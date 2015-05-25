@@ -1,0 +1,3715 @@
+ EMPLID	NAME
+	B0004	Kadirah Anwar
+	B0006	Ryanto
+	B0007	Lilis Sulistiati
+	B0009	Sofyan
+	B0011	Fatkhurrohman
+	B0012	M.Arif Subahagiyo
+	B0014	Agustiono
+	B0015	Waluyo
+	B0016	Mahdan Rijal
+	B0017	Sugeng
+	B0018	Suksma Wijaya
+	B0021	Guntur Priyadi
+	B0022	Tedi Sukarna
+	B0023	Endang Husin Abdullah
+	B0024	Neni Karline
+	B0026	Refi Mulyawan
+	B0027	Andriyanto
+	B0028	Hery Haryanto
+	B0033	M. Ariful hakim
+	B0035	Dani Hendarsyah
+	B0037	Kabul Wismoharto
+	B0038	Subekti
+	B0040	Wawan Cahyawan
+	B0041	Dodi Wahyudi
+	B0043	Sukiryanto
+	B0044	Ragil Yuliono
+	B0045	Budi Haryono S
+	B0055	Akhpas Jaelani
+	B0060	Sopiyuloh
+	B0061	Didi Raharjo
+	B0081	Dede Priatna
+	B0085	Lia Yulia
+	B0086	Yulianto Trirto Anggono
+	B0087	Supriyanto
+	B0090	Dedi Hindayana
+	B0094	Budi Nugraha
+	B0097	Yana Supriyana
+	B0100	Suryatul Wutsqo
+	B0114	Kusyanto
+	B0122	Ari Budi Nurseto
+	B0124	Miska Rahmanto
+	B0132	Cahyani Andreyati
+	B0159	Budiman Arief Payoga
+	B0162	Masuhanda
+	B0217	Hasan Solihin
+	B0219	Aulia Roy Al Ghazali
+	B0239	Rini Setiawati
+	B0240	Muhammad Habiburrohman
+	B0241	Rahmat Gunara
+	B0259	Prima Setiana
+	B0262	Asep Setiawan
+	B0275	Efian Permana
+	B0282	Oman Abdul Rahman
+	B0291	Taufik Hidayat
+	B0292	Erwan Setiawan
+	B0294	Yanyan Hardiansyah
+	B0295	Akiri Sahyani
+	B0308	Imam Bagus Pirus
+	B0320	Didin Budiman
+	B0323	Herlan Setiawan
+	B0324	Andi Nurdin
+	B0339	Yoanita Kresna
+	B0346	Wely Grayudha Budiman
+	B0355	Ridha Rachdhiana
+	B0358	Uhan Parhanudin
+	B0359	Ohan Koharudin
+	B0364	Dadang Kurnia
+	B0369	Cipyanto
+	B0372	Sufyan Hasan Basri
+	B0376	Alfried Rizal
+	B0379	Khusnul Mubarok
+	B0383	Ahmad Jalaludin
+	B0387	Panji Syukur Permana
+	B0388	Abdul Jabbar
+	B0389	Jemi
+	B0390	Ricky Is Sehabudin
+	B0392	Dani Hermawan
+	B0397	Amin Muzaki
+	B0399	Diki Kurniawan
+	B0400	Ronald Puranto
+	B0401	Yadi Supriadi
+	B0402	Iwan Suhandi
+	B0403	Ida Kusnadi
+	B0404	Yusuf Samsudin
+	B0405	Sutedi
+	B0409	Anggi Wijaya Turga
+	B0410	Acep Saepul Hidayat
+	B0413	Muhammad Zul Syawalsyah
+	B0417	Syaefullah (RT)
+	B0418	Iis Nuraeni
+	B0421	Gita Pratiwi
+	B0422	Fajar Jamalludin
+	B0433	Ridwanudin
+	B0435	Ifan Arifianto
+	B0436	Kusyanto
+	B0438	Indra Wijaya
+	B0441	Iben Mochamad Nurdin Afyadi
+	B0445	Yulian Dwi Hartono
+	B0446	Yusuf Saprudin
+	B0447	Dwiyana Permana
+	B0450	Agus Mustaram
+	B0458	Sonny Irawan
+	B0459	Agus Syifaul Huzni
+	B0460	Sepi Deni
+	B0463	Ibnu Adam
+	B0464	Heri Marsetianto
+	B0465	Mamat Rahmat
+	B0466	Dede Rendi Okta Maulandi
+	B0467	Hendra Prawiyoga
+	B0469	Anggi Triana
+	B0473	Dadik Purwanto
+	B0478	Yuniarti
+	B0479	Alek Santoso
+	B0482	Hendra Yana
+	B0485	Yunus Rosadi
+	B0486	Kusmana
+	B0487	Kusniawan
+	B0488	Linda Ayu
+	B0490	N. Anwar Sidiq
+	B0491	Pepen
+	B0492	Wawan Hermawan
+	B0493	Rohman
+	B0494	Roni Riyadi
+	B0501	Fadli Hergiana
+	B0505	Firmansyah
+	B0508	Hendra
+	B0510	Angga Prakasa Kamajaya
+	B0512	Farid Ramdani
+	B0514	Yudi Setiadi
+	B0518	Intan Permana
+	B0521	Asep Sutisna
+	B0523	Diki Muhammad Nur
+	B0524	Sri Yuningsih
+	B0527	Ridlwan Nurfaozan
+	B0530	Zamzam Nurjaman
+	B0531	Shagirin
+	B0536	Ram Ram Muhammad Ramdhan
+	B0539	Muhamad Fahmi
+	B0540	Mulyadi
+	B0542	Haris Karisman
+	B0543	Yuyu Krisdiyansah
+	B0545	Ahmad Fauzi
+	B0546	Rahmat Arianto
+	B0547	Virca Pujiastuti
+	B0552	Hendra Yatno
+	B0554	Maulana Nur Adha
+	B0557	Muhamad Arifin
+	B0559	Faiq Santoso
+	B0563	Maqinun Seddeq
+	B0564	Widi Hantoro
+	B0569	Indra Abdurohim
+	B0570	Irwan Fuad Setiansyah
+	B0572	Erni Triyani
+	B0573	Rahmat Hidayat
+	B0574	Ira Yuniar Marganingsih
+	B0575	Dani Cahyana
+	B0576	Adi Hansah
+	B0580	Adi Khofifulyadi
+	B0582	Ina Faujiah
+	B0583	Mulya Mulyana
+	B0585	Neisia Larasati
+	B0586	Jamal Gumilar
+	B0590	Heru Koswara
+	B0592	Anggi Nur Setiawan
+	B0595	Firman Rachmanda Syarief
+	B0596	Rian Toha Muhamad
+	B0597	Muhamad Hasan
+	B0598	Kartika Mega Prativi
+	B0603	Dedi Rahayu
+	B0605	Suryadi
+	B0606	Ifan Afandi
+	B0607	Rima Trisyanti
+	B0608	Deri Juita Andri
+	B0609	Abi Nurcahyo
+	B0610	Acep Ridwan
+	B0611	Raden Ivan Siva Meril Irawan
+	B0613	M. Rohman Budiman
+	B0615	Samekto Wibawa
+	B0617	Ridwan Ramdani
+	B0618	Martin Resdo Sinaga
+	B0622	Raihan Shafarian
+	B0623	Wandi Hidayat
+	B0624	Hendro Santoso
+	B0626	Yudi Dwi Budi Utomo
+	B0627	Guntur Nugraha
+	B0629	Muhammad Nur Fajar
+	B0630	Rosidin
+	B0631	Edis Supriadi
+	B0632	Faisal Fajar
+	B0633	Badrudin
+	B0635	Rian Firmansyah
+	B0637	Cecep Kurniawan
+	B0640	Miqrofatul Hasanah
+	B0642	Asim
+	B0643	Agus Nurjaman
+	B0648	Luthfi Adam
+	B0652	Shandyka Febrian
+	B0654	Andris Herlambang
+	B0655	Mukamad Helmy
+	B0657	Nurasiah
+	B0659	Mochamad Syadam Siswanto
+	B0660	Yuda Arief Pratama
+	B0661	Taufik Alfat
+	B0663	Abdul Majid
+	B0664	Muhammad Abdur Rahman Salam
+	B0666	Imat Ruhimat
+	B0671	M. Faizin
+	B0672	Dede Rismayati
+	B0673	Kulsum Sumarni
+	B0675	Andrian Alfi Rahman
+	B0676	Rachman Darmawan
+	B0677	Sinta Pertiwi
+	B0678	Insan Khaerul F
+	B0679	Ali Isa Ashari
+	B0680	Mochamad Suparno
+	B0681	Aldino Julian
+	B0682	Anjar Ginanjar
+	B0683	Kemal Andi Muharam
+	B0684	Habibbudin
+	B0685	Fais Riza
+	B0686	Abdur Rahman
+	B0687	Muhammad Burhanudin
+	B0688	Rizki Wahyudi
+	B0968	Guntikno
+	B1017	Angga Wira Pratama
+	B1048	Budiyono Dinata
+	B1049	Amin Ahmad Ibrahim
+	B1070	Fitra Ahmad Dhani
+	B1079	Oni Patoni
+	B1092	Eman Hermawan
+	B1123	Roni
+	B1136	Evin Febriani
+	B1137	Nasriyah
+	D0001	Ugartua Rumahorbo
+	D0002	Adia Putra
+	D0003	Jasrul
+	D0005	Lamtorang L.Tobing
+	D0009	Ferdinand Telaumbanua
+	D0011	Mangaris Manik
+	D0016	Bahagia Ginting
+	D0017	Dedi Iskandar
+	D0020	Zulfarina
+	D0028	Veby Eka Putra
+	D0029	Denison Zabua
+	D0032	Irwan Gandi Saputra
+	D0033	Elly Yenti
+	D0034	Gustin Merita Sikumbang
+	D0035	Hendrik
+	D0040	Bilmar Sijabat
+	D0045	Ronal Alfonsus Siregar
+	D0046	Oloan Maruli Manurung
+	D0048	Epi Yuliadi
+	D0053	Edi Wirzal
+	D0057	Albenar Pasaribu
+	D0063	Armondikstra
+	D0064	Irwan
+	D0066	Stefan Luther Tobing
+	D0070	Tumpu Saroha Sinaga
+	D0073	Robin Hood Panggabean
+	D0075	Andika Putra
+	D0076	Doprinaldi
+	D0081	Young Ahmad Denni
+	D0082	Ade Irma Tutdyah Adriani
+	D0085	Putri Yunita Osra
+	D0088	Rio Yanberlin Purba
+	D0094	Yusran
+	D0096	Norizal
+	D0097	Lamhot D.S.P Sitorus
+	D0098	Marihot Dolli Santri Siregar
+	D0102	Afrizal
+	D0105	Dedi Darmadi
+	D0121	Yumi Tania
+	D0122	Hendri Nazar
+	D0128	Letar Siagian
+	D0129	Dediyan Suhendra
+	D0131	Melisda Pasaribu
+	D0137	Riko Komala
+	D0141	Hendra Oktaria
+	D0144	Wahyudi Arza
+	D0150	Afrizal
+	D0156	Syahruddin Lubis
+	D0158	Danny Oktora R.
+	D0160	Asrizal
+	D0167	Sri Wahyuni
+	D0193	Arif Mulyadi
+	D0198	Hasanul Amrico Fatni
+	D0221	Ali Hendra Siregar
+	D0254	Husnan
+	D0284	Ahmad Kasihan
+	D0286	Budi Ihsan
+	D0292	Hendra Handoko
+	D0313	Novi Dodi Saputra
+	D0325	Adai Syahputra
+	D0328	Ilham Agus
+	D0338	Ari Subagio
+	D0341	Anton Suryadi
+	D0344	Alek Putra
+	D0348	Ramadhan
+	D0350	Zukrianto
+	D0358	Wilmar
+	D0372	Ega Indah Sari
+	D0373	Rahmad Islami Jambak
+	D0383	M. Irvan Batubara
+	D0390	Hanif Setiawan
+	D0391	Leo Realy Wasington Simarmata
+	D0395	Gosar Panjaitan
+	D0398	Rexon Pimpi Bandama
+	D0413	Joni Amran
+	D0414	Sahat Martuahman Saragih
+	D0415	Rhitsu F. M. Purba
+	D0416	Auli Fajri Putri
+	D0418	Muslim
+	D0421	Meiniarti
+	D0431	Ricky Panca Putra
+	D0432	Misbahuddin
+	D0434	Gunawan Masri
+	D0435	Andre Idra
+	D0443	Darianto
+	D0454	Dirijen Siburian
+	D0459	Jasben Situmorang
+	D0463	Deswarti
+	D0465	Henry Sinaga
+	D0466	Ali Mukmin Lubis
+	D0469	Supratman Pasaribu
+	D0471	Lambok Manurung
+	D0475	Teguh Handoko
+	D0476	Lumen Simatupang
+	D0486	Sohidin
+	D0487	Hadi Sanjaya
+	D0490	Yusfiri Padlilina Rati
+	D0492	Muhammad Faisal NST
+	D0493	Aulia Malta
+	D0497	Romi Rakhmaddillah
+	D0498	Muhammad Hafiz Thaher
+	D0499	Amrin Rumapea
+	D0500	Rapido J. Manalu
+	D0502	Zulfikar
+	D0508	Hendriko Syafruri
+	D0510	Bambang Triyanto
+	D0513	Piagam Buo
+	D0518	Khoirul Ihsan Pasaribu
+	D0519	Hotman Rikson Fransisko Hutasoit
+	D0520	Lennon Samosir
+	D0521	Robby Agustian
+	D0523	Deo Morning Son
+	D0526	Rifain Nababan
+	D0527	Aidy Fitri Yusen Viza
+	D0529	Budi Hidayat
+	D0535	Jupen Bahari
+	D0537	Muhammad Aris Yustanto
+	D0538	Lukman Hendri
+	D0545	Arif Rahman
+	D0547	Hari Parasian
+	D0551	Lando Saut Sitohang
+	D0552	Richat Manalu
+	D0555	Rini Purwasih
+	D0557	Antoni P. Napitupulu
+	D0558	Rollina Sinurat
+	D0559	Hari Budi Anto
+	D0566	Wahyu Harmen
+	D0573	Roy Marthinus Sihombing
+	D0575	Rudi Romansyah
+	D0576	Putra Hayatullah
+	D0577	Verdinal Arry
+	D0579	Puput Servita Putri
+	D0581	Candra Hevi Sastra
+	D0583	Muhammad Fadril
+	D0584	Riko Trisno
+	D0585	Riko Eka Putra
+	D0586	Zul Effendi
+	D0588	Dodi Praharja Surya
+	D0589	Udit Mulyadi
+	D0590	Yodi Onasis
+	D0593	Adika Sonia Pratama
+	D0594	Patomos Siagian
+	D0598	Jekson Limbong
+	D0600	Wike Loemenda
+	D0601	Yohanes Rezky L. Toruan
+	D0604	Sangap Panigoran Pospos
+	D0611	Asrul Sidauruk
+	D0613	Arif Yandu
+	D0615	Mas'adi
+	D0618	Dede Indra
+	D0619	Nanda Hasudungan Hutabarat
+	D0621	Daniel Sinaga
+	D0627	Andrio Purdana
+	D0632	Hadi Taufik
+	D0633	Ade Indra
+	D0636	Kristina Natalia
+	D0647	Santoni Sibuea
+	D0651	Afrimawati
+	D0653	Dani Marado Saragih
+	D0655	Zakaria
+	D0656	Luni Turnip
+	D0662	Adriansyah
+	D0664	Rahmad Akbar Syah
+	D0667	Rizka Armanda
+	D0668	Agus Victor Sirait
+	D0669	Fil Anharil
+	D0670	Nurhaevo
+	D0672	Hendra Wirman
+	D0674	Singkat Situmorang
+	D0675	Frendy Zapri Yulianto
+	D0676	Yudha Pratama
+	D0677	Taufiq Hidayat
+	D0681	Muhardi Anshari
+	D0682	Yuwanto S. Warjoyo
+	D0683	Vebi Renaldo
+	D0684	Alfikri Mirza Rosadi
+	D0687	Rido Andika Saputra
+	D0690	Agusri Piliang
+	D0691	Faisal Hakim Nasution
+	D0693	Made Prima
+	D0694	Rio
+	D0695	Inke Maristi Simanjuntak
+	D0697	Zulhendra
+	D0698	Rahmat Ade Saputra
+	D0699	Melkos Okaem
+	D0700	Fauzan Aulia
+	D0704	Heldy Vemi
+	D0712	Maidel Eka Putra
+	D0714	Afdal
+	D0715	Riza Febriani
+	D0716	Rahmi Nirbesta
+	D0718	Ilhamid Marwan
+	D0719	Rama Dhian
+	D0728	Nasri
+	D0732	Firman Sadri
+	D0736	Bambang Hartopo Turnip
+	D0738	Suryono
+	D0740	Ledy Bintang Lestari
+	D0741	Jefri Damuri Hutauruk
+	D0742	Mahfud
+	D0746	Jack Talenta Sinaga
+	D0748	Marto Sihombing
+	D0751	Maskot Cardika Hutasoit
+	D0752	Abdul Wahid
+	D0753	Prendi Marolop Marpaung
+	D0754	Muhammad Ibrahim
+	D0757	Riseldi
+	D0758	Cupriadi
+	D0760	Parsandean Harahap
+	D0761	Imam Syafei
+	D0762	Iwan Hendra Ferdinand Manulang
+	D0764	Tomy Leonardo Sinaga
+	D0767	Juiston Barasa
+	D0774	Izmi Safitri Hasibuan
+	D0777	Eko Saputra
+	D0780	Darwinsyah
+	D0781	Doktor Robinton Silaen
+	D0785	M. Rasid
+	D0786	Rafles Putra
+	D0787	Paimen Simamora
+	D0789	Harry Adinata
+	D0790	Adventus Aritonang
+	D0791	Hengki Putra Fausya
+	D0794	Yuni Ariesta
+	D0798	Muhammad Kafi
+	D0800	Furqan Tri Adli Nandi
+	D0801	Jeandrico Sayudris
+	D0802	Tulus Hutasoit
+	D0811	Abdul Rasid
+	D0813	Syairul Hadi
+	D0815	Wahyudi Armen
+	D0818	Riki Noveriko
+	D0819	Nofrinaldi Hendriko
+	D0821	Lindung P. Simbolon
+	D0823	Zulkifli
+	D0824	Mardianto
+	D0826	Pardamean Pandiangan
+	D0827	Rio Saputra Hendri
+	D0828	Hendra Trisno
+	D0829	Jauhari Haloho
+	D0832	Permadi Hadi Saputro R.
+	D0835	Verawati
+	D0836	Tolando Sitorus
+	D0837	Jhon Parulian Sipayung
+	D0838	Raymon Butar Butar
+	D0839	Rangga Yunian Sastra
+	D0840	Khasrul Hidayat Saragih
+	D0842	Aryanto Hutasoit
+	D0847	Febrinanda Farsito
+	D0849	Hendra Asyari
+	D0852	Anasrul
+	D0853	Irmawati Sipahutar
+	D0856	Pandri Malau
+	D0857	Wahyudi Bhakti Sentosa
+	D0858	Dori Nofri Yendi
+	D0859	Rita Gustina
+	D0864	Ernywaty Silaban
+	D0865	Muhammad Solihin
+	D0868	Hermando Saragih
+	D0869	Astrie Lidiya Ningsih
+	D0871	Rian Supandi Simanjuntak
+	D0872	Vanny Devi Shilviana Panjaitan
+	G0002	Kuntari Dwi Sayekti
+	G0004	Wardoyo
+	G0005	Fitri Malawati
+	G0008	Arif Setiawan
+	G0012	Leonardus Sukirno
+	G0014	Rc Irwanto
+	G0019	Sunaryo
+	G0020	Heri Hernawan
+	G0021	Supardi
+	G0024	Djati Hendarjoko
+	G0026	Sunarso
+	G0027	Bathara Hutagalung
+	G0030	B.Kresna Adi P
+	G0032	Sarwono
+	G0034	Mochamad Kolil
+	G0038	Syamsudin
+	G0040	Agus Suwito
+	G0042	Suwardi
+	G0045	Bagiyo
+	G0047	Indra Hariyati
+	G0051	Sonny Martunus
+	G0053	Edi Sutaryo
+	G0055	Arie Diana Sari
+	G0056	Eko Wachyu Witanto
+	G0058	Hermawan Tri C.
+	G0061	Hermawan Catur N
+	G0062	Jebri
+	G0063	Rendra Yuwono W
+	G0064	Ahmad Ibrahim
+	G0069	Yusri Rahmad T
+	G0070	Juwari
+	G0071	Agung Kurniawan
+	G0072	Ade Suyatno
+	G0073	Arrahman Arifin
+	G0074	Andibara Ruswitananda
+	G0075	Agus Setiawan
+	G0078	Hari Hartawan
+	G0082	Bambang Handono Warih
+	G0083	Amin Firdaus
+	G0086	Dony Baskoro
+	G0087	M.Agung Wijaya
+	G0088	Dwi Winarno
+	G0089	Wimalahadi Astawa
+	G0092	Surya Hadi Kusuma
+	G0094	Surokhim
+	G0095	Ahmad Tri Yulianto
+	G0098	Kukuh Prasetyo
+	G0106	Ferry Santoso
+	G0107	Hendro Suryo Putro
+	G0108	Eka Yulianto
+	G0112	Agung Santoso
+	G0113	Mulyatno
+	G0119	Mery Kurnia.
+	G0125	Ariyanto
+	G0128	Farida Nurohmaniati
+	G0138	Mashuri
+	G0139	Iwan Somo Budiarto
+	G0149	Arif Rahman Hakim
+	G0155	Abdul Kharis
+	G0160	Moh.Amron
+	G0165	Budi Wijanarko
+	G0170	Agung Kristianto
+	G0172	Andisa Maheranadu
+	G0176	Sulistyono
+	G0177	Suprihatin
+	G0183	Martono
+	G0968	Indriastin Prastawanti
+	G0973	Maryanto
+	G0975	Fransiska Anjar Saptiani
+	G0976	Kasmono
+	G0982	Subagio Budi Suroso
+	G0983	Ayos Maryadi
+	G0991	Andy Nugroho
+	G0993	Heru Purnomo
+	G0995	Andry Widiasmoko
+	G0999	Subagja
+	G1002	Yusuf Akhmadi
+	G1005	Eka Arisetya Utomo
+	G1006	Hari Setiawan
+	G1009	Dani Prastawa
+	G1010	Hery Novianto
+	G1013	Arif Priyanto
+	G1015	Rohman Hidayat
+	G1016	Budi Kisworo
+	G1023	Nunung Tri Iswanto
+	G1024	Nowo Sulistyandi
+	G1027	Rajib
+	G1031	Sumadi
+	G1034	Arif Darmawan
+	G1035	Agus Hartono
+	G1036	Sri Mulsantiaji
+	G1037	Bimo Dwidjatmiko
+	G1039	Wahyu Agung Sukoco
+	G1043	Roni Wihatmojo
+	G1045	Nanung Wahyu Pribadi
+	G1047	Slamet Susilo
+	G1051	Agus Yulianto
+	G1054	Antyo Samsu Hudoyo
+	G1056	Ari Trianto
+	G1060	Sigit Sugianto
+	G1071	Yugo Purnomosidi
+	G1078	Slamet Mujiono
+	G1080	Dimas Sanjaya Maskha
+	G1090	Ari Prasetyo Widodo
+	G1092	Agus Endaryanto
+	G1093	Ading Sababa
+	G1095	Ardyan Benny Susetia
+	G1099	Joko Ariyanto
+	G1104	Deddy Suryono
+	G1115	M Ichwanul Ichsan
+	G1123	Tejo Abdi Aryo Bawono
+	G1129	Yulianto Purnomo
+	G1131	Roni Hermawan
+	G1135	Slamet Raharjo
+	G1138	Anton Kristianto
+	G1148	Samsul Hadi
+	G1151	Hidayat Adi Nugroho
+	G1167	Thithit Romadona
+	G1172	Iwan Murjianto
+	G1190	Nazarudin Manaf
+	G1191	Mohammad Toha
+	G1194	Muhammad Wahyudin
+	G1210	Moh Irfan
+	G1211	Moh Arbain Pujo H
+	G1212	Dudik Iskandar
+	G1218	Antonius Anang Andy D
+	G1231	Agung Kurniawan Bias Praganda
+	G1242	Agung Andi
+	G1245	Supriyanto
+	G1247	Khairudin
+	G1248	Noorlaila Maulida
+	G1257	Muhajir
+	G1258	Joko Wibowo
+	G1260	Yogo Waseso
+	G1262	Suratman
+	G1266	Susilo Arif Hartanto
+	G1278	Kuri
+	G1282	Gunawan Fathkhurrozi
+	G1285	Sahid
+	G1292	Agung Indarto
+	G1296	Adhie Rahman
+	G1298	Setiawan Mustakhul
+	G1299	Candra Martin Eko P
+	G1304	Sukma Jaka Prabawa
+	G1314	Wahyu Sunaryono
+	G1324	Aris Santo Effendy
+	G1334	Muh Ayyid Fikri
+	G1335	Yuni Purnomo
+	G1338	Gesit Purnamasari
+	G1339	Ahmad Mudrik
+	G1342	Sehudin
+	G1343	Budi Priwanto
+	G1345	Peppi Sugianto
+	G1346	Muh Amin Mukamil
+	G1347	Tomas Riyanto
+	G1348	Abdul Rois Amin
+	G1349	Fajar Subkhan
+	G1354	Ardianto Wisnu Nugroho
+	G1356	Fauziah Setianingsih
+	G1358	Maryono
+	G1361	Putri Oktaviyani
+	G1364	Junedi
+	G1365	Andre Widyanto
+	G1367	Rodhiyatun Nafifah
+	G1372	Nurhamdi
+	G1374	Agus Mushonef
+	G1378	Amat Mansyur
+	G1379	Bagas Ade Ariyoni
+	G1382	Dennis Guritno Sri S
+	G1386	Yosef Triatmoko
+	G1391	Fery Trie Muktiharjanto
+	G1392	Taufik Hidayat
+	G1393	Ibnu Nangim Mustakim
+	G1394	Ari Prasetyo
+	G1403	Sigit Wijayanto
+	G1404	Iksan Budi Satriya
+	G1409	Adhi Nugroho
+	G1410	Sasmito Widhi Utomo
+	G1413	Andi Soleh Riyanto
+	G1426	Adi Setyo Wibowo
+	G1431	Tulus Sasongko
+	G1432	Ahmad Arif Budiharto
+	G1433	Arif Wibowo
+	G1437	Okky Surya Kusuma P
+	G1447	Muh Subakir
+	G1450	Bambang Mursito
+	G1452	Triyanto
+	G1464	Attin Munadhiroh
+	G1467	Wicara Putra
+	G1471	Jatunugroho Budi Santoso
+	G1472	Yohanas Purnianto
+	G1475	Kasnadi
+	G1476	Erwin Eko Prasetyo
+	G1477	Iswandi
+	G1478	Moh Supriyadi
+	G1484	Mokhamad Toha
+	G1494	Arif Budi Santoso
+	G1497	Viga Ayu Mularsih
+	G1498	Indra Setiawan
+	G1501	Benny Kusuma Aji Sanjaya
+	G1502	Mustaqdirin
+	G1503	Darmoyo Nurcahyo
+	G1508	Asep Mulyono Ajie
+	G1509	Zaenal Muchtadin
+	G1512	Teguh Pamungkas
+	G1513	Yusuf Afsri Firdaus
+	G1514	Nur Ichsan
+	G1515	Arrizal Auliya
+	G1516	Yopi Yulian
+	G1518	Kresna Legam Waskita Anugrahadi As
+	G1523	Ragil Noviyanto
+	G1526	Retno Ariyanto
+	G1527	Nurachmad Indarwiansyah
+	G1528	Hasan Basri
+	G1531	Imaniar Ratih Kusuma Ningrum
+	G1532	Nerie Faizah Widayati
+	G1533	Nofik Ariyanto
+	G1534	Warsito
+	G1535	Amalia Dian Utami
+	G1536	Nur Anissa
+	G1537	Desi Ariantini
+	G1540	Eko Setyo Wibowo
+	G1542	Iis Firunika
+	G1543	Apriliyanti
+	G1544	Adi Budi Utomo
+	G1545	Rony Prasetyo
+	G1546	Ardi Markosin
+	G1547	Roni Setyadi
+	G1548	Wawan Prasetyo
+	G1549	Mabrur
+	G1550	Agus Mardiyanto
+	G1551	Choirul
+	G1554	Hudhi Pradipta
+	G1559	Yayan Dwi Kusnanto
+	G1560	Yanuar Fuad Wardana
+	G1561	Agustinus Indra C
+	G1562	Surya Aji Riyanto
+	G1563	Hari Robiyanto
+	G1564	Padenan
+	G1565	Wahyu Widodo
+	G1567	Abdur Rochim
+	G1572	Bagus Roestianto
+	G1577	Wahyu Putri Febriani
+	G1579	Yan Ispramudiyanto
+	G1581	Purwanto
+	G1582	Johan Adi Wahyono
+	G1583	Nugroho Paramito
+	G1586	Catur Aji Wijayanti
+	G1591	Rahesa Galih Wahyyuning Aji
+	G1595	Ahmad Burhanudin
+	G1597	Fendy Purnomo
+	G1603	Rendi Figiyanto
+	G1606	Widyantoro
+	G1612	Hadi Wartono
+	G1615	Tunggal Ragil Wibowo
+	G1617	Iken In Feriyanto
+	G1619	Rendra Adi Laksana
+	G1620	Muhammad Agus Syaiful Imam
+	G1622	Fredy Yudi Jatmiko
+	G1623	Muammar Al Fadrik
+	G1624	Apriadi Dwi Santoso
+	G1628	Fakihudin
+	G1632	Wempi Novianto
+	G1633	Alwi Mujahidin
+	G1634	Moch. Noor Novari
+	G1635	Sri Fadli Fajri
+	G1636	Ari Riza Antoni Aditia
+	G1637	Santy Irawati
+	G1643	Soleh Sugiyanto
+	G1644	Sukri
+	G1646	Adi Yulia Setiawan
+	G1647	Dani Charismawan
+	G1651	Zaenal Mawahib
+	G1652	Jefri Setiawan
+	G1658	Burhanudin
+	G1659	Nugroho Prio Andono
+	G1660	Apik Wahyudi
+	G1662	Syafiq Thamam Sildjian
+	G1665	Mohamad Seto Aji
+	G1666	Basri Natalria
+	G1668	Yulia Kurniawan
+	G1669	Nanda Pradana
+	G1672	Slamet Suroso
+	G1673	Mohamad Sobirin
+	G1674	Jantoko Adri Ristiawan
+	G1676	Angga Risqi Ernantio
+	G1680	Anton Hartanto
+	G1682	Santoso
+	G1683	Budiater Sinaga
+	G1684	Maulana Yuistihar
+	G1688	Tedy Wijaya
+	G1692	Imam Khudori
+	G1693	Dhowi Baryyana
+	G1696	Warsito
+	G1708	Alim Mas'udy
+	G1709	Aditya Nur Haryanto
+	G1712	Faizal Helmy Satriya
+	G1713	David Prakoso
+	G1714	Endro Sutopo
+	G1722	Setiya Rahayu
+	G1726	Fakhri Ashrial Yusnar
+	G1729	Triyo Lubis
+	G1730	Teguh Wahyu Widodo
+	G1731	Yerry Purwanto
+	G1732	Khoerun
+	G1738	Erda Irawan
+	G1741	Hadi Setiawan
+	G1742	Jumali Saputra
+	G1743	Taufiq Qurohman
+	G1744	Dian Adigraha
+	G1745	Paryanto
+	G1746	Aris Suswanto
+	G1747	Dani Faiq Gunanto
+	G1751	Hera Wahyu Suryaningsih
+	G1753	Muhammad Rivqi Syalfhariza
+	G1754	Hasan Wachid
+	G1757	Adiguna Santoso
+	G1760	Widhi Dwi Nugroho
+	G1762	Vicky Zakaria
+	G1769	Didik Setiawan
+	G1775	Arif Sugito
+	G1778	Wahyu Arfianto
+	G1780	Luqman Syamsul Muis
+	G1782	Herwan Candriyan
+	G1783	Anggoro Nugroho Jati
+	G1784	Wahyu Assif Widyartono
+	G1787	Agung Puji Handoko
+	G1790	Emy Yulianti
+	G1791	Ragil Destiana
+	G1792	Galih Joko Samodra
+	G1794	Bayu Eko Prasetyo
+	G1795	Dadang Dwi Prasetiyo
+	G1797	Wicaksono Bowo Leksono
+	G1802	Akhnop Sagita Rivqy Primanda
+	G1803	Sofyan Hadi
+	G1806	Adhe Negara
+	G1809	Dedy Setiawan
+	G1811	Vivan Taher
+	G1812	Riszki Akbar Indra Wijaya
+	G1813	Teo Sakti Andhika
+	G1814	Dimas Andhika
+	G1816	Sugeng Tri Maryanto
+	G1817	Muhammad Hakim Noor Rosyid
+	G1820	Rudy Setiawan
+	G1821	Agus Adi Ragil Wicaksono
+	G1823	Zaenal Arifin
+	G1825	Anjar Rahman Pamungkas
+	G1826	Iman Arif Pranata
+	G1827	Vera Aprianti Nimas Ponco Hapsari
+	J0004	Sulamto
+	J0007	Erna Rani L. Tobing
+	J0009	Suwarman
+	J0012	Aziz
+	J0015	Sumardan
+	J0036	Siti Zubaidah
+	J0041	Elly Bellawati
+	J0042	Tuih
+	J0048	Herin Sudarto
+	J0058	Sutoyo
+	J0062	Ali Akbar
+	J0064	Supriyanti
+	J0068	Surya Anita Pangaribuan
+	J0070	Dedeh Rohayati
+	J0071	Muchlisin
+	J0075	Nurita
+	J0077	Heri Suherlan
+	J0080	Endih Sunardi
+	J0083	Inna Yuprihatin
+	J0094	Murdi
+	J0108	Suyono Ismanto
+	J0113	Rikki L. Tobing
+	J0123	Agus Martanto
+	J0124	Arys Siswanto
+	J0126	Teguh Ahmad Sujiono
+	J0129	Priyono
+	J0131	Asep Sutisna
+	J0134	Ating Haryono
+	J0135	Yustisi Daeli
+	J0145	Rimih
+	J0146	Budiman Saputra
+	J0149	Rogers Marpaung
+	J0150	Peradipta
+	J0161	Gatot Suwondo
+	J0168	Dwi Sartata
+	J0176	Sri Rahayu
+	J0178	Malem Kita Bangun
+	J0180	Jufido Kapdru Dumarto Hutauruk
+	J0181	Sulaeman
+	J0184	Nirjaya Girsang
+	J0186	Sri Rejeki
+	J0187	Sumarsudi
+	J0188	Nurjanah
+	J0189	Anwar
+	J0194	Hendro Utomo
+	J0195	Suprapto
+	J0212	Muhamad Yunus
+	J0225	Sukirno Ziki Anwar
+	J0239	Halomoan Sihombing
+	J0260	Agung Firmansyah
+	J0261	Nandar Pamungkas
+	J0265	Supardi
+	J0270	Endang Suhendar
+	J0276	Nuryanto Sigit Purnomo
+	J0278	Emil Makhruf R.
+	J0279	Januar Sri Sambodho
+	J0284	Memed Musa
+	J0293	Jackson Agustinus Simanjuntak
+	J0299	Abdul Fatah Jaelany
+	J0301	Noorman Tanjung
+	J0305	Hasanudin
+	J0321	Adi Kusmahawan
+	J0322	Endin Jamaludin
+	J0323	Linggom Napitupulu
+	J0324	Imanudin
+	J0325	Mayanto
+	J0339	Kurdianto
+	J0342	Cep Budi
+	J0344	Agus Saprudin
+	J0356	Rudi Sawito S
+	J0370	Ambar Kristanti
+	J0376	Bontor Sunandar Manik
+	J0378	Supriady Tarigan
+	J0383	Somi
+	J0384	Adam Irvan Yuana
+	J0385	Anang Widiasto
+	J0386	Matheus Pardamean Situmorang
+	J0396	Rahmat Amaludin Kurniawan
+	J0402	Agus Farida
+	J0405	Sri Handayani
+	J0456	Firdaus
+	J0462	Bagus Handoko
+	J0464	Yunan Habibie
+	J0470	Agung Wahyudi
+	J0473	Diana Mariana Marbun
+	J0478	Mahmud
+	J0479	Andi Pramesty
+	J0481	Siswanto
+	J0517	Daniel Hutabarat
+	J0525	Ahmad Mustafa Nuri
+	J0536	Purwadi
+	J0540	Siamsul Hutagalung
+	J0543	Chairul
+	J0561	Ricky Ricardo Hasugian
+	J0569	Dwi Indriaty
+	J0588	Laela Mardiana
+	J0630	Muhammad Yusuf
+	J0636	Ferdinansyah
+	J0637	Muhammad Engkur Kurniawan
+	J0645	Wahyu Irawan
+	J0661	Achmad Fauzi
+	J0663	Joko Suyatno
+	J0676	Fitri Rohmah Sari
+	J0682	Suanto
+	J0693	Santo Sitanggang
+	J0711	Mulat Wulantoro
+	J0714	Dadang Darmawan
+	J0718	Suherman
+	J0719	Iswanto Apriyani
+	J0726	Febriyanto
+	J0729	Gerry Santosa
+	J0744	Suwandi
+	J0756	Prihandoko
+	J0816	Sudirja Chandra Dinata
+	J0820	Agus Suprihatin
+	J0823	Andi Bin H. Kiming
+	J0827	Deden Rahmat Setiawan
+	J0833	Anthonius Parerung
+	J0836	Anwar Sitorus
+	J0839	Ahmad Marzuki
+	J0857	Widiyanto
+	J0858	Yudi Syahbani
+	J0860	Berton Raya Mawardi Sibarani
+	J0863	Nasrulloh
+	J0864	Singgih Tri Puji Atmoko
+	J0869	Ibbadurrahman Muhammad
+	J0873	Heriyanto
+	J0877	Endin Solihin
+	J0886	Dede Haris Rustaman
+	J0890	Sapto Nugroho
+	J0896	Sulung Hadiahnto
+	J0898	Didik Wahyono
+	J0903	Ferial
+	J0921	Nurbet Jamaludin
+	J0930	Arifin Dwi Nugroho
+	J0940	Achmad Farid Hartanto
+	J0947	Iwan Kamaludin
+	J0960	Warta Dharmawan
+	J0964	Abdul Rosyid
+	J0966	Nurgiyanto
+	J0967	R.Purwanto K.
+	J0970	I Wayan Suwirajana
+	J0973	Endang Kiswanto
+	J0975	Rahmad Zakaria
+	J0978	Meimanto
+	J0980	Yulie Murtini
+	J0982	Supriyanto
+	J0983	Heri Sofyanto
+	J0985	Riris Sm Sinaga
+	J0991	Timbul Sinaga
+	J0999	Imam Tarmudi
+	J1002	Alkatiri
+	J1003	Aris Eko Sujasmoko
+	J1008	Joko Prihwanto
+	J1009	I Wayan Sumarata
+	J1015	Muslimin
+	J1016	I Made Widastra
+	J1029	Atep Kunaipi
+	J1043	Heru Agustian
+	J1045	Sudarmanto
+	J1050	Pramudiono
+	J1055	A. Malik
+	J1057	David Eddi
+	J1064	Ni Komang Seriasih
+	J1067	Antonius Ka'U
+	J1069	Yudhi Cahyono
+	J1078	Padliansyah
+	J1082	Fendi
+	J1096	Tri Harnowo
+	J1098	Ichwan Ali Sinaga
+	J1099	Lukman Haris
+	J1117	Edi Wahyudi
+	J1121	Yulius Anton
+	J1123	Hadi Ismanto
+	J1128	Willyanoes Samawea
+	J1146	Fajar Agus Setiawan
+	J1153	Ismanudin Sulistyo
+	J1178	Kartika
+	J1184	Winda Listianingsih
+	J1185	Rika Karlen
+	J1187	G.A. Yuswa Parlindungan Pasaribu
+	J1200	Eddy Agusman
+	J1253	Rachmadi Gunawan
+	J1281	Donatus Pampung
+	J1283	Tomy Broto Siswanto
+	J1305	Ismadi
+	J1312	Muhlasin
+	J1319	Nugroho Widhi Suwarko
+	J1335	Achmad Fauzi Ramdan
+	J1343	Kristanto Dwi Nugroho
+	J1344	Supeno
+	J1357	Arief Prasetya
+	J1358	Sonie Priawan Adha
+	J1368	Wandi Saragih
+	J1374	Arief Budiman
+	J1380	Asep Raden Zakiirsya
+	J1392	Alfian
+	J1393	Rachmat Abdullah
+	J1396	Herdiansyah
+	J1407	Siti Kholilah
+	J1408	Virgo Wulan Mulya Sari
+	J1409	Andriani Yuma Arizona
+	J1410	Nurdhiansyah
+	J1411	Yunianto
+	J1419	Arifin
+	J1421	Phutut Hermawan
+	J1431	Alimudin
+	J1432	Uca
+	J1440	Harri Aksara
+	J1473	Afyan Arya Chandra
+	J1474	Giarto
+	J1477	Beni Dwi Hertanto
+	J1478	Iskandar Apri Haryanto
+	J1480	Sumardhi
+	J1487	Anjar Prasetyo
+	J1490	Abdul Rohman
+	J1492	Bayu Pambudi
+	J1494	Rochmat
+	J1507	Yuliyanto
+	J1509	Ade Setya Pambudhi
+	J1510	Alfaro Einstiana
+	J1514	Yuliyanto
+	J1522	Mohamad Ridhwan
+	J1525	Bobby Pantastik
+	J1526	Ifan Kurniawan
+	J1531	Fathurrohman
+	J1535	Anang Supriyadi
+	J1537	Suhendi
+	J1544	Dwi Agus Susanti
+	J1545	Lukman Hakim
+	J1553	Eka Furi Soegirat
+	J1554	Muhammad Abdul Munir
+	J1581	Haris Tigor R. Sihaloho
+	J1608	Angga Pratama Putra
+	J1620	Azwar Yulianto
+	J1622	Agung Riyananto
+	J1624	Ade Indra Adrian
+	J1625	Joko Santoso
+	J1626	Dita Afriandi Mutato
+	J1633	Joni
+	J1635	Wahyu Danur Gangga
+	J1641	Radius Aprianto
+	J1646	Adventus Josua Sinamo
+	J1650	Hermanus Suban
+	J1655	Gunarto
+	J1656	Syahrial Amrin
+	J1657	Agus Muchtiardi
+	J1662	Asih Prihatin
+	J1664	Lukman Nurhakim
+	J1678	Imam Wahyudi
+	J1679	Al-Haris
+	J1681	Yeyep Priana
+	J1690	Agus Gunawan
+	J1702	Hendra Prawira
+	J1705	Rudi Purwanto
+	J1709	Anggie Gita Tirta
+	J1713	Eddy Dian Sebayang
+	J1718	Riski Hilmawan
+	J1720	Frengki Halamoan
+	J1726	Anton Setio Nugroho
+	J1730	Aryo Pananjung Eko Chandra
+	J1732	Dhidiet Wijaya
+	J1746	Risky Harlan
+	J1748	Adrian Pradipto
+	J1749	Suripto
+	J1763	Intan Yuniarti
+	J1764	Rudy Saputra
+	J1769	I Made Sudiana
+	J1776	Dwito Rostiawan
+	J1784	Agus Siswanto
+	J1790	Achmad Rifani
+	J1799	Asep Syaiful Rahman
+	J1809	Yohanes De Brito Seto
+	J1810	Paulus Nyo Da Silva
+	J1815	Suprapto
+	J1816	Sherly Fiter
+	J1817	Abdul Jalil
+	J1820	Jackson Panjaitan
+	J1827	Emi Sita Eriana
+	J1839	Iswanto
+	J1845	Yuniarto Budiman
+	J1846	Bambang Riyahdi
+	J1851	Deni Rizki Firmansyah
+	J1852	Ahmad Hafidz
+	J1855	Tri Mulyono
+	J1858	Marisah Junita Anggraeni
+	J1864	Kelvien Karendy
+	J1866	Sekar Kanti Puji Rahayu
+	J1876	Septian Cahya Raharja
+	J1878	Indra Wijaya
+	J1879	M. Fahmi Sulaiman
+	J1883	Dani Suhartanta
+	J1893	Syattiri Ahmad
+	J1897	Fuad Alamsyah Febyanto
+	J1904	Rohana Pebiana
+	J1907	Komarudin
+	J1916	Toni Hermawan
+	J1917	Dekha Ariansyah
+	J1919	Hari Ismanto
+	J1931	Ahmad Ubaydillah
+	J1949	Siti Aisyah
+	J1966	Lianov
+	J1973	Ferdy Tri Maulady
+	J1975	Iman Novian Rusman
+	J1981	Firdaus Nuzula
+	J1985	Taufit Ardyansah Hidayat
+	J1986	Fazrie Yansyah Prahara
+	J1993	Hendra George K.S
+	J1994	Prana Satrio H
+	J2002	Fikri
+	J2004	M. Faesal Hadi
+	J2011	Arie Kurniawan
+	J2013	Mugeni
+	J2014	Rohmat Chidayah
+	J2020	Ahmad Suharmanto
+	J2031	Very Basten Sitanggang
+	J2032	Muhammad Fadhillah
+	J2033	Rivai
+	J2041	Ahmad Andrianto
+	J2042	Ach. Syaefurochman
+	J2046	Saiman
+	J2049	Ibni Masrukhi
+	J2068	Ria Restiani
+	J2072	Muklis Triyono
+	J2074	Arief Saputro
+	J2081	Rangga Farhanudin
+	J2093	Kurnia Candra Manurung
+	J2106	Joni Hermawan
+	J2113	Hadi Kurnia
+	J2118	Tina Dewi Kartina
+	J2121	Teguh Wahyu Febrianto
+	J2128	Mutiara Gilang P.S.
+	J2129	Khairuz Zaki
+	J2130	Faiz Adnan
+	J2141	Taufik Hidayat
+	J2147	Tino Suhartanto
+	J2174	Dhani Sastika
+	J2175	Abu Sofyan
+	J2177	Mad Yusup
+	J2178	Eko Kusumo
+	J2184	Agung Priyono
+	J2188	Aprianto Sinaga
+	J2189	Alfredo Junior E.
+	J2190	Riberto Mangamal
+	J2192	Miftakhudin
+	J2195	Fredy Kiswanto
+	J2196	Yohannes Pulungan
+	J2198	Andi Rahman Siregar
+	J2205	Abed Nego Sinaga
+	J2207	Hangga Bangun Priatna
+	J2208	Mohamad Khusni Irfan
+	J2222	Aji Mohamad Sofyan
+	J2226	Dadan Sarmada
+	J2227	Rizki Arisnanda
+	J2228	Meinrad Sitinjak
+	J2229	Ahmad Syuilmi
+	J2232	Andri Kismanto
+	J2235	Tanto Sutisno
+	J2237	Andi Mulyanto
+	J2239	Tri Budiman
+	J2245	Gandung Raharjo
+	J2246	Dedy Tri Wahyono
+	J2250	Guntur Gautama
+	J2257	Fitri Amalia
+	J2269	Muhammad Ramdhani
+	J2277	Efita Sari Indah
+	J2287	Damayanti
+	J2292	Indah Setyani
+	J2296	Putti Satriawan
+	J2314	Fahri
+	J2325	Chusnul Chotimah
+	J2328	Achmad Haidir
+	J2330	Weimpy Sulendra
+	J2340	Anggoro Cahyo Ramadhany
+	J2345	Ahmad Pradana Hasbi
+	J2350	Jimi Mara Rusli
+	J2357	Pahlefi Fajrin
+	J2361	M. Yowan Zulfikar
+	J2363	Riyan Hidayat
+	J2365	Dadang Sabiro
+	J2370	Gayatri Lesung Merdeka
+	J2373	Taufik Hidayat
+	J2374	Mochamad Anwar Sidik
+	J2375	Muhammad Arief Tiflen
+	J2376	Agus Warmansyah
+	J2377	Dimas Adi Putra
+	J2378	Gari Muthia Dewi
+	J2379	Rizki Aryanti
+	J2383	Sandy Alfian Saputra
+	J2384	Viki Tri Febriatmoko
+	J2386	Hambali
+	J2390	Egen Ilham
+	J2391	Asep Andriana
+	J2394	Duper Situmorang
+	J2398	Fauzan
+	J2402	Ismail Saleh
+	J2404	Ahmad Syofyan
+	J2406	Rohmat Fauzi
+	J2410	Rina Fajarwati
+	J2413	Eko Agus Setiawan
+	J2416	Kismono
+	J2417	Muhamad Nur
+	J2419	Risky Satria Mandala
+	J2420	Afifudin
+	J2424	Dian Widiansyah
+	J2429	Heru Pratikno
+	J2431	Atber Tanta
+	J2433	Noval Tri Adhika
+	J2436	Ekky Juliansyah
+	J2438	Aditya Ramdani
+	J2442	Cecep
+	J2454	Bayu Trapsilo
+	J2456	Agus Hidayatullah
+	J2457	Firmanto
+	J2463	Andre Marhaposan Simanungkalit
+	J2465	Engkus Kusnadi
+	J2466	Lia Mira Kuswati
+	J2467	Rivi Haryanti
+	J2468	Sriyanti
+	J2470	Ilham Julianto Hidayat
+	J2476	Firman Siambaton
+	J2477	Wahid Sudarmawan
+	J2478	Tri Diana Wati
+	J2481	Apri Imanuel
+	J2483	Bangkit Dwi Utomo
+	J2484	Dedi Rousadi
+	J2487	Syamsul Sipayung
+	J2488	Erwin Hamonangan Siregar
+	J2489	Tomi Sutanto
+	J2490	Robin Suryana
+	J2491	Ebenezer Alexander Situmorang
+	J2497	Muhammad Zaenal Abidin
+	J2498	Supriyadi
+	J2501	Dimas Adhiyat Jaya
+	J2503	Pakih Usman
+	J2504	Lis Supriyono
+	J2510	Ahmad Nurdamanhuri
+	J2511	Muhammad Akhid
+	J2512	Teguh Heryuditama
+	J2514	Arif Sutriyono
+	J2516	Kamil Mustopa
+	J2520	Trisna Agung Kurniawan
+	J2523	Angga Angriawan
+	J2525	Muhamad Slamet Widodo
+	J2527	Iswatun Fatimah
+	J2529	Dion Rasfuza
+	J2530	Supriyadi
+	J2532	Angga Marabiana
+	J2533	Ardian Leonard Sinaga
+	J2535	Dindin Nazmudin
+	J2536	Teknik Candra Kumara
+	J2545	Fransiskus Ivan Adhi Pratama
+	J2547	Muhammad Septiyarta
+	J2555	Septiana Hadi
+	J2556	Usman
+	J2558	Asep Iskandar
+	J2559	Dayat Saputra
+	J2563	Mike Arviansyah
+	J2574	Abu Choir
+	J2578	Abdul Fatah
+	J2584	Windono
+	J2590	Dini Anggraini
+	J2593	Rifki Armanto
+	J2594	Robi Purnama Alam
+	J2610	Cayo Gustianto
+	J2623	Pardiansyah
+	J2625	Saeful Anwar
+	J2626	Hendra Sudrajat
+	J2629	Reynold Jimmi Gultom
+	J2632	Rikky Gustap
+	J2634	Kulob Tejo Sunarko
+	J2639	Roni Sinaga
+	J2640	Agung Setiawan
+	J2645	Lega Riandi
+	J2647	Nugroho Prastya Wibisono
+	J2648	Mugni Tri Agustin
+	J2649	Andreagy Baskoro
+	J2651	Imam Saif
+	J2652	Rakka Nakula Saleh
+	J2653	Dwi Budiawan Asmara
+	J2654	Martha Hady Wijaya
+	J2656	Ilham Firdaus A.M.
+	J2662	Jerry Triyanto
+	J2666	Dwi Astuti
+	J2670	Fadzil Buyud Abta
+	J2671	Dony Heryanto
+	J2672	Siska Nopitria Rahayu N
+	J2674	Fransiskus Simanjuntak
+	J2675	Nasruddin
+	J2677	Ronni Indra Manik
+	J2678	Sigit Hariyadi
+	J2681	Taufik
+	J2682	Rangga Wiriadinata
+	J2683	Risma Oktavianti
+	J2684	Rudin Hamonangan Simalango
+	J2685	Bayu Setio Aji Putranto
+	J2686	Tri Wahyu Ningsih
+	J2689	Rian Jagat
+	J2691	Ardika
+	J2692	Haris Amanat
+	J2693	Khairul
+	J2694	Agus Salim
+	J2695	Ahmad Irvan Sutrisna
+	J2696	Irawan Kresna Jaya
+	J2698	Heri Rahman
+	J2699	Hadi Purwanto
+	J2700	Haris Saepudin
+	J2701	Riky Suherman
+	J2704	Dylan Ganjar Jatmika
+	J2706	Mohamad Ariyanto
+	J2707	Erik Sihol Marito Hutagalung
+	J2708	Tedi Herawan
+	J2709	Geri Rizki Panji Mawar
+	J2710	Mangaraja
+	J2712	Muhammad Solihin
+	J2713	Sunutomo Sudibyo
+	J2714	Resna Adiana
+	J2716	Jihan Chila Syahsabila
+	J2717	Ranto Hutasoit
+	J2719	Impong Rajamin Capah
+	J2724	Juli Sony Gomos Simanjuntak
+	J2725	Fauzan Kamal
+	J2726	Rachman Bonggi
+	J2732	Andriana
+	J2735	Donny Bhayangkara
+	J2738	Eko Hermawan
+	J2739	Muhammad Bilal
+	J2741	Budi Santoso
+	J2743	Rio Candra
+	J2747	Jamaludin
+	J2748	Alfian Andi Saputro
+	J2749	Makmun Aripin
+	J2752	Juanda Saputra
+	J2754	Derry Ega Saputra
+	J2756	Mukhlis Amrullah
+	J2757	Ali Imron
+	J2760	Sarmili
+	J2761	Arief Rachman
+	J2763	Siti Rosita Dewi
+	J2764	Novi Trisandi
+	J2768	Jeremia Alfred C. Diasony
+	J2769	Moch. Zaenudin
+	J2770	Tri Marhaeni
+	J2773	Josua Gultom
+	J2774	Apit Widiarto
+	J2775	Muhamad Maulana D
+	J2780	Yacobus Fernando Leba
+	J2785	Dede Nurzaman
+	J2786	Gosjali Saputra
+	J2787	Nurul Fitri
+	J2788	Akhmad Mulyasir Abdul Rahman
+	J2789	Dimas Kumorojati
+	J2790	Rahmat hidayat
+	J2791	Siti Nurhayati
+	J2793	Yusuf Ramses
+	J2794	Lita Nuansa Mekarsari
+	J2795	Ricky Khadafi
+	J2797	Sari Dewanti
+	J2798	Kiki Rizkiyani
+	J2799	Irda Jufiani
+	J2800	Triyono
+	J2801	Hartono
+	J2802	Mochamad Andyanto
+	J2803	Hermawan
+	J2804	Ade Saputra
+	J2805	Mohamad Rizki Fauzi
+	J2806	Ingsan Nur Hidayat
+	J2807	Rezky Eko Tadathiko
+	J2808	Rudi Permaiyana
+	J2809	Rheza Adhitya Ghaza
+	J2810	Rolas Christian Nainggolan
+	J2811	Dea Anggita Ramanda
+	J2814	Kamaludin
+	K0002	Fasaaro Tertius Hulu
+	K0003	Witono
+	K0005	Sulistiyo Heryono
+	K0008	Hamid Junaidi
+	K0010	Bambang Hariadi
+	K0016	Muh.Yanis
+	K0024	Yuyun Yulianti
+	K0032	Umar Dani
+	K0036	Silvester S
+	K0037	Anas Nachrowi
+	K0042	Eko Setya Budi
+	K0043	Oktovianus Tandi Bendon
+	K0044	Nailan Ulya
+	K0048	Suriansyah
+	K0051	Hijrah Sahputra
+	K0052	Aspianoor
+	K0055	Yohanis Dua Padang
+	K0056	Ronidiktius Geramop
+	K0068	Evinglista Sitongkir
+	K0071	Ahmad Choirul Huda
+	K0082	Dolvianus Roni Kondobungin
+	K0088	Andi Besse
+	K0089	Sunarti
+	K0980	Lukas Rombe Payung
+	K0981	Cuaca Duha
+	K0986	Rudi
+	K0996	Muhammad Yunus
+	K0999	Hamiral
+	K1001	Martinus Manda
+	K1017	Hakul Yakin Hulu
+	K1020	Muhammad Banaf
+	K1035	M. Jumri Talu
+	K1042	Fajar Riyanto
+	K1054	Muhammad Iman Siregar
+	K1059	Albertus Riswanto
+	K1064	Fadlan
+	K1066	Yudiansyah
+	K1072	Joko Purnomo
+	K1089	Noor Hasan
+	K1090	Amril Gunawan
+	K1105	Arif Budi Santoso
+	K1109	Roddy Pradam Cahyono
+	K1113	Ronny Tajak
+	K1121	Nitsyam
+	K1124	Abdullah Muhlison
+	K1125	Hariono
+	K1129	Ridwan Haryono
+	K1145	Muhlisin
+	K1172	Aprianus Tarigan Silangit
+	K1173	M.S.Annasir
+	K1183	Rahmansyah
+	K1184	Fathan Khorib
+	K1185	Bahrudin
+	K1199	Denny F.R. Panjaitan
+	K1206	Odhy Argawitarsa
+	K1209	Rusna Yulyda
+	K1210	Sri Indah Fajarwati
+	K1212	Melda Agustina
+	K1213	Rizwani Ikhwan
+	K1215	Adma Risma Rante Bone
+	K1218	Wahyuni Kasmin
+	K1224	Andri Kelo
+	K1225	Muhammad Rizali
+	K1229	Mukhtar
+	K1232	Taufik Eko Putra
+	K1236	Dhapid Yunius
+	K1247	Dimyati Rofingi
+	K1249	Suriansyah
+	K1252	Nubaini
+	K1261	Andri Mantani
+	K1264	Abdi Kusnandar
+	K1267	Mochammad Piqri
+	K1268	Fachmi Khusairi
+	K1274	Muhammad Surya
+	K1275	Fitliyadi
+	K1276	Bayu Ramadhan
+	K1285	Rahmadani
+	K1288	Boni Fatius Bagus Setyo Pranoto
+	K1291	Arif Rahman
+	K1294	Didi Kurniawan
+	K1296	Sigit Giyarto
+	K1297	Fitriah
+	K1300	Eka Nisfu Sari
+	K1307	Fatmawati
+	K1313	Budiman Mohidin
+	K1316	Romy
+	K1321	Helfiani
+	K1322	M. Iswandi
+	K1325	Sofia
+	K1330	Cecep Iskandar
+	K1341	Sabram
+	K1345	Irhamni
+	K1346	Anif Miftahuddin
+	K1347	Herliawan Budiman
+	K1348	Sab'iyin
+	K1353	Muhammad Ramadan
+	K1358	Yahya
+	K1359	Nunu Wargana
+	K1360	Hamdi Arifin
+	K1361	Arif Razak
+	K1362	Muhammad Pajeri
+	K1365	Thamrin Rifadin
+	K1367	Ainul Gonimah
+	K1368	Dedy Wahyudi
+	K1369	Nurul Efendy
+	K1376	Yatatema Laoli
+	K1379	Ayu Damaryanti
+	K1381	Aji Sokma
+	K1385	Muhammad Abdurrauf
+	K1388	Norhadiyatullah
+	K1399	Romiyo Saputra
+	K1400	Ahmad Fauzi
+	K1401	Hartono
+	K1402	Wardah
+	K1404	Hairil Fadli
+	K1405	Nur Abdi
+	K1406	Edhy Setiawan
+	K1407	Ahmad Syarwani
+	K1408	Sahib Hartoni
+	K1409	Muhammad Samsul Alam
+	K1410	Muhammad Ardiansyah
+	K1411	Julian Ilmi
+	K1413	Hadi Siswanto
+	K1415	Panji Putera Bangsa
+	K1417	Ferry Yatno
+	K1419	Suhendra
+	K1421	Zainal Abiddin
+	K1422	Rahmad Hidayat
+	K1423	Khotibul Umam
+	K1424	Adi Cristiawan
+	K1425	Ruswita
+	K1429	Rias Panama
+	K1433	Humaidi
+	K1434	Khoirudin
+	K1435	Dedi Muhammad Said
+	K1436	Minggus
+	K1437	Arif Irfani
+	K1439	Nur Laila
+	K1443	Nugraha Pratama Sandi
+	K1448	Dedy Wirawan
+	K1449	Iin Parlina
+	K1450	Kiki Novianti
+	K1451	Syahrul Budiman
+	K1452	Riswan Sahlani
+	K1453	Feri Setiyawan
+	K1454	Muhammad Firly
+	K1455	Irfanji
+	L0003	Armilawaty
+	L0006	Margiyanto
+	L0007	Suprapto
+	L0009	C.Dwi Darwendi
+	L0015	Marlingah
+	L0016	Epe Rokajat
+	L0018	C.Yudha Firatmo
+	L0019	Yuli Kurniasari
+	L0022	Suwandi
+	L0023	Rahma Apriany
+	L0026	Abdul Malik
+	L0030	Yudi Satriono
+	L0031	Budi Maryandi
+	L0034	Arina
+	L0037	Sherly Agustina
+	L0038	Helmi Yarpandi
+	L0044	Imron
+	L0045	Dedi Aguswandi
+	L0047	Herianto
+	L0056	Yas Budaya
+	L0062	Sugeng Riyadi
+	L0068	Ahmad Kowi
+	L0069	Wawan Gunawan
+	L0071	Ismet Wahyudi
+	L0072	Korie Sapaina
+	L0076	M. Adi Hidayat
+	L0080	Nenni Eva Frida H
+	L0086	Andriadi
+	L0094	Candra Budiman
+	L0095	Taufik Hidayat P
+	L0111	Puji Harno
+	L0115	Agam Intan Meulia
+	L0121	M.Ali Bakri
+	L0126	Rosintan Hasibuan
+	L0127	Andi Nurahman
+	L0141	Rahmat Hidayat
+	L0149	Firdaus Nuzula
+	L0170	Jimmy Manopo M
+	L0171	Imron Hanafi
+	L0183	Thenedy Jhonson
+	L0184	Hengky Yuliansyah
+	L0187	Kurnia Octoviadi
+	L0279	Ichwan Keuw
+	L0283	Agam Cut
+	L0289	Didi Supriadi
+	L0290	Ahmad Halimi Syarif
+	L0293	M.Ali
+	L0294	Sari Ramayanti
+	L0309	Anas Amrullah
+	L0310	Kampli Situngkir
+	L0313	Soguga
+	L0318	Fitria
+	L0327	Zri Haryono
+	L0331	Ganda Sanjaya
+	L0342	Matkhon Asfari
+	L0352	Boby Saryono
+	L0354	Ramadhan
+	L0366	Eri Danus
+	L0368	Anbar Saputra
+	L0372	Harmadi
+	L0376	Amalia Damayanti
+	L0379	Andika Budiono
+	L0381	Zainuri
+	L0383	Julaiman Zega
+	L0389	M.Halik
+	L0390	Hery Susanto
+	L0393	Irwandi
+	L0394	Dedy Simangunsong
+	L0396	Nurrohman
+	L0397	Noviliyadi
+	L0409	M.Fahmi Hidayat
+	L0410	Andrisman
+	L0416	Dody Kristiawan
+	L0420	Riko Agustria
+	L0422	Dora Apriyosa
+	L0426	Herwan Saputra
+	L0429	Suspa Herlina
+	L0435	Missuryani
+	L0436	Roza Kurniawan
+	L0438	Oktafia Rahmayeni
+	L0439	Candra
+	L0442	Belly Hertanto
+	L0460	Dhita Pratiwi
+	L0461	Hairul Romansyah
+	L0462	Atong
+	L0466	Romika Perandi Jaya
+	L0468	Eka Syaputra
+	L0469	Irham
+	L0473	Eko Dhale Wahyudi
+	L0476	Elva Dwi Juliani P
+	L0479	Adif Rizal
+	L0483	Pipin Eka Saputra
+	L0485	Okta Juanda
+	L0486	Dedi Wahyudi
+	L0488	Dorisandi
+	L0494	Mandarwis
+	L0504	M.Muammar Tom
+	L0510	Dodi Chandra
+	L0513	Ledy Novalina
+	L0521	Haris Trio Surya Putra
+	L0529	Bayu Sampurno
+	L0533	Insan Romadani
+	L0534	Reki Rahman
+	L0536	Fetrizal Deny Hudaya
+	L0540	Wendy Akbar
+	L0542	Hoiri Yanti
+	L0544	Ilham Saputra
+	L0551	Peri Putra Silvia
+	L0555	Cecep Sepriadi
+	L0557	Edi Purwanto
+	L0560	Guntur Partono
+	L0561	Jeki Arnandes
+	L0562	Nanda Setiawan
+	L0564	Suhendra
+	L0566	Roby Cahyadi
+	L0567	Deri Perima
+	L0572	Agus Tiar
+	L0573	Ali Syahbana
+	L0575	Khaidir Yansyah
+	L0577	Edwin Dwi Setiawan
+	L0580	Hendriono
+	L0582	Ahmad Muzaki
+	L0587	Rahmad Edwin
+	L0588	Mohamad Iksan
+	L0590	Pebri Primadeni
+	L0595	Edi Hartono
+	L0596	Revie Rosandi
+	L0597	Fransiska Anggraini
+	L0599	Ishak
+	L0600	Dedi Sampurna
+	L0601	Robby Wijaya
+	L0607	Andriyan Yogi Hatika
+	L0608	Tatang Putra
+	L0609	Wahyu Febri Jumaka
+	L0610	Vicky AG
+	L0611	Marvani
+	L0612	Muhammad Riyanto
+	L0613	Sarwani
+	L0614	Darwin Nasato
+	L0616	Wahyudi Saputra
+	L0618	Irwanto
+	L0621	Jiki Haryanto
+	L0622	Riki
+	L0625	Bobby Agusrianto
+	L0626	Tri Sucahyo
+	L0629	Muhammmad Haitami
+	L0632	Fauzi
+	L0635	Aspin Giro
+	L0642	Sandhy Dustira
+	L0645	Marwin
+	L0646	Lesgianto
+	L0649	Yunesa Asvitora
+	L0650	Fahlevi Azmani
+	L0651	Gilang Nusantara
+	L0652	Solihin
+	L0656	Afif Sofwan
+	L0663	Indra Wedi
+	L0664	Rio Rosali
+	L0665	Vedi Fandri
+	L0667	Andre Aryanto
+	L0670	Dwi Santoso
+	L0673	Berkat Fransisco Sihombing
+	L0674	Sefty Agustina
+	L0675	Yunike Triana Putri
+	L0676	Erni Sustrianti
+	L0677	Ari Setiawan
+	L0678	Eko Suprianto
+	L0680	Deksi Sanjaya
+	L0682	Muhammad Reza Wahyudi
+	L0683	Ferry Prasetyo
+	L0685	Christoforus Rumpoko
+	L0688	Rama Pertiwi
+	L0689	Miftakhur Rohman
+	L0690	Sutrasno
+	L0691	Hendra Susanto
+	L0692	Mulyono
+	L0693	Irza
+	L0695	Reza Fahlevi
+	L0700	Desi Hasanah
+	L0701	Eko Apriansyah
+	L0707	Haris Affandy
+	L0709	Rengga Ghale Pangestu
+	L0712	Fauzan
+	L0713	Susi Nurmalasari
+	L0714	Rosihan Anwar
+	L0715	Rudi Prasetyo
+	L0716	Indra Rizah Putra
+	L0717	Touvan Rifki Arisandi
+	M0004	Erwin Silaban
+	M0005	Janter Sibarani
+	M0008	Ishak Nasution
+	M0015	Asrel Marpaung
+	M0016	Safrizal
+	M0018	Alfonso Sirumapea
+	M0028	Sirajuddin Amin Nst
+	M0029	Agustinus L.H.Hutasoit
+	M0035	Efendi Manurung
+	M0041	Victor Agustinus Parulian Purba
+	M0042	Jhonson M.Nainggolan
+	M0044	Remus Sitepu
+	M0051	Afrizal Abdullah
+	M0055	Netty Surya Gultom
+	M0059	Demson Situmorang
+	M0062	Tagon Gurning
+	M0065	Setia Karo-karo
+	M0069	Hotmatua Siregar
+	M0071	Supardo
+	M0072	Bangun Tobing
+	M0076	Jayasan Sijabat
+	M0085	Wilson S.M Pangaribuan
+	M0086	Martogi S
+	M0097	Mangapul Turnip
+	M0105	Radius Napitupulu
+	M0106	Murniati Isabella Sitohang
+	M0107	Eis Merry Widyawati Sitohang
+	M0108	Fahmi Amrul
+	M0114	Jon Ediprianto Purba
+	M0115	Dedi Saputra
+	M0126	Susy Lolyta Manullang
+	M0128	Tiopan Pakpahan
+	M0133	Julianus H Simarmata
+	M0143	Ramlen Togatorop
+	M0146	Ali Marto Sinaga
+	M0153	Armiyanto
+	M0172	Harry Sibarani
+	M0174	Moses B Siregar
+	M0179	Dasa M Sinaga
+	M0189	Lylian Tiurmaida Napitupulu
+	M0194	Ahmad Syafri
+	M0198	Lisbeth Evy Susanti
+	M0200	Henri Hutauruk
+	M0203	Evi Butar-Butar
+	M0204	Jermas Manullang
+	M0205	Jhon Erwin Sakti L.Gaol
+	M0206	Dodi Indrawan
+	M0209	Jhon Edward Saragih
+	M0212	Hot Ojak Sinaga
+	M0219	Jainuddin Tamba
+	M0221	Albert Ginting
+	M0227	Osdarwin Purba
+	M0229	Addi P Ginting
+	M0231	Martinus Prapto Susilo
+	M0233	Rudi Setiawan
+	M0236	Amrizal
+	M0242	Damares Purba
+	M0249	Amarullah
+	M0251	Jhan Herdianson Purba
+	M0252	Abia Nusantara Tarigan
+	M0260	Roma Halomoan Butar-butar
+	M0267	Telap Sembiring
+	M0268	Ferri Frenki Samosir
+	M0269	Hartono Pasaribu
+	M0280	Benny F Simanjuntak
+	M0282	Dedi Robiardi S
+	M0288	Syahrida Melita Dhani
+	M0290	Tangkas Hutauruk
+	M0306	Henny BJ Pangaribuan
+	M0310	Johannes Sibagariang
+	M0312	Reynold Sianipar
+	M0315	Tapar M Silitonga
+	M0316	Gandong Sianturi
+	M0317	Johan Wahidin
+	M0330	Rikson Pagartua Siahaan
+	M0338	Arifin Sakti Nasution
+	M0348	Desmon Silaen
+	M0360	Hendrianto Hutauruk
+	M0365	Saifuddin
+	M0367	Donal Manurung
+	M0369	Dody Elfin Tarigan
+	M0375	Sempurna Karo-Karo
+	M0376	Kornelius Sembiring
+	M0377	Anton Sugianto
+	M0387	Musliadi
+	M0392	Juanda
+	M0393	Ilham Wahyudi Arifin
+	M0397	Jernihlah Hutauruk
+	M0402	Dirwan Silaban
+	M0409	Rasidi Turnip
+	M0413	Raymon Karno Naipospos
+	M0414	Prijen Swandi Sinaga
+	M0417	Haran Jaya Sihotang
+	M0426	Janri Marpaung
+	M0432	Hotmakmur Situmorang
+	M0439	Tulus Yawan Hutagalung
+	M0451	Sri Swandana
+	M0462	Bernard Bonusa Sitanggang
+	M0466	Habinsaran M
+	M0474	Dendi Irawan
+	M0480	Lalu Hamonangan Sormin
+	M0492	Insanuddin Siregar
+	M0495	Muhammad Ikhsan
+	M0504	Safril Sani
+	M0506	Edi Wesli Simatupang
+	M0522	Hasiholan Manalu
+	M0524	Daud Yusuf Manurung
+	M0527	Erawaty Sinaga
+	M0537	Lisnawati Purba
+	M0540	Sahat Siagian
+	M0541	Afdhal
+	M0545	Ruslina Sinaga
+	M0548	Sopan Bukit
+	M0550	Elfira Andrias Saragih
+	M0551	Henry Roy Jaya Sijabat
+	M0556	Mhd.Ari Ilham
+	M0557	Alexander Nino Van Sigotom Tambunan
+	M0564	Donalpri Saragih
+	M0565	Santi Melvina Manurung
+	M0566	Nora Helmy Situmorang
+	M0569	Rini Dayani Samosir
+	M0570	Afry Nirwana Yanti
+	M0571	Yuli Vistaria Tanjung
+	M0572	Diah Anggraini
+	M0573	Abdul Haris
+	M0574	Sahat Mauliate Siburian
+	M0575	Benasiat Raja Mehuli Barus
+	M0577	Atmadi Santoso
+	M0581	Sulfannur
+	M0583	Rusnedi Septiyanta Ginting
+	M0586	Holmes Henrikus Simbolon
+	M0587	Edwin Ginting
+	M0595	Roland Hotland Sinaga
+	M0598	Muhammad Abduh Nasution
+	M0602	Ravael Yerico Sitanggang
+	M0606	Mula Torang Manik
+	M0611	Muhammad Ribday
+	M0612	Dendi Triandika
+	M0613	Ahmad Kamil Lubis
+	M0614	Rikky Yakob Harahap
+	M0617	Nurmada Irawati Simbolon
+	M0618	Relon Mahulae
+	M0619	Juwindo Pangaribuan
+	M0625	Agussalim Siregar
+	M0632	Junaidi
+	M0636	Parningoran Verynando Padang
+	M0638	Toto Sumarto Tamba
+	M0640	Sudarto Hutauruk
+	M0645	Ramli Sofyan Nainggolan
+	M0647	Maryam
+	M0648	Sadarman Mendrofa
+	M0654	Jonias Siagian
+	M0658	Edu Guntur Harahap
+	M0662	Suhendri
+	M0663	Rahmat Afrizal
+	M0665	Andy Kurnianto
+	M0668	Hondor Oloan Pasaribu
+	M0669	Junra Saragih
+	M0673	Hezron Saputra Purba
+	M0674	Laurensus Malau
+	M0676	Poltak Rahmat Setia Samosir
+	M0678	Sukarto Parsaoran Sipahutar
+	M0679	Tober Pahala Sidauruk
+	M0680	Wilver Nainggolan
+	M0685	Okta Rafika Manik
+	M0689	Muhammad Faisal Roni
+	M0693	Rudi Syahputra
+	M0695	Gunung Haprillus Siagian
+	M0698	Binsar Roy Natal Sinaga
+	M0699	Rintho M Sinaga
+	M0704	Imanda Putra
+	M0706	Jhon Ady Saragih
+	M0707	Benton Mahulae
+	M0718	Atmaja Pehulisa Sembiring
+	M0729	Jesro Nadeak
+	M0730	Kamaluddin Harahap
+	M0733	Bernando Manurung
+	M0734	Rizal Parsaoran Panggabean
+	M0737	Hengki Hasiholan Panggabean
+	M0738	Berman Josef Sitepu
+	M0740	Junitar
+	M0741	Patar Napitupulu
+	M0742	Muhammad Fadil
+	M0743	Asnawati Saurmauli Simbolon
+	M0744	Dini Anisah
+	M0745	Gess Bond Risky Sibarani
+	M0746	Muhammad Fajry
+	M0747	Ronal Hasudungan Tanjung
+	M0750	Suhendri Thamrin
+	M0752	Bosman Hutabarat
+	M0753	Elis Pikal Sihombing
+	M0754	Kuswandi Harahap
+	M0756	Juntrinus Ketaren
+	M0757	Muhammad Ardiansyah
+	M0760	Benmar Alvaro Purba
+	M0765	Martua Januarison Manik
+	M0766	Nico Albertus Pandiangan
+	M0767	Hadi Bobo Lubis
+	M0774	Efron Siallagan
+	M0775	Darwis Pohanri Silalahi
+	M0780	Daniel Cryst Tomboy Siahaan
+	M0782	Donny Suhastra
+	M0783	Thomas B F Lumbanbatu
+	M0784	Arfan Nasution
+	M0785	Robi Darwis
+	M0786	Nazarullah
+	M0787	Musrizal
+	M0791	Hermanto Siringo ringo
+	M0793	Naldes
+	M0799	Martin Zandroto
+	M0801	Ronitua Jeferson Marbun
+	M0802	Freddi Sugianto Sitorus
+	M0805	Binara Tua Josen Simanjuntak
+	M0806	Yuanda Simanjuntak
+	M0808	Janres Bahtiar Tondang
+	M0810	Radinal Alfian
+	M0819	Lando Situmeang
+	M0820	Ahmad Suaib
+	M0823	Fadlun
+	M0824	Poniman Lumbantoruan
+	M0827	Dwi Elvino
+	M0828	Listaria Ginting
+	M0831	Jonatan Dafit Gurning
+	M0832	Fajarman Harefa
+	M0834	Muliyono Hasibuan
+	M0836	Hesron Tarigan
+	M0837	Erwin Sitinjak
+	M0842	Ahmad Haris Nasution
+	M0843	Jhon Freddi Sinaga
+	M0844	Benar GS
+	M0847	Rudy Suriatno Gultom
+	M0851	Ririn Siti Hamidah Pane
+	M0854	Afrianti Sofia Lumbanbatu
+	M0865	Niko Habibina Ginting
+	M0868	Riando Purba
+	M0874	Jolly Prima Hutagaol
+	M0875	Sakkot Simbolon
+	M0880	Rosita Nababan
+	M0881	Erik Suriadi Purba
+	M0882	Rian Syahputra Barus
+	M0888	Hinsa Simangunsong
+	M0891	Ebenejer Dodi Hutasoit
+	M0895	Rohanna Manurung
+	M0897	Iwan Vanhopen Pasaribu
+	M0900	M.Taufik Simanjuntak
+	M0902	Lisnawati
+	M0906	Muhardi
+	M0908	Rocky Frans Purba
+	M0909	Mirza Predicky
+	M0913	Fauzan Saputra
+	M0914	Mirza Safara
+	M0916	Muhajir
+	M0917	Musriadi Fahmi
+	M0918	Jufrizal
+	M0927	Abdi Negara Siregar
+	M0928	Muhammad Riski Siregar
+	M0930	Irwanto
+	M0931	Safriadi
+	M0932	Edi Candra
+	M0934	Ananda Puspita
+	M0935	Rizky Iman Perdana
+	M0939	Sonitra Adi Manuel Nababan
+	M0940	Eiko Sanutra Sihaloho
+	M0941	Agus Irawan Panjaitan
+	M0942	Tumpal Hamonangan Pasaribu
+	M0943	Darto Ambarita
+	M0947	Ikhwan
+	M0951	Crisnal Fernando Manalu
+	M0952	Tagor Nauli Harahap
+	M0954	Nestor Sinurat
+	M0955	Pati Gunawan Sirait
+	M0956	Arnold Anggiat Panjaitan
+	M0959	Herry Saputra
+	M0960	Nevin Andrea Sembiring
+	M0963	Sadar Sihombing
+	M0969	Syahnan Nasir Daulay
+	M0972	Rahmat
+	M0975	Mikhael Dompak H Siahaan
+	M0976	Muhammad Hafiz Abda
+	M0977	Imran Halim Hasibuan
+	M0985	Jefri Suharsa
+	M0986	Ali Imran Harahap
+	M0993	Johan Simanjuntak
+	M1000	Sahat Alindelon Hutabarat
+	M1002	Asrivan Mardiansyah Putra
+	M1003	Pabrianto Naibaho
+	M1011	Lamhot Marbuhal Sihombing
+	M1012	Wirani Simbolon
+	M1015	Solahuddin
+	M1016	Rautdin Siregar
+	M1017	Mukhlis
+	M1020	Charles Sitompul
+	M1025	Haslia Ulfa
+	M1028	Windhy Pramudia Sanjaya
+	M1031	Konfentino Darma Putra Silaban
+	M1032	Erikson Rumahombar
+	M1034	Siholnang Sitindaon
+	M1036	Bernat Pakpahan
+	M1037	Fransco Daniel Sitorus
+	M1039	Jimmy Rionando Butar butar
+	M1040	Dian Mardhika Firdaus
+	M1041	Amrizal
+	M1046	Rika Eka Yowanna
+	M1047	Mustari
+	M1049	Shahibul Mubarak
+	M1051	Zulfadli
+	M1052	Muhammad Azlansyah
+	M1054	Muhammad Isa
+	M1055	Yusrizal Azmi
+	M1056	Afdal Eilmi
+	M1057	Saddam Januar
+	M1058	Saifullah
+	M1060	Mursyidin
+	M1061	Muzawil Muhammad
+	M1062	M.Yusuf
+	M1063	Ikbal
+	M1065	Suhardi Saputra
+	M1066	Ananda Bismi Al Mahdi
+	M1067	Ikhwan
+	M1070	Mefaldy Dwi Septian
+	M1072	Elwin Bagariang
+	M1074	Maytika
+	M1077	Nurhayati J
+	M1078	Hamidah
+	M1082	Edwin Patar Manurung
+	M1083	Muammar Hafizh
+	M1086	Gunawan Ebenezer Sembiring
+	M1090	Wulan Aprillianti
+	M1091	Rusdin Nuryadin Batubara
+	M1094	Ismail Saleh Siregar
+	M1096	Amran Taufik Harahap
+	M1098	Ashi Biora
+	M1099	Abdul Wahid Nasution
+	M1100	Amir Hamzah
+	M1101	Aldi Priyatna
+	M1102	Muhammad Rais
+	M1103	Ridores Siregar
+	M1104	Jehan Manik
+	M1107	Taufik Qurahaman Siagian
+	M1109	Aulia Rahmad
+	M1110	Zulfahmi
+	M1112	Arnold Marpaung
+	M1113	Masliadi
+	M1114	Mukhlis
+	M1118	Tan Marajang Situmorang
+	M1120	Eko Efrata Sembiring
+	M1122	Lambok Marlindung Pohan
+	M1123	Rahmat Indra Junaidi
+	M1124	Edi Lufti
+	M1125	Shofi Syahreza
+	M1126	Zulhan Perdana Nasution
+	M1128	Juwita Duma Manalu
+	M1129	Riana Sihotang
+	M1130	Miftahul Khairah
+	M1131	Muliadi
+	M1132	Sahlul Mahfudh
+	M1133	Juniazi
+	M1134	M.Safwan
+	M1135	Hanri Aldino
+	M1136	Sofa Ahzaab
+	M1139	Prikles Lumbantoruan
+	M1140	Balutan Purba
+	M1141	Simon Petrus Simanjuntak
+	M1142	Beni
+	M1146	Faizal Murdani
+	M1147	Ade Pahlevi
+	M1149	Dwivan Asri
+	M1150	Dicky Perdana Barus
+	P0006	Ida Mursyidah E.
+	P0011	Herman Sinaga
+	P0013	Gunawan Hutauruk
+	P0017	Dharma Hutauruk
+	P0023	Sangma Parapat
+	P0024	M. Yunus
+	P0027	Eddy Yurianto
+	P0028	Destriana Murniati Tampubolon
+	P0031	Ropia
+	P0035	Sri Suharti
+	P0037	Efendi P. Sinaga
+	P0038	Rommel Antonius Sijabat
+	P0039	Sriyanto
+	P0040	Minggu Dominggus
+	P0045	Maniati
+	P0046	Achmad Soleh
+	P0047	Istiyoko
+	P0050	Suradal
+	P0052	Kurnia Hadiyana
+	P0056	Paulus Yahya Mujianto
+	P0060	Ai Suherti
+	P0063	Bahmada Hafiz
+	P0067	Kurniawati
+	P0076	Sudion Sihombing
+	P0081	Dede Susanti
+	P0084	Diah Kurniati
+	P0085	Tri Handoyo
+	P0086	Wibertus Sihombing
+	P0087	Kurnia
+	P0089	Suprapto Ari Bowo
+	P0090	Faisol
+	P0093	Nerni Apriyati
+	P0095	Rudy Nahu
+	P0098	Syarifudin
+	P0099	Muji Darmanto
+	P0100	Sukma Jaya
+	P0101	Siti Zulaiha
+	P0102	Ady Alvian
+	P0103	Triyanto
+	P0109	Farid Sabilach Rosyad
+	P0111	Singgih Agung
+	P0114	Marnala Naibaho
+	P0116	Untari
+	P0117	Retno Widjajanti
+	P0120	Jayadi Suwanto
+	P0121	Chrisnawati
+	P0122	Supriyana
+	P0125	Bambang Sutrisno
+	P0132	Rudi Handoyo
+	P0136	Pelita Kartika Sari
+	P0139	Solihin
+	P0142	Untung Sumadijo
+	P0148	Sutaryan
+	P0151	Wijah
+	P0156	Henry Raymond Sitompul
+	P0159	Heri Purnomo
+	P0160	Edi Sukaedi
+	P0164	Cytor Parsaoran Lumban Tobing
+	P0165	Sri Widiyastuti
+	P0169	Sutisna Dinata
+	P0190	Sobirin
+	P0191	Sarjono
+	P0192	Hilarius Wibi Hardani
+	P0200	Muhasan
+	P0204	Hilman Farid
+	P0206	Suprihadi
+	P0208	Komarudin Suhendrik
+	P0209	Zakaria
+	P0211	Wahyudin
+	P0218	Eka Fitrianto
+	P0221	Dwi Purwanti
+	P0222	Saipudin
+	P0223	Sumaryono
+	P0224	Edi Susanto
+	P0227	Wisnu Chandra Kristiaji
+	P0229	Chatarina Eny Wijayanti
+	P0230	Daisy Natalia
+	P0232	Leonardus Edy Purwanto
+	P0238	Dara Yuniarti Anggrainy
+	P0242	Jatmiko
+	P0244	Yohana Dwi Apriani
+	P0248	Muchamad Azis
+	P0249	Silvester Lemeda Simarmata
+	P0250	Ignatius Dwi Wahyu Priyanto
+	P0259	Siswanto
+	P0269	Supriyadi
+	P0272	Rizal Pahlevi Hilabi
+	P0291	Dedy Hansbuansyah
+	P0314	Amalia Safitri
+	P0343	Ibnu Athoillah
+	P0346	Aselih
+	P0347	Bima Prasetya
+	P0349	Ricardus Rahmat
+	P0358	Achmad Taupik
+	P0379	Marsis Prasada
+	P0380	Eko Hermanto
+	P0389	Nugroho Prio Utomo
+	P0393	Marsel Dominggus S
+	P0394	Ahmad Solihin
+	P0395	Aceng
+	P0400	Yudi Anton Haryanto
+	P0413	Mohamad Syarifudin
+	P0421	Maya Yulianti
+	P0422	Junaeri
+	P0424	Rupania Septima Patri
+	P0433	Suryadi Saat
+	P0435	Ahmad Maroji
+	P0436	Eko Prasetyo
+	P0437	Idi Sudiyadi
+	P0448	Meiliyatiningsih Poernama
+	P0474	Rofian
+	P0477	Eva Dwi Rahayu
+	P0491	Nurman Dwihartanto
+	P0492	Ahmad Haerani
+	P0501	Bitri Indriany
+	P0510	Muhammad Ramdhoni
+	P0514	Sunarjo
+	P0567	Sabas Sinaga, SH
+	P0583	Heru Prihatmoko
+	P0584	Muhammad Alfaris
+	P0586	Afra Yulia Rusdyantari
+	P0594	Danu Nugraha
+	P0595	Nokky Panji Wibowo
+	P0596	Alesya Eka Susanti
+	P0600	Sastra Imanuel Saragih
+	P0646	Siti Khairani
+	P0650	Hindrina Perdhana Sari
+	P0672	Irwan
+	P0673	Anto Raharjo
+	P0674	Yudi
+	P0731	Piyuk Wulandari
+	P0740	Adriansyah
+	P0762	Adiwahyanto
+	P0768	Triyono
+	P0776	Henri Rukman Sinaga
+	P0782	Muhammad Nauval
+	P0783	Edith Natasha Leatemia
+	P0785	Yudi Nur Riyadi
+	P0786	Andika Aulia
+	P0792	Wono Setya Budhi
+	P0798	Windrati Hapsari
+	P0806	Rina Astikawati
+	P0808	Winny Rachmayanti
+	P0873	Marwanto
+	P0957	Yan Yonathan
+	P0979	Roy Priyatna Sitepu
+	P0996	Yasin
+	P0997	Ridwan
+	P1009	Hadiyansyah
+	P1010	Hiko Erlina
+	P1019	Adi Maulana
+	P1020	Novita Sari
+	P1024	Pita Komalasari
+	P1025	Feti Fitria Sari
+	P1033	Abdurrahman Prastowo
+	P1035	Paul Sipoh Hutauruk
+	P1043	Dewi Fajar Melati
+	P1047	Fahrul Rozi
+	P1048	Yudho Kerti Kusumo
+	P1050	Irma Yunita
+	P1052	Dwi Indah Purwanti
+	P1054	Raja D.M. Hutauruk
+	P1055	Deborah Hutauruk
+	P1056	Dwi Cahyani
+	P1060	Suwardi Prasetyo
+	P1061	Davit Hermanu
+	P1063	Hazlina
+	P1068	Agung Saputra
+	P1089	Setyo Utami
+	P1093	Wardiansyah
+	P1097	Eko Sutrisno
+	P1098	Atika Permata
+	P1103	Dwi Haryanto
+	P1107	Lystra Stefani Onike
+	P1111	Ayu Miriam Prameswary
+	P1112	Adhika Prasetya Kusharsanto
+	P1115	Suherman
+	P1116	Agus Soleh
+	P1124	Bambang Triatmoko
+	P1127	Muslikah
+	P1128	Waryanto
+	P1131	Novieta Indra Sallama
+	P1133	Fikri Somyadewi
+	P1140	Susy Ariyani
+	P1143	Dede Permanah
+	P1145	Rudi Amdi
+	P1158	Vitri Yeni
+	P1159	Dr.John S
+	P1160	Sari Wahyuni
+	P1161	Teguh Irianto
+	P1162	Muhammad Nuruddin Tayasi
+	P1167	Sarpani
+	P1168	Vandi Ahmad Priyadi Putra
+	P1172	Noesirman
+	P1176	Rini Herawati
+	P1177	Venty Kustrianingrum
+	P1178	Dian Pramita Sari
+	P1182	Yuki Anggia Putri
+	P1185	Irwan Julianto
+	P1199	Taryo
+	P1203	Leny Latifah
+	P1211	Alfian
+	P1214	Sony Sonatha
+	P1216	Donderasi Wanihi
+	P1218	Hakim Firdaus Simanjuntak
+	P1220	Irfan Rosadi
+	P1241	Muarif
+	P1247	Merry Maria Andrajati
+	P1253	Indrawan
+	P1254	Munawar Tsabit
+	P1256	Ade Erna
+	P1263	Anna Nuryana Liza Adiani
+	P1264	Cicilia Luise Endah Yuniastari
+	P1265	Yohana Catur Indri Kurnianingtyas
+	P1267	Agus Mujamil Sidik
+	P1268	Giyatno
+	P1271	Nawang Wulan Ambarwati
+	P1272	Martha Kusuma Arumdani
+	P1273	Emy Rusmiyati
+	P1274	Catur Widarsono
+	P1278	Ogi Galacita Manik
+	P1280	Hijrah Saputra
+	P1296	Dedy Pramono
+	P1302	Maulana Iskak
+	P1305	Milly Christiana Supit
+	P1309	Arief Ibrahim
+	P1315	Arya Alamsyah
+	P1325	Gomgom Hutauruk
+	P1334	Benny Sidabutar
+	P1335	Fery Irawan
+	P1336	Al Imam Parabi
+	P1337	Didit Jakso Tranggono
+	P1338	Dian Anggraeni
+	P1341	Faisal Rahman
+	P1357	Yoga
+	P1358	Dian Cahyawati
+	P1359	Maria Nurwidi Prihastuti Hadi
+	P1362	Angga Permana Aripin
+	P1364	Rizki Amelia
+	P1365	Andri Chaerudin
+	P1368	Firmansyah
+	P1369	Widya Ayu Ningrum
+	P1370	Irene Anggraini
+	P1378	Pandu Arianata Gumelar
+	P1382	Irfan Hariyanto
+	P1384	Andriansyah Syihabudin
+	P1385	Sri Pujianti
+	P1395	Sudarmawan
+	P1401	Anita Cahya Ningsih
+	P1402	Ajar Lambangsih
+	P1404	A. Eko Trisno
+	P1407	Trio Ahmad Abdulah S
+	P1409	Dwi Saputra
+	P1411	Ramli
+	P1415	Jumadi
+	P1416	Ade Mohamad Drajat
+	P1422	Edy Safari Yanto
+	P1423	Syaeful Arifin
+	P1434	Agus Riyanto
+	P1437	Fajarwati
+	P1439	Eka Ayu Nugroho
+	P1445	Muhammad Baihaqi
+	P1451	Rahmawati
+	P1453	Kamdi
+	P1454	Heidy Retnowulan Kirana
+	P1455	Annisa Rahmania
+	P1463	Miranti Heras Tuwinda
+	P1466	Raga Galut Saputra
+	P1492	Kristina Theresia Magdalena
+	P1493	Wahyu Puji Sucianto
+	P1496	Dita Nurmala Noviyanti
+	P1497	Hendro Alberto Pangaribuan
+	P1498	Adhitya Herri Purnomo
+	P1502	Gokma Pitua Simanjuntak
+	P1506	Adnan Harysatria
+	P1508	Rian Irawan
+	P1510	Ade Iwan
+	P1513	Deden Yusup Arif
+	P1516	Rizqi Amrulloh
+	P1517	Maya Kumalasary
+	P1524	Henra Maret P. Siregar
+	P1526	Ratri Medya Septina
+	P1527	Rahayu Purwasih
+	P1533	Adi Purnomo
+	P1537	Susanto
+	P1538	Sarofil Anam
+	P1539	Adhie Tryanto
+	P1540	Regina Sari Theresia
+	P1551	David Fero
+	P1553	Sani Nurlatifah
+	P1555	Riska Puspita Sari
+	P1558	Berina Riyananda
+	P1563	Naski Tiur Purnamasari
+	P1565	Nurunnisa Ahmad Yusra
+	P1572	Arini Ayuningtias
+	P1575	Maria Yulan Kurniawati
+	P1579	Irma Nurjannah
+	P1582	Riski Candra
+	P1588	Elisa Ajeng Ayu Kumalaningtyas
+	P1605	Ibrahim Harahap
+	P1609	Aba Ahmad
+	P1617	Yulianto
+	P1627	Anwar Efendi
+	P1628	Wawan Gunawan
+	P1635	Gusnita Nazarudin
+	P1648	Hari Rayanto
+	P1649	Samsudin
+	P1651	Muhamad Ardyansah
+	P1652	Linda Antika
+	P1666	Ginanjar Muhammad
+	P1668	Putri Fitrisia Wijayanti
+	P1671	Dian Purwindarti
+	P1674	Dino Sopyan
+	P1677	Achmad Rois
+	P1678	Tongku Ali R.
+	P1679	Wulan Septriani
+	P1684	Deden Ramdanu
+	P1687	Ellisabeth Tiyas Utami
+	P1689	Dhiba Aditya Wanitatama
+	P1690	Hermuntasih
+	P1691	Andes Ghoba Chaniago
+	P1693	Agus Sunardi
+	P1696	Marthen Lay Raga
+	P1701	Ratih Kurniasih
+	P1702	Yuniar Widiastuti
+	P1704	Iran Harahap
+	P1705	Adib Ihsanudin
+	P1706	Syarif Hidayat
+	P1709	Ruli
+	P1711	Mochamad Yani
+	P1713	Deby Indriani
+	P1714	Sulaeman
+	P1715	Ahmad Mahfudin
+	P1717	Fariszka
+	P1722	Abu Sufyan
+	P1725	Mulyo Yudiyono
+	P1726	Boni Sahuria
+	P1734	Dian Ovieta Santoso
+	P1735	Riony Anastasya Ekawati Jacub
+	P1741	Sally Carolina
+	P1742	Tuti Aprianti
+	P1744	Farid Alfalaki Hamid
+	P1749	Andika Prasetiadi
+	P1755	Siti Rahma
+	P1756	Syarifah Adlina
+	P1759	Widi Wirdiyanto Hadi C.
+	P1761	Ade Suryadi
+	P1766	Keddy Halomoan Sihotang
+	P1767	Valentina Puspita Ari Suyadi
+	P1768	Carolina Pietersz
+	P1770	Taufik Romadon
+	P1771	Ramdani
+	P1774	Dwi Andri Irawan
+	P1775	Kambali
+	P1777	Riski Martinus Nababan
+	P1778	Welly Febrinaldo
+	P1780	Dewi Yuliyani
+	P1781	Amir Mahmud
+	P1784	Suandi
+	P1785	Romadhoni Akbar
+	P1787	Tardi
+	P1788	Adjis Syahri
+	P1791	Henny Nur Aprilyana
+	P1792	Niya Irmayanti
+	P1794	Agni Jilly Permata
+	P1799	Rohmat
+	P1801	Abdul Aziz
+	P1802	Aldy Rinaldy
+	P1805	Neteralia Sembiring
+	P1806	Endah Wahyuningtias
+	P1807	Mohamad Zulfikar Fauzi
+	P1808	Irsan Harjakusumah
+	P1810	Muhammad Faisal Akbar
+	P1811	Nasrudin
+	P1813	Nurul Hidayat
+	P1816	Eko Setyawan
+	P1818	Juspriadi Manullang
+	P1821	Yohana Wulan Ambarsari
+	P1823	Betty
+	P1826	Rifki Kharisma
+	P1829	Kusnadi
+	P1830	Yanuar Iriyawan
+	P1831	Risanti Intan Al Baluni
+	P1833	Yudha Ramadhan
+	P1834	Agung Tri Wibowo
+	P1835	Rachel Jessica Rugian
+	P1836	Diah Setianingsih
+	P1837	Dwi Ariyati
+	P1838	Muhammad Faturrahman Sidik
+	P1840	Desi Wahyuningsih
+	P1841	Erwanda
+	P1842	Yulian Ahmad Danu
+	P1844	Nuradi
+	P1845	Hendra Lesmana
+	P1846	Elisa Putri Andini
+	P1848	Nedika Adityo Putra
+	P1849	Wandra
+	P1851	Ika Wijayanti
+	P1852	Bakhtiar Dwi Yunika
+	P1854	Aulia Dwiningtyas Putri
+	P1855	Dimas Pradana Putra
+	P1856	Heikal Fikrie Asona
+	P1857	Puspa Rini
+	P1859	Regina Dian Novita
+	P1860	Rezki Yuniarto
+	P1863	Wissanto Aji Nugroho
+	P1864	Patrisius Andhy Wijaya
+	P1865	Andika Fadhil Muhammad
+	P1866	Latif Pungkasniar
+	P1867	Sri Suryowati
+	P1868	Nickyta Pramudia
+	P1869	Halik Sahbana
+	P1870	Dani Apriliyanto
+	P1871	Mochamad Rizki
+	P1873	Rengganis Rianingtyas Harsono Putri
+	P1874	Suci Nurul Khairiyah
+	P1876	Mustika Busana Keymandhita
+	P1877	Muhammad Mahdi
+	P1878	Annisa Amalia
+	P1879	Mei Dwi Utami
+	P1880	Mohammad Nur Isnaeni
+	P1881	Khaerunnisa
+	P1882	Mohamad Istihori
+	P1883	Asteria Dita Widyasari
+	P1885	Irma Tri Rahmawati
+	P1887	Jufrianus Siregar
+	P1888	Wirasti Wiryono
+	P1889	Widianti Maisaroh
+	P1890	Asep Mansur
+	P1891	Hildi Herdyana
+	P1892	Fajar Aprilianto WS
+	P1893	Sugeng Legowo
+	P1894	Lili Sumarni
+	P1895	Muslim
+	P1897	Nunuk Nursaptorini
+	P1900	Fikni Mutiara Rachma
+	P1901	Afnan Husnayain
+	P1902	Ganendrajati Widagdo
+	P1903	Achmad Suryadi
+	P1904	Yuliyanto
+	P1905	Jaka Harinnanto Wicaksana
+	P1906	Guruh Anugrah Pradana Putra
+	P1909	Chafid Noor Arachman
+	P1910	Bayu Ardiyanto
+	P1911	Muhammad Syafiq Kumala Putra
+	P1912	Izmir Azlan Bijak Bestari
+	P1913	Sigit Prayitno
+	P1916	Nur Putri Elizza
+	P1917	Ricky Terklin S
+	P1918	Dani Fitriyani
+	P1919	Agan Gupta Ilham
+	P1920	Nur Khamid
+	P1923	Muhammad Zamzamy
+	P1924	Suharyadi
+	P1925	Padre Pio
+	P1927	Jamilah Rachmaningsih
+	P1928	Muhamad Alwi Kosasih
+	P1930	Deny Setiawan
+	P1931	Denny Saputra
+	P1932	Dyan Ayu Farahdesi
+	P1933	Ade Irmawan
+	P1934	Dini Oktaviani
+	P1935	Rifki Riyadul Iman
+	P1936	Sendy Wulandhary
+	P1937	Lusitania Ayu Sekar Ningtyas
+	P1938	Asep Maulana
+	P1939	Bimo Wiwoho
+	P1940	Rika Amelina
+	P1941	Latif Fatus Zahrois
+	P1942	Heri Setiyanto
+	P1943	Hasanuddin
+	P1944	Amelia Rustyawati
+	P1945	Muhammad Faqih Alim
+	P1946	Nurizzah Millati Shaffiyah
+	P1947	Nurbaiti
+	P1948	Sakti Hidayati Fikriya
+	P1950	Benny
+	P1951	Yolanda Gussel
+	P1952	Oktaviani Mutiara Dwiasri
+	P1953	Arfan Febriyanto
+	P1954	Dwi Sumartini
+	P1955	Cahyani Dwi Agustiaretna
+	P1956	Melly Susanti
+	P1957	Syahru Agung
+	P1958	Ernanto Triatmojo
+	P1959	Gilang Dita Gita Persada
+	P1960	Kenny Wilson
+	P1961	Dody Sukma Abdi Pratomo
+	R0005	Pamoedji Winoto Soebagio
+	R0009	Sahala Sihombing
+	R0016	Harudji Nabir
+	R0020	Baktiar Tandisogang
+	R0021	Albertus Djago
+	R0022	Parluhutan Marpaung
+	R0026	Joni Sattu Tambing
+	R0032	Marthen Rerang
+	R0050	Sapriadi Syamsuddin
+	R0051	Ngatirin
+	R0055	Rony Pasassung
+	R0061	Mediyanto Bongga
+	R0068	Ade Rahadian
+	R0071	Asri
+	R0073	Abdul Rahman Pallawangeng
+	R0074	Jamal Aslan
+	R0079	Edy Syahyadi
+	R0080	Andi Taufan
+	R0081	Agung Oktafianto
+	R0082	Rusman
+	R0086	Ibnu Hajar
+	R0090	La Aboy
+	R0098	Zainuddin
+	R0100	Andi Hasirawati
+	R0110	Lady Amelia Grace Inkiriwang
+	R0111	Lelyana
+	R0112	Jusran
+	R0113	Abdul Ghafuur
+	R0114	Aslamiah
+	R0120	Abd. Haris
+	R0122	Ismail
+	R0125	Paulus Patanduk
+	R0126	Marthen Renda
+	R0130	Jusriadi
+	R0132	Hamka Saputra
+	R0138	Hespion
+	R0149	Irsan
+	R0150	Johan
+	R0157	Abdul Rahim
+	R0159	Hariyanto
+	R0163	Rahmat Rauf
+	R0165	Median Bangapadang
+	R0178	La Ode Jakkaya Hamadi
+	R0181	Yenny Asrianty
+	R0190	Nurul Fitriani
+	R0192	Merna Akil
+	R0195	Syamsul
+	R0202	Hasyim
+	R0207	Kuswara Nyampa
+	R0214	Alexander Roby
+	R0219	Awaluddin Djamin
+	R0220	Wayan Sudarsana
+	R0230	Said M.L.
+	R0232	Ilham Rinaldi
+	R0237	Firman R.
+	R0248	Sumardi
+	R0249	Ichwan Susanto
+	R0251	Aris ST
+	R0254	Abdul Kasim Maniku
+	R0257	Asrullah Azis
+	R0258	Syukri Muhyiddin
+	R0271	Ahmad Fauzan
+	R0274	Ahmad Adiyatma
+	R0276	Nur Salam
+	R0277	Ashari
+	R0280	Ashar
+	R0284	Ryan Hidayat
+	R0286	Zul Bakrin Harlip
+	R0291	Asriadi Jamaluddin
+	R0294	Muhammad Imran Razak
+	R0296	Sri Mulyani
+	R0305	Nurfitriani
+	R0310	Syamsurisal
+	R0313	Ulfan D Aba
+	R0314	Muhammad Taslim
+	R0317	Abd. Wahab
+	R0318	Muhammad Taufik Saleh
+	R0321	Mirwanto
+	R0329	Zulkarnaen
+	R0330	Zakariah
+	R0333	Syamsul Alam
+	R0334	Mikael Esap Sapan
+	R0337	Ahmad Arif
+	R0339	Tuan Mangasa Dolok Siagian
+	R0345	Sirajuddin
+	R0350	Syahrir
+	R0360	Rahmatullah
+	R0364	Ardiansyah
+	R0379	Ridwan Al'amin
+	R0380	Anzar
+	R0394	Herry Nurdin
+	R0402	Nenny Sartika Barau
+	R0411	Herry Darwis
+	R0417	Zulkifly
+	R0418	Herman
+	R0436	Sophian Arisawan
+	R0447	Novriyanto
+	R0448	Jasman
+	R0450	Muhammad Abduh
+	R0455	Awaluddin
+	R0463	Muhammad Sabri Mahmud
+	R0470	Jamal Arya
+	R0484	Muhammad Syahruddin Y
+	R0492	Surya Iskandar
+	R0498	Jayanti Indriani N
+	R0499	Muhammad Yunus
+	R0505	Takbir
+	R0506	Aloysius Andhiek Setyawan
+	R0508	Iskandar Hanjaya
+	R0511	Darlis
+	R0523	Supriadi Noor
+	R0527	Chaerul Ali
+	R0532	Kalfein Johanis
+	R0535	Januar
+	R0537	I Wayan Kariaso
+	R0541	Imran S.Pd
+	R0542	Putra Jaya Wiyuda
+	R0543	Eriono P. Silaen
+	R0544	Muh. Afandi Mashanafi
+	R0548	Azhar Rizka
+	R0549	Amirullah
+	R0550	Ronald Liem
+	R0553	Ritawati
+	R0554	Irwan
+	R0555	Abdul Rahman
+	R0559	Muliyono Mahmud
+	R0563	Sony Rante Tasak
+	R0564	Abdul Samad
+	R0566	Hendra Arif
+	R0567	Harpiah Pata
+	R0571	Hasan Basri
+	R0574	Supatmi
+	R0579	Ana Nurjanah
+	R0603	Hasriadi
+	R0605	Muardiansyah M
+	R0606	Hasruddin Hafid
+	R0660	Muhammad Fahri
+	R0667	Angeles Lumintang
+	R0703	Zainal
+	R0718	Muh. Ardi
+	R0729	Masri
+	R0775	Yustifar
+	R0779	Kaharuddin
+	R0781	Lalong
+	R0789	Jevriagis Hamka
+	R0790	Muhammad Nur
+	R0794	Andhicha Friyono
+	R0797	Juhriady Anugrah
+	R0800	Anugerah Magefirah Utami
+	R0801	Christian Marthen
+	R0802	Ruyung Akhbar
+	R0803	Jhon Anugrah
+	R0804	Muhammad Taqwa Sjaripuddin
+	R0805	Abd. Kasir
+	R0807	Meilan Poneta
+	R0808	Darlin
+	R0809	Muchtar Supriyono
+	R0810	Rahmat Alfian
+	R0816	Irfan Bani Putra
+	R0820	Indra S
+	R0821	La Bagenda Ali
+	R0822	Muh. Rusdi Syam
+	R0823	Andi Maulana Chalik
+	R0826	Fikry Syaharuddin
+	R0831	Kamiluddin
+	R0835	Hartoni D Sampul
+	R0836	Samsuaib Sunardi
+	R0842	Junardi
+	R0843	Said. P
+	R0846	I Wayan Sukanre
+	R0847	Muhammad Yusuf
+	R0851	Safriadi
+	R0853	Andi Rusadi Hariadi
+	R0854	Aidil
+	R0859	Ahmad Afandy KY Martam
+	R0862	Eddi Kurniawan Karim
+	R0866	Vickram
+	R0872	Suhaer
+	R0877	Amir Yunus
+	R0883	Salman
+	R0885	Anggri Arjuna Tundu
+	R0887	Ismar
+	R0892	Crisyanto Tandi Boro
+	R0895	Sumardi
+	R0896	Rivaldi
+	R0898	Irwansyah
+	R0900	Suardi
+	R0904	Makmur
+	R0905	Jusmawan
+	R0910	M. Idul
+	R0915	Marvin Mamuaya
+	R0916	Fandi Nurdin
+	R0920	Dodi Reski Saputra
+	R0921	Aziz Irianto LM Tabaika
+	R0923	Munawir Hamzah
+	R0928	Hapid Hidayat
+	R0932	Ramdhan Nugraha
+	R0934	Irda Mutmainnah Ilyas
+	R0935	Wahyullah
+	R0938	Muhammad Ikhsan
+	R0942	Hasan Yusuf
+	R0946	Kaharuddin
+	R0947	Hasrullah
+	R0949	Maharani Nivyra
+	R0950	Melki Bukoi
+	R0953	Andri Oktavian Aritonang
+	R0954	Ilias Tona
+	R0958	Abdul Muis
+	R0959	Hasan Basri
+	R0961	Royke Mikhael Tandililing
+	R0964	Andi Zulfikar Azhari
+	R0966	Fahmi Yaomil Akhir
+	R0967	Hermansyah
+	R0972	Muzakkir
+	R0973	Mohamad Ilham Adie Latief
+	R0974	Hernanto Wibowo
+	R0975	Nasrul
+	R0977	Sandi Kurniawan
+	R0978	Herul
+	R0979	Arir Sugiarti
+	R0982	Rindiantika Siraw
+	R0983	Julie Nada Pratiwi
+	R0985	Aditiyah
+	S0003	Endang Lestari Wiloedjeng
+	S0006	Dalija
+	S0007	Hendi Sambudi
+	S0010	Suratiningsih
+	S0012	Dwi D. Moelyanto
+	S0013	Harim Yanuarli
+	S0014	Santoso
+	S0016	Tejo Moelyono
+	S0019	Sunardi
+	S0021	Rahmad
+	S0022	Suwandoko
+	S0023	Suprianto
+	S0026	Lilik Elviani
+	S0029	Sanusi
+	S0030	Edy Mardoko
+	S0031	Sarialam Sinaga
+	S0034	Achmad Ridwan
+	S0036	Tjatur Prasetya
+	S0037	H. Krisnoto Dwiatmojo
+	S0042	Nanang Winarno
+	S0043	Iis Rudiyanto
+	S0044	Akhmad Khusaini
+	S0047	Naufal Hamdani
+	S0049	Suprapto
+	S0050	Hadi Saroyo
+	S0058	Okok Gunardi
+	S0059	Susanto Setyo Utomo
+	S0061	Wawan Chrisyadi
+	S0068	Kholilu Rahman
+	S0069	Nicolaus Hari Prabowo
+	S0071	M.Irkham
+	S0072	Ambi Teguh Sutrisno
+	S0076	Sukmono Ambardi
+	S0078	Pulung Agus Setianto
+	S0079	Yoyok Zen Mutaqin
+	S0080	Suryadi
+	S0082	Muchamad Taofiq
+	S0085	Tri Yuliono Nurwahyudi
+	S0089	Okta Choirul Alim
+	S0091	Nurul Laiq
+	S0094	Galih Wardani C
+	S0096	Irving William P
+	S0100	Arum Katalina
+	S0103	Ari Supriyadi
+	S0107	Anton Sri Mulyono
+	S0109	Harda Eka Putra
+	S0116	Yudha Sandhy Tripambudi
+	S0127	Ampuh Kurniadi
+	S0129	Sri Sumarmi
+	S0130	M. Irwan Asadi
+	S0136	Muhammad Arofin
+	S0137	Arista Yulianto
+	S0138	Sukamto
+	S0139	Budiono
+	S0142	Deny Firmanto Pribadi
+	S0144	A.Ardiansyah
+	S0148	Agil Putratama
+	S0152	Doni Darmawan
+	S0160	Sari Ferianti
+	S0163	Agung Witono
+	S0165	Wahyudin Kurniawan
+	S0166	Yoyok Santoso
+	S0169	Irwan Sulistyanto
+	S0174	Hervianto Satrio W
+	S0175	Yasir Arafat
+	S0176	Agus Sumartono
+	S0180	Indah Mardiana
+	S0185	Sigit Poernomo
+	S0187	Emy Dyah Widyanti
+	S0188	Galih Suryo Sumarno
+	S0191	Riza Aditya
+	S0199	Edy Susanto Hariyadi
+	S0206	Veni Rustikasari
+	S0217	Imam Prastiyo
+	S0220	Abdul Aziz
+	S0222	M.Syaifur Rochman
+	S0223	Mochammad Zaini
+	S0228	Muhammad Murtadho
+	S0229	Sukatno
+	S0232	Yani Ardiansah
+	S0233	Eko Susanto
+	S0235	Waluyo Sugito
+	S0236	Erik Susanto
+	S0237	Teguh Yahya Syafi'I
+	S0238	Wayan Nur Rahman
+	S0245	Bening Oktaria Jatmiko
+	S0252	Rony Edy Nugroho
+	S0254	Arief Rachmanto
+	S0256	Noor Yulianto
+	S0264	Purwoko
+	S0266	Tanjung Irawan
+	S0271	Dwi Priyo Widodo
+	S0275	Hendromono Iswahyudi
+	S0279	Priyono
+	S0282	Arifin Zukhri
+	S0284	Agung Rahmanto
+	S0285	Nur Yasin
+	S0289	Sugeng Hariyanto
+	S0303	Roni Kustanto
+	S0306	Juremi
+	S0308	Joko Suyitno
+	S0309	Chasan Ashari
+	S0311	Guntur Dian Harmiko
+	S0317	Yusuf Abdullah
+	S0319	Harianto
+	S0320	Vivi Andriana Dewi
+	S0322	Supridiyanto
+	S0327	Achmad Maulani
+	S0332	Eko Sudarmaji
+	S0333	Sigit Tri Winarno
+	S0335	Moh. Samsul Roin
+	S0343	Gogik Cahyanto
+	S0345	Lia Yustin Febriana
+	S0351	Hendra Tri Laksono
+	S0354	Agus Supriono
+	S0355	Misnan Hadi
+	S0356	Fendi Setiawan
+	S0372	R. Irwan Cahyo Utomo
+	S0373	Hendra Yanuar Tanto
+	S0374	Laseno
+	S0377	Anang Siswanto
+	S0382	Fx.Ferriyanto N.
+	S0385	Hardian Tjahyo Permono
+	S0388	Lambang Setyono
+	S0392	Hermanto
+	S0393	Edi Susanto
+	S0402	Faizal Reza Salahuddin
+	S0404	Indra Septiawan
+	S0407	Ah Zuhri Afnan
+	S0421	Edy Sasminto
+	S0431	Teguh Prasetyo
+	S0444	Nurul Hidayat
+	S0446	Abdul Mufid
+	S0447	Muhammad Iqbal Hasbi
+	S0448	Rachmat Hidayat
+	S0465	Sagita Widodo
+	S0467	Purnomo Setiyo Kuncoro
+	S0472	Marjianto
+	S0473	Nazib
+	S0474	Fidelis Hari Setianto
+	S0475	Arief Budi Rahman
+	S0479	Yulistiawan
+	S0480	Ghufron Al Hakim
+	S0494	Muhamad Yusuf
+	s0501	Abda Alief
+	S0512	Sugito
+	S0513	Adi Prayoga
+	S0514	Hadi Purwoko
+	S0521	Muhamad Junaedi
+	S0524	Gatot Wahyu Hidayat
+	S0531	Ferly Widia Sari
+	S0533	Ali Murtadlo
+	S0537	Catur Prasetyo
+	S0543	Herman Junaidi
+	S0545	Yudi Prayugo
+	S0550	Taufiq Ismail
+	S0552	Samsul Ma'Arif
+	S0563	Bambang Margono
+	S0567	Giat Widianto
+	S0570	Idris Fatchur Rozaq
+	S0578	Cahyo Yuli Raharjo
+	S0595	Moch. Irfan Cahyono
+	S0597	Heri Setyobudi
+	S0599	Misbachus Sudurin Nadheroh
+	S0600	Rudi Siswanto
+	S0605	Januar Wicahyadi
+	S0610	Wahyu Imam Yani
+	S0619	Sri Widodo
+	S0630	Chusyudi Rusmawan
+	S0632	Niken Nur Farida
+	S0755	Ririn Lindawati
+	S0758	Hendra Setiawan
+	S0760	Dwi Aris Mariasari
+	S0767	Purbo Susanto
+	S0769	Bambang Hadi Widianto
+	S0770	Rachmat Widiyatmoko
+	S0776	Chanki Defrianto
+	S0778	Mohlizin
+	S0804	Supriyanto
+	S0805	Yongki Prasetya
+	S0806	Teguh Karyadi
+	S0807	Yunius Hura
+	S0811	Argadia Gunawan
+	S0818	Tri Haryadi Susanto
+	S0821	Bagus Ariyanto
+	S0832	Afif Hidayat
+	S0837	Andika Perkasayudha
+	S0843	Abdul Asbi Ginting
+	S0849	Gylang Kusuma
+	S0852	Mashudah
+	S0854	Dani Usman Febrianto
+	S0856	M. Subhan
+	S0861	Septian Rusmansyah
+	S0862	Prasetyo Rochmantoro
+	S0864	Sayogo Pradewa
+	S0865	Muhtarom
+	S0866	Sapta Dewantara
+	S0876	Moh. Zam Abdurrahman
+	S0878	Aditya Kurniawan Wibowo
+	S0880	Adi Cahyono
+	S0882	Dony Eka Putra Budi Purdiyanto
+	S0897	Betty Melevina Sutomo
+	S0903	Arini Fintikhobah
+	S0904	Agus Hariyono
+	S0905	Rodhi Firdaus
+	S0906	Misbahudin
+	S0907	Sudarsono
+	S0910	Belina Octavianti
+	S0911	Winda Novia Mardi Astuti
+	S0915	Ratna Lestari
+	S0931	M. Syafi'Udin Pramestari
+	S0932	Nurul Ida Yati
+	S0936	Dodik Krisdiyanto
+	S0944	Dewi Lusiana
+	S0945	Kuntum Khoiro Ummah
+	S0948	Solichatin
+	S0958	Wisnu Aji Sasongko
+	S0959	Saiful Anam
+	S0960	Chandra Adi Setyawan
+	S0964	Abdul Rouf
+	S0965	Ahmad Fuad Adlan
+	S0966	Vikirio Kristiawan
+	S0969	I Kadek Sutanegara
+	S0973	Fandhy Bagus Permana
+	S0978	Salim Ahyar
+	S0994	Ranno Hendrawan
+	S0996	Noviyati Kusumaningrum
+	S0999	Mauren Pattiasina
+	S1002	Fransiskus Silvianus Jengka
+	S1004	Jon Marubah H Saragih
+	S1900	Leniasih Nurul Hidayat
+	S1904	Abdul Ghofur
+	S1908	Ahmad Qomaruddin Hidayat
+	S1915	Joao Dos Reis
+	S1916	Martinus Tani
+	S1918	Tarsisius Sitohang
+	S1919	Dian Widha Sari
+	S1921	Taufiq Mustofa
+	S1922	Agus Bowo Laksono
+	S1925	Ainur Rofiq
+	S1926	Rokhmat Sudibyo
+	S1927	Dedik Hariyanto
+	S1928	Tri Suharno
+	S1930	Ali Mustofa
+	S1931	Giman
+	S1933	Abdul Aziz
+	S1935	Agus Mariyono
+	S1936	Arif Hidayat
+	S1947	Yuliaty Mea Kana M
+	S1948	Dewi Aprianti
+	S1951	Hironimus Falo
+	S1952	Rezha Adityaksa
+	S1953	Dhedy Setiawan
+	S1958	Taufiq Hermawan
+	S1961	Farhan Liddinillah
+	S1963	Abdul Wafi
+	S1965	Hendi Siswandoko
+	S1966	Fajar Kurniawan
+	S1968	Suprayitno
+	S1976	Rendhi Kurniadi
+	S1977	Hafizh Yunanto
+	S1979	Wahyu Widodo
+	S1980	Langgeng Witdodo
+	S1982	Deden Probo Aditama
+	S1983	Agus Gunawan
+	S1985	Andrias
+	S1986	Khoirul Fuadi
+	S1988	Untung Sugiono
+	S1993	Ayu Puspita Dewi
+	S1994	Nur Amalia
+	S1995	Husen Haekal
+	S2000	Imam Buchori
+	S2002	Andreas Johnson L.
+	S2003	Gita Asmarani
+	S2005	Yohanes Hara Tobi
+	S2007	Andri Norma Wijaya
+	S2010	Danis Eka Prihananto
+	S2011	Novalian Aditya Dwi Permana
+	S2013	Faruq Farizmi
+	S2021	Tri Wulandari
+	S2024	Yulita Nur Fiyati
+	S2025	Reni Susanti
+	S2027	Yulian Eko Hadi Purnomo
+	S2028	Selfi Syarifah Soehartini
+	S2030	Rosidi
+	S2032	Ibnu Mas'Ud
+	S2033	Mochamad Nafi'
+	S2035	Faqih Murtadho
+	S2036	Mohammad Rifa'I
+	S2039	Dhebi Pasarela
+	S2047	Alvian Listya Yuda
+	S2048	Firman Hidayat
+	S2049	Werdo Anggoro
+	S2050	Hendra Karuniawan
+	S2054	Visal Dwi Jatmika
+	S2055	Rifki Zulmi
+	S2056	Eko Yudi Ferianto
+	S2058	Rangga Gandala Bakti
+	S2066	Yuke Abraham Kusuma
+	S2069	Conradus Heleywan So
+	S2070	Erfan Sugiarto
+	S2072	Azib Bisri
+	S2075	C. Putro Asmoro Yanuari
+	S2076	Bagus Handoko
+	S2078	Ahmad Marzuqi
+	S2082	Broto Prio Kuncoro
+	S2085	Ibnu Setyawan
+	S2087	Deny Susanto
+	S2092	Moh. Sofian Hud
+	S2093	Iga Komang Novi Karismawati
+	S2095	Putra Bagus Wibowo
+	S2098	Muhammad Khoirul Anam
+	S2104	Indra Setyawan
+	S2106	Gilang Radiktya
+	S2108	Renal Budi Antono
+	S2117	Muiz Fahrudin
+	S2118	Yhany Widodo
+	S2122	M.Isnaini
+	S2125	Nurman Slamet
+	S2128	M. Ashif Hasanuddin
+	S2138	Adi Tri Prasetiyo
+	S2140	Heri Sunarto
+	S2141	Fajar Rahmadi
+	S2143	Novy Prasetya Adji
+	S2144	Martha Sulastri Sirait
+	S2146	Mohammad Silahuddin
+	S2148	Hendra Saputro
+	S2149	Lean Wijaya
+	S2151	Novi Junaidi Dwipayana
+	S2152	M. Syamsudin
+	S2154	Riza Prasetyo Wibowo
+	S2155	Machfud Anwar
+	S2157	Heru Dwi Yanto
+	S2158	Prihantoro
+	S2161	Utomo Aji
+	S2163	M. Anwar Romadhoni
+	S2164	Yessy Bernadus T.
+	S2166	Moch. Gofur
+	S2170	Agustinus Riba
+	S2171	Klaudius Sahala Raja Manurung
+	S2172	Arif Dwi Wirawan
+	S2173	Ahmad Ilham Romairi
+	S2176	Kadek Mulyawan
+	S2182	Moch. Fauzi Ali
+	S2183	M Tiar Abdillah
+	S2184	Rio Daniel Sinambela
+	S2190	Lulut Hanggra Kumala
+	S2195	Tunjung Mulyono
+	S2196	Rohmad Yoga Pratama
+	S2202	Rudi Alfianto
+	S2204	Angga Sanditiyan Havian
+	S2207	Bayu Pratiawan
+	S2211	Muhammad Ichsan
+	S2215	Ansori
+	S2219	M. Zainal Fanani
+	S2220	Iswahyudi
+	S2223	Feber Firmando Tampubolon
+	S2224	M. Arief Kurniawan
+	S2227	Zulkifli Asy'ari
+	S2229	Erika Fendi
+	S2233	Rachmad Candra Hidayat
+	S2241	M. Fan Deddy Richardo
+	S2244	Adi Bagus Purwanto
+	S2249	Dony Ramadhan
+	S2257	Nimrot Koirewoa
+	S2258	Remon Sihotang
+	S2259	Orizon Auparay
+	S2262	Ichsan Ambarul Munir
+	S2264	Ndaru Suryo Asmoro
+	S2265	Bayu Putro Pamungkas
+	S2266	Dio Rifanda Pratama Putra
+	S2269	Tri Agus Setiabudi
+	S2270	Bonefasius Ratman
+	S2272	Ahmad Irsyadul Umam
+	S2274	Mario Mega Saputra
+	S2276	Arip Eko Prasetyo
+	S2277	Arif Nindi Arlisa
+	S2278	Aprianus Ngala
+	S2280	Adwitya Pratiko Hermawan
+	S2282	Ahsani Taqwim
+	S2283	Harits Mahastra Medha
+	S2285	Anang Santoso
+	S2288	Fahmi Mubaroq Ali Akbar
+	S2289	I Gede Gita Ansana
+	S2291	Desi Ayu Wulandari
+	S2296	Sugeng Dwiyanto
+	S2297	Oki Ilyas Kurniawan
+	S2299	Ni Putu Evik Sulianingsih
+	S2304	Ahmad Fauzan
+	S2307	Trisian Adi Danas
+	S2309	Zainul Efendi
+	S2310	Muhamad Budi Santoso
+	S2311	Ardi Nugrahanto
+	S2312	Yuski Auda Firdaus
+	S2318	Lutfia Darma Imania
+	S2320	Moch. Sulhan Basari
+	S2322	Abdul Ghofar
+	S2324	Risandiarto Mardika
+	S2325	Afif Mustofa
+	S2326	Muh. Zainul Asror
+	S2329	Himawan Rahmat Deni
+	S2330	Eko Yulianto
+	S2334	Mat Nur
+	S2337	Putra Catur Pamungkas
+	S2340	Yosha Ega Pratama
+	S2342	Muhammad Riduwan
+	S2343	Setyoadi Winarno
+	S2346	Ahmad Dahlan Bagio
+	S2347	Ade Idham Prayogi
+	S2350	Miftakhul Janah
+	S2354	Alfin Kurniawan
+	S2358	Arif Rahman Hadi
+	S2359	Nur Wahid
+	S2360	Miftachul Ilmi
+	S2361	Hafidh Kurniawan
+	S2363	Lutfi Zulfikar
+	S2364	Aris Yuni Prasetio
+	S2365	Abdul Muqsith
+	S2366	M. Agung Subhan
+	S2370	Adrianus Engelberth Dura
+	S2371	Egedius Tony
+	S2372	Ruly Hanafy
+	S2373	Nashruddin Al Abani
+	S2375	Nandang Setyawan
+	S2376	Saiful Anwar
+	S2377	Nafid Burhan Arifi
+	S2378	Mohammad Jumadi
+	S2379	Miftakhul Hakim
+	S2381	Andri Arifian Dhani
+	S2385	Yudhi Kresnawan
+	S2386	Eggar Lody Widarjo
+	S2387	Riyo Wijaya
+	S2389	M. Syafiudin Hidayat
+	S2390	Yudhiartha Krisna Putra
+	S2395	Suliswanto
+	S2396	Yustinus Widiatmoko
+	S2397	Abd. Hofid
+	S2399	Tedy Yason
+	S2400	Arif Nizar Permana
+	S2402	Muhamad Bazher
+	S2403	Agung Taufik Ramdhani
+	S2406	Septian Aditya
+	S2407	Yahyo Tri Hermawan
+	S2408	R. Endah Retno Puspita
+	S2412	Anang Wijaya
+	S2414	Bayu Pamungkas Gita Wardana
+	S2415	Candra Yunanto Anggi Wicaksono
+	S2416	Dian Pramana
+	S2417	Rikky Gunawan Sukmana
+	S2418	Angga Hermawan
+	S2419	Yermias Hetmetan
+	S2421	Moh. Zuaim Ajda
+	S2424	Khasiful Firdiansyah
+	S2425	Ricky Ardijansyah
+	S2427	Dimas Bayu Wicaksono
+	S2430	Petrus T. Balawanga
+	S2431	Ibnu Muzayyin
+	S2432	Deta Anggakara Putra
+	S2434	Nofita Heldaldiri
+	S2435	Thola'at Wafah
+	S2436	Muhammad Khoifulloh
+	S2437	Davit Agung Setriawan
+	S2438	Regus Sirumpa
+	S2441	Robby
+	S2442	I Gede Made Endra Gunawan
+	S2443	Miftahul Rizal
+	S2444	Helmi Iswandono
+	S2445	Muh. Ghofurur Rohim
+	S2448	Rachmad Wijayanto
+	S2449	Anang Setiarto
+	S2451	Edwyn Yudha Prasetio
+	S2452	Ardhika Teguh Widhi Hasworo
+	S2454	La Muhidin
+	S2458	Isa Idam Chalid
+	S2460	Ahmad Rifa'i
+	S2461	Khaerul Rozi
+	S2463	Achmad Ali Mustofa
+	S2464	M. Sholehkhan
+	S2467	Fales Eka Pribadi
+	S2468	Al Jhihant Azzmi Arfinsyah
+	S2469	Hasan Assel
+	S2471	Ali Usman
+	S2473	Reza Rizkyanto
+	S2474	Zaenuddin
+	S2475	Yoshua Duta Budi Pragiwaksa
+	S2476	Wulandari
+	S2477	Hefry Wika Kusuma Wardhana
+	S2478	Rifa'i Abror
+	S2479	Haris Sandy
+	S2480	Ria Ayu Putri Wulandari
+	S2481	Abdul Muchid Zainuddin
+	S2482	Ainul Yaqin
+	S2483	Iradhad Taqwa Sihidi
+	S2484	Moh. Binmo Ulumando
+	S2485	Ebenheizar Christanto Langkameng
+	S2486	Mohamad Sartono
+	S2488	Yishar Rico Amnifu
+	S2489	Jarwanto
+	S2494	M. Ainun Najib
+	S2496	Achmad Widodo
+	S2502	Toni
+	S2505	Mohammad Amin
+	S2519	Tedy Agiel Kusuma Sari
+	S2522	H. Anaka Pindo
+	S2526	Abdul Muad
+	S2528	Andana Arista Rachamdhika
+	S2532	Baihaki
+	S2533	Galih Pujo Saputro
+	S2535	Safe Fiza Sucahyo
+	S2536	Imam Basori
+	S2537	Erik Wahyu Wibowo
+	S2538	Mutho'in Amin
+	S2539	Willi Mulyanto
+	S2540	Budi Santoso
+	S2541	Ainul Yaqin Wahyu S.
+	S2542	Pujianto
+	S2546	Hilma Pratiwi Sumarsono
+	S2547	Elwin Marthodinata Muhammad
+	S2548	Miftahus Syukron Al Rasyid
+	S2549	Yusuf Mahmudi
+	S2550	Dyah Eka Putri Purnamasari
+	S2551	Muhammad Arif Chandrajaya
+	S2552	Faisol Muamar Hadafi
+	S2553	Cahyo Agi Wibowo
+	S2554	Firman Adi Sucipto
+	S2555	Adhi Dwiyanto
+	S2556	Sigit Hariyo Yudhanto
+	S2557	Wahyu Budiman
+	S2558	Anwar Laiya
+	S2560	Erik Kristanto
+	S2561	Achmad Kholil
+	S2566	Eko Junianto
+	S2567	Moh. Salehoddin
+	S2570	Muhammad Sudi Arifin
+	S2579	Agus Abdika
+	S2589	Irenius Yulianus W R
+	S2590	Salome Parus
+	S2591	Feltianus Jebaru
+	S2592	Hilarius Papun
+	S2593	Michael Dedi
+	S2594	Firman Fajrur Rohman
+	S2596	Herman Dwi Prabowo
+	S2598	Syarifudin
+	S2599	Fandy G.H. Yokohael
+	S2602	Ahmad Pandi
+	S2603	I Nyoman Suana
+	S2604	Doan Yoga Pratama
+	S2605	Muhammad Mustaqim
+	S2606	Rofiuzzaman Ahmad
+	S2607	Yusman Prihantono
+	S2609	Elhokmah Zakaria
+	S2612	Veny Setyowati
+	S2613	Prima Murdiyanto
+	S2616	Ali Sukron
+	S2617	Ida Ayu Made Winasista Suanadewi
+	S2618	Cahyadi
+	S2621	Anshori Setiawan
+	S2622	Zulkifli Malawat
+	S2623	Farid Abdulloh
+	S2626	Dhite Ari Novianto
+	S2627	Alfian Nurrohman
+	S2628	Wasilur Rahman
+	S2629	Stefani Koreh
+	S2630	Dandi Setyo Laksono
+	S2631	Marsianus meze Towa
+	S2632	Paskalis Didimus Baba
+	S2633	Petrus Yohannes Bio
+	S2634	Fransiskus Xaverius Boro Bhado
+	S2635	Heryanto Emanuel
+	S2636	Yuliana M A Parus
+	S2637	Denis Herlambang
+	S2640	Moh Ubaidilah
+	S2643	I Made Wira Vrisabha
+	S2644	Kuduri
+	S2647	Taufik Wahyu Hidayat
+	S2649	Riyan Firmansyah
+	S2651	Dwinanda Rian Praditya
+	S2652	Hadi Riyanto
+	S2654	Lyri Anita
+	S2655	Muhammad Sufri Sangaji
+	S2657	Nila Agi Safitri
+	S2658	Ahmad Naufal
+	S2659	Anggi Atma Bagus Satria
+	S2660	Fahrul Nur Asyari Ihsan
+	S2662	Eko Purnomo Micahyo
+	S2664	Dian Trianto
+	S2665	Insan Nurlaba
+	S2666	Saman Alisyah
+	S2669	Aulia Ineke P
+	S2670	Puguh Setyo
+	S2671	M.Farid Fauzi
+	S2672	Mariadi
+	S2674	Selamet
+	S2675	Venansius Munceng
+	S2676	Fretno Ario Sambadatu
+	S2677	Fendi yatmi Kusufa
+	S2680	Yudha Eka Noor Dyansyah
+	S2684	Gita Adhisti Wisnu
+	S2685	Arief Setiawan
+	S2686	Teguh W
+	S2687	Dedik Firmansyah
+	S2690	Edo Christyanto
+	S2691	Hayik Lana Minroshada
+	S2694	Muhyi Gaby Trianda
+	S2696	Bagus Novianto
+	S2697	Afrizal Muslim
+	S2700	Agus Diawan
+	S2701	Adi priyono
+	S2702	Umar Said
+	S2704	M.Agung Prasetyo
+	S2706	Agustinus Tunya
+	S2707	Abdus Syakur
+	S2708	Muhammad Ichsan
+	S2710	Agung Romadhon
+	S2711	Moh.Afif muhibbuddin
+	S2712	Budiyanto
+	S2715	Moh.Yusuf
+	S2716	Slamet
+	S2717	Sekti Ambawani
+	S2718	Ali Sabet
+	S2719	Agus Widodo
+	S2720	Hendri Kanafi
+	S2722	Sukoco
+	S2723	Hadi Suwanto
+	S2724	Danang Tri H
+	S2727	Okdian Maharsanto
+	S2728	Marwidodo
+	S2729	Joni Eko Cahyono
+	S2730	Rochem Muadzar
+	S2732	Agus Slamet Riyanto
+	S2734	Dwi Hariyanto
+	S2735	Gaguk Subiantoro
+	S2736	Fery Wibisono
+	S2737	Dwi Rahman Prehardianto
+	S2739	Didik Purwanto Hutomo
+	S2740	Alwan Basythomi
+	S2741	Yuni Alfiah
+	S2742	Harsika Dwi Nurrohma
+	S2743	Hendri Saputro
+	S2744	Ni Komang Ayu Suatini Rahayu
+	S2745	Cepi Muhammad Fahridudin
+	S2746	Rininta Anggraeni
+	S2748	NUR HARTATI MUSLIMIN
+	T0001	Kumiarso
+	T0004	Toto Abrianto
+	T0009	Elias Fernando Muda P.
+	T0011	Fery Kasmana
+	T0012	Maya Muhadelia
+	T0013	Hartono
+	T0018	Andri Asta Pamungkas
+	T0026	Sambudi
+	T0027	Agus Didi Paryadi
+	T0028	Yusuf Margo S.
+	T0030	Fiky Wulandari Ayudyaningrum
+	T0032	Nurhamidah
+	T0035	Guntur
+	T0046	Sean Zophany
+	T0053	Andreas Sukaryadi
+	T0054	Nani
+	T0056	Niati
+	T0060	Cindytia Pradita Lestari
+	T0064	Khumaidi
+	T0071	Wisono
+	T0072	Muhajir
+	T0074	Fajar Liandani
+	T0076	Fransiskus Kejatau
+	T0077	Irman Abdiansyah
+	T0079	Abu Jihan
+	T0082	Heri Ilbar
+	T0083	Tulus Pribadi
+	T0085	Firmansyah
+	T0086	Redha Zuriyandi
+	T0091	Lexyanus Asol
+	T0093	Ahmad Salim
+	T0094	Deny Alfarisi
+	T0098	Dedi Irawan
+	T0101	Sabransyah
+	T0102	Andri Wirawan
+	T0103	Hanifar Walad
+	T0104	Joko Meliyono
+	T0105	Topan Satrio Wijaksono
+	T0107	MERIANTO
+	T0110	Cipta Daniel Damanik
+	T0113	Samuel Tarihoran
+	U0001	Ervina Hutauruk
+	U0007	Yulianto Safrizal
+	U0008	Ahmadi
+	U0012	Rudi Wijaya
+	U0013	Adi Firmansyah
+	U0017	Sri Kustini
+	U0018	Herlina Wati
+	U0020	Ahmad Bakri
+	U0022	Rachman
+	U0031	Sobari Wicaksono
+	U0033	Diaz Alief
+	U0038	Rekyansyah
+	U0042	Sumarjono
+	U0048	Hafiz Hakiki
+	U0050	Wiwik Napika Sari
+	U0057	Sepria Meliska
+	U0058	Widya Puspitasari
+	U0063	Ririn Ariestiningrum
+	U0064	Betharia Hasugian
+	U0065	Ricki Harianto
+	U0066	Imam Solihin
+	U0072	Eko Saputra
+	U0088	Angga Ari Setiawan
+	U0090	Asharil
+	U0091	Yulius Catur Pratomo
+	U0092	Daniel Gultom
+	U0094	Thomas Dwi Aprian
+	U0096	Hengki Irawan
+	U0097	Arif Gunawan
+	U0098	Rizky Hermawan
+	U0100	Ahmad Faisol
+	U0104	Anton Setiadi
+	U0108	Nasril
+	U0111	Alan Adriansyah
+	U0112	Choirul Fariz
+	U0114	Nur Jaenuri
+	U0115	Rio Pratama
+	U0117	Joni Saputra
+	U0119	Andri Tuyama
+	U0122	Rangga Triwibowo
+	U0123	Andre Apri Anto Hutauruk
+	U0125	Nanang Setiawan
+	U0127	Solahuddin
+	U0129	Oka Saputra
+	U0131	Eko Sepriyanto
+	U0134	Leni Winingsih
+	U0136	Andi Irwansyah
+	U0140	Catur Edi Santoso
+	U0143	Jhon Antonio Gultom
+	U0154	Rizka Mustaqim
+	U0155	Eko Budi Santoso
+	U0158	Lina Ariska
+	U0161	Ruth Minar Aprillia Sinaga
+	U0163	Angga Januari
+	U0165	Fitria
+	U0167	Habib Khoirul Anwar
+	U0168	Mario Aritonang
+	U0172	Erik Fernandez
+	U0174	Try Arnado
+	Y0001	Patrisius Pratikto
+	Y0003	B. Ari Mulyanto
+	Y0005	Anas Abdullah
+	Y0006	Ponidi
+	Y0007	Satrio Sadmoko
+	Y0008	Muhamad Haris Dwi Cahyo
+	Y0011	Purwanto
+	Y0012	Tri Haryanto
+	Y0013	Suparman
+	Y0014	Sugiyanto
+	Y0016	Mochtar Effendi
+	Y0019	Sunaryo
+	Y0020	Ponimin
+	Y0021	Agus Noor Wakhid
+	Y0022	Edy Haryono
+	Y0024	Judianto
+	Y0026	Farida Nur Rahmawati
+	Y0029	Abdul Rahman Maskur
+	Y0030	Sofia Kusumaningrum
+	Y0034	Wahyu Kartika
+	Y0036	Mustafid
+	Y0044	Antonius Korniya Yulianto
+	Y0049	Sarjianto
+	Y0051	Anton Setiawan
+	Y0055	Slamet Riyadi
+	Y0059	Suwar Widiyanto
+	Y0060	Ervin Agung Hidayat
+	Y0062	Anton Gusmara
+	Y0063	Agus Risdianto
+	Y0066	Subagyo Hadi Harto
+	Y0068	Ary Iskandar
+	Y0075	Kanang Santosa
+	Y0078	Joko Susilo
+	Y0085	Budi Saryanto
+	Y0086	Dian Ashuri Latif
+	Y0090	Daryono
+	Y0091	Triana Susi Lestari
+	Y0094	Ani Yuli Setyaningsih
+	Y0098	Bagus Galih Rakasiwi
+	Y0099	Widiyanto
+	Y0100	Dony Satria Utama
+	Y0101	Handoko Aji Candra
+	Y0107	Krisbianto
+	Y0109	Eko Yudha Sujarno
+	Y0112	Aries Kristanto
+	Y0120	Agus Priyono
+	Y0121	Yanuardi Indrayana
+	Y0122	Febroe Harijadi
+	Y0123	Dahron Efendi
+	Y0136	Maryanto
+	Y0141	Wijang Sukmono
+	Y0144	Tatak Atmoko Dolly B.
+	Y0147	Hugo Harianto
+	Y0149	Anis Risa Kurniawan
+	Y0155	Agus Sugianto
+	Y0165	Aji Ardhiyanto
+	Y0176	Bomantara
+	Y0183	Marsellino Andika Adiwibowo
+	Y0189	Haryadi
+	Y0204	Sabto Triyanto
+	Y0223	Erwin Budi Setiawan
+	Y0229	Hasbi Agus Saputro
+	Y0234	Awang Hermawan
+	Y0235	Edi Sumarno
+	Y0238	Sigit Purnomo
+	Y0239	Noria Afrita Santoso
+	Y0241	Heru Krisnawan Seputra
+	Y0254	Sagi
+	Y0258	Agung Setyawan
+	Y0259	Alan Ibnu Senjaya
+	Y0263	Suryono
+	Y0264	Beni Muhamad Ardhani
+	Y0273	Dwiana Primastuti
+	Y0274	Himawan Kristianto
+	Y0281	Zamroni Latif
+	Y0282	Fx Dony Kristanto
+	Y0283	Firman Damanik
+	Y0285	Antonius Pekik Prajoko
+	Y0287	Muhamad Baedowi
+	Y0288	Bagus Rohadi Prasetya
+	Y0295	Yudi Bayu Tri Prasetyo
+	Y0298	Andi Ismanto
+	Y0299	Bintang Dwipayana
+	Y0303	Sinta Wulandari
+	Y0305	Afifah Suryaningrum
+	Y0306	Kukuh Agung Baskoro
+	Y0308	Dwi Wal'Insaani Yanto
+	Y0313	Veri Anang Putra
+	Y0314	Arnol Thomas
+	Y0316	Hendra Gustaman
+	Y0322	M. Shofi Al Mubarok
+	Y0323	Rasyid Abdul Hamid
+	Y0325	Nanap Wibowo
+	Y0331	Gana Ramadhan
+	Y0335	Rosid Hastanto
+	Y0341	Ardiansah Kurniawan
+	Y0345	Putrantama Retyantoko
+	Y0352	Habsika Mahmud Subekti
+	Y0354	Eti Kadarsih
+	Y0357	Suryo Widianto
+	Y0360	Muhammad Dani Rizal Rozaki
+	Y0361	Aditya Nandung Pambudi Rizky
+	Y0363	Gilang Nusantoro
+	Y0365	Sujito
+	Y0368	Muhamad Johari
+	Y0372	Wahyu Kurniawan
+	Y0377	May Dwi Wulandani
+	Y0382	Agung Rahmadi
+	Y0385	Ade Frianto
+	Y0386	Heru Prasetiyo
+	Y0387	Aris Munandar
+	Y0393	Tri Yuni Antoro
+	Y0395	Adi Wibowo Nur Nugroho
+	Y0396	Nurhana Dwi Atmaja
+	Y0397	Indah Niswati Yustisiany
+	Y0401	Yuli Ostiko Prasetya
+	Y0403	Slamet Indarto
+	Y0405	Dendi Aulia Rachman
+	Y0406	Deni Listiyono
+	Y0408	Nunik Dwi Andrayani
+	Y0409	Adityo Wisnu Kusumo
+	Y0413	Evi Desi Hedayah
+	Y0414	Elna Lianita
+	Y0415	Martono Supriyanto
+	Y0416	Tiara Agustina Sani
+	Y0417	Iryanto
+	Y0418	Nuron Phasaluka
+	Y0421	Kusno Ari Nugroho
+	Y0422	Tiyon
+	Y0425	Maksum Prasida Kurniawan
+	Y0432	Haryadi
+	Y0434	Raka Suryasaputra
+	Y0435	Heriyanto Fransiskus Hutagaol
+	Y0436	Aprilia Dian Kurnia Wati
+	Y0438	Vina Vidiana
+	Y0440	Teguh Prasetian Tatur
+	Y0441	Muhammad Sholeh
+	Y0442	Tri Prasetyo Nugroho
+	Y0446	Widya Budi Prayogo
+	Y0450	Riko Nugroho

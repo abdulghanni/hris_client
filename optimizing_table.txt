@@ -1,0 +1,67 @@
+-- table users
+CREATE INDEX idx_users_marital ON users(marital_id);
+OPTIMIZE TABLE users;
+
+-- table organization
+CREATE INDEX idx_organization ON organization(comp_session_id,parent_organization_id,organization_class_id);
+OPTIMIZE TABLE organization;
+
+-- table payroll_by_position
+CREATE INDEX idx_payroll_by_position ON payroll_by_position(position_id);
+OPTIMIZE TABLE payroll_by_position;
+
+-- table payroll_setup
+CREATE INDEX idx_payroll_setup ON payroll_setup(comp_session_id,payroll_type_id);
+OPTIMIZE TABLE payroll_setup;
+
+-- table position
+CREATE INDEX idx_position ON position(position_group_id,parent_position_id,organization_id);
+OPTIMIZE TABLE position;
+
+-- table position_group
+CREATE INDEX idx_position_group ON position_group(parent_position_group_id);
+OPTIMIZE TABLE position_group;
+
+-- table users_awardwarning
+CREATE INDEX idx_users_awardwarning ON users_awardwarning(user_id,award_warning_type_id);
+OPTIMIZE TABLE users_awardwarning;
+
+-- table users_certificate
+CREATE INDEX idx_users_certificate ON users_certificate(user_id,certification_type_id);
+OPTIMIZE TABLE users_certificate;
+
+-- table users_course
+CREATE INDEX idx_users_course ON users_course(user_id,course_status_id);
+OPTIMIZE TABLE users_course;
+
+-- table users_education
+CREATE INDEX idx_users_education ON users_education(user_id,education_degree_id,education_group_id,education_center_id);
+OPTIMIZE TABLE users_education;
+
+-- table users_employement
+CREATE INDEX idx_users_employement ON users_employement(user_id,position_id,organization_id,empl_status_id,employee_status_id,position_group_id,grade_id,resign_reason_id,active_inactive_id);
+OPTIMIZE TABLE users_employement;
+
+-- table users_experience
+CREATE INDEX idx_users_experience ON users_experience(user_id,resign_reason_id);
+OPTIMIZE TABLE users_experience;
+
+-- table users_groups
+CREATE INDEX idx_users_groups ON users_groups(user_id,group_id);
+OPTIMIZE TABLE users_groups;
+
+-- table users_ikatan_dinas
+CREATE INDEX idx_users_ikatan_dinas ON users_ikatan_dinas(user_id,ikatan_dinas_type);
+OPTIMIZE TABLE users_ikatan_dinas;
+
+-- table users_jabatan
+CREATE INDEX idx_users_jabatan ON users_jabatan(user_id,organization_id,position_id,employee_group_id,grade_id,branch_id,personnel_action_id);
+OPTIMIZE TABLE users_jabatan;
+
+-- table users_sk
+CREATE INDEX idx_users_sk ON users_sk(user_id,position_id,departement_id);
+OPTIMIZE TABLE users_sk;
+
+-- table users_sti
+CREATE INDEX idx_users_sti ON users_sti(user_id,position_id,receivedby_id,acknowledgeby_id);
+OPTIMIZE TABLE users_sti;

@@ -1,0 +1,136 @@
+<div class="page-content">
+    <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+    <div id="portlet-config" class="modal hide">
+        <div class="modal-header">
+            <button data-dismiss="modal" class="close" type="button"></button>
+             <h3>Widget Settings</h3>
+        </div>
+        <div class="modal-body">Widget settings form goes here</div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="content">
+        <div class="page-title">
+            <i class="icon-custom-left"></i>
+            <h3>Detail&nbsp; - &nbsp;<span class="semi-bold"><?php echo lang('att_subheading');?></span></h3> 
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="grid simple ">                            
+                    <div class="grid-body no-border">
+                    		<div class="row">
+                            <div class="col-md-12">
+                                <h4>&nbsp;</h4>
+                            </div>
+                        </div>
+                        <form id="form_edit" action="<?php echo base_url().$path_file;?>/update" method="post" enctype="multipart/form-data">
+													<fieldset>
+																<div class="row form-row">
+																	<?php 
+																	echo form_hidden("id", isset($val["id"]) ? $val["id"] : 0);
+																	echo form_hidden("jhk", 1);
+																	?>
+																	<div class="col-md-3">Nama Karyawan</div>
+																	<div class="col-md-9">
+																		<?php 
+																			$nm_f = "nik";
+																			echo form_dropdown($nm_f, $opt_users, isset($val[$nm_f]) ? $val[$nm_f] : $user, "id='".$nm_f."' class='required'");
+																		?>
+																	</div>
+																	<div class="col-md-3">Tanggal</div>
+																	<div class="col-md-9">
+											              <div class="input-with-icon right">
+											                  <div class="input-append success date no-padding">
+											                      <?php echo form_input("tgl", $val['bulan']."/".$val['tanggal']."/".$val['tahun'], "id='tgl' class='form-control'");?>
+											                      <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span> 
+											                  </div>
+											              </div>
+											            </div>
+											
+																	<div class="col-md-3">Absensi</div>
+																	<div class="col-md-9">
+																		<?php 
+																			$nm_f = "absen";
+																			echo form_radio($nm_f, "jh", isset($val['jh']) ? $val['jh'] : 0, "class='absenz'")." Hadir &nbsp;&nbsp;&nbsp;&nbsp;";
+																			echo form_radio($nm_f, "off", isset($val['off']) ? $val['off'] : 0, "class='absenz'")." OFF &nbsp;&nbsp;&nbsp;&nbsp;";
+																			//echo form_radio($nm_f, "hr", isset($val['hr']) ? $val['hr'] : 0, "class='absenz' id='hariraya'")." Hari Raya &nbsp;&nbsp;&nbsp;&nbsp;";
+																			echo form_radio($nm_f, "cuti", isset($val['cuti']) ? $val['cuti'] : 0, "class='absenz'")." Cuti &nbsp;&nbsp;&nbsp;&nbsp;";
+																			//echo form_radio($nm_f, "phl", isset($val['phl']) ? $val['phl'] : 0, "class='absenz'")." PHL &nbsp;&nbsp;&nbsp;&nbsp;";
+																			echo form_radio($nm_f, "ijin", isset($val['ijin']) ? $val['ijin'] : 0, "class='absenz'")." Ijin &nbsp;&nbsp;&nbsp;&nbsp;";
+																			echo form_radio($nm_f, "sakit", isset($val['sakit']) ? $val['sakit'] : 0, "class='absenz'")." Sakit &nbsp;&nbsp;&nbsp;&nbsp;";
+																			/*echo form_radio($nm_f, "opname", isset($val['opname']) ? $val['opname'] : 0, "class='absenz'")." Opname &nbsp;&nbsp;&nbsp;&nbsp;";
+																			echo form_radio($nm_f, "opname_istirahat", isset($val['opname_istirahat']) ? $val['opname_istirahat'] : 0, "class='absenz'")." S2 &nbsp;&nbsp;&nbsp;&nbsp;";
+																			echo form_radio($nm_f, "kecelakaan_kerja", isset($val['kecelakaan_kerja']) ? $val['kecelakaan_kerja'] : 0, "class='absenz'")." KK &nbsp;&nbsp;&nbsp;&nbsp;";*/
+																			echo form_radio($nm_f, "alpa", isset($val['alpa']) ? $val['alpa'] : 0, "class='absenz'")." Alpa &nbsp;&nbsp;&nbsp;&nbsp;";
+																			echo form_radio($nm_f, "terlambat", isset($val['terlambat']) ? $val['terlambat'] : 0, "class='absenz'")." Terlambat &nbsp;&nbsp;&nbsp;&nbsp;";
+																			echo form_radio($nm_f, "potong_gaji", isset($val['potong_gaji']) ? $val['potong_gaji'] : 0, "class='absenz'")." Potong Gaji&nbsp;&nbsp;&nbsp;&nbsp;";
+																			echo form_radio($nm_f, "pc", isset($val['pc']) ? $val['pc'] : 0, "class='absenz'")." Pulang Cepat &nbsp;&nbsp;&nbsp;&nbsp;";
+																			//echo form_radio($nm_f, "lembur", isset($val['lembur']) ? $val['lembur'] : 0, "class='absenz'")." Overtime &nbsp;&nbsp;&nbsp;&nbsp;";
+																		?>
+																		<br><br>
+																	</div>
+																	
+																	<div class="col-md-3">Scan Masuk</div>
+																	<div class="col-md-9">
+																		<div class="input-append bootstrap-timepicker">
+																			<?php
+																				$nm_f = "scan_masuk";
+																				echo form_input($nm_f, isset($val[$nm_f]) &&  $val[$nm_f]!="" ? $val[$nm_f] : "0", "id='".$nm_f."' class='span3 timepic'");
+																				echo form_hidden($nm_f."_temp", isset($val[$nm_f]) ? $val[$nm_f] : "");
+																			?>
+																			<span class="add-on"><i class="icon-time"></i></span>
+																		</div>
+																	</div>
+																	
+																	<div class="col-md-3">Scan Pulang</div>
+																	<div class="col-md-9">
+																		<div class="input-append bootstrap-timepicker">
+																			<?php 
+																				$nm_f = "scan_pulang";
+																				echo form_input($nm_f, isset($val[$nm_f]) ? $val[$nm_f] : "0", "id='".$nm_f."' class='span3 timepic'");
+																				echo form_hidden($nm_f."_temp", isset($val[$nm_f]) ? $val[$nm_f] : "");
+																			?>
+																			<span class="add-on"><i class="icon-time"></i></span>
+																		</div>
+																	</div>					
+																	
+																	<div class="col-md-3">Keterangan</div>
+																	<div class="col-md-9">
+																		<?php
+																			$nm_f = "keterangan";
+																			echo form_textarea($nm_f, isset($val[$nm_f]) ? $val[$nm_f] : "", "style='width:300px;height:100px;' id='".$nm_f."'");
+																			echo form_hidden($nm_f."_temp", isset($val[$nm_f]) ? $val[$nm_f] : "");
+																		?>
+																	</div>
+														</div>
+														
+														<div class="clearfix_button">
+															<!--<input type="submit" name="back" value="<?php echo $val_button;?>" class="btn">&nbsp;&nbsp;&nbsp;-->
+															<button type="submit" class="btn btn-primary" name="btn_add" id="btnRetPass" style="margin-top: 3px;"><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
+															<button type="button" class="btn btn-primary" name="btn_back" style="margin-top: 3px;" onClick="javascript:history.go(-1);">Back</button>
+												    	<!--<input type="button" onClick="javascript:history.go(-1);" name="back" value="Back" class="btn">-->
+												    </div>
+													</fieldset>
+												</form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END PAGE -->
+</div>
+<script src="<?php echo base_url();?>assets/js/jquery-1.8.3.min.js" type="text/javascript"></script>
+<script>
+$(function() {
+	$('.input-append.date').datepicker({
+      autoclose: true,
+      todayHighlight: true
+	});
+	
+	$('.timepic').timepicker({
+		minuteStep: 1,
+		secondStep: 1,
+		showMeridian: false,
+		showSeconds: true,
+	});
+});
+</script>

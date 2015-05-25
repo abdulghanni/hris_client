@@ -1,0 +1,1 @@
+[{"HRSPOSITIONSTATUSID":"Filled","DESCRIPTION":"Filled\/Terisi"},{"HRSPOSITIONSTATUSID":"Freezed","DESCRIPTION":"Dibekukan\/Tidak digunakan"},{"HRSPOSITIONSTATUSID":"Vacant","DESCRIPTION":"Vacant\/Kosong"}]
