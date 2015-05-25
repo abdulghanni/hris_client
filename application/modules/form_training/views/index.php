@@ -32,6 +32,7 @@
                                   <th width="40%">Tujuan</th>
                                   <th width="10%" style="text-align:center;">APPR SPV</th>
                                   <th width="10%" style="text-align:center;">APPR HRD</th>
+                                  <th width="10%" class="text-center">Cetak</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -107,8 +108,15 @@
                                     <?php echo $txt_app_lv2?>
                                     </td>
 
+
+                                    <td class="text-center">
+                                      <?php if($user->is_app_lv1 == 1 && $user->is_app_lv2 == 1){?>
+                                              <a href="<?php echo site_url('form_training/form_training_pdf/'.$user->id)?>"><i class="icon-print"></i></a>
+                                            <?php }else{ ?>
+                                              <i class="icon-print"></i>
+                                            <?php } ?>
+                                      </td>
                                   </tr>
-                                  
                               </tbody>
                               <?php }}?>
                           </table>

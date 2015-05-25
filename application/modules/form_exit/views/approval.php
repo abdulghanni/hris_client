@@ -356,6 +356,17 @@
                         
                       
                   </div>
+
+                  <?php if(is_admin()){?>
+                  <div class="row form-row">
+                    <div class="col-md-12">
+                      <label class="form-label text-left">Catatan Khusus</label>
+                    </div>
+                    <div class="col-md-12">
+                      <textarea name="note_app" id="text-editor" placeholder="Enter text ..." class="form-control" rows="10"><?php echo $row->note_app?></textarea>
+                    </div>
+                  </div>
+                  <?php }?>
                   <div class="form-actions">
                     <div class="col-md-12 text-center">
                       <div class="row wf-cuti">

@@ -17,7 +17,7 @@
         <div class="col-md-12">
           <div class="grid simple">
             <div class="grid-title no-border">
-              <h4>Form Karyawan <span class="semi-bold">Keluar</span></h4>
+              <h4>Form Karyawan <span class="semi-bold"><a href="<?php echo site_url('form_resignment')?>">Keluar</a></span></h4>
             </div>
             <div class="grid-body no-border">
             <form id="formAppHrd" class="form-no-horizontal-spacing">

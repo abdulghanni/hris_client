@@ -211,7 +211,7 @@
                       <p class="wf-approve-sp">
                         <?php if ($user->is_app_lv1 == 1) { ?>
                         <span class="semi-bold"><?php echo $name_app_lv1?></span><br/>
-                        <span class="small"><?php echo $user->date_app_lv1?></span>
+                        <span class="small"><?php echo dateIndo($user->date_app_lv1)?></span>
                         <?php }else{?>
                         <span class="semi-bold"></span><br/>
                         <span class="small"></span>
@@ -222,12 +222,12 @@
                           Mengetahui HRD,<br/><br/>
                           <?php if($user->is_app_lv2 == 1 && is_admin() == true){?>
                           <span class="semi-bold"><?php echo $name_app_lv2?></span><br/>
-                          <span class="small"><?php echo $user->date_app_lv2?></span>
+                          <span class="small"><?php echo dateIndo($user->date_app_lv2)?></span>
                           <br />
                           <button type='button' class='btn btn-info btn-small' title='Edit Approval' data-toggle="modal" data-target="#edittrainingModal"><i class='icon-paste'></i></button>
                           <?php }elseif($user->is_app_lv2 == 1 && is_admin() == false){?>
                           <span class="semi-bold"><?php echo $name_app_lv2?></span><br/>
-                          <span class="small"><?php echo $user->date_app_lv2?></span>
+                          <span class="small"><?php echo dateIndo($user->date_app_lv2)?></span>
                           <?php }else{
                             if(is_admin()){?>
                           <button class="btn btn-success btn-cons" id="btn_app_lv2" type=""><i class="icon-ok"></i>Approve</button>

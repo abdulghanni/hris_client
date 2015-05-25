@@ -227,7 +227,7 @@ class Form_exit extends MX_Controller {
 
   
     function detail($id)
-    {
+    {  
         if(!$this->ion_auth->logged_in())
         {
             redirect('auth/login', 'refresh');
@@ -324,6 +324,7 @@ class Form_exit extends MX_Controller {
             'is_app' => 1, 
             'user_app' => $user_id, 
             'date_app' => $date_now,
+            'note_app' => $this->input->post('note_app')
             );
 
            if ($this->form_exit_model->update($id,$data)) {
@@ -473,6 +474,40 @@ class Form_exit extends MX_Controller {
             }
 
         echo $bu_nm;
+    }
+
+    function form_exit_pdf($id)
+    {
+        $sess_id = $this->session->userdata('user_id');
+        $user_id = $this->db->select('user_id')->from('users_exit')->where('id', $id)->get()->row('user_id');
+
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+        else
+        {
+             $this->get_user_info($user_id);
+            
+            //$this->data['comp_session'] = $this->form_exit_model->render_session()->result();
+            
+            if(is_admin()){
+                $form_exit = $this->data['form_exit'] = $this->form_exit_model->form_exit_admin($id);
+            }else{
+            $form_exit = $this->data['form_exit'] = $this->form_exit_model->form_exit($id);
+            }
+
+
+        $this->data['id'] = $id;
+        $title = $this->data['title'] = 'Form Karyawan Keluar-'.get_name($user_id);
+        $this->load->library('mpdf60/mpdf');
+        $html = $this->load->view('exit_pdf', $this->data, true); 
+        $mpdf = new mPDF();
+        $mpdf = new mPDF('A4');
+        $mpdf->WriteHTML($html);
+        $mpdf->Output($id.'-'.$title.'.pdf', 'I');
+        }
     }
 
     function _valid_csrf_nonce()

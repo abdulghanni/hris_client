@@ -343,6 +343,14 @@
                         
                       
                   </div>
+                  <div class="row form-row">
+                    <div class="col-md-12">
+                      <label class="form-label text-left">Catatan Khusus</label>
+                    </div>
+                    <div class="col-md-12">
+                      <textarea name="note_app" id="text-editor" placeholder="Enter text ..." class="form-control" rows="10" disabled="disabled"><?php echo $row->note_app?></textarea>
+                    </div>
+                  </div>
                   <div class="form-actions">
                     <div class="col-md-12 text-center">
                       <div class="row wf-cuti">
@@ -363,7 +371,7 @@
                           <p class="wf-approve-sp">
                             <?php if($row->is_app==1){?>
                             <span class="semi-bold"><?php echo get_name($row->user_app)?></span><br/>
-                            <span class="small"><?php echo dateIndo($row->date_app)?>><br/>  
+                            <span class="small"><?php echo dateIndo($row->date_app)?><br/>  
                             <span class="semi-bold"></span><br/>
                             <?php }else{?>
                             <span class="semi-bold"></span><br/>

@@ -78,28 +78,6 @@
                       <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Tujuan pelatihan" value="<?php echo $user->tujuan_training?>" disabled="disabled">
                     </div>
                   </div>
-
-                  <?php if(!empty($user->approval_status_id_lv1)){?>
-                  <div class="row form-row">
-                    <div class="col-md-3">
-                      <label class="form-label text-right">Approval Status</label>
-                    </div>
-                    <div class="col-md-9">
-                      <input name="approval_status" id="alamat_cuti" type="text"  class="form-control" placeholder="Nama" value="<?php echo $user->approval_status_lv1; ?>" disabled="disabled">
-                    </div>
-                  </div>
-                  <?php } ?>
-
-                  <?php if(!empty($user->note_app_lv1)){?>
-                  <div class="row form-row">
-                    <div class="col-md-3">
-                      <label class="form-label text-right">Note (Supervisor) : </label>
-                    </div>
-                    <div class="col-md-9">
-                      <textarea name="notes_spv_update" class="custom-txtarea-form" placeholder="Note supervisor isi disini"><?=$notes_spv?></textarea>
-                    </div>
-                  </div>
-                  <?php } ?>
                 </div>
               </div>
                 <div class="form-actions">

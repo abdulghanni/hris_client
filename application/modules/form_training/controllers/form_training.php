@@ -22,7 +22,7 @@ class form_training extends MX_Controller {
     }
 
     function index()
-    {
+    { 
         if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page
@@ -111,7 +111,7 @@ class form_training extends MX_Controller {
                     'tujuan_training' => $this->input->post('tujuan_training'),
                     'tanggal'            => date('Y-m-d',strtotime('now')),
                     'created_on'            => date('Y-m-d',strtotime('now')),
-                    'created_by'            => $this->session->userdata('user_id')
+                    'created_by'            => $user_id
                     );
 
                 $num_rows = $this->form_training_model->form_training_admin()->num_rows();
@@ -365,7 +365,7 @@ class form_training extends MX_Controller {
     function get_user_info($user_id)
     {
         $user = $this->person_model->getUsers($user_id)->row();
-            $url = 'http://admin:12345678@localhost/hris_api/users/employement/EMPLID/'.$user->nik.'/format/json';
+            $url = get_api_key().'users/employement/EMPLID/'.$user->nik.'/format/json';
             $headers = get_headers($url);
             $response = substr($headers[0], 9, 3);
             if ($response != "404") {
@@ -429,6 +429,40 @@ class form_training extends MX_Controller {
             }
 
         echo $pos_nm;
+    }
+
+     function form_training_pdf($id)
+    {
+        $sess_id = $this->session->userdata('user_id');
+        $user_id = $this->db->select('user_id')->from('users_training')->where('id', $id)->get()->row('user_id');
+
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+        else
+        {
+             $this->get_user_info($user_id);
+            
+            //$this->data['comp_session'] = $this->form_training_model->render_session()->result();
+            
+            if(is_admin()){
+                $form_training = $this->data['form_training'] = $this->form_training_model->form_training_admin($id);
+            }else{
+            $form_training = $this->data['form_training'] = $this->form_training_model->form_training($id);
+            }
+
+
+        $this->data['id'] = $id;
+        $title = $this->data['title'] = 'Form training-'.get_name($user_id);
+        $this->load->library('mpdf60/mpdf');
+        $html = $this->load->view('training_pdf', $this->data, true); 
+        $mpdf = new mPDF();
+        $mpdf = new mPDF('A4');
+        $mpdf->WriteHTML($html);
+        $mpdf->Output($id.'-'.$title.'.pdf', 'I');
+        }
     }
 
     function _get_csrf_nonce()
@@ -506,6 +540,7 @@ class form_training extends MX_Controller {
                     $this->template->add_js('select2.min.js');
 
                     $this->template->add_js('core.js');
+                    
                     $this->template->add_js('purl.js');
                     $this->template->add_js('jquery.maskMoney.js');
 

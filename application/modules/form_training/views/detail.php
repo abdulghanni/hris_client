@@ -87,7 +87,7 @@
                         <label class="form-label text-right">Penyelenggara</label>
                       </div>
                       <div class="col-md-9">
-                        <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="-" value="<?php echo $user->penyelenggara?>" disabled="disabled">
+                        <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Penyelenggara" value="<?php echo $user->penyelenggara?>" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
@@ -95,7 +95,7 @@
                         <label class="form-label text-right">Pembiayaan</label>
                       </div>
                       <div class="col-md-9">
-                        <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="-" value="<?php echo $user->pembiayaan?>" disabled="disabled">
+                        <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Pembiayaan" value="<?php echo $user->pembiayaan?>" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
@@ -103,7 +103,7 @@
                         <label class="form-label text-right">Besar Biaya (Rp.)</label>
                       </div>
                       <div class="col-md-9">
-                        <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="-" value="<?php echo $user->besar_biaya?>" disabled="disabled">
+                        <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Besar biaya (Rp.)" value="<?php echo $user->besar_biaya?>" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
@@ -111,7 +111,7 @@
                         <label class="form-label text-right">Tempat Pelaksanaan</label>
                       </div>
                       <div class="col-md-9">
-                        <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="-" value="<?php echo $user->tempat?>" disabled="disabled">
+                        <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Tempat Pelaksanaan" value="<?php echo $user->tempat?>" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
@@ -119,7 +119,7 @@
                         <label class="form-label text-right">Waktu Pelaksanaan</label>
                       </div>
                       <div class="col-md-9">
-                        <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="-" value="<?php echo dateIndo($user->tanggal)?>" disabled="disabled">
+                        <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Waktu Pelaksanaan" value="<?php echo $user->tanggal?>" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
@@ -127,7 +127,7 @@
                         <label class="form-label text-right">Jam</label>
                       </div>
                       <div class="col-md-9">
-                        <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="-" value="<?php echo $user->jam?>" disabled="disabled">
+                        <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Waktu Pelaksanaan" value="<?php echo $user->jam?>" disabled="disabled">
                       </div>
                     </div>
                   </div>

@@ -1,4 +1,4 @@
-<?php defined('BASEPATH') OR resignment('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Form_resignment extends MX_Controller {
 
@@ -285,6 +285,40 @@ class Form_resignment extends MX_Controller {
             }
 
         echo $bu_nm;
+    }
+
+    function form_resignment_pdf($id)
+    {
+        $sess_id = $this->session->userdata('user_id');
+        $user_id = $this->db->select('user_id')->from('users_resignment')->where('id', $id)->get()->row('user_id');
+
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+        else
+        {
+             $this->get_user_info($user_id);
+            
+            //$this->data['comp_session'] = $this->form_resignment_model->render_session()->result();
+            
+            if(is_admin()){
+                $form_resignment = $this->data['form_resignment'] = $this->form_resignment_model->form_resignment_admin($id);
+            }else{
+            $form_resignment = $this->data['form_resignment'] = $this->form_resignment_model->form_resignment($id);
+            }
+
+
+        $this->data['id'] = $id;
+        $title = $this->data['title'] = 'Form Karyawan Keluar-'.get_name($user_id);
+        $this->load->library('mpdf60/mpdf');
+        $html = $this->load->view('resignment_pdf', $this->data, true); 
+        $mpdf = new mPDF();
+        $mpdf = new mPDF('A4');
+        $mpdf->WriteHTML($html);
+        $mpdf->Output($id.'-'.$title.'.pdf', 'I');
+        }
     }
 
     function _get_csrf_nonce()

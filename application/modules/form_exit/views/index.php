@@ -34,6 +34,7 @@
                                   <th width="12%" class="text-center">Approval Perpustakaan</th>
                                   <th width="12%" class="text-center">Approval HRD</th>
                                   <th width="12%" class="text-center">Approval ASM/Mgr/Kacab/BDM/CoE</th>
+                                  <th width="10%" class="text-center">Cetak</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -113,6 +114,9 @@
                                           echo '-';
                                         }
                                       ?>
+                                    </td>
+                                    <td>
+                                      <a href="<?php echo site_url('form_exit/form_exit_pdf/'.$row->id)?>"><i class="icon-print"></i></a>
                                     </td>
                                   </tr>
                                   <?php endforeach;}?>

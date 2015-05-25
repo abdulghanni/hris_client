@@ -35,6 +35,7 @@ class form_training_model extends CI_Model
 
         $this->db->where('training.is_deleted', 0);
         $this->db->where("(training.user_id= $sess_id $sub_id)",null, false);
+        $this->db->order_by('training.id', 'desc');
         $q = $this->db->get();
 
         return $q;
@@ -57,6 +58,7 @@ class form_training_model extends CI_Model
             $this->db->where('training.id', $id);
         }
 
+        $this->db->order_by('training.id', 'desc');
         $this->db->where('training.is_deleted', 0);
         $q = $this->db->get();
 

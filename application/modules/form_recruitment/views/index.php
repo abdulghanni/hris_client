@@ -31,6 +31,7 @@
                                   <th width="10%">Unit Bisnis</th>
                                   <th width="40%">Job Desc</th>
                                   <th width="10%" class="text-center">Approval HRD</th>
+                                  <th width="10%" class="text-center">Cetak</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -57,6 +58,9 @@
                                       }else{
                                        echo '-';
                                       }?>
+                                    </td>
+                                    <td class="text-center">
+                                      <a href="<?php echo site_url('form_recruitment/recruitment_pdf/'.$row->id)?>"><i class="icon-print"></i></a>
                                     </td>
                                   </tr>
                                   <?php endforeach;}?>

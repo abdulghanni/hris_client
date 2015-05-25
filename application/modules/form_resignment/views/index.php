@@ -17,7 +17,7 @@
           <div class="col-md-12">
               <div class="grid simple ">
                 <div class="grid-title no-border">
-                  <h4>Daftar Rekomendasi <span class="semi-bold">Karyawan Keluar</span></h4>
+                  <h4>Daftar Pengajuan <span class="semi-bold">Karyawan Keluar</span></h4>
                   <div class="tools"> 
                     <a href="<?php echo site_url('form_resignment/input')?>" class="config"></a>
                   </div>
@@ -28,8 +28,10 @@
                               <thead>
                                 <tr>
                                   <th width="10%">NIK</th>
-                                  <th width="40%">Nama</th>
+                                  <th width="30%">Nama</th>
+                                  <th width="10%">Tanggal Keluar</th>
                                   <th width="10%" style="text-align:center;">Approval HRD</th>
+                                  <th width="10%" class="text-center">Cetak</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -41,6 +43,9 @@
                                     </td>
                                     <td>
                                       <?php echo get_name($row->user_id)?>
+                                    </td>
+                                    <td>
+                                      <?php echo dateIndo($row->date_resign)?>
                                     </td>
                                     <td style="text-align:center;">
                                     <?php if($row->is_app==1){?>
@@ -54,6 +59,9 @@
                                         ?>
                                       
                                       <?php } ?>
+                                    </td>
+                                    <td class="text-center">
+                                      <a href="<?php echo site_url('form_resignment/form_resignment_pdf/'.$row->id)?>"><i class="icon-print"></i></a>
                                     </td>
                                   </tr>
                               <?php endforeach;} ?>

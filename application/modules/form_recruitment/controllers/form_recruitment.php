@@ -1,4 +1,4 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR recruitment('No direct script access allowed');
 
 class Form_recruitment extends MX_Controller {
 
@@ -381,6 +381,40 @@ class Form_recruitment extends MX_Controller {
             } else {
                 return '-';
             }
+    }
+
+    function recruitment_pdf($id)
+    {
+        $sess_id = $this->session->userdata('user_id');
+        $user_id = $this->db->select('user_id')->from('users_recruitment')->where('id', $id)->get()->row('user_id');
+
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+        else
+        {
+             //$this->get_user_info($user_id);
+            
+            //$this->data['comp_session'] = $this->recruitment_model->render_session()->result();
+            
+            if(is_admin()){
+                $form_recruitment = $this->data['form_recruitment'] = $this->recruitment_model->recruitment($id);
+            }else{
+            $form_recruitment = $this->data['form_recruitment'] = $this->recruitment_model->recruitment($id);
+            }
+
+
+        $this->data['id'] = $id;
+        $title = $this->data['title'] = 'Form Karyawan Keluar-'.get_name($user_id);
+        $this->load->library('mpdf60/mpdf');
+        $html = $this->load->view('recruitment_pdf', $this->data, true); 
+        $mpdf = new mPDF();
+        $mpdf = new mPDF('A4');
+        $mpdf->WriteHTML($html);
+        $mpdf->Output($id.'-'.$title.'.pdf', 'I');
+        }
     }
 
     function _get_csrf_nonce()
