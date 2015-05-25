@@ -15,7 +15,7 @@
         <div class="col-md-12">
           <div class="grid simple">
             <div class="grid-title no-border">
-              <h4>Form Keterangan Tidak <span class="semi-bold">Absen</span></h4>
+              <h4>Form Keterangan Tidak <a href="<?php echo site_url('form_absen')?>"><span class="semi-bold">Absen</span></a></h4>
             </div>
             <div class="grid-body no-border">
             <?php 
@@ -93,7 +93,7 @@
                           Hormat Saya,<br/>
                           <p class="wf-approve-sp">
                             <span class="semi-bold"><?php echo $absen->name?></span><br/>
-                            <span class="small"><?php echo $absen->created_on?></span><br/>
+                            <span class="small"><?php echo dateIndo($absen->created_on)?></span><br/>
                           </p>
                         </div>
                         <div class="col-md-6">
@@ -101,7 +101,7 @@
                           <p class="wf-approve-sp">
                             <?php if($absen->is_app_lv2==1){?>
                             <span class="semi-bold"><?php echo $name_app_lv2?></span><br/>
-                            <span class="small"><?php echo $absen->date_app_lv2?></span>
+                            <span class="small"><?php echo dateIndo($absen->date_app_lv2)?></span>
                             <?php } ?>
                           </p>
                           <p class="">(Ka. Cabang / Ka. Bagian)</p>
@@ -115,7 +115,7 @@
                           <p class="wf-approve-sp">
                             <?php if($absen->is_app_lv1==1){?>
                             <span class="semi-bold"><?php echo $name_app_lv1?></span><br/>
-                            <span class="small"><?php echo $absen->date_app_lv1?></span>
+                            <span class="small"><?php echo dateIndo($absen->date_app_lv1)?></span>
                             <?php } ?>
                           </p>
                           <p class="">(Supervisor)</p>

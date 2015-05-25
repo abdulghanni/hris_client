@@ -17,7 +17,7 @@
         <div class="col-md-12">
           <div class="grid simple">
             <div class="grid-title no-border">
-              <h4>Form Perjalanan Dinas <span class="semi-bold">Dalam Kota</span></h4>
+              <h4>Form <a href="<?php echo site_url('form_spd_dalam')?>">Perjalanan Dinas <span class="semi-bold">Dalam Kota</span></a></h4>
             </div>
             <div class="grid-body no-border">
               <form class="form-no-horizontal-spacing" id="form_spd_dalam" action="<?php echo site_url().'form_spd_dalam/do_submit/'.$id = $this->uri->segment(3, 0);?>" method="post"> 
@@ -105,7 +105,7 @@
                       <div class="col-md-3">
                         <label class="form-label text-right">Tgl. Berangkat</label>
                       </div>
-                      <?php $task_date = date('d/m/Y',strtotime($td->date_spd)) ?>
+                      <?php $task_date = dateIndo($td->date_spd) ?>
                       <div class="col-md-8">
                         <!-- <div class="input-append date success no-padding"> -->
                           <input type="text" class="form-control" name="start_cuti" value="<?php echo $task_date; ?>" disabled="disabled">
@@ -142,7 +142,7 @@
                           <?php }else{ ?>
                           <p class="wf-submit">
                             <span class="semi-bold"><?php echo get_name($td->task_receiver) ?></span><br/>
-                            <span class="small"><?php echo date('d F Y',strtotime($td->date_submit)) ?></span><br/>
+                            <span class="small"><?php echo dateIndo($td->date_submit) ?></span><br/>
                           </p>
                           <?php } ?>
                         </div>
@@ -150,7 +150,7 @@
                           <p>Yang memberi tugas / ijin</p>
                           <p class="wf-approve-sp">
                             <span class="semi-bold"><?php echo get_name($td->task_creator) ?></span><br/>
-                            <span class="small"><?php echo date('d F Y',strtotime($td->created_on)) ?></span><br/>
+                            <span class="small"><?php echo dateIndo($td->created_on) ?></span><br/>
                           </p>
                           <?php  }
                     } ?>

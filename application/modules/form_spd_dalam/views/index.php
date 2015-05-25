@@ -54,7 +54,7 @@
                                       <div class="small-text-custom">
                                         <span>Pemberi tugas : </span><?php echo $spd->creator ?><br/>
                                         <span>Penerima tugas : </span><?php echo (!empty(get_name($spd->task_receiver)))?get_name($spd->task_receiver):'-' ?><br/>
-                                        <span>Tanggal : </span><?php echo date('d F Y',strtotime($spd->date_spd)) .', '. date('H:i',strtotime($spd->start_time)) .' - '. date('H:i',strtotime($spd->end_time)) ?> WIB<br/>
+                                        <span>Tanggal : </span><?php echo dateIndo($spd->date_spd) .', '. date('H:i',strtotime($spd->start_time)) .' - '. date('H:i',strtotime($spd->end_time)) ?> WIB<br/>
                                         <span>Tempat : </span><?php echo $spd->destination ?>
                                       </div>
                                     </a>

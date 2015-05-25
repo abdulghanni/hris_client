@@ -15,7 +15,7 @@
         <div class="col-md-12">
           <div class="grid simple">
             <div class="grid-title no-border">
-              <h4>Form Pengajuan <span class="semi-bold">Pelatihan</span></h4>
+              <h4>Form Pengajuan <a href="<?php echo site_url('form_training')?>"><span class="semi-bold">Pelatihan</span></a></h4>
             </div>
             <div class="grid-body no-border">
               <form class="form-no-horizontal-spacing" id="formaddtraining" action="<?php echo site_url('form_training/add')?>"> 

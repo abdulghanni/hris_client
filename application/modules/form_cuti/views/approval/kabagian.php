@@ -32,13 +32,13 @@
                       $notes_kabag = $user->note_app_lv2;
                       $approval_id = $user->approval_status_id_lv2;
                       // convert date time
-                      $submission_date = date('d F Y',strtotime($user->created_on));
-                      $date_start_cuti = date('d F Y',strtotime($user->date_mulai_cuti));
-                      $date_end_cuti = date('d F Y',strtotime($user->date_selesai_cuti));
+                      $submission_date = dateIndo($user->created_on);
+                      $date_start_cuti = dateIndo($user->date_mulai_cuti);
+                      $date_end_cuti = dateIndo($user->date_selesai_cuti);
 
-                      $date_app_lv1 = date('d F Y', strtotime($user->date_app_lv1));
-                      $date_app_lv2 = date('d F Y', strtotime($user->date_app_lv2));
-                      $date_app_lv3 = date('d F Y', strtotime($user->date_app_lv3));
+                      $date_app_lv1 = dateIndo($user->date_app_lv1);
+                      $date_app_lv2 = dateIndo($user->date_app_lv2);
+                      $date_app_lv3 = dateIndo($user->date_app_lv3);
 
                      ?>
                       <div class="row form-row">
@@ -55,7 +55,7 @@
                         <label class="form-label text-right"><?php echo lang('start_working') ?></label>
                       </div>
                       <div class="col-md-9">
-                        <input name="seniority_date" id="seniority_date" type="text"  class="form-control" placeholder="Lama Bekerja" value="<?php echo $seniority_date ?>" disabled="disabled">
+                        <input name="seniority_date" id="seniority_date" type="text"  class="form-control" placeholder="Lama Bekerja" value="<?php echo dateIndo($seniority_date) ?>" disabled="disabled">
                       </div>
                     </div>          
                     <div class="row form-row">

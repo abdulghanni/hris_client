@@ -24,7 +24,7 @@
                               <thead>
                                 <tr>
                                   <th width="20%"><?php echo 'Nama Pengaju' ?></th>
-                                  <th width="15%"><?php echo lang('date') ?></th>
+                                  <th width="15%"><?php echo lang('date_mulai_cuti') ?></th>
                                   <th width="20%"><?php echo lang('reason') ?></th>
                                   <th width="10%"><?php echo lang('count_cuti') ?></th>
                                   <th width="10%" style="text-align:center;">appr. spv</th>
@@ -122,7 +122,7 @@
                                       <a href="#" id="viewcuti-<?php echo $id_cuti; ?>"><?php echo $user->name; ?></a>
                                     </td>
                                     <td>
-                                      <?php echo date('d-m-Y',strtotime($user->date_mulai_cuti)); ?>
+                                      <?php echo dateIndo($user->date_mulai_cuti); ?>
                                     </td>
                                     <td>
                                       <?php echo $user->alasan_cuti; ?>
@@ -175,7 +175,7 @@
                                                 <label class="form-label text-right"><?php echo lang('start_cuti') ?></label>
                                               </div>
                                               <div class="col-md-10">
-                                                <input name="registration_date" id="registration_date" type="text"  class="form-control" placeholder="Registration Date" value="<?php echo date('d-m-Y',strtotime($user->date_mulai_cuti)); ?>" disabled="disabled">
+                                                <input name="registration_date" id="registration_date" type="text"  class="form-control" placeholder="Registration Date" value="<?php echo dateIndo($user->date_mulai_cuti); ?>" disabled="disabled">
                                               </div>
                                             </div>
                                             <div class="row form-row">
@@ -183,7 +183,7 @@
                                                 <label class="form-label text-right"><?php echo lang('end_cuti') ?></label>
                                               </div>
                                               <div class="col-md-10">
-                                                <input name="status" id="status" type="text"  class="form-control" placeholder="Status" value="<?php echo date('d-m-Y',strtotime($user->date_selesai_cuti)); ?>" disabled="disabled">
+                                                <input name="status" id="status" type="text"  class="form-control" placeholder="Status" value="<?php echo dateIndo($user->date_selesai_cuti); ?>" disabled="disabled">
                                               </div>
                                             </div>
                                             <div class="row form-row">

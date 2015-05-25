@@ -29,6 +29,7 @@
                                 <tr>
                                   <th width="10%">NIK</th>
                                   <th width="30%">Nama</th>
+                                  <th width="20%">Tanggal Keluar</th>
                                   <th width="12%" class="text-center">Approval Mgr GA Nasional</th>
                                   <th width="12%" class="text-center">Approval Koperasi</th>
                                   <th width="12%" class="text-center">Approval Perpustakaan</th>
@@ -47,6 +48,9 @@
                                     </td>
                                     <td>
                                       <?php echo get_name($row->user_id)?>
+                                    </td>
+                                    <td>
+                                      <?php echo dateIndo($row->date_exit)?>
                                     </td>
                                     <td class="text-center">
                                       <?php
@@ -115,7 +119,7 @@
                                         }
                                       ?>
                                     </td>
-                                    <td>
+                                    <td class="text-center">
                                       <a href="<?php echo site_url('form_exit/form_exit_pdf/'.$row->id)?>"><i class="icon-print"></i></a>
                                     </td>
                                   </tr>

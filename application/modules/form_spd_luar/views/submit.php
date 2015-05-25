@@ -15,7 +15,7 @@
         <div class="col-md-12">
           <div class="grid simple">
             <div class="grid-title no-border">
-              <h4>Form Perjalanan Dinas <span class="semi-bold">Luar Kota</span></h4>
+              <h4>Form Perjalanan Dinas <a href="<?php echo site_url('form_spd_luar')?>"><span class="semi-bold">Luar Kota</span></a></h4>
             </div>
             <div class="grid-body no-border">
               <form class="form-no-horizontal-spacing" id="form_spd_dalam" action="<?php echo site_url().'form_spd_luar/do_submit/'.$id = $this->uri->segment(3, 0);?>" method="post"> 
@@ -126,7 +126,7 @@
                             <label class="form-label text-right">Tgl. Berangkat</label>
                           </div>
                           <div class="col-md-8">
-                            <input name="title" id="title" type="text"  class="form-control" placeholder="Dalam Rangka" value="<?php echo $td->date_spd_start; ?>" disabled="disabled">
+                            <input name="title" id="title" type="text"  class="form-control" placeholder="Dalam Rangka" value="<?php echo dateIndo($td->date_spd_start); ?>" disabled="disabled">
                           </div>
                         </div>
                         <div class="row form-row">
@@ -134,7 +134,7 @@
                             <label class="form-label text-right">Tgl. Pulang</label>
                           </div>
                           <div class="col-md-8">
-                            <input name="title" id="title" type="text"  class="form-control" placeholder="Dalam Rangka" value="<?php echo $td->date_spd_end; ?>" disabled="disabled">
+                            <input name="title" id="title" type="text"  class="form-control" placeholder="Dalam Rangka" value="<?php echo dateIndo($td->date_spd_end); ?>" disabled="disabled">
                           </div>
                         </div>
                       </div>
@@ -155,7 +155,7 @@
                           <?php }else{ ?>
                           <p class="wf-submit">
                             <span class="semi-bold"><?php echo $task_receiver_nm ?></span><br/>
-                            <span class="small"><?php echo date('d F Y',strtotime($td->date_submit)) ?></span><br/>
+                            <span class="small"><?php echo dateIndo($td->date_submit) ?></span><br/>
                           </p>
                           <?php } ?>
                         </div>
@@ -163,7 +163,7 @@
                           <p>Yang memberi tugas / ijin</p>
                           <p class="wf-approve-sp">
                             <span class="semi-bold"><?php echo $task_creator_nm ?></span><br/>
-                            <span class="small"><?php echo date('d F Y',strtotime($td->created_on)) ?></span><br/>
+                            <span class="small"><?php echo dateIndo($td->created_on) ?></span><br/>
                           </p>
                           <?php  }
                     } ?>

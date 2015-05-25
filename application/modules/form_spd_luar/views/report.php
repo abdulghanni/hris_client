@@ -17,7 +17,7 @@
         <div class="col-md-12">
           <div class="grid simple">
             <div class="grid-title no-border">
-              <h4>Laporan Kegiatan Perjalanan Dinas <span class="semi-bold">luar Kota</span></h4>
+              <h4>Laporan Kegiatan Perjalanan Dinas <a href="<?php echo site_url('form_spd_luar')?>"><span class="semi-bold">Luar Kota</span></a></h4></h4>
             </div>
             <div class="grid-body no-border">
               <?php echo form_open_multipart('form_spd_luar/add_report/'.$this->uri->segment(3));?>
@@ -95,7 +95,7 @@
                             <label class="form-label text-left">Tgl. Berangkat</label>
                           </div>
                           <div class="col-md-8">
-                            <input name="title" id="title" type="text"  class="form-control" placeholder="Dalam Rangka" value="<?php echo $td->date_spd_start; ?>" disabled="disabled">
+                            <input name="title" id="title" type="text"  class="form-control" placeholder="Dalam Rangka" value="<?php echo dateIndo($td->date_spd_start); ?>" disabled="disabled">
                           </div>
                         </div>
                         <div class="row form-row">
@@ -103,7 +103,7 @@
                             <label class="form-label text-left">Tgl.Pulang</label>
                           </div>
                           <div class="col-md-8">
-                            <input name="title" id="title" type="text"  class="form-control" placeholder="Dalam Rangka" value="<?php echo $td->date_spd_end; ?>" disabled="disabled">
+                            <input name="title" id="title" type="text"  class="form-control" placeholder="Dalam Rangka" value="<?php echo dateIndo($td->date_spd_end); ?>" disabled="disabled">
                           </div>
                         </div>
                     <div class="row form-row">
@@ -168,13 +168,13 @@
                           <?php }elseif($this->session->userdata('user_id') == $td->task_receiver && $n_report== 1|| get_nik($this->session->userdata('user_id')) == $td->task_receiver && $n_report== 1){ ?>
                           <p class="wf-submit">
                             <span class="semi-bold"><?php echo $task_receiver_nm ?></span><br/>
-                            <span class="small"><?php echo date('d F Y',strtotime($created_on)) ?></span><br/>
+                            <span class="small"><?php echo dateIndo($created_on) ?></span><br/>
                           </p>
                           <button type='button' class='btn btn-info btn-small' title='Edit Report' data-toggle="modal" data-target="#editspdluarModal"><i class='icon-paste'></i></button>
                           <?php }else{?>
                           <p class="wf-submit">
                             <span class="semi-bold"><?php echo $task_receiver_nm ?></span><br/>
-                            <span class="small"><?php echo date('d F Y',strtotime($created_on)) ?></span><br/>
+                            <span class="small"><?php echo dateIndo($created_on) ?></span><br/>
                           </p>
                           <?php } ?>
                   </div>

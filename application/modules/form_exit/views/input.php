@@ -80,7 +80,7 @@
                         <input name="form3LastName" id="position" type="text"  class="form-control" placeholder="Jabatan" value="" disabled="disabled">
                       </div>
                       <div class="col-md-2">
-                        <label class="form-label text-right">Tanggal Akhir Kerja</label>
+                        <label class="form-label text-right">Tanggal Keluar</label>
                       </div>
                       <div class="col-md-3">
                         <div class="input-append success date">

@@ -17,7 +17,7 @@
         <div class="col-md-12">
           <div class="grid simple">
             <div class="grid-title no-border">
-              <h4>Form Pengajuan <span class="semi-bold">Pelatihan</span></h4>
+              <h4>Form Pengajuan <a href="<?php echo site_url('form_training')?>"><span class="semi-bold">Pelatihan</span></a></h4>
             </div>
             <div class="grid-body no-border">
               <form class="form-no-horizontal-spacing" id="formAppLv1">
@@ -87,19 +87,19 @@
                         Diusulkan oleh,<br/><br/>
                          <p class="wf-approve-sp">
                             <span class="semi-bold"><?php echo $user->name?></span><br/>
-                            <span class="small"><?php echo $user->created_on?></span><br/>
+                            <span class="small"><?php echo dateIndo($user->created_on)?></span><br/>
                           </p>
                       </div>
                       <div class="col-md-4">
                         Persetujuan atasan,<br/><br/>
                         <?php if ($user->is_app_lv1 == 1 && cek_subordinate(is_have_subordinate($session_id),'id', $user->user_id) == TRUE) { ?>
                             <span class="semi-bold"><?php echo $name_app_lv1?></span><br/>
-                            <span class="small"><?php echo $user->date_app_lv1?></span>
+                            <span class="small"><?php echo dateIndo($user->date_app_lv1)?></span>
                             <br />
                           <button type='button' class='btn btn-info btn-small' title='Edit Approval' data-toggle="modal" data-target="#notapprovetrainingModal"><i class='icon-paste'></i></button>
                             <?php }elseif($user->is_app_lv1 == 1 && cek_subordinate(is_have_subordinate($session_id),'id', $user->user_id) == FALSE){?>
                             <span class="semi-bold"><?php echo $name_app_lv1?></span><br/>
-                            <span class="small"><?php echo $user->date_app_lv1?></span>
+                            <span class="small"><?php echo dateIndo($user->date_app_lv1)?></span>
                             <?php }elseif(cek_subordinate(is_have_subordinate($session_nik),'id', $user->user_id))
                                   {
                                     if($user->is_app_lv1 == 0){?>
@@ -111,7 +111,7 @@
                           Mengetahui HRD,<br/><br/>
                           <?php if($user->is_app_lv2 == 1){?>
                           <span class="semi-bold"><?php echo $name_app_lv2?></span><br/>
-                          <span class="small"><?php echo $user->date_app_lv2?></span>
+                          <span class="small"><?php echo dateIndo($user->date_app_lv2)?></span>
                           <?php }else{?>
                            <span class="semi-bold"></span><br/>
                            <span class="small"></span>

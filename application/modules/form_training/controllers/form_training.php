@@ -54,6 +54,8 @@ class form_training extends MX_Controller {
                 $form_training = $this->data['form_training'] = $this->form_training_model->form_training($id);
             }
 			
+            $this->data['penyelenggara'] = GetAll('penyelenggara');
+            $this->data['pembiayaan'] = GetAll('pembiayaan');
             $user_id = $this->db->select('user_id')->where('id', $id)->get('users_training')->row('user_id');
 			if($form_training->num_rows>0){
                 $this->get_app_name($id);
@@ -455,7 +457,7 @@ class form_training extends MX_Controller {
 
 
         $this->data['id'] = $id;
-        $title = $this->data['title'] = 'Form training-'.get_name($user_id);
+        $title = $this->data['title'] = 'Form Training-'.get_name($user_id);
         $this->load->library('mpdf60/mpdf');
         $html = $this->load->view('training_pdf', $this->data, true); 
         $mpdf = new mPDF();

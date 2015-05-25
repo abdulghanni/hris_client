@@ -16,7 +16,7 @@
           <div class="col-md-12">
             <div class="grid simple">
               <div class="grid-title no-border">
-                <h4>Form <span class="semi-bold">Promosi</span></h4>
+                <h4>Form Pengajuan <span class="semi-bold"><a href="<?php echo site_url('form_promosi')?>">Promosi</a></span></h4>
               </div>
               <div class="grid-body no-border">
                 <?php
@@ -159,7 +159,7 @@
                           <p>Yang mengajukan</p>
                           <p class="wf-approve-sp">
                             <span class="semi-bold"><?php echo get_name($row->user_id)?></span><br/>
-                            <span class="small"><?php echo $row->created_on?></span><br/>
+                            <span class="small"><?php echo dateIndo($row->created_on)?></span><br/>
                           </p>
                         </div>
                         <div class="col-md-6">
@@ -167,10 +167,10 @@
                           <p class="wf-approve-sp">
                             <?php if($row->is_approved == 1 && is_admin() == false){?>
                             <span class="semi-bold"><?php echo get_name($row->user_approved)?></span><br/>
-                            <span class="small"><?php echo $row->date_approved?></span><br/>
+                            <span class="small"><?php echo dateIndo($row->date_approved)?></span><br/>
                             <?php }elseif($row->is_approved == 1 && is_admin() == true){?>
                             <span class="semi-bold"><?php echo get_name($row->user_approved)?></span><br/>
-                            <span class="small"><?php echo $row->date_approved?></span><br/>
+                            <span class="small"><?php echo dateIndo($row->date_approved)?></span><br/>
                             <button type='button' class='btn btn-info btn-small' title='Edit Approval' data-toggle="modal" data-target="#notapprovepromosiModal"><i class='icon-paste'></i></button>
                             <?php }else{?>
                              <button class="btn btn-success btn-cons" id="btn_app" type="submit"><i class="icon-ok"></i>Approve</button>

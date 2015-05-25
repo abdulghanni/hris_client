@@ -63,7 +63,7 @@
                         <input name="emp" id="emp" type="text"  class="form-control" placeholder="Nama Karyawan" value="<?php echo $user_info['POSITION']?>" disabled="disabled">
                       </div>
                       <div class="col-md-2">
-                        <label class="form-label text-right">Tanggal Akhir Kerja</label>
+                        <label class="form-label text-right">Tanggal Keluar</label>
                       </div>
                       <div class="col-md-3">
                           <input type="text" class="form-control" id="sandbox-advance" name="date_exit" value="<?php echo dateIndo($row->date_exit)?>" disabled="disabled">    

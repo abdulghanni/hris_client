@@ -30,13 +30,13 @@
                       $notes_hrd = $user->note_app_lv3;
                       $approval_id = $user->approval_status_id_lv3;
                       // convert date time
-                      $submission_date = date('d F Y',strtotime($user->created_on));
-                      $date_start_cuti = date('d F Y',strtotime($user->date_mulai_cuti));
-                      $date_end_cuti = date('d F Y',strtotime($user->date_selesai_cuti));
+                      $submission_date = dateIndo($user->created_on);
+                      $date_start_cuti = dateIndo($user->date_mulai_cuti);
+                      $date_end_cuti = dateIndo($user->date_selesai_cuti);
 
-                      $date_app_lv1 = date('d F Y', strtotime($user->date_app_lv1));
-                      $date_app_lv2 = date('d F Y', strtotime($user->date_app_lv2));
-                      $date_app_lv3 = date('d F Y', strtotime($user->date_app_lv3));
+                      $date_app_lv1 = dateIndo($user->date_app_lv1);
+                      $date_app_lv2 = dateIndo($user->date_app_lv2);
+                      $date_app_lv3 = dateIndo($user->date_app_lv3);
 
                      ?>
                        <div class="row form-row">
@@ -262,12 +262,12 @@
                           Mengetahui HRD,<br/><br/>
                           <?php if($user->is_app_lv3 == 1 && is_admin() == true){?>
                           <span class="semi-bold"><?php echo $nm_app_lv3?></span><br/>
-                          <span class="small"><?php echo $user->date_app_lv3?></span>
+                          <span class="small"><?php echo $date_app_lv3?></span>
                           <br />
                           <button type='button' class='btn btn-info btn-small' title='Edit Approval' data-toggle="modal" data-target="#notapprovecutiModal"><i class='icon-paste'></i></button>
                           <?php }elseif($user->is_app_lv3 == 1 && is_admin() == false){?>
                           <span class="semi-bold"><?php echo $name_app_lv3?></span><br/>
-                          <span class="small"><?php echo $user->date_app_lv3?></span>
+                          <span class="small"><?php echo $date_app_lv3?></span>
                           <?php }else{
                             if(is_admin()){?>
                           <button class="btn btn-success btn-cons" id="btn_app_lv3" type=""><i class="icon-ok"></i>Approve</button>

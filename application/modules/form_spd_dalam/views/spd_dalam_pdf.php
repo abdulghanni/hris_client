@@ -99,7 +99,7 @@
   <tr>
     <td height="40"><span class="style3">Tanggal</span></td>
     <td height="40"><div align="center">:</div></td>
-    <td height="40"><?php $task_date = date('d/m/Y',strtotime($td->date_spd)) ?><?php echo $task_date; ?></td>
+    <td height="40"><?php $task_date = dateIndo($td->date_spd) ?><?php echo $task_date; ?></td>
   </tr>
   <tr>
     <td height="40"><span class="style3">Waktu</span></td>

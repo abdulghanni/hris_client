@@ -405,9 +405,17 @@ class Form_recruitment extends MX_Controller {
             $form_recruitment = $this->data['form_recruitment'] = $this->recruitment_model->recruitment($id);
             }
 
+        $this->data['status'] = getAll('recruitment_status', array('is_deleted' => 'where/0'));
+        $this->data['urgensi'] = getAll('recruitment_urgensi', array('is_deleted' => 'where/0'));
+        $jk = explode(',', getAll('users_recruitment_kualifikasi')->row('jenis_kelamin_id'));
+        $pendidikan = explode(',', getAll('users_recruitment_kualifikasi')->row('pendidikan_id'));
+        $this->data['jenis_kelamin'] = $this->recruitment_model->get_jk($jk);
+        $this->data['pendidikan'] = $this->recruitment_model->get_pendidikan($pendidikan);
 
+        $this->data['position_pengaju'] = $this->get_user_position(getAll('users_recruitment', array('id' => 'where/'.$id))->row_array()['user_id']);
+        //print_mz(getAll('users_recruitment', array('id' => 'where/'.$id))->row_array()['user_id']);
         $this->data['id'] = $id;
-        $title = $this->data['title'] = 'Form Karyawan Keluar-'.get_name($user_id);
+        $title = $this->data['title'] = 'Form Permintaan SDM Baru-'.get_name($user_id);
         $this->load->library('mpdf60/mpdf');
         $html = $this->load->view('recruitment_pdf', $this->data, true); 
         $mpdf = new mPDF();

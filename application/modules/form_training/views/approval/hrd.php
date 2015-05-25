@@ -17,7 +17,7 @@
         <div class="col-md-12">
           <div class="grid simple">
             <div class="grid-title no-border">
-              <h4>View Permintaan <span class="semi-bold">Pelatihan</span></h4>
+              <h4>View Permintaan <a href="<?php echo site_url('form_training')?>"><span class="semi-bold">Pelatihan</span></a></h4>
             </div>
             
             <div class="grid-body no-border">
@@ -203,7 +203,7 @@
                       Diusulkan oleh,<br/><br/>
                        <p class="wf-approve-sp">
                           <span class="semi-bold"><?php echo $user->name?></span><br/>
-                          <span class="small"><?php echo $user->created_on?></span><br/>
+                          <span class="small"><?php echo dateIndo($user->created_on)?></span><br/>
                         </p>
                     </div>
                     <div class="col-md-4">

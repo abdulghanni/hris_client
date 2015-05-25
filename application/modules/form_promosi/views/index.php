@@ -17,7 +17,7 @@
           <div class="col-md-12">
               <div class="grid simple ">
                 <div class="grid-title no-border">
-                  <h4>Daftar Pengajuan <span class="semi-bold">Promosi</span></h4>
+                  <h4>Daftar Pengajuan <span class="semi-bold"><a href="<?php echo site_url('form_promosi')?>">Promosi</a></span></h4>
                   <div class="tools"> 
                     <a href="<?php echo site_url('form_promosi/input') ?>" class="config"></a>
                   </div>
@@ -41,9 +41,9 @@
                                   <tr>
                                     <td><a href="<?php echo site_url('form_promosi/detail/'.$row->id)?>"><?php echo $row->username?></a></td>
                                     <td><?php echo get_position_name($row->old_pos)?></td>
-                                    <td><?php echo date('d-m-Y',strtotime(get_seniority_date(get_nik($row->user_id))))?></td>
+                                    <td><?php echo dateIndo(get_seniority_date(get_nik($row->user_id)))?></td>
                                     <td><?php echo get_position_name($row->new_pos)?></td>
-                                    <td><?php echo date('d-m-Y',strtotime($row->date_promosi))?></td>
+                                    <td><?php echo dateIndo($row->date_promosi)?></td>
                                     <td class="text-center">
                                     <?php if($row->is_approved==1){?>
                                     <a href="<?php echo site_url('form_promosi/approval_hrd/'.$row->id)?>"><?php echo $row->approval_status?></a>

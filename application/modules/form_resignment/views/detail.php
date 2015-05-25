@@ -133,7 +133,7 @@
 
                     <div class="row form-row">
                       <div class="col-md-12">
-                        <label class="form-label text-left">Apakah anda mempertimbangkan di masa datang untuk kembali bekerja di perusahaan ini? ?</label>
+                        <label class="form-label text-left">Apakah anda mempertimbangkan di masa datang untuk kembali bekerja di perusahaan ini?</label>
                       </div>
                     </div>
                     <div class="row form-row">

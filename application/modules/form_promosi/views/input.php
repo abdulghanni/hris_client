@@ -16,7 +16,7 @@
           <div class="col-md-12">
             <div class="grid simple">
               <div class="grid-title no-border">
-                <h4>Form <span class="semi-bold">Promosi</span></h4>
+                <h4>Form Pengajuan <span class="semi-bold"><a href="<?php echo site_url('form_promosi')?>">Promosi</a></span></h4>
               </div>
               <div class="grid-body no-border">
                 <?php
@@ -49,7 +49,7 @@
                         </div>
                         <div class="col-md-9">
                           <select name="old_bu" id="old_bu" class="select2" style="width:100%">
-                            <option value="<?php echo (!empty($user_info['BUID']))?$user_info['BUID']:'-'?>"><?php echo $user_info['BU']?></option>
+                            <option value="<?php echo (!empty($user_info['BUID']))?$user_info['BUID']:'-'?>"><?php echo (!empty($user_info))?$user_info['BU']:'-';?></option>
                           </select>
                         </div>
                       </div>
@@ -59,7 +59,7 @@
                         </div>
                         <div class="col-md-9">
                           <select name="old_org" id="old_org" class="select2" style="width:100%">
-                            <option value="<?php echo (!empty($user_info['ORGID']))?$user_info['ORGID']:'-'?>"><?php echo $user_info['ORGANIZATION']?></option>
+                            <option value="<?php echo (!empty($user_info['ORGID']))?$user_info['ORGID']:'-'?>"><?php echo (!empty($user_info))?$user_info['ORGANIZATION']:'-';?></option>
                           </select>
                         </div>
                       </div>
@@ -69,7 +69,7 @@
                         </div>
                         <div class="col-md-9">
                           <select name="old_pos" id="old_pos" class="select2" style="width:100%">
-                            <option value="<?php echo (!empty($user_info['POSID']))?$user_info['POSID']:'-'?>"><?php echo $user_info['POSITION']?></option>
+                            <option value="<?php echo (!empty($user_info['POSID']))?$user_info['POSID']:'-'?>"><?php echo (!empty($user_info))?$user_info['POSITION']:'-';?></option>
                           </select>
                         </div>
                       </div>
