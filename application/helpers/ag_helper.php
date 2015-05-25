@@ -97,19 +97,44 @@
 			}elseif(!empty($CI->db->select('username')->from('users')->where('id', $nik)->get()->row('username'))){
 			$q = $CI->db->select('username')->from('users')->where('id', $nik)->get()->row('username');
 			return $q;
+			}elseif(!empty(get_name_from_api($nik))){
+				return get_name_from_api($nik);
 			}else{
 				return '';
 			}
 		}
 	}
+        
+        if (!function_exists('get_name_from_api'))
+	{	
+            function get_name_from_api($nik)
+            {
+                $CI =& get_instance();
+                if(!empty($nik)){
+	                $url = get_api_key().'users/employement/EMPLID/'.$nik.'/format/json';
+	                $headers = get_headers($url);
+	                $response = substr($headers[0], 9, 3);
+	                if ($response != "404") {
+	                    $getuser_info = file_get_contents($url);
+	                    $user_info = json_decode($getuser_info, true);
+	                    return $CI->data['user_info'] = $user_info['NAME'];
+	                } else {
+	                    return $CI->data['user_info'] = '';
+	                }
+            	}else{
+            		return false;
+            	}
+            }
+	}
+
 	if (!function_exists('get_mchid'))
 	{	
 		function get_mchid($nik)
 		{
 			$CI =& get_instance();
-			if(!empty($CI->db->select('mchID')->from('users')->where('nik', $nik)->get()->row('mchID')))
+			if(!empty($CI->db->select('mchID')->from('mchid')->where('nik', $nik)->get()->row('mchID')))
 			{
-			$q = $CI->db->select('mchID')->from('users')->where('nik', $nik)->get()->row('mchID');
+			$q = $CI->db->select('mchID')->from('mchid')->where('nik', $nik)->get()->row('mchID');
 			return $q;
 			}else{
 			return '0';
@@ -398,13 +423,17 @@
 	{
 	function dateIndo($date,$format=null)
 	{
-		try {
-			
-			$newdate = date('d',strtotime($date)).' '.monthIndo(date('m',strtotime($date))).' '.date('Y',strtotime($date));
-			return $newdate;
+		if($date!=0000-00-00){
+			try {
+				
+				$newdate = date('d',strtotime($date)).' '.monthIndo(date('m',strtotime($date))).' '.date('Y',strtotime($date));
+				return $newdate;
 
-		} catch (Exception $e) {
-			return array();
+			} catch (Exception $e) {
+				return array();
+			}
+		}else{
+			return '';
 		}
 
 	}
