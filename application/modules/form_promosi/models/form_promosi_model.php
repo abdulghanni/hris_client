@@ -22,6 +22,7 @@ class form_promosi_model extends CI_Model
     	}
 
     	$this->db->where('user_id', $sess_id);
+        $this->db->order_by('promosi.id', 'desc');
 
     	$q = $this->db->get();
     	return $q; 
@@ -38,6 +39,9 @@ class form_promosi_model extends CI_Model
         if($id != null){
             $this->db->where('promosi.id', $id);
         }
+
+        
+        $this->db->order_by('promosi.id', 'desc');
 
         $q = $this->db->get();
         return $q; 

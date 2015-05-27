@@ -36,7 +36,7 @@ class form_absen_model extends CI_Model
         }
         $this->db->where("(absen.user_id= $sess_id $sub_id $subsub_id )",null, false);
 		$this->db->where('absen.is_deleted', 0);
-        $this->db->order_by('id', 'desc');
+        $this->db->order_by('absen.id', 'desc');
         $q = $this->db->get();
 
         return $q;
@@ -54,7 +54,7 @@ class form_absen_model extends CI_Model
             $this->db->where('absen.id', $id);
         }
 		$this->db->where('absen.is_deleted', 0);
-        $this->db->order_by('id', 'desc');
+        $this->db->order_by('absen.id', 'desc');
         $q = $this->db->get();
 
         return $q;

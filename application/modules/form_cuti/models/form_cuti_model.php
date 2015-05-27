@@ -333,6 +333,7 @@ class Form_cuti_model extends CI_Model
 
             //$this->db->where('users_cuti.is_deleted', 0);
             $this->db->where("(users_cuti.user_id= $sess_id $sub_id $subsub_id )",null, false);
+            $this->db->order_by('users_cuti.id', 'desc');
         }
 
         $this->trigger_events('extra_where');
@@ -426,7 +427,7 @@ class Form_cuti_model extends CI_Model
 			
 
             $this->db->where('users_cuti.is_deleted', 0);
-            //$this->db->where('users_cuti.user_id', $this->session->userdata('user_id'));
+            $this->db->order_by('users_cuti.id', 'desc');
         }
 
         $this->trigger_events('extra_where');

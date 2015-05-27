@@ -455,6 +455,26 @@
 		}
 	}
 
+	if(!function_exists('get_sisa_cuti'))
+	{
+		function get_sisa_cuti($user_id)
+		{
+			if($user_id !=null)
+	        {
+	            $url = get_api_key().'users/sisa_cuti/EMPLID/'.get_nik($user_id).'/format/json';
+	            $headers = get_headers($url);
+	            $response = substr($headers[0], 9, 3);
+	            if ($response != "404") {
+	                $getsisa_cuti = file_get_contents($url);
+	                $sisa_cuti = json_decode($getsisa_cuti, true);
+	                return $sisa_cuti;
+	            } else {
+	                return '-';
+	            }
+	        }
+		}
+	}
+
 
 
 	if ( ! function_exists('dateIndo'))

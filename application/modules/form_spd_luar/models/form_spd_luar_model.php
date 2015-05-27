@@ -330,6 +330,7 @@ class Form_spd_luar_model extends CI_Model
             $this->db->where('users_spd_luar.task_receiver', $sess_nik);
             $this->db->or_where('users_spd_luar.task_creator', $sess_nik);;
             $this->db->where('users_spd_luar.is_deleted', 0);
+            $this->db->order_by('users_spd_luar.id', 'desc');
         }
 
         $this->trigger_events('extra_where');
@@ -431,6 +432,8 @@ class Form_spd_luar_model extends CI_Model
                 $this->db->where('users_spd_luar.id', $id);
             }
             $this->db->where('users_spd_luar.is_deleted', 0);
+            $this->db->order_by('users_spd_luar.id', 'desc');
+
         }
 
         $this->trigger_events('extra_where');

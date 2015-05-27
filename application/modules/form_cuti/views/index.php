@@ -26,7 +26,7 @@
                                   <th width="20%"><?php echo 'Nama Pengaju' ?></th>
                                   <th width="15%"><?php echo lang('date_mulai_cuti') ?></th>
                                   <th width="20%"><?php echo lang('reason') ?></th>
-                                  <th width="10%"><?php echo lang('count_cuti') ?></th>
+                                  <th width="10%"><?php echo lang('count_day') ?></th>
                                   <th width="10%" style="text-align:center;">appr. spv</th>
                                   <th width="10%" style="text-align:center;">appr. ka. bag</th>
                                   <th width="10%" style="text-align:center;">appr. HRD</th>
@@ -40,7 +40,7 @@
                                   $session_id = get_nik($this->session->userdata('user_id'));
                                   $id_user = $this->session->userdata('user_id');
                                   $txt_app_lv1 = $txt_app_lv2 = $txt_app_lv3 = "-";
-                                  
+
                                   // approval cuti
                                   //Approval Level 1
                                   
@@ -159,7 +159,7 @@
                                                 <label class="form-label text-right"><?php echo lang('count_cuti') ?></label>
                                               </div>
                                               <div class="col-md-10">
-                                                <input name="courseid" id="courseid" type="text"  class="form-control" placeholder="courseid" value="<?php echo $user->jumlah_hari; ?>" disabled="disabled">
+                                                <input name="courseid" id="courseid" type="text"  class="form-control" placeholder="courseid" value="<?php echo $user->jumlah_hari+get_sisa_cuti($user->user_id)[0]['ENTITLEMENT']; ?>" disabled="disabled">
                                               </div>
                                             </div>
                                             <div class="row form-row">

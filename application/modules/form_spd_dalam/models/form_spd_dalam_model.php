@@ -323,6 +323,8 @@ class Form_spd_dalam_model extends CI_Model
             
             $this->db->where('users_spd_dalam.is_deleted', 0);
             $this->db->where("(users_spd_dalam.task_receiver = '$sess_nik' OR users_spd_dalam.task_creator = '$sess_nik' )",null, false);
+
+            $this->db->order_by('users_spd_dalam.id', 'desc');
         }
 
         $this->trigger_events('extra_where');
@@ -417,6 +419,7 @@ class Form_spd_dalam_model extends CI_Model
                 $this->db->where('users_spd_dalam.id', $id);
             }
             $this->db->where('users_spd_dalam.is_deleted', 0);
+            $this->db->order_by('users_spd_dalam.id', 'desc');
         }
 
         $this->trigger_events('extra_where');
