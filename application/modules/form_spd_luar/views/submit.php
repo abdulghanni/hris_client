@@ -24,13 +24,13 @@
                     <h4>Yang Memberi Tugas</h4>   
                     <?php
                     if ($tc_num_rows > 0) {
-                    foreach ($task_creator as $tc) : ?>  
+                    foreach ($task_creator as $tc) :?>  
                     <div class="row form-row">
                       <div class="col-md-3">
                         <label class="form-label text-right">Nama</label>
                       </div>
                       <div class="col-md-9">
-                        <input name="name" id="name" type="text"  class="form-control" placeholder="Nama" value="<?php echo $tc->first_name.' '.$tc->last_name ?>" disabled="disabled">
+                        <input name="name" id="name" type="text"  class="form-control" placeholder="Nama" value="<?php echo $tc->user_name?>" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
@@ -139,6 +139,28 @@
                         </div>
                       </div>
                     </div>
+
+
+                  <hr/>
+                  <h5 class="text-center"><span class="semi-bold">Ketentuan Biaya Perjalanan Dinas</span></h5>
+                          <table class="table table-bordered">
+                            <thead>
+                              <tr>
+                                <th>Golongan</th>
+                                <th>Hotel</th>
+                                <th>Uang Makan(Per Hari)</th>
+                                <th>Uang Saku(Per Hari)</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td><?php echo $biaya_pjd['grade']?></td>
+                                <td>Rp. <?php echo $biaya_pjd['hotel']?></td>
+                                <td>Rp. <?php echo $biaya_pjd['uang_makan']?></td>
+                                <td>tes</td>
+                              </tr>
+                            </tbody>
+                          </table>
                     </div>
                   </div>
                 </div>

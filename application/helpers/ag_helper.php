@@ -417,6 +417,44 @@
 		}
 	}
 
+	if(!function_exists('get_grade'))
+	{
+		function get_grade($user_id)
+		{
+			$CI =&get_instance();
+            $url = get_api_key().'users/employement/EMPLID/'.$user_id.'/format/json';
+            $headers = get_headers($url);
+            $response = substr($headers[0], 9, 3);
+            if ($response != "404") 
+            {
+                $getuser_info = file_get_contents($url);
+                $user_info = json_decode($getuser_info, true);
+                return $user_info['GRADE'];
+            } else {
+                return '-';
+            }
+		}
+	}
+
+	if(!function_exists('get_pos_group'))
+	{
+		function get_pos_group($user_id)
+		{
+			$CI =&get_instance();
+            $url = get_api_key().'users/employement/EMPLID/'.$user_id.'/format/json';
+            $headers = get_headers($url);
+            $response = substr($headers[0], 9, 3);
+            if ($response != "404") 
+            {
+                $getuser_info = file_get_contents($url);
+                $user_info = json_decode($getuser_info, true);
+                return $user_info['POSITIONGROUP'];
+            } else {
+                return '-';
+            }
+		}
+	}
+
 
 
 	if ( ! function_exists('dateIndo'))

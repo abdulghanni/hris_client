@@ -160,7 +160,8 @@ class Form_spd_luar extends MX_Controller {
             // render city
             $this->data['city_list'] = $this->form_spd_luar_model->get_city()->result();
             $this->data['cl_num_rows'] = $this->form_spd_luar_model->get_city()->num_rows();
-            
+            $task_receiver_id = getAll('users_spd_dalam', array('id' => 'where/'.$id))->row('task_receiver');
+            $this->data['biaya_pjd'] = $this->get_biaya_pjd($task_receiver_id);
 
 
             $this->_render_page('form_spd_luar/submit', $this->data);
@@ -558,13 +559,79 @@ class Form_spd_luar extends MX_Controller {
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data);
+    }
+
+    function get_biaya_pjd($task_receiver_id)
+    {
+        $grade = get_grade($task_receiver_id);
+        $pos_group = get_pos_group($task_receiver_id);
+
+        if($grade == 'G08' && $pos_group == 'AMD')
+        {
+            $biaya_pjd = array(
+                    'grade' => "$grade($pos_group)",
+                    'hotel' => 450000,
+                    'uang_makan' => 200000
+                );
+
+            return $biaya_pjd;
+        }elseif($grade == 'G08' && $pos_group == 'MGR')
+        {
+            $biaya_pjd = array(
+                    'grade' => "$grade($pos_group)",
+                    'hotel' => 325000,
+                    'uang_makan' => 150000
+                );
+
+            return $biaya_pjd;
+        }elseif($grade == 'G08' && $pos_group == 'KACAB'){
+            $biaya_pjd = array(
+                    'grade' => "$grade($pos_group)",
+                    'hotel' => 400000,
+                    'uang_makan' => 150000
+                );
+
+            return $biaya_pjd;
+        }elseif($grade == 'G07'){
+            $biaya_pjd = array(
+                    'grade' => "$grade($pos_group)",
+                    'hotel' => 275000,
+                    'uang_makan' => 150000
+                );
+
+            return $biaya_pjd;
+        }elseif($grade == 'G06' || $grade == 'G05'){
+            $biaya_pjd = array(
+                    'grade' => "$grade($pos_group)",
+                    'hotel' => 250000,
+                    'uang_makan' => 150000
+                );
+
+            return $biaya_pjd;
+        }elseif($grade == 'G04' || $grade == 'G03'){
+            $biaya_pjd = array(
+                    'grade' => "$grade($pos_group)",
+                    'hotel' => 200000,
+                    'uang_makan' => 150000
+                );
+
+            return $biaya_pjd;
+        }elseif($grade == 'G02' || $grade == 'G01'){
+            $biaya_pjd = array(
+                    'grade' => "$grade($pos_group)",
+                    'hotel' => 200000,
+                    'uang_makan' => 150000
+                );
+
+            return $biaya_pjd;
+        }
     } 
 
     public function get_emp_org()
     {
         $id = $this->input->post('id');
 
-        $url = 'http://admin:12345678@localhost/hris_api/users/employement/EMPLID/'.$id.'/format/json';
+        $url = get_api_key().'users/employement/EMPLID/'.$id.'/format/json';
             $headers = get_headers($url);
             $response = substr($headers[0], 9, 3);
             if ($response != "404") {
@@ -582,7 +649,7 @@ class Form_spd_luar extends MX_Controller {
     {
         $id = $this->input->post('id');
 
-        $url = 'http://admin:12345678@localhost/hris_api/users/employement/EMPLID/'.$id.'/format/json';
+        $url = get_api_key().'users/employement/EMPLID/'.$id.'/format/json';
             $headers = get_headers($url);
             $response = substr($headers[0], 9, 3);
             if ($response != "404") {
@@ -598,7 +665,7 @@ class Form_spd_luar extends MX_Controller {
 
     function get_user_info($user_id)
     {
-            $url = 'http://admin:12345678@localhost/hris_api/users/employement/EMPLID/'.$user_id.'/format/json';
+            $url = get_api_key().'users/employement/EMPLID/'.$user_id.'/format/json';
             $headers = get_headers($url);
             $response = substr($headers[0], 9, 3);
             if ($response != "404") {
@@ -612,7 +679,7 @@ class Form_spd_luar extends MX_Controller {
 
     function get_receiver_info($receiver_nik)
     {
-            $url = 'http://admin:12345678@localhost/hris_api/users/employement/EMPLID/'.$receiver_nik.'/format/json';
+            $url = get_api_key().'users/employement/EMPLID/'.$receiver_nik.'/format/json';
             $headers = get_headers($url);
             $response = substr($headers[0], 9, 3);
             if ($response != "404") {

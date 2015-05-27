@@ -41,7 +41,7 @@
               <tbody>
               <?php if($_num_rows > 0) { ?>
               <?php foreach ($email as $row):?>
-              <tr id="<?php echo $row->id?>" <?php if($row->is_read == 1){?>style="background-color: rgb(236, 240, 242);border: medium none;"<?php } ?>>
+              <tr id="<?php echo $row->id?>" <?php if($row->is_read == 0){?>style="background-color: #ffffcc;border: medium none;"<?php } ?>>
                <td valign="middle" class="small-cell">
                 <div class="checkbox check-success ">
                 <input name="checkbox[]" class="checkbox1" type="checkbox" id="checkbox<?php echo $row->id ?>" value="<?php echo $row->id ?>">

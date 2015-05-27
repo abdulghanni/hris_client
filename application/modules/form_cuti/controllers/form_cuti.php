@@ -747,7 +747,7 @@ class Form_cuti extends MX_Controller {
 		$approval_status_id_lv1=$this->db->where('users_cuti.id',$id)->get('users_cuti')->row('approval_status_id_lv1');
 		$approval_status_id_lv2=$this->db->where('users_cuti.id',$id)->get('users_cuti')->row('approval_status_id_lv2');
 		$approval_status_id_lv3=$this->db->where('users_cuti.id',$id)->get('users_cuti')->row('approval_status_id_lv3');
-		$user_id = $this->db->where('users_cuti.id', $id)->get('users_cuti')->row('user_id');
+		$user_nik = get_nik($this->db->where('users_cuti.id', $id)->get('users_cuti')->row('user_id'));
 		if($approval_status_id_lv1 == 1 && $approval_status_id_lv2 == 1 && $approval_status_id_lv3 == 1)
 		{
 			// Start date
@@ -757,7 +757,7 @@ class Form_cuti extends MX_Controller {
 			 
 			 while (strtotime($date) <= strtotime($end_date)) {
 			 $data = array(
-							'nik'		=> get_mchid($user_id),
+							'nik'		=> get_mchid($user_nik),
 							'jhk'		=> 1,
 							'cuti'		=> 1,
 							'tanggal' 	=> date("d", strtotime($date)),

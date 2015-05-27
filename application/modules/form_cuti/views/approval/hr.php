@@ -266,7 +266,7 @@
                           <br />
                           <button type='button' class='btn btn-info btn-small' title='Edit Approval' data-toggle="modal" data-target="#notapprovecutiModal"><i class='icon-paste'></i></button>
                           <?php }elseif($user->is_app_lv3 == 1 && is_admin() == false){?>
-                          <span class="semi-bold"><?php echo $name_app_lv3?></span><br/>
+                          <span class="semi-bold"><?php echo $nm_app_lv3?></span><br/>
                           <span class="small"><?php echo $date_app_lv3?></span>
                           <?php }else{
                             if(is_admin()){?>

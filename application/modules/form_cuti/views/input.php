@@ -52,7 +52,7 @@
                         <label class="form-label text-right">NIK</label>
                       </div>
                       <div class="col-md-9">
-                        <input name="no" id="nik" type="text"  class="form-control" placeholder="NIK" value="<?php echo (!empty($user_info['EMPLID']))?$user_info['EMPLID']:$sess_id; ?>" disabled="disabled">
+                        <input name="no" id="nik" type="text"  class="form-label" placeholder="NIK" value="<?php echo (!empty($user_info['EMPLID']))?$user_info['EMPLID']:$sess_id; ?>" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
