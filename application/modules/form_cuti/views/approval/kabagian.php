@@ -248,7 +248,7 @@
                             if(cek_subordinate(is_have_subsubordinate($session_id),'id', $user->user_id)){
                                       if($user->is_app_lv2 == 0){?>
                             <button id="btn_app_lv2" class="btn btn-success btn-cons"><i class="icon-ok"></i>Approve</button>
-                            <button class="btn btn-danger btn-cons" data-toggle="modal" data-target="#notapprovecutiModal"><i class="icon-remove"></i>Not Approve</button>
+                            <div class="btn btn-danger btn-cons" data-toggle="modal" data-target="#notapprovecutiModal"><i class="icon-remove"></i>Not Approve</div>
                             <?php }} ?>
                             <p class="">(Ka. Cabang / Ka. Bagian)</p>
                           <?php } ?>
@@ -332,7 +332,7 @@
             </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="icon-remove"></i>&nbsp;<?php echo lang('close_button')?></button> 
+        <div type="button" class="btn btn-danger" data-dismiss="modal"><i class="icon-remove"></i>&nbsp;<?php echo lang('close_button')?></div> 
         <button type="submit"  class="btn btn-success btn-cons"><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
       </div>
         <?php echo form_close()?>

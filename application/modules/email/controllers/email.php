@@ -122,7 +122,7 @@ class Email extends MX_Controller {
         $this->data['_num_rows'] = $this->email_model->like($ftitle_post)->where('is_deleted',0)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->email_sent()->num_rows();
 
          //config pagination
-         $config['base_url'] = base_url().'email/index/fn:'.$exp_ftitle[1].'/'.$sort_by.'/'.$sort_order.'/';
+         $config['base_url'] = base_url().'email/sent/index/fn:'.$exp_ftitle[1].'/'.$sort_by.'/'.$sort_order.'/';
          $config['total_rows'] = $this->data['num_rows_all'];
          $config['per_page'] = $limit;
          $config['uri_segment'] = 6;
