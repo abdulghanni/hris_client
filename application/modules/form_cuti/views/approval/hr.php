@@ -182,7 +182,7 @@
                           <label class="form-label text-right">Note (spv): </label>
                         </div>
                         <div class="col-md-9">
-                          <textarea name="notes_spv" class="custom-txtarea-form" disabled="disabled"><?php echo $user->note_app_lv1 ?></textarea>
+                          <textarea name="notes_spv" class="custom-txtarea-form" placeholder="Note supervisor isi disini" disabled="disabled"><?php echo $user->note_app_lv1 ?></textarea>
                         </div>
                       </div>
 
@@ -224,7 +224,7 @@
                           <label class="form-label text-right">Note (HRD): </label>
                         </div>
                         <div class="col-md-9">
-                          <textarea name="notes_hrd" class="custom-txtarea-form"><?php echo $user->note_app_lv3 ?></textarea>
+                          <textarea name="notes_hrd" placeholder="Note hrd isi disini" class="custom-txtarea-form"><?php echo $user->note_app_lv3 ?></textarea>
                         </div>
                       </div>
                     </div>
@@ -325,7 +325,7 @@
                 <label class="form-label text-left">Note (HRD) : </label>
               </div>
               <div class="col-md-12">
-                <textarea name="notes_hrd_update" class="custom-txtarea-form" placeholder="Note supervisor isi disini"><?=$notes_hrd?></textarea>
+                <textarea name="notes_hrd_update" class="custom-txtarea-form" placeholder="Note hrd isi disini"><?=$notes_hrd?></textarea>
               </div>
             </div>
       </div>

@@ -185,7 +185,7 @@
                           <label class="form-label text-right">Note (spv): </label>
                         </div>
                         <div class="col-md-9">
-                          <textarea name="notes_spv" class="custom-txtarea-form" disabled="disabled"><?php echo $user->note_app_lv1 ?></textarea>
+                          <textarea name="notes_spv" placeholder="Note supervisor isi disini" class="custom-txtarea-form" disabled="disabled"><?php echo $user->note_app_lv1 ?></textarea>
                         </div>
                       </div>
 
@@ -195,7 +195,7 @@
                           <label class="form-label text-right">Approval Status Ka. Bag</label>
                         </div>
                         <div class="col-md-9">
-                          <input name="alamat_cuti" id="alamat_cuti" type="text"  class="form-control" placeholder="Nama" value="<?php echo $user->approval_status_lv2; ?>" disabled="disabled">
+                          <input name="alamat_cuti" id="alamat_cuti" type="text"  class="form-control" placeholder="Approval Status" value="<?php echo $user->approval_status_lv2; ?>" disabled="disabled">
                         </div>
                       </div>
                       <?php } ?>

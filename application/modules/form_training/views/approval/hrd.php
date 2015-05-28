@@ -189,7 +189,7 @@
                       <label class="form-label text-right">Note (HRD) : </label>
                     </div>
                     <div class="col-md-9">
-                      <textarea name="notes_hrd_update" class="custom-txtarea-form" placeholder="Note supervisor isi disini"><?=$notes_hrd?></textarea>
+                      <textarea name="notes_hrd_update" class="custom-txtarea-form" placeholder="Note HRD isi disini"><?=$notes_hrd?></textarea>
                     </div>
                   </div>
                   <?php } ?>
@@ -284,7 +284,7 @@
                 <label class="form-label text-left">Note (HRD) : </label>
               </div>
               <div class="col-md-12">
-                <textarea name="note_hrd" class="custom-txtarea-form" placeholder="Note supervisor isi disini"><?=$notes_hrd?></textarea>
+                <textarea name="note_hrd" class="custom-txtarea-form" placeholder="Note HRD isi disini"><?=$notes_hrd?></textarea>
               </div>
             </div>
       </div>
@@ -417,7 +417,7 @@
                       <label class="form-label text-left">Note (HRD) : </label>
                     </div>
                     <div class="col-md-12">
-                      <textarea name="note_hrd_update" class="custom-txtarea-form" placeholder="Note supervisor isi disini"><?=$notes_hrd?></textarea>
+                      <textarea name="note_hrd_update" class="custom-txtarea-form" placeholder="Note HRD isi disini"><?=$notes_hrd?></textarea>
                     </div>
                   </div>
 
