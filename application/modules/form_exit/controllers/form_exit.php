@@ -29,7 +29,7 @@ class Form_exit extends MX_Controller {
         }
         else
         {
-            $user_nik = get_nik($this->session->userdata('user_id'));
+            $user_nik = $this->data['sess_id'] = get_nik($this->session->userdata('user_id'));
             $mgr = $this->data['mgr_ga_nas'] = $this->get_emp_by_pos('PST242');
             $koperasi = $this->data['koperasi'] = $this->get_emp_by_pos('PST263');
             $perpus = $this->data['perpustakaan'] = $this->get_emp_by_pos('PST2');
