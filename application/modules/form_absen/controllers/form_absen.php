@@ -136,13 +136,9 @@ class form_absen extends MX_Controller {
                 }else{
                     $absen_id = 1;
                 } 
-
-
-
-                $this->send_approval_request($absen_id, $user_id);
-
                 if ($this->form_validation->run() == true && $this->form_absen_model->add($data))
                 {
+                    $this->send_approval_request($absen_id, $user_id);
                      echo json_encode(array('st' =>1));     
                 }
             }
@@ -272,7 +268,7 @@ class form_absen extends MX_Controller {
                 $user_info = json_decode($getuser_info, true);
                 return $this->data['user_info'] = $user_info;
             } else {
-                //$this->data['user_info'] = $this->form_absen_model->where('users.id',$user_id)->form_absen_input()->result();
+                return '';
             }
     }
 
@@ -304,7 +300,7 @@ class form_absen extends MX_Controller {
                     'receiver_id' => $this->db->where('users.id', $user_id)->get('users')->row('superior_id'),
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Pengajuan Permohonan absen',
-                    'email_body' => get_name($user_id).' mengajukan permohonan absen, untuk melihat detail silakan <a href='.$url.'spv/'.$id.'>Klik Disini</a>',
+                    'email_body' => get_name($user_id).' mengajukan permohonan absen, untuk melihat detail silakan <a href='.$url.'spv/'.$id.'>Klik Disini</a><br/>'.$this->detail_email($id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data);
@@ -342,6 +338,21 @@ class form_absen extends MX_Controller {
                 'is_read' => 0,
             );
         $this->db->insert('email', $data);
+    }
+
+    function detail_email($id)
+    {
+         $user_id = $this->db->select('user_id')->where('id', $id)->get('users_keterangan_absen')->row('user_id');  
+         $this->get_user_info($user_id);
+        //$this->data['comp_session'] = $this->form_absen_model->render_session()->result();
+        
+        if(is_admin()){
+            $form_absen = $this->data['form_absen'] = $this->form_absen_model->form_absen_admin($id);
+        }else{
+        $form_absen = $this->data['form_absen'] = $this->form_absen_model->form_absen($id);
+        }
+        
+        return $this->load->view('form_absen/absen_mail', $this->data, TRUE);
     }
 
     function form_absen_pdf($id)

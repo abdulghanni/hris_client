@@ -313,7 +313,7 @@ class form_training extends MX_Controller {
                     'receiver_id' => get_superior($user_id),
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Pengajuan Training',
-                    'email_body' => get_name($user_id).' mengajukan permohonan pelatihan, untuk melihat detail silakan <a href='.$url.'spv/'.$id.'>Klik Disini</a>',
+                    'email_body' => get_name($user_id).' mengajukan permohonan pelatihan, untuk melihat detail silakan <a href='.$url.'spv/'.$id.'>Klik Disini</a><br/>'.$this->detail_email($id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data);
@@ -326,7 +326,7 @@ class form_training extends MX_Controller {
                 'receiver_id' => 1,
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Pengajuan Training',
-                'email_body' => get_name($user_id).' mengajukan permohonan training, untuk melihat detail silakan <a href='.$url.'hrd/'.$id.'>Klik Disini</a>',
+                'email_body' => get_name($user_id).' mengajukan permohonan training, untuk melihat detail silakan <a href='.$url.'hrd/'.$id.'>Klik Disini</a><br/>'.$this->detail_email($id),
                 'is_read' => 0,
             );
         $this->db->insert('email', $data);
@@ -343,11 +343,30 @@ class form_training extends MX_Controller {
                 'receiver_id' => get_nik($receiver_id),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Status Pengajuan Permohonan Training dari '.$type,
-                'email_body' => "Status pengajuan permohonan training anda $approval_status oleh $approver untuk detail silakan <a href=$url>Klik disini</a>",
+                'email_body' => "Status pengajuan permohonan training anda $approval_status oleh $approver untuk detail silakan <a href=$url>Klik disini</a><br/>".$this->detail_email($id),
                 'is_read' => 0,
             );
         $this->db->insert('email', $data);
     }
+
+    function detail_email($id)
+    {
+        if(is_admin()){
+            $form_training = $this->data['form_training'] = $this->form_training_model->form_training_admin($id);
+        }else{
+            $form_training = $this->data['form_training'] = $this->form_training_model->form_training($id);
+        }
+        
+        $this->data['penyelenggara'] = GetAll('penyelenggara');
+        $this->data['pembiayaan'] = GetAll('pembiayaan');
+        $user_id = $this->db->select('user_id')->where('id', $id)->get('users_training')->row('user_id');
+        if($form_training->num_rows>0){
+            $this->get_app_name($id);
+        }
+        
+        $this->get_user_info($user_id);
+        return $this->load->view('form_training/training_mail', $this->data, TRUE);
+}
 
 
     function get_app_name($id)

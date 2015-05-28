@@ -267,7 +267,7 @@ class Form_recruitment extends MX_Controller {
                 'receiver_id' => 1,
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Pengajuan Permintaan SDM Baru',
-                'email_body' => get_name($user_id).' mengajukan permintaan SDM baru, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a>',
+                'email_body' => get_name($user_id).' mengajukan permintaan SDM baru, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br/>'.$this->detail_email($id),
                 'is_read' => 0,
             );
         $this->db->insert('email', $data);
@@ -283,10 +283,23 @@ class Form_recruitment extends MX_Controller {
                 'receiver_id' => get_nik($receiver_id),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Status Pengajuan Permintaan SDM Baru dari HRD',
-                'email_body' => "Status pengajuan permintaan SDM baru disetujui oleh $approver untuk detail silakan <a href=$url>Klik disini</a>",
+                'email_body' => "Status pengajuan permintaan SDM baru disetujui oleh $approver untuk detail silakan <a href=$url>Klik disini</a><br/>".$this->detail_email($id),
                 'is_read' => 0,
             );
         $this->db->insert('email', $data);
+    }
+
+    function detail_email($id)
+    {
+        $this->data['recruitment'] = $this->recruitment_model->recruitment($id)->result();
+        $this->data['status'] = getAll('recruitment_status', array('is_deleted' => 'where/0'));
+        $this->data['urgensi'] = getAll('recruitment_urgensi', array('is_deleted' => 'where/0'));
+        $jk = explode(',', getAll('users_recruitment_kualifikasi')->row('jenis_kelamin_id'));
+        $pendidikan = explode(',', getAll('users_recruitment_kualifikasi')->row('pendidikan_id'));
+        $this->data['jenis_kelamin'] = $this->recruitment_model->get_jk($jk);
+        $this->data['pendidikan'] = $this->recruitment_model->get_pendidikan($pendidikan);
+        $this->data['position_pengaju'] = $this->get_user_position($this->recruitment_model->recruitment($id)->row_array()['user_id']);
+        return $this->load->view('form_recruitment/recruitment_mail', $this->data, TRUE);
     }
 
     function get_bu()

@@ -175,7 +175,7 @@ class Form_exit extends MX_Controller {
                 'receiver_id' => (!empty($this->get_emp_by_pos('PST242'))) ? $this->get_emp_by_pos('PST242') : 'D0001',
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Pengajuan Rekomendasi Karyawan Keluar',
-                'email_body' => get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a href='.$url.'>Klik Disini</a>',
+                'email_body' => get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
                 'is_read' => 0,
             );
         $this->db->insert('email', $data1);
@@ -186,7 +186,7 @@ class Form_exit extends MX_Controller {
                 'receiver_id' => $this->get_emp_by_pos('PST263'),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Pengajuan Rekomendasi Karyawan Keluar',
-                'email_body' => get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a href='.$url.'>Klik Disini</a>',
+                'email_body' => get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
                 'is_read' => 0,
             );
         $this->db->insert('email', $data2);
@@ -197,7 +197,7 @@ class Form_exit extends MX_Controller {
                 'receiver_id' => $this->get_emp_by_pos('PST2'),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Pengajuan Rekomendasi Karyawan Keluar',
-                'email_body' => get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a href='.$url.'>Klik Disini</a>',
+                'email_body' => get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
                 'is_read' => 0,
             );
         $this->db->insert('email', $data3);
@@ -208,7 +208,7 @@ class Form_exit extends MX_Controller {
                 'receiver_id' => $this->get_emp_by_pos('PST129'),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Pengajuan Rekomendasi Karyawan Keluar',
-                'email_body' => get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a href='.$url.'>Klik Disini</a>',
+                'email_body' => get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
                 'is_read' => 0,
             );
         $this->db->insert('email', $data4);
@@ -219,7 +219,7 @@ class Form_exit extends MX_Controller {
                 'receiver_id' => 1,
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Pengajuan Rekomendasi Karyawan Keluar',
-                'email_body' => get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a href='.$url.'>Klik Disini</a>',
+                'email_body' => get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
                 'is_read' => 0,
             );
         $this->db->insert('email', $data5);
@@ -358,6 +358,28 @@ class Form_exit extends MX_Controller {
                 'is_read' => 0,
             );
         $this->db->insert('email', $data2);
+    }
+
+    function detail_email($id)
+    {
+        if(is_admin()){
+                $form_exit = $this->data['form_exit'] = $this->form_exit_model->form_exit_admin($id);
+            }else{
+                $form_exit = $this->data['form_exit'] = $this->form_exit_model->form_exit($id);
+            }
+            
+            $user_id = getAll('users_exit', array('id'=>'where/'.$id, ))->row()->user_id;
+            $this->get_user_info($user_id);
+            $this->data['mgr_ga_nas'] = $this->get_emp_by_pos('PST242');
+            $this->data['koperasi'] = $this->get_emp_by_pos('PST263');
+            $this->data['perpustakaan'] = $this->get_emp_by_pos('PST2');
+            $this->data['hrd'] = $this->get_emp_by_pos('PST129');
+            
+            $this->data['sess_id'] = $this->session->userdata('user_id');
+            $this->data['inventaris'] = getAll('users_exit_inventaris', array('user_exit_id'=>'where/'.$id, ))->row();
+            $this->data['rekomendasi'] = getAll('users_exit_rekomendasi', array('user_exit_id'=>'where/'.$id, ))->row();
+
+            return $this->load->view('form_exit/exit_mail', $this->data, TRUE);
     }
 
     function _get_csrf_nonce()

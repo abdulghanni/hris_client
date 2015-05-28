@@ -676,7 +676,7 @@ class Form_cuti extends MX_Controller {
 
     function send_approval_request($id, $sender_id)
     {
-
+        
         $url = base_url().'form_cuti/approval_';
         if(is_have_superior($sender_id))
         {
@@ -685,9 +685,10 @@ class Form_cuti extends MX_Controller {
                     'receiver_id' => $this->form_cuti_model->get_superior_id($sender_id)->row('superior_id'),
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Pengajuan Permohonan Cuti',
-                    'email_body' => get_name($sender_id).' mengajukan permohonan cuti, untuk melihat detail silakan <a href='.$url.'spv/'.$id.'>Klik Disini</a>',
+                    'email_body' => get_name($sender_id).' mengajukan permohonan cuti, untuk melihat detail silakan <a href='.$url.'spv/'.$id.'>Klik Disini</a><br/>'.$this->detail_email($id),
                     'is_read' => 0,
                 );
+
             $this->db->insert('email', $data);
             $current_superior = get_id($this->form_cuti_model->get_superior_id($sender_id)->row('superior_id'));
         }else{
@@ -701,7 +702,7 @@ class Form_cuti extends MX_Controller {
                     'receiver_id' => get_superior($current_superior),
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Pengajuan Permohonan Cuti',
-                    'email_body' => get_name($sender_id).' mengajukan permohonan cuti, untuk melihat detail silakan <a href='.$url.'kbg/'.$id.'>Klik Disini</a>',
+                    'email_body' => get_name($sender_id).' mengajukan permohonan cuti, untuk melihat detail silakan <a href='.$url.'kbg/'.$id.'>Klik Disini<br/>'.$this->detail_email($id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data);
@@ -714,7 +715,7 @@ class Form_cuti extends MX_Controller {
                 'receiver_id' => 1,
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Pengajuan Permohonan Cuti',
-                'email_body' => get_name($sender_id).' mengajukan permohonan cuti, untuk melihat detail silakan <a href='.$url.'hrd/'.$id.'>Klik Disini</a>',
+                'email_body' => get_name($sender_id).' mengajukan permohonan cuti, untuk melihat detail silakan <a href='.$url.'hrd/'.$id.'>Klik Disini</a><br/>'.$this->detail_email($id),
                 'is_read' => 0,
             );
         $this->db->insert('email', $data);
@@ -731,10 +732,87 @@ class Form_cuti extends MX_Controller {
                 'receiver_id' => get_nik($receiver_id),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Status Pengajuan Permohonan Cuti dari '.$type,
-                'email_body' => "Status pengajuan permohonan cuti anda $approval_status oleh $approver untuk detail silakan <a href=$url>Klik disini</a>",
+                'email_body' => "Status pengajuan permohonan cuti anda $approval_status oleh $approver untuk detail silakan <a href=$url>Klik disini</a><br/>".$this->detail_email($id),
                 'is_read' => 0,
             );
         $this->db->insert('email', $data);
+    }
+
+    function detail_email($id)
+    {
+        $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
+            $cuti_details = $this->data['form_cuti'] = $this->form_cuti_model->form_cuti_supervisor($id)->result();
+            //print_mz($cuti_details);
+            $cuti_num_rows = $this->form_cuti_model->form_cuti_supervisor($id)->num_rows();
+          
+           if ($cuti_num_rows > 0){
+            foreach ($cuti_details as $cd) {
+                
+                $user_app_lv1 = $cd->user_app_lv1;
+                $user_app_lv2 = $cd->user_app_lv2;
+                $user_app_lv3 = $cd->user_app_lv3;
+                $user_id = $cd->user_id;
+                $user_pengganti = $cd->user_pengganti;
+            }
+            
+             $this->data['_num_rows'] = $this->form_cuti_model->form_cuti_supervisor($id)->num_rows();
+             $data_result = $this->form_cuti_model->where('users.id',$user_id)->get_org_id()->result();
+            foreach ($data_result as $dr) {
+                $org_id = $dr->organization_id;
+            }
+            
+            $user = $this->person_model->getUsers($user_id)->row();
+            $url = get_api_key().'users/employement/EMPLID/'.$user->nik.'/format/json';
+            $headers = get_headers($url);
+            $response = substr($headers[0], 9, 3);
+            if ($response != "404") {
+                $getuser_info = file_get_contents($url);
+                $user_info = json_decode($getuser_info, true);
+                 $this->data['seniority_date'] = (!empty($user_info['SENIORITYDATE'])) ? $user_info['SENIORITYDATE'] : '-';
+                $this->data['position'] = (!empty($user_emp->position)) ? $user_emp->position : (!empty($user_info['POSITION'])) ? $user_info['POSITION'] : '-';
+                $this->data['organization'] = (!empty($user_emp->organization)) ? $user_emp->organization : (!empty($user_info['ORGANIZATION'])) ? $user_info['ORGANIZATION'] : '-';
+                
+                } else {
+                $this->data['seniority_date'] = (!empty($user_info['SENIORITYDATE'])) ? $user_info['SENIORITYDATE'] : '-';
+                $this->data['position'] = (!empty($user_emp->position)) ? $user_emp->position : (!empty($user_info['POSITION'])) ? $user_info['POSITION'] : '-';
+                $this->data['organization'] = (!empty($user_emp->organization)) ? $user_emp->organization : (!empty($user_info['ORGANIZATION'])) ? $user_info['ORGANIZATION'] : '-';
+            }
+
+            //get app user name
+            $nm_app_lv1 = $this->form_cuti_model->where('users.id',$user_app_lv1)->get_user()->result();
+            $nm_app_lv2 = $this->form_cuti_model->where('users.id',$user_app_lv2)->get_user()->result();
+            $nm_app_lv3 = $this->form_cuti_model->where('users.id',$user_app_lv3)->get_user()->result();
+            foreach ($nm_app_lv1 as $nmlv1) {
+                $this->data['nm_app_lv1'] = $nmlv1->username;
+            }
+            foreach ($nm_app_lv2 as $nmlv2) {
+                $this->data['nm_app_lv2'] = $nmlv2->username;
+            }
+            foreach ($nm_app_lv3 as $nmlv3) {
+                $this->data['nm_app_lv3'] = $nmlv3->username;
+            }
+            
+            $url_pengganti = get_api_key().'users/employement/EMPLID/'.$user_pengganti.'/format/json';
+            $headers = get_headers($url_pengganti);
+            $response = substr($headers[0], 9, 3);
+            if ($response != "404") {
+                $getuser_pengganti = file_get_contents($url_pengganti);
+                $user_pengganti = json_decode($getuser_pengganti, true);
+            }
+            //$pengganti = $this->person_model->getNik($user_pengganti)->row();
+            
+             //render data
+            $this->data['alasan_cuti'] = $this->form_cuti_model->render_alasan()->result();
+            $this->data['user_pengganti'] = (!empty($user_pengganti['NAME'])) ? $user_pengganti['NAME'] : '-' ;
+            
+            }else{
+                $this->data['_num_rows'] = 0;
+            }
+            $user_id = $this->db->select('user_id')->from('users_cuti')->where('id', $id)->get()->row('user_id');
+            $this->data['sisa_cuti'] = (!empty($this->get_sisa_cuti($user_id)[0]['ENTITLEMENT'])) ? $this->get_sisa_cuti($user_id)[0]['ENTITLEMENT'] : '-';
+            $this->data['approval_status'] = GetAll('approval_status');
+
+        return $this->load->view('form_cuti/cuti_email', $this->data, true);
     }
 	
 	function cek_all_approval($id)

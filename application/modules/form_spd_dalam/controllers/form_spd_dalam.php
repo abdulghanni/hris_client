@@ -469,7 +469,7 @@ class Form_spd_dalam extends MX_Controller {
                     'receiver_id' => $receiver_id,
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Pemberian Tugas Perjalanan Dinas Dalam Kota',
-                    'email_body' => get_name($sender).' memberikan tugas perjalan dinas dalam kota, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a>',
+                    'email_body' => get_name($sender).' memberikan tugas perjalan dinas dalam kota, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br/>'.$this->detail_email($spd_id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data);
@@ -484,7 +484,7 @@ class Form_spd_dalam extends MX_Controller {
                     'receiver_id' => $receiver_id,
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Persetujuan Tugas Perjalanan Dinas Dalam Kota',
-                    'email_body' => get_name($sender).' telah menyetujui tugas perjalan dinas dalam kota yang anda berikan, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a>',
+                    'email_body' => get_name($sender).' telah menyetujui tugas perjalan dinas dalam kota yang anda berikan, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br/>'.$this->detail_email($spd_id),
                     'is_read' => 0,
                 );
         $this->db->insert('email', $data);
@@ -503,6 +503,64 @@ class Form_spd_dalam extends MX_Controller {
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data);
+    }
+
+    function detail_email($id)
+    {
+        $task_id = $id;
+        $user_id = $this->session->userdata('user_id');
+        if(is_admin()){
+                $data_result = $this->data['task_detail'] = $this->form_spd_dalam_model->where('users_spd_dalam.id',$task_id)->form_spd_dalam_admin($id)->result();
+                $this->data['td_num_rows'] = $this->form_spd_dalam_model->where('users_spd_dalam.id',$task_id)->form_spd_dalam_admin()->num_rows($id);
+            }else{
+                $data_result = $this->data['task_detail'] = $this->form_spd_dalam_model->where('users_spd_dalam.id',$task_id)->form_spd_dalam($id)->result();
+                $this->data['td_num_rows'] = $this->form_spd_dalam_model->where('users_spd_dalam.id',$task_id)->form_spd_dalam()->num_rows($id);
+            }
+            //get task creator id
+            foreach ($data_result as $dr) {
+                $created_by_id = $dr->task_creator;
+                $receiver_user_id = $dr->task_receiver;
+            }
+
+
+            //get task creator name
+            $query_result = $this->form_spd_dalam_model->where('users.id',$created_by_id)->get_emp_detail()->result();
+            foreach ($query_result as $qr) {
+                $this->data['task_creator_nm'] = $qr->first_name." ".$qr->last_name;
+            }
+
+            //get Receiver Info From API
+            $receiver_info = $this->get_receiver_info($receiver_user_id);
+
+            $this->data['task_receiver_nm'] = (!empty($receiver_info['NAME'])) ? $receiver_info['NAME'] : '-';
+            $this->data['task_receiver_org'] = (!empty($receiver_info['ORGANIZATION'])) ? $receiver_info['ORGANIZATION'] : '-';
+            $this->data['task_receiver_pos'] = (!empty($receiver_info['POSITION'])) ? $receiver_info['POSITION'] : '-';
+
+            //get tast receiver name
+            $query_result = $this->form_spd_dalam_model->where('users.id',$receiver_user_id)->get_emp_detail()->result();
+            foreach ($query_result as $qr) {
+                $this->data['task_receiver_nm'] = $qr->first_name." ".$qr->last_name;
+            }
+
+            //get task creator detail
+            $this->data['task_creator'] = $this->form_spd_dalam_model->where('users.nik',$created_by_id)->get_emp_detail()->result();
+            $this->data['tc_num_rows'] = $this->form_spd_dalam_model->where('users.nik',$created_by_id)->get_emp_detail()->num_rows();
+            $this->data['task_receiver'] = $this->form_spd_dalam_model->where('users.id',$receiver_user_id)->get_emp_detail()->result();
+            $this->data['tr_num_rows'] = $this->form_spd_dalam_model->where('users.id',$receiver_user_id)->get_emp_detail()->num_rows();
+
+            //get data from API
+            $this->get_user_info($created_by_id);
+            //get user org_id
+            $data_result = $this->form_spd_dalam_model->where('users.id',$user_id)->get_org_id()->result();
+            foreach ($data_result as $dr) {
+                $org_id = $dr->organization_id;
+            }
+
+            // render employee
+            $this->data['employee_list'] = $this->form_spd_dalam_model->where('users_employement.organization_id',$org_id)->render_emp()->result();
+            $this->data['el_num_rows'] = $this->form_spd_dalam_model->where('users_employement.organization_id',$org_id)->render_emp()->num_rows();
+            
+            return $this->load->view('form_spd_dalam/spd_dalam_mail', $this->data, TRUE);
     } 
 
 

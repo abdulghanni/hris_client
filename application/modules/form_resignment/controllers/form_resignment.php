@@ -177,7 +177,7 @@ class Form_resignment extends MX_Controller {
                 'receiver_id' => 1,
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Pengajuan Permohonan Resignment',
-                'email_body' => get_name($user_id).' mengajukan permohonan resign, untuk melihat detail silakan <a href='.$url.'hrd/'.$id.'>Klik Disini</a>',
+                'email_body' => get_name($user_id).' mengajukan permohonan resign, untuk melihat detail silakan <a href='.$url.'hrd/'.$id.'>Klik Disini</a><br/>'.$this->detail_email($id),
                 'is_read' => 0,
             );
         $this->db->insert('email', $data);
@@ -194,10 +194,22 @@ class Form_resignment extends MX_Controller {
                 'receiver_id' => get_nik($receiver_id),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Status Pengajuan Permohonan Resignment dari HRD',
-                'email_body' => "Status pengajuan permohonan resignment anda $approval_status oleh $approver untuk detail silakan <a href=$url>Klik disini</a>",
+                'email_body' => "Status pengajuan permohonan resignment anda $approval_status oleh $approver untuk detail silakan <a href=$url>Klik disini</a><br/>".$this->detail_email($id),
                 'is_read' => 0,
             );
         $this->db->insert('email', $data);
+    }
+
+    function detail_email($id)
+    {
+        if(is_admin()){
+            $form_resignment = $this->data['form_resignment'] = $this->form_resignment_model->form_resignment_admin($id);
+        }else{
+            $form_resignment = $this->data['form_resignment'] = $this->form_resignment_model->form_resignment($id);
+        }
+
+        $this->get_user_info($form_resignment->row('user_id'));
+        return $this->load->view('form_resignment/resignment_mail', $this->data, TRUE);
     }
 
     function get_user_info($user_id)
