@@ -159,7 +159,7 @@
                                                 <label class="form-label text-right"><?php echo lang('count_cuti') ?></label>
                                               </div>
                                               <div class="col-md-10">
-                                                <input name="courseid" id="courseid" type="text"  class="form-control" placeholder="courseid" value="<?php echo $user->jumlah_hari+get_sisa_cuti($user->user_id)[0]['ENTITLEMENT']; ?>" disabled="disabled">
+                                                <input name="courseid" id="courseid" type="text"  class="form-control" placeholder="courseid" value="<?php echo get_sisa_cuti($user->user_id)[0]['ENTITLEMENT']; ?>" disabled="disabled">
                                               </div>
                                             </div>
                                             <div class="row form-row">

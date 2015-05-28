@@ -31,6 +31,102 @@ $(document).ready(function() {
         return false;
     });
 
+    $("#emp").change(function() {
+            var empId = $(this).val();
+            get_employee_org(empId);
+            get_employee_pos(empId);
+            get_employee_orgid(empId);
+            get_employee_posid(empId);
+            get_employee_nik(empId);
+            get_employee_bu(empId);
+            get_employee_buid(empId);
+        })
+        .change();
+
+     function get_employee_org(empId)
+        {
+            $.ajax({
+                    type: 'POST',
+                    url: 'get_emp_org',
+                    data: {id : empId},
+                    success: function(data) {
+                        $('#old_org2').val(data);
+                    }
+                });
+        }
+
+        function get_employee_pos(empId)
+        {
+            $.ajax({
+                    type: 'POST',
+                    url: 'get_emp_pos',
+                    data: {id : empId},
+                    success: function(data) {
+                        $('#old_pos2').val(data);
+                    }
+                });
+        }
+
+        function get_employee_orgid(empId)
+        {
+            $.ajax({
+                    type: 'POST',
+                    url: 'get_emp_orgid',
+                    data: {id : empId},
+                    success: function(data) {
+                        $('#old_org').val(data);
+                    }
+                });
+        }
+
+        function get_employee_posid(empId)
+        {
+            $.ajax({
+                    type: 'POST',
+                    url: 'get_emp_posid',
+                    data: {id : empId},
+                    success: function(data) {
+                        $('#old_pos').val(data);
+                    }
+                });
+        }
+
+        function get_employee_nik(empId)
+        {
+            $.ajax({
+                    type: 'POST',
+                    url: 'get_emp_nik',
+                    data: {id : empId},
+                    success: function(data) {
+                        $('#nik').val(data);
+                    }
+                });
+        }
+
+        function get_employee_bu(empId)
+        {
+            $.ajax({
+                    type: 'POST',
+                    url: 'get_emp_bu',
+                    data: {id : empId},
+                    success: function(data) {
+                        $('#old_bu2').val(data);
+                    }
+                });
+        }
+
+        function get_employee_buid(empId)
+        {
+            $.ajax({
+                    type: 'POST',
+                    url: 'get_emp_buid',
+                    data: {id : empId},
+                    success: function(data) {
+                        $('#old_bu').val(data);
+                    }
+                });
+        }
+
     
 /*function myFunction(obj)
   {

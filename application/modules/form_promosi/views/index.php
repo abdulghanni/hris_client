@@ -33,6 +33,7 @@
                                   <th width="15%">Jabatan Baru</th>
                                   <th width="15%">Tanggal Pengangkatan</th>
                                   <th class="text-center" width="10%">Approval</th>
+                                  <th width="10%" class="text-center">cetak</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -54,6 +55,13 @@
                                     <?php }else{
                                       echo '-';
                                     }?>
+                                    </td>
+                                    <td class="text-center">
+                                    <?php if($row->is_approved == 1){?>
+                                            <a href="<?php echo site_url('form_promosi/form_promosi_pdf/'.$row->id)?>"><i class="icon-print"></i></a>
+                                          <?php }else{ ?>
+                                            <i class="icon-print"></i>
+                                          <?php } ?>
                                     </td>
                                   </tr> 
                                 <?php endforeach;}?>

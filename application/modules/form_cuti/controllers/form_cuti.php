@@ -161,15 +161,10 @@ class Form_cuti extends MX_Controller {
                 $cuti_id = 1;
             }
 
-            $jml_hari_cuti = $this->input->post('jml_cuti');
-            $recid = $this->get_sisa_cuti($user_id)[0]['RECID'];
-            $sisa_cuti = $this->get_sisa_cuti($user_id)[0]['ENTITLEMENT'] - $jml_hari_cuti;
-
             if ($this->form_validation->run() == true && $this->form_cuti_model->create_($user_id,$additional_data))
             {
                  $cuti_url = base_url().'form_cuti';
                  $this->send_approval_request($cuti_id, $user_id);
-                 $this->update_sisa_cuti($recid, $sisa_cuti);
                  echo json_encode(array('st' =>1, 'cuti_url' => $cuti_url));     
             }
         }
@@ -770,6 +765,12 @@ class Form_cuti extends MX_Controller {
 			 
 			 $date = date ("Y-m-d", strtotime("+1 day", strtotime($date)));
 			 }
+
+            $jml_hari_cuti = getAll('users_cuti', array('id'=>'where/'.$id))->row('jumlah_hari');
+            $recid = $this->get_sisa_cuti(get_id($user_nik))[0]['RECID'];
+            $sisa_cuti = $this->get_sisa_cuti(get_id($user_nik))[0]['ENTITLEMENT'] - $jml_hari_cuti;
+
+            $this->update_sisa_cuti($recid, $sisa_cuti);
 		}
 	}
 

@@ -114,7 +114,7 @@
                           <label class="form-label text-left">Tgl. Pengangkatan</label>
                         </div>
                         <div class="col-md-8">
-                          <input type="text" class="form-control" name="date_promosi" value="<?php echo $row->date_promosi?>" disabled="disabled">
+                          <input type="text" class="form-control" name="date_promosi" value="<?php echo dateIndo($row->date_promosi)?>" disabled="disabled">
                         </div>
                       </div>
                       <div class="row form-row">
@@ -157,7 +157,7 @@
                           <p>Yang mengajukan</p>
                           <p class="wf-approve-sp">
                             <span class="semi-bold"><?php echo get_name($row->user_id)?></span><br/>
-                            <span class="small"><?php echo $row->created_on?></span><br/>
+                            <span class="small"><?php echo dateIndo($row->created_on)?></span><br/>
                           </p>
                         </div>
                         <div class="col-md-6">
@@ -165,7 +165,7 @@
                           <p class="wf-approve-sp">
                             <?php if($row->is_approved == 1){?>
                             <span class="semi-bold"><?php echo get_name($row->user_approved)?></span><br/>
-                            <span class="small"><?php echo $row->date_approved?></span><br/>
+                            <span class="small"><?php echo dateIndo($row->date_approved)?></span><br/>
                             <?php }else{?>
                             <span class="semi-bold">-</span><br/>
                             <?php } ?>

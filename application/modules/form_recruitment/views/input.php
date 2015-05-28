@@ -112,7 +112,7 @@
                           foreach($jenis_kelamin->result() as $row):?>
                       <div class="col-md-1">
                         <div class="checkbox check-primary checkbox-circle" >
-                          <input name="jenis_kelamin[]" class="checkbox1" type="checkbox" id="jenis_kelamin<?php echo $row->id ?>" value="<?php echo $row->id ?>" required checked="checked">
+                          <input name="jenis_kelamin[]" class="checkbox1" type="checkbox" id="jenis_kelamin<?php echo $row->id ?>" value="<?php echo $row->id ?>" checked="checked">
                             <label for="jenis_kelamin<?php echo $row->id ?>"><?php echo $row->title?></label>
                           </div>
                       </div>
@@ -127,7 +127,7 @@
                             foreach($pendidikan->result() as $row):?>
                         <div class="col-md-1">
                           <div class="checkbox check-primary checkbox-circle" >
-                            <input name="pendidikan[]" class="checkbox1" type="checkbox" id="pendidikan<?php echo $row->id ?>" value="<?php echo $row->id ?>" required checked="checked">
+                            <input name="pendidikan[]" class="checkbox1" type="checkbox" id="pendidikan<?php echo $row->id ?>" value="<?php echo $row->id ?>" checked="checked">
                               <label for="pendidikan<?php echo $row->id ?>"><?php echo $row->title?></label>
                             </div>
                         </div>
@@ -138,19 +138,19 @@
                         <label class="form-label text-right">Jurusan</label>
                       </div>
                       <div class="col-md-2">
-                        <input name="jurusan" id="form3LastName" type="text"  class="form-control" placeholder="Jurusan" value="" required>
+                        <input name="jurusan" id="form3LastName" type="text"  class="form-control" placeholder="Jurusan" value="">
                       </div>
                       <div class="col-md-2">
                         <label class="form-label text-right">IPK</label>
                       </div>
                       <div class="col-md-2">
-                        <input name="ipk" id="form3LastName" type="text"  class="form-control" placeholder="IPK" value="" required>
+                        <input name="ipk" id="form3LastName" type="text"  class="form-control" placeholder="IPK" value="">
                       </div>
                       <div class="col-md-2">
                         <label class="form-label text-right">Toefl</label>
                       </div>
                       <div class="col-md-2">
-                        <input name="toefl" id="toefl" type="text"  class="form-control" placeholder="Toefl" value="" required>
+                        <input name="toefl" id="toefl" type="text"  class="form-control" placeholder="Toefl" value="">
                       </div>
                     </div>
                     <div class="row form-row">

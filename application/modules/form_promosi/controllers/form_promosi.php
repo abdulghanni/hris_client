@@ -28,6 +28,7 @@ class Form_promosi extends MX_Controller {
             //redirect them to the login page
             redirect('auth/login', 'refresh');
         }else{
+
             if(is_admin()){
                 $form_promosi = $this->data['form_promosi'] = $this->form_promosi_model->form_promosi_admin();
             }else{
@@ -45,9 +46,13 @@ class Form_promosi extends MX_Controller {
             //redirect them to the login page
             redirect('auth/login', 'refresh');
         }else{
-            $this->data['sess_id'] = $this->session->userdata('user_id');
+            $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
             $this->get_user_info();
             $this->get_bu();
+
+
+            $this->data['all_users'] = getAll('users', array('active'=>'where/1'));
+            $this->data['subordinate'] = getAll('users', array('superior_id'=>'where/'.get_nik($sess_id)));
             $this->_render_page('form_promosi/input', $this->data);
         }
     }
@@ -65,7 +70,9 @@ class Form_promosi extends MX_Controller {
             }else{
                 $this->data['form_promosi'] = $this->form_promosi_model->form_promosi($id);
             }
-            $this->get_user_info();
+
+            $user_id = getAll('users_promosi', array('id' => 'where/'.$id))->row('user_id');
+            $this->get_user_info($user_id);
             $this->_render_page('form_promosi/detail', $this->data);
         }
     }
@@ -86,8 +93,9 @@ class Form_promosi extends MX_Controller {
             }
             else
             {
+                $user_id = $this->input->post('emp');
                 $additional_data = array(
-                    'user_id'       => $this->session->userdata('user_id'),
+                    'user_id'       => $user_id,
                     'old_bu'       => $this->input->post('old_bu'),
                     'old_org'     => $this->input->post('old_org'),
                     'old_pos'           => $this->input->post('old_pos'),
@@ -114,7 +122,7 @@ class Form_promosi extends MX_Controller {
                 if ($this->form_validation->run() == true && $this->form_promosi_model->add($additional_data))
                 {
                     $promosi_url = base_url().'form_promosi';
-                    $this->send_approval_request($promosi_id);
+                    $this->send_approval_request($promosi_id, $user_id);
                     echo json_encode(array('st' =>1, 'promosi_url' => $promosi_url));    
                 }
             }
@@ -188,18 +196,17 @@ class Form_promosi extends MX_Controller {
         }
     }
 
-    function send_approval_request($id)
+    function send_approval_request($id, $user_id)
     {
-        $user_id= $this->session->userdata('user_id');
-        $username= $this->db->where('id', $user_id)->get('users')->row('username');
+        $sender_id= $this->session->userdata('user_id');
         $url = base_url().'form_promosi/approval_';
         
         $data = array(
-                'sender_id' => get_nik($user_id),
+                'sender_id' => get_nik($sender_id),
                 'receiver_id' => 1,
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                'subject' => 'Pengajuan Permohonan promosi',
-                'email_body' => $username.' mengajukan permohonan promosi, untuk melihat detail silakan <a href='.$url.'hrd/'.$id.'>Klik Disini</a>',
+                'subject' => 'Pengajuan Permohonan Promosi',
+                'email_body' => get_name($sender_id).' mengajukan permohonan promosi untuk '.get_name($user_id).', untuk melihat detail silakan <a href='.$url.'hrd/'.$id.'>Klik Disini</a>',
                 'is_read' => 0,
             );
         $this->db->insert('email', $data);
@@ -301,6 +308,184 @@ class Form_promosi extends MX_Controller {
         }
         $data['result']=$result;
         $this->load->view('dropdown_pos',$data);
+    }
+
+    function get_emp_by_pos($posid)
+    {
+        
+        $url = get_api_key().'users/employee_by_pos/POSID/'.$posid.'/format/json';
+        //print_mz($url);
+        $headers = get_headers($url);
+        $response = substr($headers[0], 9, 3);
+        if ($response != "404") {
+            $getuser_info = file_get_contents($url);
+            $pos_info = json_decode($getuser_info, true);
+            return $pos_info['EMPLID'];
+        } else {
+            return false;
+        }
+    }
+    
+    
+
+    public function get_emp_org()
+    {
+        $id = $this->input->post('id');
+
+        $url = get_api_key().'users/employement/EMPLID/'.get_nik($id).'/format/json';
+            $headers = get_headers($url);
+            $response = substr($headers[0], 9, 3);
+            if ($response != "404") {
+                $getuser_info = file_get_contents($url);
+                $user_info = json_decode($getuser_info, true);
+                $org_nm = $user_info['ORGANIZATION'];
+            } else {
+                $org_nm = '';
+            }
+        
+        echo $org_nm;
+    }
+
+    public function get_emp_pos()
+    {
+        $id = $this->input->post('id');
+
+        $url = get_api_key().'users/employement/EMPLID/'.get_nik($id).'/format/json';
+            $headers = get_headers($url);
+            $response = substr($headers[0], 9, 3);
+            if ($response != "404") {
+                $getuser_info = file_get_contents($url);
+                $user_info = json_decode($getuser_info, true);
+                $pos_nm = $user_info['POSITION'];
+            } else {
+                $pos_nm = '';
+            }
+
+        echo $pos_nm;
+    }
+
+    public function get_emp_orgid()
+    {
+        $id = $this->input->post('id');
+
+        $url = get_api_key().'users/employement/EMPLID/'.get_nik($id).'/format/json';
+            $headers = get_headers($url);
+            $response = substr($headers[0], 9, 3);
+            if ($response != "404") {
+                $getuser_info = file_get_contents($url);
+                $user_info = json_decode($getuser_info, true);
+                $org_nm = $user_info['ORGID'];
+            } else {
+                $org_nm = '';
+            }
+        
+        echo $org_nm;
+    }
+
+    public function get_emp_posid()
+    {
+        $id = $this->input->post('id');
+
+        $url = get_api_key().'users/employement/EMPLID/'.get_nik($id).'/format/json';
+            $headers = get_headers($url);
+            $response = substr($headers[0], 9, 3);
+            if ($response != "404") {
+                $getuser_info = file_get_contents($url);
+                $user_info = json_decode($getuser_info, true);
+                $pos_nm = $user_info['POSID'];
+            } else {
+                $pos_nm = '';
+            }
+
+        echo $pos_nm;
+    }
+
+    public function get_emp_nik()
+    {
+        $id = $this->input->post('id');
+
+        $url = get_api_key().'users/employement/EMPLID/'.get_nik($id).'/format/json';
+            $headers = get_headers($url);
+            $response = substr($headers[0], 9, 3);
+            if ($response != "404") {
+                $getuser_info = file_get_contents($url);
+                $user_info = json_decode($getuser_info, true);
+                $nik = $user_info['EMPLID'];
+            } else {
+                $nik = '';
+            }
+
+        echo $nik;
+    }
+
+    public function get_emp_bu()
+    {
+        $id = $this->input->post('id');
+
+        $url = get_api_key().'users/employement/EMPLID/'.get_nik($id).'/format/json';
+            $headers = get_headers($url);
+            $response = substr($headers[0], 9, 3);
+            if ($response != "404") {
+                $getuser_info = file_get_contents($url);
+                $user_info = json_decode($getuser_info, true);
+                $bu_nm = $user_info['BU'];
+            } else {
+                $bu_nm = '';
+            }
+
+        echo $bu_nm;
+    }
+
+    public function get_emp_buid()
+    {
+        $id = $this->input->post('id');
+
+        $url = get_api_key().'users/employement/EMPLID/'.get_nik($id).'/format/json';
+            $headers = get_headers($url);
+            $response = substr($headers[0], 9, 3);
+            if ($response != "404") {
+                $getuser_info = file_get_contents($url);
+                $user_info = json_decode($getuser_info, true);
+                $bu_id = $user_info['BUID'];
+            } else {
+                $bu_id = '';
+            }
+
+        echo $bu_id;
+    }
+
+    function form_promosi_pdf($id)
+    {
+        $sess_id = $this->session->userdata('user_id');
+        $user_id = $this->db->select('user_id')->from('users_promosi')->where('id', $id)->get()->row('user_id');
+
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+        else
+        {
+             $this->get_user_info($user_id);
+            
+            //$this->data['comp_session'] = $this->form_promosi_model->render_session()->result();
+            
+            if(is_admin()){
+                $form_promosi = $this->data['form_promosi'] = $this->form_promosi_model->form_promosi_admin($id);
+            }else{
+            $form_promosi = $this->data['form_promosi'] = $this->form_promosi_model->form_promosi($id);
+            }
+
+
+        $this->data['id'] = $id;
+        $title = $this->data['title'] = 'Form Pengajuan Promosi-'.get_name($user_id);
+        $this->load->library('mpdf60/mpdf');
+        $html = $this->load->view('promosi_pdf', $this->data, true); 
+        $mpdf = new mPDF();
+        $mpdf = new mPDF('A4');
+        $mpdf->WriteHTML($html);
+        $mpdf->Output($id.'-'.$title.'.pdf', 'I');
+        }
     }
 
 
