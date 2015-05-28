@@ -29,16 +29,17 @@ class Form_exit extends MX_Controller {
         }
         else
         {
-            if(is_admin()){
+            $user_nik = get_nik($this->session->userdata('user_id'));
+            $mgr = $this->data['mgr_ga_nas'] = $this->get_emp_by_pos('PST242');
+            $koperasi = $this->data['koperasi'] = $this->get_emp_by_pos('PST263');
+            $perpus = $this->data['perpustakaan'] = $this->get_emp_by_pos('PST2');
+            $hrd = $this->data['hrd'] = $this->get_emp_by_pos('PST129');
+
+            if(is_admin() || $user_nik == $mgr || $user_nik == $koperasi || $user_nik == $perpus || $user_nik == $hrd){
                 $form_exit = $this->data['form_exit'] = $this->form_exit_model->form_exit_admin();
             }else{
                 $form_exit = $this->data['form_exit'] = $this->form_exit_model->form_exit();
             }
-            
-            $this->data['mgr_ga_nas'] = $this->get_emp_by_pos('PST242');
-            $this->data['koperasi'] = $this->get_emp_by_pos('PST263');
-            $this->data['perpustakaan'] = $this->get_emp_by_pos('PST2');
-            $this->data['hrd'] = $this->get_emp_by_pos('PST129');
 
             $this->_render_page('form_exit/index');
         }

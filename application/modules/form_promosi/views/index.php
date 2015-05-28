@@ -18,9 +18,11 @@
               <div class="grid simple ">
                 <div class="grid-title no-border">
                   <h4>Daftar Pengajuan <span class="semi-bold"><a href="<?php echo site_url('form_promosi')?>">Promosi</a></span></h4>
+                  <?php if(is_have_subordinate($sess_id)||is_admin()){?>
                   <div class="tools"> 
                     <a href="<?php echo site_url('form_promosi/input') ?>" class="config"></a>
                   </div>
+                  <?php } ?>
                 </div>
                   <div class="grid-body no-border">
                         

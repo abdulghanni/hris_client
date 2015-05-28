@@ -327,7 +327,7 @@
                 <label class="form-label text-left">Note (kabag) : </label>
               </div>
               <div class="col-md-12">
-                <textarea name="notes_kabag_update" class="custom-txtarea-form" placeholder="Note supervisor isi disini"><?=$notes_kabag?></textarea>
+                <textarea name="notes_kabag_update" class="custom-txtarea-form" placeholder="Note Ka. Bagian isi disini"><?=$notes_kabag?></textarea>
               </div>
             </div>
       </div>

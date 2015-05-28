@@ -28,7 +28,7 @@ class Form_promosi extends MX_Controller {
             //redirect them to the login page
             redirect('auth/login', 'refresh');
         }else{
-
+            $this->data['sess_id'] = get_nik($this->session->userdata('user_id')); 
             if(is_admin()){
                 $form_promosi = $this->data['form_promosi'] = $this->form_promosi_model->form_promosi_admin();
             }else{

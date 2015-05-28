@@ -20,12 +20,12 @@ $(document).ready(function() {
         //minimumInputLength: 3,
     });
                 
-    $('#formaddpromosi').submit(function(response){
-        $.post($('#formaddpromosi').attr('action'), $('#formaddpromosi').serialize(),function(json){
+    $('#formadddemolition').submit(function(response){
+        $.post($('#formadddemolition').attr('action'), $('#formadddemolition').serialize(),function(json){
             if(json.st == 0){
                 $('#MsgBad').html(json.errors).fadeIn();
             }else{
-                window.location.href = json.promosi_url;
+                window.location.href = json.demolition_url;
             }
         }, 'json');
         return false;
@@ -40,6 +40,7 @@ $(document).ready(function() {
             get_employee_nik(empId);
             get_employee_bu(empId);
             get_employee_buid(empId);
+            get_employee_sen_date(empId)
         })
         .change();
 
@@ -123,6 +124,18 @@ $(document).ready(function() {
                     data: {id : empId},
                     success: function(data) {
                         $('#old_bu').val(data);
+                    }
+                });
+        }
+
+        function get_employee_sen_date(empId)
+        {
+            $.ajax({
+                    type: 'POST',
+                    url: 'get_emp_sen_date',
+                    data: {id : empId},
+                    success: function(data) {
+                        $('#seniority_date').val(data);
                     }
                 });
         }

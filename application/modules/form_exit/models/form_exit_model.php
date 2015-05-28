@@ -27,8 +27,9 @@ class form_exit_model extends CI_Model
             $this->db->where('users_exit.id', $id);
         }
 
-       // $this->db->where('exit.is_deleted', 0);
-        //$this->db->where("(exit.user_id= $sess_id $sub_id)",null, false);
+        $this->db->where('users_exit.is_deleted', 0);
+        //$this->db->where("(users_exit.user_id= $sess_id $sub_id)",null, false);
+        $this->db->where('users_exit.user_id', $sess_id);
         $this->db->order_by('users_exit.id', 'desc');
         $q = $this->db->get();
 

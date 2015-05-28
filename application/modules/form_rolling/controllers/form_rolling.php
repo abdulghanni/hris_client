@@ -23,6 +23,7 @@ class Form_rolling extends MX_Controller {
 
     function index()
     {
+        $this->data['sess_id'] = get_nik($this->session->userdata('user_id')); 
         $this->_render_page('form_rolling/index');
     }
 
