@@ -160,9 +160,9 @@
                             <tbody>
                               <tr>
                                 <td><?php echo $biaya_pjd['grade']?></td>
-                                <td>Rp. <?php echo $biaya_pjd['hotel']*$jml_pjd?></td>
-                                <td>Rp. <?php echo $biaya_pjd['uang_makan']*$jml_pjd?></td>
-                                <td>Rp. <?php echo $biaya_pjd['uang_saku']*$jml_pjd?></td>
+                                <td>Rp. <?php echo number_format($biaya_pjd['hotel']*$jml_pjd, 2)?></td>
+                                <td>Rp. <?php echo number_format($biaya_pjd['uang_makan']*$jml_pjd, 2)?></td>
+                                <td>Rp. <?php echo number_format($biaya_pjd['uang_saku']*$jml_pjd, 2)?></td>
                               </tr>
                             </tbody>
                           </table>

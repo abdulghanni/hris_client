@@ -40,59 +40,59 @@
 
                      ?>
                        <div class="row form-row">
-                      <div class="col-md-3">
+                      <div class="col-md-4">
                         <label class="form-label text-right">No</label>
                         
                       </div>
-                      <div class="col-md-9">
+                      <div class="col-md-8">
                         <input name="no" id="no" type="text"  class="form-control" placeholder="No" value="<?php echo $user->id; ?>" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
-                      <div class="col-md-3">
+                      <div class="col-md-4">
                         <label class="form-label text-right"><?php echo lang('start_working') ?></label>
                       </div>
-                      <div class="col-md-9">
+                      <div class="col-md-8">
                         <input name="seniority_date" id="seniority_date" type="text"  class="form-control" placeholder="Lama Bekerja" value="<?php echo dateIndo($seniority_date); ?>" disabled="disabled">
                       </div>
                     </div>          
                     <div class="row form-row">
-                      <div class="col-md-3">
+                      <div class="col-md-4">
                         <label class="form-label text-right"><?php echo lang('name') ?></label>
                       </div>
-                      <div class="col-md-9">
+                      <div class="col-md-8">
                         <input name="name" id="name" type="text"  class="form-control" placeholder="Nama" value="<?php echo $user->first_name.' '.$user->last_name; ?>" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
-                      <div class="col-md-3">
+                      <div class="col-md-4">
                         <label class="form-label text-right"><?php echo lang('dept_div') ?></label>
                       </div>
-                      <div class="col-md-9">
+                      <div class="col-md-8">
                         <input name="organization" id="organization" type="text"  class="form-control" placeholder="Organization" value="<?php echo $organization; ?>" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
-                      <div class="col-md-3">
+                      <div class="col-md-4">
                         <label class="form-label text-right"><?php echo lang('position') ?></label>
                       </div>
-                      <div class="col-md-9">
+                      <div class="col-md-8">
                         <input name="position" id="position" type="text"  class="form-control" placeholder="Jabatan" value="<?php echo $position; ?>" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
-                      <div class="col-md-3">
+                      <div class="col-md-4">
                         <label class="form-label text-right"><?php echo lang('cuti_remain') ?></label>
                       </div>
-                      <div class="col-md-9">
+                      <div class="col-md-8">
                         <input name="sisa_cuti" id="sisa_cuti" type="text"  class="form-control" placeholder="Sisa Cuti" value="<?php echo $sisa_cuti; ?>" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
-                      <div class="col-md-3">
+                      <div class="col-md-4">
                         <label class="form-label text-right">Tanggal pengajuan</label>
                       </div>
-                      <div class="col-md-9">
+                      <div class="col-md-8">
                         <input name="tgl_pengajuan" id="tgl_pengajuan" type="text"  class="form-control" placeholder="Tanggal Pengajuan" value="<?php echo $submission_date; ?>" disabled="disabled">
                       </div>
                     </div>  
@@ -101,29 +101,29 @@
                     <div class="col-md-7">
                       <h4>Cuti yang akan diambil</h4>
                       <div class="row form-row">
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                           <label class="form-label text-right">Tahun</label>
                         </div>
-                        <div class="col-md-9">
+                        <div class="col-md-8">
                           <input name="tahuncuti" id="tahuncuti" type="text"  class="form-control" placeholder="Nama" value="<?php echo $user->session_year; ?>" disabled="disabled">
                         </div>
                       </div>
                       <div class="row form-row">
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                           <label class="form-label text-right">Tgl. mulai cuti</label>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                           <input name="start_cuti" id="start_cuti" type="text"  class="form-control" placeholder="Nama" value="<?php echo $date_start_cuti; ?>" disabled="disabled">
                         </div>
                         <div class="col-md-1">
                           <label class="form-label text-center">s/d</label>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                           <input name="end_cuti" id="end_cuti" type="text"  class="form-control" placeholder="Nama" value="<?php echo $date_end_cuti; ?>" disabled="disabled">
                         </div>
                       </div>
                       <div class="row form-row">
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                           <label class="form-label text-right">Jml. Hari</label>
                         </div>
                         <div class="col-md-2">
@@ -131,10 +131,10 @@
                         </div>
                       </div>
                       <div class="row form-row">
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                           <label class="form-label text-right">Alasan</label>
                         </div>
-                        <div class="col-md-9">
+                        <div class="col-md-8">
                           <select id="formalasan" class="select2" style="width:100%" disabled="disabled">
                           <?php if ($alasan_cuti > 0) { ?>
                               <?php foreach ($alasan_cuti as $cs) : ?>
@@ -150,83 +150,93 @@
                         </div>
                       </div>
                       <div class="row form-row">
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                           <label class="form-label text-right">Pengganti</label>
                         </div>
-                        <div class="col-md-9">
+                        <div class="col-md-8">
                           <input name="pengganti_cuti" id="pengganti_cuti" type="text"  class="form-control" placeholder="Nama" value="<?php echo $user_pengganti ?>" disabled="disabled">
                         </div>
                       </div>
                     
                       <div class="row form-row">
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                           <label class="form-label text-right">Alamat selama cuti</label>
                         </div>
-                        <div class="col-md-9">
+                        <div class="col-md-8">
                           <input name="alamat_cuti" id="alamat_cuti" type="text"  class="form-control" placeholder="Nama" value="<?php echo $user->alamat_cuti; ?>" disabled="disabled">
                         </div>
                       </div>
                       <?php if(!empty($user->approval_status_id_lv1)){?>
                       <div class="row form-row">
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                           <label class="form-label text-right">Approval Status SPV</label>
                         </div>
-                        <div class="col-md-9">
+                        <div class="col-md-8">
                           <input name="alamat_cuti" id="alamat_cuti" type="text"  class="form-control" placeholder="Nama" value="<?php echo $user->approval_status_lv1; ?>" disabled="disabled">
                         </div>
                       </div>
                       <?php } ?>
 
+                      <?php if(!empty($user->note_app_lv1)){?>
                       <div class="row form-row">
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                           <label class="form-label text-right">Note (spv): </label>
                         </div>
-                        <div class="col-md-9">
+                        <div class="col-md-8">
                           <textarea name="notes_spv" class="custom-txtarea-form" placeholder="Note supervisor isi disini" disabled="disabled"><?php echo $user->note_app_lv1 ?></textarea>
                         </div>
                       </div>
+                      <?php } ?>
 
                       <?php if(!empty($user->approval_status_id_lv2)){?>
                       <div class="row form-row">
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                           <label class="form-label text-right">Approval Status Ka. Bag</label>
                         </div>
-                        <div class="col-md-9">
+                        <div class="col-md-8">
                           <input name="alamat_cuti" id="alamat_cuti" type="text"  class="form-control" placeholder="Nama" value="<?php echo $user->approval_status_lv2; ?>" disabled="disabled">
                         </div>
                       </div>
                       <?php } ?>
 
+                      <?php if(!empty($user->note_app_lv2)){?>
                       <div class="row form-row">
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                           <label class="form-label text-right">Note (ka. bag): </label>
                         </div>
-                        <div class="col-md-9">
-                          <textarea name="notes_kbg" class="custom-txtarea-form" placeholder="Note ka. bagian isi disini"><?php echo $user->note_app_lv2 ?></textarea>
+                        <div class="col-md-8">
+                          <textarea name="notes_kbg" class="custom-txtarea-form" placeholder="Note ka. bagian isi disini" disabled="disabled"><?php echo $user->note_app_lv2 ?></textarea>
                         </div>
                       </div>
+                      <?php } ?>
 
                       <input type="text" name="app_status" value="1" style="display:none" />
 
                       <?php if(!empty($user->approval_status_id_lv3)){?>
                       <div class="row form-row">
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                           <label class="form-label text-right">Approval Status HRD</label>
                         </div>
-                        <div class="col-md-9">
+                        <div class="col-md-8">
                           <input name="alamat_cuti" id="alamat_cuti" type="text"  class="form-control" placeholder="Nama" value="<?php echo $user->approval_status_lv3; ?>" disabled="disabled">
                         </div>
                       </div>
                       <?php } ?>
 
+                      <?php if(!empty($user->note_app_lv3)){?>
                       <div class="row form-row">
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                           <label class="form-label text-right">Note (HRD): </label>
                         </div>
-                        <div class="col-md-9">
-                          <textarea name="notes_hrd" placeholder="Note hrd isi disini" class="custom-txtarea-form"><?php echo $user->note_app_lv3 ?></textarea>
+                        <div class="col-md-8">
+                          <textarea name="notes_hrd" placeholder="Note hrd isi disini" class="custom-txtarea-form" disabled="disabled"><?php echo $user->note_app_lv3 ?></textarea>
                         </div>
                       </div>
+                      <?php } ?>
+                      <?php if($user->is_app_lv3 == 1 && is_admin() == true){?>
+                          <br />
+                          <div class='btn btn-info btn-small' title='Edit Approval' data-toggle="modal" data-target="#notapprovecutiModal"><i class='icon-edit'> Edit Approval</i></div>
+                          <?php } ?>
                     </div>
                   </div>
                   
@@ -259,19 +269,16 @@
                       </div>
                     </div>
                     <div class="col-md-4 text-center">
-                          Mengetahui HRD,<br/><br/>
-                          <?php if($user->is_app_lv3 == 1 && is_admin() == true){?>
+                          <?php if($user->is_app_lv3 == 1){?>
+                          <br/><br/>
+                          <p class="wf-approve-sp">
                           <span class="semi-bold"><?php echo $nm_app_lv3?></span><br/>
                           <span class="small"><?php echo $date_app_lv3?></span>
-                          <br />
-                          <button type='button' class='btn btn-info btn-small' title='Edit Approval' data-toggle="modal" data-target="#notapprovecutiModal"><i class='icon-paste'></i></button>
-                          <?php }elseif($user->is_app_lv3 == 1 && is_admin() == false){?>
-                          <span class="semi-bold"><?php echo $nm_app_lv3?></span><br/>
-                          <span class="small"><?php echo $date_app_lv3?></span>
+                          <p>(HRD)</p>
+                          </p> 
                           <?php }else{
                             if(is_admin()){?>
-                          <button class="btn btn-success btn-cons" id="btn_app_lv3" type=""><i class="icon-ok"></i>Approve</button>
-                          <div class="btn btn-danger btn-cons" data-toggle="modal" data-target="#notapprovecutiModal"><i class="icon-remove"></i>Not Approve</div>
+                          <div class="btn btn-success btn-cons" data-toggle="modal" data-target="#notapprovecutiModal"><i class="icon-ok"></i>Submit</div>
                           <?php }}?>
                     </div>
                   </div>
