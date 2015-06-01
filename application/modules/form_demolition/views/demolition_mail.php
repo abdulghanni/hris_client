@@ -1,25 +1,4 @@
-<!-- BEGIN PAGE CONTAINER-->
-  <div class="page-content"> 
-    <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
-    <div id="portlet-config" class="modal hide">
-      <div class="modal-header">
-        <button data-dismiss="modal" class="close" type="button"></button>
-        <h3>Widget Settings</h3>
-      </div>
-      <div class="modal-body"> Widget settings form goes here </div>
-    </div>
-    <div class="clearfix"></div>
-    <div class="content">  
-    
-    
-      <div id="container">
-        <div class="row">
-          <div class="col-md-12">
-            <div class="grid simple">
-              <div class="grid-title no-border">
-                <h4>Form <span class="semi-bold"><a href="<?php echo site_url('form_demolition')?>">Demolition</a></span></h4>
-              </div>
-              <div class="grid-body no-border">
+<div class="grid-body no-border">
                 <form class="form-no-horizontal-spacing" id=""> 
                   <div class="row column-seperation">
                     <div class="col-md-5">
@@ -102,9 +81,8 @@
                             <input type="radio" name="syarat" id="syarat2" value="0" <?php echo ($row->memenuhi_syarat==0)?'checked="checked"':''?>>Tidak
                           </label>
                         </div>
-                        </div>
+                      </div>
 
-                      <?php //if(!empty($row->note_hrd)){?>
                       <div class="row form-row">
                         <div class="col-md-4">
                           <label class="form-label text-left">Note (hrd): </label>
@@ -112,10 +90,6 @@
                         <div class="col-md-8">
                           <textarea name="notes_spv" class="custom-txtarea-form" disabled="disabled"><?php echo $row->note_hrd ?></textarea>
                         </div>
-                      </div>
-                      <?php //} ?>
-
-
                       </div>
                       
                     </div>
@@ -144,12 +118,3 @@
               </form>
             <?php endforeach;} ?>
               </div>
-            </div>
-          </div>
-        </div>
-              
-    
-      </div>
-    
-  </div>  
-  <!-- END PAGE --> 

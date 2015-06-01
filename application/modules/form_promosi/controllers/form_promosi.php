@@ -108,7 +108,7 @@ class Form_promosi extends MX_Controller {
                     'created_by'            => $this->session->userdata('user_id')
                 );
 
-                $num_rows = $this->form_promosi_model->form_promosi()->num_rows();
+                $num_rows = $this->form_promosi_model->form_promosi_admin()->num_rows();
 
                 if($num_rows>0){
                     $promosi_id = $this->db->select('id')->order_by('id', 'asc')->get('users_promosi')->last_row();

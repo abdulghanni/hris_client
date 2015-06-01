@@ -31,6 +31,43 @@ $(document).ready(function() {
         return false;
     });
 
+    var url = $.url();
+    var baseurl = url.attr('protocol')+'://'+url.attr('host')+'/';
+    var demolition_url = baseurl+'hris_client/form_demolition';
+    $('#btn_app').click(function(){
+                  $('#formApp').submit(function(ev){
+                      $.ajax({
+                          type: 'POST',
+                          url: demolition_url+'/do_approve/'+url.segment(4),
+                          data: $('#formApp').serialize(),
+                          success: function() {
+                              setTimeout(function(){
+                                  location.reload()},
+                                  1000
+                              )
+                          }
+                      });
+                      ev.preventDefault(); 
+                  });  
+              });
+
+    $('#btn_app_update').click(function(){
+                  $('#formUpdateApp').submit(function(ev){
+                      $.ajax({
+                          type: 'POST',
+                          url: demolition_url+'/do_approve/'+url.segment(4),
+                          data: $('#formUpdateApp').serialize(),
+                          success: function() {
+                              setTimeout(function(){
+                                  location.reload()},
+                                  1000
+                              )
+                          }
+                      });
+                      ev.preventDefault(); 
+                  });  
+              });
+
     $("#emp").change(function() {
             var empId = $(this).val();
             get_employee_org(empId);

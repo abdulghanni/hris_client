@@ -161,7 +161,7 @@ class Form_spd_luar extends MX_Controller {
             $this->data['city_list'] = $this->form_spd_luar_model->get_city()->result();
             $this->data['cl_num_rows'] = $this->form_spd_luar_model->get_city()->num_rows();
             $task_receiver_id = getAll('users_spd_dalam', array('id' => 'where/'.$id))->row('task_receiver');
-            $this->data['biaya_pjd'] = $this->get_biaya_pjd($task_receiver_id);
+            $this->data['biaya_pjd'] = $this->get_biaya_pjd($id, $task_receiver_id);
 
 
             $this->_render_page('form_spd_luar/submit', $this->data);
@@ -561,8 +561,9 @@ class Form_spd_luar extends MX_Controller {
             $this->db->insert('email', $data);
     }
 
-    function get_biaya_pjd($task_receiver_id)
+    function get_biaya_pjd($id, $task_receiver_id)
     {
+        $spd_id = getAll('users_spd_luar', array('id' => 'where/'.$id));
         $grade = get_grade($task_receiver_id);
         $pos_group = get_pos_group($task_receiver_id);
 
@@ -571,7 +572,8 @@ class Form_spd_luar extends MX_Controller {
             $biaya_pjd = array(
                     'grade' => "$grade($pos_group)",
                     'hotel' => 450000,
-                    'uang_makan' => 200000
+                    'uang_makan' => 200000,
+                    'uang_saku' => 0
                 );
 
             return $biaya_pjd;
@@ -580,7 +582,8 @@ class Form_spd_luar extends MX_Controller {
             $biaya_pjd = array(
                     'grade' => "$grade($pos_group)",
                     'hotel' => 325000,
-                    'uang_makan' => 150000
+                    'uang_makan' => 150000,
+                    'uang_saku' => 0,
                 );
 
             return $biaya_pjd;
@@ -588,7 +591,8 @@ class Form_spd_luar extends MX_Controller {
             $biaya_pjd = array(
                     'grade' => "$grade($pos_group)",
                     'hotel' => 400000,
-                    'uang_makan' => 150000
+                    'uang_makan' => 150000,
+                    'uang_saku' => 0,
                 );
 
             return $biaya_pjd;
@@ -596,7 +600,8 @@ class Form_spd_luar extends MX_Controller {
             $biaya_pjd = array(
                     'grade' => "$grade($pos_group)",
                     'hotel' => 275000,
-                    'uang_makan' => 150000
+                    'uang_makan' => 45000,
+                    'uang_saku' => 45000,
                 );
 
             return $biaya_pjd;
@@ -604,7 +609,8 @@ class Form_spd_luar extends MX_Controller {
             $biaya_pjd = array(
                     'grade' => "$grade($pos_group)",
                     'hotel' => 250000,
-                    'uang_makan' => 150000
+                    'uang_makan' => 35000,
+                    'uang_saku' => 40000
                 );
 
             return $biaya_pjd;
@@ -612,7 +618,8 @@ class Form_spd_luar extends MX_Controller {
             $biaya_pjd = array(
                     'grade' => "$grade($pos_group)",
                     'hotel' => 200000,
-                    'uang_makan' => 150000
+                    'uang_makan' => 30000,
+                    'uang_saku' => 35000,
                 );
 
             return $biaya_pjd;
@@ -620,7 +627,8 @@ class Form_spd_luar extends MX_Controller {
             $biaya_pjd = array(
                     'grade' => "$grade($pos_group)",
                     'hotel' => 200000,
-                    'uang_makan' => 150000
+                    'uang_makan' => 30000,
+                    'uang_saku' => 30000,
                 );
 
             return $biaya_pjd;

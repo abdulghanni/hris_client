@@ -25,27 +25,43 @@
                   <?php } ?>
                 </div>
                   <div class="grid-body no-border">
-                        
                           <table class="table table-striped table-flip-scroll cf">
                               <thead>
                                 <tr>
-                                  <th width="15%">Nama</th>
-                                  <th width="15%">Jabatan Lama</th>
-                                  <th width="15%">Tanggal Pengangkatan</th>
-                                  <th width="15%">Jabatan Baru</th>
-                                  <th width="15%">Tanggal Pengangkatan</th>
-                                  <th width="10%">Approval</th>
+                                  <th width="15%">Nama Pengaju</th>
+                                  <th width="15%">Nama Karyawan</th>
+                                  <th width="15%">Alasan Demolition</th>
+                                  <th width="15%" class="text-center">Approval HRD</th>
+                                  <th width="10%" class="text-center">Cetak</th>
                                 </tr>
                               </thead>
                               <tbody>
+                              <?php if($form_demolition->num_rows()>0){
+                                foreach($form_demolition->result() as $row):?>
                                   <tr>
-                                    <td><a href="<?php echo site_url('form_demolition/detail')?>">Wahyu Sucianto</a></td>
-                                    <td>Staff HRD</td>
-                                    <td>19-04-2010</td>
-                                    <td>Manajer HRD</td>
-                                    <td>05-05-2015</td>
-                                    <td><a href="<?php echo site_url('form_demolition/approval_hrd')?>">Ya</td>
-                                  </tr> 
+                                    <td><a href="<?php echo site_url('form_demolition/detail/'.$row->id)?>"><?php echo get_name($row->created_by)?></a></td>
+                                    <td><?php echo get_name($row->user_id)?></td>
+                                    <td><?php echo $row->alasan_demolition?></td>
+                                    <td class="text-center">
+                                    <?php if($row->is_app==1){?>
+                                    <a href="<?php echo site_url('form_demolition/approval_hrd/'.$row->id)?>"><?php echo $row->approval_status?></a>
+                                    <?php }elseif(is_admin() == true && $row->is_app == 0){?>
+                                    <a href="<?php echo site_url('form_demolition/approval_hrd/'.$row->id)?>">
+                                      <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-paste'></i></button>
+                                    </a>
+                                    <?php }else{
+                                      echo '-';
+                                    }?>
+                                    </td>
+                                    <td class="text-center">
+                                    <?php if($row->is_app == 1){?>
+                                            <a href="<?php echo site_url('form_demolition/form_demolition_pdf/'.$row->id)?>"><i class="icon-print"></i></a>
+                                          <?php }else{ ?>
+                                            <i class="icon-print"></i>
+                                          <?php } ?>
+                                    </td>
+                                  </tr>
+                                  <?php endforeach; } ?> 
                               </tbody>
                           </table>
                   </div>

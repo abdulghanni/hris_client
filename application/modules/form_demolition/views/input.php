@@ -117,7 +117,7 @@
                         </div>
                         <div class="col-md-8">
                           <label class="radio-inline">
-                            <input type="radio" name="syarat" id="syarat11" required value="1">Ya
+                            <input type="radio" name="syarat" id="syarat1" required value="1">Ya
                           </label>
                           <label class="radio-inline">
                             <input type="radio" name="syarat" id="syarat2" value="0">Tidak

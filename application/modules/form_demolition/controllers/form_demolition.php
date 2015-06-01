@@ -35,7 +35,7 @@ class Form_demolition extends MX_Controller {
                 $this->data['form_demolition'] = $this->form_demolition_model->form_demolition();
             }
 
-            $this->_render_page('form_demolition/index');
+            $this->_render_page('form_demolition/index', $this->data);
         }
     }
 
@@ -83,7 +83,7 @@ class Form_demolition extends MX_Controller {
                     'created_by'            => $this->session->userdata('user_id')
                 );
 
-                $num_rows = $this->form_demolition_model->form_demolition()->num_rows();
+                $num_rows = $this->form_demolition_model->form_demolition_admin()->num_rows();
 
                 if($num_rows>0){
                     $demolition_id = $this->db->select('id')->order_by('id', 'asc')->get('users_demolition')->last_row();
@@ -97,21 +97,122 @@ class Form_demolition extends MX_Controller {
                 if ($this->form_validation->run() == true && $this->form_demolition_model->add($additional_data))
                 {
                     $demolition_url = base_url().'form_demolition';
-                    //$this->send_approval_request($demolition_id, $user_id);
+                    $this->send_approval_request($demolition_id, $user_id);
                     echo json_encode(array('st' =>1, 'demolition_url' => $demolition_url));    
                 }
             }
         }
     }
 
-    function detail()
+    function detail($id)
     {
-        $this->_render_page('form_demolition/detail', $this->data);
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }else{
+            $this->data['sess_id'] = $this->session->userdata('user_id');
+            if(is_admin()){
+                $this->data['form_demolition'] = $this->form_demolition_model->form_demolition_admin($id);
+            }else{
+                $this->data['form_demolition'] = $this->form_demolition_model->form_demolition($id);
+            }
+
+            $user_id = getAll('users_demolition', array('id' => 'where/'.$id))->row('user_id');
+            $this->get_user_info($user_id);
+            $this->_render_page('form_demolition/detail', $this->data);
+        }
     }
 
-    function approval_hrd()
+    function approval_hrd($id)
     {
-        $this->_render_page('form_demolition/approval/hrd', $this->data);
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }else{
+            $this->data['sess_id'] = $this->session->userdata('user_id');
+            if(is_admin()){
+                $this->data['form_demolition'] = $this->form_demolition_model->form_demolition_admin($id);
+            }else{
+                $this->data['form_demolition'] = $this->form_demolition_model->form_demolition($id);
+            }
+
+            $user_id = getAll('users_demolition', array('id' => 'where/'.$id))->row('user_id');
+            $this->get_user_info($user_id);
+            $this->data['approval_status'] = GetAll('approval_status');
+            $this->_render_page('form_demolition/approval', $this->data);
+        }
+    }
+
+    function do_approve($id)
+    {
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }else{
+            $data = array(
+                    'is_app' => 1,
+                    'app_status_id' => $this->input->post('app_status'),
+                    'user_app' => $this->session->userdata('user_id'),
+                    'date_app' => date('Y-m-d',strtotime('now')),
+                    'note_hrd'=> $this->input->post('note'),
+                );
+            $approval_status = $this->input->post('app_status');
+            if($this->form_demolition_model->update($id, $data))
+            {
+                $this->approval_status_mail($id, $approval_status);
+                redirect('form_demolition/approval_hrd/'.$id, 'refresh');
+            }
+        }
+    }
+
+    function send_approval_request($id, $user_id)
+    {
+        $sender_id= $this->session->userdata('user_id');
+        $url = base_url().'form_demolition/approval_';
+        
+        $data = array(
+                'sender_id' => get_nik($sender_id),
+                'receiver_id' => 1,
+                'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                'subject' => 'Pengajuan Permohonan Demolition',
+                'email_body' => get_name($sender_id).' mengajukan permohonan demolition untuk '.get_name($user_id).', untuk melihat detail silakan <a href='.$url.'hrd/'.$id.'>Klik Disini</a><br/>'.$this->detail_email($id),
+                'is_read' => 0,
+            );
+        $this->db->insert('email', $data);
+    }
+
+    function detail_email($id)
+    {
+        $this->data['sess_id'] = $this->session->userdata('user_id');
+        if(is_admin()){
+            $this->data['form_demolition'] = $this->form_demolition_model->form_demolition_admin($id);
+        }else{
+            $this->data['form_demolition'] = $this->form_demolition_model->form_demolition($id);
+        }
+
+        $user_id = getAll('users_demolition', array('id' => 'where/'.$id))->row('user_id');
+        $this->get_user_info($user_id);
+        return $this->load->view('form_demolition/demolition_mail', $this->data, TRUE);
+    }
+
+    function approval_status_mail($id, $approval_status)
+    {
+        $url = base_url().'form_demolition/approval_hrd/'.$id;
+        $approver = get_name(get_nik($this->session->userdata('user_id')));
+        $receiver_id = $this->db->where('id', $id)->get('users_demolition')->row('created_by');
+        $approval_status = $this->db->where('id', $approval_status)->get('approval_status')->row('title');
+        $data = array(
+                'sender_id' => get_nik($this->session->userdata('user_id')),
+                'receiver_id' => get_nik($receiver_id),
+                'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                'subject' => 'Status Pengajuan Permohonan Demolition dari HRD',
+                'email_body' => "Status pengajuan permohonan demolition anda $approval_status oleh $approver untuk detail silakan <a href=$url>Klik disini</a><br/>".$this->detail_email($id),
+                'is_read' => 0,
+            );
+        $this->db->insert('email', $data);
     }
 
     function get_user_info($user_id = null)
@@ -363,7 +464,7 @@ class Form_demolition extends MX_Controller {
 
 
         $this->data['id'] = $id;
-        $title = $this->data['title'] = 'Form Pengajuan demolition-'.get_name($user_id);
+        $title = $this->data['title'] = 'Form Pengajuan Demolition-'.get_name($user_id);
         $this->load->library('mpdf60/mpdf');
         $html = $this->load->view('demolition_pdf', $this->data, true); 
         $mpdf = new mPDF();
@@ -462,7 +563,7 @@ class Form_demolition extends MX_Controller {
                     $this->template->add_css('datepicker.css');
                     $this->template->add_css('bootstrap-timepicker.css');
                      
-                }elseif(in_array($view, array('form_demolition/approval/hrd')))
+                }elseif(in_array($view, array('form_demolition/approval')))
                 {
                     $this->template->set_layout('default');
 

@@ -80,7 +80,13 @@
                       </div>
                     </div>
                         <?php if ($td_num_rows > 0) {
-                      foreach ($task_detail as $td) { ?>
+                      foreach ($task_detail as $td) { 
+                        $a = strtotime($td->date_spd_end);
+                        $b = strtotime($td->date_spd_start);
+
+                        $j = $a - $b;
+                        $jml_pjd = floor($j/(60*60*24)+1);
+                        ?>
                     <div class="row form-row">
                       <div class="col-md-3">
                         <label class="form-label text-right">Tujuan</label>
@@ -148,16 +154,16 @@
                               <tr>
                                 <th>Golongan</th>
                                 <th>Hotel</th>
-                                <th>Uang Makan(Per Hari)</th>
-                                <th>Uang Saku(Per Hari)</th>
+                                <th>Uang Makan</th>
+                                <th>Uang Saku</th>
                               </tr>
                             </thead>
                             <tbody>
                               <tr>
                                 <td><?php echo $biaya_pjd['grade']?></td>
-                                <td>Rp. <?php echo $biaya_pjd['hotel']?></td>
-                                <td>Rp. <?php echo $biaya_pjd['uang_makan']?></td>
-                                <td>tes</td>
+                                <td>Rp. <?php echo $biaya_pjd['hotel']*$jml_pjd?></td>
+                                <td>Rp. <?php echo $biaya_pjd['uang_makan']*$jml_pjd?></td>
+                                <td>Rp. <?php echo $biaya_pjd['uang_saku']*$jml_pjd?></td>
                               </tr>
                             </tbody>
                           </table>
