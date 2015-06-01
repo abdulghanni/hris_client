@@ -270,7 +270,6 @@ class Form_spd_dalam extends MX_Controller {
     {
         $user_id = $this->session->userdata('user_id');
         $report_id = $this->db->where('users_spd_dalam_report.user_spd_dalam_id', $id)->get('users_spd_dalam_report')->row('id');
-        //print_mz($report_id);
 
         if (!$this->ion_auth->logged_in())
         {
@@ -331,7 +330,7 @@ class Form_spd_dalam extends MX_Controller {
                 $this->data['disabled'] = 'disabled='.'"disabled"';
             }}
 
-            $this->_render_page('form_spd_dalam/report');
+            $this->_render_page('form_spd_dalam/report', $this->data);
         }
     }
 
@@ -469,7 +468,7 @@ class Form_spd_dalam extends MX_Controller {
                     'receiver_id' => $receiver_id,
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Pemberian Tugas Perjalanan Dinas Dalam Kota',
-                    'email_body' => get_name($sender).' memberikan tugas perjalan dinas dalam kota, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br/>'.$this->detail_email($spd_id),
+                    'email_body' => get_name($sender).' memberikan tugas perjalan dinas dalam kota, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br/>'.$this->detail_email_submit($spd_id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data);
@@ -484,7 +483,7 @@ class Form_spd_dalam extends MX_Controller {
                     'receiver_id' => $receiver_id,
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Persetujuan Tugas Perjalanan Dinas Dalam Kota',
-                    'email_body' => get_name($sender).' telah menyetujui tugas perjalan dinas dalam kota yang anda berikan, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br/>'.$this->detail_email($spd_id),
+                    'email_body' => get_name($sender).' telah menyetujui tugas perjalan dinas dalam kota yang anda berikan, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br/>'.$this->detail_email_submit($spd_id),
                     'is_read' => 0,
                 );
         $this->db->insert('email', $data);
@@ -499,13 +498,13 @@ class Form_spd_dalam extends MX_Controller {
                     'receiver_id' => $receiver_id,
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Laporan Tugas Perjalanan Dinas Dalam Kota',
-                    'email_body' => get_name($sender).' telah membuat laporan perjalanan dinas dalam kota, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a>',
+                    'email_body' => get_name($sender).' telah membuat laporan perjalanan dinas dalam kota, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br/>'.$this->detail_email_report($spd_id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data);
     }
 
-    function detail_email($id)
+    function detail_email_submit($id)
     {
         $task_id = $id;
         $user_id = $this->session->userdata('user_id');
@@ -562,6 +561,74 @@ class Form_spd_dalam extends MX_Controller {
             
             return $this->load->view('form_spd_dalam/spd_dalam_mail', $this->data, TRUE);
     } 
+
+    function detail_email_report($id)
+    {
+        $user_id = $this->session->userdata('user_id');
+        $report_id = $this->db->where('users_spd_dalam_report.user_spd_dalam_id', $id)->get('users_spd_dalam_report')->row('id');
+
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+        else
+        {
+            $this->data['photo'] = array(
+            'name'  => 'photo',
+            'id'    => 'photo',
+            'class'    => 'input-file-control',
+        );
+            $this->data['message'] = $this->session->flashdata('message');
+
+            $receiver_user_id = $this->db->where('id', $id)->get('users_spd_dalam')->row('task_receiver');
+            
+            $date_spd = date_create($this->db->where('id', $id)->get('users_spd_dalam')->row('date_spd'));
+            $date_now = date_create(date('Y-m-d',strtotime('now')));
+            $this->data['lama_pjd'] = date_diff($date_spd, $date_now)->days + 1;
+
+            $receiver_info = $this->get_receiver_info($receiver_user_id);
+
+            $this->data['task_receiver_nm'] = (!empty($receiver_info['NAME'])) ? $receiver_info['NAME'] : '-';
+            $this->data['task_receiver_org'] = (!empty($receiver_info['ORGANIZATION'])) ? $receiver_info['ORGANIZATION'] : '-';
+            $this->data['task_receiver_pos'] = (!empty($receiver_info['POSITION'])) ? $receiver_info['POSITION'] : '-';
+
+            if(is_admin()){
+                $data_result = $this->data['task_detail'] = $this->form_spd_dalam_model->where('users_spd_dalam.id',$id)->form_spd_dalam_admin($id)->result();
+                $this->data['td_num_rows'] = $this->form_spd_dalam_model->where('users_spd_dalam.id',$id)->form_spd_dalam_admin($id)->num_rows();
+            }else{
+                $data_result = $this->data['task_detail'] = $this->form_spd_dalam_model->where('users_spd_dalam.id',$id)->form_spd_dalam($id)->result();
+                $this->data['td_num_rows'] = $this->form_spd_dalam_model->where('users_spd_dalam.id',$id)->form_spd_dalam($id)->num_rows();
+            }
+            $this->data['user_folder'] = $user_folder = $this->db->where('id', $id)->get('users_spd_dalam')->row('task_receiver');
+
+            if(is_admin()){
+                $report = $this->data['report'] = $this->form_spd_dalam_model->where('users_spd_dalam_report.user_spd_dalam_id', $id)->form_spd_dalam_report_admin($report_id)->result();
+                $n_report = $this->data['n_report'] = $this->form_spd_dalam_model->where('users_spd_dalam_report.user_spd_dalam_id', $id)->form_spd_dalam_report_admin($report_id)->num_rows();
+            }else{
+                $report = $this->data['report'] = $this->form_spd_dalam_model->where('users_spd_dalam_report.user_spd_dalam_id', $id)->form_spd_dalam_report($report_id)->result();
+                $n_report = $this->data['n_report'] = $this->form_spd_dalam_model->where('users_spd_dalam_report.user_spd_dalam_id', $id)->form_spd_dalam_report($report_id)->num_rows();
+            }
+            if($n_report==0){
+                $this->data['tujuan'] = '';
+                $this->data['hasil'] = '';
+                $this->data['attachment'] = '-';
+                $this->data['disabled'] = '';
+
+            
+            }else{
+                foreach ($report as $key) {
+                $this->data['id_report'] = $key->id;    
+                $this->data['tujuan'] = $key->description;
+                $this->data['hasil'] = $key->result;
+                $this->data['attachment'] = (!empty($key->attachment)) ? $key->attachment : 2 ;
+                $this->data['created_on'] = $key->created_on;
+                $this->data['disabled'] = 'disabled='.'"disabled"';
+            }}
+
+            return $this->load->view('form_spd_dalam/spd_dalam_report_mail', $this->data, TRUE);
+        }
+    }
 
 
     public function get_emp_org()

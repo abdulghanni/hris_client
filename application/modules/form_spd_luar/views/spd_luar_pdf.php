@@ -42,7 +42,7 @@
 </div>
 <?php
 	if ($tc_num_rows > 0) {
-	foreach ($task_creator as $tc) : 
+	foreach ($task_creator as $tc) :
 ?>
 <table width="988" height="128" border="0" style="padding-left:30px;" class="style3">
 <tr class="style4"><td>Yang bertanda tangan dibawah ini : </td></tr>
@@ -85,7 +85,14 @@
     <td height="40"><?php echo $task_receiver_pos ?></td>
   </tr>
   <?php if ($td_num_rows > 0) {
-      foreach ($task_detail as $td) { ?>
+      foreach ($task_detail as $td) { 
+
+        $a = strtotime($td->date_spd_end);
+        $b = strtotime($td->date_spd_start);
+
+        $j = $a - $b;
+        $jml_pjd = floor($j/(60*60*24)+1);
+        ?>
   <tr>
     <td height="40"><span class="style3">Melakukan tugas / ijin ke </span></td>
     <td height="40"><div align="center">:</div></td>
@@ -117,6 +124,27 @@
     <td height="40"><?php echo dateIndo($td->date_spd_start) ?> s/d <?php echo dateIndo($td->date_spd_end) ?></td>
   </tr>
 </table>
+
+<h5 align="center"><span class="semi-bold">Ketentuan Biaya Perjalanan Dinas</span></h5>
+                          <table width="988" height="128" border="1" class="style3">
+                            <thead>
+                              <tr>
+                                <th>Golongan</th>
+                                <th>Hotel</th>
+                                <th>Uang Makan</th>
+                                <th>Uang Saku</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td><?php echo $biaya_pjd['grade']?></td>
+                                <td>Rp. <?php echo $biaya_pjd['hotel']*$jml_pjd?></td>
+                                <td>Rp. <?php echo $biaya_pjd['uang_makan']*$jml_pjd?></td>
+                                <td>Rp. <?php echo $biaya_pjd['uang_saku']*$jml_pjd?></td>
+                              </tr>
+                            </tbody>
+                          </table>
+
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>

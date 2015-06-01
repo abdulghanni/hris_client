@@ -1,19 +1,4 @@
-<!-- BEGIN PAGE CONTAINER-->
-  <div class="page-content"> 
-    <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
-    <div id="portlet-config" class="modal hide">
-      <div class="modal-header">
-        <button data-dismiss="modal" class="close" type="button"></button>
-        <h3>Widget Settings</h3>
-      </div>
-      <div class="modal-body"> Widget settings form goes here </div>
-    </div>
-    <div class="clearfix"></div>
-    <div class="content">  
-	    <div id="container">
-	    	<div class="row">
-        <div class="col-md-12">
-          <div class="grid simple">
+<div class="grid simple">
             <div class="grid-title no-border">
               <h4>Form Perjalanan Dinas <a href="<?php echo site_url('form_spd_luar')?>"><span class="semi-bold">Luar Kota</span></a></h4>
             </div>
@@ -146,6 +131,7 @@
                       </div>
                     </div>
 
+
                   <hr/>
                   <h5 class="text-center"><span class="semi-bold">Ketentuan Biaya Perjalanan Dinas</span></h5>
                           <table class="table table-bordered">
@@ -202,11 +188,3 @@
                   </div>  
             </div>
           </div>
-        </div>
-      </div>
-	          	
-		
-      </div>
-		
-	</div>  
-	<!-- END PAGE -->

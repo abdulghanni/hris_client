@@ -88,11 +88,11 @@ class Form_spd_luar extends MX_Controller {
             //set the flash data error message if there is one
             $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
             if(is_admin()){
-                $data_result = $this->data['task_detail'] = $this->form_spd_luar_model->where('users_spd_luar.id',$task_id)->form_spd_luar_admin()->result();
-                $this->data['td_num_rows'] = $this->form_spd_luar_model->where('users_spd_luar.id',$task_id)->form_spd_luar_admin()->num_rows();
+                $data_result = $this->data['task_detail'] = $this->form_spd_luar_model->where('users_spd_luar.id',$task_id)->form_spd_luar_admin($id)->result();
+                $this->data['td_num_rows'] = $this->form_spd_luar_model->where('users_spd_luar.id',$task_id)->form_spd_luar_admin($id)->num_rows();
             }else{
-                $data_result = $this->data['task_detail'] = $this->form_spd_luar_model->where('users_spd_luar.id',$task_id)->form_spd_luar()->result();
-                $this->data['td_num_rows'] = $this->form_spd_luar_model->where('users_spd_luar.id',$task_id)->form_spd_luar()->num_rows();
+                $data_result = $this->data['task_detail'] = $this->form_spd_luar_model->where('users_spd_luar.id',$task_id)->form_spd_luar($id)->result();
+                $this->data['td_num_rows'] = $this->form_spd_luar_model->where('users_spd_luar.id',$task_id)->form_spd_luar($id)->num_rows();
             
             }
             //get task creator id
@@ -160,7 +160,7 @@ class Form_spd_luar extends MX_Controller {
             // render city
             $this->data['city_list'] = $this->form_spd_luar_model->get_city()->result();
             $this->data['cl_num_rows'] = $this->form_spd_luar_model->get_city()->num_rows();
-            $task_receiver_id = getAll('users_spd_dalam', array('id' => 'where/'.$id))->row('task_receiver');
+            $task_receiver_id = getAll('users_spd_luar', array('id' => 'where/'.$id))->row('task_receiver');
             $this->data['biaya_pjd'] = $this->get_biaya_pjd($id, $task_receiver_id);
 
 
@@ -179,10 +179,12 @@ class Form_spd_luar extends MX_Controller {
         'is_submit' => 1,  
         'date_submit' => $date_now);
 
-       if ($this->form_spd_luar_model->update($id,$additional_data)) {
+        //print_mz('-');
+        $this->form_spd_luar_model->update($id,$additional_data);
+        
         $this->send_spd_submitted_mail($id, $receiver_id, $sender_id);
+
         redirect('form_spd_luar/submit/'.$id,'refresh');
-       }
     }
 
     public function update()
@@ -355,17 +357,17 @@ class Form_spd_luar extends MX_Controller {
             $this->data['task_receiver_pos'] = (!empty($receiver_info['POSITION'])) ? $receiver_info['POSITION'] : '-';
 
             if(is_admin()){
-                $data_result = $this->data['task_detail'] = $this->form_spd_luar_model->where('users_spd_luar.id',$id)->form_spd_luar_admin()->result();
-                $this->data['td_num_rows'] = $this->form_spd_luar_model->where('users_spd_luar.id',$id)->form_spd_luar_admin()->num_rows();
+                $data_result = $this->data['task_detail'] = $this->form_spd_luar_model->where('users_spd_luar.id',$id)->form_spd_luar_admin($id)->result();
+                $this->data['td_num_rows'] = $this->form_spd_luar_model->where('users_spd_luar.id',$id)->form_spd_luar_admin($id)->num_rows();
             }else{
-                $data_result = $this->data['task_detail'] = $this->form_spd_luar_model->where('users_spd_luar.id',$id)->form_spd_luar()->result();
-                $this->data['td_num_rows'] = $this->form_spd_luar_model->where('users_spd_luar.id',$id)->form_spd_luar()->num_rows();           
+                $data_result = $this->data['task_detail'] = $this->form_spd_luar_model->where('users_spd_luar.id',$id)->form_spd_luar($id)->result();
+                $this->data['td_num_rows'] = $this->form_spd_luar_model->where('users_spd_luar.id',$id)->form_spd_luar($id)->num_rows();           
             }
             $this->data['user_folder'] = $user_folder = $this->db->where('id', $id)->get('users_spd_luar')->row('task_receiver');
 
             $report = $this->data['report'] = $this->form_spd_luar_model->where('users_spd_luar_report.user_spd_luar_id', $id)->form_spd_luar_report()->result();
             $n_report = $this->data['n_report'] = $this->form_spd_luar_model->where('users_spd_luar_report.user_spd_luar_id', $id)->form_spd_luar_report()->num_rows();
-            //print_mz($this->db->last_query());
+            
             if($n_report==0){
                 $this->data['tujuan'] = '';
                 $this->data['hasil'] = '';
@@ -525,7 +527,7 @@ class Form_spd_luar extends MX_Controller {
                     'receiver_id' => $receiver_id,
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Pemberian Tugas Perjalanan Dinas Luar Kota',
-                    'email_body' => get_name($sender).' memberikan tugas perjalan dinas luar kota, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a>',
+                    'email_body' => get_name($sender).' memberikan tugas perjalan dinas luar kota, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br/>'.$this->detail_email_submit($spd_id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data);
@@ -540,7 +542,7 @@ class Form_spd_luar extends MX_Controller {
                     'receiver_id' => $receiver_id,
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Persetujuan Tugas Perjalanan Dinas Luar Kota',
-                    'email_body' => get_name($sender_id).' telah menyetujui tugas perjalan dinas luar kota yang anda berikan, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a>',
+                    'email_body' => get_name($sender_id).' telah menyetujui tugas perjalan dinas luar kota yang anda berikan, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br/>'.$this->detail_email_submit($spd_id),
                     'is_read' => 0,
                 );
         $this->db->insert('email', $data);
@@ -555,7 +557,7 @@ class Form_spd_luar extends MX_Controller {
                     'receiver_id' => $receiver_id,
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Laporan Tugas Perjalanan Dinas Luar Kota',
-                    'email_body' => get_name($sender_id).' telah membuat laporan Perjalanan Dinas Luar Kota, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a>',
+                    'email_body' => get_name($sender_id).' telah membuat laporan Perjalanan Dinas Luar Kota, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br/>'.$this->detail_email_report($spd_id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data);
@@ -756,6 +758,109 @@ class Form_spd_luar extends MX_Controller {
         $title_spd = $this->db->where('id', $id)->get('users_spd_luar')->row('title');
         $title = $this->data['title'] = 'Form-SPD-Luar-'.$title_spd;
            if(is_admin()){
+                $data_result = $this->data['task_detail'] = $this->form_spd_luar_model->where('users_spd_luar.id',$task_id)->form_spd_luar_admin($id)->result();
+                $this->data['td_num_rows'] = $this->form_spd_luar_model->where('users_spd_luar.id',$task_id)->form_spd_luar_admin($id)->num_rows();
+            }else{
+                $data_result = $this->data['task_detail'] = $this->form_spd_luar_model->where('users_spd_luar.id',$task_id)->form_spd_luar($id)->result();
+                $this->data['td_num_rows'] = $this->form_spd_luar_model->where('users_spd_luar.id',$task_id)->form_spd_luar($id)->num_rows();
+            
+            }
+            //get task creator id
+            foreach ($data_result as $dr) {
+                $created_by_id = $dr->task_creator;
+                $receiver_user_id = $dr->task_receiver;
+                $transportation_id = $dr->transportation_id;
+                $from_city_id = $dr->from_city_id;
+                $to_city_id = $dr->to_city_id;
+            }
+
+            //get task creator name
+            $query_result = $this->form_spd_luar_model->where('users.nik',$created_by_id)->get_emp_detail()->result();
+            foreach ($query_result as $qr) {
+                $this->data['task_creator_nm'] = $qr->user_name;
+            }
+
+             //get Receiver Info From API
+            $receiver_info = $this->get_receiver_info($receiver_user_id);
+
+            $this->data['task_receiver_nm'] = (!empty($receiver_info['NAME'])) ? $receiver_info['NAME'] : '-';
+            $this->data['task_receiver_org'] = (!empty($receiver_info['ORGANIZATION'])) ? $receiver_info['ORGANIZATION'] : '-';
+            $this->data['task_receiver_pos'] = (!empty($receiver_info['POSITION'])) ? $receiver_info['POSITION'] : '-';
+
+            //get User Info from API
+            $this->get_user_info($created_by_id);
+
+            //get transportation name
+            $query_result = $this->form_spd_luar_model->where('id',$transportation_id)->get_transportation()->result();
+            foreach ($query_result as $qr) {
+                $this->data['transportation_nm'] = $qr->title;
+            }
+            //render transportation
+            $this->data['transportation_list'] = $this->form_spd_luar_model->get_transportation()->result();
+            $this->data['tl_num_rows'] = $this->form_spd_luar_model->get_transportation()->num_rows();
+
+
+            //get city name
+            $query_result = $this->form_spd_luar_model->where('id',$from_city_id)->get_city()->result();
+            foreach ($query_result as $qr) {
+                $this->data['from_city_nm'] = $qr->title;
+            }
+            $query_result = $this->form_spd_luar_model->where('id',$to_city_id)->get_city()->result();
+            foreach ($query_result as $qr) {
+                $this->data['to_city_nm'] = $qr->title;
+            }
+
+            //get task creator detail
+            $this->data['task_creator'] = $this->form_spd_luar_model->where('users.nik',$created_by_id)->get_emp_detail()->result();
+            $this->data['tc_num_rows'] = $this->form_spd_luar_model->where('users.nik',$created_by_id)->get_emp_detail()->num_rows();
+            $this->data['task_receiver'] = $this->form_spd_luar_model->where('users.nik',$receiver_user_id)->get_emp_detail()->result();
+            $this->data['tr_num_rows'] = $this->form_spd_luar_model->where('users.nik',$receiver_user_id)->get_emp_detail()->num_rows();
+
+            //get user org_id
+            $data_result = $this->form_spd_luar_model->where('users.id',$user_id)->get_org_id()->result();
+            foreach ($data_result as $dr) {
+                $org_id = $dr->organization_id;
+            }
+
+            // render employee
+            $this->data['employee_list'] = $this->form_spd_luar_model->where('users_employement.organization_id',$org_id)->render_emp()->result();
+            $this->data['el_num_rows'] = $this->form_spd_luar_model->where('users_employement.organization_id',$org_id)->render_emp()->num_rows();
+
+
+            // render city
+            $this->data['city_list'] = $this->form_spd_luar_model->get_city()->result();
+            $this->data['cl_num_rows'] = $this->form_spd_luar_model->get_city()->num_rows();
+            $task_receiver_id = getAll('users_spd_luar', array('id' => 'where/'.$id))->row('task_receiver');
+            $this->data['biaya_pjd'] = $this->get_biaya_pjd($id, $task_receiver_id);
+
+            $this->load->library('mpdf60/mpdf');
+            $html = $this->load->view('spd_luar_pdf', $this->data, true); 
+            $mpdf = new mPDF();
+            $mpdf = new mPDF('A4');
+            $mpdf->WriteHTML($html);
+            $mpdf->Output($id.'-'.$title.'-'.$task_creator.'pdf', 'I');
+        
+    }
+
+    function detail_email_submit($id)
+    {
+        $user_id = $this->session->userdata('user_id');
+        if ($id == 0) {
+            $task_id = $this->uri->segment(3);
+        }else{
+            $task_id = $id;
+        }
+    
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+        else
+        {
+            //set the flash data error message if there is one
+            $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
+            if(is_admin()){
                 $data_result = $this->data['task_detail'] = $this->form_spd_luar_model->where('users_spd_luar.id',$task_id)->form_spd_luar_admin()->result();
                 $this->data['td_num_rows'] = $this->form_spd_luar_model->where('users_spd_luar.id',$task_id)->form_spd_luar_admin()->num_rows();
             }else{
@@ -828,16 +933,74 @@ class Form_spd_luar extends MX_Controller {
             // render city
             $this->data['city_list'] = $this->form_spd_luar_model->get_city()->result();
             $this->data['cl_num_rows'] = $this->form_spd_luar_model->get_city()->num_rows();
+            $task_receiver_id = getAll('users_spd_luar', array('id' => 'where/'.$id))->row('task_receiver');
+            $this->data['biaya_pjd'] = $this->get_biaya_pjd($id, $task_receiver_id);
+
+            return $this->load->view('form_spd_luar/spd_luar_email', $this->data, TRUE);
+        }
+    }
+
+    function detail_email_report($id)
+    {
+        $user_id = $this->session->userdata('user_id');
+
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+        else
+        {
+            $this->data['photo'] = array(
+            'name'  => 'photo',
+            'id'    => 'photo',
+            'class'    => 'input-file-control',
+        );
+            $this->data['message'] = $this->session->flashdata('message');
+
+            $receiver_user_id = $this->db->where('id', $id)->get('users_spd_luar')->row('task_receiver');
             
+            $date_spd = date_create($this->db->where('id', $id)->get('users_spd_luar')->row('date_spd_start'));
+            $date_now = date_create($this->db->where('id', $id)->get('users_spd_luar')->row('date_spd_end'));
+            $this->data['lama_pjd'] = date_diff($date_spd, $date_now)->days + 1;
 
+            $receiver_info = $this->get_receiver_info($receiver_user_id);
 
-            $this->load->library('mpdf60/mpdf');
-            $html = $this->load->view('spd_luar_pdf', $this->data, true); 
-            $mpdf = new mPDF();
-            $mpdf = new mPDF('A4');
-            $mpdf->WriteHTML($html);
-            $mpdf->Output($id.'-'.$title.'-'.$task_creator.'pdf', 'I');
-        
+            $this->data['task_receiver_nm'] = (!empty($receiver_info['NAME'])) ? $receiver_info['NAME'] : '-';
+            $this->data['task_receiver_org'] = (!empty($receiver_info['ORGANIZATION'])) ? $receiver_info['ORGANIZATION'] : '-';
+            $this->data['task_receiver_pos'] = (!empty($receiver_info['POSITION'])) ? $receiver_info['POSITION'] : '-';
+
+            if(is_admin()){
+                $data_result = $this->data['task_detail'] = $this->form_spd_luar_model->where('users_spd_luar.id',$id)->form_spd_luar_admin($id)->result();
+                $this->data['td_num_rows'] = $this->form_spd_luar_model->where('users_spd_luar.id',$id)->form_spd_luar_admin($id)->num_rows();
+            }else{
+                $data_result = $this->data['task_detail'] = $this->form_spd_luar_model->where('users_spd_luar.id',$id)->form_spd_luar($id)->result();
+                $this->data['td_num_rows'] = $this->form_spd_luar_model->where('users_spd_luar.id',$id)->form_spd_luar($id)->num_rows();           
+            }
+            $this->data['user_folder'] = $user_folder = $this->db->where('id', $id)->get('users_spd_luar')->row('task_receiver');
+
+            $report = $this->data['report'] = $this->form_spd_luar_model->where('users_spd_luar_report.user_spd_luar_id', $id)->form_spd_luar_report()->result();
+            $n_report = $this->data['n_report'] = $this->form_spd_luar_model->where('users_spd_luar_report.user_spd_luar_id', $id)->form_spd_luar_report()->num_rows();
+            //print_mz($this->db->last_query());
+            if($n_report==0){
+                $this->data['tujuan'] = '';
+                $this->data['hasil'] = '';
+                $this->data['attachment'] = '-';
+                $this->data['disabled'] = '';
+
+            
+            }else{
+                foreach ($report as $key) {
+                $this->data['id_report'] = $key->id;    
+                $this->data['tujuan'] = $key->description;
+                $this->data['hasil'] = $key->result;
+                $this->data['attachment'] = (!empty($key->attachment)) ? $key->attachment : 2 ;
+                $this->data['created_on'] = $key->created_on;
+                $this->data['disabled'] = 'disabled='.'"disabled"';
+            }}
+
+            return $this->load->view('form_spd_luar/spd_luar_report_email', $this->data, TRUE);
+        }
     }
 
 
