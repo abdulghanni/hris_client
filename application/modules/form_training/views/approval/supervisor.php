@@ -78,6 +78,40 @@
                       <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Tujuan pelatihan" value="<?php echo $user->tujuan_training?>" disabled="disabled">
                     </div>
                   </div>
+                  <!--
+                  <?php if(!empty($user->is_app_lv1)){?>
+                  <div class="row form-row">
+                    <div class="col-md-3">
+                      <label class="form-label text-right">Approval Status SPV</label>
+                    </div>
+                    <div class="col-md-9">
+                      <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Tujuan pelatihan" value="tes" disabled="disabled">
+                    </div>
+                  </div>
+                  <?php } ?>
+
+                  <?php if(!empty($user->note_app_lv1)){?>
+                  <div class="row form-row">
+                    <div class="col-md-3">
+                      <label class="form-label text-right">Note SPV</label>
+                    </div>
+                    <div class="col-md-9">
+                      <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Tujuan pelatihan" value="<?php echo $user->tujuan_training?>" disabled="disabled">
+                    </div>
+                  </div>
+                  <?php } ?>
+                  -->
+
+                  <?php if ($user->is_app_lv1 == 1 && cek_subordinate(is_have_subordinate($session_id),'id', $user->user_id) == TRUE) { ?>
+                  <div class="row form-row">
+                    <div class="col-md-6">
+                      &nbsp;
+                    </div>
+                    <div class="col-md-6">
+                      <div class='btn btn-info btn-small' class="text-center" title='Edit Approval' data-toggle="modal" data-target="#notapprovetrainingModal"><i class='icon-edit'> Edit Approval</i></div>
+                    </div>
+                  </div>
+                  <?php } ?>
                 </div>
               </div>
                 <div class="form-actions">
@@ -96,15 +130,14 @@
                             <span class="semi-bold"><?php echo $name_app_lv1?></span><br/>
                             <span class="small"><?php echo dateIndo($user->date_app_lv1)?></span>
                             <br />
-                          <button type='button' class='btn btn-info btn-small' title='Edit Approval' data-toggle="modal" data-target="#notapprovetrainingModal"><i class='icon-paste'></i></button>
+                          
                             <?php }elseif($user->is_app_lv1 == 1 && cek_subordinate(is_have_subordinate($session_id),'id', $user->user_id) == FALSE){?>
                             <span class="semi-bold"><?php echo $name_app_lv1?></span><br/>
                             <span class="small"><?php echo dateIndo($user->date_app_lv1)?></span>
                             <?php }elseif(cek_subordinate(is_have_subordinate($session_nik),'id', $user->user_id))
                                   {
                                     if($user->is_app_lv1 == 0){?>
-                          <button class="btn btn-success btn-cons" id="btn_app_lv1" type=""><i class="icon-ok"></i>Approve</button>
-                          <div class="btn btn-danger btn-cons" data-toggle="modal" data-target="#notapprovetrainingModal"><i class="icon-remove"></i>Not Approve</div>
+                          <div class="btn btn-success btn-cons" data-toggle="modal" data-target="#notapprovetrainingModal"><i class="icon-ok"></i>Submit</div>
                           <?php }}?>
                       </div>
                        <div class="col-md-4">

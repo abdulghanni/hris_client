@@ -178,7 +178,7 @@
                       <label class="form-label text-right">Approval Status</label>
                     </div>
                     <div class="col-md-9">
-                      <input name="approval_status" id="alamat_cuti" type="text"  class="form-control" placeholder="Nama" value="<?php echo $user->approval_status_lv2; ?>" disabled="disabled">
+                      <input name="approval_status" id="alamat_training" type="text"  class="form-control" placeholder="Nama" value="<?php echo $user->approval_status_lv2; ?>" disabled="disabled">
                     </div>
                   </div>
                   <?php } ?>
@@ -189,11 +189,22 @@
                       <label class="form-label text-right">Note (HRD) : </label>
                     </div>
                     <div class="col-md-9">
-                      <textarea name="notes_hrd_update" class="custom-txtarea-form" placeholder="Note HRD isi disini"><?=$notes_hrd?></textarea>
+                      <textarea name="notes_hrd_update" class="custom-txtarea-form" placeholder="Note HRD isi disini" disabled="disabled"><?=$notes_hrd?></textarea>
+                    </div>
+                  </div>
+                  <?php } ?>
+                  <?php if($user->is_app_lv2 == 1 && is_admin() == true){?>
+                  <div class="row form-row">
+                    <div class="col-md-6">
+                      &nbsp;
+                    </div>
+                    <div class="col-md-6">
+                      <div class='btn btn-info btn-small' class="text-center" title='Edit Approval' data-toggle="modal" data-target="#edittrainingModal"><i class='icon-edit'> Edit Approval</i></div>
                     </div>
                   </div>
                   <?php } ?>
               </div>
+
               <!-- end separation -->
 
               <div class="form-actions">
@@ -223,15 +234,12 @@
                           <?php if($user->is_app_lv2 == 1 && is_admin() == true){?>
                           <span class="semi-bold"><?php echo $name_app_lv2?></span><br/>
                           <span class="small"><?php echo dateIndo($user->date_app_lv2)?></span>
-                          <br />
-                          <button type='button' class='btn btn-info btn-small' title='Edit Approval' data-toggle="modal" data-target="#edittrainingModal"><i class='icon-paste'></i></button>
                           <?php }elseif($user->is_app_lv2 == 1 && is_admin() == false){?>
                           <span class="semi-bold"><?php echo $name_app_lv2?></span><br/>
                           <span class="small"><?php echo dateIndo($user->date_app_lv2)?></span>
                           <?php }else{
                             if(is_admin()){?>
-                          <button class="btn btn-success btn-cons" id="btn_app_lv2" type=""><i class="icon-ok"></i>Approve</button>
-                          <div class="btn btn-danger btn-cons" data-toggle="modal" data-target="#notapprovetrainingModal"><i class="icon-remove"></i>Not Approve</div>
+                          <div class="btn btn-success btn-cons" data-toggle="modal" data-target="#edittrainingModal"><i class="icon-ok"></i>Submit</div>
                           <?php }}?>
                     </div>
                   </div>
