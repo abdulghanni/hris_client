@@ -112,7 +112,6 @@ class form_training extends MX_Controller {
                     'id_comp_session' => 1,
                     'training_name' => $this->input->post('training_name'),
                     'tujuan_training' => $this->input->post('tujuan_training'),
-                    'tanggal'            => date('Y-m-d',strtotime('now')),
                     'created_on'            => date('Y-m-d',strtotime('now')),
                     'created_by'            => $user_id
                     );
