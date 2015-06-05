@@ -15,7 +15,7 @@
           <div class="col-md-12">
               <div class="grid simple ">
                 <div class="grid-title no-border">
-                  <h4><?php echo lang('list_of_submission'); ?> <span class="semi-bold"><?php echo lang('form_cuti_subheading'); ?></span></h4>
+                  <h4><?php echo lang('list_of_submission'); ?> <a href="<?php echo site_url('form_cuti')?>"><span class="semi-bold"><?php echo lang('form_cuti_subheading'); ?></span></a></h4>
                   <div class="tools"> 
                     <a href="<?php echo site_url('form_cuti/input'); ?>" class="config"></a>
                   </div>
@@ -40,6 +40,11 @@
                                   $session_id = get_nik($this->session->userdata('user_id'));
                                   $id_user = $this->session->userdata('user_id');
                                   $txt_app_lv1 = $txt_app_lv2 = $txt_app_lv3 = "-";
+                                  print_r($user->approval_status_id_lv1);
+                                  $color = 'Red';
+                                  $approval_status_lv1 = ($user->approval_status_id_lv1 == 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($user->approval_status_id_lv1 == 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
+                                  $approval_status_lv2 = ($user->approval_status_id_lv2 == 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($user->approval_status_id_lv2 == 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
+                                  $approval_status_lv3 = ($user->approval_status_id_lv3 == 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($user->approval_status_id_lv3 == 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
 
                                   // approval cuti
                                   //Approval Level 1
@@ -52,17 +57,17 @@
                                                   <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-paste'></i></button>
                                               </a>";
                                           }else{
-                                            $txt_app_lv1 =  "<a href='".site_url('form_cuti/approval_spv/'.$user->id)."''>$user->approval_status_lv1</a>";
+                                            $txt_app_lv1 =  "<a href='".site_url('form_cuti/approval_spv/'.$user->id)."''>$approval_status_lv1</a>";
                                             
                                           }
                                       }elseif($user->is_app_lv1== 1){
-                                        $txt_app_lv1 =  "<a href='".site_url('form_cuti/approval_spv/'.$user->id)."''>$user->approval_status_lv1</a>";
+                                        $txt_app_lv1 =  "<a href='".site_url('form_cuti/approval_spv/'.$user->id)."''>$approval_status_lv1</a>";
                                       }elseif($user->is_app_lv1== 0){
                                          $txt_app_lv1 = '-';
                                       }
                                   }else{
                                     if ($user->is_app_lv1== 1){
-                                    $txt_app_lv1 =  "<a href='".site_url('form_cuti/approval_spv/'.$user->id)."''>$user->approval_status_lv1</a>";
+                                    $txt_app_lv1 =  "<a href='".site_url('form_cuti/approval_spv/'.$user->id)."''>$approval_status_lv1</a>";
                                     }
                                   }
 
@@ -76,7 +81,7 @@
                                                   <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-paste'></i></button>
                                               </a>";
                                           }else{
-                                            $txt_app_lv2 =  "<a href='".site_url('form_cuti/approval_kbg/'.$user->id)."''>$user->approval_status_lv2</a>";
+                                            $txt_app_lv2 =  "<a href='".site_url('form_cuti/approval_kbg/'.$user->id)."''>$approval_status_lv2</a>";
                                             
                                           }
                                      }else{
@@ -84,7 +89,7 @@
                                      }
                                   }else{
                                     if ($user->is_app_lv2== 1){
-                                    $txt_app_lv2 =  "<a href='".site_url('form_cuti/approval_kbg/'.$user->id)."''>$user->approval_status_lv2</a>";
+                                    $txt_app_lv2 =  "<a href='".site_url('form_cuti/approval_kbg/'.$user->id)."''>$approval_status_lv2</a>";
                                     }
                                   }
 
@@ -95,11 +100,11 @@
                                                   <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-paste'></i></button>
                                               </a>";
                                           }else{
-                                            $txt_app_lv3 =  "<a href='".site_url('form_cuti/approval_hrd/'.$user->id)."''>$user->approval_status_lv3</a>";
+                                            $txt_app_lv3 =  "<a href='".site_url('form_cuti/approval_hrd/'.$user->id)."''>$approval_status_lv3</a>";
                                             
                                           }
                                       }elseif($user->is_app_lv3== 1){
-                                        $txt_app_lv3 =  "<a href='".site_url('form_cuti/approval_hrd/'.$user->id)."''>$user->approval_status_lv3</a>";
+                                        $txt_app_lv3 =  "<a href='".site_url('form_cuti/approval_hrd/'.$user->id)."''>$approval_status_lv3</a>";
                                       }
 
 

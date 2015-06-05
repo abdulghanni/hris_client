@@ -303,6 +303,7 @@ class Recruitment_model extends CI_Model
             $this->tables['recruitment'].'.created_on as date_created',
             'kualifikasi'.'.*', 'kemampuan'.'.*',
             'status.title as status', 'urgensi.title as urgensi',
+            'jurusan.title as jurusan', 'ipk.title as ipk','toefl.title as toefl',
 
             ));
             
@@ -311,6 +312,9 @@ class Recruitment_model extends CI_Model
             $this->db->join('users_recruitment_kemampuan as kemampuan', 'users_recruitment.user_kemampuan_id = kemampuan.id', 'left');
             $this->db->join('recruitment_status as status', 'users_recruitment.status_id = status.id', 'left');
             $this->db->join('recruitment_urgensi as urgensi', 'users_recruitment.urgensi_id = urgensi.id', 'left');
+            $this->db->join('recruitment_jurusan as jurusan', 'kualifikasi.jurusan = jurusan.id', 'left');
+            $this->db->join('ipk as ipk', 'kualifikasi.ipk = ipk.id', 'left');
+            $this->db->join('toefl as toefl', 'kualifikasi.toefl = toefl.id', 'left');
            
             $this->db->where('users_recruitment.is_deleted', 0);
             //$this->db->where('users.active', 0);

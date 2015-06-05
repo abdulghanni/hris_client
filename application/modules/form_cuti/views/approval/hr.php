@@ -17,7 +17,7 @@
           <div class="col-md-12">
             <div class="grid simple">
               <div class="grid-title no-border">
-                <h4>Form <span class="semi-bold">Cuti</span> - HRD Approval</h4>
+                <h4>Form <a href="<?php echo site_url('form_cuti')?>"><span class="semi-bold">Cuti</span> - HRD Approval</a></h4>
               </div>
               <div class="grid-body no-border">
                 <form class="form-no-horizontal-spacing" id="formAppLv3"> 

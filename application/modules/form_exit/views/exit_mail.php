@@ -91,42 +91,90 @@
                             </tr>
                             <tr>
                               <td>3</td>
-                              <td>Sepeda motor / mobil</td>
+                              <td>Sepeda Motor</td>
                               <td>
-                                <?php $kendaraan = ($inventaris->is_kendaraan == 1) ? 'Ada' : 'Tidak';?>
+                                <?php $motor = ($inventaris->is_motor == 1) ? 'Ada' : 'Tidak';?>
                                   <div class="radio">
-                                      <input id="kendaraan" type="radio" name="kendaraan" value="<?php echo $inventaris->is_kendaraan?>" checked="checked">
-                                    <label for="kendaraan"><?php echo $kendaraan?></label>
+                                      <input id="motor" type="radio" name="motor" value="<?php echo $inventaris->is_motor?>" checked="checked">
+                                    <label for="motor"><?php echo $motor?></label>
                                   </div>
                               </td>
-                              <td><input name="keterangan_kendaraan" id="form3LastName" type="text"  class="form-control" placeholder="" value="<?php echo $inventaris->keterangan_kendaraan?>" disabled="disabled"></td>
+                              <td><input name="keterangan_motor" id="form3LastName" type="text"  class="form-control" placeholder="" value="<?php echo $inventaris->keterangan_motor?>" disabled="disabled"></td>
                             </tr>
                             <tr>
                               <td>4</td>
-                              <td>STNK motor / mobil</td>
+                              <td>Mobil</td>
                               <td>
-                                <?php $stnk = ($inventaris->is_stnk == 1) ? 'Ada' : 'Tidak';?>
+                                <?php $mobil = ($inventaris->is_mobil == 1) ? 'Ada' : 'Tidak';?>
                                   <div class="radio">
-                                      <input id="stnk" type="radio" name="stnk" value="<?php echo $inventaris->is_stnk?>" checked="checked">
-                                    <label for="stnk"><?php echo $stnk?></label>
+                                      <input id="mobil" type="radio" name="mobil" value="<?php echo $inventaris->is_mobil?>" checked="checked">
+                                    <label for="mobil"><?php echo $mobil?></label>
                                   </div>
                               </td>
-                              <td><input name="keterangan_stnk" id="form3LastName" type="text"  class="form-control" placeholder="" value="<?php echo $inventaris->keterangan_stnk?>" disabled="disabled"></td>
+                              <td><input name="keterangan_mobil" id="form3LastName" type="text"  class="form-control" placeholder="" value="<?php echo $inventaris->keterangan_mobil?>" disabled="disabled"></td>
                             </tr>
                             <tr>
                               <td>5</td>
-                              <td>HP/Laptop/Ipad</td>
+                              <td>STNK Motor</td>
                               <td>
-                                <?php $gadget = ($inventaris->is_gadget == 1) ? 'Ada' : 'Tidak';?>
+                                <?php $stnk_motor = ($inventaris->is_stnk_motor == 1) ? 'Ada' : 'Tidak';?>
                                   <div class="radio">
-                                      <input id="gadget" type="radio" name="gadget" value="<?php echo $inventaris->is_gadget?>" checked="checked">
-                                    <label for="gadget"><?php echo $gadget?></label>
+                                      <input id="stnk_motor" type="radio" name="stnk_motor" value="<?php echo $inventaris->is_stnk_motor?>" checked="checked">
+                                    <label for="stnk_motor"><?php echo $stnk_motor?></label>
                                   </div>
                               </td>
-                              <td><input name="keterangan_gadget" id="keterangan" type="text"  class="form-control" placeholder="" value="<?php echo $inventaris->keterangan_gadget?>" disabled="disabled"></td>
+                              <td><input name="keterangan_stnk_motor" id="form3LastName" type="text"  class="form-control" placeholder="" value="<?php echo $inventaris->keterangan_stnk_motor?>" disabled="disabled"></td>
                             </tr>
                             <tr>
                               <td>6</td>
+                              <td>STNK Mobil</td>
+                              <td>
+                                <?php $stnk_mobil = ($inventaris->is_stnk_mobil == 1) ? 'Ada' : 'Tidak';?>
+                                  <div class="radio">
+                                      <input id="stnk_mobil" type="radio" name="stnk_mobil" value="<?php echo $inventaris->is_stnk_mobil?>" checked="checked">
+                                    <label for="stnk_mobil"><?php echo $stnk_mobil?></label>
+                                  </div>
+                              </td>
+                              <td><input name="keterangan_stnk_mobil" id="form3LastName" type="text"  class="form-control" placeholder="" value="<?php echo $inventaris->keterangan_stnk_mobil?>" disabled="disabled"></td>
+                            </tr>
+                            <tr>
+                              <td>7</td>
+                              <td>HP</td>
+                              <td>
+                                <?php $hp = ($inventaris->is_hp == 1) ? 'Ada' : 'Tidak';?>
+                                  <div class="radio">
+                                      <input id="hp" type="radio" name="hp" value="<?php echo $inventaris->is_hp?>" checked="checked">
+                                    <label for="hp"><?php echo $hp?></label>
+                                  </div>
+                              </td>
+                              <td><input name="keterangan_hp" id="keterangan" type="text"  class="form-control" placeholder="" value="<?php echo $inventaris->keterangan_hp?>" disabled="disabled"></td>
+                            </tr>
+                            <tr>
+                              <td>8</td>
+                              <td>Laptop</td>
+                              <td>
+                                <?php $laptop = ($inventaris->is_laptop == 1) ? 'Ada' : 'Tidak';?>
+                                  <div class="radio">
+                                      <input id="laptop" type="radio" name="laptop" value="<?php echo $inventaris->is_laptop?>" checked="checked">
+                                    <label for="laptop"><?php echo $laptop?></label>
+                                  </div>
+                              </td>
+                              <td><input name="keterangan_laptop" id="keterangan" type="text"  class="form-control" placeholder="" value="<?php echo $inventaris->keterangan_laptop?>" disabled="disabled"></td>
+                            </tr>
+                            <tr>
+                              <td>9</td>
+                              <td>Ipad</td>
+                              <td>
+                                <?php $ipad = ($inventaris->is_ipad == 1) ? 'Ada' : 'Tidak';?>
+                                  <div class="radio">
+                                      <input id="ipad" type="radio" name="ipad" value="<?php echo $inventaris->is_ipad?>" checked="checked">
+                                    <label for="ipad"><?php echo $ipad?></label>
+                                  </div>
+                              </td>
+                              <td><input name="keterangan_ipad" id="keterangan" type="text"  class="form-control" placeholder="" value="<?php echo $inventaris->keterangan_ipad?>" disabled="disabled"></td>
+                            </tr>
+                            <tr>
+                              <td>10</td>
                               <td>Laporan serah terima</td>
                               <td>
                                 <?php $laporan = ($inventaris->is_laporan == 1) ? 'Ada' : 'Tidak';?>
@@ -138,7 +186,7 @@
                               <td><input name="keterangan_laporan" id="form3LastName" type="text"  class="form-control" placeholder="" value="<?php echo $inventaris->keterangan_laporan?>" disabled="disabled"></td>
                             </tr>
                             <tr>
-                              <td>7</td>
+                              <td>11</td>
                               <td>Rekonsiliasi Saldo</td>
                               <td>
                                 <?php $saldo = ($inventaris->is_saldo == 1) ? 'Ada' : 'Tidak';?>
@@ -150,7 +198,7 @@
                               <td><input name="keterangan_saldo" id="form3LastName" type="text"  class="form-control" placeholder="" value="<?php echo $inventaris->keterangan_saldo?>" disabled="disabled"></td>
                             </tr>
                             <tr>
-                              <td>8</td>
+                              <td>12</td>
                               <td>Pinjaman Koperasi</td>
                               <td>
                                 <?php $pinjaman_koperasi = ($inventaris->is_pinjaman_koperasi == 1) ? 'Ada' : 'Tidak';?>
@@ -162,7 +210,7 @@
                               <td><input name="keterangan_koperasi" id="form3LastName" type="text"  class="form-control" placeholder="" value="<?php echo $inventaris->keterangan_pinjaman_koperasi?>" disabled="disabled"></td>
                             </tr>
                             <tr>
-                              <td>9</td>
+                              <td>13</td>
                               <td>Pinjaman buku perpustakaan</td>
                               <td>
                                 <?php $pinjaman_buku = ($inventaris->is_pinjaman_buku == 1) ? 'Ada' : 'Tidak';?>
@@ -174,7 +222,7 @@
                               <td><input name="keterangan_buku" id="form3LastName" type="text"  class="form-control" placeholder="" value="<?php echo $inventaris->keterangan_pinjaman_buku?>" disabled="disabled"></td>
                             </tr>
                             <tr>
-                              <td>10</td>
+                              <td>14</td>
                               <td>Ikatan dinas</td>
                               <td>
                                 <?php $ikatan = ($inventaris->is_ikatan == 1) ? 'Ada' : 'Tidak';?>
@@ -184,6 +232,30 @@
                                   </div>
                               </td>
                               <td><input name="keterangan_ikatan" id="form3LastName" type="text"  class="form-control" placeholder="" value="<?php echo $inventaris->keterangan_ikatan?>" disabled="disabled"></td>
+                            </tr>
+                            <tr>
+                              <td>15</td>
+                              <td>Kartu Kredit</td>
+                              <td>
+                                <?php $kartu_kredit = ($inventaris->is_kartu_kredit == 1) ? 'Ada' : 'Tidak';?>
+                                  <div class="radio">
+                                      <input id="kartu_kredit" type="radio" name="kartu_kredit" value="<?php echo $inventaris->is_kartu_kredit?>" checked="checked">
+                                    <label for="kartu_kredit"><?php echo $kartu_kredit?></label>
+                                  </div>
+                              </td>
+                              <td><input name="keterangan_kartu_kredit" id="form3LastName" type="text"  class="form-control" placeholder="" value="<?php echo $inventaris->keterangan_kartu_kredit?>" disabled="disabled"></td>
+                            </tr>
+                            <tr>
+                              <td>14</td>
+                              <td>Pinjaman Subsidi Rumah</td>
+                              <td>
+                                <?php $pinjaman_subsidi = ($inventaris->is_pinjaman_subsidi == 1) ? 'Ada' : 'Tidak';?>
+                                  <div class="radio">
+                                      <input id="pinjaman_subsidi" type="radio" name="pinjaman_subsidi" value="<?php echo $inventaris->is_pinjaman_subsidi?>" checked="checked">
+                                    <label for="pinjaman_subsidi"><?php echo $pinjaman_subsidi?></label>
+                                  </div>
+                              </td>
+                              <td><input name="keterangan_pinjaman_subsidi" id="form3LastName" type="text"  class="form-control" placeholder="" value="<?php echo $inventaris->keterangan_pinjaman_subsidi?>" disabled="disabled"></td>
                             </tr>
                           </table>
                         </div>
@@ -297,6 +369,17 @@
                             </tr>
                             <tr>
                               <td>4</td>
+                              <td>Diberikan uang pisah</td>
+                              <td>
+                                <?php $uang_pisah = ($rekomendasi->is_uang_pisah == 1) ? 'Ada' : 'Tidak';?>
+                                  <div class="radio">
+                                      <input id="uang_pisah" type="radio" name="uang_pisah" value="<?php echo $rekomendasi->is_uang_pisah?>" checked="checked">
+                                    <label for="uang_pisah"><?php echo $uang_pisah?></label>
+                                  </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>5</td>
                               <td>Diberikan surat keterangan kerja</td>
                               <td>
                                 <?php $sk_kerja = ($rekomendasi->is_sk_kerja == 1) ? 'Ada' : 'Tidak';?>
@@ -307,7 +390,7 @@
                               </td>
                             </tr>
                             <tr>
-                              <td>5</td>
+                              <td>6</td>
                               <td>Diberikan ijazah asli ybs</td>
                               <td>
                                 <?php $ijazah = ($rekomendasi->is_ijazah == 1) ? 'Ada' : 'Tidak';?>

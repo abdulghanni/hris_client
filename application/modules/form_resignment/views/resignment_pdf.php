@@ -68,9 +68,20 @@
 </table>
 <p class="style7">Alasan Berhenti Kerja </p>
 <div class="style8">
-<ul>
-  <li><?php echo $row->alasan_resign?></li>
-</ul>
+<div class="row form-row">
+                      <div class="col-md-12">
+                      <div class="checkbox check-primary checkbox-circle" >
+                        <?php 
+                        if($alasan->num_rows()>0){
+                          foreach($alasan->result() as $alasan):?>
+                          <input name="alasan[]" class="checkbox1" type="checkbox" id="alasan<?php echo $alasan->id ?>" value="<?php echo $alasan->id ?>" checked="checked" disabled="disabled">
+                            <label for="alasan<?php echo $alasan->id ?>"><?php echo $alasan->title?></label>
+                        <?php endforeach;} ?>
+
+                      </div>
+                      </div>
+                      </div>
+                    </div>
 </div>
 
 <div class="style9">

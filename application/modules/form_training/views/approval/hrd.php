@@ -146,12 +146,39 @@
                   </div>
                   <div class="row form-row">
                     <div class="col-md-3">
-                      <label class="form-label text-right">Waktu Pelaksanaan</label>
+                      <label class="form-label text-right">Nama Narasumber</label>
                     </div>
                     <div class="col-md-9">
+                      <input name="narasumber" id="tempat" type="text"  class="form-control" placeholder="Nama Narasumber" value="<?php echo $user->narasumber?>" <?php echo $disabled?> required>
+                    </div>
+                  </div>
+                  <div class="row form-row">
+                    <div class="col-md-3">
+                      <label class="form-label text-right">Nama Vendor</label>
+                    </div>
+                    <div class="col-md-9">
+                      <input name="vendor" id="tempat" type="text"  class="form-control" placeholder="Nama Vendor" value="<?php echo $user->vendor?>" <?php echo $disabled?> required>
+                    </div>
+                  </div>
+                  <div class="row form-row">
+                    <div class="col-md-3">
+                      <label class="form-label text-right">Waktu Pelaksanaan</label>
+                    </div>
+                    <div class="col-md-4">
                       <div class="input-with-icon right">
                           <div class="input-append success date no-padding">
-                              <input type="text" class="datepicker" id="training_date" name="tanggal" value="<?php echo $user->tanggal?>" <?php echo $disabled?> required>
+                              <input type="text" class="datepicker" id="tanggal_mulai" name="tanggal_mulai" value="<?php echo $user->tanggal_mulai?>" <?php echo $disabled?> required>
+                              <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span> 
+                          </div>
+                      </div>
+                    </div>
+                    <div class="col-md-1">
+                      <label class="form-label">s/d</label>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="input-with-icon right">
+                          <div class="input-append success date no-padding">
+                              <input type="text" class="datepicker" id="tanggal_akhir" name="tanggal_akhir" value="<?php echo $user->tanggal_akhir?>" <?php echo $disabled?> required>
                               <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span> 
                           </div>
                       </div>
@@ -159,12 +186,36 @@
                   </div>
                   <div class="row form-row">
                     <div class="col-md-3">
+                      <label class="form-label text-right">Lama Pelaksanaan</label>
+                    </div>
+                    <div class="col-md-2">
+                      <input name="lama_training_bulan" id="lama_training_bulan" type="text"  class="form-control text-center" value="<?php echo $user->lama_training_bulan?> Bulan" readonly>
+                    </div>
+                    <div class="col-md-2">
+                      <input name="lama_training_hari" id="lama_training_hari" type="text"  class="form-control text-center" value="<?php echo $user->lama_training_hari?> Hari" readonly>
+                    </div>
+                  </div>
+                  <div class="row form-row">
+                    <div class="col-md-3">
                       <label class="form-label text-right">Jam</label>
                     </div>
                     
-                    <div class="col-md-9">
+                    <div class="col-md-4">
                       <div class="input-append bootstrap-timepicker">
-                        <input name="jam" id="timepicker2" type="text" class="timepicker-24" value="<?php echo $user->jam?>" <?php echo $disabled?> required>
+                        <input name="jam_mulai" id="timepicker2" type="text" class="timepicker-24" value="<?php echo $user->jam_mulai?>" <?php echo $disabled?> required>
+                        <span class="add-on">
+                            <i class="icon-time"></i>
+                        </span>
+                      </div>
+                    </div>
+
+                    <div class="col-md-1">
+                      <label class="form-label">s/d</label>
+                    </div>
+
+                    <div class="col-md-4">
+                      <div class="input-append bootstrap-timepicker">
+                        <input name="jam_akhir" id="timepicker2" type="text" class="timepicker-24" value="<?php echo $user->jam_akhir?>" <?php echo $disabled?> required>
                         <span class="add-on">
                             <i class="icon-time"></i>
                         </span>
@@ -175,13 +226,35 @@
                   <?php if(!empty($user->approval_status_id_lv2)){?>
                   <div class="row form-row">
                     <div class="col-md-3">
-                      <label class="form-label text-right">Approval Status</label>
+                      <label class="form-label text-right">Status Approval</label>
                     </div>
                     <div class="col-md-9">
                       <input name="approval_status" id="alamat_training" type="text"  class="form-control" placeholder="Nama" value="<?php echo $user->approval_status_lv2; ?>" disabled="disabled">
                     </div>
                   </div>
+                  <?php }else{?>
+                  <div class="row form-row">
+                    <div class="col-md-3">
+                      <label class="form-label text-right">Status Approval </label>
+                    </div>
+                    <div class="col-md-9">
+                      <div class="radio">
+                        <?php 
+                        if($approval_status->num_rows() > 0){
+                          foreach($approval_status->result() as $app){
+                            $checked = ($app->id <> 0 && $app->id == $approval_id) ? 'checked = "checked"' : '';
+                            ?>
+                        <input id="app_status<?php echo $app->id?>" type="radio" name="app_status" value="<?php echo $app->id?>" <?php echo $checked?>>
+                        <label for="app_status<?php echo $app->id?>"><?php echo $app->title?></label>
+                        <?php }}else{?>
+                        <input id="app_status" type="radio" name="app_status" value="0">
+                        <label for="app_status">No Data</label>
+                          <?php } ?>
+                      </div>
+                    </div>
+                  </div>
                   <?php } ?>
+
 
                   <?php if(!empty($user->note_app_lv2)){?>
                   <div class="row form-row">
@@ -189,7 +262,16 @@
                       <label class="form-label text-right">Note (HRD) : </label>
                     </div>
                     <div class="col-md-9">
-                      <textarea name="notes_hrd_update" class="custom-txtarea-form" placeholder="Note HRD isi disini" disabled="disabled"><?=$notes_hrd?></textarea>
+                      <textarea name="notes_hrd" class="custom-txtarea-form" placeholder="Note HRD isi disini" disabled="disabled"><?=$notes_hrd?></textarea>
+                    </div>
+                  </div>
+                  <?php }else{ ?>
+                  <div class="row form-row">
+                    <div class="col-md-3">
+                      <label class="form-label text-right">Note (HRD) : </label>
+                    </div>
+                    <div class="col-md-9">
+                      <textarea name="notes_hrd" class="custom-txtarea-form" placeholder="Note HRD isi disini"></textarea>
                     </div>
                   </div>
                   <?php } ?>
@@ -239,7 +321,7 @@
                           <span class="small"><?php echo dateIndo($user->date_app_lv2)?></span>
                           <?php }else{
                             if(is_admin()){?>
-                          <div class="btn btn-success btn-cons" data-toggle="modal" data-target="#edittrainingModal"><i class="icon-ok"></i>Submit</div>
+                          <button id="btn_app_lv2" class="btn btn-success btn-cons"><i class="icon-ok"></i>Submit</button>
                           <?php }}?>
                     </div>
                   </div>
@@ -373,12 +455,39 @@
                   </div>
                   <div class="row form-row">
                     <div class="col-md-3">
-                      <label class="form-label text-right">Waktu Pelaksanaan</label>
+                      <label class="form-label text-right">Nama Narasumber</label>
                     </div>
                     <div class="col-md-9">
+                      <input name="narasumber_update" id="tempat" type="text"  class="form-control" placeholder="Nama Narasumber" value="<?php echo $user->narasumber?>" required>
+                    </div>
+                  </div>
+                  <div class="row form-row">
+                    <div class="col-md-3">
+                      <label class="form-label text-right">Nama Vendor</label>
+                    </div>
+                    <div class="col-md-9">
+                      <input name="vendor_update" id="vendor_update" type="text"  class="form-control" placeholder="Nama Vendor" value="<?php echo $user->vendor?>" required>
+                    </div>
+                  </div>
+                  <div class="row form-row">
+                    <div class="col-md-3">
+                      <label class="form-label text-right">Waktu Pelaksanaan</label>
+                    </div>
+                    <div class="col-md-3">
                       <div class="input-with-icon right">
                           <div class="input-append success date no-padding">
-                              <input type="text" class="datepicker" id="training_date_update" name="tanggal_update" data-date-format="yyyy-mm-dd" value="<?php echo $user->tanggal?>"  required>
+                              <input type="text" class="datepicker" id="tanggal_mulai_update" name="tanggal_mulai_update" value="<?php echo $user->tanggal_mulai?>" required>
+                              <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span> 
+                          </div>
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+                      <label class="form-label text-center">s/d</label>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="input-with-icon right">
+                          <div class="input-append success date no-padding">
+                              <input type="text" class="datepicker" id="tanggal_akhir_update" name="tanggal_akhir_update" value="<?php echo $user->tanggal_akhir?>" required>
                               <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span> 
                           </div>
                       </div>
@@ -386,12 +495,36 @@
                   </div>
                   <div class="row form-row">
                     <div class="col-md-3">
+                      <label class="form-label text-right">Lama Pelaksanaan</label>
+                    </div>
+                    <div class="col-md-2">
+                      <input name="lama_training_bulan_update" id="lama_training_bulan_update" type="text"  class="form-control text-center" value="<?php echo $user->lama_training_bulan?> Bulan" readonly>
+                    </div>
+                    <div class="col-md-2">
+                      <input name="lama_training_hari_update" id="lama_training_hari_update" type="text"  class="form-control text-center" value="<?php echo $user->lama_training_hari?> Hari" readonly>
+                    </div>
+                  </div>
+                  <div class="row form-row">
+                    <div class="col-md-3">
                       <label class="form-label text-right">Jam</label>
                     </div>
                     
-                    <div class="col-md-9">
+                    <div class="col-md-3">
                       <div class="input-append bootstrap-timepicker">
-                        <input name="jam_update" id="timepicker2" type="text" class="timepicker-24" value="<?php echo $user->jam?>"  required>
+                        <input name="jam_mulai_update" id="timepicker2" type="text" class="timepicker-24" value="<?php echo $user->jam_mulai?>" required>
+                        <span class="add-on">
+                            <i class="icon-time"></i>
+                        </span>
+                      </div>
+                    </div>
+
+                    <div class="col-md-2">
+                      <label class="form-label text-center">s/d</label>
+                    </div>
+
+                    <div class="col-md-3">
+                      <div class="input-append bootstrap-timepicker">
+                        <input name="jam_akhir_update" id="timepicker2" type="text" class="timepicker-24" value="<?php echo $user->jam_akhir?>" required>
                         <span class="add-on">
                             <i class="icon-time"></i>
                         </span>

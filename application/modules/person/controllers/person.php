@@ -259,6 +259,7 @@ class Person extends MX_Controller {
 		$this->data['aviva'] = (!empty($user_emp->aviva)) ? $user_emp->aviva : (!empty($user_info['AVIVA'])) ? $user_info['AVIVA'] : '-';
         $this->data['bpjs'] = (!empty($user_emp->aviva)) ? $user_emp->aviva : (!empty($user_info['JAMSOSTEK'])) ? $user_info['JAMSOSTEK'] : '-';
         $this->data['ktp'] = (!empty($user_emp->aviva)) ? $user_emp->aviva : (!empty($user_info['KTP'])) ? $user_info['KTP'] : '-';
+        $this->data['ktp_valid_date'] = (!empty($user_emp->aviva)) ? $user_emp->aviva : (!empty($user_info['KTPVALIDDATE'])) ? $user_info['KTPVALIDDATE'] : '-';
         $this->data['tax'] = (!empty($user_emp->aviva)) ? $user_emp->aviva : (!empty($user_info['TAX'])) ? $user_info['TAX'] : '-';
 		$this->data['seniority_date'] = (!empty($user_emp->seniority_date)) ? $user_emp->seniority_date : (!empty($user_info['SENIORITYDATE'])) ? $user_info['SENIORITYDATE'] : '-';
         $this->data['position'] = (!empty($user_emp->position)) ? $user_emp->position : (!empty($user_info['POSITION'])) ? $user_info['POSITION'] : '-';

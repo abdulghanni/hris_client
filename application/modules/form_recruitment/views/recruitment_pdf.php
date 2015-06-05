@@ -82,23 +82,27 @@
     <td class="tg-031e" colspan="2"><?php echo $row->komputer?></td>
   </tr>
   <tr>
-    <td class="tg-031e" colspan="2">&nbsp;&nbsp;&nbsp;b. Komunikasi</td>
+    <td class="tg-031e" colspan="2">&nbsp;&nbsp;&nbsp;b. Bahasa Pemrograman</td>
+    <td class="tg-031e" colspan="2"><?php echo $row->bahasa_pemrograman?></td>
+  </tr>
+  <tr>
+    <td class="tg-031e" colspan="2">&nbsp;&nbsp;&nbsp;c. Komunikasi</td>
     <td class="tg-031e" colspan="2"><?php echo $row->komunikasi?></td>
   </tr>
   <tr>
-    <td class="tg-031e" colspan="2">&nbsp;&nbsp;&nbsp;c. Grafika</td>
+    <td class="tg-031e" colspan="2">&nbsp;&nbsp;&nbsp;d. Grafika</td>
     <td class="tg-031e" colspan="2"><?php echo $row->grafika?></td>
   </tr>
   <tr>
-    <td class="tg-031e" colspan="2">&nbsp;&nbsp;&nbsp;d. Desain/Setting</td>
+    <td class="tg-031e" colspan="2">&nbsp;&nbsp;&nbsp;e. Desain/Setting</td>
     <td class="tg-031e" colspan="2"><?php echo $row->desain?></td>
   </tr>
   <tr>
-    <td class="tg-031e" colspan="2">&nbsp;&nbsp;&nbsp;e. Brevet</td>
+    <td class="tg-031e" colspan="2">&nbsp;&nbsp;&nbsp;f. Brevet</td>
     <td class="tg-031e" colspan="2"><?php echo $row->brevet?></td>
   </tr>
   <tr>
-    <td class="tg-031e" colspan="2">&nbsp;&nbsp;&nbsp;f. Lain-lain</td>
+    <td class="tg-031e" colspan="2">&nbsp;&nbsp;&nbsp;g. Lain-lain</td>
     <td class="tg-031e" colspan="2"><?php echo $row->lain_lain?></td>
   </tr>
   <tr>
@@ -114,6 +118,13 @@
   </tr>
   </table>
   <textarea class="jobdesc" rows="4" width="1000px" align="center"><?php echo $row->job_desc?></textarea>
+  <table class="tg" width="1000px" align="center">
+  <tr>
+  <tr>
+    <td height="100" colspan="4">Catatan Pengaju<br/></td>
+  </tr>
+  </table>
+  <textarea class="jobdesc" rows="4" width="1000px" align="center"><?php echo $row->note_pengaju?></textarea>
   <table class="tg" width="1000px" align="center">
   <tr>
     <td class="tg-031e" colspan="2" align="center">Pemohon</td>
@@ -160,11 +171,7 @@
     <td class="tg-031e">Tanda Tangan</td>
     <td class="tg-031e"></td>
   </tr>
-  <tr>
-  <td height="100" colspan="8">Catatan<br/></td>
-  </tr>
 </table>
-<textarea class="jobdesc" rows="4" width="1000px" align="center"><?php echo $row->note_hrd?></textarea>
 <?php endforeach;?>
 </body>
 </html>

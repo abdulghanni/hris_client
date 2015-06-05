@@ -82,64 +82,100 @@
     </tr>
     <tr>
       <td height="40" align="center">3</td>
-      <td>&nbsp;Sepeda Motor / Mobil</td>
-      <td align="center">&nbsp;<?php echo ($row->is_kendaraan == 1) ? 'Ada' : 'Tidak';?></td>
-      <td>&nbsp;<?php echo $row->keterangan_kendaraan?></td>
+      <td>&nbsp;Sepeda Motor</td>
+      <td align="center">&nbsp;<?php echo ($row->is_motor == 1) ? 'Ada' : 'Tidak';?></td>
+      <td>&nbsp;<?php echo $row->keterangan_motor?></td>
     </tr>
     <tr>
       <td height="40" align="center">4</td>
-      <td>&nbsp;STNK Motor/Mobil</td>
-      <td align="center">&nbsp;<?php echo ($row->is_stnk == 1) ? 'Ada' : 'Tidak';?></td>
-      <td>&nbsp;<?php echo $row->keterangan_stnk?></td>
+      <td>&nbsp;Mobil</td>
+      <td align="center">&nbsp;<?php echo ($row->is_mobil == 1) ? 'Ada' : 'Tidak';?></td>
+      <td>&nbsp;<?php echo $row->keterangan_mobil?></td>
     </tr>
     <tr>
       <td height="40" align="center">5</td>
-      <td>&nbsp;Hp/Laptop/Ipad</td>
-      <td align="center">&nbsp;<?php echo ($row->is_gadget == 1) ? 'Ada' : 'Tidak';?></td>
-      <td>&nbsp;<?php echo $row->keterangan_gadget?></td>
+      <td>&nbsp;STNK Motor</td>
+      <td align="center">&nbsp;<?php echo ($row->is_stnk_motor == 1) ? 'Ada' : 'Tidak';?></td>
+      <td>&nbsp;<?php echo $row->keterangan_stnk_motor?></td>
     </tr>
     <tr>
       <td height="40" align="center">6</td>
+      <td>&nbsp;STNK Mobil</td>
+      <td align="center">&nbsp;<?php echo ($row->is_stnk_mobil == 1) ? 'Ada' : 'Tidak';?></td>
+      <td>&nbsp;<?php echo $row->keterangan_stnk_mobil?></td>
+    </tr>
+    <tr>
+      <td height="40" align="center">7</td>
+      <td>&nbsp;Hp</td>
+      <td align="center">&nbsp;<?php echo ($row->is_hp == 1) ? 'Ada' : 'Tidak';?></td>
+      <td>&nbsp;<?php echo $row->keterangan_hp?></td>
+    </tr>
+    <tr>
+      <td height="40" align="center">8</td>
+      <td>&nbsp;Laptop</td>
+      <td align="center">&nbsp;<?php echo ($row->is_laptop == 1) ? 'Ada' : 'Tidak';?></td>
+      <td>&nbsp;<?php echo $row->keterangan_laptop?></td>
+    </tr>
+    <tr>
+      <td height="40" align="center">9</td>
+      <td>&nbsp;Ipad</td>
+      <td align="center">&nbsp;<?php echo ($row->is_ipad == 1) ? 'Ada' : 'Tidak';?></td>
+      <td>&nbsp;<?php echo $row->keterangan_ipad?></td>
+    </tr>
+    <tr>
+      <td height="40" align="center">10</td>
       <td>&nbsp;Laporan Serah Terima</td>
       <td align="center">&nbsp;<?php echo ($row->is_laporan == 1) ? 'Ada' : 'Tidak';?></td>
       <td>&nbsp;<?php echo $row->keterangan_laporan?></td>
     </tr>
     <tr>
-      <td height="40" align="center">7</td>
+      <td height="40" align="center">11</td>
       <td>&nbsp;Rekonsiliasi Saldo</td>
       <td align="center">&nbsp;<?php echo ($row->is_saldo == 1) ? 'Ada' : 'Tidak';?></td>
       <td>&nbsp;<?php echo $row->keterangan_saldo?></td>
     </tr>
     <tr>
-      <td height="40" align="center">8</td>
+      <td height="40" align="center">12</td>
       <td>&nbsp;Pinjaman Koperasi</td>
       <td align="center">&nbsp;<?php echo ($row->is_pinjaman_koperasi == 1) ? 'Ada' : 'Tidak';?></td>
       <td>&nbsp;<?php echo $row->keterangan_pinjaman_koperasi?></td>
     </tr>
     <tr>
-      <td height="40" align="center">9</td>
+      <td height="40" align="center">13</td>
       <td>&nbsp;Pinjaman Buku Perpustakaan</td>
       <td align="center">&nbsp;<?php echo ($row->is_pinjaman_buku == 1) ? 'Ada' : 'Tidak';?></td>
       <td>&nbsp;<?php echo $row->keterangan_pinjaman_buku?></td>
     </tr>
     <tr>
-      <td height="40" align="center">10</td>
+      <td height="40" align="center">14</td>
       <td>&nbsp;Ikatan Dinas</td>
       <td align="center">&nbsp;<?php echo ($row->is_ikatan == 1) ? 'Ada' : 'Tidak';?></td>
       <td>&nbsp;<?php echo $row->keterangan_ikatan?></td>
+    </tr>
+    <tr>
+      <td height="40" align="center">15</td>
+      <td>&nbsp;Kartu Kredit</td>
+      <td align="center">&nbsp;<?php echo ($row->is_kartu_kredit == 1) ? 'Ada' : 'Tidak';?></td>
+      <td>&nbsp;<?php echo $row->keterangan_kartu_kredit?></td>
+    </tr>
+    <tr>
+      <td height="40" align="center">16</td>
+      <td>&nbsp;Pinjaman Subsidi</td>
+      <td align="center">&nbsp;<?php echo ($row->is_pinjaman_subsidi == 1) ? 'Ada' : 'Tidak';?></td>
+      <td>&nbsp;<?php echo $row->keterangan_pinjaman_subsidi?></td>
     </tr>
   </tbody>
 </table>
 <table width="1000" align="center">
   <tbody>
     <tr>
-      <th width="250" height="20" scope="col"></th>
-      <th width="250" scope="col">&nbsp;&nbsp;&nbsp;&nbsp;Mengetahui,</th>
-      <th width="250" scope="col"></th>
-      <th width="250" scope="col"></th>
+      <th width="250" height="10"></th>
+      <th width="250">&nbsp;&nbsp;&nbsp;&nbsp;Mengetahui,</th>
+      <th width="250"></th>
+      <th width="250"></th>
     </tr>
     <tr>
-      <td height="117" align="center"><?php echo get_name($row->user_app_mgr)?><br/><?php echo dateIndo($row->date_app_mgr)?></td>
+      <td height="80" align="center"><?php echo get_name($row->user_app_mgr)?><br/><?php echo dateIndo($row->date_app_mgr)?></td>
       <td align="center"><?php echo get_name($row->user_app_koperasi)?><br/><?php echo dateIndo($row->date_app_koperasi)?></td>
       <td align="center"><?php echo get_name($row->user_app_perpus)?><br/><?php echo dateIndo($row->date_app_perpus)?></td>
       <td align="center"><?php echo get_name($row->user_app_hrd)?><br/><?php echo dateIndo($row->date_app_hrd)?></td>
@@ -184,6 +220,14 @@
       <td height="35" align="center">3</td>
       <td>&nbsp;Diberikan Uang Jasa</td>
       <td align="center">&nbsp;<?php echo ($row->is_uang_jasa == 1) ? 'Ada' : 'Tidak';?></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td height="35" align="center">3</td>
+      <td>&nbsp;Diberikan Uang pisah</td>
+      <td align="center">&nbsp;<?php echo ($row->is_uang_pisah == 1) ? 'Ada' : 'Tidak';?></td>
       <td></td>
       <td></td>
       <td></td>

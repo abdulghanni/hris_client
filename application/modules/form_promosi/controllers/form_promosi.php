@@ -468,6 +468,24 @@ class Form_promosi extends MX_Controller {
         echo $bu_id;
     }
 
+    public function get_emp_sendate()
+    {
+        $id = $this->input->post('id');
+
+        $url = get_api_key().'users/employement/EMPLID/'.get_nik($id).'/format/json';
+            $headers = get_headers($url);
+            $response = substr($headers[0], 9, 3);
+            if ($response != "404") {
+                $getuser_info = file_get_contents($url);
+                $user_info = json_decode($getuser_info, true);
+                $sen_date = dateIndo($user_info['SENIORITYDATE']);
+            } else {
+                $sen_date = '';
+            }
+
+        echo $sen_date;
+    }
+
     function form_promosi_pdf($id)
     {
         $sess_id = $this->session->userdata('user_id');

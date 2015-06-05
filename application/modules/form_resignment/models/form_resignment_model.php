@@ -69,4 +69,19 @@ class form_resignment_model extends CI_Model
         return TRUE;
     }
 
+    public function get_alasan($r = array())
+    {
+        $x = '';
+        for ($i=0; $i <sizeof($r) ; $i++) { 
+            if($i<1){
+            $this->db->where('id', $r[$i]);
+            }else{  
+            $this->db->or_where('id', $r[$i]);  
+            }
+        }
+
+        $q = $this->db->get('alasan_resign');
+        return $q;
+    }
+
 }

@@ -85,6 +85,9 @@ class Form_recruitment extends MX_Controller {
             redirect('auth/login', 'refresh');
         }
 
+        $this->data['jurusan'] = getAll('recruitment_jurusan', array('is_deleted' => 'where/0'));
+        $this->data['ipk'] = getAll('ipk', array('is_deleted' => 'where/0'));
+        $this->data['toefl'] = getAll('toefl', array('is_deleted' => 'where/0'));
         $this->data['status'] = getAll('recruitment_status', array('is_deleted' => 'where/0'));
         $this->data['urgensi'] = getAll('recruitment_urgensi', array('is_deleted' => 'where/0'));
         $this->data['jenis_kelamin'] = getAll('jenis_kelamin', array('is_deleted' => 'where/0'));
@@ -172,6 +175,7 @@ class Form_recruitment extends MX_Controller {
                 $data3 = array(
                         'user_recruitment_id' => $recruitment_id,
                         'komputer' => $this->input->post('komputer'),
+                        'bahasa_pemrograman' => $this->input->post('pemrograman'),
                         'komunikasi' => $this->input->post('komunikasi'),
                         'grafika' => $this->input->post('grafika'),
                         'desain' => $this->input->post('desain'),
@@ -181,6 +185,7 @@ class Form_recruitment extends MX_Controller {
                         'pengalaman' => $this->input->post('pengalaman'),
                         'lama_Pengalaman' => $this->input->post('lama_pengalaman'),
                         'job_desc' => $this->input->post('job_desc'),
+                        'note_pengaju' => $this->input->post('note_pengaju'),
                         'created_on'            => date('Y-m-d',strtotime('now')),
                         'created_by'            => $this->session->userdata('user_id')
                     );
@@ -205,8 +210,8 @@ class Form_recruitment extends MX_Controller {
         $this->data['recruitment'] = $this->recruitment_model->recruitment($id)->result();
         $this->data['status'] = getAll('recruitment_status', array('is_deleted' => 'where/0'));
         $this->data['urgensi'] = getAll('recruitment_urgensi', array('is_deleted' => 'where/0'));
-        $jk = explode(',', getAll('users_recruitment_kualifikasi')->row('jenis_kelamin_id'));
-        $pendidikan = explode(',', getAll('users_recruitment_kualifikasi')->row('pendidikan_id'));
+        $jk = explode(',', getAll('users_recruitment_kualifikasi', array('id' => 'where/'.$id))->row('jenis_kelamin_id'));
+        $pendidikan = explode(',', getAll('users_recruitment_kualifikasi', array('id' => 'where/'.$id))->row('pendidikan_id'));
         $this->data['jenis_kelamin'] = $this->recruitment_model->get_jk($jk);
         $this->data['pendidikan'] = $this->recruitment_model->get_pendidikan($pendidikan);
         $this->data['position_pengaju'] = $this->get_user_position($this->recruitment_model->recruitment($id)->row_array()['user_id']);
@@ -220,12 +225,11 @@ class Form_recruitment extends MX_Controller {
             //redirect them to the login page
             redirect('auth/login', 'refresh');
         }
-        $this->data['sess_id'] = $this->session->userdata('user_id');
         $this->data['recruitment'] = $this->recruitment_model->recruitment($id)->result();
         $this->data['status'] = getAll('recruitment_status', array('is_deleted' => 'where/0'));
         $this->data['urgensi'] = getAll('recruitment_urgensi', array('is_deleted' => 'where/0'));
-        $jk = explode(',', getAll('users_recruitment_kualifikasi')->row('jenis_kelamin_id'));
-        $pendidikan = explode(',', getAll('users_recruitment_kualifikasi')->row('pendidikan_id'));
+        $jk = explode(',', getAll('users_recruitment_kualifikasi', array('id' => 'where/'.$id))->row('jenis_kelamin_id'));
+        $pendidikan = explode(',', getAll('users_recruitment_kualifikasi', array('id' => 'where/'.$id))->row('pendidikan_id'));
         $this->data['jenis_kelamin'] = $this->recruitment_model->get_jk($jk);
         $this->data['pendidikan'] = $this->recruitment_model->get_pendidikan($pendidikan);
         $this->data['position_pengaju'] = $this->get_user_position($this->recruitment_model->recruitment($id)->row_array()['user_id']);
@@ -294,8 +298,8 @@ class Form_recruitment extends MX_Controller {
         $this->data['recruitment'] = $this->recruitment_model->recruitment($id)->result();
         $this->data['status'] = getAll('recruitment_status', array('is_deleted' => 'where/0'));
         $this->data['urgensi'] = getAll('recruitment_urgensi', array('is_deleted' => 'where/0'));
-        $jk = explode(',', getAll('users_recruitment_kualifikasi')->row('jenis_kelamin_id'));
-        $pendidikan = explode(',', getAll('users_recruitment_kualifikasi')->row('pendidikan_id'));
+        $jk = explode(',', getAll('users_recruitment_kualifikasi', array('id' => 'where/'.$id))->row('jenis_kelamin_id'));
+        $pendidikan = explode(',', getAll('users_recruitment_kualifikasi', array('id' => 'where/'.$id))->row('pendidikan_id'));
         $this->data['jenis_kelamin'] = $this->recruitment_model->get_jk($jk);
         $this->data['pendidikan'] = $this->recruitment_model->get_pendidikan($pendidikan);
         $this->data['position_pengaju'] = $this->get_user_position($this->recruitment_model->recruitment($id)->row_array()['user_id']);
@@ -418,10 +422,11 @@ class Form_recruitment extends MX_Controller {
             $form_recruitment = $this->data['form_recruitment'] = $this->recruitment_model->recruitment($id);
             }
 
+        $this->data['recruitment'] = $this->recruitment_model->recruitment($id)->result();
         $this->data['status'] = getAll('recruitment_status', array('is_deleted' => 'where/0'));
         $this->data['urgensi'] = getAll('recruitment_urgensi', array('is_deleted' => 'where/0'));
-        $jk = explode(',', getAll('users_recruitment_kualifikasi')->row('jenis_kelamin_id'));
-        $pendidikan = explode(',', getAll('users_recruitment_kualifikasi')->row('pendidikan_id'));
+        $jk = explode(',', getAll('users_recruitment_kualifikasi', array('id' => 'where/'.$id))->row('jenis_kelamin_id'));
+        $pendidikan = explode(',', getAll('users_recruitment_kualifikasi', array('id' => 'where/'.$id))->row('pendidikan_id'));
         $this->data['jenis_kelamin'] = $this->recruitment_model->get_jk($jk);
         $this->data['pendidikan'] = $this->recruitment_model->get_pendidikan($pendidikan);
 

@@ -104,11 +104,12 @@ class Form_cuti extends MX_Controller {
 
             // form cuti yang akan diambil
             $this->data['comp_session'] = $this->form_cuti_model->render_session()->result();
-            $this->data['alasan_cuti'] = $this->form_cuti_model->render_alasan()->result();
+            $this->data['alasan_cuti'] = $this->get_type_cuti();
+            //print_mz($this->data['alasan_cuti']);
            
 
             $this->data['_num_rows'] = $this->form_cuti_model->where('users.id',$user_id)->form_cuti_input()->num_rows();
-            $this->data['alasan_num_rows'] = $this->form_cuti_model->render_alasan()->num_rows();
+            //$this->data['alasan_num_rows'] = $this->form_cuti_model->render_alasan()->num_rows();
 
             $this->_render_page('form_cuti/input', $this->data);
         }
@@ -187,6 +188,20 @@ class Form_cuti extends MX_Controller {
                 return '-';
             }
         }
+    }
+
+    function get_type_cuti()
+    {
+        $url = get_api_key().'users/type_cuti/format/json';
+            $headers = get_headers($url);
+            $response = substr($headers[0], 9, 3);
+            if ($response != "404") {
+                $gettype_cuti = file_get_contents($url);
+                $type_cuti = json_decode($gettype_cuti, true);
+                return $type_cuti;
+            } else {
+                return '';
+            }
     }
 
     function update_sisa_cuti($recid, $sisa_cuti)

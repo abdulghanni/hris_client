@@ -146,6 +146,14 @@
                     </div>
                     <div class="row form-row">
                       <div class="col-md-2">
+                        <label class="form-label text-right">Bahasa Pemrograman</label>
+                      </div>
+                      <div class="col-md-10">
+                        <input name="pemrograman" id="form3LastName" type="text"  class="form-control" placeholder="pemrograman" value="<?php echo $row->bahasa_pemrograman?>" disabled="disabled">
+                      </div>
+                    </div>
+                    <div class="row form-row">
+                      <div class="col-md-2">
                         <label class="form-label text-right">Komunikasi</label>
                       </div>
                       <div class="col-md-10">
@@ -220,10 +228,10 @@
 
                     <div class="row form-row">
                       <div class="col-md-2">
-                        <label class="form-label text-right">Catatan HRD</label>
+                        <label class="form-label text-right">Catatan Pengaju</label>
                       </div>
                       <div class="col-md-10">
-                        <textarea name="note_hrd" id="text-editor" placeholder="Enter text ..." class="form-control" rows="10" required <?php echo ($row->is_app_hrd == 1) ? 'disabled="disabled"' : '';?>><?php echo $row->note_hrd?></textarea>
+                        <textarea name="note_hrd" id="text-editor" placeholder="Enter text ..." class="form-control" rows="10" disabled="disabled"><?php echo $row->note_pengaju?></textarea>
                       </div>
                     </div>
                   </div>

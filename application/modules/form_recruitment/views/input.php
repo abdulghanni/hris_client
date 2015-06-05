@@ -112,7 +112,7 @@
                           foreach($jenis_kelamin->result() as $row):?>
                       <div class="col-md-1">
                         <div class="checkbox check-primary checkbox-circle" >
-                          <input name="jenis_kelamin[]" class="checkbox1" type="checkbox" id="jenis_kelamin<?php echo $row->id ?>" value="<?php echo $row->id ?>" checked="checked">
+                          <input name="jenis_kelamin[]" class="checkbox1" type="checkbox" id="jenis_kelamin<?php echo $row->id ?>" value="<?php echo $row->id ?>">
                             <label for="jenis_kelamin<?php echo $row->id ?>"><?php echo $row->title?></label>
                           </div>
                       </div>
@@ -127,7 +127,7 @@
                             foreach($pendidikan->result() as $row):?>
                         <div class="col-md-1">
                           <div class="checkbox check-primary checkbox-circle" >
-                            <input name="pendidikan[]" class="checkbox1" type="checkbox" id="pendidikan<?php echo $row->id ?>" value="<?php echo $row->id ?>" checked="checked">
+                            <input name="pendidikan[]" class="checkbox1" type="checkbox" id="pendidikan<?php echo $row->id ?>" value="<?php echo $row->id ?>">
                               <label for="pendidikan<?php echo $row->id ?>"><?php echo $row->title?></label>
                             </div>
                         </div>
@@ -137,20 +137,35 @@
                       <div class="col-md-2">
                         <label class="form-label text-right">Jurusan</label>
                       </div>
-                      <div class="col-md-2">
-                        <input name="jurusan" id="form3LastName" type="text"  class="form-control" placeholder="Jurusan" value="">
+                      <div class="col-md-3">
+                        <select name="jurusan" id="jurusan" class="form-custom select2" style="width:100%" required>
+                          <?php if($jurusan->num_rows()>0){
+                            foreach($jurusan->result() as $row):?>
+                            <option value="<?php echo $row->id?>"><?php echo $row->title?></option>
+                          <?php endforeach;}?>
+                        </select>
                       </div>
-                      <div class="col-md-2">
+                      <div class="col-md-1">
                         <label class="form-label text-right">IPK</label>
                       </div>
                       <div class="col-md-2">
-                        <input name="ipk" id="form3LastName" type="text"  class="form-control" placeholder="IPK" value="">
+                        <select name="ipk" id="ipk" class="form-custom select2" style="width:100%" required>
+                          <?php if($ipk->num_rows()>0){
+                            foreach($ipk->result() as $row):?>
+                            <option value="<?php echo $row->id?>"><?php echo $row->title?></option>
+                          <?php endforeach;}?>
+                        </select>
                       </div>
-                      <div class="col-md-2">
+                      <div class="col-md-1">
                         <label class="form-label text-right">Toefl</label>
                       </div>
                       <div class="col-md-2">
-                        <input name="toefl" id="toefl" type="text"  class="form-control" placeholder="Toefl" value="">
+                        <select name="toefl" id="toefl" class="form-custom select2" style="width:100%" required>
+                          <?php if($toefl->num_rows()>0){
+                            foreach($toefl->result() as $row):?>
+                            <option value="<?php echo $row->id?>"><?php echo $row->title?></option>
+                          <?php endforeach;}?>
+                        </select>
                       </div>
                     </div>
                     <div class="row form-row">
@@ -164,6 +179,14 @@
                       </div>
                       <div class="col-md-10">
                         <input name="komputer" id="form3LastName" type="text"  class="form-control" placeholder="Komputer" value="">
+                      </div>
+                    </div>
+                    <div class="row form-row">
+                      <div class="col-md-2">
+                        <label class="form-label text-right">Bahasa Pemrograman</label>
+                      </div>
+                      <div class="col-md-10">
+                        <input name="pemrograman" id="pemrograman" type="text"  class="form-control" placeholder="bahasa pemrograman" value="">
                       </div>
                     </div>
                     <div class="row form-row">
@@ -239,6 +262,16 @@
                         <textarea name="job_desc" id="text-editor" placeholder="Enter text ..." class="form-control" rows="10" required></textarea>
                       </div>
                     </div>
+
+                    <div class="row form-row">
+                      <div class="col-md-2">
+                        <label class="form-label text-right">Catatan Pengaju</label>
+                      </div>
+                      <div class="col-md-10">
+                        <textarea name="note_pengaju" id="text-editor" placeholder="Enter text ..." class="form-control" rows="10"></textarea>
+                      </div>
+                    </div>
+
                   </div>
                 </div>
                 <div class="form-actions">

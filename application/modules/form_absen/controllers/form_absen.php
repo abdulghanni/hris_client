@@ -299,8 +299,8 @@ class form_absen extends MX_Controller {
                     'sender_id' => get_nik($user_id),
                     'receiver_id' => $this->db->where('users.id', $user_id)->get('users')->row('superior_id'),
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                    'subject' => 'Pengajuan Permohonan absen',
-                    'email_body' => get_name($user_id).' mengajukan permohonan absen, untuk melihat detail silakan <a href='.$url.'spv/'.$id.'>Klik Disini</a><br/>'.$this->detail_email($id),
+                    'subject' => 'Pengajuan Permohonan Tidak Absen',
+                    'email_body' => get_name($user_id).' mengajukan Permohonan Tidak Absen, untuk melihat detail silakan <a href='.$url.'spv/'.$id.'>Klik Disini</a><br/>'.$this->detail_email($id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data);
@@ -315,8 +315,8 @@ class form_absen extends MX_Controller {
                     'sender_id' => get_nik($user_id),
                     'receiver_id' => get_superior($current_superior),
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                    'subject' => 'Pengajuan Permohonan absen',
-                    'email_body' => get_name($user_id).' mengajukan permohonan absen, untuk melihat detail silakan <a href='.$url.'kbg/'.$id.'>Klik Disini</a>',
+                    'subject' => 'Pengajuan Permohonan Tidak Absen',
+                    'email_body' => get_name($user_id).' mengajukan Permohonan Tidak Absen, untuk melihat detail silakan <a href='.$url.'kbg/'.$id.'>Klik Disini</a><br/>'.$this->detail_email($id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data);
@@ -333,8 +333,8 @@ class form_absen extends MX_Controller {
                 'sender_id' => get_nik($this->session->userdata('user_id')),
                 'receiver_id' => get_nik($receiver_id),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                'subject' => 'Status Pengajuan Permohonan absen dari '.$type,
-                'email_body' => "Status pengajuan permohonan absen anda $approval_status oleh $approver untuk detail silakan <a href=$url>Klik disini</a>",
+                'subject' => 'Status Pengajuan Permohonan Tidak Absen dari '.$type,
+                'email_body' => "Status pengajuan Permohonan Tidak Absen anda $approval_status oleh $approver untuk detail silakan <a href=$url>Klik disini</a><br/>".$this->detail_email($id),
                 'is_read' => 0,
             );
         $this->db->insert('email', $data);

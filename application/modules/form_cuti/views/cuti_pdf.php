@@ -98,14 +98,29 @@
     <td height="40"><span class="style3"><?php echo $user->alamat_cuti?></span></td>
   </tr>
   <tr>
+    <td height="40"><span class="style3">Approval Status(SPV) </span></td>
+    <td height="40"><div align="center">:</div></td>
+    <td height="40"><span class="style3"><?php echo $user->approval_status_lv1?></span></td>
+  </tr>
+  <tr>
     <td height="40"><span class="style3">Note Supervisor </span></td>
     <td height="40"><div align="center">:</div></td>
     <td height="40"><span class="style3"><?php echo $user->note_app_lv1?></span></td>
   </tr>
   <tr>
+    <td height="40"><span class="style3">Approval Status(Ka. Bag) </span></td>
+    <td height="40"><div align="center">:</div></td>
+    <td height="40"><span class="style3"><?php echo $user->approval_status_lv2?></span></td>
+  </tr>
+  <tr>
     <td height="40"><span class="style3">Note Ka. Bagian </span></td>
     <td height="40"><div align="center">:</div></td>
     <td height="40"><span class="style3"><?php echo $user->note_app_lv2?></span></td>
+  </tr>
+  <tr>
+    <td height="40"><span class="style3">Approval Status(HRD) </span></td>
+    <td height="40"><div align="center">:</div></td>
+    <td height="40"><span class="style3"><?php echo $user->approval_status_lv3?></span></td>
   </tr>
   <tr>
     <td height="40"><span class="style3">Note HRD </span></td>

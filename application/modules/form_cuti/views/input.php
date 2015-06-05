@@ -146,10 +146,10 @@
                       </div>
                       <div class="col-md-9">
                         <select name="alasan_cuti" id="alasan_cuti" class="select2" style="width:100%">
-                          <?php if ($alasan_num_rows > 0) { ?>
-                              <?php foreach ($alasan_cuti as $cs) : ?>
-                                <option value="<?php echo $cs->id; ?>"><?php echo $cs->title; ?></option>
-                              <?php endforeach; ?>                      
+                          <?php if (!empty($alasan_cuti)) { ?>
+                              <?php for ($i=0;$i<sizeof($alasan_cuti);$i++) : ?>
+                                <option value="<?php echo $alasan_cuti[$i]['HRSLEAVETYPEID']; ?>"><?php echo $alasan_cuti[$i]['DESCRIPTION']; ?></option>
+                              <?php endfor; ?>                      
                           <?php } else {?>
                                 <option value="0">No Data</option>
                             <?php } ?>

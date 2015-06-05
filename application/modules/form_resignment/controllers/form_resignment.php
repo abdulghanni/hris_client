@@ -63,7 +63,7 @@ class Form_resignment extends MX_Controller {
         else
         {
             $this->form_validation->set_rules('date_resign' , 'Tanggal Akhir Kerja', 'trim|required');
-            $this->form_validation->set_rules('alasan_resign_id' , 'Alasan berhenti kerja', 'trim|required');
+            //$this->form_validation->set_rules('alasan_resign_id' , 'Alasan berhenti kerja', 'trim|required');
             $this->form_validation->set_rules('desc_resign' , 'Alasan utama berhenti kerja', 'trim|required');
             $this->form_validation->set_rules('procedure_resign' , 'Prosedur perusahaan', 'trim|required');
             $this->form_validation->set_rules('kepuasan_resign' , 'Hal yang memuaskan', 'trim|required');
@@ -82,7 +82,7 @@ class Form_resignment extends MX_Controller {
                     'user_id' => $user_id,
                     'id_comp_session' => 1,
                     'date_resign' => date('Y-m-d',strtotime($this->input->post('date_resign'))),
-                    'alasan_resign_id' => $this->input->post('alasan_resign_id'),
+                    'alasan_resign_id' => implode(',',$this->input->post('alasan_resign_id')),
                     'desc_resign'            => $this->input->post('desc_resign'),
                     'procedure_resign'            => $this->input->post('procedure_resign'),
                     'kepuasan_resign'            => $this->input->post('kepuasan_resign'),
@@ -125,6 +125,9 @@ class Form_resignment extends MX_Controller {
                 $form_resignment = $this->data['form_resignment'] = $this->form_resignment_model->form_resignment($id);
             }
 
+            $this->data['alasan_resign'] = getAll('alasan_resign', array('is_deleted' => 'where/0'));
+            $alasan = explode(',', getAll('users_resignment', array('id' => 'where/'.$id))->row('alasan_resign_id'));
+            $this->data['alasan'] = $this->form_resignment_model->get_alasan($alasan);
             $this->get_user_info($form_resignment->row('user_id'));
             $this->_render_page('form_resignment/detail', $this->data);
         }
@@ -208,6 +211,9 @@ class Form_resignment extends MX_Controller {
             $form_resignment = $this->data['form_resignment'] = $this->form_resignment_model->form_resignment($id);
         }
 
+        $this->data['alasan_resign'] = getAll('alasan_resign', array('is_deleted' => 'where/0'));
+        $alasan = explode(',', getAll('users_resignment', array('id' => 'where/'.$id))->row('alasan_resign_id'));
+        $this->data['alasan'] = $this->form_resignment_model->get_alasan($alasan);
         $this->get_user_info($form_resignment->row('user_id'));
         return $this->load->view('form_resignment/resignment_mail', $this->data, TRUE);
     }
@@ -311,7 +317,10 @@ class Form_resignment extends MX_Controller {
         }
         else
         {
-             $this->get_user_info($user_id);
+            $this->data['alasan_resign'] = getAll('alasan_resign', array('is_deleted' => 'where/0'));
+            $alasan = explode(',', getAll('users_resignment', array('id' => 'where/'.$id))->row('alasan_resign_id'));
+            $this->data['alasan'] = $this->form_resignment_model->get_alasan($alasan);
+            $this->get_user_info($user_id);
             
             //$this->data['comp_session'] = $this->form_resignment_model->render_session()->result();
             

@@ -145,9 +145,20 @@
                           <label class="form-label text-left">Note (hrd): </label>
                         </div>
                         <div class="col-md-8">
-                          <textarea name="notes_spv" class="custom-txtarea-form" disabled="disabled"><?php echo $row->note_hrd ?></textarea>
+                          <textarea name="notes_hrd" class="custom-txtarea-form" disabled="disabled"><?php echo $row->note_hrd ?></textarea>
                         </div>
                       </div>
+                      <?php } ?>
+
+                     <?php if($row->is_approved == 1 && is_admin()){?>
+                        <div class="row form-row">
+                          <div class="col-md-6">
+                            &nbsp;
+                          </div>
+                          <div class="col-md-6">
+                            <div class='btn btn-info btn-small' class="text-center" title='Edit Approval' data-toggle="modal" data-target="#notapprovepdemolitioModal"><i class='icon-edit'> Edit Approval</i></div>
+                          </div>
+                        </div>
                       <?php } ?>
                       
                     </div>
@@ -171,10 +182,9 @@
                             <?php }elseif($row->is_approved == 1 && is_admin() == true){?>
                             <span class="semi-bold"><?php echo get_name($row->user_approved)?></span><br/>
                             <span class="small"><?php echo dateIndo($row->date_approved)?></span><br/>
-                            <button type='button' class='btn btn-info btn-small' title='Edit Approval' data-toggle="modal" data-target="#notapprovepromosiModal"><i class='icon-paste'></i></button>
+                            
                             <?php }else{?>
-                             <button class="btn btn-success btn-cons" id="btn_app" type="submit"><i class="icon-ok"></i>Approve</button>
-                             <span class="btn btn-danger btn-cons" data-toggle="modal" data-target="#notapprovepromosiModal"><i class="icon-remove"></i> Not Approve</span>
+                            <div class="btn btn-success btn-cons" data-toggle="modal" data-target="#notapprovepromosiModal"><i class="icon-ok"></i>Submit</div>
                             <p class="">...............................</p>
                             <?php } ?>
                           </p>

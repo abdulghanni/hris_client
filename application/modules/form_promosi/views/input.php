@@ -94,7 +94,7 @@
                           <label class="form-label text-right">Tanggal Pengangkatan</label>
                         </div>
                         <div class="col-md-9">
-                          <input name="form3LastName" id="form3LastName" type="text"  class="form-control " placeholder="Nama" value="<?php echo (!empty($user_info['SENIORITYDATE']))?dateIndo($user_info['SENIORITYDATE']):'-'?>"  disabled="disabled" >
+                          <input name="form3LastName" id="sen_date" type="text"  class="form-control " placeholder="Nama" value=""  disabled="disabled" >
                         </div>
                       </div>
                       

@@ -78,11 +78,16 @@
                     
                     <div class="row form-row">
                       <div class="col-md-12">
-                        <div class="radio">
-                            <input id="alasan_resign-<?php echo $row->id?>" type="radio" name="alasan_resign" value="<?php echo $row->id?>" checked="checked">
-                            <label for="alasan_resign-<?php echo $row->id?>"><?php echo $row->alasan_resign?></label>
-                          </div>
-                        </div>
+                      <div class="checkbox check-primary checkbox-circle" >
+                        <?php 
+                        if($alasan->num_rows()>0){
+                          foreach($alasan->result() as $alasan):?>
+                          <input name="alasan[]" class="checkbox1" type="checkbox" id="alasan<?php echo $alasan->id ?>" value="<?php echo $alasan->id ?>" checked="checked" disabled="disabled">
+                            <label for="alasan<?php echo $alasan->id ?>"><?php echo $alasan->title?></label>
+                        <?php endforeach;} ?>
+
+                      </div>
+                      </div>
                       </div>
                     </div>
 

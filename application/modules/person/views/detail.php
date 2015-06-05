@@ -196,6 +196,15 @@
 				                      	<input type="text" class="form-control" value="<?php echo $ktp?>" disabled="disabled">
 				                      </div>
 				                    </div>
+
+				                    <div class="row form-row">
+				                      <div class="col-md-3">
+				                        Ktp Valid Date
+				                      </div>
+				                      <div class="col-md-9">
+				                      	<input type="text" class="form-control" value="<?php echo dateIndo($ktp_valid_date)?>" disabled="disabled">
+				                      </div>
+				                    </div>
 									
 									<div class="row form-row">
 				                      <div class="col-md-3">

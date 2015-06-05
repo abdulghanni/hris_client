@@ -40,6 +40,7 @@ $(document).ready(function() {
             get_employee_nik(empId);
             get_employee_bu(empId);
             get_employee_buid(empId);
+            get_employee_sendate(empId);
         })
         .change();
 
@@ -123,6 +124,18 @@ $(document).ready(function() {
                     data: {id : empId},
                     success: function(data) {
                         $('#old_bu').val(data);
+                    }
+                });
+        }
+
+        function get_employee_sendate(empId)
+        {
+            $.ajax({
+                    type: 'POST',
+                    url: 'get_emp_sendate',
+                    data: {id : empId},
+                    success: function(data) {
+                        $('#sen_date').val(data);
                     }
                 });
         }

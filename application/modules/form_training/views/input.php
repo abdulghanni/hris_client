@@ -36,10 +36,17 @@
                               <?php endforeach; ?>
                             </select>
                           <?php }else{?>
+                            <?php if($subordinate->num_rows() > 0){?>
                             <select id="emp" class="" style="width:100%" name="emp">
-                                <option value="<?php echo $sess_id?>"><?php echo get_name($sess_id) ?></option>
+                                <?php foreach($subordinate->result() as $row):?>
+                            <option value="<?php echo $row->id?>"><?php echo get_name($row->id) ?></option>
+                            <?php endforeach;?>
+                        </select>
+                            <?php }else{ ?>
+                            <select>
+                            <option value="0">-- Anda tidak mempunyai bawahan --</option>
                             </select>
-                          <?php } ?>
+                        <?php }}?>
                       </div>
                     </div>    
                     <div class="row form-row">

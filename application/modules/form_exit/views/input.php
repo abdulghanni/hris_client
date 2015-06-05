@@ -133,45 +133,97 @@
                             </tr>
                             <tr>
                               <td>3</td>
-                              <td>Sepeda motor / mobil</td>
+                              <td>Sepeda Motor</td>
                               <td>
                                 <label class="radio-inline">
-                                  <input type="radio" name="kendaraan" id="kendaraan1" required value="1">Ada
+                                  <input type="radio" name="motor" id="motor1" required value="1">Ada
                                 </label>
                                 <label class="radio-inline">
-                                  <input type="radio" name="kendaraan" id="kendaraan2" value="0">Tidak
+                                  <input type="radio" name="motor" id="motor2" value="0">Tidak
                                 </label>
                               </td>
-                              <td><input name="keterangan_kendaraan" id="form3LastName" type="text"  class="form-control" placeholder="" value=""></td>
+                              <td><input name="keterangan_motor" id="form3LastName" type="text"  class="form-control" placeholder="" value=""></td>
                             </tr>
                             <tr>
                               <td>4</td>
-                              <td>STNK motor / mobil</td>
+                              <td>Mobil</td>
                               <td>
                                 <label class="radio-inline">
-                                  <input type="radio" name="stnk" id="stnk1" required value="1">Ada
+                                  <input type="radio" name="mobil" id="mobil1" required value="1">Ada
                                 </label>
                                 <label class="radio-inline">
-                                  <input type="radio" name="stnk" id="stnk2" value="0">Tidak
+                                  <input type="radio" name="mobil" id="mobil2" value="0">Tidak
                                 </label>
                               </td>
-                              <td><input name="keterangan_stnk" id="form3LastName" type="text"  class="form-control" placeholder="" value=""></td>
+                              <td><input name="keterangan_mobil" id="form3LastName" type="text"  class="form-control" placeholder="" value=""></td>
                             </tr>
                             <tr>
                               <td>5</td>
-                              <td>HP/Laptop/Ipad</td>
+                              <td>STNK Motor</td>
                               <td>
                                 <label class="radio-inline">
-                                  <input type="radio" name="gadget" id="gadget1" required value="1">Ada
+                                  <input type="radio" name="stnk_motor" id="stnk_motor1" required value="1">Ada
                                 </label>
                                 <label class="radio-inline">
-                                  <input type="radio" name="gadget" id="gadget2" value="0">Tidak
+                                  <input type="radio" name="stnk_mobil" id="stnk_motor2" value="0">Tidak
                                 </label>
                               </td>
-                              <td><input name="keterangan_gadget" id="keterangan" type="text"  class="form-control" placeholder="" value=""></td>
+                              <td><input name="keterangan_stnk_motor" id="form3LastName" type="text"  class="form-control" placeholder="" value=""></td>
                             </tr>
                             <tr>
                               <td>6</td>
+                              <td>STNK Mobil</td>
+                              <td>
+                                <label class="radio-inline">
+                                  <input type="radio" name="stnk_mobil" id="stnk_mobil1" required value="1">Ada
+                                </label>
+                                <label class="radio-inline">
+                                  <input type="radio" name="stnk_mobil" id="stnk_mobil2" value="0">Tidak
+                                </label>
+                              </td>
+                              <td><input name="keterangan_stnk_mobil" id="form3LastName" type="text"  class="form-control" placeholder="" value=""></td>
+                            </tr>
+                            <tr>
+                              <td>7</td>
+                              <td>HP</td>
+                              <td>
+                                <label class="radio-inline">
+                                  <input type="radio" name="hp" id="hp1" required value="1">Ada
+                                </label>
+                                <label class="radio-inline">
+                                  <input type="radio" name="hp" id="hp2" value="0">Tidak
+                                </label>
+                              </td>
+                              <td><input name="keterangan_hp" id="keterangan" type="text"  class="form-control" placeholder="" value=""></td>
+                            </tr>
+                            <tr>
+                              <td>8</td>
+                              <td>Laptop</td>
+                              <td>
+                                <label class="radio-inline">
+                                  <input type="radio" name="laptop" id="laptop1" required value="1">Ada
+                                </label>
+                                <label class="radio-inline">
+                                  <input type="radio" name="laptop" id="laptop2" value="0">Tidak
+                                </label>
+                              </td>
+                              <td><input name="keterangan_laptop" id="keterangan" type="text"  class="form-control" placeholder="" value=""></td>
+                            </tr>
+                            <tr>
+                              <td>9</td>
+                              <td>Ipad</td>
+                              <td>
+                                <label class="radio-inline">
+                                  <input type="radio" name="ipad" id="ipad1" required value="1">Ada
+                                </label>
+                                <label class="radio-inline">
+                                  <input type="radio" name="ipad" id="ipad2" value="0">Tidak
+                                </label>
+                              </td>
+                              <td><input name="keterangan_ipad" id="keterangan" type="text"  class="form-control" placeholder="" value=""></td>
+                            </tr>
+                            <tr>
+                              <td>10</td>
                               <td>Laporan serah terima</td>
                               <td>
                                 <label class="radio-inline">
@@ -184,7 +236,7 @@
                               <td><input name="keterangan_laporan" id="form3LastName" type="text"  class="form-control" placeholder="" value=""></td>
                             </tr>
                             <tr>
-                              <td>7</td>
+                              <td>11</td>
                               <td>Rekonsiliasi Saldo</td>
                               <td>
                                 <label class="radio-inline">
@@ -197,7 +249,7 @@
                               <td><input name="keterangan_saldo" id="form3LastName" type="text"  class="form-control" placeholder="" value=""></td>
                             </tr>
                             <tr>
-                              <td>8</td>
+                              <td>12</td>
                               <td>Pinjaman Koperasi</td>
                               <td>
                                 <label class="radio-inline">
@@ -210,7 +262,7 @@
                               <td><input name="keterangan_koperasi" id="form3LastName" type="text"  class="form-control" placeholder="" value=""></td>
                             </tr>
                             <tr>
-                              <td>9</td>
+                              <td>13</td>
                               <td>Pinjaman buku perpustakaan</td>
                               <td>
                                 <label class="radio-inline">
@@ -223,7 +275,7 @@
                               <td><input name="keterangan_buku" id="form3LastName" type="text"  class="form-control" placeholder="" value=""></td>
                             </tr>
                             <tr>
-                              <td>10</td>
+                              <td>14</td>
                               <td>Ikatan dinas</td>
                               <td>
                                 <label class="radio-inline">
@@ -235,12 +287,38 @@
                               </td>
                               <td><input name="keterangan_ikatan" id="form3LastName" type="text"  class="form-control" placeholder="" value=""></td>
                             </tr>
+                            <tr>
+                              <td>15</td>
+                              <td>Kartu Kredit</td>
+                              <td>
+                                <label class="radio-inline">
+                                  <input type="radio" name="kartu_kredit" id="kartu_kredit1" required value="1">Ada
+                                </label>
+                                <label class="radio-inline">
+                                  <input type="radio" name="kartu_kredit" id="kartu_kredit2" value="0">Tidak
+                                </label>
+                              </td>
+                              <td><input name="keterangan_kartu_kredit" id="form3LastName" type="text"  class="form-control" placeholder="" value=""></td>
+                            </tr>
+                            <tr>
+                              <td>16</td>
+                              <td>Pinjaman Subsidi Rumah</td>
+                              <td>
+                                <label class="radio-inline">
+                                  <input type="radio" name="pinjaman_subsidi" id="pinjaman_subsidi1" required value="1">Ada
+                                </label>
+                                <label class="radio-inline">
+                                  <input type="radio" name="pinjaman_subsidi" id="pinjaman_subsidi2" value="0">Tidak
+                                </label>
+                              </td>
+                              <td><input name="keterangan_pinjaman_subsidi" id="form3LastName" type="text"  class="form-control" placeholder="" value=""></td>
+                            </tr>
                           </table>
                         </div>
                       </div>
                         <div class="row form-row">
                           <div class="col-md-12">
-                            <h4>Kami rekomendasikan kep1 karyawan tersebut</h4>
+                            <h4>Kami rekomendasikan kepada karyawan tersebut</h4>
                           </div>
                         </div>
                         <div class="row form-row">
@@ -284,6 +362,18 @@
                             </tr>
                             <tr>
                               <td>4</td>
+                              <td>Diberikan uang Pisah</td>
+                              <td>
+                                <label class="radio-inline">
+                                  <input type="radio" name="uang_pisah" id="uang_pisah1" required value="1">Ada
+                                </label>
+                                <label class="radio-inline">
+                                  <input type="radio" name="uang_pisah" id="uang_pisah2" value="0">Tidak
+                                </label>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>5</td>
                               <td>Diberikan surat keterangan kerja</td>
                               <td>
                                 <label class="radio-inline">
@@ -295,7 +385,7 @@
                               </td>
                             </tr>
                             <tr>
-                              <td>5</td>
+                              <td>6</td>
                               <td>Diberikan ijazah asli ybs</td>
                               <td>
                                 <label class="radio-inline">

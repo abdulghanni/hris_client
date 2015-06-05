@@ -91,11 +91,12 @@
                     
                     <div class="row form-row">
                       <div class="col-md-12">
-                        <div class="radio">
+                        <div class="checkbox check-primary checkbox-circle" >
                             <?php
                               if($alasan_resign->num_rows()>0){
                                   foreach($alasan_resign->result() as $row):?>
-                            <input id="alasan-<?php echo $row->id?>" type="radio" name="alasan_resign_id" value="<?php echo $row->id?>" required>
+
+                            <input id="alasan-<?php echo $row->id?>" class="checkbox1" type="checkbox" name="alasan_resign_id[]" value="<?php echo $row->id?>">
                             <label for="alasan-<?php echo $row->id?>"><?php echo $row->title?></label>
                             <?php endforeach;}?>
                           </div>

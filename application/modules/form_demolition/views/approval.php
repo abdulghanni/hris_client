@@ -98,24 +98,46 @@
 
                         <div class="col-md-8">
                           <label class="radio-inline">
-                            <input type="radio" name="syarat" id="syarat1" required value="1" <?php echo ($row->memenuhi_syarat==1)?'checked="checked"':''?>>Ya
+                            <input type="radio" name="syarat" id="syarat1" required value="1" <?php echo ($row->memenuhi_syarat==1)?'checked="checked"':''?> disabled="disabled">Ya
                           </label>
                           <label class="radio-inline">
-                            <input type="radio" name="syarat" id="syarat2" value="0" <?php echo ($row->memenuhi_syarat==0)?'checked="checked"':''?>>Tidak
+                            <input type="radio" name="syarat" id="syarat2" value="0" <?php echo ($row->memenuhi_syarat==0)?'checked="checked"':''?> disabled="disabled">Tidak
                           </label>
                         </div>
                         </div>
 
-                      <?php //if(!empty($row->note_hrd)){?>
+                      <?php if(!empty($row->approval_status)){?>
+                      <div class="row form-row">
+                        <div class="col-md-4">
+                          <label class="form-label text-left">Approval Status (hrd): </label>
+                        </div>
+                        <div class="col-md-8">
+                          <textarea name="note" class="custom-txtarea-form" disabled="disabled"><?php echo $row->approval_status ?></textarea>
+                        </div>
+                      </div>
+                      <?php } ?>
+
+                      <?php if(!empty($row->note_hrd)){?>
                       <div class="row form-row">
                         <div class="col-md-4">
                           <label class="form-label text-left">Note (hrd): </label>
                         </div>
                         <div class="col-md-8">
-                          <textarea name="note" class="custom-txtarea-form" <?php echo (is_admin())?'':'disabled="disabled"'?>><?php echo $row->note_hrd ?></textarea>
+                          <textarea name="note" class="custom-txtarea-form" disabled="disabled"><?php echo $row->note_hrd ?></textarea>
                         </div>
                       </div>
-                      <?php //} ?>
+                      <?php } ?>
+
+                       <?php if($row->is_app == 1 && is_admin()){?>
+                        <div class="row form-row">
+                          <div class="col-md-6">
+                            &nbsp;
+                          </div>
+                          <div class="col-md-6">
+                            <div class='btn btn-info btn-small' class="text-center" title='Edit Approval' data-toggle="modal" data-target="#notapprovedemolitionModal"><i class='icon-edit'> Edit Approval</i></div>
+                          </div>
+                        </div>
+                      <?php } ?>
 
 
                       </div>
@@ -141,10 +163,8 @@
                             <?php }elseif($row->is_app == 1 && is_admin() == true){?>
                             <span class="semi-bold"><?php echo get_name($row->user_app)?></span><br/>
                             <span class="small"><?php echo dateIndo($row->date_app)?></span><br/>
-                            <button type='button' class='btn btn-info btn-small' title='Edit Approval' data-toggle="modal" data-target="#notapprovedemolitionModal"><i class='icon-paste'></i></button>
                             <?php }else{?>
-                             <button class="btn btn-success btn-cons" id="btn_app" type="submit"><i class="icon-ok"></i>Approve</button>
-                             <span class="btn btn-danger btn-cons" data-toggle="modal" data-target="#notapprovedemolitionModal"><i class="icon-remove"></i> Not Approve</span>
+                             <div class="btn btn-success btn-cons" data-toggle="modal" data-target="#notapprovedemolitionModal"><i class="icon-ok"></i>Submit</div>
                             <p class="">...............................</p>
                             <?php } ?>
                           </p>

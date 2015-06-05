@@ -77,9 +77,9 @@ class Form_exit extends MX_Controller {
             $this->form_validation->set_rules('date_exit' , 'Tanggal Akhir Kerja', 'trim|required');
             $this->form_validation->set_rules('seragam' , 'Seragam', 'trim|required');
             $this->form_validation->set_rules('id_card' , 'ID Card', 'trim|required');
-            $this->form_validation->set_rules('kendaraan' , 'Kendaraan', 'trim|required');
-            $this->form_validation->set_rules('stnk' , 'STNK', 'trim|required');
-            $this->form_validation->set_rules('gadget' , 'HP/Laptop/Ipad', 'trim|required');
+            //$this->form_validation->set_rules('kendaraan' , 'Kendaraan', 'trim|required');
+            //$this->form_validation->set_rules('stnk' , 'STNK', 'trim|required');
+            //$this->form_validation->set_rules('gadget' , 'HP/Laptop/Ipad', 'trim|required');
             $this->form_validation->set_rules('laporan' , 'Laporan Serah terima', 'trim|required');
             $this->form_validation->set_rules('saldo' , 'Rekonsiliasi Saldo', 'trim|required');
             $this->form_validation->set_rules('koperasi' , 'Pinjaman Koperasi', 'trim|required');
@@ -126,12 +126,20 @@ class Form_exit extends MX_Controller {
                     'keterangan_seragam' =>$this->input->post('keterangan_seragam'),
                     'is_id_card' =>$this->input->post('id_card'),
                     'keterangan_id_card' =>$this->input->post('keterangan_id_card'),
-                    'is_kendaraan' =>$this->input->post('kendaraan'),
-                    'keterangan_kendaraan' =>$this->input->post('keterangan_kendaraan'),
-                    'is_stnk' =>$this->input->post('stnk'),
-                    'keterangan_stnk' =>$this->input->post('keterangan_stnk'),
-                    'is_gadget' =>$this->input->post('gadget'),
-                    'keterangan_gadget' =>$this->input->post('keterangan_gadget'),
+                    'is_motor' =>$this->input->post('motor'),
+                    'keterangan_motor' =>$this->input->post('keterangan_motor'),
+                    'is_mobil' =>$this->input->post('mobil'),
+                    'keterangan_mobil' =>$this->input->post('keterangan_mobil'),
+                    'is_stnk_motor' =>$this->input->post('stnk_motor'),
+                    'keterangan_stnk_motor' =>$this->input->post('keterangan_stnk_motor'),
+                    'is_stnk_mobil' =>$this->input->post('stnk_mobil'),
+                    'keterangan_stnk_mobil' =>$this->input->post('keterangan_stnk_mobil'),
+                    'is_hp' =>$this->input->post('hp'),
+                    'keterangan_hp' =>$this->input->post('keterangan_hp'),
+                    'is_laptop' =>$this->input->post('laptop'),
+                    'keterangan_laptop' =>$this->input->post('keterangan_laptop'),
+                    'is_ipad' =>$this->input->post('ipad'),
+                    'keterangan_ipad' =>$this->input->post('keterangan_ipad'),
                     'is_laporan' =>$this->input->post('laporan'),
                     'keterangan_laporan' =>$this->input->post('keterangan_laporan'),
                     'is_saldo' =>$this->input->post('saldo'),
@@ -142,6 +150,10 @@ class Form_exit extends MX_Controller {
                     'keterangan_pinjaman_buku' =>$this->input->post('keterangan_buku'),
                     'is_ikatan' =>$this->input->post('ikatan'),
                     'keterangan_ikatan' =>$this->input->post('keterangan_ikatan'),
+                    'is_kartu_kredit' =>$this->input->post('kartu_kredit'),
+                    'keterangan_kartu_kredit' =>$this->input->post('keterangan_kartu_kredit'),
+                    'is_pinjaman_subsidi' =>$this->input->post('pinjaman_subsidi'),
+                    'keterangan_pinjaman_subsidi' =>$this->input->post('keterangan_pinjaman_subsidi'),
                     'created_on'            => date('Y-m-d',strtotime('now')),
                     'created_by'            => $creator_id,
                 );
@@ -151,6 +163,7 @@ class Form_exit extends MX_Controller {
                     'is_pesangon' =>$this->input->post('pesangon'),
                     'is_uang_ganti' =>$this->input->post('uang_ganti'),
                     'is_uang_jasa' =>$this->input->post('uang_jasa'),
+                    'is_uang_pisah' =>$this->input->post('uang_pisah'),
                     'is_sk_kerja' =>$this->input->post('skkerja'),
                     'is_ijazah' =>$this->input->post('ijazah'),
                     'created_on'            => date('Y-m-d',strtotime('now')),

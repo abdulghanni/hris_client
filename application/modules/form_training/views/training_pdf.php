@@ -89,8 +89,23 @@ foreach($form_training->result() as $user):?>
     </tr>
     <tr>
       <td height="45" align="center">10</td>
+      <td>&nbsp;Nama Narasumber</td>
+      <td>&nbsp;<?php echo $user->narasumber?></td>
+    </tr>
+    <tr>
+      <td height="45" align="center">11</td>
+      <td>&nbsp;Nama Vendor</td>
+      <td>&nbsp;<?php echo $user->vendor?></td>
+    </tr>
+    <tr>
+      <td height="45" align="center">12</td>
       <td>&nbsp;Tempat Pelaksanaan :&nbsp;&nbsp; <?php echo $user->tempat?></td>
-      <td>&nbsp;Tanggal & Jam Pelaksaan :&nbsp;&nbsp;<?php echo dateIndo($user->tanggal)?>&nbsp;&nbsp;<?php echo $user->jam?> </td>
+      <td>&nbsp;Tanggal & Jam Pelaksaan :&nbsp;&nbsp;<?php echo dateIndo($user->tanggal_mulai)?> s/d <?php echo dateIndo($user->tanggal_akhir)?>&nbsp;&nbsp;<?php echo $user->jam_mulai?> s/d <?php echo $user->jam_akhir?> </td>
+    </tr>
+    <tr>
+      <td height="45" align="center">13</td>
+      <td>&nbsp;Lama Pelaksanaan</td>
+      <td>&nbsp;<?php echo $user->lama_training_bulan.' Bulan'.' '.$user->lama_training_hari.' Hari'?></td>
     </tr>
   </tbody>
 <?php endforeach;?>

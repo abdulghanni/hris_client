@@ -82,6 +82,7 @@ class form_training extends MX_Controller {
 
         $this->get_user_info($sess_id);
         $this->data['all_users'] = getAll('users');
+        $this->data['subordinate'] = getAll('users', array('superior_id'=>'where/'.get_nik($sess_id)));
 
 
         $this->_render_page('form_training/input', $this->data);
@@ -243,8 +244,14 @@ class form_training extends MX_Controller {
         'pembiayaan_id' => $this->input->post('pembiayaan'),
         'besar_biaya' => $this->input->post('besar_biaya'),
         'tempat' => $this->input->post('tempat'),
-        'tanggal'=> date('Y-m-d',strtotime($this->input->post('tanggal'))),
-        'jam'   => $this->input->post('jam'),
+        'narasumber' => $this->input->post('narasumber'),
+        'vendor' => $this->input->post('vendor'),
+        'tanggal_mulai'=> date('Y-m-d',strtotime($this->input->post('tanggal_mulai'))),
+        'tanggal_akhir'=> date('Y-m-d',strtotime($this->input->post('tanggal_akhir'))),
+        'lama_training_bulan' => $this->input->post('lama_training_bulan'),
+        'lama_training_hari' => $this->input->post('lama_training_hari'),
+        'jam_mulai'   => $this->input->post('jam_mulai'),
+        'jam_akhir'   => $this->input->post('jam_akhir'),
         'is_app_lv2' => 1, 
         'user_app_lv2' => $user_id,
         'approval_status_id_lv2' => 1, 
@@ -286,8 +293,14 @@ class form_training extends MX_Controller {
         'pembiayaan_id' => $this->input->post('pembiayaan_update'),
         'besar_biaya' => $this->input->post('besar_biaya_update'),
         'tempat' => $this->input->post('tempat_update'),
-        'tanggal'=> date('Y-m-d',strtotime($this->input->post('tanggal_update'))),
-        'jam'   => $this->input->post('jam_update'),
+        'narasumber' => $this->input->post('narasumber_update'),
+        'vendor' => $this->input->post('vendor_update'),
+        'tanggal_mulai'=> date('Y-m-d',strtotime($this->input->post('tanggal_mulai_update'))),
+        'tanggal_akhir'=> date('Y-m-d',strtotime($this->input->post('tanggal_akhir_update'))),
+        'lama_training_bulan' => $this->input->post('lama_training_bulan_update'),
+        'lama_training_hari' => $this->input->post('lama_training_hari_update'),
+        'jam_mulai'   => $this->input->post('jam_mulai_update'),
+        'jam_akhir'   => $this->input->post('jam_akhir_update'),
         'is_app_lv2' => 1,
         'approval_status_id_lv2' => $this->input->post('app_status_update'),
         'note_app_lv2' => $this->input->post('note_hrd_update'), 

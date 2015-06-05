@@ -137,10 +137,43 @@
                   </div>
                   <div class="row form-row">
                     <div class="col-md-3">
-                      <label class="form-label text-right">Waktu Pelaksanaan</label>
+                      <label class="form-label text-right">Nama Narasumber</label>
                     </div>
                     <div class="col-md-9">
-                      <input type="text" class="form-control" id="training_date" name="tanggal" value="<?php echo dateIndo($user->tanggal)?>" <?php echo $disabled?> required>
+                      <input name="narasumber_update" id="tempat" type="text"  class="form-control" placeholder="Nama Narasumber" value="<?php echo $user->narasumber?>" disabled="disabled">
+                    </div>
+                  </div>
+                  <div class="row form-row">
+                    <div class="col-md-3">
+                      <label class="form-label text-right">Nama Vendor</label>
+                    </div>
+                    <div class="col-md-9">
+                      <input name="vendor_update" id="vendor_update" type="text"  class="form-control" placeholder="Nama Vendor" value="<?php echo $user->vendor?>" disabled="disabled">
+                    </div>
+                  </div>
+                  <div class="row form-row">
+                    <div class="col-md-3">
+                      <label class="form-label text-right">Waktu Pelaksanaan</label>
+                    </div>
+                    <div class="col-md-3">
+                      <input type="text" id="tanggal_mulai_update" name="tanggal_mulai_update" value="<?php echo dateIndo($user->tanggal_mulai)?>" disabled="disabled">
+                    </div>
+                    <div class="col-md-2">
+                      <label class="form-label text-center">s/d</label>
+                    </div>
+                    <div class="col-md-3">
+                       <input type="text" id="tanggal_akhir_update" name="tanggal_akhir_update" value="<?php echo dateIndo($user->tanggal_akhir)?>" disabled="disabled">
+                    </div>
+                  </div>
+                  <div class="row form-row">
+                    <div class="col-md-3">
+                      <label class="form-label text-right">Lama Pelaksanaan</label>
+                    </div>
+                    <div class="col-md-2">
+                      <input name="lama_training_bulan_update" id="lama_training_bulan_update" type="text"  class="form-control text-center" value="<?php echo $user->lama_training_bulan?> Bulan" readonly>
+                    </div>
+                    <div class="col-md-2">
+                      <input name="lama_training_hari_update" id="lama_training_hari_update" type="text"  class="form-control text-center" value="<?php echo $user->lama_training_hari?> Hari" readonly>
                     </div>
                   </div>
                   <div class="row form-row">
@@ -148,8 +181,26 @@
                       <label class="form-label text-right">Jam</label>
                     </div>
                     
-                    <div class="col-md-9">
-                        <input name="jam" class="form-control" id="timepicker2" type="text" value="<?php echo $user->jam?>" <?php echo $disabled?> required>
+                    <div class="col-md-3">
+                      <div class="input-append bootstrap-timepicker">
+                        <input name="jam_mulai_update" id="timepicker2" type="text" class="timepicker-24" value="<?php echo $user->jam_mulai?>" disabled="disabled">
+                        <span class="add-on">
+                            <i class="icon-time"></i>
+                        </span>
+                      </div>
+                    </div>
+
+                    <div class="col-md-2">
+                      <label class="form-label text-center">s/d</label>
+                    </div>
+
+                    <div class="col-md-3">
+                      <div class="input-append bootstrap-timepicker">
+                        <input name="jam_akhir_update" id="timepicker2" type="text" class="timepicker-24" value="<?php echo $user->jam_akhir?>" disabled="disabled">
+                        <span class="add-on">
+                            <i class="icon-time"></i>
+                        </span>
+                      </div>
                     </div>
                   </div>
 
@@ -170,7 +221,7 @@
                       <label class="form-label text-right">Note (HRD) : </label>
                     </div>
                     <div class="col-md-9">
-                      <textarea name="notes_hrd_update" class="custom-txtarea-form" placeholder="Note HRD isi disini"><?=$notes_hrd?></textarea>
+                      <textarea name="notes_hrd_update" class="custom-txtarea-form" placeholder="Note HRD isi disini" disabled="disabled"><?php echo $user->note_app_lv2?></textarea>
                     </div>
                   </div>
                   <?php } ?>

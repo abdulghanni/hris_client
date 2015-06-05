@@ -30,8 +30,8 @@
                                   <th width="10%">Tanggal</th>
                                   <th width="10%">Nama</th>
                                   <th width="20%">Keterangan</th>
-                                  <th width="10%">appr. spv</th>
-                                  <th width="10%">appr. ka. bag</th>
+                                  <th width="10%" class="text-center">appr. spv</th>
+                                  <th width="10%" class="text-center">appr. ka. bag</th>
                                   <th width="10%" class="text-center">cetak</th>
                                 </tr>
                               </thead>
@@ -54,17 +54,17 @@
                                                   <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-paste'></i></button>
                                               </a>";
                                           }else{
-                                            $txt_app_lv1 =  "<a href='".site_url('form_absen/approval_spv/'.$absen->id)."''>Ya</a>";
+                                            $txt_app_lv1 =  "<a href='".site_url('form_absen/approval_spv/'.$absen->id)."''></i>Ya</a>";
                                             
                                           }
                                       }elseif($absen->is_app_lv1== 1){
-                                        $txt_app_lv1 =  "<a href='".site_url('form_absen/approval_spv/'.$absen->id)."''>Ya</a>";
+                                        $txt_app_lv1 =  "<a href='".site_url('form_absen/approval_spv/'.$absen->id)."''><i class='icon-ok-sign' title='Approved'></i></a>";
                                       }elseif($absen->is_app_lv1== 0){
                                          $txt_app_lv1 = '-';
                                       }
                                   }else{
                                     if ($absen->is_app_lv1== 1){
-                                    $txt_app_lv1 =  "<a href='".site_url('form_absen/approval_spv/'.$absen->id)."''>Ya</a>";
+                                    $txt_app_lv1 =  "<a href='".site_url('form_absen/approval_spv/'.$absen->id)."''><i class='icon-ok-sign' title='Approved'></i></a>";
                                     }
                                   }
 
@@ -78,7 +78,7 @@
                                                   <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-paste'></i></button>
                                               </a>";
                                           }else{
-                                            $txt_app_lv2 =  "<a href='".site_url('form_absen/approval_kbg/'.$absen->id)."''>Ya</a>";
+                                            $txt_app_lv2 =  "<a href='".site_url('form_absen/approval_kbg/'.$absen->id)."'><i class='icon-ok-sign' title='Approved'></a>";
                                             
                                           }
                                      }else{
@@ -86,7 +86,7 @@
                                      }
                                   }else{
                                     if ($absen->is_app_lv2== 1){
-                                    $txt_app_lv2 =  "<a href='".site_url('form_absen/approval_spv/'.$absen->id)."''>Ya</a>";
+                                    $txt_app_lv2 =  "<a href='".site_url('form_absen/approval_spv/'.$absen->id)."''><i class='icon-ok-sign' title='Approved'></a>";
                                     }
                                   }
 
