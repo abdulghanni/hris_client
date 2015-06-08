@@ -88,9 +88,19 @@
     <td height="40"><span class="style3"><?php echo $user->alasan_cuti?></span></td>
   </tr>
   <tr>
+    <td height="40"><span class="style3">Remarks</span></td>
+    <td height="40"><div align="center">:</div></td>
+    <td height="40"><span class="style3"><?php echo $user->remarks?></span></td>
+  </tr>
+  <tr>
     <td height="40"><span class="style3">Pengganti</span></td>
     <td height="40"><div align="center">:</div></td>
     <td height="40"><span class="style3"><?php echo $user_pengganti?></span></td>
+  </tr>
+  <tr>
+    <td height="40"><span class="style3">No. HP</span></td>
+    <td height="40"><div align="center">:</div></td>
+    <td height="40"><span class="style3"><?php echo $user->contact?></span></td>
   </tr>
   <tr>
     <td height="40"><span class="style3">Alamat Selama Cuti </span></td>

@@ -322,7 +322,7 @@ class Form_cuti_model extends CI_Model
                 'status_lv3.title as approval_status_lv3',
             ));
 
-            $this->db->join('alasan_cuti', 'users_cuti.alasan_cuti_id = alasan_cuti.id', 'left');
+            $this->db->join('alasan_cuti', 'users_cuti.alasan_cuti_id = alasan_cuti.HRSLEAVETYPEID', 'left');
             $this->db->join('comp_session', 'users_cuti.id_comp_session = comp_session.id', 'left');
             $this->db->join('users', 'users_cuti.user_id = users.id', 'left');
 			$this->db->join('approval_status as status_lv1', 'users_cuti.approval_status_id_lv1 = status_lv1.id', 'left');
@@ -418,7 +418,7 @@ class Form_cuti_model extends CI_Model
                 'status_lv3.title as approval_status_lv3',
             ));
 
-            $this->db->join('alasan_cuti', 'users_cuti.alasan_cuti_id = alasan_cuti.id', 'left');
+            $this->db->join('alasan_cuti', 'users_cuti.alasan_cuti_id = alasan_cuti.HRSLEAVETYPEID', 'left');
             $this->db->join('comp_session', 'users_cuti.id_comp_session = comp_session.id', 'left');
             $this->db->join('users', 'users_cuti.user_id = users.id', 'left');
 			$this->db->join('approval_status as status_lv1', 'users_cuti.approval_status_id_lv1 = status_lv1.id', 'left');
@@ -614,7 +614,7 @@ class Form_cuti_model extends CI_Model
             $this->db->join('position', 'users_employement.position_id = position.id', 'left');
             $this->db->join('users_cuti_plafon', 'users.id = users_cuti_plafon.user_id', 'left');
             $this->db->join('comp_session', 'users_cuti.id_comp_session = comp_session.id', 'left');
-            $this->db->join('alasan_cuti', 'users_cuti.alasan_cuti_id = alasan_cuti.id', 'left');
+            $this->db->join('alasan_cuti', 'users_cuti.alasan_cuti_id = alasan_cuti.HRSLEAVETYPEID', 'left');
             $this->db->join('approval_status as status_lv1', 'users_cuti.approval_status_id_lv1 = status_lv1.id', 'left');
             $this->db->join('approval_status as status_lv2', 'users_cuti.approval_status_id_lv2 = status_lv2.id', 'left');
             $this->db->join('approval_status as status_lv3', 'users_cuti.approval_status_id_lv3 = status_lv3.id', 'left');

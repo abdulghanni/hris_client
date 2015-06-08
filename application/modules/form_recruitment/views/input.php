@@ -178,7 +178,16 @@
                         <label class="form-label text-right">Komputer</label>
                       </div>
                       <div class="col-md-10">
-                        <input name="komputer" id="form3LastName" type="text"  class="form-control" placeholder="Komputer" value="">
+                        <?php 
+                          if($komputer->num_rows()>0){
+                            foreach($komputer->result() as $row):?>
+                        <div class="col-md-2">
+                          <div class="checkbox check-primary checkbox-circle" >
+                            <input name="komputer[]" class="checkbox1" type="checkbox" id="komputer<?php echo $row->id ?>" value="<?php echo $row->id ?>">
+                              <label for="komputer<?php echo $row->id ?>"><?php echo $row->title?></label>
+                            </div>
+                        </div>
+                      <?php endforeach;} ?>
                       </div>
                     </div>
                     <div class="row form-row">

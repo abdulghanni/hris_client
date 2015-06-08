@@ -162,7 +162,7 @@
                                                 <label class="form-label text-right"><?php echo lang('count_cuti') ?></label>
                                               </div>
                                               <div class="col-md-10">
-                                                <input name="courseid" id="courseid" type="text"  class="form-control" placeholder="courseid" value="<?php echo get_sisa_cuti($user->user_id)[0]['ENTITLEMENT']; ?>" disabled="disabled">
+                                                <input name="courseid" id="courseid" type="text"  class="form-control" placeholder="courseid" value="<?php echo (!empty(get_sisa_cuti($user->user_id)[0]['ENTITLEMENT']))?get_sisa_cuti($user->user_id)[0]['ENTITLEMENT']:'-'; ?>" disabled="disabled">
                                               </div>
                                             </div>
                                             <div class="row form-row">
@@ -207,10 +207,26 @@
                                             </div>
                                             <div class="row form-row">
                                               <div class="col-md-2">
+                                                <label class="form-label text-right"><?php echo 'Remarks' ?></label>
+                                              </div>
+                                              <div class="col-md-10">
+                                                <input name="status" id="status" type="text"  class="form-control" placeholder="Status" value="<?php echo $user->remarks; ?>" disabled="disabled">
+                                              </div>
+                                            </div>
+                                            <div class="row form-row">
+                                              <div class="col-md-2">
                                                 <label class="form-label text-right"><?php echo lang('replacement') ?></label>
                                               </div>
                                               <div class="col-md-10">
                                                 <input name="status" id="status" type="text"  class="form-control" placeholder="Status" value="<?php echo get_pengganti($user->id); ?>" disabled="disabled">
+                                              </div>
+                                            </div>
+                                            <div class="row form-row">
+                                              <div class="col-md-2">
+                                                <label class="form-label text-right"><?php echo 'No. HP' ?></label>
+                                              </div>
+                                              <div class="col-md-10">
+                                                <input name="status" id="status" type="text"  class="form-control" placeholder="Status" value="<?php echo $user->contact; ?>" disabled="disabled">
                                               </div>
                                             </div>
                                             <div class="row form-row">

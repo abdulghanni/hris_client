@@ -36,17 +36,22 @@
                             <tbody>
                               <?php if ($_num_rows > 0) { ?>
                               <?php foreach ($form_spd_dalam as $spd) : ?>
-                              <?php 
-                                if ($spd->is_submit == 1) {
+                              <?php
+                                $report_num = getAll('users_spd_dalam_report', array('user_spd_dalam_id'=>'where/'.$spd->id))->num_rows();
+                                if ($spd->is_submit == 1 && $report_num == 1) {
                                   $btn_dis = "disabled=\"disabled\"";
                                   $btn_sub = "Submitted";
-                                  $btn_rep = "View Report";
+                                  $report_disable = (get_nik($sess_id) == $spd->task_receiver)?'':'';
+                                }elseif($spd->is_submit == 1 && $report_num == 0){
+                                  $btn_dis = "disabled=\"disabled\"";
+                                  $btn_sub = "Submitted";
+                                  $report_disable = (get_nik($sess_id) == $spd->task_receiver)?'':'disabled';
                                 }else{
-                                  $btn_dis = "";
+                                  $btn_dis = '';
+                                  $report_disable = 'disabled';
                                   $btn_sub = "Submit";
-                                  $btn_rep = "Report";
                                 }
-                                
+                                $btn_rep = ($report_num>0)?'View Report':(($report_num < 1 && get_nik($sess_id) == $spd->task_receiver)?'Create Report':'Report');
                                ?>
                                 <tr>
                                   <td>
@@ -60,19 +65,17 @@
                                     </a>
                                   </td>
                                   <td>
-                                    <div class="list-actions">
+                                    <div class="list-actions" class="text-center">
                                       <a href="<?php echo base_url() ?>form_spd_dalam/submit/<?php echo $spd->id ?>">
                                         <button <?php echo $btn_dis; ?> class="btn btn-primary btn-cons" type="button">
                                           <i class="icon-ok"></i>
                                            <?php echo $btn_sub; ?>
                                         </button>
                                       </a>
-                                      <a href="<?php echo base_url() ?>form_spd_dalam/report/<?php echo $spd->id ?>">
-                                        <button class="btn btn-info btn-cons" type="button">
+                                        <button class="btn btn-info btn-cons" type="button" onclick='window.location.href="<?php echo base_url()?>form_spd_dalam/report/<?php echo $spd->id ?>"' <?php echo $report_disable?>>
                                           <i class="icon-paste"></i>
                                           <?php echo $btn_rep; ?>
                                         </button>
-                                      </a>
                                       <a href="<?php echo base_url() ?>form_spd_dalam/pdf/<?php echo $spd->id ?>">
                                         <button class="btn btn-info btn-cons" type="button">
                                           <i class="icon-print"></i>

@@ -112,18 +112,15 @@
                           <label class="form-label text-right">Alasan</label>
                         </div>
                         <div class="col-md-9">
-                          <select id="formalasan" class="select2" style="width:100%" disabled="disabled">
-                          <?php if ($alasan_cuti > 0) { ?>
-                              <?php foreach ($alasan_cuti as $cs) : ?>
-                              <?php if ($cs->id == $user->alasan_cuti_id) {
-                                $selected = "selected";
-                              }else{
-                                $selected = "";
-                              } ?>
-                                <option value="<?php echo $cs->id; ?>" <?php echo $selected; ?>><?php echo $cs->title;?> </option>
-                              <?php endforeach; ?>                      
-                          <?php } ?>
-                          </select> 
+                          <input name="alasan" id="alasan" type="text"  class="form-control" placeholder="alasan" value="<?php echo $user->alasan_cuti?>" disabled>
+                        </div>
+                      </div>
+                      <div class="row form-row">
+                        <div class="col-md-3">
+                          <label class="form-label text-right"><?php echo 'Remarks' ?></label>
+                        </div>
+                        <div class="col-md-9">
+                          <input name="remarks" id="remarks" type="text"  class="form-control" placeholder="remarks" value="<?php echo $user->remarks?>">
                         </div>
                       </div>
                       <div class="row form-row">
@@ -134,7 +131,16 @@
                           <input name="pengganti_cuti" id="pengganti_cuti" type="text"  class="form-control" placeholder="Nama" value="<?php echo $user_pengganti ?>" disabled="disabled">
                         </div>
                       </div>
-                    
+                      
+                      <div class="row form-row">
+                        <div class="col-md-3">
+                          <label class="form-label text-right"><?php echo 'No. HP' ?></label>
+                        </div>
+                        <div class="col-md-9">
+                          <input name="contact" id="contact" type="text"  class="form-control" placeholder="contact" value="<?php echo $user->contact?>">
+                        </div>
+                      </div>
+
                       <div class="row form-row">
                         <div class="col-md-3">
                           <label class="form-label text-right">Alamat selama cuti</label>

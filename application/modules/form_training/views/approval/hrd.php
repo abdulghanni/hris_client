@@ -93,6 +93,24 @@
                   </div>
                   <div class="row form-row">
                     <div class="col-md-3">
+                      <label class="form-label text-right">Tipe Pelatihan</label>
+                    </div>
+                    <div class="col-md-9">
+                      <select name="training_type" class="select2" id="training_type" style="width:100%" <?php echo $disabled?>>
+                          <?php if($training_type->num_rows()>0){
+                              foreach ($training_type->result_array() as $key => $value) {
+                              $selected = ($user->training_type_id <> 0 && $user->training_type_id == $value['id']) ? 'selected = selected' : '';
+                              echo '<option value="'.$value['id'].'" '.$selected.'>'.$value['title'].'</option>';
+                              }}else{
+                              echo '<option value="0">'.'No Data'.'</option>';
+                              }
+                              ?>
+
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row form-row">
+                    <div class="col-md-3">
                       <label class="form-label text-right">Penyelenggara</label>
                     </div>
                     <div class="col-md-9">
@@ -271,7 +289,7 @@
                       <label class="form-label text-right">Note (HRD) : </label>
                     </div>
                     <div class="col-md-9">
-                      <textarea name="notes_hrd" class="custom-txtarea-form" placeholder="Note HRD isi disini"></textarea>
+                      <textarea name="note_hrd" class="custom-txtarea-form" placeholder="Note HRD isi disini"></textarea>
                     </div>
                   </div>
                   <?php } ?>
@@ -400,6 +418,24 @@
       <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
       <div class="modal-body">
         <form class="form-no-horizontal-spacing" method="POST" action="<?php echo site_url('form_training/update_approve_hrd/'.$this->uri->segment(3))?>">
+            <div class="row form-row">
+              <div class="col-md-3">
+                <label class="form-label text-right">Tipe Pelatihan</label>
+              </div>
+              <div class="col-md-9">
+                <select name="training_type_update" class="select2" id="training_type" style="width:100%">
+                    <?php if($training_type->num_rows()>0){
+                        foreach ($training_type->result_array() as $key => $value) {
+                        $selected = ($user->training_type_id <> 0 && $user->training_type_id == $value['id']) ? 'selected = selected' : '';
+                        echo '<option value="'.$value['id'].'" '.$selected.'>'.$value['title'].'</option>';
+                        }}else{
+                        echo '<option value="0">'.'No Data'.'</option>';
+                        }
+                        ?>
+
+                </select>
+              </div>
+            </div>
             <div class="row form-row">
                     <div class="col-md-3">
                       <label class="form-label text-right">Penyelenggara</label>
@@ -558,7 +594,7 @@
                       <label class="form-label text-left">Note (HRD) : </label>
                     </div>
                     <div class="col-md-12">
-                      <textarea name="note_hrd_update" class="custom-txtarea-form" placeholder="Note HRD isi disini"><?=$notes_hrd?></textarea>
+                      <textarea name="note_hrd_update" class="custom-txtarea-form" placeholder="Note HRD isi disini"><?php echo $user->note_app_lv2?></textarea>
                     </div>
                   </div>
 

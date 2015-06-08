@@ -84,6 +84,14 @@
                   </div>
                   <div class="row form-row">
                     <div class="col-md-3">
+                      <label class="form-label text-right">Tipe Pelatihan</label>
+                    </div>
+                    <div class="col-md-9">
+                      <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Tujuan pelatihan" value="<?php echo $user->training_type?>" disabled="disabled">
+                    </div>
+                  </div>
+                  <div class="row form-row">
+                    <div class="col-md-3">
                       <label class="form-label text-right">Penyelenggara</label>
                     </div>
                     <div class="col-md-9">

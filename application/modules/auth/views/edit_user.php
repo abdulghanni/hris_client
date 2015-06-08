@@ -62,7 +62,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-6">
+                                            <div class="=col-md-6">
                                                 <?php if($s_photo && file_exists('./uploads/'.$u_folder.'/'.$s_photo)) {?>
                                                 <img alt="" src="<?php echo base_url()?>uploads/<?php echo $u_folder.'/80x80/'.$s_photo?>">
                                                 <?php }else{ ?>
@@ -130,6 +130,38 @@
                                                 </select>
                                             </div>
                                         </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <!-- <div class="input-with-icon right"> -->
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <!-- input foto -->
+                                                    <?php echo 'Scan KK';?>
+                                                    <input type="file" name="kk" value="<?php echo 'tes'?>" id="kk" class="input-file-control"  /> 
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <?php echo lang('register_nik_label', 'nik');?>
+                                                    <?php echo form_upload('tes');?>                              
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                            <div class="col-md-6">
+                                                <?php if($s_photo && file_exists('./uploads/'.$u_folder.'/'.$s_photo)) {?>
+                                                <img alt="" src="<?php echo base_url()?>uploads/<?php echo $u_folder.'/80x80/'.$s_photo?>">
+                                                <?php }else{ ?>
+                                                <img alt="" src="<?php echo base_url()?>assets/img/no-image.png" class="img-responsive">
+                                                <?php } ?>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <?php if($s_photo && file_exists('./uploads/'.$u_folder.'/'.$s_photo)) {?>
+                                                <img alt="" src="<?php echo base_url()?>uploads/<?php echo $u_folder.'/80x80/'.$s_photo?>">
+                                                <?php }else{ ?>
+                                                <img alt="" src="<?php echo base_url()?>assets/img/no-image.png" class="img-responsive">
+                                                <?php } ?>
+                                            </div>
+                                            </div>
                                     </div>
 									
                                 </div>

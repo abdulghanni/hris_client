@@ -156,6 +156,15 @@
                         </select> 
                       </div>
                     </div>
+                    
+                    <div class="row form-row">
+                      <div class="col-md-3">
+                        <label class="form-label text-right"><?php echo 'Remarks' ?></label>
+                      </div>
+                      <div class="col-md-9">
+                        <input name="remarks" id="remarks" type="text"  class="form-control" placeholder="remarks">
+                      </div>
+                    </div>
                     <div class="row form-row">
                       <div class="col-md-3">
                         <label class="form-label text-right"><?php echo lang('replacement') ?></label>
@@ -171,8 +180,14 @@
                             <?php endforeach;?>
                           </select>
                             <?php }?>
-                          
-                       
+                      </div>
+                    </div>
+                    <div class="row form-row">
+                      <div class="col-md-3">
+                        <label class="form-label text-right"><?php echo 'No. HP' ?></label>
+                      </div>
+                      <div class="col-md-9">
+                        <input name="contact" id="contact" type="text"  class="form-control" placeholder="contact">
                       </div>
                     </div>
                     <div class="row form-row">

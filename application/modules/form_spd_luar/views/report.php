@@ -121,6 +121,20 @@
                     <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
                    
                    <div class="row form-row">
+                      <div class="col-md-4">
+                        <label class="form-label text-left">Sudah Terlaksana : </label>
+                      </div>
+                        <div class="col-md-8">
+                          <label class="radio-inline">
+                            <input type="radio" name="is_done" id="is_done1" required value="1" <?php echo ($is_done==1)?'checked="checked"':''?>>Ya
+                          </label>
+                          <label class="radio-inline">
+                            <input type="radio" name="is_done" id="is_done2" value="0" <?php echo ($is_done==0)?'checked="checked"':''?>>Tidak
+                          </label>
+                        </div>
+                    </div>
+
+                   <div class="row form-row">
                       <div class="col-md-12">
                         <label class="form-label text-left">Maksud dan Tujuan : </label>
                       </div>
@@ -151,6 +165,15 @@
                       </div>
                     </div>
 
+                    <?php if($this->session->userdata('user_id') == $td->task_receiver && $n_report== 1|| get_nik($this->session->userdata('user_id')) == $td->task_receiver && $n_report== 1){ ?>
+                    <br/>
+                    <div class="row form-row">
+                      <div class="col-md-12" align="center">
+                        <div class='btn btn-info btn-small' title='Edit Report' data-toggle="modal" data-target="#editspdluarModal"><i class='icon-edit'> Edit Report</i></div>
+                      </div>
+                    </div>
+                    <?php } ?>
+
                   </div>
                   </div>
 
@@ -170,7 +193,6 @@
                             <span class="semi-bold"><?php echo $task_receiver_nm ?></span><br/>
                             <span class="small"><?php echo dateIndo($created_on) ?></span><br/>
                           </p>
-                          <button type='button' class='btn btn-info btn-small' title='Edit Report' data-toggle="modal" data-target="#editspdluarModal"><i class='icon-paste'></i></button>
                           <?php }else{?>
                           <p class="wf-submit">
                             <span class="semi-bold"><?php echo $task_receiver_nm ?></span><br/>
@@ -206,6 +228,19 @@
       <div class="modal-body">
         <?php echo form_open_multipart('form_spd_luar/update_report/'.$id_report)?>
             <h4>Laporan Kegiatan PJD</h4>
+            <div class="row form-row">
+              <div class="col-md-4">
+                <label class="form-label text-left">Sudah Terlaksana : </label>
+              </div>
+                <div class="col-md-8">
+                  <label class="radio-inline">
+                    <input type="radio" name="is_done" id="is_done1" required value="1" <?php echo ($is_done==1)?'checked="checked"':''?>>Ya
+                  </label>
+                  <label class="radio-inline">
+                    <input type="radio" name="is_done" id="is_done2" value="0" <?php echo ($is_done==0)?'checked="checked"':''?>>Tidak
+                  </label>
+                </div>
+            </div>
             <div class="row form-row">
               <div class="col-md-12">
                 <label class="form-label text-left">Maksud dan Tujuan : </label>

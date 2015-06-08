@@ -147,12 +147,16 @@ class Form_cuti extends MX_Controller {
                 'date_selesai_cuti'     => date('Y-m-d', strtotime($this->input->post('end_cuti'))),
                 'jumlah_hari'           => $this->input->post('jml_cuti'),
                 'alasan_cuti_id'        => $this->input->post('alasan_cuti'),
+                'remarks'               => $this->input->post('remarks'),
                 'user_pengganti'        => $this->input->post('user_pengganti'),
+                'contact'               => $this->input->post('contact'),
                 'alamat_cuti'           => $this->input->post('alamat'),
                 'created_on'            => date('Y-m-d',strtotime('now')),
                 'created_by'            => $this->session->userdata('user_id')
             );
 
+            $leave_request_id = $this->get_last_leave_request_id();
+            
             $num_rows = $this->db->get('users_cuti')->num_rows();
 
             if($num_rows>0){
@@ -168,6 +172,7 @@ class Form_cuti extends MX_Controller {
                  $this->send_approval_request($cuti_id, $user_id);
                  echo json_encode(array('st' =>1, 'cuti_url' => $cuti_url));     
             }
+            $this->insert_leave_request($user_id, $additional_data, $leave_request_id);
         }
     }
 
@@ -190,18 +195,32 @@ class Form_cuti extends MX_Controller {
         }
     }
 
+    function get_last_leave_request_id()
+    {
+        $url = get_api_key().'users/last_leave_request_id/format/json';
+        $headers = get_headers($url);
+        $response = substr($headers[0], 9, 3);
+        if ($response != "404") {
+            $getleave_request_id = file_get_contents($url);
+            $leave_request_id = json_decode($getleave_request_id, true);
+            return $leave_request_id;
+        } else {
+            return '';
+        }
+    }
+
     function get_type_cuti()
     {
         $url = get_api_key().'users/type_cuti/format/json';
-            $headers = get_headers($url);
-            $response = substr($headers[0], 9, 3);
-            if ($response != "404") {
-                $gettype_cuti = file_get_contents($url);
-                $type_cuti = json_decode($gettype_cuti, true);
-                return $type_cuti;
-            } else {
-                return '';
-            }
+        $headers = get_headers($url);
+        $response = substr($headers[0], 9, 3);
+        if ($response != "404") {
+            $gettype_cuti = file_get_contents($url);
+            $type_cuti = json_decode($gettype_cuti, true);
+            return $type_cuti;
+        } else {
+            return '';
+        }
     }
 
     function update_sisa_cuti($recid, $sisa_cuti)
@@ -215,15 +234,71 @@ class Form_cuti extends MX_Controller {
 
         $result = $this->rest->{$method}($uri, $params);
 
+
         if(isset($result->status) && $result->status == 'success')  
         {  
             return TRUE;
-            print_mz($this->rest->debug());
+            print_r($this->rest->debug());
         }     
         else  
         {  
             return FALSE;
-            print_mz($this->rest->debug());
+            print_r($this->rest->debug());
+        }
+    }
+
+    function insert_leave_request($user_id, $data = array(), $leave_request_id)
+    {
+        //print_mz($user_id.$data);
+        $user_id = get_nik($user_id);
+        $leaveid = substr($leave_request_id[0]['IDLEAVEREQUEST'],2)+1;
+        $leaveid = sprintf('%06d', $leaveid);
+        $IDLEAVEREQUEST = 'CT'.$leaveid;
+        $RECVERSION = $leave_request_id[0]['RECVERSION']+1;
+        $RECID = $leave_request_id[0]['RECID']+1;
+        $method = 'post';
+        $params =  array();
+        $uri = get_api_key().'users/leave_request/'.
+               'EMPLID/'.$user_id.
+               '/HRSLEAVETYPEID/'.$data['alasan_cuti_id'].
+               '/REMARKS/'.$data['remarks'].
+               '/CONTACTPHONE/'.$data['contact'].
+               '/TOTALLEAVEDAYS/'.$data['jumlah_hari'].
+               '/LEAVEDATETO/'.$data['date_selesai_cuti'].
+               '/LEAVEDATEFROM/'.$data['date_mulai_cuti'].
+               '/REQUESTDATE/'.$data['created_on'].
+               '/IDLEAVEREQUEST/'.$IDLEAVEREQUEST.
+               '/STATUSFLAG/'.'1'.
+               '/IDPERSONSUBSTITUTE/'.$data['user_pengganti'].
+               '/TRAVELLINGLOCATION/'.$data['alamat_cuti'].
+               '/MODIFIEDDATETIME/'.$data['created_on'].
+               '/MODIFIEDBY/'.$data['created_by'].
+               '/CREATEDDATETIME/'.$data['created_on'].
+               '/CREATEDBY/'.$data['created_by'].
+               '/DATAAREAID/'.get_user_dataareaid($user_id).
+               '/RECVERSION/'.$RECVERSION.
+               '/RECID/'.$RECID.
+               '/BRANCHID/'.get_user_branchid($user_id).
+               '/DIMENSION/'.get_user_buid($user_id).
+               '/DIMENSION2_/'.get_user_dimension2_($user_id).
+               '/HRSLOCATIONID/'.get_user_locationid($user_id).
+               '/HRSEMPLGROUPID/'.get_user_emplgroupid($user_id)
+               ;
+
+        $this->rest->format('application/json');
+
+        $result = $this->rest->{$method}($uri, $params);
+
+
+        if(isset($result->status) && $result->status == 'success')  
+        {  
+            return true;
+            //print_r($this->rest->debug());
+        }     
+        else  
+        {  
+            return false;
+            //print_r($this->rest->debug());
         }
     }
 

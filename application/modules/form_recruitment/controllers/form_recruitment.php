@@ -92,6 +92,7 @@ class Form_recruitment extends MX_Controller {
         $this->data['urgensi'] = getAll('recruitment_urgensi', array('is_deleted' => 'where/0'));
         $this->data['jenis_kelamin'] = getAll('jenis_kelamin', array('is_deleted' => 'where/0'));
         $this->data['pendidikan'] = getAll('recruitment_pendidikan', array('is_deleted' => 'where/0'));
+        $this->data['komputer'] = getAll('recruitment_komputer', array('is_deleted' => 'where/0'));
         $this->data['sess_id'] = $this->session->userdata('user_id');
         $this->get_bu();
 
@@ -174,7 +175,7 @@ class Form_recruitment extends MX_Controller {
 
                 $data3 = array(
                         'user_recruitment_id' => $recruitment_id,
-                        'komputer' => $this->input->post('komputer'),
+                        'komputer' => implode(',',$this->input->post('komputer')),
                         'bahasa_pemrograman' => $this->input->post('pemrograman'),
                         'komunikasi' => $this->input->post('komunikasi'),
                         'grafika' => $this->input->post('grafika'),
@@ -212,8 +213,10 @@ class Form_recruitment extends MX_Controller {
         $this->data['urgensi'] = getAll('recruitment_urgensi', array('is_deleted' => 'where/0'));
         $jk = explode(',', getAll('users_recruitment_kualifikasi', array('id' => 'where/'.$id))->row('jenis_kelamin_id'));
         $pendidikan = explode(',', getAll('users_recruitment_kualifikasi', array('id' => 'where/'.$id))->row('pendidikan_id'));
+        $komputer = explode(',', getAll('users_recruitment_kemampuan', array('id' => 'where/'.$id))->row('komputer'));
         $this->data['jenis_kelamin'] = $this->recruitment_model->get_jk($jk);
         $this->data['pendidikan'] = $this->recruitment_model->get_pendidikan($pendidikan);
+        $this->data['komputer'] = $this->recruitment_model->get_komputer($komputer);
         $this->data['position_pengaju'] = $this->get_user_position($this->recruitment_model->recruitment($id)->row_array()['user_id']);
         $this->_render_page('form_recruitment/detail', $this->data);
     }
@@ -230,8 +233,10 @@ class Form_recruitment extends MX_Controller {
         $this->data['urgensi'] = getAll('recruitment_urgensi', array('is_deleted' => 'where/0'));
         $jk = explode(',', getAll('users_recruitment_kualifikasi', array('id' => 'where/'.$id))->row('jenis_kelamin_id'));
         $pendidikan = explode(',', getAll('users_recruitment_kualifikasi', array('id' => 'where/'.$id))->row('pendidikan_id'));
+        $komputer = explode(',', getAll('users_recruitment_kemampuan', array('id' => 'where/'.$id))->row('komputer'));
         $this->data['jenis_kelamin'] = $this->recruitment_model->get_jk($jk);
         $this->data['pendidikan'] = $this->recruitment_model->get_pendidikan($pendidikan);
+        $this->data['komputer'] = $this->recruitment_model->get_komputer($komputer);
         $this->data['position_pengaju'] = $this->get_user_position($this->recruitment_model->recruitment($id)->row_array()['user_id']);
         $this->_render_page('form_recruitment/approval', $this->data);
     }
@@ -300,8 +305,10 @@ class Form_recruitment extends MX_Controller {
         $this->data['urgensi'] = getAll('recruitment_urgensi', array('is_deleted' => 'where/0'));
         $jk = explode(',', getAll('users_recruitment_kualifikasi', array('id' => 'where/'.$id))->row('jenis_kelamin_id'));
         $pendidikan = explode(',', getAll('users_recruitment_kualifikasi', array('id' => 'where/'.$id))->row('pendidikan_id'));
+        $komputer = explode(',', getAll('users_recruitment_kemampuan', array('id' => 'where/'.$id))->row('komputer'));
         $this->data['jenis_kelamin'] = $this->recruitment_model->get_jk($jk);
         $this->data['pendidikan'] = $this->recruitment_model->get_pendidikan($pendidikan);
+        $this->data['komputer'] = $this->recruitment_model->get_komputer($komputer);
         $this->data['position_pengaju'] = $this->get_user_position($this->recruitment_model->recruitment($id)->row_array()['user_id']);
         return $this->load->view('form_recruitment/recruitment_mail', $this->data, TRUE);
     }
@@ -427,8 +434,10 @@ class Form_recruitment extends MX_Controller {
         $this->data['urgensi'] = getAll('recruitment_urgensi', array('is_deleted' => 'where/0'));
         $jk = explode(',', getAll('users_recruitment_kualifikasi', array('id' => 'where/'.$id))->row('jenis_kelamin_id'));
         $pendidikan = explode(',', getAll('users_recruitment_kualifikasi', array('id' => 'where/'.$id))->row('pendidikan_id'));
+        $komputer = explode(',', getAll('users_recruitment_kemampuan', array('id' => 'where/'.$id))->row('komputer'));
         $this->data['jenis_kelamin'] = $this->recruitment_model->get_jk($jk);
         $this->data['pendidikan'] = $this->recruitment_model->get_pendidikan($pendidikan);
+        $this->data['komputer'] = $this->recruitment_model->get_komputer($komputer);
 
         $this->data['position_pengaju'] = $this->get_user_position(getAll('users_recruitment', array('id' => 'where/'.$id))->row_array()['user_id']);
         //print_mz(getAll('users_recruitment', array('id' => 'where/'.$id))->row_array()['user_id']);

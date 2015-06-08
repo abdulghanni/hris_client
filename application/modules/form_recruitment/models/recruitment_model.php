@@ -396,6 +396,21 @@ class Recruitment_model extends CI_Model
         $q = $this->db->get('recruitment_pendidikan');
         return $q;
     }
+
+    public function get_komputer($r = array())
+    {
+        $x = '';
+        for ($i=0; $i <sizeof($r) ; $i++) { 
+            if($i<1){
+            $this->db->where('id', $r[$i]);
+            }else{  
+            $this->db->or_where('id', $r[$i]);  
+            }
+        }
+
+        $q = $this->db->get('recruitment_komputer');
+        return $q;
+    }
     
 
 

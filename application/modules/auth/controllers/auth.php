@@ -894,6 +894,7 @@ class Auth extends MX_Controller {
                             'phone'      => $this->input->post('phone'),
                             'previous_email'      => $this->input->post('previous_email'),
                             'bb_pin'      => $this->input->post('bb_pin'),
+                            'scan_kk'   =>$this->input->post('kk'),
                             'superior_id' => $this->input->post('superior_id'),
                             );
 
@@ -908,6 +909,7 @@ class Auth extends MX_Controller {
                             'previous_email'      => $this->input->post('previous_email'),
                             'bb_pin'      => $this->input->post('bb_pin'),
                             'photo'     =>$image_name,
+                            'scan_kk'   =>$this->input->post('kk'),
 							'superior_id' => $this->input->post('superior_id'),
                          );
             }
@@ -981,6 +983,8 @@ class Auth extends MX_Controller {
             'disabled'  => 'disabled',
             'value' => $this->form_validation->set_value('nik', $user->nik),
         );
+
+        $this->data['kk'] = $user->scan_kk;
 
         $this->data['bod'] = array(
             'name'  => 'bod',

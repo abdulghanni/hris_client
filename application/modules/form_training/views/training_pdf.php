@@ -72,6 +72,11 @@ foreach($form_training->result() as $user):?>
 </table>
 <table width="1000" border="1" align="center">
   <tbody>
+  <tr>
+      <td height="45" width="39" align="center">7</td>
+      <td width="361">&nbsp;Tipe Pelatihan</td>
+      <td width="573">&nbsp;<?php echo $user->training_type?></td>
+    </tr>
     <tr>
       <td height="45" width="39" align="center">7</td>
       <td width="361">&nbsp;Penyelenggara</td>

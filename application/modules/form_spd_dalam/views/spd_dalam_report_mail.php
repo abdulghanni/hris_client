@@ -58,6 +58,19 @@
                     <div <?php ( ! empty($message)) && print('class="alert alert-info"'); ?> id="infoMessage"><?php echo $message;?></div>
                    
                    <div class="row form-row">
+                      <div class="col-md-4">
+                        <label class="form-label text-left">Sudah Terlaksana : </label>
+                      </div>
+                        <div class="col-md-8">
+                          <label class="radio-inline">
+                            <input type="radio" name="is_done" id="is_done1" required value="1" <?php echo ($is_done==1)?'checked="checked"':''?>>Ya
+                          </label>
+                          <label class="radio-inline">
+                            <input type="radio" name="is_done" id="is_done2" value="0" <?php echo ($is_done==0)?'checked="checked"':''?>>Tidak
+                          </label>
+                        </div>
+                    </div>
+                   <div class="row form-row">
                       <div class="col-md-12">
                         <label class="form-label text-left">Maksud dan Tujuan : </label>
                       </div>

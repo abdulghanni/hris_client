@@ -42,8 +42,9 @@
                                 $id_training = $user->id;
                                   $session_id = get_nik($this->session->userdata('user_id'));
                                   $id_user = $this->session->userdata('user_id');
-                                  $txt_app_lv1 = $txt_app_lv2 = $txt_app_lv3 = "-";
-                                  
+                                  $txt_app_lv1 = $txt_app_lv2 = "-";
+                                  $approval_status_lv1 = ($user->approval_status_id_lv1 == 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($user->approval_status_id_lv1 == 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
+                                  $approval_status_lv2 = ($user->approval_status_id_lv2 == 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($user->approval_status_id_lv2 == 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
                                   // approval training
                                   //Approval Level 1
                                   
@@ -55,35 +56,32 @@
                                                   <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-paste'></i></button>
                                               </a>";
                                           }else{
-                                            $txt_app_lv1 =  "<a href='".site_url('form_training/approval_spv/'.$user->id)."''>Ya</a>";
+                                            $txt_app_lv1 =  "<a href='".site_url('form_training/approval_spv/'.$user->id)."''>$approval_status_lv1</a>";
                                             
                                           }
                                       }elseif($user->is_app_lv1== 1){
-                                        $txt_app_lv1 =  "<a href='".site_url('form_training/approval_spv/'.$user->id)."''>Ya</a>";
+                                        $txt_app_lv1 =  "<a href='".site_url('form_training/approval_spv/'.$user->id)."''>$approval_status_lv1</a>";
                                       }elseif($user->is_app_lv1== 0){
                                          $txt_app_lv1 = '-';
                                       }
                                   }else{
                                     if ($user->is_app_lv1== 1){
-                                    $txt_app_lv1 =  "<a href='".site_url('form_training/approval_spv/'.$user->id)."''>Ya</a>";
+                                    $txt_app_lv1 =  "<a href='".site_url('form_training/approval_spv/'.$user->id)."''>$approval_status_lv1</a>";
                                     }
                                   }
 
                                   //Approval Level 3
-                                    if(is_admin()){
+                                   if(is_admin()){
                                           if($user->is_app_lv2 == 0){
                                               $txt_app_lv2 = "<a href='".site_url('form_training/approval_hrd/'.$user->id)."''>
                                                   <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-paste'></i></button>
                                               </a>";
                                           }else{
-                                            $txt_app_lv2 =  "<a href='".site_url('form_training/approval_hrd/'.$user->id)."''>Ya</a>";
+                                            $txt_app_lv2 =  "<a href='".site_url('form_training/approval_hrd/'.$user->id)."''>$approval_status_lv2</a>";
+                                            
                                           }
-                                      }else{
-                                        if($user->is_app_lv2 == 0){
-                                              $txt_app_lv2 = "-";
-                                          }else{
-                                            $txt_app_lv2 =  "<a href='".site_url('form_training/approval_hrd/'.$user->id)."''>Ya</a>";
-                                          }
+                                      }elseif($user->is_app_lv2== 1){
+                                        $txt_app_lv2 =  "<a href='".site_url('form_training/approval_hrd/'.$user->id)."''>$approval_status_lv2</a>";
                                       }
                                   ?>
 

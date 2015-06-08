@@ -141,7 +141,16 @@
                         <label class="form-label text-right">Komputer</label>
                       </div>
                       <div class="col-md-10">
-                        <input name="komputer" id="form3LastName" type="text"  class="form-control" placeholder="Komputer" value="<?php echo $row->komputer?>" disabled="disabled">
+                        <?php 
+                          if($komputer->num_rows()>0){
+                            foreach($komputer->result() as $p):?>
+                        <div class="col-md-1">
+                          <div class="checkbox check-primary checkbox-circle" >
+                            <input name="komputer[]" class="checkbox1" type="checkbox" id="komputer<?php echo $p->id ?>" value="<?php echo $p->id ?>" checked="checked" disabled="disabled">
+                              <label for="komputer<?php echo $p->id ?>"><?php echo $p->title?></label>
+                            </div>
+                        </div>
+                      <?php endforeach;} ?>
                       </div>
                     </div>
                     <div class="row form-row">

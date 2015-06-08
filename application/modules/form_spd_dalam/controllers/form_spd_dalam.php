@@ -30,6 +30,7 @@ class Form_spd_dalam extends MX_Controller {
         }
         else
         {
+            $this->data['sess_id'] = $this->session->userdata('user_id');
             //set the flash data error message if there is one
             $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
 
@@ -314,6 +315,7 @@ class Form_spd_dalam extends MX_Controller {
                 $n_report = $this->data['n_report'] = $this->form_spd_dalam_model->where('users_spd_dalam_report.user_spd_dalam_id', $id)->form_spd_dalam_report($report_id)->num_rows();
             }
             if($n_report==0){
+                $this->data['is_done'] = '';
                 $this->data['tujuan'] = '';
                 $this->data['hasil'] = '';
                 $this->data['attachment'] = '-';
@@ -322,7 +324,8 @@ class Form_spd_dalam extends MX_Controller {
             
             }else{
                 foreach ($report as $key) {
-                $this->data['id_report'] = $key->id;    
+                $this->data['id_report'] = $key->id;
+                $this->data['is_done'] = $key->is_done;    
                 $this->data['tujuan'] = $key->description;
                 $this->data['hasil'] = $key->result;
                 $this->data['attachment'] = (!empty($key->attachment)) ? $key->attachment : 2 ;
@@ -364,6 +367,7 @@ class Form_spd_dalam extends MX_Controller {
                 if(!$this->upload->do_upload())
                 {
                     $additional_data = array(
+                        'is_done'       => $this->input->post('is_done'),
                         'description'   => $this->input->post('maksud'),
                         'result'        => $this->input->post('hasil'),
                         'date_submit'   => date('Y-m-d',strtotime('now')),
@@ -377,6 +381,7 @@ class Form_spd_dalam extends MX_Controller {
                     $file_name = $upload_data['file_name'];
                 
                     $additional_data = array(
+                        'is_done'       => $this->input->post('is_done'),
                         'description'   => $this->input->post('maksud'),
                         'result'        => $this->input->post('hasil'),
                         'attachment'    => $file_name,
@@ -427,6 +432,7 @@ class Form_spd_dalam extends MX_Controller {
                 if(!$this->upload->do_upload())
                 {
                     $additional_data = array(
+                        'is_done'       => $this->input->post('is_done'),
                         'description'   => $this->input->post('maksud'),
                         'result'        => $this->input->post('hasil'),
                         'attachment'    => '',
@@ -441,6 +447,7 @@ class Form_spd_dalam extends MX_Controller {
                     $file_name = $upload_data['file_name'];
                 
                     $additional_data = array(
+                        'is_done'       => $this->input->post('is_done'),
                         'description'   => $this->input->post('maksud'),
                         'result'        => $this->input->post('hasil'),
                         'attachment'    => $file_name,
@@ -610,6 +617,7 @@ class Form_spd_dalam extends MX_Controller {
                 $n_report = $this->data['n_report'] = $this->form_spd_dalam_model->where('users_spd_dalam_report.user_spd_dalam_id', $id)->form_spd_dalam_report($report_id)->num_rows();
             }
             if($n_report==0){
+                $this->data['is_done'] = '';
                 $this->data['tujuan'] = '';
                 $this->data['hasil'] = '';
                 $this->data['attachment'] = '-';
@@ -618,6 +626,7 @@ class Form_spd_dalam extends MX_Controller {
             
             }else{
                 foreach ($report as $key) {
+                $this->data['is_done'] = $key->is_done;
                 $this->data['id_report'] = $key->id;    
                 $this->data['tujuan'] = $key->description;
                 $this->data['hasil'] = $key->result;

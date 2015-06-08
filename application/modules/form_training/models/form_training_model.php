@@ -44,11 +44,12 @@ class form_training_model extends CI_Model
 
     function form_training_admin($id = null)
     {
-        $this->db->select('training.*, training.id as id,users.nik as nik, users.username as name,penyelenggara.title as penyelenggara, pembiayaan.title as pembiayaan,
+        $this->db->select('training.*, training.id as id,users.nik as nik, users.username as name,training_type.title as training_type, penyelenggara.title as penyelenggara, pembiayaan.title as pembiayaan,
                           status_lv1.title as approval_status_lv1,
                           status_lv2.title as approval_status_lv2');
         $this->db->from('users_training as training');
         $this->db->join('users', 'users.id = training.user_id', 'LEFT');
+        $this->db->join('training_type', 'training.training_type_id = training_type.id', 'LEFT');
         $this->db->join('penyelenggara', 'training.penyelenggara_id = penyelenggara.id', 'LEFT');
         $this->db->join('pembiayaan', 'training.pembiayaan_id = pembiayaan.id', 'LEFT');
         $this->db->join('approval_status as status_lv1', 'training.approval_status_id_lv1 = status_lv1.id', 'left');

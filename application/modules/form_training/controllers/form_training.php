@@ -182,6 +182,7 @@ class form_training extends MX_Controller {
             }else{
                 $form_training = $this->data['form_training'] = $this->form_training_model->form_training($id);
             }
+            $this->data['training_type'] = GetAll('training_type', array('is_deleted' => 'where/0'));
             $this->data['penyelenggara'] = GetAll('penyelenggara');
             $this->data['pembiayaan'] = GetAll('pembiayaan');
             if($form_training->num_rows>0){
@@ -239,6 +240,7 @@ class form_training extends MX_Controller {
         $date_now = date('Y-m-d');
 
         $data = array(
+        'training_type_id' => $this->input->post('training_type'),
         'penyelenggara_id' => $this->input->post('penyelenggara'),
         'pembiayaan_id' => $this->input->post('pembiayaan'),
         'besar_biaya' => $this->input->post('besar_biaya'),
@@ -253,8 +255,10 @@ class form_training extends MX_Controller {
         'jam_akhir'   => $this->input->post('jam_akhir'),
         'is_app_lv2' => 1, 
         'user_app_lv2' => $user_id,
-        'approval_status_id_lv2' => 1, 
-        'date_app_lv2' => $date_now);
+        'approval_status_id_lv2' => $this->input->post('app_status'), 
+        'date_app_lv2' => $date_now,
+        'note_app_lv2' => $this->input->post('note_hrd')
+        );
 
         $approval_status = 1;
         if ($this->form_training_model->update($id,$data)) {
@@ -288,6 +292,7 @@ class form_training extends MX_Controller {
         $date_now = date('Y-m-d');
 
         $additional_data = array(
+        'training_type_id' => $this->input->post('training_type_update'),
         'penyelenggara_id' => $this->input->post('penyelenggara_update'),
         'pembiayaan_id' => $this->input->post('pembiayaan_update'),
         'besar_biaya' => $this->input->post('besar_biaya_update'),

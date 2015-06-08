@@ -417,6 +417,120 @@
 		}
 	}
 
+	if(!function_exists('get_user_branchid'))
+	{
+		function get_user_branchid($user_id)
+		{
+			$CI =&get_instance();
+            $url = get_api_key().'users/employement/EMPLID/'.$user_id.'/format/json';
+            $headers = get_headers($url);
+            $response = substr($headers[0], 9, 3);
+            if ($response != "404") 
+            {
+                $getuser_info = file_get_contents($url);
+                $user_info = json_decode($getuser_info, true);
+                return $user_info['BRANCHID'];
+            } else {
+                return '';
+            }
+		}
+	}
+
+	if(!function_exists('get_user_dimension2_'))
+	{
+		function get_user_dimension2_($user_id)
+		{
+			$CI =&get_instance();
+            $url = get_api_key().'users/employement/EMPLID/'.$user_id.'/format/json';
+            $headers = get_headers($url);
+            $response = substr($headers[0], 9, 3);
+            if ($response != "404") 
+            {
+                $getuser_info = file_get_contents($url);
+                $user_info = json_decode($getuser_info, true);
+                return $user_info['DIMENSION2_'];
+            } else {
+                return '';
+            }
+		}
+	}
+
+	if(!function_exists('get_user_locationid'))
+	{
+		function get_user_locationid($user_id)
+		{
+			$CI =&get_instance();
+            $url = get_api_key().'users/employement/EMPLID/'.$user_id.'/format/json';
+            $headers = get_headers($url);
+            $response = substr($headers[0], 9, 3);
+            if ($response != "404") 
+            {
+                $getuser_info = file_get_contents($url);
+                $user_info = json_decode($getuser_info, true);
+                return $user_info['LOCATIONID'];
+            } else {
+                return '';
+            }
+		}
+	}
+
+	if(!function_exists('get_user_emplgroupid'))
+	{
+		function get_user_emplgroupid($user_id)
+		{
+			$CI =&get_instance();
+            $url = get_api_key().'users/employement/EMPLID/'.$user_id.'/format/json';
+            $headers = get_headers($url);
+            $response = substr($headers[0], 9, 3);
+            if ($response != "404") 
+            {
+                $getuser_info = file_get_contents($url);
+                $user_info = json_decode($getuser_info, true);
+                return $user_info['EMPLGROUPID'];
+            } else {
+                return '';
+            }
+		}
+	}
+
+	if(!function_exists('get_user_dataareaid'))
+	{
+		function get_user_dataareaid($user_id)
+		{
+			$CI =&get_instance();
+            $url = get_api_key().'users/employement/EMPLID/'.$user_id.'/format/json';
+            $headers = get_headers($url);
+            $response = substr($headers[0], 9, 3);
+            if ($response != "404") 
+            {
+                $getuser_info = file_get_contents($url);
+                $user_info = json_decode($getuser_info, true);
+                return $user_info['DATAAREAID'];
+            } else {
+                return '';
+            }
+		}
+	}
+
+	if(!function_exists('get_user_buid'))
+	{
+		function get_user_buid($user_id)
+		{
+			$CI =&get_instance();
+            $url = get_api_key().'users/employement/EMPLID/'.$user_id.'/format/json';
+            $headers = get_headers($url);
+            $response = substr($headers[0], 9, 3);
+            if ($response != "404") 
+            {
+                $getuser_info = file_get_contents($url);
+                $user_info = json_decode($getuser_info, true);
+                return substr($user_info['BUID'],0,2);
+            } else {
+                return '';
+            }
+		}
+	}
+
 	if(!function_exists('get_grade'))
 	{
 		function get_grade($user_id)
