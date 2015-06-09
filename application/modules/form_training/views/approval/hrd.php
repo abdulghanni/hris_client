@@ -185,7 +185,7 @@
                     <div class="col-md-4">
                       <div class="input-with-icon right">
                           <div class="input-append success date no-padding">
-                              <input type="text" class="datepicker" id="tanggal_mulai" name="tanggal_mulai" value="<?php echo $user->tanggal_mulai?>" <?php echo $disabled?> required>
+                              <input type="text" class="datepicker" id="tanggal_mulai" name="tanggal_mulai" value="<?php echo ($user->tanggal_mulai == '0000-00-00')?'':$user->tanggal_mulai?>" <?php echo $disabled?> required>
                               <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span> 
                           </div>
                       </div>
@@ -320,8 +320,12 @@
                     <div class="col-md-4">
                       Persetujuan atasan,<br/><br/>
                       <p class="wf-approve-sp">
-                        <?php if ($user->is_app_lv1 == 1) { ?>
-                        <span class="semi-bold"><?php echo $name_app_lv1?></span><br/>
+                        <?php 
+                            $approved = assets_url('img/approved_stamp.png');
+                            $rejected = assets_url('img/rejected_stamp.png');
+                            if($user->is_app_lv1==1){
+                              echo ($user->approval_status_id_lv1 == 1)? "<img class=approval_img src=$approved>":(($user->approval_status_id_lv1 == 2) ? "<img class=approval_img src=$rejected>":'');?><br/>
+                            <span class="semi-bold"><?php echo $name_app_lv1?></span><br/>
                         <span class="small"><?php echo dateIndo($user->date_app_lv1)?></span>
                         <?php }else{?>
                         <span class="semi-bold"></span><br/>
@@ -331,8 +335,9 @@
                     </div>
                     <div class="col-md-4">
                           Mengetahui HRD,<br/><br/>
-                          <?php if($user->is_app_lv2 == 1 && is_admin() == true){?>
-                          <span class="semi-bold"><?php echo $name_app_lv2?></span><br/>
+                          <?php if($user->is_app_lv2==1){
+                            echo ($user->approval_status_id_lv2 == 1)? "<img class=approval_img src=$approved>":(($user->approval_status_id_lv2 == 2) ? "<img class=approval_img src=$rejected>":'');?><br/>
+                            <span class="semi-bold"><?php echo $name_app_lv2?></span><br/>
                           <span class="small"><?php echo dateIndo($user->date_app_lv2)?></span>
                           <?php }elseif($user->is_app_lv2 == 1 && is_admin() == false){?>
                           <span class="semi-bold"><?php echo $name_app_lv2?></span><br/>

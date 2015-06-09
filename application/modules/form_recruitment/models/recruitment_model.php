@@ -295,7 +295,22 @@ class Recruitment_model extends CI_Model
         }
         else
         {
+            $admin = is_admin();
+            $sess_id = $this->session->userdata('user_id');
             $nik = get_nik($this->session->userdata('user_id'));
+
+            if(!empty(is_have_subordinate(get_nik($sess_id)))){
+            $sub_id = get_subordinate($sess_id);
+            }else{
+                $sub_id = '';
+            }
+
+            if(!empty(is_have_subsubordinate($sess_id))){
+            $subsub_id = 'OR '.get_subsubordinate($sess_id);
+            }else{
+                $subsub_id = '';
+            }
+
             //default selects
             $this->db->select(array(
             $this->tables['recruitment'].'.*',
@@ -308,6 +323,7 @@ class Recruitment_model extends CI_Model
             ));
             
             
+            $this->db->join('users', 'users_recruitment.user_id = users.id', 'left');
             $this->db->join('users_recruitment_kualifikasi as kualifikasi', 'users_recruitment.user_kualifikasi_id = kualifikasi.id', 'left');
             $this->db->join('users_recruitment_kemampuan as kemampuan', 'users_recruitment.user_kemampuan_id = kemampuan.id', 'left');
             $this->db->join('recruitment_status as status', 'users_recruitment.status_id = status.id', 'left');
@@ -320,7 +336,9 @@ class Recruitment_model extends CI_Model
             //$this->db->where('users.active', 0);
             //$this->db->where('receiver_id', (!empty($nik)) ? $nik : $this->session->userdata('user_id'));
             $this->db->order_by('users_recruitment.id', 'desc');
-
+            if($admin != 1){
+                $this->db->where("(users_recruitment.user_id= $sess_id $sub_id $subsub_id )",null, false);
+            }
             if($id != null)
             {
                 $this->db->where('users_recruitment.id', $id);

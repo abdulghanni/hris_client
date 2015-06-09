@@ -1,11 +1,16 @@
 $(document).ready(function() {
-    var date = $('#training_date_update').datepicker({ dateFormat: 'yyyy-mm-dd' }).val();
+    //var date = $('#training_date_update').datepicker({ dateFormat: 'yyyy-mm-dd' }).val();
 
     $('.timepicker-24').timepicker({
                 minuteStep: 1,
                 showSeconds: true,
                 showMeridian: false
      });
+
+    $("#tanggal_mulai").datepicker({format: "yyyy-mm-dd", todayHighlight: true})
+    $("#tanggal_mulai").datepicker("setDate", new Date());
+    $("#tanggal_akhir").datepicker({format: "yyyy-mm-dd", todayHighlight: true})
+    $("#tanggal_akhir").datepicker("setDate", new Date());
      				
 	$(".select2").select2();
 

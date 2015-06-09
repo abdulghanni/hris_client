@@ -27,7 +27,8 @@ class Form_recruitment extends MX_Controller {
             //redirect them to the login page
             redirect('auth/login', 'refresh');
         }
-        
+        $this->data['session_id'] = $this->session->userdata('user_id');
+        //$admin = cek_subordinate(is_have_subordinate($this->data['session_id']),'id', 30);print_mz(lq());
         //set sort order
         $this->data['sort_order'] = $sort_order;
         
@@ -228,6 +229,8 @@ class Form_recruitment extends MX_Controller {
             //redirect them to the login page
             redirect('auth/login', 'refresh');
         }
+        $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
+        $this->data['session_id'] = $this->session->userdata('user_id');
         $this->data['recruitment'] = $this->recruitment_model->recruitment($id)->result();
         $this->data['status'] = getAll('recruitment_status', array('is_deleted' => 'where/0'));
         $this->data['urgensi'] = getAll('recruitment_urgensi', array('is_deleted' => 'where/0'));
@@ -241,7 +244,7 @@ class Form_recruitment extends MX_Controller {
         $this->_render_page('form_recruitment/approval', $this->data);
     }
 
-    function do_approve($id, $type)
+    function do_approve($type, $id)
     {
         if(!$this->ion_auth->logged_in())
         {
@@ -254,45 +257,122 @@ class Form_recruitment extends MX_Controller {
 
             $data = array(
             'is_app_'.$type => 1, 
+            'approval_status_id_'.$type => $this->input->post('app_status_'.$type),
             'user_app_'.$type => $user_id, 
             'date_app_'.$type => $date_now,
-            'note_hrd' => $this->input->post('note_hrd')
+            'note_'.$type => $this->input->post('note_'.$type)
             );
-
+            $approval_status = $this->input->post('app_status_'.$type);
            if ($this->recruitment_model->update($id,$data)) {
-               $this->approval_mail($id);
-               return TRUE;
+               $this->approval_mail($id, $approval_status, $type);
+               redirect('form_recruitment/approval/'.$id, 'refresh');
             }
         }
     }
 
-    function send_approval_request($id, $user_id)
+    function update_approve($type, $id)
+    {
+        if(!$this->ion_auth->logged_in())
+        {
+            redirect('auth/login', 'refresh');
+        }
+        else
+        {
+            $user_id = $this->session->userdata('user_id');
+            $date_now = date('Y-m-d');
+
+            $data = array(
+            'is_app_'.$type => 1, 
+            'approval_status_id_'.$type => $this->input->post('update_app_status_'.$type),
+            'user_app_'.$type => $user_id, 
+            'date_app_'.$type => $date_now,
+            'note_'.$type => $this->input->post('update_note_'.$type)
+            );
+            $approval_status = $this->input->post('update_app_status_'.$type);
+           if ($this->recruitment_model->update($id,$data)) {
+               $this->update_approval_mail($id, $approval_status, $type);
+               redirect('form_recruitment/approval/'.$id, 'refresh');
+            }
+        }
+    }
+
+    function send_approval_request($id, $sender_id)
     {
         $url = base_url().'form_recruitment/approval/'.$id;
+        if(is_have_superior($sender_id))
+        {
+            $data = array(
+                    'sender_id' => get_nik($sender_id),
+                    'receiver_id' => get_superior($sender_id),
+                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                    'subject' => 'Pengajuan Permintaan SDM Baru',
+                    'email_body' => get_name($sender_id).' mengajukan permintaan SDM baru, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br/>'.$this->detail_email($id),
+                    'is_read' => 0,
+                );
+
+            $this->db->insert('email', $data);
+            $current_superior = get_id(get_superior($sender_id));
+        }else{
+        $current_superior = 0;
+        }
         
-        //approval to manager ga nasional
+        if(!empty(get_superior($current_superior)))
+        {
+            $data = array(
+                    'sender_id' => get_nik($sender_id),
+                    'receiver_id' => get_superior($current_superior),
+                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                    'subject' => 'Pengajuan Permintaan SDM Baru',
+                    'email_body' => get_name($sender_id).' mengajukan permintaan SDM baru, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br/>'.$this->detail_email($id),
+                    'is_read' => 0,
+                );
+            $this->db->insert('email', $data);
+        }
+
+       
+
         $data = array(
-                'sender_id' => get_nik($user_id),
+                'sender_id' => get_nik($sender_id),
                 'receiver_id' => 1,
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Pengajuan Permintaan SDM Baru',
-                'email_body' => get_name($user_id).' mengajukan permintaan SDM baru, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br/>'.$this->detail_email($id),
+                'email_body' => get_name($sender_id).' mengajukan permintaan SDM baru, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br/>'.$this->detail_email($id),
                 'is_read' => 0,
             );
         $this->db->insert('email', $data);
     }
 
-    function approval_mail($id)
+    function approval_mail($id, $approval_status, $type)
     {
         $url = base_url().'form_recruitment/approval/'.$id;
         $approver = get_name(get_nik($this->session->userdata('user_id')));
         $receiver_id = getAll('users_recruitment', array('id' => 'where/'.$id))->row('user_id');
+        $approval_status = $this->db->where('id', $approval_status)->get('approval_status')->row('title');
+        $type = ($type == 'lv1')? 'Supervisor':(($type == 'lv2')?'Ka. Bagian':'HRD');
         $data = array(
                 'sender_id' => get_nik($this->session->userdata('user_id')),
                 'receiver_id' => get_nik($receiver_id),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                'subject' => 'Status Pengajuan Permintaan SDM Baru dari HRD',
-                'email_body' => "Status pengajuan permintaan SDM baru disetujui oleh $approver untuk detail silakan <a href=$url>Klik disini</a><br/>".$this->detail_email($id),
+                'subject' => 'Status Pengajuan Permintaan SDM Baru dari '.$type,
+                'email_body' => "Status pengajuan permintaan SDM baru anda $approval_status oleh $approver untuk detail silakan <a href=$url>Klik disini</a><br/>".$this->detail_email($id),
+                'is_read' => 0,
+            );
+        $this->db->insert('email', $data);
+    }
+
+    function update_approval_mail($id, $approval_status, $type)
+    {
+        $url = base_url().'form_recruitment/approval/'.$id;
+        $approver = get_name(get_nik($this->session->userdata('user_id')));
+        $receiver_id = getAll('users_recruitment', array('id' => 'where/'.$id))->row('user_id');
+        $approval_status = $this->db->where('id', $approval_status)->get('approval_status')->row('title');
+        $type = ($type == 'lv1')? 'Supervisor':(($type == 'lv2')?'Ka. Bagian':'HRD');
+        $data = array(
+                'sender_id' => get_nik($this->session->userdata('user_id')),
+                'receiver_id' => get_nik($receiver_id),
+                'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                'subject' => 'Perubahan Status Pengajuan Permintaan SDM Baru dari '.$type,
+                'email_body' => "$type melakukan perubahan status pengajuan permintaan SDM baru anda, status pengajuan anda sekarang $approval_status oleh $approver untuk detail silakan <a href=$url>Klik disini</a><br/>".$this->detail_email($id),
                 'is_read' => 0,
             );
         $this->db->insert('email', $data);
@@ -566,6 +646,7 @@ class Form_recruitment extends MX_Controller {
                     
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                     $this->template->add_css('plugins/select2/select2.css');
+                    $this->template->add_css('approval_img.css');
                     
                 }
 

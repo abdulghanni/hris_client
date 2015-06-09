@@ -76,7 +76,7 @@
                           <label class="form-label text-right">Tanggal Pengangkatan</label>
                         </div>
                         <div class="col-md-9">
-                          <input name="form3LastName" id="form3LastName" type="text"  class="form-control " placeholder="Nama" value="<?php echo (!empty($user_info['SENIORITYDATE']))?dateIndo($user_info['SENIORITYDATE']):'-'?>"  disabled="disabled" >
+                          <input name="form3LastName" id="form3LastName" type="text"  class="form-control " placeholder="Nama" value="<?php echo (!empty($row_info['SENIORITYDATE']))?dateIndo($row_info['SENIORITYDATE']):'-'?>"  disabled="disabled" >
                         </div>
                       </div>
                       
@@ -156,7 +156,7 @@
                             &nbsp;
                           </div>
                           <div class="col-md-6">
-                            <div class='btn btn-info btn-small' class="text-center" title='Edit Approval' data-toggle="modal" data-target="#notapprovepdemolitioModal"><i class='icon-edit'> Edit Approval</i></div>
+                            <div class='btn btn-info btn-small' class="text-center" title='Edit Approval' data-toggle="modal" data-target="#notapprovepromosiModal"><i class='icon-edit'> Edit Approval</i></div>
                           </div>
                         </div>
                       <?php } ?>
@@ -176,10 +176,15 @@
                         <div class="col-md-6">
                           <p>Menyetujui</p>
                           <p class="wf-approve-sp">
-                            <?php if($row->is_approved == 1 && is_admin() == false){?>
+                            <?php 
+                            $approved = assets_url('img/approved_stamp.png');
+                            $rejected = assets_url('img/rejected_stamp.png');
+                            if($row->is_approved == 1 && is_admin() == false){
+                            echo ($row->approval_status_id == 1)? "<img class=approval_img src=$approved>":(($row->approval_status_id == 2) ? "<img class=approval_img src=$rejected>":'');?><br/>
                             <span class="semi-bold"><?php echo get_name($row->user_approved)?></span><br/>
                             <span class="small"><?php echo dateIndo($row->date_approved)?></span><br/>
-                            <?php }elseif($row->is_approved == 1 && is_admin() == true){?>
+                            <?php }elseif($row->is_approved == 1 && is_admin() == true){
+                            echo ($row->approval_status_id == 1)? "<img class=approval_img src=$approved>":(($row->approval_status_id == 2) ? "<img class=approval_img src=$rejected>":'');?><br/>
                             <span class="semi-bold"><?php echo get_name($row->user_approved)?></span><br/>
                             <span class="small"><?php echo dateIndo($row->date_approved)?></span><br/>
                             

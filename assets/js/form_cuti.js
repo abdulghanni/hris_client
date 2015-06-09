@@ -494,7 +494,7 @@ $(document).ready(function() {
 			return this.optional(element) || valid;
 		},jQuery.format("Please enter a proper name."));
 });	
-	 
+/*	 
 $(document).ready(function(){
                 $('#formaddcuti').submit(function(response){
                     $.post($('#formaddcuti').attr('action'), $('#formaddcuti').serialize(),function(json){
@@ -507,3 +507,4 @@ $(document).ready(function(){
                     return false;
                 });
             });
+*/

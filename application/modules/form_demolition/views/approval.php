@@ -157,10 +157,15 @@
                         <div class="col-md-6">
                           <p>Menyetujui</p>
                           <p class="wf-approve-sp">
-                            <?php if($row->is_app == 1 && is_admin() == false){?>
+                            <?php 
+                            $approved = assets_url('img/approved_stamp.png');
+                            $rejected = assets_url('img/rejected_stamp.png');
+                            if($row->is_app == 1 && is_admin() == false){
+                            echo ($row->app_status_id == 1)? "<img class=approval_img src=$approved>":(($row->app_status_id == 2) ? "<img class=approval_img src=$rejected>":'');?><br/>
                             <span class="semi-bold"><?php echo get_name($row->user_app)?></span><br/>
                             <span class="small"><?php echo dateIndo($row->date_app)?></span><br/>
-                            <?php }elseif($row->is_app == 1 && is_admin() == true){?>
+                            <?php }elseif($row->is_app == 1 && is_admin() == true){
+                              echo ($row->app_status_id == 1)? "<img class=approval_img src=$approved>":(($row->app_status_id == 2) ? "<img class=approval_img src=$rejected>":'');?><br/>
                             <span class="semi-bold"><?php echo get_name($row->user_app)?></span><br/>
                             <span class="small"><?php echo dateIndo($row->date_app)?></span><br/>
                             <?php }else{?>

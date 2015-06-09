@@ -251,7 +251,11 @@
                       Disetujui oleh,
                       <div class="row wf-cuti">
                         <div class="col-md-6">
-                          <?php if ($user->is_app_lv1 == 1) { ?>
+                          <?php 
+                          $approved = assets_url('img/approved_stamp.png');
+                          $rejected = assets_url('img/rejected_stamp.png');
+                          if ($user->is_app_lv1 == 1) { 
+                            echo ($user->approval_status_id_lv1 == 1)? "<img class=approval_img src=$approved>":(($user->approval_status_id_lv1 == 2) ? "<img class=approval_img src=$rejected>":'');?><br/>
                             <p class="wf-approve-sp">
                               <span class="semi-bold"><?php echo $nm_app_lv1 ?></span><br>
                               <span class="small"><?php echo $date_app_lv1; ?></span><br>
@@ -262,7 +266,8 @@
                           <?php } ?>
                         </div>
                           <div class="col-md-6">
-                            <?php if ($user->is_app_lv2 == 1) { ?>
+                            <?php if ($user->is_app_lv2 == 1) { 
+                              echo ($user->approval_status_id_lv2 == 1)? "<img class=approval_img src=$approved>":(($user->approval_status_id_lv2 == 2) ? "<img class=approval_img src=$rejected>":'');?><br/>
                             <p class="wf-approve-sp">
                               <span class="semi-bold"><?php echo $nm_app_lv2 ?></span><br>
                               <span class="small"><?php echo $date_app_lv2 ?></span><br>
@@ -275,8 +280,9 @@
                       </div>
                     </div>
                     <div class="col-md-4 text-center">
-                          <?php if($user->is_app_lv3 == 1){?>
-                          <br/><br/>
+                    <p>&nbsp;</p>
+                          <?php if($user->is_app_lv3 == 1){
+                            echo ($user->approval_status_id_lv3 == 1)? "<img class=approval_img src=$approved>":(($user->approval_status_id_lv3 == 2) ? "<img class=approval_img src=$rejected>":'');?><br/>
                           <p class="wf-approve-sp">
                           <span class="semi-bold"><?php echo $nm_app_lv3?></span><br/>
                           <span class="small"><?php echo $date_app_lv3?></span>
@@ -285,6 +291,9 @@
                           <?php }else{
                             if(is_admin()){?>
                           <div class="btn btn-success btn-cons" data-toggle="modal" data-target="#notapprovecutiModal"><i class="icon-ok"></i>Submit</div>
+                          <br/>
+                          <p>&nbsp;</p>
+                          <p class="">(HRD)</p>
                           <?php }}?>
                     </div>
                   </div>
@@ -302,7 +311,7 @@
 	</div>  
 	<!-- END PAGE -->
 
-  <!-- Edit approval cuti Modal -->
+<!-- Edit approval cuti Modal -->
 <div class="modal fade" id="notapprovecutiModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog" id="modaldialog">
     <div class="modal-content">

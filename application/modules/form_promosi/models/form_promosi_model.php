@@ -10,7 +10,20 @@ class form_promosi_model extends CI_Model
 
     function form_promosi($id = null)
     {
-    	$sess_id =  $this->session->userdata('user_id');
+    	$sess_id = $this->session->userdata('user_id');
+            
+        if(!empty(is_have_subordinate(get_nik($sess_id)))){
+        $sub_id = get_subordinate($sess_id);
+        }else{
+            $sub_id = '';
+        }
+
+        if(!empty(is_have_subsubordinate($sess_id))){
+        $subsub_id = 'OR '.get_subsubordinate($sess_id);
+        }else{
+            $subsub_id = '';
+        }
+
     	$this->db->select('promosi.*, users.username as username, approval_status.title as approval_status');
     	$this->db->from('users_promosi as promosi');
 
@@ -21,7 +34,7 @@ class form_promosi_model extends CI_Model
     		$this->db->where('promosi.id', $id);
     	}
 
-    	$this->db->where('user_id', $sess_id);
+    	$this->db->where("(promosi.user_id= $sess_id $sub_id $subsub_id )",null, false);
         $this->db->order_by('promosi.id', 'desc');
 
     	$q = $this->db->get();

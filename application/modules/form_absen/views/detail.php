@@ -99,7 +99,9 @@
                         <div class="col-md-6">
                           Mengetahui,<br/>
                           <p class="wf-approve-sp">
-                            <?php if($absen->is_app_lv2==1){?>
+                            <?php
+                            if($absen->is_app_lv2==1){?>
+                            <img class="approval_img" src="<?php echo assets_url('img/approved_stamp.png')?>"/><br/>
                             <span class="semi-bold"><?php echo $name_app_lv2?></span><br/>
                             <span class="small"><?php echo dateIndo($absen->date_app_lv2)?></span>
                             <?php } ?>
@@ -114,6 +116,7 @@
                           &nbsp;<br/>
                           <p class="wf-approve-sp">
                             <?php if($absen->is_app_lv1==1){?>
+                            <img class="approval_img" src="<?php echo assets_url('img/approved_stamp.png')?>"/><br/>
                             <span class="semi-bold"><?php echo $name_app_lv1?></span><br/>
                             <span class="small"><?php echo dateIndo($absen->date_app_lv1)?></span>
                             <?php } ?>

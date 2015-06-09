@@ -10,19 +10,32 @@ class form_demolition_model extends CI_Model
 
     function form_demolition($id = null)
     {
-    	$sess_id =  $this->session->userdata('user_id');
-    	$this->db->select('demolition.*, approval_status.title as approval_status');
-    	$this->db->from('users_demolition as demolition');
+    	$sess_id = $this->session->userdata('user_id');
+            
+        if(!empty(is_have_subordinate(get_nik($sess_id)))){
+        $sub_id = get_subordinate($sess_id);
+        }else{
+            $sub_id = '';
+        }
 
-        //$this->db->join('users', 'demolition.user_id = users.id', 'left');
-        $this->db->join('approval_status', 'demolition.app_status_id = approval_status.id', 'left');
+        if(!empty(is_have_subsubordinate($sess_id))){
+        $subsub_id = 'OR '.get_subsubordinate($sess_id);
+        }else{
+            $subsub_id = '';
+        }
+
+    	$this->db->select('users_demolition.*, approval_status.title as approval_status');
+    	$this->db->from('users_demolition');
+
+        $this->db->join('users', 'users_demolition.user_id = users.id', 'left');
+        $this->db->join('approval_status', 'users_demolition.app_status_id = approval_status.id', 'left');
 
     	if($id != null){
-    		$this->db->where('demolition.id', $id);
+    		$this->db->where('users_demolition.id', $id);
     	}
 
-    	$this->db->where('user_id', $sess_id);
-        $this->db->order_by('demolition.id', 'desc');
+    	$this->db->where("(users_demolition.user_id= $sess_id $sub_id $subsub_id )",null, false);
+        $this->db->order_by('users_demolition.id', 'desc');
 
     	$q = $this->db->get();
     	return $q; 

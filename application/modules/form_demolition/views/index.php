@@ -37,20 +37,22 @@
                               </thead>
                               <tbody>
                               <?php if($form_demolition->num_rows()>0){
-                                foreach($form_demolition->result() as $row):?>
+                                foreach($form_demolition->result() as $row):
+                                  $approval_status = ($row->app_status_id == 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($row->app_status_id == 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
+                                  ?>
                                   <tr>
                                     <td><a href="<?php echo site_url('form_demolition/detail/'.$row->id)?>"><?php echo get_name($row->created_by)?></a></td>
                                     <td><?php echo get_name($row->user_id)?></td>
                                     <td><?php echo $row->alasan_demolition?></td>
                                     <td class="text-center">
                                     <?php if($row->is_app==1){?>
-                                    <a href="<?php echo site_url('form_demolition/approval_hrd/'.$row->id)?>"><?php echo $row->approval_status?></a>
+                                    <a href="<?php echo site_url('form_demolition/approval_hrd/'.$row->id)?>"><?php echo $approval_status?></a>
                                     <?php }elseif(is_admin() == true && $row->is_app == 0){?>
                                     <a href="<?php echo site_url('form_demolition/approval_hrd/'.$row->id)?>">
                                       <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-paste'></i></button>
                                     </a>
                                     <?php }else{
-                                      echo '-';
+                                      echo "<i class='icon-minus' title = 'Pending'></i>";
                                     }?>
                                     </td>
                                     <td class="text-center">

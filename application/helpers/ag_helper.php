@@ -196,10 +196,12 @@
 		function is_have_subordinate($id)
 		{
 			$CI =& get_instance();
-			
+			$nik = get_nik($id);
 			if($CI->db->select('id')->from('users')->where('superior_id', $id)->get()->num_rows()>0)
 			{
 				return $CI->db->select('id')->from('users')->where('superior_id', $id)->get()->result_array('id');
+			}elseif($CI->db->select('id')->from('users')->where('superior_id', $nik)->get()->num_rows()>0){
+				return $CI->db->select('id')->from('users')->where('superior_id', $nik)->get()->result_array('id');
 			}else{
 				return false;
 			}
@@ -213,7 +215,7 @@
 		$CI =& get_instance();
 		$sess_id = $CI->session->userdata('user_id');
 		$sess_nik = get_nik($CI->session->userdata('user_id'));
-		if(!empty(is_have_subsubordinate($sess_id) || is_have_subordinate($sess_nik)))
+		if(!empty(is_have_subsubordinate($sess_id) || is_have_subordinate($sess_nik) || is_have_subordinate($sess_id)))
         {
 	    foreach ($array as $item)
 	        if (isset($item[$key]) && $item[$key] == $val)

@@ -126,7 +126,11 @@
                       </div>
                       <div class="col-md-4">
                         Persetujuan atasan,<br/><br/>
-                        <?php if ($user->is_app_lv1 == 1 && cek_subordinate(is_have_subordinate($session_id),'id', $user->user_id) == TRUE) { ?>
+                        <?php 
+                            $approved = assets_url('img/approved_stamp.png');
+                            $rejected = assets_url('img/rejected_stamp.png');
+                            if($user->is_app_lv1==1){
+                              echo ($user->approval_status_id_lv1 == 1)? "<img class=approval_img src=$approved>":(($user->approval_status_id_lv1 == 2) ? "<img class=approval_img src=$rejected>":'');?><br/>
                             <span class="semi-bold"><?php echo $name_app_lv1?></span><br/>
                             <span class="small"><?php echo dateIndo($user->date_app_lv1)?></span>
                             <br />
@@ -142,8 +146,9 @@
                       </div>
                        <div class="col-md-4">
                           Mengetahui HRD,<br/><br/>
-                          <?php if($user->is_app_lv2 == 1){?>
-                          <span class="semi-bold"><?php echo $name_app_lv2?></span><br/>
+                         <?php if($user->is_app_lv2==1){
+                            echo ($user->approval_status_id_lv2 == 1)? "<img class=approval_img src=$approved>":(($user->approval_status_id_lv2 == 2) ? "<img class=approval_img src=$rejected>":'');?><br/>
+                            <span class="semi-bold"><?php echo $name_app_lv2?></span><br/>
                           <span class="small"><?php echo dateIndo($user->date_app_lv2)?></span>
                           <?php }else{?>
                            <span class="semi-bold"></span><br/>

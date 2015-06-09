@@ -16,7 +16,7 @@ $(document).ready(function() {
      var baseurl = url.attr('protocol')+'://'+url.attr('host')+'/';
      var recruitment_url = baseurl+'hris_client/form_recruitment';
 
-	 $('#btn_app_hrd').click(function(){
+	 /*$('#btn_app_hrd').click(function(){
                   $('#formApp').submit(function(ev){
                       $.ajax({
                           type: 'POST',
@@ -31,7 +31,7 @@ $(document).ready(function() {
                       });
                       ev.preventDefault(); 
                   });  
-              });
+              });*/
 	 
 	 jQuery.validator.addMethod("name", function(value, element)
 		{

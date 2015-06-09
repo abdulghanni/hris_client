@@ -249,7 +249,11 @@
                         <div class="col-md-4">
                           Persetujuan atasan,<br/><br/>
                           <p class="wf-approve-sp">
-                            <?php if($user->is_app_lv1==1){?>
+                            <?php 
+                            $approved = assets_url('img/approved_stamp.png');
+                            $rejected = assets_url('img/rejected_stamp.png');
+                            if($user->is_app_lv1==1){
+                              echo ($user->approval_status_id_lv1 == 1)? "<img class=approval_img src=$approved>":(($user->approval_status_id_lv1 == 2) ? "<img class=approval_img src=$rejected>":'');?><br/>
                             <span class="semi-bold"><?php echo $name_app_lv1?></span><br/>
                             <span class="small"><?php echo dateIndo($user->date_app_lv1)?></span>
                             <?php }else{?>
@@ -261,7 +265,8 @@
                         <div class="col-md-4">
                           Mengetahui HRD,<br/><br/>
                           <p class="wf-approve-sp">
-                            <?php if($user->is_app_lv2==1){?>
+                            <?php if($user->is_app_lv2==1){
+                            echo ($user->approval_status_id_lv2 == 1)? "<img class=approval_img src=$approved>":(($user->approval_status_id_lv2 == 2) ? "<img class=approval_img src=$rejected>":'');?><br/>
                             <span class="semi-bold"><?php echo $name_app_lv2?></span><br/>
                             <span class="small"><?php echo dateIndo($user->date_app_lv2)?></span>
                             <?php }else{?>

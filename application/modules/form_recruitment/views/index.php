@@ -30,6 +30,8 @@
                                   <th width="20%">Nama Pengaju</th>
                                   <th width="10%">Unit Bisnis</th>
                                   <th width="40%">Job Desc</th>
+                                  <th width="10%" class="text-center">Approval SPV</th>
+                                  <th width="10%" class="text-center">Approval Ka. Bag</th>
                                   <th width="10%" class="text-center">Approval HRD</th>
                                   <th width="10%" class="text-center">Cetak</th>
                                 </tr>
@@ -37,7 +39,11 @@
                               <tbody>
                               <?php
                                 if($_num_rows >0){
-                                  foreach($recruitment as $row):?>
+                                  foreach($recruitment as $row):
+                                  $approval_status_lv1 = ($row->approval_status_id_lv1 == 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($row->approval_status_id_lv1 == 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
+                                  $approval_status_lv2 = ($row->approval_status_id_lv2 == 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($row->approval_status_id_lv2 == 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
+                                  $approval_status_hrd = ($row->approval_status_id_hrd == 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($row->approval_status_id_hrd == 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
+                                    ?>
                                   <tr>
                                     <td>
                                       <a href="<?php echo site_url('form_recruitment/detail/'.$row->id)?>"><?php echo get_name($row->user_id)?></a>
@@ -49,14 +55,36 @@
                                       <?php echo $row->job_desc?>
                                     </td>
                                     <td class="text-center">
+                                    <?php if($row->is_app_lv1 == 1){?>
+                                       <a href="<?php echo site_url('form_recruitment/approval/'.$row->id)?>"><?php echo $approval_status_lv1?></a>
+                                      <?php }elseif($row->is_app_lv2 == 0 && cek_subordinate(is_have_subordinate($session_id),'id', $row->user_id)){
+                                        echo "<a href='".site_url('form_recruitment/approval/'.$row->id)."''>
+                                                  <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-paste'></i></button>
+                                                </a>";
+                                      }else{
+                                       echo "<i class='icon-minus' title = 'Pending'></i>";
+                                      }?>
+                                    </td>
+                                    <td class="text-center">
+                                    <?php if($row->is_app_lv2 == 1){?>
+                                       <a href="<?php echo site_url('form_recruitment/approval/'.$row->id)?>"><?php echo $approval_status_lv2?></a>
+                                      <?php }elseif($row->is_app_lv2 == 0 && cek_subordinate(is_have_subsubordinate($session_id),'id', $row->user_id)){
+                                        echo "<a href='".site_url('form_recruitment/approval/'.$row->id)."''>
+                                                  <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-paste'></i></button>
+                                                </a>";
+                                      }else{
+                                       echo "<i class='icon-minus' title = 'Pending'></i>";
+                                      }?>
+                                    </td>
+                                    <td class="text-center">
                                     <?php if($row->is_app_hrd == 1){?>
-                                       <a href="<?php echo site_url('form_recruitment/approval/'.$row->id)?>">Approved</a>
+                                       <a href="<?php echo site_url('form_recruitment/approval/'.$row->id)?>"><?php echo $approval_status_hrd?></a>
                                       <?php }elseif($row->is_app_hrd == 0 && is_admin()){
                                         echo "<a href='".site_url('form_recruitment/approval/'.$row->id)."''>
                                                   <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-paste'></i></button>
                                                 </a>";
                                       }else{
-                                       echo '-';
+                                       echo "<i class='icon-minus' title = 'Pending'></i>";
                                       }?>
                                     </td>
                                     <td class="text-center">

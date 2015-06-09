@@ -142,19 +142,19 @@
     <td class="tg-031e">Nama</td>
     <td class="tg-031e" width="200"><?php echo get_name($row->user_id)?></td>
     <td class="tg-031e">Nama</td>
-    <td class="tg-031e" width="200"></td>
+    <td class="tg-031e" width="200"><?php echo get_name($row->user_app_lv1)?></td>
     <td class="tg-031e">Nama</td>
-    <td class="tg-031e" width="200"></td>
+    <td class="tg-031e" width="200"><?php echo get_name($row->user_app_lv2)?></td>
     <td class="tg-031e">Nama</td>
-    <td class="tg-031e" width="200"><?php echo get_name($row->user_app_hrd )?></td>
+    <td class="tg-031e" width="200"><?php echo get_name($row->user_app_hrd)?></td>
   </tr>
   <tr>
     <td class="tg-031e">Jabatan</td>
     <td class="tg-031e"><?php echo $position_pengaju?></td>
     <td class="tg-031e">Jabatan</td>
-    <td class="tg-031e"></td>
+    <td class="tg-031e">Supervisor</td>
     <td class="tg-031e">Jabatan</td>
-    <td class="tg-031e"></td>
+    <td class="tg-031e">Ka. Bagian</td>
     <td class="tg-031e">Jabatan</td>
     <td class="tg-031e">HRD Database</td>
   </tr>
@@ -162,9 +162,9 @@
     <td class="tg-031e">Tanggal</td>
     <td class="tg-031e"><?php echo dateIndo($row->date_created)?></td>
     <td class="tg-031e">Tanggal</td>
-    <td class="tg-031e"></td>
+    <td class="tg-031e"><?php echo dateIndo($row->date_app_lv1)?></td>
     <td class="tg-031e">Tanggal</td>
-    <td class="tg-031e"></td>
+    <td class="tg-031e"><?php echo dateIndo($row->date_app_lv2)?></td>
     <td class="tg-031e">Tanggal</td>
     <td class="tg-031e"><?php echo dateIndo($row->date_app_hrd)?></td>
   </tr>

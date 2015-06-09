@@ -57,6 +57,11 @@
     <td><div align="center" class="style3">:</div></td>
     <td><span class="style3"><?php echo dateIndo($row->date_exit)?> </span></td>
   </tr>
+  <tr>
+    <td><span class="style3">Tipe Rekomendasi </span></td>
+    <td><div align="center" class="style3">:</div></td>
+    <td><span class="style3"><?php echo $row->exit_type?> </span></td>
+  </tr>
 </table>
 <p class="style7">Inventaris yang harus diserahkan </p>
 <table width="1000" border="1" align="center">

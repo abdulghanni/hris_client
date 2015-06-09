@@ -43,8 +43,8 @@
                             <?php endforeach;?>
                         </select>
                             <?php }else{ ?>
-                            <select>
-                            <option value="0">-- Anda tidak mempunyai bawahan --</option>
+                            <select style="width:100%" name="emp" required>
+                            <option value="">-- Anda tidak mempunyai bawahan --</option>
                             </select>
                         <?php }}?>
                       </div>
@@ -87,6 +87,20 @@
                           <input type="text" class="form-control" id="sandbox-advance" name="date_exit" required>
                           <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
                         </div>    
+                      </div>
+                    </div>
+                    <div class="row form-row">
+                      <div class="col-md-2">
+                        <label class="form-label text-right">Tipe Rekomendasi</label>
+                      </div>
+                      <div class="col-md-3">
+                        <select style="width:100%" name="exit_type_id">
+                        <?php
+                          if($exit_type->num_rows>0){
+                            foreach($exit_type->result() as $row):?>
+                          <option value="<?php echo $row->id?>"><?php echo $row->title?></option>
+                        <?php endforeach;}?>
+                        </select>
                       </div>
                     </div>
                       

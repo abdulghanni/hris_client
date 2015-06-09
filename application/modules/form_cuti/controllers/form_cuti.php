@@ -126,7 +126,8 @@ class Form_cuti extends MX_Controller {
         
         if($this->form_validation->run() == FALSE)
         {
-            echo json_encode(array('st'=>0, 'errors'=>validation_errors('<div class="alert alert-danger" role="alert">', '</div>')));
+            //echo json_encode(array('st'=>0, 'errors'=>validation_errors('<div class="alert alert-danger" role="alert">', '</div>')));
+            redirect('form_cuti/input', 'refresh'); 
         }
         else
         {
@@ -170,7 +171,8 @@ class Form_cuti extends MX_Controller {
             {
                  $cuti_url = base_url().'form_cuti';
                  $this->send_approval_request($cuti_id, $user_id);
-                 echo json_encode(array('st' =>1, 'cuti_url' => $cuti_url));     
+                 //echo json_encode(array('st' =>1, 'cuti_url' => $cuti_url))
+                 redirect('form_cuti', 'refresh');   
             }
             $this->insert_leave_request($user_id, $additional_data, $leave_request_id);
         }
@@ -1221,7 +1223,7 @@ class Form_cuti extends MX_Controller {
                     $this->template->add_css('plugins/select2/select2.css');
                     
                 }
-                elseif(in_array($view, array('form_cuti/input','form_cuti/page_prints')))
+                elseif(in_array($view, array('form_cuti/input')))
                 {
 
                     $this->template->set_layout('default');
@@ -1278,6 +1280,7 @@ class Form_cuti extends MX_Controller {
                     
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                     $this->template->add_css('plugins/select2/select2.css');
+                    $this->template->add_css('approval_img.css');
                     
                 }
 

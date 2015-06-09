@@ -257,7 +257,11 @@
                       Disetujui oleh,
                       <div class="row wf-cuti">
                         <div class="col-md-6">
-                          <?php if ($user->is_app_lv1 == 1) { ?>
+                          <?php
+                          $approved = assets_url('img/approved_stamp.png');
+                          $rejected = assets_url('img/rejected_stamp.png');
+                           if ($user->is_app_lv1 == 1) { 
+                            echo ($user->approval_status_id_lv1 == 1)? "<img class=approval_img src=$approved>":(($user->approval_status_id_lv1 == 2) ? "<img class=approval_img src=$rejected>":'');?><br/>
                             <p class="wf-approve-sp">
                               <span class="semi-bold"><?php echo $nm_app_lv1 ?></span><br>
                               <span class="small"><?php echo $date_app_lv1; ?></span><br>
@@ -268,13 +272,15 @@
                           <?php } ?>
                         </div>
                           <div class="col-md-6">
-                          <?php if ($user->is_app_lv2 == 1 && cek_subordinate(is_have_subsubordinate($session_id),'id', $user->user_id) == TRUE) { ?>
+                          <?php if ($user->is_app_lv2 == 1 && cek_subordinate(is_have_subsubordinate($session_id),'id', $user->user_id) == TRUE) {
+                           echo ($user->approval_status_id_lv2 == 1)? "<img class=approval_img src=$approved>":(($user->approval_status_id_lv2 == 2) ? "<img class=approval_img src=$rejected>":'');?><br/>
                             <p class="wf-approve-sp">
                               <span class="semi-bold"><?php echo $nm_app_lv2 ?></span><br>
                               <span class="small"><?php echo $date_app_lv2 ?></span><br>
                               (Ka. Cabang / Ka. Bagian)<br />
                             </p>   
-                          <?php }elseif($user->is_app_lv2 == 1 && cek_subordinate(is_have_subsubordinate($session_id),'id', $user->user_id) == FALSE) { ?>
+                          <?php }elseif($user->is_app_lv2 == 1 && cek_subordinate(is_have_subsubordinate($session_id),'id', $user->user_id) == FALSE) { 
+                            echo ($user->approval_status_id_lv2 == 1)? "<img class=approval_img src=$approved>":(($user->approval_status_id_lv2 == 2) ? "<img class=approval_img src=$rejected>":'');?><br/>
                           <p class="wf-approve-sp">
                               <span class="semi-bold"><?php echo $nm_app_lv2 ?></span><br>
                               <span class="small"><?php echo $date_app_lv2 ?></span><br>
@@ -294,14 +300,19 @@
                       &nbsp;
                       <div class="row wf-cuti">
                         <div class="col-md-12">
-                          <?php if ($user->is_app_lv3 == 1) { ?>
+                          <?php if ($user->is_app_lv3 == 1) { 
+                            echo ($user->approval_status_id_lv3 == 1)? "<img class=approval_img src=$approved>":(($user->approval_status_id_lv3 == 2) ? "<img class=approval_img src=$rejected>":'');?><br/>
                             <p class="wf-approve-sp">
                               <span class="semi-bold"><?php echo $nm_app_lv3 ?></span><br>
                               <span class="small"><?php echo $date_app_lv3 ?></span><br>
-                              (Personalia)
+                              (HRD)
                             </p>   
                           <?php }else{ ?>
-                            <p class="">(HRD)</p>
+                            <p class="wf-approve-sp">
+                              <span class="semi-bold"></span><br>
+                              <span class="small"></span><br>
+                              (HRD)
+                            </p>
                           <?php } ?>
                         </div>
                       </div>

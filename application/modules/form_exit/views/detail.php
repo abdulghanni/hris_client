@@ -69,6 +69,14 @@
                           <input type="text" class="form-control" id="sandbox-advance" name="date_exit" value="<?php echo dateIndo($row->date_exit)?>" disabled="disabled">    
                       </div>
                     </div>
+                    <div class="row form-row">
+                      <div class="col-md-2">
+                        <label class="form-label text-right">Tipe Rekomendasi</label>
+                      </div>
+                      <div class="col-md-3">
+                        <input type="text" class="form-control" id="sandbox-advance" name="tipe" value="<?php echo $row->exit_type?>" disabled="disabled">    
+                      </div>
+                    </div>
                       
                       <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
                       <div class="row form-row">

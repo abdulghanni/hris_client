@@ -44,7 +44,7 @@
                                   $id_absen = $absen->id;
                                   $session_id = get_nik($this->session->userdata('user_id'));
                                   $id_user = $this->session->userdata('user_id');
-                                  $txt_app_lv1 = $txt_app_lv2 = $txt_app_lv3 = "-";
+                                  $txt_app_lv1 = $txt_app_lv2 = $txt_app_lv3 = "<i class='icon-minus' title = 'Pending'></i>";
 
                                 if(!empty(is_have_subordinate($session_id)))
                                   {
@@ -54,7 +54,7 @@
                                                   <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-paste'></i></button>
                                               </a>";
                                           }else{
-                                            $txt_app_lv1 =  "<a href='".site_url('form_absen/approval_spv/'.$absen->id)."''></i>Ya</a>";
+                                            $txt_app_lv1 =  "<a href='".site_url('form_absen/approval_spv/'.$absen->id)."''><i class='icon-ok-sign' title = 'Approved'></i></a>";
                                             
                                           }
                                       }elseif($absen->is_app_lv1== 1){
@@ -72,22 +72,20 @@
                                   
                                   if(!empty(is_have_subsubordinate($id_user)))
                                   {
-                                    if(cek_subordinate(is_have_subsubordinate($id_user),'id', $absen->user_id)){
-                                          if($absen->is_app_lv2 == 0){
-                                              $txt_app_lv2 = "<a href='".site_url('form_absen/approval_kbg/'.$absen->id)."''>
-                                                  <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-paste'></i></button>
-                                              </a>";
-                                          }else{
-                                            $txt_app_lv2 =  "<a href='".site_url('form_absen/approval_kbg/'.$absen->id)."'><i class='icon-ok-sign' title='Approved'></a>";
-                                            
-                                          }
-                                     }else{
-                                     
-                                     }
-                                  }else{
-                                    if ($absen->is_app_lv2== 1){
-                                    $txt_app_lv2 =  "<a href='".site_url('form_absen/approval_spv/'.$absen->id)."''><i class='icon-ok-sign' title='Approved'></a>";
+                                    if(cek_subordinate(is_have_subsubordinate($id_user),'id', $absen->user_id))
+                                    {
+                                      if($absen->is_app_lv2 == 0)
+                                      {
+                                          $txt_app_lv2 = "<a href='".site_url('form_absen/approval_kbg/'.$absen->id)."''>
+                                              <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-paste'></i></button>
+                                          </a>";
+                                      }else{
+                                        $txt_app_lv2 =  "<a href='".site_url('form_absen/approval_kbg/'.$absen->id)."'><i class='icon-ok-sign' title='Approved'></i></a>";
+                                      }
                                     }
+                                  }elseif($absen->is_app_lv2== 1)
+                                  {
+                                    $txt_app_lv2 =  "<a href='".site_url('form_absen/approval_spv/'.$absen->id)."''><i class='icon-ok-sign' title='Approved'></i></a>"; 
                                   }
 
 
@@ -117,9 +115,9 @@
                                     </td>
                                     <td class="text-center">
                                     <?php if($absen->is_app_lv1 == 1 && $absen->is_app_lv2 == 1){?>
-                                            <a href="<?php echo site_url('form_absen/form_absen_pdf/'.$absen->id)?>"><i class="icon-print"></i></a>
+                                            <a href="<?php echo site_url('form_absen/form_absen_pdf/'.$absen->id)?>"><i class="icon-print" title="Print"></i></a>
                                           <?php }else{ ?>
-                                            <i class="icon-print"></i>
+                                            <i class="icon-print" title="Print"></i>
                                           <?php } ?>
                                     </td>
                                   </tr>

@@ -62,7 +62,7 @@ class Form_exit extends MX_Controller {
             $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
             $this->data['all_users'] = getAll('users', array('active'=>'where/1'));
             $this->data['subordinate'] = getAll('users', array('superior_id'=>'where/'.get_nik($sess_id)));
-            //print_mz($this->data['subordinate']);
+            $this->data['exit_type'] = getAll('exit_type', array('is_deleted'=>'where/0'));
             $this->_render_page('form_exit/input', $this->data);
     }
     
@@ -114,6 +114,7 @@ class Form_exit extends MX_Controller {
                     'user_id' => $user_id,
                     'id_comp_session' => 1,
                     'date_exit' => date('Y-m-d',strtotime($this->input->post('date_exit'))),
+                    'exit_type_id' => $this->input->post('exit_type_id'),
                     'user_exit_inventaris_id' => $exit_id,
                     'user_exit_rekomendasi_id'   => $exit_id,
                     'created_on'            => date('Y-m-d',strtotime('now')),
