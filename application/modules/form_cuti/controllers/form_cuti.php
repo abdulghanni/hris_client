@@ -171,8 +171,9 @@ class Form_cuti extends MX_Controller {
             {
                  $cuti_url = base_url().'form_cuti';
                  $this->send_approval_request($cuti_id, $user_id);
+                 print_mz($this->insert_leave_request($user_id, $additional_data, $leave_request_id));
                  //echo json_encode(array('st' =>1, 'cuti_url' => $cuti_url))
-                 redirect('form_cuti', 'refresh');   
+                 //redirect('form_cuti', 'refresh');   
             }
             $this->insert_leave_request($user_id, $additional_data, $leave_request_id);
         }
@@ -258,13 +259,16 @@ class Form_cuti extends MX_Controller {
         $IDLEAVEREQUEST = 'CT'.$leaveid;
         $RECVERSION = $leave_request_id[0]['RECVERSION']+1;
         $RECID = $leave_request_id[0]['RECID']+1;
+        $remarks = str_replace(' ', '-', $data['remarks']);
+        $alamat_cuti = str_replace(' ', '-', $data['alamat_cuti']);
+        $phone = str_replace(' ', '-', $data['contact']);
         $method = 'post';
         $params =  array();
         $uri = get_api_key().'users/leave_request/'.
                'EMPLID/'.$user_id.
                '/HRSLEAVETYPEID/'.$data['alasan_cuti_id'].
-               '/REMARKS/'.$data['remarks'].
-               '/CONTACTPHONE/'.$data['contact'].
+               '/REMARKS/'.$remarks.
+               '/CONTACTPHONE/'.$phone.
                '/TOTALLEAVEDAYS/'.$data['jumlah_hari'].
                '/LEAVEDATETO/'.$data['date_selesai_cuti'].
                '/LEAVEDATEFROM/'.$data['date_mulai_cuti'].
@@ -272,7 +276,7 @@ class Form_cuti extends MX_Controller {
                '/IDLEAVEREQUEST/'.$IDLEAVEREQUEST.
                '/STATUSFLAG/'.'1'.
                '/IDPERSONSUBSTITUTE/'.$data['user_pengganti'].
-               '/TRAVELLINGLOCATION/'.$data['alamat_cuti'].
+               '/TRAVELLINGLOCATION/'.$alamat_cuti.
                '/MODIFIEDDATETIME/'.$data['created_on'].
                '/MODIFIEDBY/'.$data['created_by'].
                '/CREATEDDATETIME/'.$data['created_on'].
@@ -294,12 +298,12 @@ class Form_cuti extends MX_Controller {
 
         if(isset($result->status) && $result->status == 'success')  
         {  
-            return true;
+            return print_r($this->rest->debug());
             //print_r($this->rest->debug());
         }     
         else  
         {  
-            return false;
+            return print_r($this->rest->debug());
             //print_r($this->rest->debug());
         }
     }
