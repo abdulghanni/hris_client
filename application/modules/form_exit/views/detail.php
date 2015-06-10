@@ -294,7 +294,11 @@
                       <div class="row wf-cuti">
                         <div class="col-md-3">
                           <p class="wf-approve-sp">
-                            <?php if($row->is_app_mgr == 1){?>
+                            <?php 
+                            $approved = assets_url('img/approved_stamp.png');
+                            $rejected = assets_url('img/rejected_stamp.png');
+                            if($row->is_app_mgr == 1){
+                            echo "<img class=approval_img_recruitment src=$approved>"?><br/>
                             <span class="semi-bold"><?php echo get_name($mgr_ga_nas)?></span><br/>
                             <span class="small"><?php echo dateIndo($row->date_app_mgr)?></span><br/>
                             <?php }else{ ?>
@@ -308,7 +312,8 @@
 
                         <div class="col-md-3">
                           <p class="wf-approve-sp">
-                            <?php if($row->is_app_mgr == 1){?>
+                            <?php if($row->is_app_koperasi == 1){
+                            echo "<img class=approval_img_recruitment src=$approved>"?><br/>
                             <span class="semi-bold"><?php echo get_name($koperasi)?></span><br/>
                             <span class="small"><?php echo dateIndo($row->date_app_koperasi)?></span><br/>
                             <?php }else{ ?>
@@ -322,7 +327,8 @@
                           
                         <div class="col-md-3">
                           <p class="wf-approve-sp">
-                            <?php if($row->is_app_mgr == 1){?>
+                            <?php if($row->is_app_perpus == 1){
+                            echo "<img class=approval_img_recruitment src=$approved>"?><br/>
                             <span class="semi-bold"><?php echo get_name($perpustakaan)?></span><br/>
                             <span class="small"><?php echo dateIndo($row->date_app_perpus)?></span><br/>
                             <?php }else{ ?>
@@ -336,7 +342,8 @@
                           
                         <div class="col-md-3">
                           <p class="wf-approve-sp">
-                            <?php if($row->is_app_mgr == 1){?>
+                            <?php if($row->is_app_hrd == 1){
+                            echo "<img class=approval_img_recruitment src=$approved>"?><br/>
                             <span class="semi-bold"><?php echo get_name($hrd)?></span><br/>
                             <span class="small"><?php echo dateIndo($row->date_app_hrd)?></span><br/>
                             <?php }else{ ?>
@@ -460,7 +467,8 @@
                         <div class="col-md-4">
                           Mengetahui / Menyetujui,<br/><br/>
                           <p class="wf-approve-sp">
-                            <?php if($row->is_app==1){?>
+                            <?php if($row->is_app==1){
+                            echo "<img class=approval_img_recruitment src=$approved>"?><br/>
                             <span class="semi-bold"><?php echo get_name($row->user_app)?></span><br/>
                             <span class="small"><?php echo dateIndo($row->date_app)?><br/>  
                             <span class="semi-bold"></span><br/>

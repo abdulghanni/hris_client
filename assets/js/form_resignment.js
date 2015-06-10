@@ -79,11 +79,11 @@ $(document).ready(function() {
                 });
                 
             $('#btn_app').click(function(){
-                  $('#formAppHrd').submit(function(ev){
+                  $('#formApp').submit(function(ev){
                       $.ajax({
                           type: 'POST',
-                          url: resign_url+'/do_approve_hrd/'+url.segment(4),
-                          data: $('#formAppHrd').serialize(),
+                          url: resign_url+'/do_approve/'+url.segment(4),
+                          data: $('#formApp').serialize(),
                           success: function() {
                               setTimeout(function(){
                                   location.reload()},

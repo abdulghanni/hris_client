@@ -260,41 +260,41 @@
                         <div class="col-md-3">
                           <p class="wf-approve-sp">
                           <div class="col-md-12"><span class="semi-bold">Mengetahui / Menyetujui,</span><br/><br/></div>
-                            <!--
-                            <?php if($row->is_app_mgr == 1){?>
-                            <span class="semi-bold"><?php echo get_name($koperasi)?></span><br/>
-                            <span class="small"><?php echo dateIndo($row->date_app_koperasi)?></span><br/>
+                            <?php 
+                          $approved = assets_url('img/approved_stamp.png');
+                          $rejected = assets_url('img/rejected_stamp.png');
+                          if ($row->is_app_lv1 == 1) { 
+                            echo ($row->approval_status_id_lv1 == 1)? "<img class=approval_img_md src=$approved>":(($row->approval_status_id_lv1 == 2) ? "<img class=approval_img_md src=$rejected>":'');?><br/>
+                            <span class="semi-bold"><?php echo get_name($row->user_app_lv1)?></span><br/>
+                            <span class="semi-bold">Supervisor</span><br/>
+                            <span class="small"><?php echo dateIndo($row->date_app_lv1)?></span><br/>
                             <?php }else{ ?>
                             <span class="semi-bold"></span><br/>
                             <span class="small"></span><br/>
                             <?php } ?>
-                            <span class="semi-bold"></span><br/>
-                            <span class="semi-bold">Sie Koperasi</span>
-                            -->
                           </p>
                         </div>
                           
                         <div class="col-md-3">
                           <p class="wf-approve-sp">
                           <div class="col-md-12"><span class="semi-bold">Mengetahui / Menyetujui,</span><br/><br/></div>
-                           <!--
-                            <?php if($row->is_app_mgr == 1){?>
-                            <span class="semi-bold"><?php echo get_name($perpustakaan)?></span><br/>
-                            <span class="small"><?php echo dateIndo($row->date_app_perpus)?></span><br/>
-                            <?php }else{ ?>
+                           <?php if ($row->is_app_lv2 == 1) { 
+                            echo ($row->approval_status_id_lv2 == 1)? "<img class=approval_img_md src=$approved>":(($row->approval_status_id_lv2 == 2) ? "<img class=approval_img_md src=$rejected>":'');?><br/>
+                            <span class="semi-bold"><?php echo get_name($row->user_app_lv2)?></span><br/>
+                            <span class="semi-bold">Ka. Bagian</span><br/>
+                            <span class="small"><?php echo dateIndo($row->date_app_lv2)?></span><br/>
+                            <?php }else{?>
                             <span class="semi-bold"></span><br/>
                             <span class="small"></span><br/>
                             <?php } ?>
-                            <span class="semi-bold"></span><br/>
-                            <span class="semi-bold">Perpustakaan</span>
-                            -->
                           </p>
                         </div>
                           
                         <div class="col-md-3">
                           <p class="wf-approve-sp">
                           <div class="col-md-12"><span class="semi-bold">Diterima HRD</span><br/><br/></div>
-                            <?php if($row->is_app_hrd == 1){?>
+                            <?php if($row->is_app_hrd == 1){
+                              echo ($row->approval_status_id_hrd == 1)? "<img class=approval_img_md src=$approved>":(($row->approval_status_id_hrd == 2) ? "<img class=approval_img_md src=$rejected>":'');?><br/>
                             <span class="semi-bold"><?php echo get_name($row->user_app_hrd )?></span><br/>
                             <span class="semi-bold">HRD Database</span><br/>
                             <span class="small"><?php echo dateIndo($row->date_app_hrd)?></span><br/>

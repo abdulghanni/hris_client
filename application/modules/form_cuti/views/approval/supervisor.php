@@ -17,7 +17,7 @@
           <div class="col-md-12">
             <div class="grid simple">
               <div class="grid-title no-border">
-                <h4>Form <span class="semi-bold">Cuti</span> - Supervisor Approval</h4>
+                <h4><a href="<?php echo site_url('form_cuti')?>">Form <span class="semi-bold">Cuti</span> - Supervisor Approval</a></h4>
               </div>
               <div class="grid-body no-border">
                 <form class="form-no-horizontal-spacing" id="formAppLv1" action="<?php// echo site_url('form_cuti/do_approve_spv/2')?>">
@@ -317,8 +317,6 @@
                       </div>
                     </div>
                   </div>
-                  <?php endforeach; ?>
-                  <?php } ?>
                 </form>
               </div>
             </div>
@@ -331,7 +329,7 @@
 	</div>  
   <!-- END PAGE -->
 
-  <!-- Edit approval cuti Modal -->
+<!-- Edit approval cuti Modal -->
 <div class="modal fade" id="notapprovecutiModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog" id="modaldialog">
     <div class="modal-content">
@@ -342,6 +340,35 @@
       <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
       <div class="modal-body">
         <form class="form-no-horizontal-spacing" method="POST" action="<?php echo site_url('form_cuti/update_approve_spv/'.$this->uri->segment(3))?>">
+            <div class="row form-row">
+              <div class="col-md-3">
+                <label class="form-label text-left"><?php echo lang('start_cuti_date') ?></label>
+              </div>
+              <div class="col-md-3">
+                <div id="datepicker_start" class="input-append date success no-padding">
+                  <input type="text" class="form-control" name="start_cuti" value="<?php echo $user->date_mulai_cuti?>">
+                  <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span> 
+                </div>
+              </div>
+              <div class="col-md-2">
+                <label class="form-label text-center">s/d</label>
+              </div>
+              <div class="col-md-3">
+                <div id="datepicker_end" class="input-append date success no-padding">
+                  <input type="text" class="form-control" name="end_cuti" value="<?php echo $user->date_selesai_cuti?>">
+                  <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span> 
+                </div>
+              </div>
+            </div>
+            <div class="row form-row">
+              <div class="col-md-3">
+                <label class="form-label text-left"><?php echo lang('count_day') ?></label>
+              </div>
+              <div class="col-md-2">
+                <input id="jml_hari" type="text"  class="form-control" placeholder="Jml. Hari" value="<?php echo $user->jumlah_hari?>" readonly>
+                <input type="hidden" name="jml_cuti" id="jml_cuti" value="">
+              </div>
+            </div>
             <div class="row form-row">
               <div class="col-md-12">
                 <label class="form-label text-left">Status Approval </label>
@@ -380,3 +407,7 @@
   </div>
 </div>
 <!--end edit modal-->
+
+
+<?php endforeach; ?>
+<?php } ?>

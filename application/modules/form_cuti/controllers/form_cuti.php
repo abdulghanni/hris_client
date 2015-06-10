@@ -61,17 +61,28 @@ class Form_cuti extends MX_Controller {
             
             $this->data['num_rows_all'] = $this->form_cuti_model->like($ftitle_post)->where('is_deleted',0)->form_cuti()->num_rows();
 
-            //list of filterize limit form_cuti for pagination
-            if (!$this->ion_auth->is_admin())
-            { 
             $form_cuti = $this->data['form_cuti'] = $this->form_cuti_model->like($ftitle_post)->where('is_deleted',0)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->form_cuti()->result();
             $this->data['_num_rows'] = $this->form_cuti_model->like($ftitle_post)->where('is_deleted',0)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->form_cuti()->num_rows();
             
-            }else{
-                //print_mz($this->ion_auth->is_admin());
-            $form_cuti = $this->data['form_cuti'] = $this->form_cuti_model->like($ftitle_post)->where('is_deleted',0)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->form_cuti_for_admin()->result();    
-            $this->data['_num_rows'] = $this->form_cuti_model->like($ftitle_post)->where('is_deleted',0)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->form_cuti_for_admin()->num_rows();
-            }
+
+             //config pagination
+             $config['base_url'] = base_url().'form_cuti/index/fn:'.$exp_ftitle[1].'/'.$sort_by.'/'.$sort_order.'/';
+             $config['total_rows'] = $this->data['num_rows_all'];
+             $config['per_page'] = $limit;
+             $config['uri_segment'] = 6;
+
+            //inisialisasi config
+             $this->pagination->initialize($config);
+
+            //create pagination
+            $this->data['halaman'] = $this->pagination->create_links();
+
+            $this->data['ftitle_search'] = array(
+                'name'  => 'title',
+                'id'    => 'title',
+                'type'  => 'text',
+                'value' => $this->form_validation->set_value('title'),
+            );
 
             $this->_render_page('form_cuti/index', $this->data);
         }
@@ -663,16 +674,22 @@ class Form_cuti extends MX_Controller {
         $cuti_id = $this->input->post('cuti_id');
 
         $additional_data = array(
+        'date_mulai_cuti'       => date('Y-m-d', strtotime($this->input->post('start_cuti'))),
+        'date_selesai_cuti'     => date('Y-m-d', strtotime($this->input->post('end_cuti'))),
+        'jumlah_hari'           => $this->input->post('jml_cuti'),
         'is_app_lv1' => 1,
         'approval_status_id_lv1' => $this->input->post('app_status_update'),
         'note_app_lv1' => $this->input->post('notes_spv_update'), 
         'user_app_lv1' => $user_id, 
-        'date_app_lv1' => $date_now);
+        'date_app_lv1' => $date_now,
+        'edited_on'   => date('Y-m-d',strtotime('now')),
+        'edited_by'   => $this->session->userdata('user_id')
+                );
 
         $approval_status = $this->input->post('app_status_update');
         
         $this->form_cuti_model->update($id,$additional_data);
-        $this->approval_mail($id, $approval_status,'spv','Supervisor');
+        $this->update_approval_mail($id, $approval_status,'spv','Supervisor');
 		$this->cek_all_approval($id);
         redirect('form_cuti/approval_spv/'.$id, 'refresh');
        
@@ -706,16 +723,22 @@ class Form_cuti extends MX_Controller {
         $cuti_id = $this->input->post('cuti_id');
 
         $additional_data = array(
+        'date_mulai_cuti'       => date('Y-m-d', strtotime($this->input->post('start_cuti'))),
+        'date_selesai_cuti'     => date('Y-m-d', strtotime($this->input->post('end_cuti'))),
+        'jumlah_hari'           => $this->input->post('jml_cuti'),
         'is_app_lv2' => 1,
         'approval_status_id_lv2' => $this->input->post('app_status_update'),
         'note_app_lv2' => $this->input->post('notes_kabag_update'), 
         'user_app_lv2' => $user_id, 
-        'date_app_lv2' => $date_now);
+        'date_app_lv2' => $date_now,
+        'edited_on'   => date('Y-m-d',strtotime('now')),
+        'edited_by'   => $this->session->userdata('user_id')
+        );
 
         $approval_status = $this->input->post('app_status_update');
 
         $this->form_cuti_model->update($id,$additional_data);
-        $this->approval_mail($id, $approval_status,'kbg', 'Ka. Bagian');
+        $this->update_approval_mail($id, $approval_status,'kbg', 'Ka. Bagian');
 		$this->cek_all_approval($id);
 
         redirect('form_cuti/approval_kbg/'.$id, 'refresh');
@@ -754,16 +777,22 @@ class Form_cuti extends MX_Controller {
         $cuti_id = $this->input->post('cuti_id');
 
         $additional_data = array(
+        'date_mulai_cuti'       => date('Y-m-d', strtotime($this->input->post('start_cuti'))),
+        'date_selesai_cuti'     => date('Y-m-d', strtotime($this->input->post('end_cuti'))),
+        'jumlah_hari'           => $this->input->post('jml_cuti'),
         'is_app_lv3' => 1,
         'approval_status_id_lv3' => $this->input->post('app_status_update'),
         'note_app_lv3' => $this->input->post('notes_hrd_update'), 
         'user_app_lv3' => $user_id, 
-        'date_app_lv3' => $date_now);
+        'date_app_lv3' => $date_now,
+        'edited_on'   => date('Y-m-d',strtotime('now')),
+        'edited_by'   => $this->session->userdata('user_id')
+        );
 
         $approval_status = $this->input->post('app_status_update');
 
         $this->form_cuti_model->update($id,$additional_data);
-        $this->approval_mail($id, $approval_status,'hrd', 'HRD');
+        $this->update_approval_mail($id, $approval_status,'hrd', 'HRD');
 		$this->cek_all_approval($id);
 
         redirect('form_cuti/approval_hrd/'.$id, 'refresh');
@@ -829,6 +858,23 @@ class Form_cuti extends MX_Controller {
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Status Pengajuan Permohonan Cuti dari '.$type,
                 'email_body' => "Status pengajuan permohonan cuti anda $approval_status oleh $approver untuk detail silakan <a href=$url>Klik disini</a><br/>".$this->detail_email($id),
+                'is_read' => 0,
+            );
+        $this->db->insert('email', $data);
+    }
+
+    function update_approval_mail($id, $approval_status, $type_url, $type)
+    {
+        $url = base_url().'form_cuti/approval_'.$type_url.'/'.$id;
+        $approver = get_name(get_nik($this->session->userdata('user_id')));
+        $receiver_id = $this->db->where('id', $id)->get('users_cuti')->row('user_id');
+        $approval_status = $this->db->where('id', $approval_status)->get('approval_status')->row('title');
+        $data = array(
+                'sender_id' => get_nik($this->session->userdata('user_id')),
+                'receiver_id' => get_nik($receiver_id),
+                'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                'subject' => 'Perubahan Status Pengajuan Permohonan Cuti dari '.$type,
+                'email_body' => "$type melakukan perubahan Status pengajuan permohonan cuti anda, status pengajuan anda sekarang $approval_status oleh $approver untuk detail silakan <a href=$url>Klik disini</a><br/>".$this->detail_email($id),
                 'is_read' => 0,
             );
         $this->db->insert('email', $data);
@@ -1215,7 +1261,7 @@ class Form_cuti extends MX_Controller {
                     $this->template->add_js('core.js');
                     $this->template->add_js('purl.js');
 
-                    $this->template->add_js('main.js');
+                    //$this->template->add_js('main.js');
                     $this->template->add_js('respond.min.js');
 
                     $this->template->add_js('jquery.bootstrap.wizard.min.js');
@@ -1278,6 +1324,7 @@ class Form_cuti extends MX_Controller {
                     $this->template->add_js('respond.min.js');
 
                     $this->template->add_js('jquery.bootstrap.wizard.min.js');
+                    $this->template->add_js('bootstrap-datepicker.js');
                     $this->template->add_js('jquery.validate.min.js');
                     $this->template->add_js('form_cuti.js');
 

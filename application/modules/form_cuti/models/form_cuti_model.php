@@ -296,7 +296,7 @@ class Form_cuti_model extends CI_Model
         else
         {
             $sess_id = $this->session->userdata('user_id');
-            
+            $is_admin = is_admin();
             if(!empty(is_have_subordinate(get_nik($sess_id)))){
             $sub_id = get_subordinate($sess_id);
             }else{
@@ -332,7 +332,9 @@ class Form_cuti_model extends CI_Model
 
 
             //$this->db->where('users_cuti.is_deleted', 0);
-            $this->db->where("(users_cuti.user_id= $sess_id $sub_id $subsub_id )",null, false);
+            if($is_admin!=1){
+                $this->db->where("(users_cuti.user_id= $sess_id $sub_id $subsub_id )",null, false);
+            }
             $this->db->order_by('users_cuti.id', 'desc');
         }
 
@@ -390,88 +392,7 @@ class Form_cuti_model extends CI_Model
         return $q;
     }
 
-    public function form_cuti_for_admin()
-    {
-        $this->trigger_events('form_cuti');
-
-        if (isset($this->_ion_select) && !empty($this->_ion_select))
-        {
-            foreach ($this->_ion_select as $select)
-            {
-                $this->db->select($select);
-            }
-
-            $this->_ion_select = array();
-        }
-        else
-        {
-            //default selects
-            $this->db->select(array(
-                $this->tables['users_cuti'].'.*',
-                $this->tables['users_cuti'].'.id as id',
-
-                $this->tables['alasan_cuti'].'.title as alasan_cuti',
-                $this->tables['comp_session'].'.year as comp_session',
-                $this->tables['users'].'.username as name',
-				'status_lv1.title as approval_status_lv1',
-                'status_lv2.title as approval_status_lv2',
-                'status_lv3.title as approval_status_lv3',
-            ));
-
-            $this->db->join('alasan_cuti', 'users_cuti.alasan_cuti_id = alasan_cuti.HRSLEAVETYPEID', 'left');
-            $this->db->join('comp_session', 'users_cuti.id_comp_session = comp_session.id', 'left');
-            $this->db->join('users', 'users_cuti.user_id = users.id', 'left');
-			$this->db->join('approval_status as status_lv1', 'users_cuti.approval_status_id_lv1 = status_lv1.id', 'left');
-            $this->db->join('approval_status as status_lv2', 'users_cuti.approval_status_id_lv2 = status_lv2.id', 'left');
-            $this->db->join('approval_status as status_lv3', 'users_cuti.approval_status_id_lv3 = status_lv3.id', 'left');
-			
-
-            $this->db->where('users_cuti.is_deleted', 0);
-            $this->db->order_by('users_cuti.id', 'desc');
-        }
-
-        $this->trigger_events('extra_where');
-
-        //run each where that was passed
-
-        if (isset($this->_ion_like) && !empty($this->_ion_like))
-        {
-            foreach ($this->_ion_like as $like)
-            {
-                $this->db->or_like($like);
-            }
-
-            $this->_ion_like = array();
-        }
-
-        if (isset($this->_ion_limit) && isset($this->_ion_offset))
-        {
-            $this->db->limit($this->_ion_limit, $this->_ion_offset);
-
-            $this->_ion_limit  = NULL;
-            $this->_ion_offset = NULL;
-        }
-        else if (isset($this->_ion_limit))
-        {
-            $this->db->limit($this->_ion_limit);
-
-            $this->_ion_limit  = NULL;
-        }
-
-        //set the order
-        if (isset($this->_ion_order_by) && isset($this->_ion_order))
-        {
-            $this->db->order_by($this->_ion_order_by, $this->_ion_order);
-
-            $this->_ion_order    = NULL;
-            $this->_ion_order_by = NULL;
-        }
-
-        $this->response = $this->db->get($this->tables['users_cuti']);
-
-        return $this;
-    }
-
+    
     public function form_cuti_input()
     {
         $this->trigger_events('form_cuti_input');

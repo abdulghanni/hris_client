@@ -287,7 +287,11 @@
                       <div class="row wf-cuti">
                         <div class="col-md-3">
                           <p class="wf-approve-sp">
-                            <?php if($row->is_app_mgr == 1){?>
+                            <?php 
+                            $approved = assets_url('img/approved_stamp.png');
+                            $rejected = assets_url('img/rejected_stamp.png');
+                            if($row->is_app_mgr == 1){
+                            echo "<img class=approval_img_recruitment src=$approved>"?><br/>
                             <span class="semi-bold"><?php echo get_name(!empty($mgr_ga_nas) ? $mgr_ga_nas : 'D0001')?></span><br/>
                             <span class="small"><?php echo dateIndo($row->date_app_mgr)?></span><br/>
                             <?php }elseif($row->is_app_mgr == 0 && get_nik($sess_id) === $mgr_id){?>
@@ -338,7 +342,8 @@
                           
                         <div class="col-md-3">
                           <p class="wf-approve-sp">
-                            <?php if($row->is_app_hrd == 1){?>
+                            <?php if($row->is_app_hrd == 1){
+                            echo "<img class=approval_img_recruitment src=$approved>"?><br/>
                             <span class="semi-bold"><?php echo get_name($hrd)?></span><br/>
                             <span class="small"><?php echo dateIndo($row->date_app_hrd)?></span><br/>
                             <?php }elseif($row->is_app_hrd == 0 && get_nik($sess_id) == $hrd){?>

@@ -57,7 +57,7 @@
                                     <td class="text-center">
                                     <?php if($row->is_app_lv1 == 1){?>
                                        <a href="<?php echo site_url('form_recruitment/approval/'.$row->id)?>"><?php echo $approval_status_lv1?></a>
-                                      <?php }elseif($row->is_app_lv2 == 0 && cek_subordinate(is_have_subordinate($session_id),'id', $row->user_id)){
+                                      <?php }elseif($row->is_app_lv1 == 0 && cek_subordinate(is_have_subordinate($session_id),'id', $row->user_id)){
                                         echo "<a href='".site_url('form_recruitment/approval/'.$row->id)."''>
                                                   <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-paste'></i></button>
                                                 </a>";

@@ -620,6 +620,7 @@ class Form_recruitment extends MX_Controller {
                     $this->template->add_css('plugins/select2/select2.css');
                     $this->template->add_css('datepicker.css');
                     $this->template->add_css('bootstrap-timepicker.css');
+                    $this->template->add_css('approval_img.css');
                      
                 }elseif(in_array($view, array('form_recruitment/approval')))
                 {

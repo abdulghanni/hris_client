@@ -275,6 +275,7 @@ class Email extends MX_Controller {
                     
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                     $this->template->add_css('plugins/select2/select2.css');
+                    $this->template->add_css('approval_img.css');
 
                     //$this->template->add_css('pace-theme-flash.css');
                     //$this->template->add_css('datepicker.css');

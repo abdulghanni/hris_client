@@ -147,6 +147,32 @@
                       </div>
                     </div>
 
+                    <?php if(!empty($row->note_lv1)){?>
+                    <div class="row form-row">
+                      <div class="col-md-12">
+                        <label class="form-label text-left">Catatan Supervisor</label>
+                      </div>
+                    </div>
+                    <div class="row form-row">
+                      <div class="col-md-12">
+                        <textarea id="text-editor" placeholder="Enter text ..." class="form-control" rows="3" name="note_hrd" <?php echo ($row->is_app_lv1==1)? 'disabled="disabled"' : ''?>><?php echo $row->note_lv1?></textarea>
+                      </div>
+                    </div>
+                    <?php };
+                      if(!empty($row->note_lv2)){?>
+                    <div class="row form-row">
+                      <div class="col-md-12">
+                        <label class="form-label text-left">Catatan Ka. Bagian</label>
+                      </div>
+                    </div>
+                    <div class="row form-row">
+                      <div class="col-md-12">
+                        <textarea id="text-editor" placeholder="Enter text ..." class="form-control" rows="3" name="note_hrd" <?php echo ($row->is_app_lv2==1)? 'disabled="disabled"' : ''?>><?php echo $row->note_lv2?></textarea>
+                      </div>
+                    </div>
+                    <?php };
+                    if(!empty($row->note_hrd)){
+                    ?>
                     <div class="row form-row">
                       <div class="col-md-12">
                         <label class="form-label text-left">Catatan Pewawancara</label>
@@ -154,31 +180,66 @@
                     </div>
                     <div class="row form-row">
                       <div class="col-md-12">
-                        <textarea id="text-editor" placeholder="Enter text ..." class="form-control" rows="3" name="note_hrd" <?php echo ($row->is_app==1)? 'disabled="disabled"' : ''?>><?php echo $row->note_hrd?></textarea>
+                        <textarea id="text-editor" placeholder="Enter text ..." class="form-control" rows="3" name="note_hrd" <?php echo ($row->is_app_hrd==1)? 'disabled="disabled"' : ''?>><?php echo $row->note_hrd?></textarea>
                       </div>
-                    </div>
-
+                    </div><?php } ?>
                 </div>
+                <?php 
+                  $approved = assets_url('img/approved_stamp.png');
+                  $rejected = assets_url('img/rejected_stamp.png');
+                ?>
                  <div class="form-actions">
                   <div class="col-md-12 text-center">
                       <div class="row wf-cuti">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                           Karyawan Ybs,<br/><br/>
                           <p class="wf-approve-sp">
                             <span class="semi-bold"><?php echo get_name($row->user_id)?></span><br/>
                             <span class="small"><?php echo dateIndo($row->created_on)?></span><br/>
                           </p>
                         </div>
-
-                        <div class="col-md-4"></div>
                         
-                        <div class="col-md-4">
+                        <div class="col-md-3">
+                          <p class="wf-approve-sp">
+                          <div class="col-md-12"><span class="semi-bold">Mengetahui / Menyetujui,</span><br/><br/></div>
+                            <?php 
+                          $approved = assets_url('img/approved_stamp.png');
+                          $rejected = assets_url('img/rejected_stamp.png');
+                          if ($row->is_app_lv1 == 1) { 
+                            echo ($row->app_status_id_lv1 == 1)? "<img class=approval_img_md src=$approved>":(($row->app_status_id_lv1 == 2) ? "<img class=approval_img_md src=$rejected>":'');?><br/>
+                            <span class="semi-bold"><?php echo get_name($row->user_app_lv1)?></span><br/>
+                            <span class="semi-bold">Supervisor</span><br/>
+                            <span class="small"><?php echo dateIndo($row->date_app_lv1)?></span><br/>
+                            <?}else{?>
+                            <span class="semi-bold"></span><br/>
+                            <span class="small"></span><br/>
+                            <?php } ?>
+                          </p>
+                        </div>
+                          
+                        <div class="col-md-3">
+                          <p class="wf-approve-sp">
+                          <div class="col-md-12"><span class="semi-bold">Mengetahui / Menyetujui,</span><br/><br/></div>
+                           <?php if ($row->is_app_lv2 == 1) { 
+                            echo ($row->app_status_id_lv2 == 1)? "<img class=approval_img_md src=$approved>":(($row->app_status_id_lv2 == 2) ? "<img class=approval_img_md src=$rejected>":'');?><br/>
+                            <span class="semi-bold"><?php echo get_name($row->user_app_lv2)?></span><br/>
+                            <span class="semi-bold">Ka. Bagian</span><br/>
+                            <span class="small"><?php echo dateIndo($row->date_app_lv2)?></span><br/>
+                            <?php }else{?>
+                            <span class="semi-bold"></span><br/>
+                            <span class="small"></span><br/>
+                            <?php } ?>
+                          </p>
+                        </div>
+
+                        <div class="col-md-3">
                           Pewawancara,<br/><br/>
                           <p class="wf-approve-sp">
-                            <?php if($row->is_app==1){?>
-                            <span class="semi-bold"><?php echo get_name($row->user_app)?></span><br/>
-                            <span class="small"><?php echo dateIndo($row->date_app)?></span>
-                            <?php }else{?>
+                            <?php if($row->is_app_hrd==1){
+                            echo ($row->app_status_id_hrd == 1)? "<img class=approval_img_md src=$approved>":(($row->app_status_id_hrd == 2) ? "<img class=approval_img_md src=$rejected>":'');?><br/>
+                            <span class="semi-bold"><?php echo get_name($row->user_app_hrd)?></span><br/>
+                            <span class="small"><?php echo dateIndo($row->date_app_hrd)?></span>
+                            <?}else{ ?>
                             <span class="semi-bold"></span><br/>
                             <span class="semi-bold">(HRD)</span>
                             <?php } ?>
@@ -186,10 +247,7 @@
                         </div>
                       </div>
                     </div>
-                    
                 </div>
-                </div>
-              <?php endforeach;}?>
               </form>
             </div>
           </div>
@@ -200,4 +258,5 @@
       </div>
     
   </div>  
-  <!-- END PAGE --> 
+  <!-- END PAGE -->
+  <?php endforeach;}?>
