@@ -17,13 +17,15 @@
         <div class="col-md-12">
           <div class="grid simple">
             <div class="grid-title no-border">
-              <h4>View Permintaan <span class="semi-bold"><a href="<?php echo site_url('form_training')?>">Pelatihan</a></span></h4>
+              <h4>View Permintaan <span class="semi-bold"><a href="<?php echo site_url('form_training_group')?>">Pelatihan</a></span></h4>
             </div>
             <div class="grid-body no-border">
             <?php
-              $disabled = 'disabled="disabled"';
-              if($form_training->num_rows()>0){
-                foreach($form_training->result() as $user){
+              if($form_training_group->num_rows()>0){
+                foreach($form_training_group->result() as $user){
+                $peserta = getAll('users_training_group', array('id'=>'where/'.$user->id))->row('user_peserta_id');
+                $p = explode(",", $peserta);
+                $disabled = 'disabled="disabled"';
                 ?>
               <form class="form-no-horizontal-spacing" id=""> 
                 <div class="row column-seperation">
@@ -41,7 +43,7 @@
                         <label class="form-label text-right">Nama</label>
                       </div>
                       <div class="col-md-9">
-                        <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama" value="<?php echo $user->name?>" disabled="disabled">
+                        <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama" value="<?php echo get_name($user->user_pengaju_id)?>" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
@@ -60,6 +62,23 @@
                         <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama" value="<?php echo (!empty($user_info))?$user_info['ORGANIZATION']:'-';?>" disabled="disabled">
                       </div>
                     </div>
+
+                    <div class="row form-row">
+                      <div class="col-md-3">
+                        <label class="form-label text-right">Nama Peserta Training</label>
+                      </div>
+                      <div class="col-md-9">
+                      <?php for($i=0;$i<sizeof($p);$i++):?>
+                      <div class="col-md-3">
+                        <div class="checkbox check-primary checkbox-circle" >
+                          <input name="peserta[]" class="checkbox1" type="checkbox" id="peserta<?php echo $p[$i] ?>" checked>
+                            <label for="peserta<?php echo $p[$i] ?>"><?php echo get_name($p[$i])?></label>
+                          </div>
+                      </div>
+                      <?php endfor; ?>
+                      </div>
+                    </div> 
+
                     <div class="row form-row">
                       <div class="col-md-3">
                         <label class="form-label text-right">Nama Program Pelatihan</label>
@@ -236,7 +255,7 @@
                   <?php } ?>
               </div>
               <!-- end separation -->
-              <?php } ?>
+                <?php } ?>
                 <div class="form-actions">
                   <div class="col-md-12 text-center">
                       <div class="row wf-cuti">

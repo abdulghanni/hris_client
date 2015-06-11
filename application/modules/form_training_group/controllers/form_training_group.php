@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-class form_training extends MX_Controller {
+class form_training_group extends MX_Controller {
 
   public $data;
     function __construct()
@@ -12,7 +12,7 @@ class form_training extends MX_Controller {
         
         $this->load->database();
     $this->load->model('person/person_model','person_model');
-        $this->load->model('form_training/form_training_model','form_training_model');
+        $this->load->model('form_training_group/form_training_group_model','form_training_group_model');
         
         $this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
 
@@ -31,8 +31,9 @@ class form_training extends MX_Controller {
         else
         {
             $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
-            $form_training = $this->data['form_training'] = $this->form_training_model->form_training();
-            $this->_render_page('form_training/index', $this->data);
+            $form_training_group = $this->data['form_training_group'] = $this->form_training_group_model->form_training_group();
+
+            $this->_render_page('form_training_group/index', $this->data);
         }
     }
 
@@ -46,16 +47,14 @@ class form_training extends MX_Controller {
         else
         {
             $this->data['training_type'] = GetAll('training_type', array('is_deleted' => 'where/0'));
-            $form_training = $this->data['form_training'] = $this->form_training_model->form_training($id);
+            $form_training_group = $this->data['form_training_group'] = $this->form_training_group_model->form_training_group($id);
+
             $this->data['penyelenggara'] = GetAll('penyelenggara', array('is_deleted'=>'where/0'));
             $this->data['pembiayaan'] = GetAll('pembiayaan', array('is_deleted'=>'where/0'));
-            $user_id = $this->db->select('user_id')->where('id', $id)->get('users_training')->row('user_id');
-			if($form_training->num_rows>0){
-                $this->get_app_name($id);
-            }
+            $user_id = $this->db->select('user_pengaju_id')->where('id', $id)->get('users_training_group')->row('user_pengaju_id');
 			
             $this->get_user_info($user_id);
-            $this->_render_page('form_training/detail', $this->data);
+            $this->_render_page('form_training_group/detail', $this->data);
         }
     }
 
@@ -68,15 +67,14 @@ class form_training extends MX_Controller {
         }
 
         $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
-        $this->data['user_name'] = $this->form_training_model->get_app_name($sess_id);
-        $form_training = $this->data['training'] = $this->form_training_model->form_training($sess_id);
+        $form_training_group = $this->data['training'] = $this->form_training_group_model->form_training_group($sess_id);
 
         $this->get_user_info($sess_id);
         $this->data['all_users'] = getAll('users');
         $this->data['subordinate'] = getAll('users', array('superior_id'=>'where/'.get_nik($sess_id)));
 
 
-        $this->_render_page('form_training/input', $this->data);
+        $this->_render_page('form_training_group/input', $this->data);
     }
 
     function add()
@@ -99,7 +97,8 @@ class form_training extends MX_Controller {
                 $user_id= $this->input->post('emp');
 
                 $data = array(
-                    'user_id' => $user_id,
+                    'user_pengaju_id' => $user_id,
+                    'user_peserta_id' => implode(',',$this->input->post('peserta')),
                     'id_comp_session' => 1,
                     'training_name' => $this->input->post('training_name'),
                     'tujuan_training' => $this->input->post('tujuan_training'),
@@ -107,18 +106,21 @@ class form_training extends MX_Controller {
                     'created_by'            => $this->session->userdata('user_id'),
                     );
 
-                $num_rows = getAll('users_training', array('is_deleted'=>'where/0'))->num_rows();
-
+                $num_rows = getAll('users_training_group', array('is_deleted'=>'where/0'))->num_rows();
+                $peserta_id = implode(',',$this->input->post('peserta'));
+                $peserta_id = explode(',',$peserta_id);
+               
                 if($num_rows>0){
-                    $training_id = $this->db->select('id')->order_by('id', 'asc')->get('users_training')->last_row();
+                    $training_id = $this->db->select('id')->order_by('id', 'asc')->get('users_training_group')->last_row();
                     $training_id = $training_id->id+1;
                 }else{
                     $training_id = 1;
                 }
 
-                    if ($this->form_validation->run() == true && $this->form_training_model->add($data))
+                    if ($this->form_validation->run() == true && $this->form_training_group_model->add($data))
                     {
                         $this->send_approval_request($training_id, $user_id);
+                        $this->send_peserta_mail($training_id, $user_id, $peserta_id);
                         echo json_encode(array('st' =>1));     
                     }
             }
@@ -129,24 +131,20 @@ class form_training extends MX_Controller {
     function approval_spv($id)
     {
         $sess_id = $this->session->userdata('user_id');
-        $user_training_id = $this->db->select('user_id')->from('users_training')->where('id', $id)->get()->row('user_id');
+        $user_training_id = $this->db->select('user_pengaju_id')->from('users_training_group')->where('id', $id)->get()->row('user_pengaju_id');
         if (!$this->ion_auth->logged_in())
         {
             redirect('auth/login', 'refresh');
         }
         else
         {
-            $user_id = $this->db->select('user_id')->where('id', $id)->get('users_training')->row('user_id');
+            $user_id = $this->db->select('user_pengaju_id')->where('id', $id)->get('users_training_group')->row('user_pengaju_id');
             
             $this->get_user_info($user_id);
             
-            $form_training = $this->data['form_training'] = $this->form_training_model->form_training($id);
-            if($form_training->num_rows>0){
-                $this->get_app_name($id);
-            }
-
+            $form_training_group = $this->data['form_training_group'] = $this->form_training_group_model->form_training_group($id);
             $this->data['approval_status'] = GetAll('approval_status');
-            $this->_render_page('form_training/approval/supervisor', $this->data);
+            $this->_render_page('form_training_group/approval/supervisor', $this->data);
         }
 
         
@@ -155,51 +153,28 @@ class form_training extends MX_Controller {
     function approval_hrd($id)
     {
         $sess_id = $this->session->userdata('user_id');
-        $user_training_id = $this->db->select('user_id')->from('users_training')->where('id', $id)->get()->row('user_id');
+        $user_training_id = $this->db->select('user_pengaju_id')->from('users_training_group')->where('id', $id)->get()->row('user_pengaju_id');
         if (!$this->ion_auth->logged_in())
         {
             redirect('auth/login', 'refresh');
         }
         else
         {
-            $user_id = $this->db->select('user_id')->where('id', $id)->get('users_training')->row('user_id');
+            $user_id = $this->db->select('user_pengaju_id')->where('id', $id)->get('users_training_group')->row('user_pengaju_id');
             
             $this->get_user_info($user_id);
             
-            $form_training = $this->data['form_training'] = $this->form_training_model->form_training($id);
+            $form_training_group = $this->data['form_training_group'] = $this->form_training_group_model->form_training_group($id);
             $this->data['training_type'] = GetAll('training_type', array('is_deleted' => 'where/0'));
             $this->data['penyelenggara'] = GetAll('penyelenggara');
             $this->data['pembiayaan'] = GetAll('pembiayaan');
-            if($form_training->num_rows>0){
-                $this->get_app_name($id);
-            }
-
             $this->data['approval_status'] = GetAll('approval_status');
-            $this->_render_page('form_training/approval/hrd', $this->data);
+            $this->_render_page('form_training_group/approval/hrd', $this->data);
         }
 
     }
 
     function do_approve_spv($id)
-    {
-        $user_id = $this->session->userdata('user_id');
-        $date_now = date('Y-m-d');
-
-        $data = array(
-        'is_app_lv1' => 1, 
-        'user_app_lv1' => $user_id,
-        'approval_status_id_lv1' => 1,  
-        'date_app_lv1' => $date_now);
-
-        $approval_status = 1;
-
-       if ($this->form_training_model->update($id,$data)) {
-           $this->approval_mail($id, $approval_status,'spv', 'Supervisor');
-           return TRUE;
-       }
-    }
-
-    function not_approve_spv($id)
     {
         $user_id = $this->session->userdata('user_id');
         $date_now = date('Y-m-d');
@@ -213,9 +188,29 @@ class form_training extends MX_Controller {
 
         $approval_status = $this->input->post('app_status');
 
-        $this->form_training_model->update($id,$data);
+        $this->form_training_group_model->update($id,$data);
         $this->approval_mail($id, $approval_status,'spv', 'Supervisor');
-        redirect('form_training/approval_spv/'.$id, 'refresh');
+        redirect('form_training_group/approval_spv/'.$id, 'refresh');
+       
+    }
+
+    function update_approve_spv($id)
+    {
+        $user_id = $this->session->userdata('user_id');
+        $date_now = date('Y-m-d');
+
+        $data = array(
+        'is_app_lv1' => 1, 
+        'user_app_lv1' => $user_id,
+        'approval_status_id_lv1' => $this->input->post('app_status_update'),
+        'note_app_lv1' => $this->input->post('note_spv_update'), 
+        'date_app_lv1' => $date_now);
+
+        $approval_status = $this->input->post('app_status_update');
+
+        $this->form_training_group_model->update($id,$data);
+        $this->update_approval_mail($id, $approval_status,'spv', 'Supervisor');
+        redirect('form_training_group/approval_spv/'.$id, 'refresh');
        
     }
 
@@ -246,29 +241,10 @@ class form_training extends MX_Controller {
         );
 
         $approval_status = 1;
-        if ($this->form_training_model->update($id,$data)) {
+        if ($this->form_training_group_model->update($id,$data)) {
         $this->approval_mail($id, $approval_status,'hrd', 'HRD');
            return TRUE;
        }
-    }
-
-    function not_approve_hrd($id)
-    {
-        $user_id = $this->session->userdata('user_id');
-        $date_now = date('Y-m-d');
-
-        $data = array(
-        'is_app_lv2' => 1, 
-        'user_app_lv2' => $user_id,
-        'approval_status_id_lv2' => $this->input->post('app_status'),
-        'note_app_lv2' => $this->input->post('note_hrd'), 
-        'date_app_lv2' => $date_now);
-
-        $approval_status = $this->input->post('app_status');
-        $this->form_training_model->update($id,$data);
-        $this->approval_mail($id, $approval_status,'hrd', 'HRD');
-        redirect('form_training/approval_hrd/'.$id, 'refresh');
-       
     }
 
     public function update_approve_hrd($id)
@@ -298,16 +274,16 @@ class form_training extends MX_Controller {
 
         $approval_status = $this->input->post('app_status_update');
 
-        $this->form_training_model->update($id,$additional_data);
-        $this->approval_mail($id, $approval_status,'hrd', 'HRD');
+        $this->form_training_group_model->update($id,$additional_data);
+        $this->update_approval_mail($id, $approval_status,'hrd', 'HRD');
 
-        redirect('form_training/approval_hrd/'.$id, 'refresh');
+        redirect('form_training_group/approval_hrd/'.$id, 'refresh');
        
     }
 
     function send_approval_request($id, $user_id)
     {
-        $url = base_url().'form_training/approval_';
+        $url = base_url().'form_training_group/approval_';
         if(is_have_superior($user_id))
         {
             $data = array(
@@ -334,11 +310,27 @@ class form_training extends MX_Controller {
         $this->db->insert('email', $data);
     }
 
+    function send_peserta_mail($id, $sender_id, $peserta_id = array())
+    {
+        $url = base_url().'form_training_group/detail';
+        for($i=0;$i<sizeof($peserta_id);$i++):
+        $data = array(
+                'sender_id' => get_nik($sender_id),
+                'receiver_id' => get_nik($peserta_id[$i]),
+                'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                'subject' => 'Pengajuan Training',
+                'email_body' => get_name($sender_id).' mengajukan permohonan pelatihan untuk anda, untuk melihat detail silakan <a href='.$url.'/'.$id.'>Klik Disini</a><br/>'.$this->detail_email($id),
+                'is_read' => 0,
+            );
+        $this->db->insert('email', $data);
+        endfor;
+    }
+
     function approval_mail($id, $approval_status, $type_url, $type)
     {
-        $url = base_url().'form_training/approval_'.$type_url.'/'.$id;
+        $url = base_url().'form_training_group/approval_'.$type_url.'/'.$id;
         $approver = get_name(get_nik($this->session->userdata('user_id')));
-        $receiver_id = $this->db->where('id', $id)->get('users_training')->row('user_id');
+        $receiver_id = $this->db->where('id', $id)->get('users_training_group')->row('user_pengaju_id');
         $approval_status = $this->db->where('id', $approval_status)->get('approval_status')->row('title');
         $data = array(
                 'sender_id' => get_nik($this->session->userdata('user_id')),
@@ -351,50 +343,53 @@ class form_training extends MX_Controller {
         $this->db->insert('email', $data);
     }
 
+    function update_approval_mail($id, $approval_status, $type_url, $type)
+    {
+        $url = base_url().'form_training_group/approval_'.$type_url.'/'.$id;
+        $approver = get_name(get_nik($this->session->userdata('user_id')));
+        $receiver_id = $this->db->where('id', $id)->get('users_training_group')->row('user_pengaju_id');
+        $approval_status = $this->db->where('id', $approval_status)->get('approval_status')->row('title');
+        $data = array(
+                'sender_id' => get_nik($this->session->userdata('user_id')),
+                'receiver_id' => get_nik($receiver_id),
+                'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                'subject' => 'Perubahan Status Pengajuan Permohonan Training dari '.$type,
+                'email_body' => "$approver melakukan perubahan Status pengajuan permohonan training anda menjadi $approval_status, untuk detail silakan <a href=$url>Klik disini</a><br/>".$this->detail_email($id),
+                'is_read' => 0,
+            );
+        $this->db->insert('email', $data);
+    }
+
     function detail_email($id)
     {
         
-        $form_training = $this->data['form_training'] = $this->form_training_model->form_training($id);
+        $form_training_group = $this->data['form_training_group'] = $this->form_training_group_model->form_training_group($id);
         
         $this->data['penyelenggara'] = GetAll('penyelenggara');
         $this->data['pembiayaan'] = GetAll('pembiayaan');
-        $user_id = $this->db->select('user_id')->where('id', $id)->get('users_training')->row('user_id');
-        if($form_training->num_rows>0){
-            $this->get_app_name($id);
-        }
-        
+        $user_id = getAll('users_training_group', array('id'=>'where/'.$id))->row('user_pengaju_id');
         $this->get_user_info($user_id);
-        return $this->load->view('form_training/training_mail', $this->data, TRUE);
-}
+        return $this->load->view('form_training_group/training_mail', $this->data, TRUE);
+    }
 
-
-    function get_app_name($id)
+    function get_subordinate($id)
     {
-        $form_training = $this->form_training_model->form_training($id);
-        foreach($form_training->result() as $training){
-            $user_app_lv1 = $training->user_app_lv1;
-            $user_app_lv2 = $training->user_app_lv2;
-        }
-
-        $this->data['name_app_lv1'] = $this->form_training_model->get_app_name($user_app_lv1);
-        $this->data['name_app_lv2'] = $this->form_training_model->get_app_name($user_app_lv2);
-
-        return $this->data;
+        $this->data['subordinate'] = getAll('users', array('superior_id'=>'where/'.get_nik($id)));
+        $this->load->view('radio_subordinate',$this->data);
     }
 
     function get_user_info($user_id)
     {
-        $user = $this->person_model->getUsers($user_id)->row();
-            $url = get_api_key().'users/employement/EMPLID/'.$user->nik.'/format/json';
-            $headers = get_headers($url);
-            $response = substr($headers[0], 9, 3);
-            if ($response != "404") {
-                $getuser_info = file_get_contents($url);
-                $user_info = json_decode($getuser_info, true);
-                return $this->data['user_info'] = $user_info;
-            } else {
-                return $this->data['user_info'] = '';
-            }
+        $url = get_api_key().'users/employement/EMPLID/'.get_nik($user_id).'/format/json';
+        $headers = get_headers($url);
+        $response = substr($headers[0], 9, 3);
+        if ($response != "404") {
+            $getuser_info = file_get_contents($url);
+            $user_info = json_decode($getuser_info, true);
+            return $this->data['user_info'] = $user_info;
+        } else {
+            return $this->data['user_info'] = '';
+        }
     }
 
     public function get_emp_org()
@@ -451,10 +446,10 @@ class form_training extends MX_Controller {
         echo $pos_nm;
     }
 
-     function form_training_pdf($id)
+     function form_training_group_pdf($id)
     {
         $sess_id = $this->session->userdata('user_id');
-        $user_id = $this->db->select('user_id')->from('users_training')->where('id', $id)->get()->row('user_id');
+        $user_id = $this->db->select('user_pengaju_id')->from('users_training_group')->where('id', $id)->get()->row('user_pengaju_id');
 
         if (!$this->ion_auth->logged_in())
         {
@@ -465,7 +460,7 @@ class form_training extends MX_Controller {
         {
             
         $this->get_user_info($user_id);
-        $form_training = $this->data['form_training'] = $this->form_training_model->form_training($id);
+        $form_training_group = $this->data['form_training_group'] = $this->form_training_group_model->form_training_group($id);
 
         $this->data['id'] = $id;
         $title = $this->data['title'] = 'Form Training-'.get_name($user_id);
@@ -509,7 +504,7 @@ class form_training extends MX_Controller {
         {
             $this->load->library('template');
 
-                if(in_array($view, array('form_training/index')))
+                if(in_array($view, array('form_training_group/index')))
                 {
                     $this->template->set_layout('default');
 
@@ -528,17 +523,17 @@ class form_training extends MX_Controller {
 
                     $this->template->add_js('jquery.bootstrap.wizard.min.js');
                     $this->template->add_js('jquery.validate.min.js');
-                    //$this->template->add_js('form_training.js');
+                    //$this->template->add_js('form_training_group.js');
 
                     
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                     $this->template->add_css('plugins/select2/select2.css');
                     
                 }
-                elseif(in_array($view, array('form_training/input',
-                                             'form_training/detail',
-                                             'form_training/approval/hrd',
-											 'form_training/approval/supervisor',
+                elseif(in_array($view, array('form_training_group/input',
+                                             'form_training_group/detail',
+                                             'form_training_group/approval/hrd',
+											 'form_training_group/approval/supervisor',
                     )))
                 {
 
@@ -564,7 +559,7 @@ class form_training extends MX_Controller {
                     $this->template->add_js('jquery.validate.min.js');
                     $this->template->add_js('bootstrap-datepicker.js');
                     $this->template->add_js('bootstrap-timepicker.js');
-                    $this->template->add_js('form_training.js');
+                    $this->template->add_js('form_training_group.js');
                     
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                     $this->template->add_css('plugins/select2/select2.css');

@@ -39,6 +39,7 @@
           <li > <a href="<?php echo site_url('form_spd_luar') ?>">Perjalanan dinas - luar kota</a> </li>     
           <li > <a href="<?php echo site_url('form_absen')?>">Keterangan tidak absen</a> </li>          
           <li > <a href="<?php echo site_url('form_training')?>">Training</a> </li>          
+          <li > <a href="<?php echo site_url('form_training_group')?>">Training Group</a> </li>          
           <!--<li > <a href="form_medical.html">Medical</a> </li>-->
           <li > <a href="<?php echo site_url('form_promosi')?>">Promosi</a> </li>          
           <li > <a href="<?php echo site_url('form_demolition')?>">Demolition</a> </li>          

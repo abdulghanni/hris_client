@@ -256,18 +256,15 @@ class Email extends MX_Controller {
                     $this->template->add_js('bootstrap.min.js');
 
                     $this->template->add_js('jquery-ui-1.10.1.custom.min.js');
-                    //$this->template->add_js('jqueryblockui.js');
                     $this->template->add_js('jquery.sidr.min.js');
                     $this->template->add_js('breakpoints.js');
                     $this->template->add_js('select2.min.js');
-                    //$this->template->add_js('pace.min.js');
-                    //$this->template->add_js('bootstrap-datepicker.js');
-
-                    //$this->template->add_js('modernizr.js');
-                    $this->template->add_js('purl.js');
-                    $this->template->add_js('email_comman.js');
+                    
                     $this->template->add_js('core.js');
+                    $this->template->add_js('email_comman.js');
+                    
                     $this->template->add_js('jqueryblockui.js');
+
                     //$this->template->add_js('modules/skeleton.js');
                     //$this->template->add_css('modules/skeleton.css');
                     $this->template->add_js('main.js');
