@@ -42,14 +42,19 @@
                               </thead>
                               <tbody>
                                   <?php if($form_exit->num_rows()>0){
-                                      foreach($form_exit->result() as $row):?>
-                                  
+                                      foreach($form_exit->result() as $row):
+                                      $approval_status = ($row->app_status_id== 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($row->app_status_id== 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
+                                      $approval_status_mgr = ($row->app_status_id_mgr== 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($row->app_status_id_mgr== 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
+                                      $approval_status_koperasi = ($row->app_status_id_koperasi== 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($row->app_status_id_koperasi== 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
+                                      $approval_status_perpus = ($row->app_status_id_perpus== 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($row->app_status_id_perpus== 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
+                                      $approval_status_hrd = ($row->app_status_id_hrd== 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($row->app_status_id_hrd== 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
+                                  ?>
                                   <tr>
                                     <td>
                                       <a href="<?php echo site_url('form_exit/detail/'.$row->id)?>"><?php echo get_nik($row->user_id)?></a>
                                     </td>
                                     <td>
-                                      <?php echo get_name($row->user_id)?>
+                                      <a href="<?php echo site_url('form_exit/detail/'.$row->id)?>"><?php echo get_name($row->user_id)?></a>
                                     </td>
                                     <td>
                                       <?php echo dateIndo($row->date_exit)?>
@@ -60,7 +65,7 @@
                                       $mgr_id = (!empty($mgr_ga_nas)) ? $mgr_ga_nas : 'D0001';
                                         if($row->is_app_mgr == 1){
                                           echo "<a href='".site_url('form_exit/approval/'.$row->id)."''>
-                                                  <i class='icon-ok-sign' title = 'Approved'></i>
+                                                  $approval_status_mgr
                                                 </a>";
                                         }elseif($row->is_app_mgr == 0 && get_nik($sess_id) == $mgr_id){
                                           echo "<a href='".site_url('form_exit/approval/'.$row->id)."''>
@@ -75,7 +80,7 @@
                                       <?php
                                         if($row->is_app_koperasi == 1){
                                           echo "<a href='".site_url('form_exit/approval/'.$row->id)."''>
-                                                  <i class='icon-ok-sign' title = 'Approved'></i>
+                                                  $approval_status_koperasi
                                                 </a>";
                                         }elseif($row->is_app_koperasi == 0 && get_nik($sess_id) == $koperasi){
                                           echo "<a href='".site_url('form_exit/approval/'.$row->id)."''>
@@ -90,7 +95,7 @@
                                       <?php
                                         if($row->is_app_perpus == 1){
                                           echo "<a href='".site_url('form_exit/approval/'.$row->id)."''>
-                                                  <i class='icon-ok-sign' title = 'Approved'></i>
+                                                  $approval_status_perpus
                                                 </a>";
                                         }elseif($row->is_app_perpus == 0 && get_nik($sess_id) == $perpustakaan){
                                           echo "<a href='".site_url('form_exit/approval/'.$row->id)."''>
@@ -105,7 +110,7 @@
                                       <?php
                                         if($row->is_app_hrd == 1){
                                           echo "<a href='".site_url('form_exit/approval/'.$row->id)."''>
-                                                  <i class='icon-ok-sign' title = 'Approved'></i>
+                                                  $approval_status_hrd
                                                 </a>";
                                         }elseif($row->is_app_hrd == 0 && get_nik($sess_id) == $hrd){
                                           echo "<a href='".site_url('form_exit/approval/'.$row->id)."''>
@@ -120,7 +125,7 @@
                                       <?php
                                         if($row->is_app == 1){
                                           echo "<a href='".site_url('form_exit/approval/'.$row->id)."''>
-                                                  <i class='icon-ok-sign' title = 'Approved'></i>
+                                                  $approval_status
                                                 </a>";
                                         }elseif($row->is_app == 0 && is_admin()){
                                           echo "<a href='".site_url('form_exit/approval/'.$row->id)."''>

@@ -70,7 +70,7 @@ class form_training_group extends MX_Controller {
         $form_training_group = $this->data['training'] = $this->form_training_group_model->form_training_group($sess_id);
 
         $this->get_user_info($sess_id);
-        $this->data['all_users'] = getAll('users');
+        $this->data['all_users'] = getAll('users', array('active'=>'where/1'));
         $this->data['subordinate'] = getAll('users', array('superior_id'=>'where/'.get_nik($sess_id)));
 
 

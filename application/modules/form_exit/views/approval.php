@@ -19,7 +19,7 @@
                   <h4>Form Rekomendasi <span class="semi-bold"><a href="<?php echo site_url('form_exit')?>">Karyawan Keluar</a></span></h4>
               </div>
               <div class="grid-body no-border">
-                 <form id="formApp" class="form-no-horizontal-spacing">
+                 <form id="" class="form-no-horizontal-spacing">
                     <?php foreach($form_exit->result() as $row):
                  ?>
                 <div class="row column-seperation">
@@ -67,6 +67,14 @@
                       </div>
                       <div class="col-md-3">
                           <input type="text" class="form-control" id="sandbox-advance" name="date_exit" value="<?php echo dateIndo($row->date_exit)?>" disabled="disabled">    
+                      </div>
+                    </div>
+                    <div class="row form-row">
+                      <div class="col-md-2">
+                        <label class="form-label text-right">Tipe Rekomendasi</label>
+                      </div>
+                      <div class="col-md-3">
+                        <input type="text" class="form-control" id="sandbox-advance" name="tipe" value="<?php echo $row->exit_type?>" disabled="disabled">    
                       </div>
                     </div>
                       
@@ -283,6 +291,20 @@
 
                       <?php $mgr_id = (!empty($mgr_ga_nas)) ? $mgr_ga_nas : 'D0001';?>
                   <div class="form-actions">
+                    <div class="row form-row">
+                        <div class="col-md-12 text-center">
+                        <?php if($row->is_app_mgr == 1 && get_nik($sess_id) == $mgr_id){?>
+                            <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitexitModalMgr"><i class='icon-edit'> Edit Approval</i></div>
+                          <?php }elseif($row->is_app_koperasi == 1 && get_nik($sess_id) == $koperasi){?>
+                            <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitexitModalKoperasi"><i class='icon-edit'> Edit Approval</i></div>
+                          <?php }elseif($row->is_app_perpus == 1 && get_nik($sess_id) == $perpustakaan){?>
+                            <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitexitModalPerpus"><i class='icon-edit'> Edit Approval</i></div>
+                          <?php }elseif($row->is_app_hrd == 1 && get_nik($sess_id) == $hrd){?>
+                            <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitexitModalHrd"><i class='icon-edit'> Edit Approval</i></div>
+                          <?php } ?>
+                        </div>
+                    </div>
+
                       <div class="col-md-12 text-center"><div class="col-md-12 text-center"><span class="semi-bold">Mengetahui,</span><br/><br/><br/></div>
                       <div class="row wf-cuti">
                         <div class="col-md-3">
@@ -291,11 +313,11 @@
                             $approved = assets_url('img/approved_stamp.png');
                             $rejected = assets_url('img/rejected_stamp.png');
                             if($row->is_app_mgr == 1){
-                            echo "<img class=approval_img_recruitment src=$approved>"?><br/>
+                            echo ($row->app_status_id_mgr == 1)? "<img class=approval_img_md src=$approved>":(($row->app_status_id_mgr == 2) ? "<img class=approval_img_md src=$rejected>":'');?><br/>
                             <span class="semi-bold"><?php echo get_name(!empty($mgr_ga_nas) ? $mgr_ga_nas : 'D0001')?></span><br/>
                             <span class="small"><?php echo dateIndo($row->date_app_mgr)?></span><br/>
                             <?php }elseif($row->is_app_mgr == 0 && get_nik($sess_id) === $mgr_id){?>
-                            <button class="btn btn-success btn-cons" id="btn_app_mgr" type=""><i class="icon-ok"></i>Approve</button>
+                            <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitexitModalMgr"><i class="icon-ok"></i>Submit</div>
                             <span class="small"></span><br/>
                             <?php }else{?>
                             <span class="semi-bold"></span><br/>
@@ -308,11 +330,12 @@
 
                         <div class="col-md-3">
                           <p class="wf-approve-sp">
-                            <?php if($row->is_app_koperasi == 1){?>
+                            <?php if($row->is_app_koperasi == 1){
+                            echo ($row->app_status_id_koperasi == 1)? "<img class=approval_img_md src=$approved>":(($row->app_status_id_koperasi == 2) ? "<img class=approval_img_md src=$rejected>":'');?><br/>
                             <span class="semi-bold"><?php echo get_name($koperasi)?></span><br/>
                             <span class="small"><?php echo dateIndo($row->date_app_koperasi)?></span><br/>
                             <?php }elseif($row->is_app_koperasi == 0 && get_nik($sess_id) == $koperasi){?>
-                            <button class="btn btn-success btn-cons" id="btn_app_koperasi" type=""><i class="icon-ok"></i>Approve</button>
+                            <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitexitModalKoperasi"><i class="icon-ok"></i>Submit</div>
                             <span class="small"></span><br/>
                             <?php }else{?>
                             <span class="semi-bold"></span><br/>
@@ -325,11 +348,12 @@
                           
                         <div class="col-md-3">
                           <p class="wf-approve-sp">
-                            <?php if($row->is_app_perpus == 1){?>
+                            <?php if($row->is_app_perpus == 1){
+                              echo ($row->app_status_id_perpus == 1)? "<img class=approval_img_md src=$approved>":(($row->app_status_id_perpus == 2) ? "<img class=approval_img_md src=$rejected>":'');?><br/>
                             <span class="semi-bold"><?php echo get_name($perpustakaan)?></span><br/>
                             <span class="small"><?php echo dateIndo($row->date_app_perpus)?></span><br/>
                             <?php }elseif($row->is_app_perpus == 0 && get_nik($sess_id) == $perpustakaan){?>
-                            <button class="btn btn-success btn-cons" id="btn_app_perpus" type=""><i class="icon-ok"></i>Approve</button>
+                            <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitexitModalPerpus"><i class="icon-ok"></i>Submit</div>
                             <span class="small"></span><br/>
                             <?php }else{?>
                             <span class="semi-bold"></span><br/>
@@ -343,11 +367,11 @@
                         <div class="col-md-3">
                           <p class="wf-approve-sp">
                             <?php if($row->is_app_hrd == 1){
-                            echo "<img class=approval_img_recruitment src=$approved>"?><br/>
+                            echo ($row->app_status_id_hrd == 1)? "<img class=approval_img_md src=$approved>":(($row->app_status_id_hrd == 2) ? "<img class=approval_img_md src=$rejected>":'');?><br/>
                             <span class="semi-bold"><?php echo get_name($hrd)?></span><br/>
                             <span class="small"><?php echo dateIndo($row->date_app_hrd)?></span><br/>
                             <?php }elseif($row->is_app_hrd == 0 && get_nik($sess_id) == $hrd){?>
-                            <button class="btn btn-success btn-cons" id="btn_app_hrd" type=""><i class="icon-ok"></i>Approve</button>
+                            <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitexitModalHrd"><i class="icon-ok"></i>Submit</div>
                             <span class="small"></span><br/>
                             <?php }else{?>
                             <span class="semi-bold"></span><br/>
@@ -445,17 +469,72 @@
                       
                   </div>
 
-                  <?php if(is_admin()){?>
+                  <?php if(!empty($row->note_mgr)){?>
+                  <div class="row form-row">
+                    <div class="col-md-12">
+                      <label class="form-label text-left">Catatan Manager Ga Nasional</label>
+                    </div>
+                    <div class="col-md-12">
+                      <textarea  id="text-editor" placeholder="Enter text ..." class="form-control" rows="2" disabled><?php echo $row->note_mgr?></textarea>
+                    </div>
+                  </div>
+                  <?php }?>
+
+
+                  <?php if(!empty($row->note_koperasi)){?>
+                  <div class="row form-row">
+                    <div class="col-md-12">
+                      <label class="form-label text-left">Catatan Sie Koperasi</label>
+                    </div>
+                    <div class="col-md-12">
+                      <textarea  id="text-editor" placeholder="Enter text ..." class="form-control" rows="2" disabled><?php echo $row->note_koperasi?></textarea>
+                    </div>
+                  </div>
+                  <?php }?>
+
+                  <?php if(!empty($row->note_perpus)){?>
+                  <div class="row form-row">
+                    <div class="col-md-12">
+                      <label class="form-label text-left">Catatan Perpustakaan</label>
+                    </div>
+                    <div class="col-md-12">
+                      <textarea  id="text-editor" placeholder="Enter text ..." class="form-control" rows="2" disabled><?php echo $row->note_perpus?></textarea>
+                    </div>
+                  </div>
+                  <?php }?>
+
+                  <?php if(!empty($row->note_hrd)){?>
+                  <div class="row form-row">
+                    <div class="col-md-12">
+                      <label class="form-label text-left">Catatan HRD</label>
+                    </div>
+                    <div class="col-md-12">
+                      <textarea  id="text-editor" placeholder="Enter text ..." class="form-control" rows="2" disabled><?php echo $row->note_hrd?></textarea>
+                    </div>
+                  </div>
+                  <?php }?>
+
+
+                  <?php if(!empty($row->note_app)){?>
                   <div class="row form-row">
                     <div class="col-md-12">
                       <label class="form-label text-left">Catatan Khusus</label>
                     </div>
                     <div class="col-md-12">
-                      <textarea name="note_app" id="text-editor" placeholder="Enter text ..." class="form-control" rows="10"><?php echo $row->note_app?></textarea>
+                      <textarea  id="text-editor" placeholder="Enter text ..." class="form-control" rows="2" disabled><?php echo $row->note_app?></textarea>
                     </div>
                   </div>
                   <?php }?>
+
                   <div class="form-actions">
+                    <div class="row form-row">
+                        <div class="col-md-12 text-center">
+                        <?php if($row->is_app == 1 && is_admin() == true){?>
+                            <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitexitModal"><i class='icon-edit'> Edit Approval</i></div>
+                          <?php } ?>
+                        </div>
+                    </div>
+
                     <div class="col-md-12 text-center">
                       <div class="row wf-cuti">
                         <div class="col-md-4">
@@ -473,12 +552,13 @@
                         <div class="col-md-4">
                           Mengetahui / Menyetujui,<br/><br/>
                           <p class="wf-approve-sp">
-                            <?php if($row->is_app==1){?>
+                            <?php if($row->is_app==1){
+                              echo ($row->app_status_id == 1)? "<img class=approval_img_md src=$approved>":(($row->app_status_id == 2) ? "<img class=approval_img_md src=$rejected>":'');?><br/>
                             <span class="semi-bold"><?php echo get_name($row->user_app)?></span><br/>
                             <span class="small"><?php echo dateIndo($row->date_app)?><br/>  
                             <span class="semi-bold"></span><br/>
                             <?php }elseif($row->is_app == 0 && is_admin()){?>
-                            <button class="btn btn-success btn-cons" id="btn_app_admin" type=""><i class="icon-ok"></i>Approve</button><br />
+                            <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitexitModal"><i class="icon-ok"></i>Submit</div><br />
                             <span class="small"></span><br/>
                             <?php }else{?>
                             <span class="semi-bold"></span><br/>
@@ -492,7 +572,6 @@
                     </div> 
                   </div>
                 </div>
-                      <?php endforeach;?>
                 </form>
               </div>
           </div>
@@ -505,4 +584,260 @@
   </div>  
   <!-- END PAGE -->
 
+<!-- do approval exit Modal ASM/Mgr/Kacab/BDM/CoE -->
+<div class="modal fade" id="submitexitModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" id="modaldialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Approval Form Exit Clearence</h4>
+      </div>
+      <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
+      <div class="modal-body">
+      <?php $action = ($row->is_app == 0)?'do':'update';?>
+        <form class="form-no-horizontal-spacing" id="formAppAdmin">
+            <div class="row form-row">
+              <div class="col-md-12">
+                <label class="form-label text-left">Status Approval</label>
+              </div>
+              <div class="col-md-12">
+                <div class="radio">
+                  <?php 
+                  if($approval_status->num_rows() > 0){
+                    foreach($approval_status->result() as $app){
+                      $checked = ($app->id <> 0 && $app->id == $row->app_status_id) ? 'checked = "checked"' : '';
+                      ?>
+                  <input id="app_status<?php echo $app->id?>" type="radio" name="app_status" value="<?php echo $app->id?>" <?php echo $checked?>>
+                  <label for="app_status<?php echo $app->id?>"><?php echo $app->title?></label>
+                  <?php }}else{?>
+                  <input id="app_status" type="radio" name="app_status" value="0">
+                  <label for="app_status">No Data</label>
+                    <?php } ?>
+                </div>
+              </div>
+            </div>
+            <div class="row form-row">
+              <div class="col-md-12">
+                <label class="form-label text-left">Note (ASM/Mgr/Kacab/BDM/CoE) : </label>
+              </div>
+              <div class="col-md-12">
+                <textarea name="note_app" class="custom-txtarea-form" placeholder="Note ASM/Mgr/Kacab/BDM/CoE isi disini"><?php echo $row->note_app?></textarea>
+              </div>
+            </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="icon-remove"></i>&nbsp;<?php echo lang('close_button')?></button> 
+        <button type="submit" id="btn_app_admin"  class="btn btn-success btn-cons"><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
+      </div>
+        <?php echo form_close()?>
+    </div>
+  </div>
+</div>
+<!--end do ASM/Mgr/Kacab/BDM/CoE--> 
+
+
+<!-- do approval exit Modal mgr Ga Nasional -->
+<div class="modal fade" id="submitexitModalMgr" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" id="modaldialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Approval Form Exit Clearence</h4>
+      </div>
+      <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
+      <div class="modal-body">
+      <?php $action = ($row->is_app_mgr == 0)?'do':'update';?>
+        <form class="form-no-horizontal-spacing" id="formAppMgr" method="POST" action="<?php echo site_url('form_exit/'.$action.'_approve/lv1/'.$this->uri->segment(3))?>">
+            <div class="row form-row">
+              <div class="col-md-12">
+                <label class="form-label text-left">Status Approval</label>
+              </div>
+              <div class="col-md-12">
+                <div class="radio">
+                  <?php 
+                  if($approval_status->num_rows() > 0){
+                    foreach($approval_status->result() as $app){
+                      $checked = ($app->id <> 0 && $app->id == $row->app_status_id_mgr) ? 'checked = "checked"' : '';
+                      ?>
+                  <input id="app_status_mgr<?php echo $app->id?>" type="radio" name="app_status_mgr" value="<?php echo $app->id?>" <?php echo $checked?>>
+                  <label for="app_status_mgr<?php echo $app->id?>"><?php echo $app->title?></label>
+                  <?php }}else{?>
+                  <input id="app_status_mgr" type="radio" name="app_status_mgr" value="0">
+                  <label for="app_status_mgr">No Data</label>
+                    <?php } ?>
+                </div>
+              </div>
+            </div>
+            <div class="row form-row">
+              <div class="col-md-12">
+                <label class="form-label text-left">Note (Manager Ga Nasional) : </label>
+              </div>
+              <div class="col-md-12">
+                <textarea name="note_mgr" class="custom-txtarea-form" placeholder="Note Manager Ga Nasional isi disini"><?php echo $row->note_mgr?></textarea>
+              </div>
+            </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="icon-remove"></i>&nbsp;<?php echo lang('close_button')?></button> 
+        <button type="submit" id="btn_app_mgr" class="btn btn-success btn-cons"><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
+      </div>
+        <?php echo form_close()?>
+    </div>
+  </div>
+</div>
+<!--end do mgr Ga Nasional--> 
+
+<!-- do approval exit Modal koperasi -->
+<div class="modal fade" id="submitexitModalKoperasi" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" id="modaldialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Approval Form Exit Clearence</h4>
+      </div>
+      <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
+      <div class="modal-body">
+      <?php $action = ($row->is_app_koperasi == 0)?'do':'update';?>
+        <form class="form-no-horizontal-spacing" id="formAppKoperasi" method="POST" action="<?php echo site_url('form_exit/'.$action.'_approve/lv1/'.$this->uri->segment(3))?>">
+            <div class="row form-row">
+              <div class="col-md-12">
+                <label class="form-label text-left">Status Approval</label>
+              </div>
+              <div class="col-md-12">
+                <div class="radio">
+                  <?php 
+                  if($approval_status->num_rows() > 0){
+                    foreach($approval_status->result() as $app){
+                      $checked = ($app->id <> 0 && $app->id == $row->app_status_id_koperasi) ? 'checked = "checked"' : '';
+                      ?>
+                  <input id="app_status_koperasi<?php echo $app->id?>" type="radio" name="app_status_koperasi" value="<?php echo $app->id?>" <?php echo $checked?>>
+                  <label for="app_status_koperasi<?php echo $app->id?>"><?php echo $app->title?></label>
+                  <?php }}else{?>
+                  <input id="app_status_koperasi" type="radio" name="app_status_koperasi" value="0">
+                  <label for="app_status_koperasi">No Data</label>
+                    <?php } ?>
+                </div>
+              </div>
+            </div>
+            <div class="row form-row">
+              <div class="col-md-12">
+                <label class="form-label text-left">Note (Sie Koperasi) : </label>
+              </div>
+              <div class="col-md-12">
+                <textarea name="note_koperasi" class="custom-txtarea-form" placeholder="Note Sie Koperasi isi disini"><?php echo $row->note_koperasi?></textarea>
+              </div>
+            </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="icon-remove"></i>&nbsp;<?php echo lang('close_button')?></button> 
+        <button type="submit" id="btn_app_koperasi" class="btn btn-success btn-cons"><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
+      </div>
+        <?php echo form_close()?>
+    </div>
+  </div>
+</div>
+<!--end do Koperasi--> 
+
+<!-- do approval exit Modal Perpustakaan -->
+<div class="modal fade" id="submitexitModalPerpus" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" id="modaldialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Approval Form Exit Clearence</h4>
+      </div>
+      <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
+      <div class="modal-body">
+      <?php $action = ($row->is_app_perpus == 0)?'do':'update';?>
+        <form class="form-no-horizontal-spacing" id="formAppPerpus" method="POST" action="<?php echo site_url('form_exit/'.$action.'_approve/lv1/'.$this->uri->segment(3))?>">
+            <div class="row form-row">
+              <div class="col-md-12">
+                <label class="form-label text-left">Status Approval</label>
+              </div>
+              <div class="col-md-12">
+                <div class="radio">
+                  <?php 
+                  if($approval_status->num_rows() > 0){
+                    foreach($approval_status->result() as $app){
+                      $checked = ($app->id <> 0 && $app->id == $row->app_status_id_perpus) ? 'checked = "checked"' : '';
+                      ?>
+                  <input id="app_status_perpus<?php echo $app->id?>" type="radio" name="app_status_perpus" value="<?php echo $app->id?>" <?php echo $checked?>>
+                  <label for="app_status_perpus<?php echo $app->id?>"><?php echo $app->title?></label>
+                  <?php }}else{?>
+                  <input id="app_status_perpus" type="radio" name="app_status_perpus" value="0">
+                  <label for="app_status_perpus">No Data</label>
+                    <?php } ?>
+                </div>
+              </div>
+            </div>
+            <div class="row form-row">
+              <div class="col-md-12">
+                <label class="form-label text-left">Note (Perpustakaan) : </label>
+              </div>
+              <div class="col-md-12">
+                <textarea name="note_perpus" class="custom-txtarea-form" placeholder="Note Perpustakaan isi disini"><?php echo $row->note_perpus?></textarea>
+              </div>
+            </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="icon-remove"></i>&nbsp;<?php echo lang('close_button')?></button> 
+        <button type="submit" id="btn_app_perpus" class="btn btn-success btn-cons"><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
+      </div>
+        <?php echo form_close()?>
+    </div>
+  </div>
+</div>
+<!--end do Perpustakaan--> 
+
+<!-- do approval exit Modal HRD -->
+<div class="modal fade" id="submitexitModalHrd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" id="modaldialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Approval Form Exit Clearence</h4>
+      </div>
+      <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
+      <div class="modal-body">
+      <?php $action = ($row->is_app_hrd == 0)?'do':'update';?>
+        <form class="form-no-horizontal-spacing" id="formAppHrd" method="POST" action="<?php echo site_url('form_exit/'.$action.'_approve/lv1/'.$this->uri->segment(3))?>">
+            <div class="row form-row">
+              <div class="col-md-12">
+                <label class="form-label text-left">Status Approval</label>
+              </div>
+              <div class="col-md-12">
+                <div class="radio">
+                  <?php 
+                  if($approval_status->num_rows() > 0){
+                    foreach($approval_status->result() as $app){
+                      $checked = ($app->id <> 0 && $app->id == $row->app_status_id_hrd) ? 'checked = "checked"' : '';
+                      ?>
+                  <input id="app_status_hrd<?php echo $app->id?>" type="radio" name="app_status_hrd" value="<?php echo $app->id?>" <?php echo $checked?>>
+                  <label for="app_status_hrd<?php echo $app->id?>"><?php echo $app->title?></label>
+                  <?php }}else{?>
+                  <input id="app_status_hrd" type="radio" name="app_status_hrd" value="0">
+                  <label for="app_status_hrd">No Data</label>
+                    <?php } ?>
+                </div>
+              </div>
+            </div>
+            <div class="row form-row">
+              <div class="col-md-12">
+                <label class="form-label text-left">Note (HRD) : </label>
+              </div>
+              <div class="col-md-12">
+                <textarea name="note_hrd" class="custom-txtarea-form" placeholder="Note HRD isi disini"><?php echo $row->note_hrd?></textarea>
+              </div>
+            </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="icon-remove"></i>&nbsp;<?php echo lang('close_button')?></button> 
+        <button type="submit" id="btn_app_hrd" class="btn btn-success btn-cons"><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
+      </div>
+        <?php echo form_close()?>
+    </div>
+  </div>
+</div>
+
+<?php endforeach;?>
 

@@ -17,10 +17,10 @@
         <div class="col-md-12">
           <div class="grid simple">
             <div class="grid-title no-border">
-              <h4>Form Perjalanan Dinas <span class="semi-bold">Dalam Kota</span></h4>
+              <h4>Form <a href="<?php echo site_url('form_spd_dalam_group')?>">Perjalanan Dinas <span class="semi-bold">Dalam Kota (Group)</span></a></h4>
             </div>
             <div class="grid-body no-border">
-              <form class="form-no-horizontal-spacing" id="add_spd_dalam" action="<?php echo site_url() ?>form_spd_dalam/add" method="post"> 
+              <form class="form-no-horizontal-spacing" id="add_spd_dalam_group" action="<?php echo site_url() ?>form_spd_dalam_group/add" method="post"> 
                 <div class="row column-seperation">
                   <div class="col-md-5">
                     <h4>Yang Memberi Tugas</h4>
@@ -39,9 +39,8 @@
                         <?php } ?>
                       </select>
                       <?php }else{ ?>
-                        <select id="emp_tc" style="width:100%" name="emp_tc">
-                          <option value="<?php echo (!empty(get_nik($tc->user_id))) ? get_nik($tc->user_id) : $tc->user_id ?>"><?php echo $tc->user_name; ?></option>
-                      </select>
+                        <input type="text"  class="form-control" placeholder="Nama" value="<?php echo get_name($sess_id)?>" readonly>
+                        <input id="emp_tc" onload="getTr()" name="emp_tc" type="hidden"  class="form-control" placeholder="Nama" value="<?php echo get_nik($sess_id)?>">
                       <?php } ?>
                       </div>
                     </div>
@@ -50,7 +49,7 @@
                         <label class="form-label text-right">Dept/Bagian</label>
                       </div>
                       <div class="col-md-9">
-                        <input name="org_tc" id="org_tc" type="text"  class="form-control" placeholder="Nama" value="<?php echo (!empty($user_info))?$user_info['ORGANIZATION']:'-';?>" disabled="disabled">
+                        <input name="org_tc" id="org_tc" type="text"  class="form-control" placeholder="Dept/Bagian" value="<?php echo (!empty($user_info))?$user_info['ORGANIZATION']:'-';?>" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
@@ -58,7 +57,7 @@
                         <label class="form-label text-right">Jabatan</label>
                       </div>
                       <div class="col-md-9">
-                        <input name="pos_tc" id="pos_tc" type="text"  class="form-control" placeholder="Nama" value="<?php echo (!empty($user_info))?$user_info['POSITION']:'-';?>" disabled="disabled">
+                        <input name="pos_tc" id="pos_tc" type="text"  class="form-control" placeholder="Jabatan" value="<?php echo (!empty($user_info))?$user_info['POSITION']:'-';?>" disabled="disabled">
                       </div>
                     </div>
                     <?php  endforeach;
@@ -69,61 +68,48 @@
                     <h4>Memberi tugas / Ijin Kepada</h4>
                     <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
                     <div class="row form-row">
-                      <div class="col-md-3">
+                      <div class="col-md-2">
                         <label class="form-label text-right">Nama</label>
                       </div>
-                      <div class="col-md-9">
-                        <?php if(is_admin()){
-                        $style_tr='class="form-control input-sm" id="employee_sel"';
-                            echo form_dropdown('employee',array('Pilih User'=>'- Pilih User -'),'',$style_tr);
-                        }else{?>
-                        <select id="employee_sel" class="select2" style="width:100%" name="employee" >
-                          <?php if (!empty($task_receiver))  {
-                            foreach ($task_receiver as $key => $up) { ?>
-                              <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
-                            <?php }
-                          }else{
-                            foreach ($task_receiver_2 as $up) { ?>
-                              <option value="<?php echo (!empty(get_nik($up->id))) ? get_nik($up->id) : $up->id ?>"><?php echo $up->first_name.' '.$up->last_name; ?></option>
-                            <?php }
-                            }} ?>
-                        </select>
+                      <?php 
+                      if(is_admin() || !is_admin()){?>
+                      <div class="col-md-10">
+                        <div id="peserta" >
+                        </div>
+                      </div>
+                    <?php}else{?>
+                      <div class="col-md-10">
+                        <?php if(!empty($subordinate)){
+                        for($i=0;$i<sizeof($subordinate);$i++):?>
+                          <div class="col-md-5">
+                            <div class="checkbox check-primary checkbox-circle" >
+                              <input name="peserta[]" class="checkbox1" type="checkbox" id="peserta<?php echo $subordinate[$i]['ID'] ?>" value="<?php echo $subordinate[$i]['ID']?>">
+                                <label for="peserta<?php echo $subordinate[$i]['ID'] ?>"><?php echo get_name($subordinate[$i]['ID'])?></label>
+                             </div>
+                          </div>
+                        <?php endfor;} ?>
+                      <?php } ?>
                       </div>
                     </div>
+                    
                     <div class="row form-row">
-                      <div class="col-md-3">
-                        <label class="form-label text-right">Dept/Bagian</label>
-                      </div>
-                      <div class="col-md-9">
-                        <input name="org_tr" id="org_tr" type="text"  class="form-control" placeholder="Dept/Bagian" value="" disabled="disabled">
-                      </div>
-                    </div>
-                    <div class="row form-row">
-                      <div class="col-md-3">
-                        <label class="form-label text-right">Jabatan</label>
-                      </div>
-                      <div class="col-md-9">
-                        <input name="pos_tr" id="pos_tr" type="text"  class="form-control" placeholder="Jabatan" value="" disabled="disabled">
-                      </div>
-                    </div>
-                    <div class="row form-row">
-                      <div class="col-md-3">
+                      <div class="col-md-2">
                         <label class="form-label text-right">Tujuan</label>
                       </div>
-                      <div class="col-md-9">
+                      <div class="col-md-10">
                         <input name="destination" id="destination" type="text"  class="form-control" placeholder="Tujuan" value="" required>
                       </div>
                     </div>
                     <div class="row form-row">
-                      <div class="col-md-3">
+                      <div class="col-md-2">
                         <label class="form-label text-right">Dalam Rangka</label>
                       </div>
-                      <div class="col-md-9">
+                      <div class="col-md-10">
                         <input name="title" id="title" type="text"  class="form-control" placeholder="Dalam Rangka" value="" required>
                       </div>
                     </div>
                     <div class="row form-row">
-                      <div class="col-md-3">
+                      <div class="col-md-2">
                         <label class="form-label text-right">Tgl. Berangkat</label>
                       </div>
                       <div class="col-md-8">
@@ -134,7 +120,7 @@
                       </div>
                     </div>
                     <div class="row form-row">
-                      <div class="col-md-3">
+                      <div class="col-md-2">
                         <label class="form-label text-right">Waktu</label>
                       </div>
                       <div class="col-md-3">
@@ -182,9 +168,9 @@
      {
          tcid = document.getElementById("emp_tc").value;
          $.ajax({
-             url:"<?php echo base_url();?>form_spd_dalam/get_tr/"+tcid+"",
+             url:"<?php echo base_url();?>form_spd_dalam_group/get_tr/"+tcid+"",
              success: function(response){
-             $("#employee_sel").html(response);
+             $("#peserta").html(response);
              },
              dataType:"html"
          });

@@ -174,7 +174,7 @@
 <table width="1000" align="center">
   <tbody>
     <tr>
-      <th width="250" height="10"></th>
+      <th width="250" height="250"></th>
       <th width="250">&nbsp;&nbsp;&nbsp;&nbsp;Mengetahui,</th>
       <th width="250"></th>
       <th width="250"></th>
@@ -193,7 +193,9 @@
     </tr>
   </tbody>
 </table>
-
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <p class="style7">Kami rekomendasikan kepada karyawan tersebut </p>
 <table width="1000" align="center">
   <tbody>
@@ -256,11 +258,28 @@
     
   </tbody>
 </table>
+<?php if(!empty($row->note_mgr)){?>
+<p class="style4">Catatan Manager GA Nasional</p>
+<textarea class="style4" rows="4" width="100%"><?php echo $row->note_mgr?></textarea>
+<?php } ?>
+<?php if(!empty($row->note_koperasi)){?>
+<p class="style4">Catatan Sie Koperasi</p>
+<textarea class="style4" rows="4" width="100%"><?php echo $row->note_koperasi?></textarea>
+<?php } ?>
+<?php if(!empty($row->note_perpus)){?>
+<p class="style4">Catatan Perpustakaan</p>
+<textarea class="style4" rows="4" width="100%"><?php echo $row->note_perpus?></textarea>
+<?php } ?>
+<?php if(!empty($row->note_hrd)){?>
+<p class="style4">Catatan HRD</p>
+<textarea class="style4" rows="4" width="100%"><?php echo $row->note_hrd?></textarea>
+<?php } ?>
 <?php if(!empty($row->note_app)){?>
 <p class="style4">Catatan Khusus</p>
 <textarea class="style4" rows="4" width="100%"><?php echo $row->note_app?></textarea>
 <?php } ?>
 <br />
+<p>&nbsp;</p>
 <table width="1000" align="center">
   <tbody>
     <tr>

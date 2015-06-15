@@ -78,11 +78,11 @@ $(document).ready(function() {
                 });
 
 	    $('#btn_app_mgr').click(function(){
-                  $('#formApp').submit(function(ev){
+                  $('#formAppMgr').submit(function(ev){
                       $.ajax({
                           type: 'POST',
                           url: exit_url+'/do_approve/'+url.segment(4)+'/mgr',
-                          data: $('#formApp').serialize(),
+                          data: $('#formAppMgr').serialize(),
                           success: function() {
                               setTimeout(function(){
                                   location.reload()},
@@ -95,11 +95,11 @@ $(document).ready(function() {
               });
 
 	    $('#btn_app_koperasi').click(function(){
-                  $('#formApp').submit(function(ev){
+                  $('#formAppKoperasi').submit(function(ev){
                       $.ajax({
                           type: 'POST',
                           url: exit_url+'/do_approve/'+url.segment(4)+'/koperasi',
-                          data: $('#formApp').serialize(),
+                          data: $('#formAppKoperasi').serialize(),
                           success: function() {
                               setTimeout(function(){
                                   location.reload()},
@@ -112,11 +112,11 @@ $(document).ready(function() {
               });
 
 	    $('#btn_app_perpus').click(function(){
-                  $('#formApp').submit(function(ev){
+                  $('#formAppPerpus').submit(function(ev){
                       $.ajax({
                           type: 'POST',
                           url: exit_url+'/do_approve/'+url.segment(4)+'/perpus',
-                          data: $('#formApp').serialize(),
+                          data: $('#formAppPerpus').serialize(),
                           success: function() {
                               setTimeout(function(){
                                   location.reload()},
@@ -129,11 +129,11 @@ $(document).ready(function() {
               });
 
 	    $('#btn_app_hrd').click(function(){
-                  $('#formApp').submit(function(ev){
+                  $('#formAppHrd').submit(function(ev){
                       $.ajax({
                           type: 'POST',
                           url: exit_url+'/do_approve/'+url.segment(4)+'/hrd',
-                          data: $('#formApp').serialize(),
+                          data: $('#formAppHrd').serialize(),
                           success: function() {
                               setTimeout(function(){
                                   location.reload()},
@@ -146,15 +146,15 @@ $(document).ready(function() {
               });
 
 	    $('#btn_app_admin').click(function(){
-                  $('#formApp').submit(function(ev){
+                  $('#formAppAdmin').submit(function(ev){
                       $.ajax({
                           type: 'POST',
-                          url: exit_url+'/do_approve_admin/'+url.segment(4),
-                          data: $('#formApp').serialize(),
+                          url: exit_url+'/do_approve/'+url.segment(4)+'/admin',
+                          data: $('#formAppAdmin').serialize(),
                           success: function() {
                               setTimeout(function(){
                                   location.reload()},
-                                  1000
+                                  500
                               )
                           }
                       });

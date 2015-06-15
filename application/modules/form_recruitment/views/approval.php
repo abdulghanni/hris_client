@@ -372,7 +372,7 @@
             </div>
             <div class="row form-row">
               <div class="col-md-12">
-                <label class="form-label text-left">Note (Ka. Bag) : </label>
+                <label class="form-label text-left">Note (Supervisor) : </label>
               </div>
               <div class="col-md-12">
                 <textarea name="note_lv1" class="custom-txtarea-form" placeholder="Note Supervisor isi disini"><?php echo $row->note_lv1?></textarea>

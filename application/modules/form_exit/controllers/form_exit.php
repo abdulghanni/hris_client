@@ -30,9 +30,9 @@ class Form_exit extends MX_Controller {
         else
         {
             $user_nik = $this->data['sess_id'] = get_nik($this->session->userdata('user_id'));
-            $mgr = $this->data['mgr_ga_nas'] = $this->get_emp_by_pos('PST242');
-            $koperasi = $this->data['koperasi'] = $this->get_emp_by_pos('PST263');
-            $perpus = $this->data['perpustakaan'] = $this->get_emp_by_pos('PST2');
+            $mgr = $this->data['mgr_ga_nas'] = (!empty($this->get_emp_by_pos('PST242')))?$this->get_emp_by_pos('PST242'):'D0001';//D0001
+            $koperasi = $this->data['koperasi'] = $this->get_emp_by_pos('PST263');//p0035
+            $perpus = $this->data['perpustakaan'] = $this->get_emp_by_pos('PST2');//P1463 
             $hrd = $this->data['hrd'] = $this->get_emp_by_pos('PST129');
 
             if(is_admin() || $user_nik == $mgr || $user_nik == $koperasi || $user_nik == $perpus || $user_nik == $hrd){
@@ -279,18 +279,21 @@ class Form_exit extends MX_Controller {
         else
         {
 
-            if(is_admin()){
+            $user_nik = $this->data['sess_id'] = get_nik($this->session->userdata('user_id'));
+            $mgr = $this->data['mgr_ga_nas'] = (!empty($this->get_emp_by_pos('PST242')))?$this->get_emp_by_pos('PST242'):'D0001';
+            $koperasi = $this->data['koperasi'] = $this->get_emp_by_pos('PST263');
+            $perpus = $this->data['perpustakaan'] = $this->get_emp_by_pos('PST2');
+            $hrd = $this->data['hrd'] = $this->get_emp_by_pos('PST129');
+
+            if(is_admin() || $user_nik == $mgr || $user_nik == $koperasi || $user_nik == $perpus || $user_nik == $hrd){
                 $form_exit = $this->data['form_exit'] = $this->form_exit_model->form_exit_admin($id);
             }else{
                 $form_exit = $this->data['form_exit'] = $this->form_exit_model->form_exit($id);
             }
-            
+
+            $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
             $user_id = getAll('users_exit', array('id'=>'where/'.$id, ))->row()->user_id;
             $this->get_user_info($user_id);
-            $this->data['mgr_ga_nas'] = $this->get_emp_by_pos('PST242');
-            $this->data['koperasi'] = $this->get_emp_by_pos('PST263');
-            $this->data['perpustakaan'] = $this->get_emp_by_pos('PST2');
-            $this->data['hrd'] = $this->get_emp_by_pos('PST129');
             
             $this->data['sess_id'] = $this->session->userdata('user_id');
             $this->data['inventaris'] = getAll('users_exit_inventaris', array('user_exit_id'=>'where/'.$id, ))->row();
@@ -311,55 +314,51 @@ class Form_exit extends MX_Controller {
             $user_id = $this->session->userdata('user_id');
             $date_now = date('Y-m-d');
 
-            $data = array(
-            'is_app_'.$type => 1, 
-            'user_app_'.$type => $user_id, 
-            'date_app_'.$type => $date_now,
+            if($type=='admin'){
+                $data = array(
+                'is_app' => 1, 
+                'app_status_id' => $this->input->post('app_status'), 
+                'user_app' => $user_id, 
+                'date_app' => $date_now,
+                'note_app' => $this->input->post('note_app')
+                );
+                $is_app = getValue('is_app', 'users_exit', array('id'=>'where/'.$id));
+                $approval_status = $this->input->post('app_status');
+            }else{
+                $data = array(
+                'is_app_'.$type => 1,
+                'app_status_id_'.$type => $this->input->post('app_status_'.$type), 
+                'user_app_'.$type => $user_id, 
+                'date_app_'.$type => $date_now,
+                'note_'.$type => $this->input->post('note_'.$type)
             );
+                $is_app = getValue('is_app_'.$type, 'users_exit', array('id'=>'where/'.$id));
+                $approval_status = $this->input->post('app_status_'.$type);
+            }
 
            if ($this->form_exit_model->update($id,$data)) {
-               $this->approval_mail($id, $type);
+                if($is_app==0){
+                    $this->approval_mail($id, $type, $approval_status);
+                }else{
+                    $this->update_approval_mail($id, $type, $approval_status);
+                }
                return TRUE;
             }
         }
     }
 
-    function do_approve_admin($id)
-    {
-        if(!$this->ion_auth->logged_in())
-        {
-            redirect('auth/login', 'refresh');
-        }
-        else
-        {
-            $user_id = $this->session->userdata('user_id');
-            $date_now = date('Y-m-d');
-
-            $data = array(
-            'is_app' => 1, 
-            'user_app' => $user_id, 
-            'date_app' => $date_now,
-            'note_app' => $this->input->post('note_app')
-            );
-
-           if ($this->form_exit_model->update($id,$data)) {
-               $this->approval_mail($id, 'admin');
-               return TRUE;
-            }
-        }
-    }
-
-    function approval_mail($id, $type)
+    function approval_mail($id, $type, $approval_status)
     {
         $url = base_url().'form_exit/approval/'.$id;
         $approver = get_name(get_nik($this->session->userdata('user_id')));
         $receiver_id = getAll('users_exit', array('id' => 'where/'.$id))->row('user_id');
+         $approval_status = $this->db->where('id', $approval_status)->get('approval_status')->row('title');
         $data1 = array(
                 'sender_id' => get_nik($this->session->userdata('user_id')),
                 'receiver_id' => get_nik($receiver_id),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Status Pengajuan Rekomendasi Keluar dari '.$type,
-                'email_body' => "Status pengajuan Rekomendasi karyawan Keluar untuk anda oleh ".get_name(get_superior($receiver_id))." disetujui oleh $approver untuk detail silakan <a href=$url>Klik disini</a>",
+                'email_body' => "Status pengajuan Rekomendasi karyawan Keluar untuk anda oleh ".get_name(get_superior($receiver_id))." $approval_status oleh $approver untuk detail silakan <a href=$url>Klik disini</a><br/>".$this->detail_email($id),
                 'is_read' => 0,
             );
         $this->db->insert('email', $data1);
@@ -369,7 +368,34 @@ class Form_exit extends MX_Controller {
                 'receiver_id' => get_superior($receiver_id),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Status Pengajuan Rekomendasi Keluar dari '.$type,
-                'email_body' => "Status pengajuan Rekomendasi karyawan Keluar untuk ".get_name($receiver_id)." disetujui oleh $approver untuk detail silakan <a href=$url>Klik disini</a>",
+                'email_body' => "Status pengajuan Rekomendasi karyawan Keluar untuk ".get_name($receiver_id)." $approval_status oleh $approver untuk detail silakan <a href=$url>Klik disini</a><br/>".$this->detail_email($id),
+                'is_read' => 0,
+            );
+        $this->db->insert('email', $data2);
+    }
+
+    function update_approval_mail($id, $type, $approval_status)
+    {
+        $url = base_url().'form_exit/approval/'.$id;
+        $approver = get_name(get_nik($this->session->userdata('user_id')));
+        $receiver_id = getAll('users_exit', array('id' => 'where/'.$id))->row('user_id');
+        $approval_status = $this->db->where('id', $approval_status)->get('approval_status')->row('title');
+        $data1 = array(
+                'sender_id' => get_nik($this->session->userdata('user_id')),
+                'receiver_id' => get_nik($receiver_id),
+                'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                'subject' => 'Perubahan Status Pengajuan Rekomendasi Keluar dari '.$type,
+                'email_body' => $approver." melakukan perubahan status pengajuan rekomendasi karyawan Keluar untuk anda oleh ".get_name(get_superior($receiver_id))." status pengajuan anda saat ini $approval_status, untuk detail silakan <a href=$url>Klik disini</a><br/>".$this->detail_email($id),
+                'is_read' => 0,
+            );
+        $this->db->insert('email', $data1);
+
+        $data2 = array(
+                'sender_id' => get_nik($this->session->userdata('user_id')),
+                'receiver_id' => get_superior($receiver_id),
+                'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                'subject' => 'Perubahan Status Pengajuan Rekomendasi Keluar dari '.$type,
+                'email_body' => $approver." melakukan perubahan Status pengajuan Rekomendasi karyawan Keluar untuk ".get_name($receiver_id)." status pengajuan anda saat ini $approval_status, untuk detail silakan <a href=$url>Klik disini</a><br/>".$this->detail_email($id),
                 'is_read' => 0,
             );
         $this->db->insert('email', $data2);
@@ -377,24 +403,27 @@ class Form_exit extends MX_Controller {
 
     function detail_email($id)
     {
-        if(is_admin()){
-                $form_exit = $this->data['form_exit'] = $this->form_exit_model->form_exit_admin($id);
-            }else{
-                $form_exit = $this->data['form_exit'] = $this->form_exit_model->form_exit($id);
-            }
-            
-            $user_id = getAll('users_exit', array('id'=>'where/'.$id, ))->row()->user_id;
-            $this->get_user_info($user_id);
-            $this->data['mgr_ga_nas'] = $this->get_emp_by_pos('PST242');
-            $this->data['koperasi'] = $this->get_emp_by_pos('PST263');
-            $this->data['perpustakaan'] = $this->get_emp_by_pos('PST2');
-            $this->data['hrd'] = $this->get_emp_by_pos('PST129');
-            
-            $this->data['sess_id'] = $this->session->userdata('user_id');
-            $this->data['inventaris'] = getAll('users_exit_inventaris', array('user_exit_id'=>'where/'.$id, ))->row();
-            $this->data['rekomendasi'] = getAll('users_exit_rekomendasi', array('user_exit_id'=>'where/'.$id, ))->row();
+        $user_nik = $this->data['sess_id'] = get_nik($this->session->userdata('user_id'));
+        $mgr = $this->data['mgr_ga_nas'] = (!empty($this->get_emp_by_pos('PST242')))?$this->get_emp_by_pos('PST242'):'D0001';
+        $koperasi = $this->data['koperasi'] = $this->get_emp_by_pos('PST263');
+        $perpus = $this->data['perpustakaan'] = $this->get_emp_by_pos('PST2');
+        $hrd = $this->data['hrd'] = $this->get_emp_by_pos('PST129');
 
-            return $this->load->view('form_exit/exit_mail', $this->data, TRUE);
+        if(is_admin() || $user_nik == $mgr || $user_nik == $koperasi || $user_nik == $perpus || $user_nik == $hrd){
+            $form_exit = $this->data['form_exit'] = $this->form_exit_model->form_exit_admin($id);
+        }else{
+            $form_exit = $this->data['form_exit'] = $this->form_exit_model->form_exit($id);
+        }
+
+        $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
+        $user_id = getAll('users_exit', array('id'=>'where/'.$id, ))->row()->user_id;
+        $this->get_user_info($user_id);
+        
+        $this->data['sess_id'] = $this->session->userdata('user_id');
+        $this->data['inventaris'] = getAll('users_exit_inventaris', array('user_exit_id'=>'where/'.$id, ))->row();
+        $this->data['rekomendasi'] = getAll('users_exit_rekomendasi', array('user_exit_id'=>'where/'.$id, ))->row();
+
+        return $this->load->view('form_exit/exit_mail', $this->data, TRUE);
     }
 
     function _get_csrf_nonce()

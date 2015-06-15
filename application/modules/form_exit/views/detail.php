@@ -298,10 +298,10 @@
                             $approved = assets_url('img/approved_stamp.png');
                             $rejected = assets_url('img/rejected_stamp.png');
                             if($row->is_app_mgr == 1){
-                            echo "<img class=approval_img_recruitment src=$approved>"?><br/>
-                            <span class="semi-bold"><?php echo get_name($mgr_ga_nas)?></span><br/>
+                            echo ($row->app_status_id_mgr == 1)? "<img class=approval_img_md src=$approved>":(($row->app_status_id_mgr == 2) ? "<img class=approval_img_md src=$rejected>":'');?><br/>
+                            <span class="semi-bold"><?php echo get_name(!empty($mgr_ga_nas) ? $mgr_ga_nas : 'D0001')?></span><br/>
                             <span class="small"><?php echo dateIndo($row->date_app_mgr)?></span><br/>
-                            <?php }else{ ?>
+                            <?php }else{?>
                             <span class="semi-bold"></span><br/>
                             <span class="small"></span><br/>
                             <?php } ?>
@@ -313,10 +313,10 @@
                         <div class="col-md-3">
                           <p class="wf-approve-sp">
                             <?php if($row->is_app_koperasi == 1){
-                            echo "<img class=approval_img_recruitment src=$approved>"?><br/>
+                            echo ($row->app_status_id_koperasi == 1)? "<img class=approval_img_md src=$approved>":(($row->app_status_id_koperasi == 2) ? "<img class=approval_img_md src=$rejected>":'');?><br/>
                             <span class="semi-bold"><?php echo get_name($koperasi)?></span><br/>
                             <span class="small"><?php echo dateIndo($row->date_app_koperasi)?></span><br/>
-                            <?php }else{ ?>
+                            <?php }else{?>
                             <span class="semi-bold"></span><br/>
                             <span class="small"></span><br/>
                             <?php } ?>
@@ -328,10 +328,10 @@
                         <div class="col-md-3">
                           <p class="wf-approve-sp">
                             <?php if($row->is_app_perpus == 1){
-                            echo "<img class=approval_img_recruitment src=$approved>"?><br/>
+                              echo ($row->app_status_id_perpus == 1)? "<img class=approval_img_md src=$approved>":(($row->app_status_id_perpus == 2) ? "<img class=approval_img_md src=$rejected>":'');?><br/>
                             <span class="semi-bold"><?php echo get_name($perpustakaan)?></span><br/>
                             <span class="small"><?php echo dateIndo($row->date_app_perpus)?></span><br/>
-                            <?php }else{ ?>
+                            <?php }else{?>
                             <span class="semi-bold"></span><br/>
                             <span class="small"></span><br/>
                             <?php } ?>
@@ -343,10 +343,10 @@
                         <div class="col-md-3">
                           <p class="wf-approve-sp">
                             <?php if($row->is_app_hrd == 1){
-                            echo "<img class=approval_img_recruitment src=$approved>"?><br/>
+                            echo ($row->app_status_id_hrd == 1)? "<img class=approval_img_md src=$approved>":(($row->app_status_id_hrd == 2) ? "<img class=approval_img_md src=$rejected>":'');?><br/>
                             <span class="semi-bold"><?php echo get_name($hrd)?></span><br/>
                             <span class="small"><?php echo dateIndo($row->date_app_hrd)?></span><br/>
-                            <?php }else{ ?>
+                            <?php }else{?>
                             <span class="semi-bold"></span><br/>
                             <span class="small"></span><br/>
                             <?php } ?>
@@ -437,18 +437,63 @@
                             </tr>
                           </table>
                         </div>
-
-                        
-                      
                   </div>
+                  <?php if(!empty($row->note_mgr)){?>
+                  <div class="row form-row">
+                    <div class="col-md-12">
+                      <label class="form-label text-left">Catatan Manager Ga Nasional</label>
+                    </div>
+                    <div class="col-md-12">
+                      <textarea  id="text-editor" placeholder="Enter text ..." class="form-control" rows="2" disabled><?php echo $row->note_mgr?></textarea>
+                    </div>
+                  </div>
+                  <?php }?>
+
+
+                  <?php if(!empty($row->note_koperasi)){?>
+                  <div class="row form-row">
+                    <div class="col-md-12">
+                      <label class="form-label text-left">Catatan Sie Koperasi</label>
+                    </div>
+                    <div class="col-md-12">
+                      <textarea  id="text-editor" placeholder="Enter text ..." class="form-control" rows="2" disabled><?php echo $row->note_koperasi?></textarea>
+                    </div>
+                  </div>
+                  <?php }?>
+
+                  <?php if(!empty($row->note_perpus)){?>
+                  <div class="row form-row">
+                    <div class="col-md-12">
+                      <label class="form-label text-left">Catatan Perpustakaan</label>
+                    </div>
+                    <div class="col-md-12">
+                      <textarea  id="text-editor" placeholder="Enter text ..." class="form-control" rows="2" disabled><?php echo $row->note_perpus?></textarea>
+                    </div>
+                  </div>
+                  <?php }?>
+
+                  <?php if(!empty($row->note_hrd)){?>
+                  <div class="row form-row">
+                    <div class="col-md-12">
+                      <label class="form-label text-left">Catatan HRD</label>
+                    </div>
+                    <div class="col-md-12">
+                      <textarea  id="text-editor" placeholder="Enter text ..." class="form-control" rows="2" disabled><?php echo $row->note_hrd?></textarea>
+                    </div>
+                  </div>
+                  <?php }?>
+
+
+                  <?php if(!empty($row->note_app)){?>
                   <div class="row form-row">
                     <div class="col-md-12">
                       <label class="form-label text-left">Catatan Khusus</label>
                     </div>
                     <div class="col-md-12">
-                      <textarea name="note_app" id="text-editor" placeholder="Enter text ..." class="form-control" rows="10" disabled="disabled"><?php echo $row->note_app?></textarea>
+                      <textarea  id="text-editor" placeholder="Enter text ..." class="form-control" rows="2" disabled><?php echo $row->note_app?></textarea>
                     </div>
                   </div>
+                  <?php }?>
                   <div class="form-actions">
                     <div class="col-md-12 text-center">
                       <div class="row wf-cuti">
@@ -468,7 +513,7 @@
                           Mengetahui / Menyetujui,<br/><br/>
                           <p class="wf-approve-sp">
                             <?php if($row->is_app==1){
-                            echo "<img class=approval_img_recruitment src=$approved>"?><br/>
+                              echo ($row->app_status_id == 1)? "<img class=approval_img_md src=$approved>":(($row->app_status_id == 2) ? "<img class=approval_img_md src=$rejected>":'');?><br/>
                             <span class="semi-bold"><?php echo get_name($row->user_app)?></span><br/>
                             <span class="small"><?php echo dateIndo($row->date_app)?><br/>  
                             <span class="semi-bold"></span><br/>
