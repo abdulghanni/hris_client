@@ -89,7 +89,7 @@ class Form_spd_luar_group extends MX_Controller {
             $user_submit = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('user_submit');
             $this->data['receiver'] = $p = explode(",", $receiver);
             $this->data['receiver_submit'] = explode(",", $user_submit);
-
+            $this->data['ci'] = $this;
             //get data from API
             $this->get_user_info($creator);
 
@@ -516,6 +516,7 @@ class Form_spd_luar_group extends MX_Controller {
 
             //get data from API
             $this->get_user_info($creator);
+            $this->data['ci'] = $this;
 
             return $this->load->view('form_spd_luar_group/spd_luar_group_mail', $this->data, TRUE);
         }
@@ -566,6 +567,80 @@ class Form_spd_luar_group extends MX_Controller {
             return $this->load->view('form_spd_luar_group/spd_luar_report_group_mail', $this->data, TRUE);
         }
     }
+
+    function get_biaya_pjd($id, $task_receiver_id)
+    {
+        $spd_id = getAll('users_spd_luar', array('id' => 'where/'.$id));
+        $grade = get_grade($task_receiver_id);
+        $pos_group = get_pos_group($task_receiver_id);
+
+        if($grade == 'G08' && $pos_group == 'AMD')
+        {
+            $biaya_pjd = array(
+                    'grade' => "$grade($pos_group)",
+                    'hotel' => 450000,
+                    'uang_makan' => 200000,
+                    'uang_saku' => 0
+                );
+
+            return $biaya_pjd;
+        }elseif($grade == 'G08' && $pos_group == 'MGR')
+        {
+            $biaya_pjd = array(
+                    'grade' => "$grade($pos_group)",
+                    'hotel' => 325000,
+                    'uang_makan' => 150000,
+                    'uang_saku' => 0,
+                );
+
+            return $biaya_pjd;
+        }elseif($grade == 'G08' && $pos_group == 'KACAB'){
+            $biaya_pjd = array(
+                    'grade' => "$grade($pos_group)",
+                    'hotel' => 400000,
+                    'uang_makan' => 150000,
+                    'uang_saku' => 0,
+                );
+
+            return $biaya_pjd;
+        }elseif($grade == 'G07'){
+            $biaya_pjd = array(
+                    'grade' => "$grade($pos_group)",
+                    'hotel' => 275000,
+                    'uang_makan' => 45000,
+                    'uang_saku' => 45000,
+                );
+
+            return $biaya_pjd;
+        }elseif($grade == 'G06' || $grade == 'G05'){
+            $biaya_pjd = array(
+                    'grade' => "$grade($pos_group)",
+                    'hotel' => 250000,
+                    'uang_makan' => 35000,
+                    'uang_saku' => 40000
+                );
+
+            return $biaya_pjd;
+        }elseif($grade == 'G04' || $grade == 'G03'){
+            $biaya_pjd = array(
+                    'grade' => "$grade($pos_group)",
+                    'hotel' => 200000,
+                    'uang_makan' => 30000,
+                    'uang_saku' => 35000,
+                );
+
+            return $biaya_pjd;
+        }elseif($grade == 'G02' || $grade == 'G01'){
+            $biaya_pjd = array(
+                    'grade' => "$grade($pos_group)",
+                    'hotel' => 200000,
+                    'uang_makan' => 30000,
+                    'uang_saku' => 30000,
+                );
+
+            return $biaya_pjd;
+        }
+    } 
 
 
     public function get_emp_org()
@@ -673,67 +748,18 @@ class Form_spd_luar_group extends MX_Controller {
     
     function pdf($id)
     {
-        $user_id = $this->session->userdata('user_id');
-        if ($id == 0) {
-            $task_id = $this->uri->segment(3);
-        }else{
-            $task_id = $id;
-        }
-
-        $title_spd = $this->db->where('id', $id)->get('users_spd_luar_group')->row('title');
-        $title = $this->data['title'] = 'Form-SPD-Luar(Group)-'.$title_spd;
-
-           
-            $data_result = $this->data['task_detail'] = $this->form_spd_luar_group_model->where('users_spd_luar_group.id',$task_id)->form_spd_luar_group($id)->result();
-            $this->data['td_num_rows'] = $this->form_spd_luar_group_model->where('users_spd_luar_group.id',$task_id)->form_spd_luar_group()->num_rows($id);
-        
-        //get task creator id
-        foreach ($data_result as $dr) {
-            $created_by_id = $dr->task_creator;
-            $receiver_user_id = $dr->task_receiver;
-        }
-
-
-        //get task creator name
-        $query_result = $this->form_spd_luar_group_model->where('users.id',$created_by_id)->get_emp_detail()->result();
-        foreach ($query_result as $qr) {
-            $task_creator = $this->data['task_creator_nm'] = $qr->first_name." ".$qr->last_name;
-        }
-
-        //get Receiver Info From API
+        $data_result = $this->data['task_detail'] = $this->form_spd_luar_group_model->where('users_spd_luar_group.id',$id)->form_spd_luar_group($id)->result();
+        $this->data['td_num_rows'] = $this->form_spd_luar_group_model->where('users_spd_luar_group.id',$id)->form_spd_luar_group()->num_rows($id);
+    
         $receiver = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('task_receiver');
-        $p = explode(",", $receiver);
-
-        $n='';
-        for($i=0;$i<sizeof($p);$i++):
-            $n .= '* '.get_name($p[$i]).'<br/>';
-        endfor;
-
-        $this->data['task_receiver_nm'] = $n;
-        //get tast receiver name
-        $query_result = $this->form_spd_luar_group_model->where('users.id',$receiver_user_id)->get_emp_detail()->result();
-        foreach ($query_result as $qr) {
-            $this->data['task_receiver_nm'] = $qr->first_name." ".$qr->last_name;
-        }
-
-        //get task creator detail
-        $this->data['task_creator'] = $this->form_spd_luar_group_model->where('users.nik',$created_by_id)->get_emp_detail()->result();
-        $this->data['tc_num_rows'] = $this->form_spd_luar_group_model->where('users.nik',$created_by_id)->get_emp_detail()->num_rows();
-        $this->data['task_receiver'] = $this->form_spd_luar_group_model->where('users.id',$receiver_user_id)->get_emp_detail()->result();
-        $this->data['tr_num_rows'] = $this->form_spd_luar_group_model->where('users.id',$receiver_user_id)->get_emp_detail()->num_rows();
+        $creator = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('task_creator');
+        $user_submit = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('user_submit');
+        $this->data['receiver'] = $p = explode(",", $receiver);
+        $this->data['receiver_submit'] = explode(",", $user_submit);
 
         //get data from API
-        $this->get_user_info($created_by_id);
-        //get user org_id
-        $data_result = $this->form_spd_luar_group_model->where('users.id',$user_id)->get_org_id()->result();
-        foreach ($data_result as $dr) {
-            $org_id = $dr->organization_id;
-        }
-
-        // render employee
-        $this->data['employee_list'] = $this->form_spd_luar_group_model->where('users_employement.organization_id',$org_id)->render_emp()->result();
-        $this->data['el_num_rows'] = $this->form_spd_luar_group_model->where('users_employement.organization_id',$org_id)->render_emp()->num_rows();
-        
+        $this->get_user_info($creator);
+        $this->data['ci'] = $this;
 
         $this->load->library('mpdf60/mpdf');
         $html = $this->load->view('spd_luar_group_pdf', $this->data, true); 

@@ -27,7 +27,7 @@ class form_training_model extends CI_Model
         $this->db->join('users', 'users.id = training.user_id', 'LEFT');
         $this->db->join('penyelenggara', 'training.penyelenggara_id = penyelenggara.id', 'LEFT');
         $this->db->join('pembiayaan', 'training.pembiayaan_id = pembiayaan.id', 'LEFT');
-        $this->db->join('training_type', 'training_group.training_type_id = training_type.id', 'LEFT');
+        $this->db->join('training_type', 'training.training_type_id = training_type.id', 'LEFT');
         $this->db->join('approval_status as status_lv1', 'training.approval_status_id_lv1 = status_lv1.id', 'left');
         $this->db->join('approval_status as status_lv2', 'training.approval_status_id_lv2 = status_lv2.id', 'left');
                                                                                                                                                                                                                                                                                                                                                                                         

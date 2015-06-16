@@ -96,7 +96,9 @@ class Person extends MX_Controller {
         $this->data['email'] = (!empty($user->email)) ? $user->email : '';
         $this->data['previous_email'] = (!empty($user->previous_email)) ? $user->previous_email : '';
         $this->data['bb_pin'] = (!empty($user->bb_pin)) ? $user->bb_pin : ''; 
-        $this->data['photo'] = (!empty($user->photo)) ? $user->photo : ''; 
+        $this->data['photo'] = (!empty($user->photo)) ? $user->photo : '';
+        $this->data['s_kk'] = $this->form_validation->set_value('kk', $user->scan_kk);
+        $this->data['s_akta'] = $this->form_validation->set_value('akta', $user->scan_akta); 
         $user_folder = $user->id.$user->first_name;
         $this->data['u_folder'] = $user_folder;
 		
@@ -260,6 +262,7 @@ class Person extends MX_Controller {
         $this->data['bpjs'] = (!empty($user_emp->aviva)) ? $user_emp->aviva : (!empty($user_info['JAMSOSTEK'])) ? $user_info['JAMSOSTEK'] : '-';
         $this->data['ktp'] = (!empty($user_emp->aviva)) ? $user_emp->aviva : (!empty($user_info['KTP'])) ? $user_info['KTP'] : '-';
         $this->data['ktp_valid_date'] = (!empty($user_emp->aviva)) ? $user_emp->aviva : (!empty($user_info['KTPVALIDDATE'])) ? $user_info['KTPVALIDDATE'] : '-';
+        $this->data['npwp'] = (!empty($user_emp->aviva)) ? $user_emp->aviva : (!empty($user_info['NPWP'])) ? $user_info['NPWP'] : '-';
         $this->data['tax'] = (!empty($user_emp->aviva)) ? $user_emp->aviva : (!empty($user_info['TAX'])) ? $user_info['TAX'] : '-';
 		$this->data['seniority_date'] = (!empty($user_emp->seniority_date)) ? $user_emp->seniority_date : (!empty($user_info['SENIORITYDATE'])) ? $user_info['SENIORITYDATE'] : '-';
         $this->data['position'] = (!empty($user_emp->position)) ? $user_emp->position : (!empty($user_info['POSITION'])) ? $user_info['POSITION'] : '-';
@@ -409,10 +412,12 @@ class Person extends MX_Controller {
                 $this->template->add_js('bootstrap-datepicker.js');
                 $this->template->add_js('jquery.animateNumbers.js');
                 $this->template->add_js('jqueryblockui.js');
+                $this->template->add_js('jquery.prettyPhoto.js');
 
                 $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                 $this->template->add_css('plugins/select2/select2.css');
                 $this->template->add_css('datepicker.css');
+                $this->template->add_css('prettyPhoto.css');
             }
 
             if ( ! empty($data['title']))

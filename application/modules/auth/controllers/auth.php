@@ -809,7 +809,6 @@ class Auth extends MX_Controller {
                 show_error($this->lang->line('error_csrf'));
             }
             // Config for image upload
-
             $user_folder = $user->id.$user->first_name;
 			if(!is_dir('./'.'uploads')){
             mkdir('./'.'uploads', 0777);
@@ -894,7 +893,6 @@ class Auth extends MX_Controller {
                             'phone'      => $this->input->post('phone'),
                             'previous_email'      => $this->input->post('previous_email'),
                             'bb_pin'      => $this->input->post('bb_pin'),
-                            'scan_kk'   =>$this->input->post('kk'),
                             'superior_id' => $this->input->post('superior_id'),
                             );
 
@@ -909,7 +907,6 @@ class Auth extends MX_Controller {
                             'previous_email'      => $this->input->post('previous_email'),
                             'bb_pin'      => $this->input->post('bb_pin'),
                             'photo'     =>$image_name,
-                            'scan_kk'   =>$this->input->post('kk'),
 							'superior_id' => $this->input->post('superior_id'),
                          );
             }
@@ -976,6 +973,20 @@ class Auth extends MX_Controller {
             'value' => $this->form_validation->set_value('photo', $user->photo),
         );
 
+        $this->data['kk'] = array(
+            'name'  => 'kk',
+            'id'    => 'kk',
+            'class'    => 'input-file-control',
+            'value' => $this->form_validation->set_value('kk', $user->scan_kk),
+        );
+
+        $this->data['akta'] = array(
+            'name'  => 'akta',
+            'id'    => 'akta',
+            'class'    => 'input-file-control',
+            'value' => $this->form_validation->set_value('akta', $user->scan_akta),
+        );
+
         $this->data['nik'] = array(
             'name'  => 'nik',
             'id'    => 'nik',
@@ -983,8 +994,6 @@ class Auth extends MX_Controller {
             'disabled'  => 'disabled',
             'value' => $this->form_validation->set_value('nik', $user->nik),
         );
-
-        $this->data['kk'] = $user->scan_kk;
 
         $this->data['bod'] = array(
             'name'  => 'bod',
@@ -1071,6 +1080,8 @@ class Auth extends MX_Controller {
 
         $this->data['marital_id'] = $this->form_validation->set_value('email', $user->marital_id);
         $this->data['s_photo'] = $this->form_validation->set_value('photo', $user->photo);
+        $this->data['s_kk'] = $this->form_validation->set_value('kk', $user->scan_kk);
+        $this->data['s_akta'] = $this->form_validation->set_value('akta', $user->scan_akta);
         $user_folder = $user->id.$user->first_name;
         $this->data['u_folder'] = $user_folder;
 
@@ -1080,6 +1091,44 @@ class Auth extends MX_Controller {
 
 
         $this->_render_page('auth/edit_user', $this->data);
+    }
+
+    function do_upload_file($id, $type)
+    {
+        $user = $this->ion_auth->user($id)->row();
+        $user_folder = $user->id.$user->first_name;
+        if(!is_dir('./'.'uploads')){
+            mkdir('./'.'uploads', 0777);
+            }
+            if(!is_dir('./uploads/'.$user_folder)){
+            mkdir('./uploads/'.$user_folder, 0777);
+            }
+            if(!is_dir('./uploads/'.$user_folder.'/'.$type)){
+            mkdir('./uploads/'.$user_folder.'/'.$type, 0777);
+            }
+
+             $config =  array(
+                  'upload_path'     => "./uploads/".$user_folder.'/'.$type.'/',
+                  'allowed_types'   => '*',
+                  'overwrite'       => TRUE,
+                );    
+                $this->load->library('upload', $config);
+                if(!$this->upload->do_upload($type))
+                {
+                    $data = array(
+                    'scan_'.$type => "$user->scan_$type",
+                    );
+
+                }else{
+                $upload_data = $this->upload->data();
+                $image_name = $upload_data['file_name'];
+                $data = array(
+                                'scan_'.$type  =>$image_name,
+                             );
+                }
+
+            $this->ion_auth->update($user->id, $data);
+            redirect('auth/edit_user/'.$user->id, 'refresh');     
     }
 
     function detail($id, $sort_by = "id", $sort_order = "asc", $offset = 0)
@@ -3141,8 +3190,11 @@ class Auth extends MX_Controller {
                     $this->template->add_js('breakpoints.js');
                     $this->template->add_js('pace.min.js');
                     $this->template->add_js('bootstrap-datepicker.js');
+                    $this->template->add_js('jquery.validate.min.js');
+                    $this->template->add_js('additional-methods.min.js');
                     $this->template->add_js('edit_user.js');
                     $this->template->add_js('core.js');
+                    $this->template->add_js('jquery.prettyPhoto.js');
                     
                     $this->template->add_js('select2.min.js');
                     
@@ -3150,6 +3202,7 @@ class Auth extends MX_Controller {
                     $this->template->add_css('plugins/select2/select2.css');
                     $this->template->add_css('pace-theme-flash.css');
                     $this->template->add_css('datepicker.css');
+                    $this->template->add_css('prettyPhoto.css');
                 }
                 elseif(in_array($view, array('auth/detail',
                                              'auth/detail_course',

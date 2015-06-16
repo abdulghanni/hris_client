@@ -41,16 +41,15 @@
   <p align="center" class="style6">Form Surat Tugas / Ijin </p>
 </div>
 <?php
-	if ($tc_num_rows > 0) {
-	foreach ($task_creator as $tc) : 
-?>
-<table width="988" height="128" border="0" style="padding-left:30px;" class="style3">
+if ($td_num_rows > 0) {
+  foreach ($task_detail as $td) : ?>
+<table width="1200" height="128" border="0" class="style3">
 <tr class="style4"><td>Yang bertanda tangan dibawah ini : </td></tr>
 <tr><td height="30"></td></tr>
   <tr>
     <td width="275" height="40"><span class="style3">Nama</span></td>
     <td width="10" height="40"><div align="center">:</div></td>
-    <td width="440" height="40"><?php echo $tc->user_name ?></td>
+    <td width="440" height="40"><?php echo get_name($td->task_creator) ?></td>
   </tr>
   <tr>
     <td height="40"><span class="style3">Bagian / Dept </span></td>
@@ -65,22 +64,53 @@
 <?php endforeach; 
 }
 ?> 
+</table>
 
+<table width="1200" height="128" border="0" class="style3">
 <tr><td height="40"></td></tr>
-<tr class="style4"><td>Memberi tugas / ijin kepada : </td></tr>
+<tr><td>Memberi tugas / ijin kepada : </td></tr>
 <tr><td height="30"></td></tr>
-  <tr>
-    <td width="275" height="10"><span class="style3">Nama</span></td>
-    <td width="10" height="10"><div align="center">:</div></td>
-    <td width="440" height="10"></td>
-  </tr>
-  <tr>
-    <td width="275" height="80"><span class="style3"></span></td>
-    <td width="10" height="80"><div align="center"></div></td>
-    <td width="440" height="80"><?php echo $task_receiver_nm ?></td>
-  </tr>
+</table>
+
+<table width="1200" height="128" border="1" class="style3">
+  <thead>
+    <tr>
+      <th>Nama</th>
+      <th>Dept/Bagian</th>
+      <th>Jabatan</th>
+      <th>Golongan</th>
+      <th>Hotel</th>
+      <th>Uang Makan</th>
+      <th>Uang Saku</th>
+      <th>Submit</th>
+    </tr>
+  </thead>
+  <tbody>
+    <?php for($i=0;$i<sizeof($receiver);$i++):?>
+    <tr>
+    <td><?php echo get_name($receiver[$i])?></td>
+      <td><?php echo get_user_organization($receiver[$i])?></td>
+      <td><?php echo get_user_position($receiver[$i])?></td>
+      <td><?php echo $ci->get_biaya_pjd($td->id, $receiver[$i])['grade']?></td>
+      <td><?php echo $ci->get_biaya_pjd($td->id, $receiver[$i])['hotel']?></td>
+      <td><?php echo $ci->get_biaya_pjd($td->id, $receiver[$i])['uang_makan']?></td>
+      <td><?php echo $ci->get_biaya_pjd($td->id, $receiver[$i])['uang_saku']?></td>
+      <td class="text-center"><?php echo in_array($receiver[$i], $receiver_submit)?"Ya":"-"?></td>
+    </tr>
+    <?php endfor?>
+  </tbody>
+</table>
+<br/>
+<table width="1200" height="128" border="0" style="" class="style3">
   <?php if ($td_num_rows > 0) {
-      foreach ($task_detail as $td) { ?>
+      foreach ($task_detail as $td) { 
+
+        $a = strtotime($td->date_spd_end);
+        $b = strtotime($td->date_spd_start);
+
+        $j = $a - $b;
+        $jml_pjd = floor($j/(60*60*24)+1);
+        ?>
   <tr>
     <td height="40"><span class="style3">Melakukan tugas / ijin ke </span></td>
     <td height="40"><div align="center">:</div></td>
@@ -92,17 +122,27 @@
     <td height="40"><?php echo $td->title; ?></td>
   </tr>
   <tr>
-    <td height="40"><span class="style3">Tanggal</span></td>
+    <td height="40"><span class="style3">Kota Tujuan</span></td>
     <td height="40"><div align="center">:</div></td>
-    <td height="40"><?php $task_date = dateIndo($td->date_spd) ?><?php echo $task_date; ?></td>
+    <td height="40"><?php echo $td->city_to; ?></td>
   </tr>
   <tr>
-    <td height="40"><span class="style3">Waktu</span></td>
+    <td height="40"><span class="style3">Dari Kota</span></td>
     <td height="40"><div align="center">:</div></td>
-    <td height="40"><?php echo date('H:i:s',strtotime($td->start_time)) ?> s/d <?php echo date('H:i:s',strtotime($td->end_time)) ?></td>
+    <td height="40"><?php echo $td->city_from; ?></td>
+  </tr>
+  <tr>
+    <td height="40"><span class="style3">Kendaraan</span></td>
+    <td height="40"><div align="center">:</div></td>
+    <td height="40"><?php echo $td->transportation_nm; ?></td>
+  </tr>
+  <tr>
+    <td height="40"><span class="style3">Tanggal</span></td>
+    <td height="40"><div align="center">:</div></td>
+    <td height="40"><?php echo dateIndo($td->date_spd_start) ?> s/d <?php echo dateIndo($td->date_spd_end) ?></td>
   </tr>
 </table>
-<p>&nbsp;</p>
+
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 
@@ -116,7 +156,13 @@
 <p class="">...............................</p>
 <?php }else{ ?>
 <p class="wf-submit">
-<span class="semi-bold"><?php echo get_name($td->task_receiver) ?></span><br/>
+<span class="semi-bold">
+<?php
+  for($i=0;$i<sizeof($receiver_submit);$i++):
+    echo get_name($receiver_submit[$i]).',';
+  endfor;
+?>
+</span><br/>
 <span class="small"><?php echo dateIndo($td->date_submit) ?></span><br/>
 </p>
 <?php } ?>

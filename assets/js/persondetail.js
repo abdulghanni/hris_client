@@ -146,4 +146,7 @@ $(document).ready(function() {
 	      	$('#ikatandinasdetail-' + iditemikatandinas).toggle();
 	    });
 	});
+
+	$("a[rel^='prettyPhoto']").prettyPhoto({social_tools:false});
+	
 });

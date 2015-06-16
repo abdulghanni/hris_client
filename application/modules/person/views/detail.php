@@ -199,10 +199,19 @@
 
 				                    <div class="row form-row">
 				                      <div class="col-md-3">
-				                        Ktp Valid Date
+				                        KTP Valid Date
 				                      </div>
 				                      <div class="col-md-9">
 				                      	<input type="text" class="form-control" value="<?php echo dateIndo($ktp_valid_date)?>" disabled="disabled">
+				                      </div>
+				                    </div>
+
+				                    <div class="row form-row">
+				                      <div class="col-md-3">
+				                        <?php echo 'NPWP';?>
+				                      </div>
+				                      <div class="col-md-9">
+				                      	<input type="text" class="form-control" value="<?php echo $npwp?>" disabled="disabled">
 				                      </div>
 				                    </div>
 									
@@ -214,6 +223,32 @@
 				                      	<input type="text" class="form-control" value="<?php echo $tax?>" disabled="disabled">
 				                      </div>
 				                    </div>
+
+				                    <div class="row form-row">
+				                      <div class="col-md-3">
+				                        <?php echo 'Scan Kartu Keluarga';?>
+				                      </div>
+				                      <div class="col-md-3">
+				                      	<?php if($s_kk && file_exists('./uploads/'.$u_folder.'/kk/'.$s_kk)) {?>
+                                        <a href="<?php echo base_url()?>uploads/<?php echo $u_folder.'/kk/'.$s_kk?>" rel="prettyPhoto"><img alt="" height="80" width="80" src="<?php echo base_url()?>uploads/<?php echo $u_folder.'/kk/'.$s_kk?>" /></a>
+                                        <?php }else{ ?>
+                                        <img alt="" src="<?php echo base_url()?>assets/img/no-file.png" height="80" width="80">
+                                        <?php } ?>
+				                      </div>
+
+				                      <div class="col-md-3">
+				                        <?php echo 'Scan Akta Kelahiran';?>
+				                      </div>
+				                      <div class="col-md-3">
+				                      	<?php if($s_akta && file_exists('./uploads/'.$u_folder.'/akta/'.$s_akta)) {?>
+                                        <a href="<?php echo base_url()?>uploads/<?php echo $u_folder.'/akta/'.$s_akta?>" rel="prettyPhoto"><img alt="" height="80" width="80" src="<?php echo base_url()?>uploads/<?php echo $u_folder.'/akta/'.$s_akta?>"></a>
+                                        <?php }else{ ?>
+                                        <img alt="" src="<?php echo base_url()?>assets/img/no-file.png" height="80" width="80">
+                                        <?php } ?>
+				                      </div>
+
+				                    </div>
+
 				                </div>
 				                
 

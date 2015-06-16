@@ -133,35 +133,35 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <!-- <div class="input-with-icon right"> -->
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <!-- input foto -->
-                                                    <?php echo 'Scan KK';?>
-                                                    <input type="file" name="kk" value="<?php echo 'tes'?>" id="kk" class="input-file-control"  /> 
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <?php echo lang('register_nik_label', 'nik');?>
-                                                    <?php echo form_upload('tes');?>                              
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
+                                    <!-- <div class="input-with-icon right"> -->
+                                        <div class="row text-center">
                                             <div class="col-md-6">
-                                                <?php if($s_photo && file_exists('./uploads/'.$u_folder.'/'.$s_photo)) {?>
-                                                <img alt="" src="<?php echo base_url()?>uploads/<?php echo $u_folder.'/80x80/'.$s_photo?>">
-                                                <?php }else{ ?>
-                                                <img alt="" src="<?php echo base_url()?>assets/img/no-image.png" class="img-responsive">
-                                                <?php } ?>
+                                                <!-- input foto -->
+                                                <?php echo 'Scan Kartu Keluarga';?><br/>
+                                                <div class='btn' title='Upload KK' data-toggle="modal" data-target="#uploadkkModal"><i class="icon-upload"> Upload</i></div><br/>
                                             </div>
                                             <div class="col-md-6">
-                                                <?php if($s_photo && file_exists('./uploads/'.$u_folder.'/'.$s_photo)) {?>
-                                                <img alt="" src="<?php echo base_url()?>uploads/<?php echo $u_folder.'/80x80/'.$s_photo?>">
+                                                <?php echo 'Scan Akta Kelahiran';?><br/>
+                                                <div class='btn' title='Upload Akta' data-toggle="modal" data-target="#uploadaktaModal"><i class="icon-upload"> Upload</i></div><br/>                           
+                                            </div>
+                                        </div>
+                                        <br/>
+                                        <div class="row">
+                                            <div class="col-md-6 text-center">
+                                                <?php if($s_kk && file_exists('./uploads/'.$u_folder.'/kk/'.$s_kk)) {?>
+                                                <a href="<?php echo base_url()?>uploads/<?php echo $u_folder.'/kk/'.$s_kk?>" rel="prettyPhoto"><img alt="" height="80" width="80" src="<?php echo base_url()?>uploads/<?php echo $u_folder.'/kk/'.$s_kk?>" /></a>
                                                 <?php }else{ ?>
-                                                <img alt="" src="<?php echo base_url()?>assets/img/no-image.png" class="img-responsive">
+                                                <img alt="" src="<?php echo base_url()?>assets/img/no-file.png" height="80" width="80">
                                                 <?php } ?>
                                             </div>
+                                            <div class="col-md-6 text-center">
+                                                <?php if($s_akta && file_exists('./uploads/'.$u_folder.'/akta/'.$s_akta)) {?>
+                                                <a href="<?php echo base_url()?>uploads/<?php echo $u_folder.'/akta/'.$s_akta?>" rel="prettyPhoto"><img alt="" height="80" width="80" src="<?php echo base_url()?>uploads/<?php echo $u_folder.'/akta/'.$s_akta?>"></a>
+                                                <?php }else{ ?>
+                                                <img alt="" src="<?php echo base_url()?>assets/img/no-file.png" height="80" width="80">
+                                                <?php } ?>
                                             </div>
+                                        </div>
                                     </div>
 									
                                 </div>
@@ -259,3 +259,78 @@
     </div>
     <!-- END PAGE -->
 </div>
+
+<!-- Upload KK Modal -->
+<div class="modal fade" id="uploadkkModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" id="modaldialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"><?php echo 'Upload Scan Kartu Keluarga'?></h4>
+      </div>
+      <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
+      <div class="modal-body">
+        <?php echo form_open_multipart('auth/do_upload_file/'.$user->id.'/kk', array('id'=>'formkk'))?>
+            <div class="row form-row">
+              <div class="col-md-12">
+                <label class="form-label text-left">Scan Kartu Keluarga : </label>
+              </div>
+              <div class="col-md-12">
+              <?php echo form_upload($kk);?>
+              </div>
+              <div class="col-md-12">
+               <?php if($s_kk && file_exists('./uploads/'.$u_folder.'/kk/'.$s_kk)) {?>
+                <img alt="" height="80" width="80" src="<?php echo base_url()?>uploads/<?php echo $u_folder.'/kk/'.$s_kk?>">
+                <?php }else{ ?>
+                <img alt="" src="<?php echo base_url()?>assets/img/no-file.png" class="img-responsive">
+                <?php } ?>
+              </div>
+            </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="icon-remove"></i>&nbsp;<?php echo lang('close_button')?></button> 
+        <button type="submit" class="btn btn-primary lnkBlkWhtArw" name="btn_add" id="btnRetPass" style="margin-top: 3px;"><i class="icon-ok-sign"></i>&nbsp;<?php echo 'Upload'?></button> 
+      </div>
+        <?php echo form_close()?>
+    </div>
+  </div>
+</div>
+<!--end  modal-->
+
+<!-- Upload akta Modal -->
+<div class="modal fade" id="uploadaktaModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" id="modaldialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"><?php echo 'Upload Scan Akta Kelahiran'?></h4>
+      </div>
+      <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
+      <div class="modal-body">
+        <?php echo form_open_multipart('auth/do_upload_file/'.$user->id.'/akta', array('id'=>'formakta'))?>
+            <div class="row form-row">
+              <div class="col-md-12">
+                <label class="form-label text-left">Scan Akta Kelahiran : </label>
+              </div>
+              <div class="col-md-12">
+              <?php echo form_upload($akta);?>
+              </div>
+              <div class="col-md-12">
+               <?php if($s_akta && file_exists('./uploads/'.$u_folder.'/akta/'.$s_akta)) {?>
+                <img alt="" height="80" width="80" src="<?php echo base_url()?>uploads/<?php echo $u_folder.'/akta/'.$s_akta?>">
+                <?php }else{ ?>
+                <img alt="" src="<?php echo base_url()?>assets/img/no-file.png" class="img-responsive">
+                <?php } ?>
+              </div>
+            </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="icon-remove"></i>&nbsp;<?php echo lang('close_button')?></button> 
+        <button type="submit" class="btn btn-primary lnkBlkWhtArw" name="btn_add" id="btnRetPass" style="margin-top: 3px;"><i class="icon-ok-sign"></i>&nbsp;<?php echo 'Upload'?></button> 
+      </div>
+        <?php echo form_close()?>
+    </div>
+  </div>
+</div>
+<!--end  modal-->
+

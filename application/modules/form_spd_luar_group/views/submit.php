@@ -55,32 +55,6 @@
                     <h4>Memberi tugas / Ijin Kepada</h4>
                     
                     <div class="row form-row">
-                      <div class="col-md-12">
-                        <!--<textarea id="text-editor" placeholder="" class="form-control" rows="3"  disabled="disabled"><?php echo $task_receiver_nm?></textarea>-->
-                        <table class="table table-bordered">
-                            <thead>
-                              <tr>
-                                <th>Nama</th>
-                                <th>Dept/Bagian</th>
-                                <th>Jabatan</th>
-                                <th>Submit</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                            <?php for($i=0;$i<sizeof($receiver);$i++):?>
-                              <tr>
-                                <td><?php echo get_name($receiver[$i])?></td>
-                                <td><?php echo get_user_organization($receiver[$i])?></td>
-                                <td><?php echo get_user_position($receiver[$i])?></td>
-                                <td class="text-center"><?php echo in_array($receiver[$i], $receiver_submit)?"<i class='icon-ok-sign' title = 'Submitted'></i>":"<i class='icon-minus' title = 'Pending'></i>"?></td>
-                              </tr>
-                            <?php endfor?>
-                            </tbody>
-                          </table>
-                      </div>
-                    </div>
-                    
-                    <div class="row form-row">
                       <div class="col-md-3">
                         <label class="form-label text-left">Tujuan</label>
                       </div>
@@ -137,6 +111,37 @@
                         </div>
                       </div>
                   </div>
+
+                  &nbsp;<hr/>
+                  <h5 class="text-center"><span class="semi-bold">Ketentuan Biaya Perjalanan Dinas</span></h5>
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th>Nama</th>
+                        <th>Dept/Bagian</th>
+                        <th>Jabatan</th>
+                        <th>Golongan</th>
+                        <th>Hotel</th>
+                        <th>Uang Makan</th>
+                        <th>Uang Saku</th>
+                        <th>Submit</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    <?php for($i=0;$i<sizeof($receiver);$i++):?>
+                      <tr>
+                      <td><?php echo get_name($receiver[$i])?></td>
+                        <td><?php echo get_user_organization($receiver[$i])?></td>
+                        <td><?php echo get_user_position($receiver[$i])?></td>
+                        <td><?php echo $ci->get_biaya_pjd($td->id, $receiver[$i])['grade']?></td>
+                        <td><?php echo $ci->get_biaya_pjd($td->id, $receiver[$i])['hotel']?></td>
+                        <td><?php echo $ci->get_biaya_pjd($td->id, $receiver[$i])['uang_makan']?></td>
+                        <td><?php echo $ci->get_biaya_pjd($td->id, $receiver[$i])['uang_saku']?></td>
+                        <td class="text-center"><?php echo in_array($receiver[$i], $receiver_submit)?"<i class='icon-ok-sign' title = 'Submitted'></i>":"<i class='icon-minus' title = 'Pending'></i>"?></td>
+                      </tr>
+                      <?php endfor?>
+                    </tbody>
+                  </table>
                 </div>
               </div>
                 <div class="form-actions text-center">
