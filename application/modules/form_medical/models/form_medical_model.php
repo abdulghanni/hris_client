@@ -296,6 +296,12 @@ class Form_medical_model extends CI_Model
         else
         {
             $sess_id = $this->session->userdata('user_id');
+            
+            if(!empty(is_have_subordinate(get_nik($sess_id)))){
+            $sub_id = get_subordinate($sess_id);
+            }else{
+                $sub_id = '';
+            }
             $is_admin = is_admin();
 
             //default selects
@@ -308,7 +314,7 @@ class Form_medical_model extends CI_Model
 
             //$this->db->where('users_medical.is_deleted', 0);
             if($is_admin!=1){
-                $this->db->where("(users_medical.user_id= $sess_id)",null, false);
+                $this->db->where("(users_medical.user_id= $sess_id $sub_id)",null, false);
             }
 
             $this->db->order_by('users_medical.id', 'desc');
