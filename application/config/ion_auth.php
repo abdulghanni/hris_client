@@ -70,6 +70,7 @@ $config['tables']['users_spd_luar_report_group']  = 'users_spd_luar_report_group
 $config['tables']['transportation']  = 'transportation';
 $config['tables']['city']  = 'city';
 $config['tables']['recruitment']  = 'users_recruitment';
+$config['tables']['users_medical']  = 'users_medical';
 
 /*
  | Users table column and Group table column you want to join WITH.
@@ -123,7 +124,21 @@ $config['salt_prefix']    = '$2y$';
 $config['site_title']                 = "web-HRIS";       // Site Title, example.com
 $config['admin_email']                = "andi@komunigrafik.com"; // Admin Email, admin@example.com
 $config['default_group']              = 'members';           // Default group, use name
-$config['admin_group']                = 'admin';             // Default administrators group, use name
+$config['admin_group']                = array(
+    'admin' => 'admin',
+    'Admin IT' => 'Admin IT',
+    'Admin HRD' => 'Admin HRD',
+    'Admin Logistik' => 'Admin Logistik',
+    'Admin Koperasi' => 'Admin Koperasi',
+    'Admin Perpustakaan' => 'Admin Perpustakaan',
+);             // Default administrators group, use name
+$config['admin_bagian']               = array(
+    'admin HRD' => 'Admin HRD',
+    'Admin IT' => 'Admin IT',
+    'Admin Logistik' => 'Admin Logistik',
+    'Admin Koperasi' => 'Admin Koperasi',
+    'Admin Perpustakaan' => 'Admin Perpustakaan',
+);             // Default administrators group, use name
 $config['identity']                   = 'email';             // A database column which is used to login with
 $config['min_password_length']        = 8;                   // Minimum Required Length of Password
 $config['max_password_length']        = 20;                  // Maximum Allowed Length of Password

@@ -455,6 +455,15 @@ class Ion_auth
         return $this->in_group($admin_group, $id);
     }
 
+    public function is_admin_bagian($id=false)
+    {
+        $this->ion_auth_model->trigger_events('is_admin_bagian');
+
+        $admin_group = $this->config->item('admin_bagian', 'ion_auth');
+
+        return $this->in_group($admin_group, $id);
+    }
+
     /**
      * in_group
      *

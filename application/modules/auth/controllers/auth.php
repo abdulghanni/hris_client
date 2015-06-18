@@ -804,10 +804,10 @@ class Auth extends MX_Controller {
        if (isset($_POST) && !empty($_POST))
         {
             // do we have a valid request?
-            if ($this->_valid_csrf_nonce() === FALSE || $id != $this->input->post('id'))
+            /*if ($this->_valid_csrf_nonce() === FALSE || $id != $this->input->post('id'))
             {
                 show_error($this->lang->line('error_csrf'));
-            }
+            }*/
             // Config for image upload
             $user_folder = $user->id.$user->first_name;
 			if(!is_dir('./'.'uploads')){
@@ -999,6 +999,7 @@ class Auth extends MX_Controller {
             'name'  => 'bod',
             'id'    => 'bod',
             'type'  => 'text',
+            'required'  => 'required',
             'value' => $this->form_validation->set_value('bod', $user->bod),
         );
 
@@ -1006,12 +1007,14 @@ class Auth extends MX_Controller {
             'name'  => 'first_name',
             'id'    => 'first_name',
             'type'  => 'text',
+            'required'  => 'required',
             'value' => $this->form_validation->set_value('first_name', $user->first_name),
         );
         $this->data['last_name'] = array(
             'name'  => 'last_name',
             'id'    => 'last_name',
             'type'  => 'text',
+            'required'  => 'required',
             'value' => $this->form_validation->set_value('last_name', $user->last_name),
         );
         $this->data['company'] = array(

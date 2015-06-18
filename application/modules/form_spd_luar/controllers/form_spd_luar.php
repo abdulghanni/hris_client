@@ -711,7 +711,6 @@ class Form_spd_luar extends MX_Controller {
     public function get_tr($id)
     {
         $url = get_api_key().'users/org/EMPLID/'.$id.'/format/json';
-        //print_r($url);
             $headers = get_headers($url);
             $response = substr($headers[0], 9, 3);
             if ($response != "404") {

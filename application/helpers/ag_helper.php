@@ -609,6 +609,30 @@
 		}
 	}
 
+	if(!function_exists('get_user_same_org'))
+	{
+		function get_user_same_org($id)
+	    {
+	    	$result = '';
+	        $url = get_api_key().'users/org/EMPLID/'.$id.'/format/json';
+	            $headers = get_headers($url);
+	            $response = substr($headers[0], 9, 3);
+	            if ($response != "404") {
+	                $get_task_receiver = file_get_contents($url);
+	                $task_receiver = json_decode($get_task_receiver, true);
+	                //return print_r($task_receiver);
+	                 foreach ($task_receiver as $row)
+	                    {
+	                        $result.=$row['ID'].' ';
+	                    }
+	            } else {
+	               $result .= '';
+	            }
+
+	        return explode(' ' ,$result);
+	    }
+	}
+
 	if(!function_exists('get_sisa_cuti'))
 	{
 		function get_sisa_cuti($user_id)
