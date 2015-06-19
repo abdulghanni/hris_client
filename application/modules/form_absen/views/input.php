@@ -102,6 +102,21 @@
                         <input name="alasan" id="alasan" type="text"  class="form-control" placeholder="Alasan" value="" required>
                       </div>
                     </div>
+                    <?php if(is_admin()){?>
+                    <div class="row form-row">
+                      <div class="col-md-3">
+                        <label class="form-label text-right">Izin Potong Cuti</label>
+                      </div>
+                      <div class="col-md-9">
+                        <div class="radio">
+                          <input id="potong_cuti_1" type="radio" name="potong_cuti" value="1">
+                          <label for="potong_cuti_1">Ya</label>
+                          <input id="potong_cuti_0" type="radio" name="potong_cuti" value="0" checked>
+                          <label for="potong_cuti_0">Tidak</label>
+                        </div>
+                      </div>
+                    </div>
+                    <?php } ?>
                   </div>
                 </div>
                 <div class="form-actions">

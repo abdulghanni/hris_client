@@ -464,6 +464,52 @@ class Ion_auth
         return $this->in_group($admin_group, $id);
     }
 
+    public function is_admin_HRD($id=false)
+    {
+        $this->ion_auth_model->trigger_events('is_admin_HRD');
+
+        $admin_group = $this->config->item('admin_HRD', 'ion_auth');
+
+        return $this->in_group($admin_group, $id);
+    }
+
+    public function is_admin_IT($id=false)
+    {
+        $this->ion_auth_model->trigger_events('is_admin_IT');
+
+        $admin_group = $this->config->item('admin_IT', 'ion_auth');
+
+        return $this->in_group($admin_group, $id);
+    }
+
+    public function is_admin_logistik($id=false)
+    {
+        $this->ion_auth_model->trigger_events('is_admin_logistik');
+
+        $admin_group = $this->config->item('admin_logistik', 'ion_auth');
+
+        return $this->in_group($admin_group, $id);
+    }
+
+    public function is_admin_koperasi($id=false)
+    {
+        $this->ion_auth_model->trigger_events('is_admin_koperasi');
+
+        $admin_group = $this->config->item('admin_koperasi', 'ion_auth');
+
+        return $this->in_group($admin_group, $id);
+    }
+
+    public function is_admin_perpustakaan($id=false)
+    {
+        $this->ion_auth_model->trigger_events('is_admin_perpustakaan');
+
+        $admin_group = $this->config->item('admin_perpustakaan', 'ion_auth');
+
+        return $this->in_group($admin_group, $id);
+    }
+
+
     /**
      * in_group
      *

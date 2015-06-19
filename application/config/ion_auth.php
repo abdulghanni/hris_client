@@ -133,12 +133,18 @@ $config['admin_group']                = array(
     'Admin Perpustakaan' => 'Admin Perpustakaan',
 );             // Default administrators group, use name
 $config['admin_bagian']               = array(
-    'admin HRD' => 'Admin HRD',
+    'Admin HRD' => 'Admin HRD',
     'Admin IT' => 'Admin IT',
-    'Admin Logistik' => 'Admin Logistik',
-    'Admin Koperasi' => 'Admin Koperasi',
-    'Admin Perpustakaan' => 'Admin Perpustakaan',
-);             // Default administrators group, use name
+    'Admin logistik' => 'Admin Logistik',
+    'Admin koperasi' => 'Admin Koperasi',
+    'Admin perpustakaan' => 'Admin Perpustakaan',
+);
+$config['admin_HRD']                = 'Admin HRD';
+$config['admin_IT']                = 'Admin IT';
+$config['admin_Logistik']                = 'Admin Logistik';
+$config['admin_Koperasi']                = 'Admin Koperasi';
+$config['admin_Perpustakaan']                = 'Admin Perpustakaan';
+
 $config['identity']                   = 'email';             // A database column which is used to login with
 $config['min_password_length']        = 8;                   // Minimum Required Length of Password
 $config['max_password_length']        = 20;                  // Maximum Allowed Length of Password

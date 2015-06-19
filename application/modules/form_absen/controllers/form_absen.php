@@ -8,6 +8,7 @@ class form_absen extends MX_Controller {
         parent::__construct();
         $this->load->library('authentication', NULL, 'ion_auth');
         $this->load->library('form_validation');
+        $this->load->library('rest');
         $this->load->helper('url');
         
         $this->load->database();
@@ -127,6 +128,27 @@ class form_absen extends MX_Controller {
                     'created_by'            => $user_id
                     );
 
+                if($this->input->post('potong_cuti') == 1){
+                    $user_nik = get_nik($user_id);
+                    $date = $this->input->post('date_tidak_hadir');
+                    $recid = $this->get_sisa_cuti($user_id)[0]['RECID'];
+                    $sisa_cuti = $this->get_sisa_cuti($user_id)[0]['ENTITLEMENT'] - 1;
+
+                    $this->update_sisa_cuti($recid, $sisa_cuti);
+
+                    $data2 = array(
+                                'nik'       => get_mchid($user_nik),
+                                'jhk'       => 1,
+                                'cuti'      => 1,
+                                'tanggal'   => date("d", strtotime($date)),
+                                'bulan'     => date("m", strtotime($date)),
+                                'tahun'     => date("Y", strtotime($date)),
+                                'create_date' => date('Y-m-d',strtotime('now')),
+                                'create_user_id' => $this->session->userdata('user_id'),
+                            );
+                    $this->db->insert('attendance', $data2);
+                }
+
                 $num_rows = getAll('users_keterangan_absen')->num_rows();
                 
                 if($num_rows>0)
@@ -141,8 +163,27 @@ class form_absen extends MX_Controller {
                     $this->send_approval_request($absen_id, $user_id);
                      echo json_encode(array('st' =>1));     
                 }
-            }
 
+
+            }
+        }
+    }
+
+    function get_sisa_cuti($user_id = null)
+    {
+        //$id = $this->session->userdata('user_id');
+        if($user_id !=null)
+        {
+            $url = get_api_key().'users/sisa_cuti/EMPLID/'.get_nik($user_id).'/format/json';
+            $headers = get_headers($url);
+            $response = substr($headers[0], 9, 3);
+            if ($response != "404") {
+                $getsisa_cuti = file_get_contents($url);
+                $sisa_cuti = json_decode($getsisa_cuti, true);
+                return $sisa_cuti;
+            } else {
+                return '-';
+            }
         }
     }
 
@@ -353,6 +394,28 @@ class form_absen extends MX_Controller {
         }
         
         return $this->load->view('form_absen/absen_mail', $this->data, TRUE);
+    }
+
+    function update_sisa_cuti($recid, $sisa_cuti)
+    { 
+     
+        $method = 'post';
+        $params =  array();
+        $uri = get_api_key().'users/sisa_cuti/RECID/'.$recid.'/ENTITLEMENT/'.$sisa_cuti;
+
+        $this->rest->format('application/json');
+
+        $result = $this->rest->{$method}($uri, $params);
+
+
+        if(isset($result->status) && $result->status == 'success')  
+        {  
+            return TRUE;
+        }     
+        else  
+        {  
+            return FALSE;
+        }
     }
 
     function form_absen_pdf($id)

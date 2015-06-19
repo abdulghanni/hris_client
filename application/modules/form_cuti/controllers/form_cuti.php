@@ -182,9 +182,9 @@ class Form_cuti extends MX_Controller {
             {
                  $cuti_url = base_url().'form_cuti';
                  $this->send_approval_request($cuti_id, $user_id);
-                 print_mz($this->insert_leave_request($user_id, $additional_data, $leave_request_id));
-                 //echo json_encode(array('st' =>1, 'cuti_url' => $cuti_url))
-                 //redirect('form_cuti', 'refresh');   
+                 //print_mz($this->insert_leave_request($user_id, $additional_data, $leave_request_id));
+                 //echo json_encode(array('st' =>1, 'cuti_url' => $cuti_url));
+                 redirect('form_cuti', 'refresh');   
             }
             $this->insert_leave_request($user_id, $additional_data, $leave_request_id);
         }

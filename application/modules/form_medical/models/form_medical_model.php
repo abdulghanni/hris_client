@@ -309,6 +309,8 @@ class Form_medical_model extends CI_Model
                 $this->tables['users_medical'].'.*',
                 $this->tables['users_medical'].'.id as id',
                 ));
+
+            $this->db->join('users', 'users.id = users_medical.user_id', 'LEFT');
 			
 
 
