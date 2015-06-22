@@ -146,6 +146,12 @@ class Email extends MX_Controller {
 
     function detail($id)
     {
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+        
         $data = array(
             'is_read' => 1
             );

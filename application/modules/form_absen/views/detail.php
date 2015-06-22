@@ -19,9 +19,9 @@
             </div>
             <div class="grid-body no-border">
             <?php 
-            if($form_absen->num_rows()>0){
-              foreach($form_absen->result() as $absen){?>
-              <form class="form-no-horizontal-spacing" id=""> 
+            if($_num_rows>0){
+              foreach($form_absen as $absen){?>
+              <form class="form-no-horizontal-spacing" id="formAbsen"> 
                 <div class="row column-seperation">
                   <div class="col-md-12">    
                     <div class="row form-row">
@@ -38,8 +38,7 @@
                       </div>
                       <div class="col-md-8">
                         <div class="input-append success no-padding">
-                          <input type="text" class="form-control" name="date_tidak_hadir" value="<?php echo dateIndo($absen->date)?>" disabled="disabled">
-                          <!-- <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span> --> 
+                          <input type="text" class="form-control" name="date_tidak_hadir" value="<?php echo dateIndo($absen->date_tidak_hadir)?>" disabled="disabled">
                         </div>
                       </div>
                     </div>
@@ -48,7 +47,7 @@
                         <label class="form-label text-right">Nama</label>
                       </div>
                       <div class="col-md-9">
-                        <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama" value="<?php echo $absen->name?>" disabled="disabled">
+                        <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama" value="<?php echo get_name($absen->user_id)?>" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
@@ -56,7 +55,7 @@
                         <label class="form-label text-right">Dept/Bagian</label>
                       </div>
                       <div class="col-md-9">
-                        <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama" value="<?php echo $user_info['ORGANIZATION']; ?>" disabled="disabled">
+                        <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama" value="<?php echo get_user_organization($user_nik)?>" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
@@ -87,45 +86,123 @@
                   </div>
                 </div>
                 <div class="form-actions">
-                  <div class="col-md-8 text-center">
+                      <div class="col-md-12 text-center"><div class="col-md-12 text-center"><span class="semi-bold">Mengetahui,</span><br/><br/><br/></div>
                       <div class="row wf-cuti">
-                        <div class="col-md-6">
-                          Hormat Saya,<br/>
-                          <p class="wf-approve-sp">
-                            <span class="semi-bold"><?php echo $absen->name?></span><br/>
-                            <span class="small"><?php echo dateIndo($absen->created_on)?></span><br/>
-                          </p>
-                        </div>
-                        <div class="col-md-6">
-                          Mengetahui,<br/>
+                        <div class="col-md-3">
                           <p class="wf-approve-sp">
                             <?php
-                            if($absen->is_app_lv2==1){?>
-                            <img class="approval_img" src="<?php echo assets_url('img/approved_stamp.png')?>"/><br/>
-                            <span class="semi-bold"><?php echo $name_app_lv2?></span><br/>
-                            <span class="small"><?php echo dateIndo($absen->date_app_lv2)?></span>
+                            $approved = assets_url('img/approved_stamp.png');
+                            if(!empty($absen->user_app_lv1) && $absen->is_app_lv1 == 0 && get_nik($sess_id) == $absen->user_app_lv1){?>
+                              <button id="btn_app_lv1" class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok"></i>Submit</button>
+                              <span class="small"></span>
+                              <span class="semi-bold"></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"></span><br/>
+                              <span class="semi-bold">(Supervisor)</span>
+                            <?php }elseif(!empty($absen->user_app_lv1) && $absen->is_app_lv1 == 1){
+                              echo "<img class=approval_img_md src=$approved>"?>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"><?php echo get_name($absen->user_app_lv1)?></span><br/>
+                              <span class="small"><?php echo dateIndo($absen->date_app_lv1)?></span><br/>
+                              <span class="semi-bold"></span>
+                              <span class="semi-bold">(Supervisor)</span>
+                            <?php }else{?>
+                              <span class="small"></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"></span><br/>
+                              <span class="semi-bold"><?php echo (!empty($absen->user_app_lv1))?'(Supervisor)':'';?></span>
                             <?php } ?>
                           </p>
-                          <p class="">(Ka. Cabang / Ka. Bagian)</p>
                         </div>
-                      </div>
-                    </div>
-                    <div class="col-md-4 text-center">
-                      <div class="row wf-cuti">
-                        <div class="col-md-12">
-                          &nbsp;<br/>
+
+                        <div class="col-md-3">
                           <p class="wf-approve-sp">
-                            <?php if($absen->is_app_lv1==1){?>
-                            <img class="approval_img" src="<?php echo assets_url('img/approved_stamp.png')?>"/><br/>
-                            <span class="semi-bold"><?php echo $name_app_lv1?></span><br/>
-                            <span class="small"><?php echo dateIndo($absen->date_app_lv1)?></span>
+                            <?php
+                            if(!empty($absen->user_app_lv2) && $absen->is_app_lv2 == 0 && get_nik($sess_id) == $absen->user_app_lv2){?>
+                              <button id="btn_app_lv2" class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok"></i>Submit</button>
+                              <span class="small"></span>
+                              <span class="semi-bold"></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"></span><br/>
+                              <span class="semi-bold">(Ka. Bagian)</span>
+                            <?php }elseif(!empty($absen->user_app_lv2) && $absen->is_app_lv2 == 1){
+                              echo "<img class=approval_img_md src=$approved>"?>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"><?php echo get_name($absen->user_app_lv2)?></span><br/>
+                              <span class="small"><?php echo dateIndo($absen->date_app_lv2)?></span><br/>
+                              <span class="semi-bold"></span>
+                              <span class="semi-bold">(Ka. Bagian)</span>
+                            <?php }else{?>
+                              <span class="small"></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"></span><br/>
+                              <span class="semi-bold"><?php echo (!empty($absen->user_app_lv2))?'(Ka. Bagian)':'';?></span>
                             <?php } ?>
                           </p>
-                          <p class="">(Supervisor)</p>
+                        </div>
+                          
+                        <div class="col-md-3">
+                          <p class="wf-approve-sp">
+                            <?php
+                            if(!empty($absen->user_app_lv3) && $absen->is_app_lv3 == 0 && get_nik($sess_id) == $absen->user_app_lv3){?>
+                              <button id="btn_app_lv3" class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok"></i>Submit</button>
+                              <span class="small"></span>
+                              <span class="semi-bold"></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"></span><br/>
+                              <span class="semi-bold">(<?php echo get_user_position($absen->user_app_lv3)?>)</span>
+                            <?php }elseif(!empty($absen->user_app_lv3) && $absen->is_app_lv3 == 1){
+                              echo "<img class=approval_img_md src=$approved>"?>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"><?php echo get_name($absen->user_app_lv3)?></span><br/>
+                              <span class="small"><?php echo dateIndo($absen->date_app_lv3)?></span><br/>
+                              <span class="semi-bold"></span>
+                              <span class="semi-bold">(<?php echo get_user_position($absen->user_app_lv3)?>)</span>
+                            <?php }else{?>
+                              <span class="small"></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"></span><br/>
+                              <span class="semi-bold"><?php echo (!empty($absen->user_app_lv3))?get_user_position($absen->user_app_lv3):'';?></span>
+                            <?php } ?>
+                          </p>
+                        </div>
+                          
+                        <div class="col-md-3">
+                          <p class="wf-approve-sp">
+                            <?php
+                            if($absen->is_app_hrd == 0 && is_admin()){?>
+                              <button id="btn_app_hrd" class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok"></i>Submit</button>
+                              <span class="small"></span>
+                              <span class="semi-bold"></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"></span><br/>
+                              <span class="semi-bold">(HRD)</span>
+                            <?php }elseif($absen->is_app_hrd == 1){
+                              echo "<img class=approval_img_md src=$approved>"?>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"><?php echo get_name($absen->user_app_hrd)?></span><br/>
+                              <span class="small"><?php echo dateIndo($absen->date_app_hrd)?></span><br/>
+                              <span class="semi-bold"></span>
+                              <span class="semi-bold">(HRD)</span>
+                            <?php }else{?>
+                              <span class="small"></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"></span><br/>
+                              <span class="semi-bold">(HRD)</span>
+                            <?php } ?>
+                          </p>
                         </div>
                       </div>
-                    </div>
-                </div>
+                    </div> 
+                  </div>
               </form>
               <?php }}?>
             </div>

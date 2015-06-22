@@ -296,6 +296,7 @@ class Form_cuti_model extends CI_Model
         else
         {
             $sess_id = $this->session->userdata('user_id');
+            $sess_nik = get_nik($sess_id);
             $is_admin = is_admin();
             if(!empty(is_have_subordinate(get_nik($sess_id)))){
             $sub_id = get_subordinate($sess_id);
@@ -320,6 +321,7 @@ class Form_cuti_model extends CI_Model
 				'status_lv1.title as approval_status_lv1',
                 'status_lv2.title as approval_status_lv2',
                 'status_lv3.title as approval_status_lv3',
+                'status_hrd.title as approval_status_hrd',
             ));
 
             $this->db->join('alasan_cuti', 'users_cuti.alasan_cuti_id = alasan_cuti.HRSLEAVETYPEID', 'left');
@@ -328,12 +330,17 @@ class Form_cuti_model extends CI_Model
 			$this->db->join('approval_status as status_lv1', 'users_cuti.approval_status_id_lv1 = status_lv1.id', 'left');
             $this->db->join('approval_status as status_lv2', 'users_cuti.approval_status_id_lv2 = status_lv2.id', 'left');
             $this->db->join('approval_status as status_lv3', 'users_cuti.approval_status_id_lv3 = status_lv3.id', 'left');
+            $this->db->join('approval_status as status_hrd', 'users_cuti.approval_status_id_hrd = status_hrd.id', 'left');
 			
 
 
             //$this->db->where('users_cuti.is_deleted', 0);
             if($is_admin!=1){
-                $this->db->where("(users_cuti.user_id= $sess_id $sub_id $subsub_id )",null, false);
+                //$this->db->where("(users_cuti.user_id= $sess_id $sub_id $subsub_id )",null, false);
+                $this->db->or_where('users_cuti.user_id', $sess_id);
+                $this->db->or_where('users_cuti.user_app_lv1', $sess_nik);
+                $this->db->or_where('users_cuti.user_app_lv2', $sess_nik);
+                $this->db->or_where('users_cuti.user_app_lv3', $sess_nik);
             }
             $this->db->order_by('users_cuti.id', 'desc');
         }
@@ -379,19 +386,6 @@ class Form_cuti_model extends CI_Model
 
         return $this;
     }
-
-    
-    public function get_superior_id($user_id)
-    {
-        $this->db->select('users.superior_id as superior_id');
-        $this->db->from('users');
-        $this->db->where('users.id', $user_id);
-        $this->db->where('users.superior_id is not null');
-
-        $q = $this->db->get();
-        return $q;
-    }
-
     
     public function form_cuti_input()
     {
@@ -503,60 +497,54 @@ class Form_cuti_model extends CI_Model
         }
         else
         {
+            $sess_id = $this->session->userdata('user_id');
+            $is_admin = is_admin();
+            if(!empty(is_have_subordinate(get_nik($sess_id)))){
+            $sub_id = get_subordinate($sess_id);
+            }else{
+                $sub_id = '';
+            }
+
+            if(!empty(is_have_subsubordinate($sess_id))){
+            $subsub_id = 'OR '.get_subsubordinate($sess_id);
+            }else{
+                $subsub_id = '';
+            }
+
             //default selects
             $this->db->select(array(
                 $this->tables['users_cuti'].'.*',
                 $this->tables['users_cuti'].'.id as id',
-                //$this->tables['users_cuti'].'.id as user_id',
 
-                $this->tables['users'].'.first_name as first_name',
-                $this->tables['users'].'.last_name as last_name',
-                $this->tables['users_employement'].'.position_id as position_id',
-                $this->tables['users_employement'].'.organization_id as organization_id',
-                $this->tables['users_employement'].'.seniority_date as seniority_date',
-                $this->tables['organization'].'.title as organization_title',
-                $this->tables['position'].'.title as position_title',
-                $this->tables['users_cuti_plafon'].'.hak_cuti as hak_cuti',
-                $this->tables['users_cuti_plafon'].'.id_comp_session as id_comp_session',
-                $this->tables['comp_session'].'.year as session_year',
-                $this->tables['users_cuti'].'.created_on as tgl_pengajuan',
                 $this->tables['alasan_cuti'].'.title as alasan_cuti',
+                $this->tables['comp_session'].'.year as session_year',
+                $this->tables['users'].'.username as name',
                 'status_lv1.title as approval_status_lv1',
                 'status_lv2.title as approval_status_lv2',
                 'status_lv3.title as approval_status_lv3',
-				
-                
+                'status_hrd.title as approval_status_hrd',
             ));
-            
-            $this->db->join('users', 'users_cuti.user_id = users.id', 'left');
-			
-            $this->db->join('users_employement', 'users.id = users_employement.user_id', 'left');
-            $this->db->join('organization', 'users_employement.organization_id = organization.id', 'left');
-            $this->db->join('position', 'users_employement.position_id = position.id', 'left');
-            $this->db->join('users_cuti_plafon', 'users.id = users_cuti_plafon.user_id', 'left');
-            $this->db->join('comp_session', 'users_cuti.id_comp_session = comp_session.id', 'left');
+
             $this->db->join('alasan_cuti', 'users_cuti.alasan_cuti_id = alasan_cuti.HRSLEAVETYPEID', 'left');
+            $this->db->join('comp_session', 'users_cuti.id_comp_session = comp_session.id', 'left');
+            $this->db->join('users', 'users_cuti.user_id = users.id', 'left');
             $this->db->join('approval_status as status_lv1', 'users_cuti.approval_status_id_lv1 = status_lv1.id', 'left');
             $this->db->join('approval_status as status_lv2', 'users_cuti.approval_status_id_lv2 = status_lv2.id', 'left');
             $this->db->join('approval_status as status_lv3', 'users_cuti.approval_status_id_lv3 = status_lv3.id', 'left');
-			
+            $this->db->join('approval_status as status_hrd', 'users_cuti.approval_status_id_hrd = status_hrd.id', 'left');
+            
+
+
             $this->db->where('users_cuti.id', $id);
-            //$this->db->where('users.is_deleted', 0);
+            if($is_admin!=1){
+                //$this->db->where("(users_cuti.user_id= $sess_id $sub_id $subsub_id )",null, false);
+            }
+            $this->db->order_by('users_cuti.id', 'desc');
         }
 
         $this->trigger_events('extra_where');
 
         //run each where that was passed
-
-        if (isset($this->_ion_where) && !empty($this->_ion_where))
-        {
-            foreach ($this->_ion_where as $where)
-            {
-                $this->db->where($where);
-            }
-
-            $this->_ion_where = array();
-        }
 
         if (isset($this->_ion_like) && !empty($this->_ion_like))
         {

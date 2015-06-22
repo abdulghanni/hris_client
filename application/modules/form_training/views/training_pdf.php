@@ -10,7 +10,7 @@
 <p>&nbsp;</p>
 <table width="1000" border="1" align="center">
 <?php
-foreach($form_training->result() as $user):?>
+foreach($form_training as $user):?>
   <tbody>
     <tr>
       <th width="44" height="45" scope="col">No.</th>
@@ -20,22 +20,22 @@ foreach($form_training->result() as $user):?>
     <tr>
       <td height="45" align="center">1</td>
       <td>&nbsp;NIK</td>
-      <td>&nbsp;<?php echo (!empty($user_info))?$user_info['EMPLID']:'-';?></td>
+      <td>&nbsp;<?php echo get_nik($user->user_id)?></td>
     </tr>
     <tr>
       <td height="45" align="center">2</td>
       <td>&nbsp;Nama Karyawan</td>
-      <td>&nbsp;<?php echo $user->name?></td>
+      <td>&nbsp;<?php echo get_name($user->user_id)?></td>
     </tr>
     <tr>
       <td height="45" align="center">3</td>
       <td>&nbsp;Jabatan</td>
-      <td>&nbsp;<?php echo (!empty($user_info))?$user_info['POSITION']:'-';?></td>
+      <td>&nbsp;<?php echo get_user_position($user_nik)?></td>
     </tr>
     <tr>
       <td height="45" align="center">4</td>
       <td>&nbsp;Dept/Bagian</td>
-      <td>&nbsp;<?php echo (!empty($user_info))?$user_info['ORGANIZATION']:'-';?></td>
+      <td>&nbsp;<?php echo get_user_organization($user_nik)?></td>
     </tr>
     <tr>
       <td height="45" align="center">5</td>
@@ -57,9 +57,9 @@ foreach($form_training->result() as $user):?>
       <th width="333" scope="col">Mengetahui HRD</th>
     </tr>
     <tr>
-      <td height="117" align="center"><br/><br/><br/><br/><br/><?php echo $user->name?><br/><?php echo dateIndo($user->created_on)?></td>
+      <td height="117" align="center"><br/><br/><br/><br/><br/><?php echo get_name($user->created_by)?><br/><?php echo dateIndo($user->created_on)?></td>
       <td align="center"><br/><br/><br/><br/><br/><?php echo get_name($user->user_app_lv1)?><br/><?php echo dateIndo($user->date_app_lv1)?></td>
-      <td align="center"><br/><br/><br/><br/><br/><?php echo get_name($user->user_app_lv2)?><br/><?php echo dateIndo($user->date_app_lv2)?></td>
+      <td align="center"><br/><br/><br/><br/><br/><?php echo get_name($user->user_app_hrd)?><br/><?php echo dateIndo($user->date_app_hrd)?></td>
     </tr>
   </tbody>
 </table>

@@ -62,9 +62,9 @@ $(document).ready(function() {
 	            });
 	    }
             
-            var url = $.url();
-	    	var baseurl = url.attr('protocol')+'://'+url.attr('host')+'/';
-            var exit_url = baseurl+'hris_client/form_exit';
+      var url = $.url();
+    	var baseurl = url.attr('protocol')+'://'+url.attr('host')+'/'+url.segment(1)+'/';
+      var exit_url = baseurl+'form_exit';
 
 	    $('#formaddexit').submit(function(response){
                     $.post($('#formaddexit').attr('action'), $('#formaddexit').serialize(),function(json){

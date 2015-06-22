@@ -21,8 +21,8 @@ class form_training extends MX_Controller {
         
     }
 
-    function index()
-    { 
+    function index($ftitle = "fn:",$sort_by = "id", $sort_order = "asc", $offset = 0)
+    {
         if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page
@@ -30,8 +30,55 @@ class form_training extends MX_Controller {
         }
         else
         {
-            $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
-            $form_training = $this->data['form_training'] = $this->form_training_model->form_training();
+            $sess_id= $this->data['sess_id'] = $this->session->userdata('user_id');
+            $this->data['sess_nik'] = $sess_nik = get_nik($sess_id);
+
+
+            //set sort order
+            $this->data['sort_order'] = $sort_order;
+            
+            //set sort by
+            $this->data['sort_by'] = $sort_by;
+           
+            //set filter by title
+            $this->data['ftitle_param'] = $ftitle; 
+            $exp_ftitle = explode(":",$ftitle);
+            $ftitle_re = str_replace("_", " ", $exp_ftitle[1]);
+            $ftitle_post = (strlen($ftitle_re) > 0) ? array('form_training.title'=>$ftitle_re) : array() ;
+            
+            //set default limit in var $config['list_limit'] at application/config/ion_auth.php 
+            $this->data['limit'] = $limit = (strlen($this->input->post('limit')) > 0) ? $this->input->post('limit') : 10 ;
+
+            $this->data['offset'] = 6;
+
+            //list of filterize all form_training  
+            $this->data['form_training_all'] = $this->form_training_model->like($ftitle_post)->where('is_deleted',0)->form_training()->result();
+            
+            $this->data['num_rows_all'] = $this->form_training_model->like($ftitle_post)->where('is_deleted',0)->form_training()->num_rows();
+
+            $form_training = $this->data['form_training'] = $this->form_training_model->like($ftitle_post)->where('is_deleted',0)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->form_training()->result();
+            $this->data['_num_rows'] = $this->form_training_model->like($ftitle_post)->where('is_deleted',0)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->form_training()->num_rows();
+            
+
+             //config pagination
+             $config['base_url'] = base_url().'form_training/index/fn:'.$exp_ftitle[1].'/'.$sort_by.'/'.$sort_order.'/';
+             $config['total_rows'] = $this->data['num_rows_all'];
+             $config['per_page'] = $limit;
+             $config['uri_segment'] = 6;
+
+            //inisialisasi config
+             $this->pagination->initialize($config);
+
+            //create pagination
+            $this->data['halaman'] = $this->pagination->create_links();
+
+            $this->data['ftitle_search'] = array(
+                'name'  => 'title',
+                'id'    => 'title',
+                'type'  => 'text',
+                'value' => $this->form_validation->set_value('title'),
+            );
+
             $this->_render_page('form_training/index', $this->data);
         }
     }
@@ -43,20 +90,19 @@ class form_training extends MX_Controller {
             //redirect them to the login page
             redirect('auth/login', 'refresh');
         }
-        else
-        {
+            $user_id= getValue('user_id', 'users_training', array('id'=>'where/'.$id));
+            $this->data['user_nik'] = $sess_nik = get_nik($user_id);
+            $this->data['sess_id'] = $this->session->userdata('user_id');
+
+            $this->data['form_training'] = $this->form_training_model->form_training($id)->result();
+            $this->data['_num_rows'] = $this->form_training_model->form_training($id)->num_rows();
+
             $this->data['training_type'] = GetAll('training_type', array('is_deleted' => 'where/0'));
-            $form_training = $this->data['form_training'] = $this->form_training_model->form_training($id);
-            $this->data['penyelenggara'] = GetAll('penyelenggara', array('is_deleted'=>'where/0'));
-            $this->data['pembiayaan'] = GetAll('pembiayaan', array('is_deleted'=>'where/0'));
-            $user_id = $this->db->select('user_id')->where('id', $id)->get('users_training')->row('user_id');
-			if($form_training->num_rows>0){
-                $this->get_app_name($id);
-            }
-			
-            $this->get_user_info($user_id);
+            $this->data['penyelenggara'] = GetAll('penyelenggara', array('is_deleted' => 'where/0'));
+            $this->data['pembiayaan'] = GetAll('pembiayaan', array('is_deleted' => 'where/0'));
+            $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
+            
             $this->_render_page('form_training/detail', $this->data);
-        }
     }
 
     function input()
@@ -67,12 +113,12 @@ class form_training extends MX_Controller {
             redirect('auth/login', 'refresh');
         }
 
-        $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
-        $this->data['user_name'] = $this->form_training_model->get_app_name($sess_id);
+        $this->data['sess_id'] = $sess_id = $this->session->userdata('user_id'); 
+        $this->data['sess_nik'] = get_nik($sess_id);
+
         $form_training = $this->data['training'] = $this->form_training_model->form_training($sess_id);
 
-        $this->get_user_info($sess_id);
-        $this->data['all_users'] = getAll('users');
+        $this->data['all_users'] = getAll('users', array('active'=>'where/1', 'username'=>'order/asc'), array('!=id'=>'1'));
         $this->data['subordinate'] = getAll('users', array('superior_id'=>'where/'.get_nik($sess_id)));
 
 
@@ -85,138 +131,77 @@ class form_training extends MX_Controller {
         {
             redirect('auth/login', 'refresh');
         }
+
+        $this->form_validation->set_rules('training_name', 'Nama Program Pelatihan', 'trim|required');
+        $this->form_validation->set_rules('tujuan_training', 'Tujuan Pelatihan', 'trim|required');
+
+        if($this->form_validation->run() == FALSE)
+        {
+        echo json_encode(array('st'=>0, 'errors'=>validation_errors('<div class="alert alert-danger" role="alert">', '</div>')));
+        }
         else
         {
-            $this->form_validation->set_rules('training_name', 'Nama Program Pelatihan', 'trim|required');
-            $this->form_validation->set_rules('tujuan_training', 'Tujuan Pelatihan', 'trim|required');
+            $user_id= $this->input->post('emp');
 
-            if($this->form_validation->run() == FALSE)
-            {
-            echo json_encode(array('st'=>0, 'errors'=>validation_errors('<div class="alert alert-danger" role="alert">', '</div>')));
+            $data = array(
+                'id_comp_session' => 1,
+                'training_name' => $this->input->post('training_name'),
+                'tujuan_training' => $this->input->post('tujuan_training'),
+                'user_app_lv1'          => $this->input->post('atasan1'),
+                'user_app_lv2'          => $this->input->post('atasan2'),
+                'user_app_lv3'          => $this->input->post('atasan3'),
+                'created_on'            => date('Y-m-d',strtotime('now')),
+                'created_by'            => $this->session->userdata('user_id'),
+                );
+
+            $num_rows = getAll('users_training')->num_rows();
+
+            if($num_rows>0){
+                $training_id = $this->db->select('id')->order_by('id', 'asc')->get('users_training')->last_row();
+                $training_id = $training_id->id+1;
+            }else{
+                $training_id = 1;
             }
-            else
-            {
-                $user_id= $this->input->post('emp');
 
-                $data = array(
-                    'user_id' => $user_id,
-                    'id_comp_session' => 1,
-                    'training_name' => $this->input->post('training_name'),
-                    'tujuan_training' => $this->input->post('tujuan_training'),
-                    'created_on'            => date('Y-m-d',strtotime('now')),
-                    'created_by'            => $this->session->userdata('user_id'),
-                    );
-
-                $num_rows = getAll('users_training', array('is_deleted'=>'where/0'))->num_rows();
-
-                if($num_rows>0){
-                    $training_id = $this->db->select('id')->order_by('id', 'asc')->get('users_training')->last_row();
-                    $training_id = $training_id->id+1;
-                }else{
-                    $training_id = 1;
+                if ($this->form_validation->run() == true && $this->form_training_model->create_($user_id, $data))
+                {
+                    $this->send_approval_request($training_id, $user_id);
+                    echo json_encode(array('st' =>1));     
                 }
-
-                    if ($this->form_validation->run() == true && $this->form_training_model->add($data))
-                    {
-                        $this->send_approval_request($training_id, $user_id);
-                        echo json_encode(array('st' =>1));     
-                    }
-            }
-
         }
     }
 
-    function approval_spv($id)
+    function do_approve($id, $type)
     {
-        $sess_id = $this->session->userdata('user_id');
-        $user_training_id = $this->db->select('user_id')->from('users_training')->where('id', $id)->get()->row('user_id');
-        if (!$this->ion_auth->logged_in())
+        if(!$this->ion_auth->logged_in())
         {
             redirect('auth/login', 'refresh');
         }
         else
         {
-            $user_id = $this->db->select('user_id')->where('id', $id)->get('users_training')->row('user_id');
-            
-            $this->get_user_info($user_id);
-            
-            $form_training = $this->data['form_training'] = $this->form_training_model->form_training($id);
-            if($form_training->num_rows>0){
-                $this->get_app_name($id);
+            $user_id = get_nik($this->session->userdata('user_id'));
+            $date_now = date('Y-m-d');
+
+            $data = array(
+            'is_app_'.$type => 1,
+            'approval_status_id_'.$type => $this->input->post('app_status_'.$type),
+            'date_app_'.$type => $date_now,
+            'note_app_'.$type => $this->input->post('note_'.$type)
+            );
+                
+            $is_app = getValue('is_app_'.$type, 'users_training', array('id'=>'where/'.$id));
+            $approval_status = $this->input->post('app_status_'.$type);
+
+            if($is_app==0){
+                $this->approval_mail($id, $approval_status);
+            }else{
+                $this->update_approval_mail($id, $approval_status);
             }
 
-            $this->data['approval_status'] = GetAll('approval_status');
-            $this->_render_page('form_training/approval/supervisor', $this->data);
-        }
-
-        
-    }
-
-    function approval_hrd($id)
-    {
-        $sess_id = $this->session->userdata('user_id');
-        $user_training_id = $this->db->select('user_id')->from('users_training')->where('id', $id)->get()->row('user_id');
-        if (!$this->ion_auth->logged_in())
-        {
-            redirect('auth/login', 'refresh');
-        }
-        else
-        {
-            $user_id = $this->db->select('user_id')->where('id', $id)->get('users_training')->row('user_id');
-            
-            $this->get_user_info($user_id);
-            
-            $form_training = $this->data['form_training'] = $this->form_training_model->form_training($id);
-            $this->data['training_type'] = GetAll('training_type', array('is_deleted' => 'where/0'));
-            $this->data['penyelenggara'] = GetAll('penyelenggara');
-            $this->data['pembiayaan'] = GetAll('pembiayaan');
-            if($form_training->num_rows>0){
-                $this->get_app_name($id);
+           if ($this->form_training_model->update($id,$data)) {
+                return TRUE;
             }
-
-            $this->data['approval_status'] = GetAll('approval_status');
-            $this->_render_page('form_training/approval/hrd', $this->data);
         }
-
-    }
-
-    function do_approve_spv($id)
-    {
-        $user_id = $this->session->userdata('user_id');
-        $date_now = date('Y-m-d');
-
-        $data = array(
-        'is_app_lv1' => 1, 
-        'user_app_lv1' => $user_id,
-        'approval_status_id_lv1' => 1,  
-        'date_app_lv1' => $date_now);
-
-        $approval_status = 1;
-
-       if ($this->form_training_model->update($id,$data)) {
-           $this->approval_mail($id, $approval_status,'spv', 'Supervisor');
-           return TRUE;
-       }
-    }
-
-    function not_approve_spv($id)
-    {
-        $user_id = $this->session->userdata('user_id');
-        $date_now = date('Y-m-d');
-
-        $data = array(
-        'is_app_lv1' => 1, 
-        'user_app_lv1' => $user_id,
-        'approval_status_id_lv1' => $this->input->post('app_status'),
-        'note_app_lv1' => $this->input->post('note_spv'), 
-        'date_app_lv1' => $date_now);
-
-        $approval_status = $this->input->post('app_status');
-
-        $this->form_training_model->update($id,$data);
-        $this->approval_mail($id, $approval_status,'spv', 'Supervisor');
-        redirect('form_training/approval_spv/'.$id, 'refresh');
-       
     }
 
     function do_approve_hrd($id)
@@ -238,114 +223,120 @@ class form_training extends MX_Controller {
         'lama_training_hari' => $this->input->post('lama_training_hari'),
         'jam_mulai'   => $this->input->post('jam_mulai'),
         'jam_akhir'   => $this->input->post('jam_akhir'),
-        'is_app_lv2' => 1, 
-        'user_app_lv2' => $user_id,
-        'approval_status_id_lv2' => $this->input->post('app_status'), 
-        'date_app_lv2' => $date_now,
-        'note_app_lv2' => $this->input->post('note_hrd')
-        );
+        'is_app_hrd' => 1,
+        'approval_status_id_hrd' => $this->input->post('app_status'),
+        'note_app_hrd' => $this->input->post('note_hrd'), 
+        'user_app_hrd' => $user_id, 
+        'date_app_hrd' => $date_now);
 
-        $approval_status = 1;
+        $approval_status = $this->input->post('app_status');
+
         if ($this->form_training_model->update($id,$data)) {
-        $this->approval_mail($id, $approval_status,'hrd', 'HRD');
+         $this->approval_mail($id, $approval_status);
            return TRUE;
        }
     }
 
-    function not_approve_hrd($id)
-    {
-        $user_id = $this->session->userdata('user_id');
-        $date_now = date('Y-m-d');
-
-        $data = array(
-        'is_app_lv2' => 1, 
-        'user_app_lv2' => $user_id,
-        'approval_status_id_lv2' => $this->input->post('app_status'),
-        'note_app_lv2' => $this->input->post('note_hrd'), 
-        'date_app_lv2' => $date_now);
-
-        $approval_status = $this->input->post('app_status');
-        $this->form_training_model->update($id,$data);
-        $this->approval_mail($id, $approval_status,'hrd', 'HRD');
-        redirect('form_training/approval_hrd/'.$id, 'refresh');
-       
-    }
-
-    public function update_approve_hrd($id)
-    {
-        $user_id = $this->session->userdata('user_id');
-        $date_now = date('Y-m-d');
-
-        $additional_data = array(
-        'training_type_id' => $this->input->post('training_type_update'),
-        'penyelenggara_id' => $this->input->post('penyelenggara_update'),
-        'pembiayaan_id' => $this->input->post('pembiayaan_update'),
-        'besar_biaya' => $this->input->post('besar_biaya_update'),
-        'tempat' => $this->input->post('tempat_update'),
-        'narasumber' => $this->input->post('narasumber_update'),
-        'vendor' => $this->input->post('vendor_update'),
-        'tanggal_mulai'=> date('Y-m-d',strtotime($this->input->post('tanggal_mulai_update'))),
-        'tanggal_akhir'=> date('Y-m-d',strtotime($this->input->post('tanggal_akhir_update'))),
-        'lama_training_bulan' => $this->input->post('lama_training_bulan_update'),
-        'lama_training_hari' => $this->input->post('lama_training_hari_update'),
-        'jam_mulai'   => $this->input->post('jam_mulai_update'),
-        'jam_akhir'   => $this->input->post('jam_akhir_update'),
-        'is_app_lv2' => 1,
-        'approval_status_id_lv2' => $this->input->post('app_status_update'),
-        'note_app_lv2' => $this->input->post('note_hrd_update'), 
-        'user_app_lv2' => $user_id, 
-        'date_app_lv2' => $date_now);
-
-        $approval_status = $this->input->post('app_status_update');
-
-        $this->form_training_model->update($id,$additional_data);
-        $this->approval_mail($id, $approval_status,'hrd', 'HRD');
-
-        redirect('form_training/approval_hrd/'.$id, 'refresh');
-       
-    }
-
     function send_approval_request($id, $user_id)
     {
-        $url = base_url().'form_training/approval_';
-        if(is_have_superior($user_id))
-        {
-            $data = array(
-                    'sender_id' => get_nik($user_id),
-                    'receiver_id' => get_superior($user_id),
+        $url = base_url().'form_training/detail/'.$id;
+        $user_app_lv1 = getValue('user_app_lv1', 'users_training', array('id'=>'where/'.$id));
+        $user_app_lv2 = getValue('user_app_lv2', 'users_training', array('id'=>'where/'.$id));
+        $user_app_lv3 = getValue('user_app_lv3', 'users_training', array('id'=>'where/'.$id));
+        $pengaju_id = $this->session->userdata('user_id');
+        //approval to LV1
+        if(!empty($user_app_lv1)){
+            $data1 = array(
+                    'sender_id' => get_nik($pengaju_id),
+                    'receiver_id' => $user_app_lv1,
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Pengajuan Training',
-                    'email_body' => get_name($user_id).' mengajukan permohonan pelatihan, untuk melihat detail silakan <a href='.$url.'spv/'.$id.'>Klik Disini</a><br/>'.$this->detail_email($id),
+                    'email_body' => get_name($pengaju_id).' mengajukan permohonan pelatihan untuk '.get_name($user_id).', untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
                     'is_read' => 0,
                 );
-            $this->db->insert('email', $data);
-        }else{
-        $current_superior = 0;
+            $this->db->insert('email', $data1);
         }
 
+        //approval to LV2
+        if(!empty($user_app_lv2)){
+            $data2 = array(
+                    'sender_id' => get_nik($pengaju_id),
+                    'receiver_id' => $user_app_lv2,
+                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                    'subject' => 'Pengajuan Training',
+                    'email_body' => get_name($pengaju_id).' mengajukan permohonan pelatihan untuk '.get_name($user_id).', untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
+                    'is_read' => 0,
+                );
+            $this->db->insert('email', $data2);
+        }
+
+        //approval to LV3
+        if(!empty($user_app_lv3)){
+            $data3 = array(
+                    'sender_id' => get_nik($pengaju_id),
+                    'receiver_id' => $user_app_lv3,
+                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                    'subject' => 'Pengajuan Training',
+                    'email_body' => get_name($pengaju_id).' mengajukan permohonan pelatihan untuk '.get_name($user_id).', untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
+                    'is_read' => 0,
+                );
+            $this->db->insert('email', $data3);
+        }
+
+        //approval to hrd
+            $data4 = array(
+                    'sender_id' => get_nik($pengaju_id),
+                    'receiver_id' => 1,
+                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                    'subject' => 'Pengajuan Training',
+                    'email_body' => get_name($pengaju_id).' mengajukan permohonan pelatihan untuk '.get_name($user_id).', untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
+                    'is_read' => 0,
+                );
+            $this->db->insert('email', $data4);
+        // Notifikasi untuk peserta training
+            $data5 = array(
+                    'sender_id' => get_nik($pengaju_id),
+                    'receiver_id' => get_nik($user_id),
+                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                    'subject' => 'Pengajuan Training',
+                    'email_body' => get_name($pengaju_id).' mengajukan permohonan pelatihan untuk anda, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br/>'.$this->detail_email($id),
+                    'is_read' => 0,
+                );
+            $this->db->insert('email', $data5);
+            
+        }
+
+    function approval_mail($id, $approval_status)
+    {
+        $url = base_url().'form_training/detail/'.$id;
+        $approver = get_name(get_nik($this->session->userdata('user_id')));
+        $pengaju_id = getValue('created_by', 'users_training', array('id'=>'where/'.$id));
+        $peserta_id = getValue('user_id', 'users_training', array('id'=>'where/'.$id));
+        $approval_status = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
         $data = array(
-                'sender_id' => get_nik($user_id),
-                'receiver_id' => 1,
+                'sender_id' => get_nik($this->session->userdata('user_id')),
+                'receiver_id' => get_nik($pengaju_id),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                'subject' => 'Pengajuan Training',
-                'email_body' => get_name($user_id).' mengajukan permohonan training, untuk melihat detail silakan <a href='.$url.'hrd/'.$id.'>Klik Disini</a><br/>'.$this->detail_email($id),
+                'subject' => 'Status Pengajuan Permintaan Training dari Atasan',
+                'email_body' => "Status pengajuan permohonan training anda $approval_status oleh $approver untuk detail silakan <a href=$url>Klik disini</a><br/>".$this->detail_email($id),
                 'is_read' => 0,
             );
         $this->db->insert('email', $data);
     }
 
-    function approval_mail($id, $approval_status, $type_url, $type)
+    function update_approval_mail($id, $approval_status)
     {
-        $url = base_url().'form_training/approval_'.$type_url.'/'.$id;
+       $url = base_url().'form_training/detail/'.$id;
         $approver = get_name(get_nik($this->session->userdata('user_id')));
-        $receiver_id = $this->db->where('id', $id)->get('users_training')->row('user_id');
-        $approval_status = $this->db->where('id', $approval_status)->get('approval_status')->row('title');
+        $pengaju_id = getValue('created_by', 'users_training', array('id'=>'where/'.$id));
+        $peserta_id = getValue('user_id', 'users_training', array('id'=>'where/'.$id));
+        $approval_status = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
         $data = array(
                 'sender_id' => get_nik($this->session->userdata('user_id')),
-                'receiver_id' => get_nik($receiver_id),
+                'receiver_id' => get_nik($pengaju_id),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                'subject' => 'Status Pengajuan Permohonan Training dari '.$type,
-                'email_body' => "Status pengajuan permohonan training anda $approval_status oleh $approver untuk detail silakan <a href=$url>Klik disini</a><br/>".$this->detail_email($id),
+                'subject' => 'Perubahan Status Pengajuan Permintaan Training dari Atasan',
+                'email_body' => "$approver melakukan perubahan status permintaan training anda, Status permintaan anda kini $approval_status, untuk detail silakan <a href=$url>Klik disini</a><br/>".$this->detail_email($id),
                 'is_read' => 0,
             );
         $this->db->insert('email', $data);
@@ -353,49 +344,47 @@ class form_training extends MX_Controller {
 
     function detail_email($id)
     {
-        
-        $form_training = $this->data['form_training'] = $this->form_training_model->form_training($id);
-        
-        $this->data['penyelenggara'] = GetAll('penyelenggara');
-        $this->data['pembiayaan'] = GetAll('pembiayaan');
-        $user_id = $this->db->select('user_id')->where('id', $id)->get('users_training')->row('user_id');
-        if($form_training->num_rows>0){
-            $this->get_app_name($id);
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
         }
+            $user_id= getValue('user_id', 'users_training', array('id'=>'where/'.$id));
+            $this->data['user_nik'] = $sess_nik = get_nik($user_id);
+            $this->data['sess_id'] = $this->session->userdata('user_id');
+
+            $this->data['form_training'] = $this->form_training_model->form_training($id)->result();
+            $this->data['_num_rows'] = $this->form_training_model->form_training($id)->num_rows();
+
+            $this->data['training_type'] = GetAll('training_type', array('is_deleted' => 'where/0'));
+            $this->data['penyelenggara'] = GetAll('penyelenggara', array('is_deleted' => 'where/0'));
+            $this->data['pembiayaan'] = GetAll('pembiayaan', array('is_deleted' => 'where/0'));
+            $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
+            
         
-        $this->get_user_info($user_id);
         return $this->load->view('form_training/training_mail', $this->data, TRUE);
-}
+    }
 
-
-    function get_app_name($id)
+    public function get_atasan($id)
     {
-        $form_training = $this->form_training_model->form_training($id);
-        foreach($form_training->result() as $training){
-            $user_app_lv1 = $training->user_app_lv1;
-            $user_app_lv2 = $training->user_app_lv2;
+        $url = get_api_key().'users/superior/EMPLID/'.get_nik($id).'/format/json';
+        $headers = get_headers($url);
+        $response = substr($headers[0], 9, 3);
+        if ($response != "404") {
+            $get_task_receiver = file_get_contents($url);
+            $task_receiver = json_decode($get_task_receiver, true);
+             foreach ($task_receiver as $row)
+                {
+                    $result['0']= '-- Pilih Atasan --';
+                    $result[$row['ID']]= ucwords(strtolower($row['NAME']));
+                }
+        } else {
+           $result['-']= '- Tidak ada user dengan departemen yang sama -';
         }
-
-        $this->data['name_app_lv1'] = $this->form_training_model->get_app_name($user_app_lv1);
-        $this->data['name_app_lv2'] = $this->form_training_model->get_app_name($user_app_lv2);
-
-        return $this->data;
+        $data['result']=$result;
+        $this->load->view('dropdown_atasan',$data);
     }
 
-    function get_user_info($user_id)
-    {
-        $user = $this->person_model->getUsers($user_id)->row();
-            $url = get_api_key().'users/employement/EMPLID/'.$user->nik.'/format/json';
-            $headers = get_headers($url);
-            $response = substr($headers[0], 9, 3);
-            if ($response != "404") {
-                $getuser_info = file_get_contents($url);
-                $user_info = json_decode($getuser_info, true);
-                return $this->data['user_info'] = $user_info;
-            } else {
-                return $this->data['user_info'] = '';
-            }
-    }
 
     public function get_emp_org()
     {
@@ -453,19 +442,18 @@ class form_training extends MX_Controller {
 
      function form_training_pdf($id)
     {
-        $sess_id = $this->session->userdata('user_id');
-        $user_id = $this->db->select('user_id')->from('users_training')->where('id', $id)->get()->row('user_id');
-
-        if (!$this->ion_auth->logged_in())
+         if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page
             redirect('auth/login', 'refresh');
         }
-        else
-        {
-            
-        $this->get_user_info($user_id);
-        $form_training = $this->data['form_training'] = $this->form_training_model->form_training($id);
+
+        $user_id= getValue('user_id', 'users_training', array('id'=>'where/'.$id));
+        $this->data['user_nik'] = $sess_nik = get_nik($user_id);
+        $this->data['sess_id'] = $this->session->userdata('user_id');
+
+        $this->data['form_training'] = $this->form_training_model->form_training($id)->result();
+        $this->data['_num_rows'] = $this->form_training_model->form_training($id)->num_rows();
 
         $this->data['id'] = $id;
         $title = $this->data['title'] = 'Form Training-'.get_name($user_id);
@@ -475,7 +463,6 @@ class form_training extends MX_Controller {
         $mpdf = new mPDF('A4');
         $mpdf->WriteHTML($html);
         $mpdf->Output($id.'-'.$title.'.pdf', 'I');
-        }
     }
 
     function _get_csrf_nonce()
@@ -544,10 +531,6 @@ class form_training extends MX_Controller {
 
                     $this->template->set_layout('default');
 
-                    $this->template->add_js('jquery.min.js');
-                    $this->template->add_js('bootstrap.min.js');
-
-                    $this->template->add_js('jquery-ui-1.10.1.custom.min.js');
                     $this->template->add_js('jquery.sidr.min.js');
                     $this->template->add_js('breakpoints.js');
                     $this->template->add_js('select2.min.js');

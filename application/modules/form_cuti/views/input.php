@@ -38,7 +38,7 @@
                       </div>
                       <div class="col-md-9">
                         <?php if(is_admin()){
-                        $style_up='class="select2" style="width:100%" id="emp_id" onChange="getUp()"';
+                        $style_up='class="select2" style="width:100%" id="emp_id" onChange="getDropDown()"';
                             echo form_dropdown('emp',$users,'',$style_up);
                         }else{?>
                         <select name="emp" id="emp" class="form-control" style="width:100%">
@@ -87,6 +87,66 @@
                         <input name="sisa_cuti" id="sisa_cuti" type="text"  class="form-control" placeholder="Sisa Cuti" value="<?php echo $sisa_cuti ?>" disabled="disabled">
                       </div>
                     </div>
+                    <p>&nbsp;</p>
+                    <div class="row form-row">
+                      <div class="col-md-3">
+                        <label class="bold form-label text-right"><?php echo 'Approval' ?></label>
+                      </div>
+                    </div>
+
+                    <div class="row form-row">
+                      <div class="col-md-3">
+                        <label class="form-label text-right"><?php echo 'Supervisor' ?></label>
+                      </div>
+                      <div class="col-md-9">
+                      <?php if(is_admin()){
+                        $style_up='class="select2" style="width:100%" id="atasan1"';
+                            echo form_dropdown('atasan1',array('0'=>'- Pilih Supervisor -'),'',$style_up);
+                        }else{?>
+                        <select name="atasan1" id="atasan1" class="select2" style="width:100%">
+                            <?php foreach ($user_pengganti as $key => $up) : ?>
+                              <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
+                            <?php endforeach;?>
+                          </select>
+                            <?php }?>
+                      </div>
+                    </div>
+
+                    <div class="row form-row">
+                      <div class="col-md-3">
+                        <label class="form-label text-right"><?php echo 'Ka. Bagian' ?></label>
+                      </div>
+                      <div class="col-md-9">
+                      <?php if(is_admin()){
+                        $style_up='class="select2" style="width:100%" id="atasan2"';
+                            echo form_dropdown('atasan2',array('0'=>'- Pilih Ka. Bagian -'),'',$style_up);
+                        }else{?>
+                        <select name="atasan2" id="atasan2" class="select2" style="width:100%">
+                            <?php foreach ($user_pengganti as $key => $up) : ?>
+                              <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
+                            <?php endforeach;?>
+                          </select>
+                            <?php }?>
+                      </div>
+                    </div>
+
+                    <div class="row form-row">
+                      <div class="col-md-3">
+                        <label class="form-label text-right"><?php echo 'Atasan Lainnya' ?></label>
+                      </div>
+                      <div class="col-md-9">
+                      <?php if(is_admin()){
+                        $style_up='class="select2" style="width:100%" id="atasan3"';
+                            echo form_dropdown('atasan3',array('0'=>'- Pilih Atasan Lainnya -'),'',$style_up);
+                        }else{?>
+                        <select name="atasan3" id="atasan3" class="select2" style="width:100%">
+                            <?php foreach ($user_pengganti as $key => $up) : ?>
+                              <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
+                            <?php endforeach;?>
+                          </select>
+                            <?php }?>
+                      </div>
+                    </div>
                     
                   </div>
                   <div class="col-md-7">
@@ -117,7 +177,7 @@
                       </div>
                       <div class="col-md-3">
                         <div id="datepicker_start" class="input-append date success no-padding">
-                          <input type="text" class="form-control" name="start_cuti">
+                          <input type="text" class="form-control" name="start_cuti" required>
                           <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span> 
                         </div>
                       </div>
@@ -126,7 +186,7 @@
                       </div>
                       <div class="col-md-3">
                         <div id="datepicker_end" class="input-append date success no-padding">
-                          <input type="text" class="form-control" name="end_cuti">
+                          <input type="text" class="form-control" name="end_cuti" required>
                           <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span> 
                         </div>
                       </div>
@@ -162,7 +222,7 @@
                         <label class="form-label text-right"><?php echo 'Remarks' ?></label>
                       </div>
                       <div class="col-md-9">
-                        <input name="remarks" id="remarks" type="text"  class="form-control" placeholder="remarks">
+                        <input name="remarks" id="remarks" type="text"  class="form-control" placeholder="remarks" required>
                       </div>
                     </div>
                     <div class="row form-row">
@@ -172,7 +232,7 @@
                       <div class="col-md-9">
                       <?php if(is_admin()){
                         $style_up='class="select2" style="width:100%" id="user_pengganti"';
-                            echo form_dropdown('user_pengganti',array('Pilih User'=>'- Pilih User -'),'',$style_up);
+                            echo form_dropdown('user_pengganti',array('0'=>'- Pilih User -'),'',$style_up);
                         }else{?>
                         <select name="user_pengganti" id="user_pengganti" class="select2" style="width:100%">
                             <?php foreach ($user_pengganti as $key => $up) : ?>
@@ -187,7 +247,7 @@
                         <label class="form-label text-right"><?php echo 'No. HP' ?></label>
                       </div>
                       <div class="col-md-9">
-                        <input name="contact" id="contact" type="text"  class="form-control" placeholder="contact">
+                        <input name="contact" id="contact" type="text"  class="form-control" placeholder="contact" required>
                       </div>
                     </div>
                     <div class="row form-row">
@@ -195,7 +255,7 @@
                         <label class="form-label text-right"><?php echo lang('addr_cuti') ?></label>
                       </div>
                       <div class="col-md-9">
-                        <input name="alamat" id="alamat" type="text"  class="form-control" placeholder="Alamat">
+                        <input name="alamat" id="alamat" type="text"  class="form-control" placeholder="Alamat" required>
                       </div>
                     </div>
                   </div>
@@ -220,7 +280,54 @@
   <!-- END PAGE -->
 
   <script type="text/javascript">
-    function getUp()
+
+    function getDropDown()
+    {
+      getAtasan1();
+      getAtasan2();
+      getAtasan3();
+      getUp();
+    }
+    function getAtasan1()
+     {
+         emp_id = document.getElementById("emp_id").value;
+         $.ajax({
+             url:"<?php echo base_url();?>form_cuti/get_up/"+emp_id+"",
+             success: function(response){
+             $("#atasan1").html(response);
+             },
+             dataType:"html"
+         });
+         return false;
+     }
+
+     function getAtasan2()
+     {
+         emp_id = document.getElementById("emp_id").value;
+         $.ajax({
+             url:"<?php echo base_url();?>form_cuti/get_up/"+emp_id+"",
+             success: function(response){
+             $("#atasan2").html(response);
+             },
+             dataType:"html"
+         });
+         return false;
+     }
+
+     function getAtasan3()
+     {
+         emp_id = document.getElementById("emp_id").value;
+         $.ajax({
+             url:"<?php echo base_url();?>form_cuti/get_up/"+emp_id+"",
+             success: function(response){
+             $("#atasan3").html(response);
+             },
+             dataType:"html"
+         });
+         return false;
+     }
+
+     function getUp()
      {
          emp_id = document.getElementById("emp_id").value;
          $.ajax({

@@ -28,26 +28,26 @@
                         <label class="form-label text-right">Nama</label>
                       </div>
                       <div class="col-md-3">
-                        <?php if(is_admin()){?>
-                          <select id="emp" class="select2" style="width:100%" name="emp">
+                      <?php 
+                      if(is_admin()){?>
+                        <select id="emp" class="select2" style="width:100%" name="emp" onchange="getDropDown()">
                           <?php
                           foreach ($all_users->result() as $u) :
                             $selected = $u->id == $sess_id ? 'selected = selected' : '';?>
-                            <option value="<?php echo $u->id?>" <?php echo $selected?>><?php echo $u->username; ?></option>
+                            <option value="<?php echo $u->id?>" <?php echo $selected?>><?php echo $u->username?></option>
                           <?php endforeach; ?>
                         </select>
-                        <?php }else{?>
-                        <select id="emp" class="" style="width:100%" name="emp">
-                            <option value="<?php echo $sess_id?>"><?php echo get_name($sess_id) ?></option>
-                        </select>
-                        <?php } ?>
+                      <?php }else{?>
+                        <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama Karyawan" value="<?php echo get_name($sess_id)?>" disabled="disabled">
+                        <input name="emp" type="hidden" value="<?php echo $sess_id?>">
+                      <?php } ?>
                       </div>
 
                       <div class="col-md-2">
                         <label class="form-label text-right">Wilayah</label>
                       </div>
                       <div class="col-md-3">
-                        <input name="form3LastName" id="bu" type="text"  class="form-control" placeholder="Wilayah" value="" disabled="disabled">
+                        <input name="form3LastName" id="bu" type="text"  class="form-control" placeholder="Wilayah" value="<?php echo get_user_bu($sess_nik)?>" disabled="disabled">
                       </div>
 
                     </div>
@@ -57,13 +57,13 @@
                         <label class="form-label text-right">NIK</label>
                       </div>
                       <div class="col-md-3">
-                        <input name="form3LastName" id="nik" type="text"  class="form-control" placeholder="NIK" value="" disabled="disabled">
+                        <input name="form3LastName" id="nik" type="text"  class="form-control" placeholder="NIK" value="<?php echo $sess_nik?>" disabled="disabled">
                       </div>
                       <div class="col-md-2">
                         <label class="form-label text-right">Dept/Bagian</label>
                       </div>
                       <div class="col-md-3">
-                        <input name="form3LastName" id="organization" type="text"  class="form-control" placeholder="Dept/Bagian" value="" disabled="disabled">
+                        <input name="form3LastName" id="organization" type="text"  class="form-control" placeholder="Dept/Bagian" value="<?php echo get_user_organization($sess_nik)?>" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
@@ -71,7 +71,7 @@
                         <label class="form-label text-right">Jabatan</label>
                       </div>
                       <div class="col-md-3">
-                        <input name="form3LastName" id="position" type="text"  class="form-control" placeholder="Jabatan" value="" disabled="disabled">
+                        <input name="form3LastName" id="position" type="text"  class="form-control" placeholder="Jabatan" value="<?php echo get_user_position($sess_nik)?>" disabled="disabled">
                       </div>
                       <div class="col-md-2">
                         <label class="form-label text-right">Tanggal Akhir Kerja</label>
@@ -83,8 +83,9 @@
                         </div>    
                       </div>
                     </div>
+
                     <div class="row form-row">
-                    <div class="col-md-12">
+                      <div class="col-md-12">
                         <label class="form-label text-left">Alasan Berhenti Bekerja</label>
                       </div>
                     </div>
@@ -103,6 +104,8 @@
                         </div>
                       </div>
                     </div>
+
+                    
 
                       
                     <div class="row form-row">
@@ -159,6 +162,70 @@
                         <textarea id="text-editor" placeholder="Enter text ..." class="form-control" rows="3" name="rework_resign" required></textarea>
                       </div>
                     </div>
+
+                    <div class="row form-row">
+                      <div class="col-md-12">
+                        <label class="bold form-label text-left"><?php echo 'Approval' ?></label>
+                      </div>
+                    </div>
+
+                    <div class="row form-row">
+                      <div class="col-md-2">
+                        <label class="form-label text-left"><?php echo 'Supervisor' ?></label>
+                      </div>
+                      <div class="col-md-5">
+                      <?php if(is_admin()){
+                        $style_up='class="select2" style="width:100%" id="atasan1"';
+                            echo form_dropdown('atasan1',array('0'=>'- Pilih Supervisor -'),'',$style_up);
+                        }else{?>
+                        <select name="atasan1" id="atasan1" class="select2" style="width:100%">
+                            <option value="0">- Pilih Supervisor -</option>
+                            <?php foreach ($user_atasan as $key => $up) : ?>
+                              <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
+                            <?php endforeach;?>
+                          </select>
+                            <?php }?>
+                      </div>
+                    </div>
+
+                    <div class="row form-row">
+                      <div class="col-md-2">
+                        <label class="form-label text-left"><?php echo 'Ka. Bagian' ?></label>
+                      </div>
+                      <div class="col-md-5">
+                      <?php if(is_admin()){
+                        $style_up='class="select2" style="width:100%" id="atasan2"';
+                            echo form_dropdown('atasan2',array('0'=>'- Pilih Ka. Bagian -'),'',$style_up);
+                        }else{?>
+                        <select name="atasan2" id="atasan2" class="select2" style="width:100%">
+                            <option value="0">- Pilih Ka. Bagian -</option>
+                            <?php foreach ($user_atasan as $key => $up) : ?>
+                            <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
+                            <?php endforeach;?>
+                        </select>
+                      <?php }?>
+                      </div>
+                    </div>
+
+                    <div class="row form-row">
+                      <div class="col-md-2">
+                        <label class="form-label text-left"><?php echo 'Atasan Lainnya' ?></label>
+                      </div>
+                      <div class="col-md-5">
+                      <?php if(is_admin()){
+                        $style_up='class="select2" style="width:100%" id="atasan3"';
+                            echo form_dropdown('atasan3',array('0'=>'- Pilih Atasan Lainnya -'),'',$style_up);
+                        }else{?>
+                        <select name="atasan3" id="atasan3" class="select2" style="width:100%">
+                            <option value="0">- Pilih Atasan Lainnya -</option>
+                            <?php foreach ($user_atasan as $key => $up) : ?>
+                            <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
+                            <?php endforeach;?>
+                        </select>
+                            <?php }?>
+                      </div>
+                    </div>
+
                 </div>
                 <div class="form-actions">
                   <div class="pull-right">
@@ -177,4 +244,53 @@
       </div>
     
   </div>  
-  <!-- END PAGE --> 
+  <!-- END PAGE -->
+
+  <script type="text/javascript">
+
+    function getDropDown()
+    {
+      getAtasan1();
+      getAtasan2();
+      getAtasan3();
+    }
+
+    function getAtasan1()
+     {
+         emp = document.getElementById("emp").value;
+         $.ajax({
+             url:"<?php echo base_url();?>form_resignment/get_atasan/"+emp+"",
+             success: function(response){
+             $("#atasan1").html(response);
+             },
+             dataType:"html"
+         });
+         return false;
+     }
+
+     function getAtasan2()
+     {
+         emp = document.getElementById("emp").value;
+         $.ajax({
+             url:"<?php echo base_url();?>form_resignment/get_atasan/"+emp+"",
+             success: function(response){
+             $("#atasan2").html(response);
+             },
+             dataType:"html"
+         });
+         return false;
+     }
+
+     function getAtasan3()
+     {
+         emp = document.getElementById("emp").value;
+         $.ajax({
+             url:"<?php echo base_url();?>form_resignment/get_atasan/"+emp+"",
+             success: function(response){
+             $("#atasan3").html(response);
+             },
+             dataType:"html"
+         });
+         return false;
+     }
+  </script> 

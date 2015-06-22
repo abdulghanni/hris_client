@@ -69,8 +69,16 @@ $config['tables']['users_spd_luar_group']  = 'users_spd_luar_group';
 $config['tables']['users_spd_luar_report_group']  = 'users_spd_luar_report_group';
 $config['tables']['transportation']  = 'transportation';
 $config['tables']['city']  = 'city';
+$config['tables']['keterangan_absen']  = 'keterangan_absen';
+$config['tables']['users_absen']  = 'users_absen';
+$config['tables']['users_training']  = 'users_training';
+$config['tables']['penyelenggara']  = 'penyelenggara';
+$config['tables']['pembiayaan']  = 'pembiayaan';
+$config['tables']['training_type']  = 'training_type';
 $config['tables']['recruitment']  = 'users_recruitment';
 $config['tables']['users_medical']  = 'users_medical';
+$config['tables']['users_resignment']  = 'users_resignment';
+$config['tables']['alasan_resign']  = 'alasan_resign';
 
 /*
  | Users table column and Group table column you want to join WITH.

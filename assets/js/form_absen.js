@@ -1,50 +1,11 @@
 $(document).ready(function() {              
-    $(".select2").select2();
+$(".select2").select2();
+$('#limit').select2();
 
-    //Date Pickers
-
-      $('.input-append.date')
-        .datepicker({todayHighlight: true})
-        .on('changeDate', function(ev){
-            days();
-            $(this).datepicker('hide').blur();
-    });
-
-
-    function days() {
-                var a = $("#datepicker_start").datepicker('getFormattedDate'),
-                    b = $("#datepicker_end").datepicker('getFormattedDate'),
-                    c = 24*60*60*1000,
-                    diffDays = Math.floor(( Date.parse(b) - Date.parse(a) ) / c);
-                $("#jml_hari").val(diffDays);
-                $("#jml_cuti").val(diffDays);
-    }
-
-    function formatDate(_d){
-         var d = new Date(_d);
-        var curr_date = d.getDate();
-        if(curr_date < 10)
-            curr_date = "0" + curr_date;
-        
-        var curr_month = d.getMonth() + 1; //Months are zero based
-        if(curr_month < 10)
-            curr_month = "0" + curr_month;
-        
-        var curr_year = d.getFullYear();   
-        return curr_month + '/' + curr_date + '/' + curr_year;
-    }
-
-    $('#jml_hari').change(function(){        
-        if($(this).val() != ''){
-            var days = $(this).val();
-            var start= new Date($("#datepicker_start").val());
-            var newStart = start.setDate(start.getDate() + parseInt(days));    
-            $("#datepicker_end").val(formatDate(newStart));
-        }else{
-            $("#datepicker_end").val($("#datepicker_start").val());
-        }
-        
-    });
+$('.input-append.date').datepicker({
+    format: "dd-mm-yyyy",
+    autoclose: true,
+    todayHighlight: true
 });
 
 $("#emp").change(function() {
@@ -67,22 +28,25 @@ $("#emp").change(function() {
       
 
 //approval absen
-var url = $.url();
-var baseurl = url.attr('protocol')+'://'+url.attr('host')+'/';
-var absen_url = baseurl+'hris_client/form_absen';
-var uri1 = absen_url+'/do_approve_spv/'+url.segment(4);
-var uri2 = absen_url+'/do_approve_kbg/'+url.segment(4);
+$('button[data-loading-text]').click(function () {
+    $(this).button('loading');
+    });
+
+    var url = $.url();
+    var baseurl = url.attr('protocol')+'://'+url.attr('host')+'/'+url.segment(1)+'/';
+    var uri1 = url.segment(2)+'/do_approve/'+url.segment(4)+'/lv1';
+    var uri2 = url.segment(2)+'/do_approve/'+url.segment(4)+'/lv2';
+    var uri3 = url.segment(2)+'/do_approve/'+url.segment(4)+'/lv3';
+    var uri4 = url.segment(2)+'/do_approve/'+url.segment(4)+'/hrd';
+
     $('#btn_app_lv1').click(function(){
-        $('#formAppLv1').submit(function(ev){
+        $('#formAbsen').submit(function(ev){
             $.ajax({
                 type: 'POST',
-                url: uri1,
-                data: $('#formAppLv1').serialize(),
+                url: baseurl+uri1,
+                data: $('#formAbsen').serialize(),
                 success: function() {
-                    setTimeout(function(){
-                        location.reload()},
-                       2000
-                    )
+                     location.reload()
                 }
             });
             ev.preventDefault(); 
@@ -90,16 +54,41 @@ var uri2 = absen_url+'/do_approve_kbg/'+url.segment(4);
     });
 
     $('#btn_app_lv2').click(function(){
-        $('#formAppLv2').submit(function(ev){
+        $('#formAbsen').submit(function(ev){
             $.ajax({
                 type: 'POST',
-                url: uri2,
-                data: $('#formAppLv2').serialize(),
+                url: baseurl+uri2,
+                data: $('#formAbsen').serialize(),
                 success: function() {
-                    setTimeout(function(){
-                        location.reload()},
-                       2000
-                    )
+                     location.reload()
+                }
+            });
+            ev.preventDefault(); 
+        });  
+    });
+
+    $('#btn_app_lv3').click(function(){
+        $('#formAbsen').submit(function(ev){
+            $.ajax({
+                type: 'POST',
+                url: baseurl+uri3,
+                data: $('#formAbsen').serialize(),
+                success: function() {
+                     location.reload()
+                }
+            });
+            ev.preventDefault(); 
+        });  
+    });
+
+    $('#btn_app_hrd').click(function(){
+        $('#formAbsen').submit(function(ev){
+            $.ajax({
+                type: 'POST',
+                url: baseurl+uri4,
+                data: $('#formAbsen').serialize(),
+                success: function() {
+                     location.reload()
                 }
             });
             ev.preventDefault(); 
@@ -107,15 +96,14 @@ var uri2 = absen_url+'/do_approve_kbg/'+url.segment(4);
     });
 
 //input absen
-$(document).ready(function(){
-                $('#formaddabsen').submit(function(response){
-                    $.post($('#formaddabsen').attr('action'), $('#formaddabsen').serialize(),function(json){
-                        if(json.st == 0){
-                            $('#MsgBad').html(json.errors).fadeIn();
-                        }else{
-                            window.location.href = absen_url;
-                        }
-                    }, 'json');
-                    return false;
-                });
-            });
+    $('#formaddabsen').submit(function(response){
+        $.post($('#formaddabsen').attr('action'), $('#formaddabsen').serialize(),function(json){
+            if(json.st == 0){
+                $('#MsgBad').html(json.errors).fadeIn();
+            }else{
+                window.location.href = baseurl+url.segment(2);
+            }
+        }, 'json');
+        return false;
+    });
+});

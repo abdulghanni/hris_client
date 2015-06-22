@@ -28,16 +28,16 @@
                       <div class="col-md-10">
                           <?php 
                           if(is_admin()){?>
-                            <select id="emp" class="select2" style="width:100%" name="emp">
+                            <select id="emp" class="select2" style="width:100%" name="emp" onchange="getDropDown()">
                               <?php
                               foreach ($all_users->result() as $u) :
                                 $selected = $u->id == $sess_id ? 'selected = selected' : '';?>
-                                <option value="<?php echo $u->id?>" <?php echo $selected?>><?php echo $u->username; ?></option>
+                                <option value="<?php echo $u->id?>" <?php echo $selected?>><?php echo $u->username?></option>
                               <?php endforeach; ?>
                             </select>
                           <?php }else{?>
                             <?php if($subordinate->num_rows() > 0){?>
-                            <select id="emp" class="" style="width:100%" name="emp">
+                            <select id="emp" class="select2" style="width:100%" name="emp" onchange="getDropDown()">
                                 <?php foreach($subordinate->result() as $row):?>
                             <option value="<?php echo $row->id?>"><?php echo get_name($row->id) ?></option>
                             <?php endforeach;?>
@@ -78,7 +78,7 @@
                         <label class="form-label text-right">Nama Program Pelatihan</label>
                       </div>
                       <div class="col-md-10">
-                        <input name="training_name" id="form3LastName" type="text"  class="form-control" placeholder="Nama program pelatihan" value="">
+                        <input name="training_name" id="form3LastName" type="text"  class="form-control" placeholder="Nama program pelatihan" value="" required>
                       </div>
                     </div>
                     <div class="row form-row">
@@ -86,14 +86,79 @@
                         <label class="form-label text-right">Tujuan Pelatihan</label>
                       </div>
                       <div class="col-md-10">
-                        <input name="tujuan_training" id="form3LastName" type="text"  class="form-control" placeholder="Tujuan pelatihan" value="">
+                        <input name="tujuan_training" id="form3LastName" type="text"  class="form-control" placeholder="Tujuan pelatihan" value="" required>
                       </div>
                     </div>
+
+                    <div class="row form-row">
+                      <div class="col-md-2">
+                        <label class="bold form-label text-right"><?php echo 'Approval' ?></label>
+                      </div>
+                    </div>
+
+                    <div class="row form-row">
+                      <div class="col-md-2">
+                        <label class="form-label text-right"><?php echo 'Supervisor' ?></label>
+                      </div>
+                      <div class="col-md-10">
+                      <?php if(is_admin()){
+                        $style_up='class="select2" style="width:100%" id="atasan1"';
+                            echo form_dropdown('atasan1',array('0'=>'- Pilih Supervisor -'),'',$style_up);
+                        }else{?>
+                        <select name="atasan1" id="atasan1" class="select2" style="width:100%">
+                            <option value="0">- Pilih Supervisor -</option>
+                            <?php foreach ($user_atasan as $key => $up) : ?>
+                              <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
+                            <?php endforeach;?>
+                          </select>
+                            <?php }?>
+                      </div>
+                    </div>
+
+                    <div class="row form-row">
+                      <div class="col-md-2">
+                        <label class="form-label text-right"><?php echo 'Ka. Bagian' ?></label>
+                      </div>
+                      <div class="col-md-10">
+                      <?php if(is_admin()){
+                        $style_up='class="select2" style="width:100%" id="atasan2"';
+                            echo form_dropdown('atasan2',array('0'=>'- Pilih Ka. Bagian -'),'',$style_up);
+                        }else{?>
+                        <select name="atasan2" id="atasan2" class="select2" style="width:100%">
+                            <option value="0">- Pilih Ka. Bagian -</option>
+                            <?php foreach ($user_atasan as $key => $up) : ?>
+                            <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
+                            <?php endforeach;?>
+                        </select>
+                      <?php }?>
+                      </div>
+                    </div>
+
+                    <div class="row form-row">
+                      <div class="col-md-2">
+                        <label class="form-label text-right"><?php echo 'Atasan Lainnya' ?></label>
+                      </div>
+                      <div class="col-md-10">
+                      <?php if(is_admin()){
+                        $style_up='class="select2" style="width:100%" id="atasan3"';
+                            echo form_dropdown('atasan3',array('0'=>'- Pilih Atasan Lainnya -'),'',$style_up);
+                        }else{?>
+                        <select name="atasan3" id="atasan3" class="select2" style="width:100%">
+                            <option value="0">- Pilih Atasan Lainnya -</option>
+                            <?php foreach ($user_atasan as $key => $up) : ?>
+                            <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
+                            <?php endforeach;?>
+                        </select>
+                            <?php }?>
+                      </div>
+                    </div>
+
+
                   </div>
                 </div>
                 <div class="form-actions">
                   <div class="pull-right">
-                    <button class="btn btn-danger btn-cons" type="submit"><i class="icon-ok"></i> Save</button>
+                    <button class="btn btn-danger btn-cons" id="btnAdd" type="submit"><i class="icon-ok"></i> Save</button>
                     <a href="<?php echo site_url('form_training')?>"><button class="btn btn-white btn-cons" type="button">Cancel</button></a>
                   </div>
                 </div>
@@ -109,3 +174,52 @@
 		
 	</div>  
 	<!-- END PAGE --> 
+
+  <script type="text/javascript">
+
+    function getDropDown()
+    {
+      getAtasan1();
+      getAtasan2();
+      getAtasan3();
+    }
+
+    function getAtasan1()
+     {
+         emp = document.getElementById("emp").value;
+         $.ajax({
+             url:"<?php echo base_url();?>form_training/get_atasan/"+emp+"",
+             success: function(response){
+             $("#atasan1").html(response);
+             },
+             dataType:"html"
+         });
+         return false;
+     }
+
+     function getAtasan2()
+     {
+         emp = document.getElementById("emp").value;
+         $.ajax({
+             url:"<?php echo base_url();?>form_training/get_atasan/"+emp+"",
+             success: function(response){
+             $("#atasan2").html(response);
+             },
+             dataType:"html"
+         });
+         return false;
+     }
+
+     function getAtasan3()
+     {
+         emp = document.getElementById("emp").value;
+         $.ajax({
+             url:"<?php echo base_url();?>form_training/get_atasan/"+emp+"",
+             success: function(response){
+             $("#atasan3").html(response);
+             },
+             dataType:"html"
+         });
+         return false;
+     }
+  </script>

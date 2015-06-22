@@ -38,8 +38,8 @@
   <p align="left"><img src="<?php echo assets_url('img/erlangga.jpg')?>" width="296" height="80" /></p>
   <p align="center" class="style6">Form Keterangan Tidak Absen</p>
 </div>
-<?php foreach($form_absen->result() as $row):?>
-<table width="988" height="135" border="0" style="padding-left:30px;">
+<?php foreach($form_absen as $row):?>
+<table width="1000" height="135" border="0" style="padding-left:30px;">
   <tr>
     <td width="275" height="40"><span class="style3">No</span></td>
     <td width="10" height="40"><div align="center">:</div></td>
@@ -58,7 +58,7 @@
   <tr>
     <td height="40"><span class="style3">Dept/Bagian</span></td>
     <td height="40"><div align="center">:</div></td>
-    <td height="40"><span class="style3"><?php echo $user_info['ORGANIZATION']; ?></span></td>
+    <td height="40"><span class="style3"><?php echo get_user_organization($user_nik) ?></span></td>
   </tr>
   <tr>
     <td height="40"><span class="style3">Keterangan</span></td>
@@ -71,44 +71,40 @@
     <td height="40"><span class="style3"><?php echo $row->alasan?></span></td>
   </tr>
 </table>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<div style="float: left; text-align: center; width: 30%;" class="style5">
-<p>Hormat Saya,</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-
-<p class="wf-submit">
-<span class="semi-bold"><?php echo get_name($row->user_id) ?></span><br/>
-<span class="small"><?php echo dateIndo($row->created_on) ?></span><br/>
-</p>
-</div>
-
-
-
-<div style="float: right;text-align: center; width: 30%;" class="style5">
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<?php if($row->is_app_lv1 == 1){?>
-<span class="semi-bold"><?php echo get_name($row->user_app_lv1) ?></span><br/>
-<span class="small"><?php echo dateIndo($row->date_app_lv1)?></span><br/>
-<?php } ?>
-<span class="small">(Supervisor)</span>
-</div>
-
-<div style="float: right;text-align: center; width: 30%;" class="style5">
-<p>Mengetahui,</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<?php if($row->is_app_lv2 == 1){?>
-<span class="semi-bold"><?php echo get_name($row->user_app_lv2) ?></span><br/>
-<span class="small"><?php echo dateIndo($row->date_app_lv2)?></span><br/>
-<?php } ?>
-<span class="small">(Ka. Cabang / Ka. Bagian)</span>
-</div>
+<table width="1000" align="center">
+  <tbody>
+    <tr>
+      <th width="250" height="250"></th>
+      <th width="250">Disetujui Oleh,</th>
+      <th width="250"></th>
+      <th width="250"></th>
+    </tr>
+    <tr>
+    <?php if(!empty($row->user_app_lv1)){?>
+      <td height="80" align="center"><?php echo get_name($row->user_app_lv1)?><br/><?php echo dateIndo($row->date_app_lv1)?></td>
+    <?php }?>
+    <?php if(!empty($row->user_app_lv2)){?>
+      <td align="center"><?php echo get_name($row->user_app_lv2)?><br/><?php echo dateIndo($row->date_app_lv2)?></td>
+    <?php }?>
+    <?php if(!empty($row->user_app_lv3)){?>
+      <td align="center"><?php echo get_name($row->user_app_lv3)?><br/><?php echo dateIndo($row->date_app_lv3)?></td>
+    <?php }?>
+      <td align="center"><?php echo get_name($row->user_app_hrd)?><br/><?php echo dateIndo($row->date_app_hrd)?></td>
+    </tr>
+    <tr >
+    <?php if(!empty($row->user_app_lv1)){?>
+      <td align="center">(Supervisor)</td>
+    <?php }?>
+    <?php if(!empty($row->user_app_lv2)){?>
+      <td align="center">(Ka. Bagian)</td>
+      <?php }?>
+    <?php if(!empty($row->user_app_lv3)){?>
+      <td align="center"><?php echo '('.get_user_position($row->user_app_lv3).')'?></td>
+    <?php } ?>
+      <td align="center">(HRD Database)</td>
+    </tr>
+  </tbody>
+</table>
 
 <div style="clear: both; margin: 0pt; padding: 0pt; "></div>
 <p>&nbsp;</p>

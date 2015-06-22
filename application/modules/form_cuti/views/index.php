@@ -29,6 +29,7 @@
                                   <th width="10%"><?php echo lang('count_day') ?></th>
                                   <th width="10%" style="text-align:center;">appr. spv</th>
                                   <th width="10%" style="text-align:center;">appr. ka. bag</th>
+                                  <th width="10%" style="text-align:center;">appr. Atasan Lainnya</th>
                                   <th width="10%" style="text-align:center;">appr. HRD</th>
                                   <th width="10%" style="align:center;">cetak</th>
                                 </tr>
@@ -37,73 +38,59 @@
                                 <?php if ($_num_rows > 0) {
                                   foreach ($form_cuti as $user) :
                                   $id_cuti = $user->id;
-                                  $session_id = get_nik($this->session->userdata('user_id'));
+                                  $session_nik = get_nik($this->session->userdata('user_id'));
                                   $id_user = $this->session->userdata('user_id');
-                                  $txt_app_lv1 = $txt_app_lv2 = $txt_app_lv3 = "<i class='icon-minus' title = 'Pending'></i>";
+                                  $txt_app_lv1 = $txt_app_lv2 = $txt_app_lv3 = $txt_app_hrd = "<i class='icon-minus' title = 'Pending'></i>";
                                   $approval_status_lv1 = ($user->approval_status_id_lv1 == 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($user->approval_status_id_lv1 == 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
                                   $approval_status_lv2 = ($user->approval_status_id_lv2 == 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($user->approval_status_id_lv2 == 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
                                   $approval_status_lv3 = ($user->approval_status_id_lv3 == 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($user->approval_status_id_lv3 == 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
-
-                                  // approval cuti
-                                  //Approval Level 1
+                                  $approval_status_hrd = ($user->approval_status_id_hrd == 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($user->approval_status_id_hrd == 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
                                   
-                                  if(!empty(is_have_subordinate($session_id)))
-                                  {
-                                    if(cek_subordinate(is_have_subordinate($session_id),'id', $user->user_id)){
-                                          if($user->is_app_lv1 == 0){
-                                              $txt_app_lv1 = "<a href='".site_url('form_cuti/approval_spv/'.$user->id)."''>
-                                                  <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-paste'></i></button>
-                                              </a>";
-                                          }else{
-                                            $txt_app_lv1 =  "<a href='".site_url('form_cuti/approval_spv/'.$user->id)."''>$approval_status_lv1</a>";
-                                            
-                                          }
-                                      }elseif($user->is_app_lv1== 1){
-                                        $txt_app_lv1 =  "<a href='".site_url('form_cuti/approval_spv/'.$user->id)."''>$approval_status_lv1</a>";
-                                      }elseif($user->is_app_lv1== 0){
-                                         $txt_app_lv1 = '-';
-                                      }
-                                  }else{
-                                    if ($user->is_app_lv1== 1){
-                                    $txt_app_lv1 =  "<a href='".site_url('form_cuti/approval_spv/'.$user->id)."''>$approval_status_lv1</a>";
-                                    }
+                  
+                                  //Approval Level 1
+                                  if(!empty($user->user_app_lv1) && $user->is_app_lv1 == 0 && $session_nik == $user->user_app_lv1){
+                                      $txt_app_lv1 = "<a href='".site_url('form_cuti/approval/'.$user->id)."''>
+                                                      <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-edit'></i></button>
+                                                      </a>";
+                                    }elseif(!empty($user->user_app_lv1)){
+                                      $txt_app_lv1 = "<a href='".site_url('form_cuti/approval/'.$user->id)."''>$approval_status_lv1</a>";
+                                    }else{
+                                    $txt_app_lv1 = "<i class='icon-circle' title = 'Tidak Butuh Approval'></i>";
                                   }
+                                  
 
                                   //ApprovalLevel 2
                                   
-                                  if(!empty(is_have_subsubordinate($id_user)))
-                                  {
-                                    if(cek_subordinate(is_have_subsubordinate($id_user),'id', $user->user_id)){
-                                          if($user->is_app_lv2 == 0){
-                                              $txt_app_lv2 = "<a href='".site_url('form_cuti/approval_kbg/'.$user->id)."''>
-                                                  <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-paste'></i></button>
-                                              </a>";
-                                          }else{
-                                            $txt_app_lv2 =  "<a href='".site_url('form_cuti/approval_kbg/'.$user->id)."''>$approval_status_lv2</a>";
-                                            
-                                          }
-                                     }else{
-                                     
-                                     }
-                                  }else{
-                                    if ($user->is_app_lv2== 1){
-                                    $txt_app_lv2 =  "<a href='".site_url('form_cuti/approval_kbg/'.$user->id)."''>$approval_status_lv2</a>";
-                                    }
+                                  if(!empty($user->user_app_lv2) && $user->is_app_lv2 == 0 && $session_nik == $user->user_app_lv2){
+                                      $txt_app_lv2 = "<a href='".site_url('form_cuti/approval/'.$user->id)."''>
+                                                      <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-edit'></i></button>
+                                                      </a>";
+                                    }elseif(!empty($user->user_app_lv2)){
+                                      $txt_app_lv2 = "<a href='".site_url('form_cuti/approval/'.$user->id)."''>$approval_status_lv2</a>";
+                                    }else{
+                                    $txt_app_lv2 = "<i class='icon-circle' title = 'Tidak Butuh Approval'></i>";
                                   }
 
                                   //Approval Level 3
-                                    if(is_admin()){
-                                          if($user->is_app_lv3 == 0){
-                                              $txt_app_lv3 = "<a href='".site_url('form_cuti/approval_hrd/'.$user->id)."''>
-                                                  <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-paste'></i></button>
-                                              </a>";
-                                          }else{
-                                            $txt_app_lv3 =  "<a href='".site_url('form_cuti/approval_hrd/'.$user->id)."''>$approval_status_lv3</a>";
-                                            
-                                          }
-                                      }elseif($user->is_app_lv3== 1){
-                                        $txt_app_lv3 =  "<a href='".site_url('form_cuti/approval_hrd/'.$user->id)."''>$approval_status_lv3</a>";
-                                      }
+
+                                  if(!empty($user->user_app_lv3) && $user->is_app_lv3 == 0 && $session_nik == $user->user_app_lv3){
+                                      $txt_app_lv3 = "<a href='".site_url('form_cuti/approval/'.$user->id)."''>
+                                                      <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-edit'></i></button>
+                                                      </a>";
+                                    }elseif(!empty($user->user_app_lv3)){
+                                      $txt_app_lv3 = "<a href='".site_url('form_cuti/approval/'.$user->id)."''>$approval_status_lv3</a>";
+                                    }else{
+                                    $txt_app_lv3 = "<i class='icon-circle' title = 'Tidak Butuh Approval'></i>";
+                                  }
+
+                                  //Approval HRD
+                                    if(is_admin()&&$user->is_app_lv3 == 0){
+                                      $txt_app_hrd = "<a href='".site_url('form_cuti/approval/'.$user->id)."''>
+                                                      <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-edit'></i></button>
+                                                      </a>";
+                                    }elseif($user->is_app_lv3 == 1){
+                                      $txt_app_hrd =  "<a href='".site_url('form_cuti/approval/'.$user->id)."''>$approval_status_hrd</a>";
+                                    }
 
 
                                   // date cuti
@@ -143,12 +130,11 @@
                                     <td style="text-align:center;">
                                       <?php echo $txt_app_lv3; ?>
                                     </td>
+                                    <td style="text-align:center;">
+                                      <?php echo $txt_app_hrd; ?>
+                                    </td>
                                     <td class="text-center">
-                                    <?php if($user->is_app_lv1 == 1 && $user->is_app_lv2 == 1 && $user->is_app_lv3 == 1){?>
-                                            <a href="<?php echo site_url('form_cuti/form_cuti_pdf/'.$user->id)?>"><i class="icon-print"></i></a>
-                                          <?php }else{ ?>
-                                            <i class="icon-print"></i>
-                                          <?php } ?>
+                                       <a href="<?php echo site_url('form_cuti/form_cuti_pdf/'.$user->id)?>"><i class="icon-print"></i></a>
                                     </td>
                                   </tr>
                                   <tr id="cutidetail-<?php echo $id_cuti; ?>" style="display:none">
@@ -247,7 +233,7 @@
                               </tbody>
                           </table>
                   </div>
-
+                  <?php if($_num_rows>0):?>
                   <div class="row">
                     <div class="col-md-4 page_limit">
                         <?php echo form_open(uri_string());?>
@@ -271,6 +257,7 @@
                       </ul>
                     </div>
                   </div>
+                <?php endif; ?>
 
               </div>
           </div>

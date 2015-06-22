@@ -3164,7 +3164,7 @@ class Auth extends MX_Controller {
                 {
                     $this->template->set_layout('single');
 
-                    $this->template->add_js('main.js');
+                    //$this->template->add_js('main.js');
                     $this->template->add_js('jquery.validate.min.js');
 
                     $this->template->add_css('main.css');

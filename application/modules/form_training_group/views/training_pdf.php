@@ -10,7 +10,7 @@
 <p>&nbsp;</p>
 <table width="1000" border="1" align="center">
 <?php
-foreach($form_training->result() as $user):?>
+foreach($form_training_group->result() as $user):?>
   <tbody>
     <tr>
       <th width="44" height="45" scope="col">No.</th>
