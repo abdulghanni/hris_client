@@ -130,32 +130,6 @@
                       
                     </div>
                 </div>
-                <div class="form-actions text-center">
-                    <!-- <div class="col-md-12 text-center"> -->
-                      <div class="row wf-cuti">
-                        <div class="col-md-6">
-                          <p>Yang mengajukan</p>
-                          <p class="wf-approve-sp">
-                            <span class="semi-bold"><?php echo get_name($row->user_id)?></span><br/>
-                            <span class="small"><?php echo dateIndo($row->created_on)?></span><br/>
-                          </p>
-                        </div>
-                        <div class="col-md-6">
-                          <p>Menyetujui</p>
-                          <p class="wf-approve-sp">
-                            <?php if($row->is_approved == 1){?>
-                            <span class="semi-bold"><?php echo get_name($row->user_approved)?></span><br/>
-                            <span class="small"><?php echo dateIndo($row->date_approved)?></span><br/>
-                            <?php }else{?>
-                            <span class="semi-bold">-</span><br/>
-                            <?php } ?>
-                          </p>
-                          
-                        </div>
-                      </div>
-                    <!-- /div> -->
-                  </div>
-
               <?php endforeach;}?>
               </form>
               </div>

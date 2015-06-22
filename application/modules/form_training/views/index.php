@@ -88,11 +88,11 @@
                                     }
 
                                      //Approval HRD
-                                    if(is_admin()&&$user->is_app_lv3 == 0){
+                                    if(is_admin()&&$user->is_app_hrd == 0){
                                       $txt_app_hrd = "<a href='".site_url('form_training/detail/'.$user->id)."''>
                                                       <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-edit'></i></button>
                                                       </a>";
-                                    }elseif($user->is_app_lv3 == 1){
+                                    }elseif($user->is_app_hrd == 1){
                                       $txt_app_hrd =  "<a href='".site_url('form_training/detail/'.$user->id)."''>$approval_status_hrd</a>";
                                     }
                                   ?>

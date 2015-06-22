@@ -181,10 +181,28 @@
 
 				                    <div class="row form-row">
 				                      <div class="col-md-3">
-				                        <?php echo lang('bpjs_number', 'bpjs');?>
+				                        <?php echo 'BPJS Tenaga Kerja';?>
 				                      </div>
 				                      <div class="col-md-9">
-				                      	<input type="text" class="form-control" value="<?php echo $bpjs?>" disabled="disabled">
+				                      	<input type="text" class="form-control" value="<?php echo $bpjs_kerja?>" disabled="disabled">
+				                      </div>
+				                    </div>
+
+				                    <div class="row form-row">
+				                      <div class="col-md-3">
+				                        <?php echo 'BPJS Kesehatan';?>
+				                      </div>
+				                      <div class="col-md-9">
+				                      	<input type="text" class="form-control" value="<?php echo $bpjs_kesehatan?>" disabled="disabled">
+				                      </div>
+				                    </div>
+
+				                    <div class="row form-row">
+				                      <div class="col-md-3">
+				                        <?php echo 'Bumida';?>
+				                      </div>
+				                      <div class="col-md-9">
+				                      	<input type="text" class="form-control" value="<?php echo $bumida?>" disabled="disabled">
 				                      </div>
 				                    </div>
 									

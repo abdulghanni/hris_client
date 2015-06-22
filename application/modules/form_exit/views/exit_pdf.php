@@ -210,7 +210,7 @@
     <tr>
       <td height="35" align="center">1</td>
       <td>&nbsp;Diberikan Uang Pesangon</td>
-      <td align="center">&nbsp;<?php echo ($row->is_uang_pesangon == 1) ? 'Ada' : 'Tidak';?></td>
+      <td align="center">&nbsp;<?php echo ($row->is_uang_pesangon == 1) ? 'Ya' : 'Tidak';?></td>
     	<td></td>
     	<td></td>
     	<td></td>
@@ -218,7 +218,7 @@
     <tr>
       <td height="35" align="center">2</td>
       <td>&nbsp;Diberikan Uang Pengganti Hak</td>
-      <td align="center">&nbsp;<?php echo ($row->is_uang_ganti == 1) ? 'Ada' : 'Tidak';?></td>
+      <td align="center">&nbsp;<?php echo ($row->is_uang_ganti == 1) ? 'Ya' : 'Tidak';?></td>
       <td></td>
       <td></td>
       <td></td>
@@ -226,7 +226,7 @@
     <tr>
       <td height="35" align="center">3</td>
       <td>&nbsp;Diberikan Uang Jasa</td>
-      <td align="center">&nbsp;<?php echo ($row->is_uang_jasa == 1) ? 'Ada' : 'Tidak';?></td>
+      <td align="center">&nbsp;<?php echo ($row->is_uang_jasa == 1) ? 'Ya' : 'Tidak';?></td>
       <td></td>
       <td></td>
       <td></td>
@@ -234,7 +234,7 @@
     <tr>
       <td height="35" align="center">3</td>
       <td>&nbsp;Diberikan Uang pisah</td>
-      <td align="center">&nbsp;<?php echo ($row->is_uang_pisah == 1) ? 'Ada' : 'Tidak';?></td>
+      <td align="center">&nbsp;<?php echo ($row->is_uang_pisah == 1) ? 'Ya' : 'Tidak';?></td>
       <td></td>
       <td></td>
       <td></td>
@@ -242,7 +242,7 @@
     <tr>
       <td height="35" align="center">4</td>
       <td>&nbsp;Diberikan Surat Keterangan Kerja</td>
-      <td align="center">&nbsp;<?php echo ($row->is_sk_kerja == 1) ? 'Ada' : 'Tidak';?></td>
+      <td align="center">&nbsp;<?php echo ($row->is_sk_kerja == 1) ? 'Ya' : 'Tidak';?></td>
       <td></td>
       <td></td>
       <td></td>
@@ -250,7 +250,7 @@
     <tr>
       <td height="35" align="center">5</td>
       <td>&nbsp;Diberikan Ijazah Asli Ybs.</td>
-      <td align="center">&nbsp;<?php echo ($row->is_ijazah == 1) ? 'Ada' : 'Tidak';?></td>
+      <td align="center">&nbsp;<?php echo ($row->is_ijazah == 1) ? 'Ya' : 'Tidak';?></td>
       <td></td>
       <td></td>
       <td></td>

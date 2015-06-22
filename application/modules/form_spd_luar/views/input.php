@@ -33,7 +33,6 @@
                       <div class="col-md-9">
                         <?php if(is_admin()){?>
                       <select id="emp_tc" class="select2" style="width:100%" name="emp_tc" onChange="getTr()">
-					  <option value="0">- Pilih User -</option>
                         <?php
                         foreach ($all_users as $up) {?>
                           <option value="<?php echo (!empty(get_nik($up->id))) ? get_nik($up->id) : $up->id ?>"><?php echo $up->user_name; ?></option>
@@ -51,7 +50,7 @@
                         <label class="form-label text-right">Dept/Bagian</label>
                       </div>
                       <div class="col-md-9">
-                        <input name="org_tc" id="org_tc" type="text"  class="form-control" placeholder="Dept/Bagian" value="<?php echo (!empty($user_info))?$user_info['ORGANIZATION']:'-';?>" disabled="disabled">
+                        <input name="org_tc" id="org_tc" type="text"  class="form-control" placeholder="Dept/Bagian" value="<?php echo get_user_organization($sess_nik);?>" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
@@ -59,7 +58,7 @@
                         <label class="form-label text-right">Jabatan</label>
                       </div>
                       <div class="col-md-9">
-                        <input name="pos_tc" id="pos_tc" type="text"  class="form-control" placeholder="Jabatan" value="<?php echo (!empty($user_info))?$user_info['POSITION']:'-';?>" disabled="disabled">
+                        <input name="pos_tc" id="pos_tc" type="text"  class="form-control" placeholder="Jabatan" value="<?php echo get_user_position($sess_nik);?>" disabled="disabled">
                       </div>
                     </div>
                     <?php  endforeach;
@@ -75,7 +74,7 @@
                       </div>
                       <div class="col-md-9">
                         <?php if(is_admin()){
-                        $style_tr='class="form-control input-sm" id="employee_sel"';
+                        $style_tr='class="select2" style="width:100%" id="employee_sel"';
                             echo form_dropdown('employee',array('Pilih User'=>'- Pilih User -'),'',$style_tr);
                         }else{?>
                         <select id="employee_sel" class="select2" style="width:100%" name="employee" >

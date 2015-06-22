@@ -111,8 +111,8 @@
 <p>Disetujui, </p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
-<span class="semi-bold"><?php echo get_name($user_app) ?></span><br/>
-<?php echo (!empty(get_user_position(get_nik($user_app)))) ? get_user_position(get_nik($user_app)) : ''?><br/>
+<span class="semi-bold"><?php echo (!empty($user_app))?get_name($user_app):'' ?></span><br/>
+<?php echo (!empty($user_app)) ? get_user_position(get_nik($user_app)) : ''?><br/>
 <?php echo dateIndo($date_app) ?>
 </div>
 

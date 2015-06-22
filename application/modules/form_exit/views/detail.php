@@ -373,7 +373,7 @@
                               <td>1</td>
                               <td>Diberikan Uang Pesangon</td>
                               <td>
-                                <?php $pesangon = ($rekomendasi->is_pesangon == 1) ? 'Ada' : 'Tidak';?>
+                                <?php $pesangon = ($rekomendasi->is_pesangon == 1) ? 'Ya' : 'Tidak';?>
                                   <div class="radio">
                                       <input id="pesangon" type="radio" name="pesangon" value="<?php echo $rekomendasi->is_pesangon?>" checked="checked">
                                     <label for="pesangon"><?php echo $pesangon?></label>
@@ -384,7 +384,7 @@
                               <td>2</td>
                               <td>Diberikan uang pengganti hak</td>
                               <td>
-                                <?php $uang_ganti = ($rekomendasi->is_uang_ganti == 1) ? 'Ada' : 'Tidak';?>
+                                <?php $uang_ganti = ($rekomendasi->is_uang_ganti == 1) ? 'Ya' : 'Tidak';?>
                                   <div class="radio">
                                       <input id="uang_ganti" type="radio" name="uang_ganti" value="<?php echo $rekomendasi->is_uang_ganti?>" checked="checked">
                                     <label for="uang_ganti"><?php echo $uang_ganti?></label>
@@ -395,7 +395,7 @@
                               <td>3</td>
                               <td>Diberikan uang jasa</td>
                               <td>
-                                <?php $uang_jasa = ($rekomendasi->is_uang_jasa == 1) ? 'Ada' : 'Tidak';?>
+                                <?php $uang_jasa = ($rekomendasi->is_uang_jasa == 1) ? 'Ya' : 'Tidak';?>
                                   <div class="radio">
                                       <input id="uang_jasa" type="radio" name="uang_jasa" value="<?php echo $rekomendasi->is_uang_jasa?>" checked="checked">
                                     <label for="uang_jasa"><?php echo $uang_jasa?></label>
@@ -406,7 +406,7 @@
                               <td>3</td>
                               <td>Diberikan uang pisah</td>
                               <td>
-                                <?php $uang_pisah = ($rekomendasi->is_uang_pisah == 1) ? 'Ada' : 'Tidak';?>
+                                <?php $uang_pisah = ($rekomendasi->is_uang_pisah == 1) ? 'Ya' : 'Tidak';?>
                                   <div class="radio">
                                       <input id="uang_pisah" type="radio" name="uang_pisah" value="<?php echo $rekomendasi->is_uang_pisah?>" checked="checked">
                                     <label for="uang_pisah"><?php echo $uang_pisah?></label>
@@ -417,7 +417,7 @@
                               <td>4</td>
                               <td>Diberikan surat keterangan kerja</td>
                               <td>
-                                <?php $sk_kerja = ($rekomendasi->is_sk_kerja == 1) ? 'Ada' : 'Tidak';?>
+                                <?php $sk_kerja = ($rekomendasi->is_sk_kerja == 1) ? 'Ya' : 'Tidak';?>
                                   <div class="radio">
                                       <input id="sk_kerja" type="radio" name="sk_kerja" value="<?php echo $rekomendasi->is_sk_kerja?>" checked="checked">
                                     <label for="sk_kerja"><?php echo $sk_kerja?></label>
@@ -428,7 +428,7 @@
                               <td>5</td>
                               <td>Diberikan ijazah asli ybs</td>
                               <td>
-                                <?php $ijazah = ($rekomendasi->is_ijazah == 1) ? 'Ada' : 'Tidak';?>
+                                <?php $ijazah = ($rekomendasi->is_ijazah == 1) ? 'Ya' : 'Tidak';?>
                                   <div class="radio">
                                       <input id="ijazah" type="radio" name="ijazah" value="<?php echo $rekomendasi->is_ijazah?>" checked="checked">
                                     <label for="ijazah"><?php echo $ijazah?></label>

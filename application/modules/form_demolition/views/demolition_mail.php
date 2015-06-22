@@ -94,27 +94,6 @@
                       
                     </div>
                 </div>
-                <div class="form-actions text-center">
-                    <!-- <div class="col-md-12 text-center"> -->
-                      <div class="row wf-cuti">
-                        <div class="col-md-6">
-                          <p>Yang mengajukan</p>
-                          <p class="wf-approve-sp">
-                            <span class="semi-bold"><?php echo get_name($row->created_by)?></span><br/>
-                            <span class="small"><?php echo dateIndo($row->created_on)?></span><br/>
-                          </p>
-                        </div>
-                        <div class="col-md-6">
-                          <p>Menyetujui</p>
-                          <p class="wf-approve-sp">
-                            <span class="semi-bold"><?php echo get_name($row->user_app)?></span><br/>
-                            <span class="small"><?php echo dateIndo($row->date_app)?></span><br/>
-                          </p>
-                          
-                        </div>
-                      </div>
-                    <!-- /div> -->
-                  </div>
               </form>
             <?php endforeach;} ?>
               </div>

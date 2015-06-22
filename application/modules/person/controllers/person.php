@@ -259,11 +259,15 @@ class Person extends MX_Controller {
 		
 		//print_mz($data);
 		$this->data['aviva'] = (!empty($user_emp->aviva)) ? $user_emp->aviva : (!empty($user_info['AVIVA'])) ? $user_info['AVIVA'] : '-';
-        $this->data['bpjs'] = (!empty($user_emp->aviva)) ? $user_emp->aviva : (!empty($user_info['JAMSOSTEK'])) ? $user_info['JAMSOSTEK'] : '-';
+        $this->data['bpjs_kerja'] = (!empty($user_emp->aviva)) ? $user_emp->aviva : (!empty($user_info['JAMSOSTEK'])) ? $user_info['JAMSOSTEK'] : '-';
         $this->data['ktp'] = (!empty($user_emp->aviva)) ? $user_emp->aviva : (!empty($user_info['KTP'])) ? $user_info['KTP'] : '-';
         $this->data['ktp_valid_date'] = (!empty($user_emp->aviva)) ? $user_emp->aviva : (!empty($user_info['KTPVALIDDATE'])) ? $user_info['KTPVALIDDATE'] : '-';
         $this->data['npwp'] = (!empty($user_emp->aviva)) ? $user_emp->aviva : (!empty($user_info['NPWP'])) ? $user_info['NPWP'] : '-';
         $this->data['tax'] = (!empty($user_emp->aviva)) ? $user_emp->aviva : (!empty($user_info['TAX'])) ? $user_info['TAX'] : '-';
+        $this->data['bpjs_kesehatan'] = (!empty($user_info['BPJS'])) ? $user_info['BPJS'] : '-';
+        $this->data['bpjs_date'] = (!empty($user_info['BPJS'])) ? $user_info['BPJSDATE'] : '-';
+        $this->data['bumida'] = (!empty($user_info['BUMIDA'])) ? $user_info['BUMIDA'] : '-';
+        $this->data['bumida_date'] = (!empty($user_info['BPJS'])) ? $user_info['BUMIDADATE'] : '-';
 		$this->data['seniority_date'] = (!empty($user_emp->seniority_date)) ? $user_emp->seniority_date : (!empty($user_info['SENIORITYDATE'])) ? $user_info['SENIORITYDATE'] : '-';
         $this->data['position'] = (!empty($user_emp->position)) ? $user_emp->position : (!empty($user_info['POSITION'])) ? $user_info['POSITION'] : '-';
         $this->data['empl_status'] = (!empty($user_emp->empl_status)) ? $user_emp->empl_status : (!empty($user_info['EMPLOYEESTATUS'])) ? $user_info['EMPLOYEESTATUS'] : '-';

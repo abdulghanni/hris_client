@@ -72,6 +72,7 @@ $config['tables']['city']  = 'city';
 $config['tables']['keterangan_absen']  = 'keterangan_absen';
 $config['tables']['users_absen']  = 'users_absen';
 $config['tables']['users_training']  = 'users_training';
+$config['tables']['users_training_group']  = 'users_training_group';
 $config['tables']['penyelenggara']  = 'penyelenggara';
 $config['tables']['pembiayaan']  = 'pembiayaan';
 $config['tables']['training_type']  = 'training_type';
@@ -133,25 +134,20 @@ $config['site_title']                 = "web-HRIS";       // Site Title, example
 $config['admin_email']                = "andi@komunigrafik.com"; // Admin Email, admin@example.com
 $config['default_group']              = 'members';           // Default group, use name
 $config['admin_group']                = array(
-    'admin' => 'admin',
-    'Admin IT' => 'Admin IT',
-    'Admin HRD' => 'Admin HRD',
-    'Admin Logistik' => 'Admin Logistik',
-    'Admin Koperasi' => 'Admin Koperasi',
-    'Admin Perpustakaan' => 'Admin Perpustakaan',
-);             // Default administrators group, use name
+                                        'admin' => 'admin',
+                                        );             // Default administrators group, use name
 $config['admin_bagian']               = array(
-    'Admin HRD' => 'Admin HRD',
-    'Admin IT' => 'Admin IT',
-    'Admin logistik' => 'Admin Logistik',
-    'Admin koperasi' => 'Admin Koperasi',
-    'Admin perpustakaan' => 'Admin Perpustakaan',
-);
-$config['admin_HRD']                = 'Admin HRD';
-$config['admin_IT']                = 'Admin IT';
-$config['admin_Logistik']                = 'Admin Logistik';
-$config['admin_Koperasi']                = 'Admin Koperasi';
-$config['admin_Perpustakaan']                = 'Admin Perpustakaan';
+                                        'Admin HRD' => 'Admin HRD',
+                                        'Admin IT' => 'Admin IT',
+                                        'Admin logistik' => 'Admin Logistik',
+                                        'Admin koperasi' => 'Admin Koperasi',
+                                        'Admin perpustakaan' => 'Admin Perpustakaan',
+                                        );
+$config['admin_HRD']                  = 'Admin HRD';
+$config['admin_IT']                   = 'Admin IT';
+$config['admin_Logistik']             = 'Admin Logistik';
+$config['admin_Koperasi']             = 'Admin Koperasi';
+$config['admin_Perpustakaan']         = 'Admin Perpustakaan';
 
 $config['identity']                   = 'email';             // A database column which is used to login with
 $config['min_password_length']        = 8;                   // Minimum Required Length of Password

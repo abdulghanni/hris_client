@@ -33,63 +33,72 @@
                                   <th width="20%">Nama Peserta</th>
                                   <th width="20%">Nama pelatihan</th>
                                   <th width="40%">Tujuan</th>
-                                  <th width="10%" style="text-align:center;">APPR SPV</th>
-                                  <th width="10%" style="text-align:center;">APPR HRD</th>
+                                  <th width="10%" style="text-align:center;">appr. spv</th>
+                                  <th width="10%" style="text-align:center;">appr. ka. bag</th>
+                                  <th width="10%" style="text-align:center;">appr. Atasan Lainnya</th>
+                                  <th width="10%" style="text-align:center;">appr. HRD</th>
                                   <th width="10%" class="text-center">Cetak</th>
                                 </tr>
                               </thead>
                               <tbody>
                               <?php 
-                              if($form_training_group->num_rows()>0){
-                                foreach($form_training_group->result() as $user){
-                                $id_training = $user->id;
-                                $peserta = getAll('users_training_group', array('id'=>'where/'.$id_training))->row('user_peserta_id');
-                                $p = explode(",", $peserta);
-                                  $session_id = get_nik($this->session->userdata('user_id'));
-                                  $id_user = $this->session->userdata('user_id');
-                                  $txt_app_lv1 = $txt_app_lv2 = "<i class='icon-minus' title = 'Pending'></i>";
-                                  $approval_status_lv1 = ($user->approval_status_id_lv1 == 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($user->approval_status_id_lv1 == 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
-                                  $approval_status_lv2 = ($user->approval_status_id_lv2 == 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($user->approval_status_id_lv2 == 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
-                                  // approval training
-                                  //Approval Level 1
-                                  
-                                  if(!empty(is_have_subordinate($session_id)))
-                                  {
-                                    if(cek_subordinate(is_have_subordinate($session_id),'id', $user->user_pengaju_id)){
-                                          if($user->is_app_lv1 == 0){
-                                              $txt_app_lv1 = "<a href='".site_url('form_training_group/approval_spv/'.$user->id)."''>
-                                                  <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-paste'></i></button>
-                                              </a>";
-                                          }else{
-                                            $txt_app_lv1 =  "<a href='".site_url('form_training_group/approval_spv/'.$user->id)."''>$approval_status_lv1</a>";
-                                            
-                                          }
-                                      }elseif($user->is_app_lv1== 1){
-                                        $txt_app_lv1 =  "<a href='".site_url('form_training_group/approval_spv/'.$user->id)."''>$approval_status_lv1</a>";
-                                      }elseif($user->is_app_lv1== 0){
-                                         $txt_app_lv1 = "<i class='icon-minus' title = 'Pending'></i>";
-                                      }
-                                  }else{
-                                    if ($user->is_app_lv1== 1){
-                                    $txt_app_lv1 =  "<a href='".site_url('form_training_group/approval_spv/'.$user->id)."''>$approval_status_lv1</a>";
+                              if($_num_rows>0){
+                                foreach($form_training_group as $user):
+                                    $id_training = $user->id;
+                                    $peserta = getAll('users_training_group', array('id'=>'where/'.$id_training))->row('user_peserta_id');
+                                    $p = explode(",", $peserta);
+                                    $txt_app_lv1 = $txt_app_lv2 = $txt_app_lv3 = $txt_app_hrd = "<i class='icon-minus' title = 'Pending'></i>";
+                                    $approval_status_lv1 = ($user->approval_status_id_lv1 == 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($user->approval_status_id_lv1 == 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
+                                    $approval_status_lv2 = ($user->approval_status_id_lv2 == 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($user->approval_status_id_lv2 == 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
+                                    $approval_status_lv3 = ($user->approval_status_id_lv3 == 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($user->approval_status_id_lv3 == 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
+                                    $approval_status_hrd = ($user->approval_status_id_hrd == 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($user->approval_status_id_hrd == 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
+                                    
+                    
+                                    //Approval Level 1
+                                    if(!empty($user->user_app_lv1) && $user->is_app_lv1 == 0 && $sess_nik == $user->user_app_lv1){
+                                        $txt_app_lv1 = "<a href='".site_url('form_training_group/detail/'.$user->id)."''>
+                                                        <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-edit'></i></button>
+                                                        </a>";
+                                      }elseif(!empty($user->user_app_lv1)){
+                                        $txt_app_lv1 = "<a href='".site_url('form_training_group/detail/'.$user->id)."''>$approval_status_lv1</a>";
+                                      }else{
+                                      $txt_app_lv1 = "<i class='icon-circle' title = 'Tidak Butuh Approval'></i>";
                                     }
-                                  }
+                                    
 
-                                  //Approval Level 3
-                                   if(is_admin()){
-                                          if($user->is_app_lv2 == 0){
-                                              $txt_app_lv2 = "<a href='".site_url('form_training_group/approval_hrd/'.$user->id)."''>
-                                                  <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-paste'></i></button>
-                                              </a>";
-                                          }else{
-                                            $txt_app_lv2 =  "<a href='".site_url('form_training_group/approval_hrd/'.$user->id)."''>$approval_status_lv2</a>";
-                                            
-                                          }
-                                      }elseif($user->is_app_lv2== 1){
-                                        $txt_app_lv2 =  "<a href='".site_url('form_training_group/approval_hrd/'.$user->id)."''>$approval_status_lv2</a>";
-                                      }
+                                    //ApprovalLevel 2
+                                    
+                                    if(!empty($user->user_app_lv2) && $user->is_app_lv2 == 0 && $sess_nik == $user->user_app_lv2){
+                                        $txt_app_lv2 = "<a href='".site_url('form_training_group/detail/'.$user->id)."''>
+                                                        <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-edit'></i></button>
+                                                        </a>";
+                                      }elseif(!empty($user->user_app_lv2)){
+                                        $txt_app_lv2 = "<a href='".site_url('form_training_group/detail/'.$user->id)."''>$approval_status_lv2</a>";
+                                      }else{
+                                      $txt_app_lv2 = "<i class='icon-circle' title = 'Tidak Butuh Approval'></i>";
+                                    }
+
+                                    //Approval Level 3
+
+                                    if(!empty($user->user_app_lv3) && $user->is_app_lv3 == 0 && $sess_nik == $user->user_app_lv3){
+                                        $txt_app_lv3 = "<a href='".site_url('form_training_group/detail/'.$user->id)."''>
+                                                        <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-edit'></i></button>
+                                                        </a>";
+                                      }elseif(!empty($user->user_app_lv3)){
+                                        $txt_app_lv3 = "<a href='".site_url('form_training_group/detail/'.$user->id)."''>$approval_status_lv3</a>";
+                                      }else{
+                                      $txt_app_lv3 = "<i class='icon-circle' title = 'Tidak Butuh Approval'></i>";
+                                    }
+
+                                     //Approval HRD
+                                    if(is_admin()&&$user->is_app_hrd == 0){
+                                      $txt_app_hrd = "<a href='".site_url('form_training_group/detail/'.$user->id)."''>
+                                                      <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-edit'></i></button>
+                                                      </a>";
+                                    }elseif($user->is_app_hrd== 1){
+                                      $txt_app_hrd =  "<a href='".site_url('form_training_group/detail/'.$user->id)."''>$approval_status_hrd</a>";
+                                    }
                                   ?>
-
                                   <tr>
                                     <td>
                                       <a href="<?php echo site_url('form_training_group/detail/'.$user->id)?>"><?php echo get_name($user->user_pengaju_id)?></a>
@@ -113,25 +122,50 @@
                                     </td>
 
                                     <td style="text-align:center;">
-                                    <?php echo $txt_app_lv1?>
+                                      <?php echo $txt_app_lv1;?>
                                     </td>
-
                                     <td style="text-align:center;">
-                                    <?php echo $txt_app_lv2?>
+                                      <?php echo $txt_app_lv2; ?>
                                     </td>
-
-
+                                    <td style="text-align:center;">
+                                      <?php echo $txt_app_lv3; ?>
+                                    </td>
+                                    <td style="text-align:center;">
+                                      <?php echo $txt_app_hrd; ?>
+                                    </td>
                                     <td class="text-center">
-                                      <?php if($user->is_app_lv1 == 1 && $user->is_app_lv2 == 1){?>
-                                              <a href="<?php echo site_url('form_training_group/form_training_group_pdf/'.$user->id)?>"><i class="icon-print"></i></a>
-                                            <?php }else{ ?>
-                                              <i class="icon-print"></i>
-                                            <?php } ?>
-                                      </td>
+                                       <a href="<?php echo site_url('form_training/form_training_pdf/'.$user->id)?>"><i class="icon-print"></i></a>
+                                    </td>
                                   </tr>
                               </tbody>
-                              <?php }}?>
+                              <?php endforeach;}?>
                           </table>
+
+                          <?php if($_num_rows>0):?>
+                          <div class="row">
+                            <div class="col-md-4 page_limit">
+                                <?php echo form_open(uri_string());?>
+                                <?php 
+                                    $selectComponentData = array(
+                                        10  => '10',
+                                        25 => '25',
+                                        50 =>'50',
+                                        75 => '75',
+                                        100 => '100',);
+                                    $selectComponentJs = 'class="select2" onChange="this.form.submit()" id="limit"';
+                                    echo "Per page: ".form_dropdown('limit', $selectComponentData, $limit, $selectComponentJs);
+                                    echo '&nbsp;'.lang('found_subheading').'&nbsp;'.$num_rows_all.'&nbsp;'.'Pengajuan';
+                                ?>
+                                <?php echo form_close();?>
+                            </div>
+
+                            <div class="col-md-10">
+                              <ul class="dataTables_paginate paging_bootstrap pagination">
+                                  <?php echo $halaman;?>
+                              </ul>
+                            </div>
+                          </div>
+                          <?php endif; ?>
                   </div>
               </div>
           </div>

@@ -224,67 +224,6 @@
                     </div>
                   </div>
                 </div>
-                <div class="form-actions">
-                      <div class="row wf-cuti">
-
-                      	<div class="col-md-12 text-center">
-                        <div class="col-md-3">
-                          <p class="wf-approve-sp">
-                          <div class="col-md-12"><span class="semi-bold">Pemohon,</span><br/><br/></div>
-                            <span class="semi-bold"><?php echo get_name($row->user_id)?></span><br/>
-                            <span class="semi-bold"><?php echo $position_pengaju?></span><br/>
-                            <span class="small"><?php echo dateIndo($row->date_created)?></span>
-                          </p>
-                        </div>
-
-                        <div class="col-md-3">
-                          <p class="wf-approve-sp">
-                          <div class="col-md-12"><span class="semi-bold">Mengetahui / Menyetujui,</span><br/><br/></div>
-                            <!--
-                            <?php if($row->is_app_mgr == 1){?>
-                            <span class="semi-bold"><?php echo get_name($koperasi)?></span><br/>
-                            <span class="small"><?php echo dateIndo($row->date_app_koperasi)?></span><br/>
-                            <?php }else{ ?>
-                            <span class="semi-bold"></span><br/>
-                            <span class="small"></span><br/>
-                            <?php } ?>
-                            <span class="semi-bold"></span><br/>
-                            <span class="semi-bold">Sie Koperasi</span>
-                            -->
-                          </p>
-                        </div>
-                          
-                        <div class="col-md-3">
-                          <p class="wf-approve-sp">
-                          <div class="col-md-12"><span class="semi-bold">Mengetahui / Menyetujui,</span><br/><br/></div>
-                           <!--
-                            <?php if($row->is_app_mgr == 1){?>
-                            <span class="semi-bold"><?php echo get_name($perpustakaan)?></span><br/>
-                            <span class="small"><?php echo dateIndo($row->date_app_perpus)?></span><br/>
-                            <?php }else{ ?>
-                            <span class="semi-bold"></span><br/>
-                            <span class="small"></span><br/>
-                            <?php } ?>
-                            <span class="semi-bold"></span><br/>
-                            <span class="semi-bold">Perpustakaan</span>
-                            -->
-                          </p>
-                        </div>
-                          
-                        <div class="col-md-3">
-                          <p class="wf-approve-sp">
-                          <div class="col-md-12"><span class="semi-bold">Diterima HRD</span><br/><br/></div>
-                            <?php if($row->is_app_hrd == 1){?>
-                            <span class="semi-bold"><?php echo get_name($row->user_app_hrd )?></span><br/>
-                            <span class="semi-bold">HRD Database</span><br/>
-                            <span class="small"><?php echo dateIndo($row->date_app_hrd)?></span><br/>
-                            <?php } ?>
-                          </p>
-                        </div>
-                        <!--PST242, PST263, PST2, PST129-->
-                      </div>
-                    </div> 
-                  </div>
             <?php endforeach;?>
               </form>
             </div>

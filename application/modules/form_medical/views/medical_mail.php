@@ -58,40 +58,6 @@
                     </div>
                   </div>
                 </div>
-                <div class="form-actions text-center">
-                    <!-- <div class="col-md-12 text-center"> -->
-                      <div class="row wf-spd">
-                        <div class="col-md-6">
-                          <p>Hormat Kami,</p>
-                          <p class="wf-submit">
-                          <span class="semi-bold"></span><br/>
-                            <span class="small"></span><br/>
-                            <span class="semi-bold"><?php echo get_name($created_by) ?></span><br/>
-                            <span class="semi-bold"><?php echo (!empty(get_user_position(get_nik($created_by)))) ? get_user_position(get_nik($created_by)) : ''?></span><br/>
-                            <span class="small"><?php echo dateIndo($created_on) ?></span><br/>
-                          </p>
-                        </div>
-                        <div class="col-md-6">
-                          <p>Disetujui,</p>
-                          <p class="wf-approve-sp">
-                            <span class="semi-bold"></span><br/>
-                            <span class="small"></span><br/>
-                            <?php if($is_app==1) {?>
-                            <span class="semi-bold"><?php echo get_name($user_app) ?></span><br/>
-                            <span class="semi-bold"><?php echo (!empty(get_user_position(get_nik($user_app)))) ? get_user_position(get_nik($user_app)) : ''?></span><br/>
-                            <span class="small"><?php echo dateIndo($date_app) ?></span><br/>
-                            <?php }elseif(is_admin()&&$is_app==0){?>
-                            <span class="small"></span><br/>
-                            <p class="">...............................</p>
-                            <?php }else{?>
-                            <span class="small"></span><br/>
-                            <p class="">...............................</p>
-                            <?php } ?>
-                          </p>
-                        </div>
-                      </div>
-                    <!-- /div> -->
-                  </div>
               </form>
-                  </div>  
+              </div>  
             </div>

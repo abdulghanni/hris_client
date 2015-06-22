@@ -28,7 +28,7 @@
                       <div class="col-md-10">
                           <?php 
                           if(is_admin()){?>
-                            <select id="emp" class="select2" style="width:100%" name="emp" onChange="tampilSubordinate()">
+                            <select id="emp" class="select2" style="width:100%" name="emp" onChange="getDropDown()">
                               <?php
                               foreach ($all_users->result() as $u) :
                                 $selected = $u->id == $sess_id ? 'selected = selected' : '';?>
@@ -46,7 +46,7 @@
                         <label class="form-label text-right">NIK</label>
                       </div>
                       <div class="col-md-10">
-                        <input type="text" class="form-control" id="nik" name="nik" value="<?php echo (!empty($user_info))?$user_info['EMPLID']:'-';?>" disabled="disabled">
+                        <input type="text" class="form-control" id="nik" name="nik" value="<?php echo $sess_nik?>" disabled="disabled">
                       </div>
                     </div>
 
@@ -55,7 +55,7 @@
                         <label class="form-label text-right">Jabatan</label>
                       </div>
                       <div class="col-md-10">
-                        <input name="position" id="position" type="text"  class="form-control" placeholder="Jabatan" value="<?php echo (!empty($user_info))?$user_info['POSITION']:'-';?>" disabled="disabled">
+                        <input name="position" id="position" type="text"  class="form-control" placeholder="Jabatan" value="<?php echo get_user_position($sess_nik)?>" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
@@ -63,7 +63,7 @@
                         <label class="form-label text-right">Dept/Bagian</label>
                       </div>
                       <div class="col-md-10">
-                        <input name="organization" id="organization" type="text"  class="form-control" placeholder="Dept/Bagian" value="<?php echo (!empty($user_info))?$user_info['ORGANIZATION']:'-';?>" disabled="disabled">
+                        <input name="organization" id="organization" type="text"  class="form-control" placeholder="Dept/Bagian" value="<?php echo get_user_organization($sess_nik)?>" disabled="disabled">
                       </div>
                     </div>
 
@@ -108,6 +108,70 @@
                         <input name="tujuan_training" id="form3LastName" type="text"  class="form-control" placeholder="Tujuan pelatihan" value="" required>
                       </div>
                     </div>
+
+                    <div class="row form-row">
+                      <div class="col-md-2">
+                        <label class="bold form-label text-right"><?php echo 'Approval' ?></label>
+                      </div>
+                    </div>
+
+                    <div class="row form-row">
+                      <div class="col-md-2">
+                        <label class="form-label text-right"><?php echo 'Supervisor' ?></label>
+                      </div>
+                      <div class="col-md-10">
+                      <?php if(is_admin()){
+                        $style_up='class="select2" style="width:100%" id="atasan1"';
+                            echo form_dropdown('atasan1',array('0'=>'- Pilih Supervisor -'),'',$style_up);
+                        }else{?>
+                        <select name="atasan1" id="atasan1" class="select2" style="width:100%">
+                            <option value="0">- Pilih Supervisor -</option>
+                            <?php foreach ($user_atasan as $key => $up) : ?>
+                              <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
+                            <?php endforeach;?>
+                          </select>
+                            <?php }?>
+                      </div>
+                    </div>
+
+                    <div class="row form-row">
+                      <div class="col-md-2">
+                        <label class="form-label text-right"><?php echo 'Ka. Bagian' ?></label>
+                      </div>
+                      <div class="col-md-10">
+                      <?php if(is_admin()){
+                        $style_up='class="select2" style="width:100%" id="atasan2"';
+                            echo form_dropdown('atasan2',array('0'=>'- Pilih Ka. Bagian -'),'',$style_up);
+                        }else{?>
+                        <select name="atasan2" id="atasan2" class="select2" style="width:100%">
+                            <option value="0">- Pilih Ka. Bagian -</option>
+                            <?php foreach ($user_atasan as $key => $up) : ?>
+                            <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
+                            <?php endforeach;?>
+                        </select>
+                      <?php }?>
+                      </div>
+                    </div>
+
+                    <div class="row form-row">
+                      <div class="col-md-2">
+                        <label class="form-label text-right"><?php echo 'Atasan Lainnya' ?></label>
+                      </div>
+                      <div class="col-md-10">
+                      <?php if(is_admin()){
+                        $style_up='class="select2" style="width:100%" id="atasan3"';
+                            echo form_dropdown('atasan3',array('0'=>'- Pilih Atasan Lainnya -'),'',$style_up);
+                        }else{?>
+                        <select name="atasan3" id="atasan3" class="select2" style="width:100%">
+                            <option value="0">- Pilih Atasan Lainnya -</option>
+                            <?php foreach ($user_atasan as $key => $up) : ?>
+                            <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
+                            <?php endforeach;?>
+                        </select>
+                            <?php }?>
+                      </div>
+                    </div>
+
                   </div>
                 </div>
                 <div class="form-actions">
@@ -129,9 +193,18 @@
 	</div>  
 	<!-- END PAGE --> 
 
-  <script type="text/javascript">
+<script type="text/javascript">
+
+  function getDropDown()
+    {
+      tampilSubordinate();
+      getAtasan1();
+      getAtasan2();
+      getAtasan3();
+    }
+
   function tampilSubordinate()
- {
+  {
      empid = document.getElementById("emp").value;
      $.ajax({
          url:"<?php echo base_url();?>form_training_group/get_subordinate/"+empid+"",
@@ -141,5 +214,44 @@
          dataType:"html"
      });
      return false;
- }
+  }
+
+  function getAtasan1()
+     {
+         emp = document.getElementById("emp").value;
+         $.ajax({
+             url:"<?php echo base_url();?>form_training/get_atasan/"+emp+"",
+             success: function(response){
+             $("#atasan1").html(response);
+             },
+             dataType:"html"
+         });
+         return false;
+     }
+
+     function getAtasan2()
+     {
+         emp = document.getElementById("emp").value;
+         $.ajax({
+             url:"<?php echo base_url();?>form_training/get_atasan/"+emp+"",
+             success: function(response){
+             $("#atasan2").html(response);
+             },
+             dataType:"html"
+         });
+         return false;
+     }
+
+     function getAtasan3()
+     {
+         emp = document.getElementById("emp").value;
+         $.ajax({
+             url:"<?php echo base_url();?>form_training/get_atasan/"+emp+"",
+             success: function(response){
+             $("#atasan3").html(response);
+             },
+             dataType:"html"
+         });
+         return false;
+     }
  </script>

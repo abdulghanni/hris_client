@@ -223,6 +223,9 @@ class Form_spd_luar extends MX_Controller {
         }
         else
         {
+
+            $sess_id = $this->session->userdata('user_id');
+            $this->data['sess_nik']  = get_nik($sess_id);
             //set the flash data error message if there is one
             $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
 
@@ -718,7 +721,6 @@ class Form_spd_luar extends MX_Controller {
                 $task_receiver = json_decode($get_task_receiver, true);
                  foreach ($task_receiver as $row)
                     {
-                        $result[0]= '-- Pilih User --';
                         $result[$row['ID']]= ucwords(strtolower($row['NAME']));
                     }
             } else {

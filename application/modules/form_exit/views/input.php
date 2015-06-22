@@ -179,7 +179,7 @@
                                   <input type="radio" name="stnk_motor" id="stnk_motor1" required value="1">Ada
                                 </label>
                                 <label class="radio-inline">
-                                  <input type="radio" name="stnk_mobil" id="stnk_motor2" value="0">Tidak
+                                  <input type="radio" name="stnk_motor" id="stnk_motor2" value="0">Tidak
                                 </label>
                               </td>
                               <td><input name="keterangan_stnk_motor" id="form3LastName" type="text"  class="form-control" placeholder="" value=""></td>
@@ -343,7 +343,7 @@
                               <td>Diberikan Uang Pesangon</td>
                               <td>
                                 <label class="radio-inline">
-                                  <input type="radio" name="pesangon" id="pesangon1" required value="1">Ada
+                                  <input type="radio" name="pesangon" id="pesangon1" required value="1">Ya
                                 </label>
                                 <label class="radio-inline">
                                   <input type="radio" name="pesangon" id="pesangon2" value="0">Tidak
@@ -355,7 +355,7 @@
                               <td>Diberikan uang pengganti hak</td>
                               <td>
                                 <label class="radio-inline">
-                                  <input type="radio" name="uang_ganti" id="uang_ganti1" required value="1">Ada
+                                  <input type="radio" name="uang_ganti" id="uang_ganti1" required value="1">Ya
                                 </label>
                                 <label class="radio-inline">
                                   <input type="radio" name="uang_ganti" id="uang_ganti2" value="0">Tidak
@@ -367,7 +367,7 @@
                               <td>Diberikan uang jasa</td>
                               <td>
                                 <label class="radio-inline">
-                                  <input type="radio" name="uang_jasa" id="uang_jasa1" required value="1">Ada
+                                  <input type="radio" name="uang_jasa" id="uang_jasa1" required value="1">Ya
                                 </label>
                                 <label class="radio-inline">
                                   <input type="radio" name="uang_jasa" id="uang_jasa2" value="0">Tidak
@@ -379,7 +379,7 @@
                               <td>Diberikan uang Pisah</td>
                               <td>
                                 <label class="radio-inline">
-                                  <input type="radio" name="uang_pisah" id="uang_pisah1" required value="1">Ada
+                                  <input type="radio" name="uang_pisah" id="uang_pisah1" required value="1">Ya
                                 </label>
                                 <label class="radio-inline">
                                   <input type="radio" name="uang_pisah" id="uang_pisah2" value="0">Tidak
@@ -391,7 +391,7 @@
                               <td>Diberikan surat keterangan kerja</td>
                               <td>
                                 <label class="radio-inline">
-                                  <input type="radio" name="skkerja" id="skkerja1" required value="1">Ada
+                                  <input type="radio" name="skkerja" id="skkerja1" required value="1">Ya
                                 </label>
                                 <label class="radio-inline">
                                   <input type="radio" name="skkerja" id="skkerja2" value="0">Tidak
@@ -403,7 +403,7 @@
                               <td>Diberikan ijazah asli ybs</td>
                               <td>
                                 <label class="radio-inline">
-                                  <input type="radio" name="ijazah" id="ijazah1" required value="1">Ada
+                                  <input type="radio" name="ijazah" id="ijazah1" required value="1">Ya
                                 </label>
                                 <label class="radio-inline">
                                   <input type="radio" name="ijazah" id="ijazah2" value="0">Tidak
