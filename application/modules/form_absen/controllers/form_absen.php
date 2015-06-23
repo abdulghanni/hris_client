@@ -237,11 +237,12 @@ class form_absen extends MX_Controller {
         'user_app_'.$type => $user_id, 
         'date_app_'.$type => $date_now,
         );
-        $this->approval_mail($id, 1,'spv', 'Supervisor');
+        
        if ($this->form_absen_model->update($id,$data)) {
            return TRUE;
        }
 
+       $this->approval_mail($id);
     }
 
     function send_approval_request($id, $user_id)
@@ -258,7 +259,7 @@ class form_absen extends MX_Controller {
                     'receiver_id' => $user_app_lv1,
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Pengajuan Keterangan Tidak Absen',
-                    'email_body' => get_name($user_id).' mengajukan Keterangan Tidak Absen, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
+                    'email_body' => get_name($user_id).' mengajukan Keterangan Tidak Absen, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data1);
@@ -271,7 +272,7 @@ class form_absen extends MX_Controller {
                     'receiver_id' => $user_app_lv2,
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Pengajuan Keterangan Tidak Absen',
-                    'email_body' => get_name($user_id).' mengajukan Keterangan Tidak Absen, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
+                    'email_body' => get_name($user_id).' mengajukan Keterangan Tidak Absen, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data2);
@@ -284,7 +285,7 @@ class form_absen extends MX_Controller {
                     'receiver_id' => $user_app_lv3,
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Pengajuan Keterangan Tidak Absen',
-                    'email_body' => get_name($user_id).' mengajukan Keterangan Tidak Absen, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
+                    'email_body' => get_name($user_id).' mengajukan Keterangan Tidak Absen, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data3);
@@ -296,7 +297,7 @@ class form_absen extends MX_Controller {
                     'receiver_id' => 1,
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Pengajuan Keterangan Tidak Absen',
-                    'email_body' => get_name($user_id).' mengajukan Keterangan Tidak Absen, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
+                    'email_body' => get_name($user_id).' mengajukan Keterangan Tidak Absen, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data4);
@@ -312,7 +313,7 @@ class form_absen extends MX_Controller {
                 'receiver_id' => get_nik($receiver_id),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Status Pengajuan Permohonan Tidak Absen dari Atasan',
-                'email_body' => "Status pengajuan Permohonan Tidak Absen anda Disetujui oleh $approver untuk detail silakan <a href=$url>Klik disini</a><br/>".$this->detail_email($id),
+                'email_body' => "Status pengajuan Permohonan Tidak Absen anda Disetujui oleh $approver untuk detail silakan <a class='klikmail' href=$url>Klik disini</a><br/>".$this->detail_email($id),
                 'is_read' => 0,
             );
         $this->db->insert('email', $data);

@@ -19,7 +19,7 @@
             </div>
             <div class="grid-body no-border">
             <h6 class="bold">BAGIAN : <?php echo $bagian?></h6>
-              <form class="form-no-horizontal-spacing" id="formApp"> 
+              <form class="form-no-horizontal-spacing" id="formMedical"> 
                 <div class="row column-seperation">
 
                   <hr/>
@@ -39,6 +39,7 @@
       					        <?php 
         					        if(!empty($detail)){
                              $total = $detail[0]['rupiah'];
+                             $approved = assets_url('img/approved_stamp.png');
         					        	  for($i=0;$i<sizeof($detail);$i++):
                               ?>
       						        <tr>
@@ -73,42 +74,130 @@
                     </div>
                   </div>
                 </div>
+                <?php if($_num_rows>0){
+                  foreach($form_medical as $row):?>
                 <div class="form-actions text-center">
                     <!-- <div class="col-md-12 text-center"> -->
                       <div class="row wf-spd">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                           <p>Hormat Kami,</p>
                           <p class="wf-submit">
                           <span class="semi-bold"></span><br/>
                             <span class="small"></span><br/>
-                            <span class="semi-bold"><?php echo get_name($created_by) ?></span><br/>
-                            <span class="semi-bold"><?php echo (!empty(get_user_position(get_nik($created_by)))) ? get_user_position(get_nik($created_by)) : ''?></span><br/>
-                            <span class="small"><?php echo dateIndo($created_on) ?></span><br/>
+                            <span class="semi-bold"><?php echo get_name($row->user_id) ?></span><br/>
+                            <span class="semi-bold"><?php echo (!empty(get_user_position(get_nik($row->user_id)))) ? get_user_position(get_nik($row->user_id)) : ''?></span><br/>
+                            <span class="small"><?php echo dateIndo($row->created_on) ?></span><br/>
                           </p>
                         </div>
-                        <div class="col-md-6">
-                          <p>Disetujui,</p>
+
+                        <div class="col-md-4">
+                          <p>Mengetahui,</p>
                           <p class="wf-approve-sp">
+                          <?php if($row->is_app_hrd==1) {
+                            echo "<img class=approval_img src=$approved>"?>
                             <span class="semi-bold"></span><br/>
                             <span class="small"></span><br/>
-                            <?php if($is_app==1) {?>
-                            <span class="semi-bold"><?php echo get_name($user_app) ?></span><br/>
-                            <span class="semi-bold"><?php echo (!empty(get_user_position(get_nik($user_app)))) ? get_user_position(get_nik($user_app)) : ''?></span><br/>
-                            <span class="small"><?php echo dateIndo($date_app) ?></span><br/>
-                            <?php }elseif(is_admin()&&$is_app==0){?>
-                            <button id="btnAppMedical" class="btn btn-success btn-cons"><i class="icon-ok"></i>Submit</button>
+                            <span class="semi-bold"><?php echo get_name($row->user_app_hrd) ?></span><br/>
+                            <span class="semi-bold"></span><br/>
+                            <span class="small"><?php echo dateIndo($row->date_app_hrd) ?></span><br/>
+                            <?php }elseif(is_admin()&&$row->is_app_hrd==0){?>
+                            <span class="semi-bold"></span><br/>
+                            <span class="small"></span><br/>
+                            <button id="btn_app_hrd" class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok"></i>Submit</button>
+                            <p class="">(HRD)</p>
+                            <?php }else{?>
+                            <span class="semi-bold"></span><br/>
+                            <span class="small"></span><br/>
+                            <span class="small"></span><br/>
+                            <p class="">(HRD)</p>
+                            <?php } ?>
+                          </p>
+                        </div>
+
+                        <?php if(!empty($row->user_app_lv1)){?>
+                        <div class="col-md-4">
+                          <p>Disetujui,</p>
+                          <p class="wf-approve-sp">
+                          <?php if($row->is_app_lv1==1) {
+                            echo "<img class=approval_img src=$approved>"?>
+                            <span class="semi-bold"></span><br/>
+                            <span class="small"></span><br/>
+                            <span class="semi-bold"><?php echo get_name($row->user_app_lv1) ?></span><br/>
+                            <span class="semi-bold"><?php echo (!empty($row->user_app_lv1)) ? get_user_position($row->user_app_lv1) : ''?></span><br/>
+                            <span class="small"><?php echo dateIndo($row->date_app_lv1) ?></span><br/>
+                            <?php }elseif($row->is_app_lv1==0 && $sess_nik == $row->user_app_lv1){?>
+                            <span class="semi-bold"></span><br/>
+                            <span class="small"></span><br/>
+                            <button id="btn_app_lv1" class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok"></i>Submit</button>
                             <p class="">...............................</p>
                             <?php }else{?>
+                            <span class="semi-bold"></span><br/>
+                            <span class="small"></span><br/>
                             <span class="small"></span><br/>
                             <p class="">...............................</p>
                             <?php } ?>
                           </p>
                         </div>
+                        <?php } ?>
                       </div>
                     <!-- /div> -->
+                    <?php if(!empty($row->user_app_lv2)){?>
+                        <div class="col-md-7">
+                          <p>Mengetahui,</p>
+                          <p class="wf-approve-sp">
+                          <?php if($row->is_app_lv2==1) {
+                            echo "<img class=approval_img src=$approved>"?>
+                            <span class="semi-bold"></span><br/>
+                            <span class="small"></span><br/>
+                            <span class="semi-bold"><?php echo get_name($row->user_app_lv2) ?></span><br/>
+                            <span class="semi-bold"><?php echo (!empty($row->user_app_lv2)) ? get_user_position($row->user_app_lv2) : ''?></span><br/>
+                            <span class="small"><?php echo dateIndo($row->date_app_lv2) ?></span><br/>
+                            <?php }elseif($row->is_app_lv2==0 && $sess_nik == $row->user_app_lv2){?>
+                            <span class="semi-bold"></span><br/>
+                            <span class="small"></span><br/>
+                            <button id="btn_app_lv2" class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok"></i>Submit</button>
+                            <p class="">...............................</p>
+                            <?php }else{?>
+                            <span class="semi-bold"></span><br/>
+                            <span class="small"></span><br/>
+                            <span class="small"></span><br/>
+                            <p class="">...............................</p>
+                            <?php } ?>
+                          </p>
+                        </div>
+                        <?php } ?>
+
+                        <?php if(!empty($row->user_app_lv3)){?>
+                        <div class="col-md-2">
+                          <p>Mengetahui,</p>
+                          <p class="wf-approve-sp">
+                          <?php if($row->is_app_lv3==1) {
+                            echo "<img class=approval_img src=$approved>"?>
+                            <span class="semi-bold"></span><br/>
+                            <span class="small"></span><br/>
+                            <span class="semi-bold"><?php echo get_name($row->user_app_lv3) ?></span><br/>
+                            <span class="semi-bold"><?php echo (!empty($row->user_app_lv3)) ? get_user_position($row->user_app_lv3) : ''?></span><br/>
+                            <span class="small"><?php echo dateIndo($row->date_app_lv3) ?></span><br/>
+                            <?php }elseif($row->is_app_lv3==0 && $sess_nik == $row->user_app_lv3){?>
+                            <span class="semi-bold"></span><br/>
+                            <span class="small"></span><br/>
+                            <button id="btn_app_lv3" class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok"></i>Submit</button>
+                            <p class="">...............................</p>
+                            <?php }else{?>
+                            <span class="semi-bold"></span><br/>
+                            <span class="small"></span><br/>
+                            <span class="small"></span><br/>
+                            <p class="">...............................</p>
+                            <?php } ?>
+                          </p>
+                        </div>
+                        <?php } ?>
+                      </div>
+                    </div>
                   </div>
+                <?php endforeach;}?>
               </form>
-                  </div>  
+             </div>  
             </div>
           </div>
         </div>

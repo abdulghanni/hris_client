@@ -537,7 +537,7 @@ class Form_spd_luar extends MX_Controller {
                     'receiver_id' => $receiver_id,
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Pemberian Tugas Perjalanan Dinas Luar Kota',
-                    'email_body' => get_name($sender).' memberikan tugas perjalan dinas luar kota, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br/>'.$this->detail_email_submit($spd_id),
+                    'email_body' => get_name($sender).' memberikan tugas perjalan dinas luar kota, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$this->detail_email_submit($spd_id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data);
@@ -552,7 +552,7 @@ class Form_spd_luar extends MX_Controller {
                     'receiver_id' => $receiver_id,
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Persetujuan Tugas Perjalanan Dinas Luar Kota',
-                    'email_body' => get_name($sender_id).' telah menyetujui tugas perjalan dinas luar kota yang anda berikan, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br/>'.$this->detail_email_submit($spd_id),
+                    'email_body' => get_name($sender_id).' telah menyetujui tugas perjalan dinas luar kota yang anda berikan, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$this->detail_email_submit($spd_id),
                     'is_read' => 0,
                 );
         $this->db->insert('email', $data);
@@ -567,7 +567,7 @@ class Form_spd_luar extends MX_Controller {
                     'receiver_id' => $receiver_id,
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Laporan Tugas Perjalanan Dinas Luar Kota',
-                    'email_body' => get_name($sender_id).' telah membuat laporan Perjalanan Dinas Luar Kota, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br/>'.$this->detail_email_report($spd_id),
+                    'email_body' => get_name($sender_id).' telah membuat laporan Perjalanan Dinas Luar Kota, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$this->detail_email_report($spd_id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data);

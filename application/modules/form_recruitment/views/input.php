@@ -237,8 +237,8 @@
                       <div class="col-md-10">
                         <input name="lain-lain" id="form3LastName" type="text"  class="form-control" placeholder="Lain-lain" value="">
                       </div>
-                    </div
->                    <div class="row form-row">
+                    </div>
+                    <div class="row form-row">
                       <div class="col-md-2">
                         <label class="form-label text-right">Portfolio</label>
                       </div>

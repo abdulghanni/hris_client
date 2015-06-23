@@ -29,15 +29,68 @@
                                 <tr>
                                   <th width="10%">Tanggal </th>
                                   <th width="20%">Nama Pembuat Rekap </th>
-                                  <th width="40%">Bagian</th>
-                                  <th width="10%" class="text-center">Approval Atasan</th>
-                                  <th width="10%" class="text-center">Cetak</th>
+                                  <th width="20%">Bagian</th>
+                                  <th width="10%" style="text-align:center;">appr. spv</th>
+                                  <th width="10%" style="text-align:center;">appr. ka. bag</th>
+                                  <th width="10%" style="text-align:center;">appr. Atasan Lainnya</th>
+                                  <th width="10%" style="text-align:center;">appr. HRD</th>
+                                  <th width="10%" class="text-center">cetak</th>
                                 </tr>
                               </thead>
                               <tbody>
                               <?php if($_num_rows>0){
                                 foreach($form_medical as $row):
-                                  $app_status = ($row->is_app == 1)?"<a href='".site_url('form_absen/detail/'.$row->id)."''><i class='icon-ok-sign' title='Approved'></i></a>" : "<i class='icon-minus' title='Pending'></i>";
+                                  $txt_app_lv1 = $txt_app_lv2 = $txt_app_lv3 = $txt_app_hrd = "<i class='icon-minus' title = 'Pending'></i>";
+                                  $approval_status_lv1 = "<i class='icon-ok-sign' title = 'Approved'></i>";
+                                  $approval_status_lv2 = "<i class='icon-ok-sign' title = 'Approved'></i>";
+                                  $approval_status_lv3 = "<i class='icon-ok-sign' title = 'Approved'></i>";
+                                  $approval_status_hrd = "<i class='icon-ok-sign' title = 'Approved'></i>";
+
+                                //Approval Level 1
+                                  if(empty($row->user_app_lv1)){
+                                     $txt_app_lv1 = "<i class='icon-circle' title = 'Tidak Butuh Approval'></i>";
+                                    }elseif(!empty($row->user_app_lv1 && $row->is_app_lv1 == 1)){
+                                      $txt_app_lv1 = "<a href='".site_url('form_medical/detail/'.$row->id)."''>$approval_status_lv2</a>";
+                                    }elseif(!empty($row->user_app_lv1) && $row->is_app_lv1 == 0 && $sess_nik == $row->user_app_lv1){
+                                      $txt_app_lv1 = "<a href='".site_url('form_medical/detail/'.$row->id)."''>
+                                                      <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-edit'></i></button>
+                                                      </a>";
+                                    }
+                                  
+
+                                  //ApprovalLevel 2
+                                  
+                                  if(empty($row->user_app_lv2)){
+                                     $txt_app_lv2 = "<i class='icon-circle' title = 'Tidak Butuh Approval'></i>";
+                                    }elseif(!empty($row->user_app_lv2 && $row->is_app_lv2 == 1)){
+                                      $txt_app_lv2 = "<a href='".site_url('form_medical/detail/'.$row->id)."''>$approval_status_lv2</a>";
+                                    }elseif(!empty($row->user_app_lv2) && $row->is_app_lv2 == 0 && $sess_nik == $row->user_app_lv2){
+                                      $txt_app_lv2 = "<a href='".site_url('form_medical/detail/'.$row->id)."''>
+                                                      <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-edit'></i></button>
+                                                      </a>";
+                                    }
+
+                                  //Approval Level 3
+
+                                  if(!empty($row->user_app_lv3) && $row->is_app_lv3 == 0 && $sess_nik == $row->user_app_lv3){
+                                      $txt_app_lv3 = "<a href='".site_url('form_medical/detail/'.$row->id)."''>
+                                                      <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-edit'></i></button>
+                                                      </a>";
+                                    }elseif(!empty($row->user_app_lv3) && $row->is_app_lv3 == 1){
+                                      $txt_app_lv3 = "<a href='".site_url('form_medical/detail/'.$row->id)."''>$approval_status_lv3</a>";
+                                    }else{
+                                    $txt_app_lv3 = "<i class='icon-circle' title = 'Tidak Butuh Approval'></i>";
+                                  }
+
+                                  //Approval HRD
+                                    if(is_admin()&&$row->is_app_hrd == 0){
+                                      $txt_app_hrd = "<a href='".site_url('form_medical/detail/'.$row->id)."''>
+                                                      <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-edit'></i></button>
+                                                      </a>";
+                                    }elseif($row->is_app_hrd == 1){
+                                      $txt_app_hrd =  "<a href='".site_url('form_medical/detail/'.$row->id)."''>$approval_status_hrd</a>";
+                                    }
+
                                   ?>
                                   <tr>
                                     <td><a href="<?php echo site_url('form_medical/detail/'.$row->id)?>"><?php echo dateIndo($row->created_on)?></a></td>
@@ -47,13 +100,52 @@
                                     <td>
                                       <?php echo get_user_organization(get_nik($row->user_id))?>
                                     </td>
-                                    <td class="text-center"><?php echo $app_status?></td>
-                                    <td class="text-center"><a href="<?php echo site_url('form_medical/form_medical_pdf/'.$row->id)?>"><i class="icon-print" title="Print"></i></a></td>
+                                    <td style="text-align:center;">
+                                      <?php echo $txt_app_lv1;?>
+                                    </td>
+                                    <td style="text-align:center;">
+                                      <?php echo $txt_app_lv2;?>
+                                    </td>
+                                    <td style="text-align:center;">
+                                      <?php echo $txt_app_lv3;?>
+                                    </td>
+                                    <td style="text-align:center;">
+                                      <?php echo $txt_app_hrd;?>
+                                    </td>
+                                    <td class="text-center">
+                                      <a href="<?php echo site_url('form_medical/form_medical_pdf/'.$row->id)?>"><i class="icon-print" title="Print"></i></a>
+                                    </td>
                                   </tr>
                                 <?php endforeach;}?>
-                                  
                               </tbody>
                           </table>
+
+                          <?php if($_num_rows>0):?>
+                          <div class="row">
+                            <div class="col-md-4 page_limit">
+                                <?php echo form_open(uri_string());?>
+                                <?php 
+                                    $selectComponentData = array(
+                                        10  => '10',
+                                        25 => '25',
+                                        50 =>'50',
+                                        75 => '75',
+                                        100 => '100',);
+                                    $selectComponentJs = 'class="select2" onChange="this.form.submit()" id="limit"';
+                                    echo "Per page: ".form_dropdown('limit', $selectComponentData, $limit, $selectComponentJs);
+                                    echo '&nbsp;'.lang('found_subheading').'&nbsp;'.$num_rows_all.'&nbsp;'.'Pengajuan';
+                                ?>
+                                <?php echo form_close();?>
+                            </div>
+
+                            <div class="col-md-10">
+                              <ul class="dataTables_paginate paging_bootstrap pagination">
+                                  <?php echo $halaman;?>
+                              </ul>
+                            </div>
+                          </div>
+                          <?php endif; ?>
+
                   </div>
               </div>
           </div>

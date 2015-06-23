@@ -320,7 +320,7 @@ class Form_recruitment extends MX_Controller {
                     'receiver_id' => $user_app_lv1,
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Pengajuan Permintaan SDM Baru',
-                    'email_body' => get_name($user_id).' mengajukan Permintaan SDM Baru, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
+                    'email_body' => get_name($user_id).' mengajukan Permintaan SDM Baru, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data1);
@@ -333,7 +333,7 @@ class Form_recruitment extends MX_Controller {
                     'receiver_id' => $user_app_lv2,
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Pengajuan Permintaan SDM Baru',
-                    'email_body' => get_name($user_id).' mengajukan Permintaan SDM Baru, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
+                    'email_body' => get_name($user_id).' mengajukan Permintaan SDM Baru, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data2);
@@ -346,7 +346,7 @@ class Form_recruitment extends MX_Controller {
                     'receiver_id' => $user_app_lv3,
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Pengajuan Permintaan SDM Baru',
-                    'email_body' => get_name($user_id).' mengajukan Permintaan SDM Baru, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
+                    'email_body' => get_name($user_id).' mengajukan Permintaan SDM Baru, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data3);
@@ -358,7 +358,7 @@ class Form_recruitment extends MX_Controller {
                     'receiver_id' => 1,
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Pengajuan Permintaan SDM Baru',
-                    'email_body' => get_name($user_id).' mengajukan Permintaan SDM Baru, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
+                    'email_body' => get_name($user_id).' mengajukan Permintaan SDM Baru, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data4);
@@ -375,7 +375,7 @@ class Form_recruitment extends MX_Controller {
                 'receiver_id' => get_nik($receiver_id),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Status Permintaan SDM Baru dari Atasan',
-                'email_body' => "Status Permintaan SDM Baru anda $approval_status oleh $approver untuk detail silakan <a href=$url>Klik disini</a><br/>".$this->detail_email($id),
+                'email_body' => "Status Permintaan SDM Baru anda $approval_status oleh $approver untuk detail silakan <a class='klikmail' href=$url>Klik disini</a><br/>".$this->detail_email($id),
                 'is_read' => 0,
             );
         $this->db->insert('email', $data);
@@ -392,7 +392,7 @@ class Form_recruitment extends MX_Controller {
                 'receiver_id' => get_nik($receiver_id),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Perubahan Status Permintaan SDM Baru dari Atasan',
-                'email_body' => "$approver melakukan perubahan status Permintaan SDM Baru anda menjadi $approval_status, untuk detail silakan <a href=$url>Klik disini</a><br/>".$this->detail_email($id),
+                'email_body' => "$approver melakukan perubahan status Permintaan SDM Baru anda menjadi $approval_status, untuk detail silakan <a class='klikmail' href=$url>Klik disini</a><br/>".$this->detail_email($id),
                 'is_read' => 0,
             );
         $this->db->insert('email', $data);

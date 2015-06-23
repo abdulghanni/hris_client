@@ -1,4 +1,4 @@
-<<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
@@ -39,12 +39,12 @@
   <!-- <p align="left"><img src="<?php echo assets_url('img/erlangga.jpg')?>" width="296" height="80" /></p>-->
   <p align="center" class="style6">Form Pengajuan Karyawan Keluar</p>
 </div>
-<?php foreach($form_resignment->result() as $row):?>
+<?php foreach($form_resignment as $row):?>
 <table width="988" height="135" border="0" align="center" style="padding-left:30px">
   <tr>
     <td width="220" height="30"><span class="style3">NIK</span></td>
     <td width="10"><div align="center" class="style3">:</div></td>
-    <td width="274"><div align="left" class="style3"><?php echo (!empty($user_info))?$user_info['EMPLID']:'-';?></div></td>
+    <td width="274"><div align="left" class="style3"><?php echo $user_nik?></div></td>
     <td height="40"><span class="style3">Nama Karyawan </span></td>
     <td><div align="center" class="style3">:</div></td>
     <td><span class="style3"><?php echo get_name($row->user_id)?> </span></td>
@@ -52,15 +52,15 @@
   <tr>
     <td width="200"><span class="style3">Jabatan</span></td>
     <td width="10"><div align="center" class="style3">:</div></td>
-    <td width="300"><span class="style3"><?php echo (!empty($user_info))?$user_info['POSITION']:'-';?></span></td>
+    <td width="300"><span class="style3"><?php echo get_user_position($user_nik);?></span></td>
     <td><span class="style3">Tanggal Mulai Kerja</span></td>
     <td><div align="center" class="style3">:</div></td>
-    <td><span class="style3"><?php echo (!empty($user_info))?dateIndo($user_info['SENIORITYDATE']):'-';?></span></td>
+    <td><span class="style3"><?php echo dateIndo(get_user_sen_date($user_nik));?></span></td>
   </tr>
   <tr>
     <td height="40"><span class="style3">Wilayah </span></td>
     <td><div align="center" class="style3">:</div></td>
-    <td><span class="style3"><?php echo (!empty($user_info))?$user_info['BU']:'-';?></span></td>
+    <td><span class="style3"><?php echo get_user_bu($user_nik)?></span></td>
     <td><span class="style3">Tanggal Akhir Kerja </span></td>
     <td><div align="center" class="style3">:</div></td>
     <td><span class="style3"><?php echo dateIndo($row->date_resign)?> </span></td>

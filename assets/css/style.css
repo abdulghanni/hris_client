@@ -7098,3 +7098,8 @@ ul.my-friends li .profile-pic{
     transition: all 0.12s linear 0s !important;
     font: 16px "Helvetica Neue",Helvetica,Arial,sans-serif;
 }
+
+.klikmail{
+	font-style: bold;
+	font-size:15px !important;
+}

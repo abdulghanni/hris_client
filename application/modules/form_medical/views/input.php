@@ -46,6 +46,110 @@
 							        <tbody>
 							        </tbody>
 						    	</table>
+
+
+                    <?php if(is_admin()){?>
+					          <div class="row form-row">
+                      <div class="col-md-2">
+                        <label class="form-label text-left"><?php echo 'Pembuat Rekapitulasi' ?></label>
+                      </div>
+                      <div class="col-md-5">
+                        <select id="emp" class="select2" style="width:100%" name="pengaju" onchange="getDropDown()">
+                          <?php
+                          foreach ($all_users->result() as $u) :
+                            $selected = $u->id == $sess_id ? 'selected = selected' : '';?>
+                            <option value="<?php echo $u->id?>" <?php echo $selected?>><?php echo $u->username.' - '.get_nik($u->id); ?></option>
+                          <?php endforeach; ?>
+                        </select>
+                      </div>
+                    </div>
+                    <?php }else{?>
+                    <input type="hidden" name="pengaju" value="<?php echo $sess_id?>" />
+                    <?php } ?>
+
+					          <div class="row form-row">
+                      <div class="col-md-12">
+                        <label class="bold form-label text-left"><?php echo 'Approval' ?></label>
+                      </div>
+                    </div>
+
+                    <div class="row form-row">
+                      <div class="col-md-2">
+                        <label class="form-label text-left"><?php echo 'Supervisor' ?></label>
+                      </div>
+                      <div class="col-md-5">
+                        <?php if(is_admin()){?>
+                        <select id="atasan1" class="select2" style="width:100%" name="atasan1" >
+                        <option value="0">- Pilih Supervisor -</option>
+                          <?php
+                          foreach ($all_users->result() as $u) :
+                            $selected = $u->id == $sess_id ? 'selected = selected' : '';?>
+                            <option value="<?php echo $u->nik?>" <?php echo $selected?>><?php echo $u->username?></option>
+                          <?php endforeach; ?>
+                        </select>
+                        <?php }else{ ?>
+                        <select name="atasan1" id="atasan1" class="select2" style="width:100%">
+                            <option value="0">- Pilih Supervisor -</option>
+                            <?php foreach ($user_atasan as $key => $up) : ?>
+                              <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
+                            <?php endforeach;?>
+                        </select>
+                            <?php }?>
+                      </div>
+                    </div>
+
+                    <div class="row form-row">
+                      <div class="col-md-2">
+                        <label class="form-label text-left"><?php echo 'Ka. Bagian' ?></label>
+                      </div>
+                      <div class="col-md-5">
+                      <?php if(is_admin()){?>
+                        <select id="atasan2" class="select2" style="width:100%" name="atasan2">
+                        <option value="0">- Pilih Ka. Bagian -</option>
+                          <?php
+                          foreach ($all_users->result() as $u) :
+                            $selected = $u->id == $sess_id ? 'selected = selected' : '';?>
+                            <option value="<?php echo $u->nik?>" <?php echo $selected?>><?php echo $u->username?></option>
+                          <?php endforeach; ?>
+                        </select>
+                        <?php }else{ ?>
+                        <select name="atasan2" id="atasan2" class="select2" style="width:100%">
+                            <option value="0">- Pilih Ka. Bagian -</option>
+                            <?php foreach ($user_atasan as $key => $up) : ?>
+                            <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
+                            <?php endforeach;?>
+                        </select>
+                      <?php }?>
+                      </div>
+                    </div>
+
+                    <div class="row form-row">
+                      <div class="col-md-2">
+                        <label class="form-label text-left"><?php echo 'Atasan Lainnya' ?></label>
+                      </div>
+                      <div class="col-md-5">
+                      <?php if(is_admin()){
+                        ?>
+                        <select id="atasan3" class="select2" style="width:100%" name="atasan3">
+                        <option value="0">- Pilih Atasan Lainnya -</option>
+                          <?php
+                          foreach ($all_users->result() as $u) :
+                            $selected = $u->id == $sess_id ? 'selected = selected' : '';?>
+                            <option value="<?php echo $u->nik?>" <?php echo $selected?>><?php echo $u->username?></option>
+                          <?php endforeach; ?>
+                        </select>
+                        <?php }else{ ?>
+                        <select name="atasan3" id="atasan3" class="select2" style="width:100%">
+                            <option value="0">- Pilih Atasan Lainnya -</option>
+                            <?php foreach ($user_atasan as $key => $up) : ?>
+                            <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
+                            <?php endforeach;?>
+                        </select>
+                            <?php }?>
+                      </div>
+                    </div>
+
+
 				                 <div class="form-actions">
 				                  <div class="pull-right">
 				                    <button id="btnSaveMedical" class="btn btn-success btn-cons" type="submit" style="display: none;"><i class="icon-ok"></i> <?php echo lang('save_button') ?></button>
@@ -63,7 +167,7 @@
     </div>
 </div> 
 <!-- END PAGE --> 
-
+<?php $all_users = $all_users->result_array();?>
 <script type="text/javascript">
 	function addRow(tableID){
 	var table=document.getElementById(tableID);
@@ -97,8 +201,53 @@
 	}
 
 
-function deleteRow(tableID){try{var table=document.getElementById(tableID);var rowCount=table.rows.length;for(var i=0;i<rowCount;i++){var row=table.rows[i];var chkbox=row.cells[0].childNodes[0];if(null!=chkbox&&true==chkbox.checked){table.deleteRow(i);rowCount--;i--;}}}catch(e){alert(e);}}
+	function deleteRow(tableID){try{var table=document.getElementById(tableID);var rowCount=table.rows.length;for(var i=0;i<rowCount;i++){var row=table.rows[i];var chkbox=row.cells[0].childNodes[0];if(null!=chkbox&&true==chkbox.checked){table.deleteRow(i);rowCount--;i--;}}}catch(e){alert(e);}}
 
+    function getDropDown()
+    {
+      getAtasan1();
+      getAtasan2();
+      getAtasan3();
+    }
+
+    function getAtasan1()
+     {
+         emp = document.getElementById("emp").value;
+         $.ajax({
+             url:"<?php echo base_url();?>form_medical/get_atasan/"+emp+"",
+             success: function(response){
+             $("#atasan1").html(response);
+             },
+             dataType:"html"
+         });
+         return false;
+     }
+
+     function getAtasan2()
+     {
+         emp = document.getElementById("emp").value;
+         $.ajax({
+             url:"<?php echo base_url();?>form_medical/get_atasan/"+emp+"",
+             success: function(response){
+             $("#atasan2").html(response);
+             },
+             dataType:"html"
+         });
+         return false;
+     }
+
+     function getAtasan3()
+     {
+         emp = document.getElementById("emp").value;
+         $.ajax({
+             url:"<?php echo base_url();?>form_medical/get_atasan/"+emp+"",
+             success: function(response){
+             $("#atasan3").html(response);
+             },
+             dataType:"html"
+         });
+         return false;
+     }
 
 
 </script>

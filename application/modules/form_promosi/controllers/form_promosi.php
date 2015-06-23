@@ -206,7 +206,7 @@ class Form_promosi extends MX_Controller {
                 'receiver_id' => 1,
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Pengajuan Permohonan Promosi',
-                'email_body' => get_name($sender_id).' mengajukan permohonan promosi untuk '.get_name($user_id).', untuk melihat detail silakan <a href='.$url.'hrd/'.$id.'>Klik Disini</a><br/>'.$this->detail_email($id),
+                'email_body' => get_name($sender_id).' mengajukan permohonan promosi untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'hrd/'.$id.'>Klik Disini</a><br/>'.$this->detail_email($id),
                 'is_read' => 0,
             );
         $this->db->insert('email', $data);
@@ -223,7 +223,7 @@ class Form_promosi extends MX_Controller {
                 'receiver_id' => get_nik($receiver_id),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Status Pengajuan Permohonan promosi dari HRD',
-                'email_body' => "Status pengajuan permohonan promosi anda $approval_status oleh $approver untuk detail silakan <a href=$url>Klik disini</a><br/>".$this->detail_email($id),
+                'email_body' => "Status pengajuan permohonan promosi anda $approval_status oleh $approver untuk detail silakan <a class='klikmail' href=$url>Klik disini</a><br/>".$this->detail_email($id),
                 'is_read' => 0,
             );
         $this->db->insert('email', $data);

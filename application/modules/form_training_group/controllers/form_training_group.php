@@ -265,7 +265,7 @@ class form_training_group extends MX_Controller {
                     'receiver_id' => $user_app_lv1,
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Pengajuan Training Group',
-                    'email_body' => get_name($user_id).' mengajukan permohonan pelatihan Group, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
+                    'email_body' => get_name($user_id).' mengajukan permohonan pelatihan Group, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data1);
@@ -278,7 +278,7 @@ class form_training_group extends MX_Controller {
                     'receiver_id' => $user_app_lv2,
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Pengajuan Training Group',
-                    'email_body' => get_name($user_id).' mengajukan permohonan pelatihan Group, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
+                    'email_body' => get_name($user_id).' mengajukan permohonan pelatihan Group, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data2);
@@ -291,7 +291,7 @@ class form_training_group extends MX_Controller {
                     'receiver_id' => $user_app_lv3,
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Pengajuan Training',
-                    'email_body' => get_name($user_id).' mengajukan permohonan pelatihan Group, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
+                    'email_body' => get_name($user_id).' mengajukan permohonan pelatihan Group, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data3);
@@ -303,7 +303,7 @@ class form_training_group extends MX_Controller {
                     'receiver_id' => 1,
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Pengajuan Training',
-                    'email_body' => get_name($user_id).' mengajukan permohonan pelatihan Group, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
+                    'email_body' => get_name($user_id).' mengajukan permohonan pelatihan Group, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data4);
@@ -319,7 +319,7 @@ class form_training_group extends MX_Controller {
                 'receiver_id' => get_nik($peserta_id[$i]),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Pengajuan Training Group',
-                'email_body' => get_name($sender_id).' mengajukan permohonan pelatihan group untuk anda, untuk melihat detail silakan <a href='.$url.'/'.$id.'>Klik Disini</a><br/>'.$this->detail_email($id),
+                'email_body' => get_name($sender_id).' mengajukan permohonan pelatihan group untuk anda, untuk melihat detail silakan <a class="klikmail" href='.$url.'/'.$id.'>Klik Disini</a><br/>'.$this->detail_email($id),
                 'is_read' => 0,
             );
         $this->db->insert('email', $data);
@@ -337,7 +337,7 @@ class form_training_group extends MX_Controller {
                 'receiver_id' => get_nik($pengaju_id),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Status Pengajuan Permintaan Training Group dari Atasan',
-                'email_body' => "Status pengajuan permohonan training anda $approval_status oleh $approver untuk detail silakan <a href=$url>Klik disini</a><br/>".$this->detail_email($id),
+                'email_body' => "Status pengajuan permohonan training anda $approval_status oleh $approver untuk detail silakan <a class='klikmail' href=$url>Klik disini</a><br/>".$this->detail_email($id),
                 'is_read' => 0,
             );
         $this->db->insert('email', $data);
@@ -354,7 +354,7 @@ class form_training_group extends MX_Controller {
                 'receiver_id' => get_nik($pengaju_id),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Perubahan Status Pengajuan Permintaan Training  Groupdari Atasan',
-                'email_body' => "$approver melakukan perubahan status permintaan training group anda, Status permintaan anda kini $approval_status, untuk detail silakan <a href=$url>Klik disini</a><br/>".$this->detail_email($id),
+                'email_body' => "$approver melakukan perubahan status permintaan training group anda, Status permintaan anda kini $approval_status, untuk detail silakan <a class='klikmail' href=$url>Klik disini</a><br/>".$this->detail_email($id),
                 'is_read' => 0,
             );
         $this->db->insert('email', $data);
@@ -445,9 +445,6 @@ class form_training_group extends MX_Controller {
 
      function form_training_group_pdf($id)
     {
-        $sess_id = $this->session->userdata('user_id');
-        
-
         if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page
@@ -455,9 +452,17 @@ class form_training_group extends MX_Controller {
         }
         else
         {
-            
-        
-        $form_training_group = $this->data['form_training_group'] = $this->form_training_group_model->form_training_group($id);
+        $user_id= getValue('user_pengaju_id', 'users_training_group', array('id'=>'where/'.$id));
+        $this->data['user_nik'] = $sess_nik = get_nik($user_id);
+        $this->data['sess_id'] = $this->session->userdata('user_id');
+
+        $form_training_group = $this->data['form_training_group'] = $this->form_training_group_model->form_training_group($id)->result($id);
+        $this->data['_num_rows'] = $this->form_training_group_model->form_training_group($id)->num_rows($id);
+
+        $this->data['training_type'] = GetAll('training_type', array('is_deleted' => 'where/0'));
+        $this->data['penyelenggara'] = GetAll('penyelenggara', array('is_deleted' => 'where/0'));
+        $this->data['pembiayaan'] = GetAll('pembiayaan', array('is_deleted' => 'where/0'));
+        $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
 
         $this->data['id'] = $id;
         $title = $this->data['title'] = 'Form Training-'.get_name($user_id);

@@ -78,37 +78,37 @@ foreach($form_training as $user):?>
       <td width="573">&nbsp;<?php echo $user->training_type?></td>
     </tr>
     <tr>
-      <td height="45" width="39" align="center">7</td>
+      <td height="45" width="39" align="center">8</td>
       <td width="361">&nbsp;Penyelenggara</td>
       <td width="573">&nbsp;<?php echo $user->penyelenggara?></td>
     </tr>
     <tr>
-      <td height="45" align="center">8</td>
+      <td height="45" align="center">9</td>
       <td>&nbsp;Pembiayaan</td>
       <td>&nbsp;<?php echo $user->pembiayaan?></td>
     </tr>
     <tr>
-      <td height="45" align="center">9</td>
+      <td height="45" align="center">10</td>
       <td>&nbsp;Besar Biaya</td>
       <td>&nbsp;Rp.&nbsp;<?php echo $user->besar_biaya?></td>
     </tr>
     <tr>
-      <td height="45" align="center">10</td>
+      <td height="45" align="center">11</td>
       <td>&nbsp;Nama Narasumber</td>
       <td>&nbsp;<?php echo $user->narasumber?></td>
     </tr>
     <tr>
-      <td height="45" align="center">11</td>
+      <td height="45" align="center">12</td>
       <td>&nbsp;Nama Vendor</td>
       <td>&nbsp;<?php echo $user->vendor?></td>
     </tr>
     <tr>
-      <td height="45" align="center">12</td>
+      <td height="45" align="center">13</td>
       <td>&nbsp;Tempat Pelaksanaan :&nbsp;&nbsp; <?php echo $user->tempat?></td>
       <td>&nbsp;Tanggal & Jam Pelaksaan :&nbsp;&nbsp;<?php echo dateIndo($user->tanggal_mulai)?> s/d <?php echo dateIndo($user->tanggal_akhir)?>&nbsp;&nbsp;<?php echo $user->jam_mulai?> s/d <?php echo $user->jam_akhir?> </td>
     </tr>
     <tr>
-      <td height="45" align="center">13</td>
+      <td height="45" align="center">14</td>
       <td>&nbsp;Lama Pelaksanaan</td>
       <td>&nbsp;<?php echo $user->lama_training_bulan.' Bulan'.' '.$user->lama_training_hari.' Hari'?></td>
     </tr>

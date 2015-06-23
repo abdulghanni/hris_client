@@ -251,7 +251,7 @@ class form_training extends MX_Controller {
                     'receiver_id' => $user_app_lv1,
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Pengajuan Training',
-                    'email_body' => get_name($pengaju_id).' mengajukan permohonan pelatihan untuk '.get_name($user_id).', untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
+                    'email_body' => get_name($pengaju_id).' mengajukan permohonan pelatihan untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data1);
@@ -264,7 +264,7 @@ class form_training extends MX_Controller {
                     'receiver_id' => $user_app_lv2,
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Pengajuan Training',
-                    'email_body' => get_name($pengaju_id).' mengajukan permohonan pelatihan untuk '.get_name($user_id).', untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
+                    'email_body' => get_name($pengaju_id).' mengajukan permohonan pelatihan untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data2);
@@ -277,7 +277,7 @@ class form_training extends MX_Controller {
                     'receiver_id' => $user_app_lv3,
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Pengajuan Training',
-                    'email_body' => get_name($pengaju_id).' mengajukan permohonan pelatihan untuk '.get_name($user_id).', untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
+                    'email_body' => get_name($pengaju_id).' mengajukan permohonan pelatihan untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data3);
@@ -289,7 +289,7 @@ class form_training extends MX_Controller {
                     'receiver_id' => 1,
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Pengajuan Training',
-                    'email_body' => get_name($pengaju_id).' mengajukan permohonan pelatihan untuk '.get_name($user_id).', untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
+                    'email_body' => get_name($pengaju_id).' mengajukan permohonan pelatihan untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data4);
@@ -299,7 +299,7 @@ class form_training extends MX_Controller {
                     'receiver_id' => get_nik($user_id),
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Pengajuan Training',
-                    'email_body' => get_name($pengaju_id).' mengajukan permohonan pelatihan untuk anda, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br/>'.$this->detail_email($id),
+                    'email_body' => get_name($pengaju_id).' mengajukan permohonan pelatihan untuk anda, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$this->detail_email($id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data5);
@@ -318,7 +318,7 @@ class form_training extends MX_Controller {
                 'receiver_id' => get_nik($pengaju_id),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Status Pengajuan Permintaan Training dari Atasan',
-                'email_body' => "Status pengajuan permohonan training anda $approval_status oleh $approver untuk detail silakan <a href=$url>Klik disini</a><br/>".$this->detail_email($id),
+                'email_body' => "Status pengajuan permohonan training anda $approval_status oleh $approver untuk detail silakan <a class='klikmail' href=$url>Klik disini</a><br/>".$this->detail_email($id),
                 'is_read' => 0,
             );
         $this->db->insert('email', $data);
@@ -336,7 +336,7 @@ class form_training extends MX_Controller {
                 'receiver_id' => get_nik($pengaju_id),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Perubahan Status Pengajuan Permintaan Training dari Atasan',
-                'email_body' => "$approver melakukan perubahan status permintaan training anda, Status permintaan anda kini $approval_status, untuk detail silakan <a href=$url>Klik disini</a><br/>".$this->detail_email($id),
+                'email_body' => "$approver melakukan perubahan status permintaan training anda, Status permintaan anda kini $approval_status, untuk detail silakan <a class='klikmail' href=$url>Klik disini</a><br/>".$this->detail_email($id),
                 'is_read' => 0,
             );
         $this->db->insert('email', $data);

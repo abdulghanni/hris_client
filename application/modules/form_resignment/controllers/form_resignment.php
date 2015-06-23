@@ -228,7 +228,7 @@ class Form_resignment extends MX_Controller {
                     'receiver_id' => $user_app_lv1,
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Pengajuan Karyawan Keluar',
-                    'email_body' => get_name($user_id).' mengajukan Karyawan Keluar, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
+                    'email_body' => get_name($user_id).' mengajukan Karyawan Keluar, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data1);
@@ -241,7 +241,7 @@ class Form_resignment extends MX_Controller {
                     'receiver_id' => $user_app_lv2,
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Pengajuan Karyawan Keluar',
-                    'email_body' => get_name($user_id).' mengajukan Karyawan Keluar, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
+                    'email_body' => get_name($user_id).' mengajukan Karyawan Keluar, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data2);
@@ -254,7 +254,7 @@ class Form_resignment extends MX_Controller {
                     'receiver_id' => $user_app_lv3,
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Pengajuan Karyawan Keluar',
-                    'email_body' => get_name($user_id).' mengajukan Karyawan Keluar, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
+                    'email_body' => get_name($user_id).' mengajukan Karyawan Keluar, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data3);
@@ -266,7 +266,7 @@ class Form_resignment extends MX_Controller {
                     'receiver_id' => 1,
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Pengajuan Karyawan Keluar',
-                    'email_body' => get_name($user_id).' mengajukan Karyawan Keluar, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
+                    'email_body' => get_name($user_id).' mengajukan Karyawan Keluar, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data4);
@@ -283,7 +283,7 @@ class Form_resignment extends MX_Controller {
                 'receiver_id' => get_nik($receiver_id),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Status Pengajuan Karyawan Keluar dari Atasan',
-                'email_body' => "Status pengajuan Karyawan Keluar anda $approval_status oleh $approver untuk detail silakan <a href=$url>Klik disini</a><br/>".$this->detail_email($id),
+                'email_body' => "Status pengajuan Karyawan Keluar anda $approval_status oleh $approver untuk detail silakan <a class='klikmail' href=$url>Klik disini</a><br/>".$this->detail_email($id),
                 'is_read' => 0,
             );
         $this->db->insert('email', $data);
@@ -300,7 +300,7 @@ class Form_resignment extends MX_Controller {
                 'receiver_id' => get_nik($receiver_id),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Perubahan Status Pengajuan Karyawan Keluar dari Atasan',
-                'email_body' => "$approver melakukan perubahan status pengajuan Karyawan Keluar anda menjadi $approval_status, untuk detail silakan <a href=$url>Klik disini</a><br/>".$this->detail_email($id),
+                'email_body' => "$approver melakukan perubahan status pengajuan Karyawan Keluar anda menjadi $approval_status, untuk detail silakan <a class='klikmail' href=$url>Klik disini</a><br/>".$this->detail_email($id),
                 'is_read' => 0,
             );
         $this->db->insert('email', $data);
@@ -436,29 +436,21 @@ class Form_resignment extends MX_Controller {
 
     function form_resignment_pdf($id)
     {
-        $sess_id = $this->session->userdata('user_id');
-        $user_id = $this->db->select('user_id')->from('users_resignment')->where('id', $id)->get()->row('user_id');
-
-        if (!$this->ion_auth->logged_in())
+        if(!$this->ion_auth->logged_in())
         {
-            //redirect them to the login page
             redirect('auth/login', 'refresh');
         }
-        else
-        {
-            $this->data['alasan_resign'] = getAll('alasan_resign', array('is_deleted' => 'where/0'));
-            $alasan = explode(',', getAll('users_resignment', array('id' => 'where/'.$id))->row('alasan_resign_id'));
-            $this->data['alasan'] = $this->form_resignment_model->get_alasan($alasan);
-            $this->get_user_info($user_id);
-            
-            //$this->data['comp_session'] = $this->form_resignment_model->render_session()->result();
-            
-            if(is_admin()){
-                $form_resignment = $this->data['form_resignment'] = $this->form_resignment_model->form_resignment_admin($id);
-            }else{
-            $form_resignment = $this->data['form_resignment'] = $this->form_resignment_model->form_resignment($id);
-            }
-
+        
+        $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
+        $user_id = getValue('user_id', 'users_resignment', array('id'=>'where/'.$id));
+        $this->data['user_nik'] = get_nik($user_id);
+        $form_resignment = $this->data['form_resignment'] = $this->form_resignment_model->form_resignment($id)->result();
+        $this->data['_num_rows'] = $this->form_resignment_model->form_resignment($id)->num_rows();
+        
+        $this->data['alasan_resign'] = getAll('alasan_resign', array('is_deleted' => 'where/0'));
+        $alasan = explode(',', getAll('users_resignment', array('id' => 'where/'.$id))->row('alasan_resign_id'));
+        $this->data['alasan'] = $this->form_resignment_model->get_alasan($alasan);
+        $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
 
         $this->data['id'] = $id;
         $title = $this->data['title'] = 'Form Karyawan Keluar-'.get_name($user_id);
@@ -468,7 +460,6 @@ class Form_resignment extends MX_Controller {
         $mpdf = new mPDF('A4');
         $mpdf->WriteHTML($html);
         $mpdf->Output($id.'-'.$title.'.pdf', 'I');
-        }
     }
 
     function _get_csrf_nonce()

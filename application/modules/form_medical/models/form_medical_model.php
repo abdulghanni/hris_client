@@ -280,7 +280,7 @@ class Form_medical_model extends CI_Model
      * @return object form_medical
      * @author Deni
      **/
-    public function form_medical()
+    public function form_medical($id=null)
     {
         $this->trigger_events('form_medical');
 
@@ -296,6 +296,7 @@ class Form_medical_model extends CI_Model
         else
         {
             $sess_id = $this->session->userdata('user_id');
+            $sess_nik = get_nik($sess_id);
             
             if(!empty(is_have_subordinate(get_nik($sess_id)))){
             $sub_id = get_subordinate($sess_id);
@@ -313,10 +314,13 @@ class Form_medical_model extends CI_Model
             $this->db->join('users', 'users.id = users_medical.user_id', 'LEFT');
 			
 
-
+            if($id != null)
+            {
+                $this->db->where('users_medical.id', $id);
+            }
             //$this->db->where('users_medical.is_deleted', 0);
             if($is_admin!=1){
-                $this->db->where("(users_medical.user_id= $sess_id $sub_id)",null, false);
+                $this->db->where("(users_medical.user_id = $sess_id OR  users_medical.user_app_lv1 = '$sess_nik' OR users_medical.user_app_lv2 = '$sess_nik' OR users_medical.user_app_lv3 = '$sess_nik' OR users_medical.created_by = '$sess_id')",null, false);
             }
 
             $this->db->order_by('users_medical.id', 'desc');

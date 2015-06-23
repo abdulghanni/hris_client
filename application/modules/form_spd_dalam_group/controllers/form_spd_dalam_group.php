@@ -455,7 +455,7 @@ class Form_spd_dalam_group extends MX_Controller {
                     'receiver_id' => $task_receiver_id[$i],
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Pemberian Tugas Perjalanan Dinas Dalam Kota (group)',
-                    'email_body' => get_name($sender_id).' memberikan tugas perjalan dinas Dalam Kota (group), untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br/>'.$this->detail_email_submit($spd_id),
+                    'email_body' => get_name($sender_id).' memberikan tugas perjalan dinas Dalam Kota (group), untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$this->detail_email_submit($spd_id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data);
@@ -471,7 +471,7 @@ class Form_spd_dalam_group extends MX_Controller {
                     'receiver_id' => $receiver_id,
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Persetujuan Tugas Perjalanan Dinas Dalam Kota (group)',
-                    'email_body' => get_name($sender).' telah menyetujui tugas perjalan dinas Dalam Kota (group) yang anda berikan, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br/>'.$this->detail_email_submit($spd_id),
+                    'email_body' => get_name($sender).' telah menyetujui tugas perjalan dinas Dalam Kota (group) yang anda berikan, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$this->detail_email_submit($spd_id),
                     'is_read' => 0,
                 );
         $this->db->insert('email', $data);
@@ -487,7 +487,7 @@ class Form_spd_dalam_group extends MX_Controller {
                     'receiver_id' => $receiver_id,
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Laporan Tugas Perjalanan Dinas Dalam Kota (group)',
-                    'email_body' => get_name($sender).' telah membuat laporan perjalanan dinas Dalam Kota (group), untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br/>'.$this->detail_email_report($spd_id, $sess_id),
+                    'email_body' => get_name($sender).' telah membuat laporan perjalanan dinas Dalam Kota (group), untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$this->detail_email_report($spd_id, $sess_id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data);

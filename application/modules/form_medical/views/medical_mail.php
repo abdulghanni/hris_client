@@ -1,15 +1,11 @@
-<div class="grid simple">
-            <div class="grid-title no-border">
-              <h4>Detail Rekapitulasi <span class="semi-bold"><a href="<?php echo site_url('form_medical')?>">Rawat Jalan & Inap</a></span></h4>
-            </div>
-            <div class="grid-body no-border">
+<div class="grid-body no-border">
             <h6 class="bold">BAGIAN : <?php echo $bagian?></h6>
               <form class="form-no-horizontal-spacing" id="formApp"> 
                 <div class="row column-seperation">
 
                   <hr/>
                   <h5 class="text-center"><span class="semi-bold">Rekapitulasi Rawat Jalan & Inap</span></h5>
-                          <table id="dataTable" class="table table-bordered">
+                    <table id="dataTable" class="table table-bordered">
                       <thead>
                         <tr>
                           <th width="5%">NIK</th>
@@ -58,6 +54,6 @@
                     </div>
                   </div>
                 </div>
+                </div>
               </form>
-              </div>  
-            </div>
+                  </div>  

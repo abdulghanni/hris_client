@@ -190,7 +190,7 @@ class Form_exit extends MX_Controller {
                 'receiver_id' => (!empty($this->get_emp_by_pos('PST242'))) ? $this->get_emp_by_pos('PST242') : 'D0001',
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Pengajuan Rekomendasi Karyawan Keluar',
-                'email_body' => get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
+                'email_body' => get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
                 'is_read' => 0,
             );
         $this->db->insert('email', $data1);
@@ -201,7 +201,7 @@ class Form_exit extends MX_Controller {
                 'receiver_id' => $this->get_emp_by_pos('PST263'),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Pengajuan Rekomendasi Karyawan Keluar',
-                'email_body' => get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
+                'email_body' => get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
                 'is_read' => 0,
             );
         $this->db->insert('email', $data2);
@@ -212,7 +212,7 @@ class Form_exit extends MX_Controller {
                 'receiver_id' => $this->get_emp_by_pos('PST2'),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Pengajuan Rekomendasi Karyawan Keluar',
-                'email_body' => get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
+                'email_body' => get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
                 'is_read' => 0,
             );
         $this->db->insert('email', $data3);
@@ -223,7 +223,7 @@ class Form_exit extends MX_Controller {
                 'receiver_id' => $this->get_emp_by_pos('PST129'),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Pengajuan Rekomendasi Karyawan Keluar',
-                'email_body' => get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
+                'email_body' => get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
                 'is_read' => 0,
             );
         $this->db->insert('email', $data4);
@@ -234,7 +234,7 @@ class Form_exit extends MX_Controller {
                 'receiver_id' => 1,
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Pengajuan Rekomendasi Karyawan Keluar',
-                'email_body' => get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
+                'email_body' => get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
                 'is_read' => 0,
             );
         $this->db->insert('email', $data5);
@@ -358,7 +358,7 @@ class Form_exit extends MX_Controller {
                 'receiver_id' => get_nik($receiver_id),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Status Pengajuan Rekomendasi Keluar dari '.$type,
-                'email_body' => "Status pengajuan Rekomendasi karyawan Keluar untuk anda oleh ".get_name(get_superior($receiver_id))." $approval_status oleh $approver untuk detail silakan <a href=$url>Klik disini</a><br/>".$this->detail_email($id),
+                'email_body' => "Status pengajuan Rekomendasi karyawan Keluar untuk anda oleh ".get_name(get_superior($receiver_id))." $approval_status oleh $approver untuk detail silakan <a class='klikmail' href=$url>Klik disini</a><br/>".$this->detail_email($id),
                 'is_read' => 0,
             );
         $this->db->insert('email', $data1);
@@ -368,7 +368,7 @@ class Form_exit extends MX_Controller {
                 'receiver_id' => get_superior($receiver_id),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Status Pengajuan Rekomendasi Keluar dari '.$type,
-                'email_body' => "Status pengajuan Rekomendasi karyawan Keluar untuk ".get_name($receiver_id)." $approval_status oleh $approver untuk detail silakan <a href=$url>Klik disini</a><br/>".$this->detail_email($id),
+                'email_body' => "Status pengajuan Rekomendasi karyawan Keluar untuk ".get_name($receiver_id)." $approval_status oleh $approver untuk detail silakan <a class='klikmail' href=$url>Klik disini</a><br/>".$this->detail_email($id),
                 'is_read' => 0,
             );
         $this->db->insert('email', $data2);
@@ -395,7 +395,7 @@ class Form_exit extends MX_Controller {
                 'receiver_id' => get_superior($receiver_id),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Perubahan Status Pengajuan Rekomendasi Keluar dari '.$type,
-                'email_body' => $approver." melakukan perubahan Status pengajuan Rekomendasi karyawan Keluar untuk ".get_name($receiver_id)." status pengajuan anda saat ini $approval_status, untuk detail silakan <a href=$url>Klik disini</a><br/>".$this->detail_email($id),
+                'email_body' => $approver." melakukan perubahan Status pengajuan Rekomendasi karyawan Keluar untuk ".get_name($receiver_id)." status pengajuan anda saat ini $approval_status, untuk detail silakan <a class='klikmail' href=$url>Klik disini</a><br/>".$this->detail_email($id),
                 'is_read' => 0,
             );
         $this->db->insert('email', $data2);

@@ -36,7 +36,7 @@ class Form_medical extends MX_Controller {
         }
         else
         {
-
+            $this->data['sess_nik'] = get_nik($this->session->userdata('user_id'));
             $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
 
             //set sort order
@@ -97,9 +97,12 @@ class Form_medical extends MX_Controller {
         }
         $sess_id = $this->session->userdata('user_id');
         $this->data['bagian'] = get_user_organization(get_nik($sess_id));
-        $this->data['all_users'] = getAll('users', array('active'=>'where/1'))->result_array();
         $this->data['hubungan'] = getAll('medical_hubungan', array('is_deleted' => 'where/0'))->result_array();
         $this->data['jenis'] = getAll('medical_jenis_pemeriksaan', array('is_deleted' => 'where/0'))->result_array();
+
+        $this->data['sess_id'] = $this->session->userdata('user_id');
+        $this->data['all_users'] = getAll('users', array('active'=>'where/1', 'username'=>'order/asc'), array('!=id'=>'1'));
+        $this->get_user_atasan();
         $this->_render_page('form_medical/input', $this->data);
     }
 
@@ -144,8 +147,11 @@ class Form_medical extends MX_Controller {
             endfor;
         
         $medical = array(
-            'user_id' => $this->session->userdata('user_id'),
+            'user_id' => $this->input->post('pengaju'),
             'user_medical_detail_id' => $medical_detail_id,
+            'user_app_lv1'          => $this->input->post('atasan1'),
+            'user_app_lv2'          => $this->input->post('atasan2'),
+            'user_app_lv3'          => $this->input->post('atasan3'),
             'created_by' => $this->session->userdata('user_id'),
             'created_on' => date('Y-m-d',strtotime('now')),
             );
@@ -166,8 +172,8 @@ class Form_medical extends MX_Controller {
 
             $this->db->insert('users_medical_detail', $data_medical_detail);
             endfor;
-
-            $this->send_approval_request($last_medical_id, $sess_id);
+            $user_id = $this->input->post('pengaju');
+            $this->send_approval_request($last_medical_id, $user_id);
             redirect('form_medical', 'refresh');
     }
 
@@ -178,58 +184,97 @@ class Form_medical extends MX_Controller {
             //redirect them to the login page
             redirect('auth/login', 'refresh');
         }
-        $user_id = getValue('user_id', 'users_medical', array('id'=>'where'.$id));
+        $user_id = getValue('user_id', 'users_medical', array('id'=>'where/'.$id));
+        $sess_id= $this->session->userdata('user_id');
+        $this->data['sess_nik'] = get_nik($sess_id);
         $this->data['bagian'] = get_user_organization(get_nik($user_id));
         $this->data['detail'] = $this->form_medical_model->form_medical_detail($id)->result_array();
-        $this->data['created_by'] = getValue('created_by', 'users_medical', array('id'=>'where/'.$id));
-        $this->data['created_on'] = getValue('created_on', 'users_medical', array('id'=>'where/'.$id));
-        $this->data['is_app'] = getValue('is_app', 'users_medical', array('id'=>'where/'.$id));
-        $this->data['user_app'] = getValue('user_app', 'users_medical', array('id'=>'where/'.$id));
-        $this->data['date_app'] = getValue('date_app', 'users_medical', array('id'=>'where/'.$id));
+        $form_medical = $this->data['form_medical'] = $this->form_medical_model->form_medical($id)->result();
+        $this->data['_num_rows'] = $this->form_medical_model->form_medical($id)->num_rows();
+            
         $this->_render_page('form_medical/detail', $this->data);
 
     }
 
-    function do_approve($id)
+    function do_approve($id, $type)
     {
-        if (!$this->ion_auth->logged_in())
+        if(!$this->ion_auth->logged_in())
         {
-            //redirect them to the login page
             redirect('auth/login', 'refresh');
         }
 
-        $data = array(
-        'is_app' => 1, 
-        'user_app' => $this->session->userdata('user_id'), 
-        'date_app' => date('Y-m-d',strtotime('now')),
-        );
+        $user_id = get_nik($this->session->userdata('user_id'));
+        $date_now = date('Y-m-d');
 
-        $this->approval_mail($id);
+        $data = array(
+        'is_app_'.$type => 1,
+        'user_app_'.$type => $user_id, 
+        'date_app_'.$type => $date_now,
+        );
+        
        if ($this->form_medical_model->update($id,$data)) {
            return TRUE;
        }
+
+       $this->approval_mail($id);
     }
 
     function send_approval_request($id, $user_id)
     {
-        if (!$this->ion_auth->logged_in())
-        {
-            //redirect them to the login page
-            redirect('auth/login', 'refresh');
+        $url = base_url().'form_medical/detail/'.$id;
+        $user_app_lv1 = getValue('user_app_lv1', 'users_medical', array('id'=>'where/'.$id));
+        $user_app_lv2 = getValue('user_app_lv2', 'users_medical', array('id'=>'where/'.$id));
+        $user_app_lv3 = getValue('user_app_lv3', 'users_medical', array('id'=>'where/'.$id));
+        
+        //approval to LV1
+        if(!empty($user_app_lv1)){
+            $data1 = array(
+                    'sender_id' => get_nik($user_id),
+                    'receiver_id' => $user_app_lv1,
+                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                    'subject' => 'Rekapitulasi Rawat Jalan & Inap',
+                    'email_body' => get_name($user_id).' membuat rekapitulasi rawat jalan dan inap, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$this->detail_email($id),
+                    'is_read' => 0,
+                );
+            $this->db->insert('email', $data1);
         }
 
-        $sender_id= $this->session->userdata('user_id');
-        $url = base_url().'form_medical/detail';
-        
-        $data = array(
-                'sender_id' => get_nik($sender_id),
-                'receiver_id' => get_superior($sender_id),
-                'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                'subject' => 'Rekapitulasi Rawat Jalan & Inap',
-                'email_body' => get_name($sender_id).' membuat rekapitulasi rawat jalan dan inap, untuk melihat detail silakan <a href='.$url.'/'.$id.'>Klik Disini</a><br/>'.$this->detail_email($id),
-                'is_read' => 0,
-            );
-        $this->db->insert('email', $data);
+        //approval to LV2
+        if(!empty($user_app_lv2)){
+            $data2 = array(
+                    'sender_id' => get_nik($user_id),
+                    'receiver_id' => $user_app_lv2,
+                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                    'subject' => 'Rekapitulasi Rawat Jalan & Inap',
+                    'email_body' => get_name($user_id).' membuat rekapitulasi rawat jalan dan inap, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$this->detail_email($id),
+                    'is_read' => 0,
+                );
+            $this->db->insert('email', $data2);
+        }
+
+        //approval to LV3
+        if(!empty($user_app_lv3)){
+            $data3 = array(
+                    'sender_id' => get_nik($user_id),
+                    'receiver_id' => $user_app_lv3,
+                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                    'subject' => 'Rekapitulasi Rawat Jalan & Inap',
+                    'email_body' => get_name($user_id).' membuat rekapitulasi rawat jalan dan inap, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$this->detail_email($id),
+                    'is_read' => 0,
+                );
+            $this->db->insert('email', $data3);
+        }
+
+        //approval to hrd
+            $data4 = array(
+                    'sender_id' => get_nik($user_id),
+                    'receiver_id' => 1,
+                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                    'subject' => 'Rekapitulasi Rawat Jalan & Inap',
+                    'email_body' => get_name($user_id).' membuat rekapitulasi rawat jalan dan inap, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$this->detail_email($id),
+                    'is_read' => 0,
+                );
+            $this->db->insert('email', $data4);
     }
 
     function approval_mail($id)
@@ -242,14 +287,14 @@ class Form_medical extends MX_Controller {
 
         $sender_id= $this->session->userdata('user_id');
         $receiver_id = getValue('user_id', 'users_medical', array('id'=>'where/'.$id));
-        $url = base_url().'form_medical/detail';
+        $url = base_url().'form_medical/detail/'.$id;
         
         $data = array(
                 'sender_id' => get_nik($sender_id),
                 'receiver_id' => get_nik($receiver_id),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Rekapitulasi Rawat Jalan & Inap',
-                'email_body' => get_name($sender_id).' menyetujui rekapitulasi rawat jalan dan inap yang anda buat, untuk melihat detail silakan <a href='.$url.'/'.$id.'>Klik Disini</a><br/>'.$this->detail_email($id),
+                'email_body' => get_name($sender_id).' menyetujui rekapitulasi rawat jalan dan inap yang anda buat, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$this->detail_email($id),
                 'is_read' => 0,
             );
         $this->db->insert('email', $data);
@@ -263,15 +308,10 @@ class Form_medical extends MX_Controller {
             redirect('auth/login', 'refresh');
         }
 
-        $user_id = getValue('user_id', 'users_medical', array('id'=>'where'.$id));
+        $user_id = getValue('user_id', 'users_medical', array('id'=>'where/'.$id));
         $this->data['bagian'] = get_user_organization(get_nik($user_id));
         $this->data['detail'] = $this->form_medical_model->form_medical_detail($id)->result_array();
-        $this->data['created_by'] = getValue('created_by', 'users_medical', array('id'=>'where/'.$id));
-        $this->data['created_on'] = getValue('created_on', 'users_medical', array('id'=>'where/'.$id));
-        $this->data['is_app'] = getValue('is_app', 'users_medical', array('id'=>'where/'.$id));
-        $this->data['user_app'] = getValue('user_app', 'users_medical', array('id'=>'where/'.$id));
-        $this->data['date_app'] = getValue('date_app', 'users_medical', array('id'=>'where/'.$id));
-        return $this->_render_page('form_medical/medical_mail', $this->data, TRUE);
+        return $this->load->view('form_medical/medical_mail', $this->data, TRUE);
     }
 
     function form_medical_pdf($id)
@@ -282,14 +322,14 @@ class Form_medical extends MX_Controller {
             redirect('auth/login', 'refresh');
         }
 
-        $user_id = getValue('user_id', 'users_medical', array('id'=>'where'.$id));
+        $user_id = getValue('user_id', 'users_medical', array('id'=>'where/'.$id));
         $this->data['bagian'] = get_user_organization(get_nik($user_id));
         $this->data['detail'] = $this->form_medical_model->form_medical_detail($id)->result_array();
-        $this->data['created_by'] = getValue('created_by', 'users_medical', array('id'=>'where/'.$id));
+        $this->data['created_by'] = getValue('user_id', 'users_medical', array('id'=>'where/'.$id));
         $this->data['created_on'] = getValue('created_on', 'users_medical', array('id'=>'where/'.$id));
-        $this->data['is_app'] = getValue('is_app', 'users_medical', array('id'=>'where/'.$id));
-        $this->data['user_app'] = getValue('user_app', 'users_medical', array('id'=>'where/'.$id));
-        $this->data['date_app'] = getValue('date_app', 'users_medical', array('id'=>'where/'.$id));
+        $this->data['is_app'] = getValue('is_app_lv1', 'users_medical', array('id'=>'where/'.$id));
+        $this->data['user_app'] = getValue('user_app_lv1', 'users_medical', array('id'=>'where/'.$id));
+        $this->data['date_app'] = getValue('date_app_lv1', 'users_medical', array('id'=>'where/'.$id));
 
         $this->data['id'] = $id;
         $title = $this->data['title'] = 'REKAPITULASI RAWAT JALAN & INAP - '.$id;
@@ -299,6 +339,41 @@ class Form_medical extends MX_Controller {
         $mpdf = new mPDF('A4');
         $mpdf->WriteHTML($html);
         $mpdf->Output($id.'-'.$title.'.pdf', 'I');
+    }
+
+    function get_user_atasan()
+    {
+            $user_id = $this->session->userdata('user_id');
+            $url_org = get_api_key().'users/superior/EMPLID/'.get_nik($user_id).'/format/json';
+            $headers_org = get_headers($url_org);
+            $response = substr($headers_org[0], 9, 3);
+            if ($response != "404") {
+            $get_user_pengganti = file_get_contents($url_org);
+            $user_pengganti = json_decode($get_user_pengganti, true);
+            return $this->data['user_atasan'] = $user_pengganti;
+            }else{
+             return $this->data['user_atasan'] = 'Tidak ada karyawan dengan departement yang sama';
+            }
+    }
+
+    public function get_atasan($id)
+    {
+        $url = get_api_key().'users/superior/EMPLID/'.get_nik($id).'/format/json';
+        $headers = get_headers($url);
+        $response = substr($headers[0], 9, 3);
+        if ($response != "404") {
+            $get_task_receiver = file_get_contents($url);
+            $task_receiver = json_decode($get_task_receiver, true);
+             foreach ($task_receiver as $row)
+                {
+                    $result['0']= '-- Pilih Atasan --';
+                    $result[$row['ID']]= ucwords(strtolower($row['NAME']));
+                }
+        } else {
+           $result['-']= '- Tidak ada user dengan departemen yang sama -';
+        }
+        $data['result']=$result;
+        $this->load->view('dropdown_atasan',$data);
     }
 
     function _render_page($view, $data=null, $render=false)
@@ -311,11 +386,6 @@ class Form_medical extends MX_Controller {
                 if(in_array($view, array('form_medical/index')))
                 {
                     $this->template->set_layout('default');
-
-                    $this->template->add_js('jquery.min.js');
-                    $this->template->add_js('bootstrap.min.js');
-
-                    $this->template->add_js('jquery-ui-1.10.1.custom.min.js');
                     $this->template->add_js('jquery.sidr.min.js');
                     $this->template->add_js('breakpoints.js');
                     $this->template->add_js('select2.min.js');
@@ -323,12 +393,11 @@ class Form_medical extends MX_Controller {
                     $this->template->add_js('core.js');
                     $this->template->add_js('purl.js');
 
-                    //$this->template->add_js('main.js');
+                    $this->template->add_js('main.js');
                     $this->template->add_js('respond.min.js');
 
                     $this->template->add_js('jquery.bootstrap.wizard.min.js');
                     $this->template->add_js('jquery.validate.min.js');
-                    $this->template->add_js('form_medical.js');
 
                     
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
@@ -342,10 +411,6 @@ class Form_medical extends MX_Controller {
 
                     $this->template->set_layout('default');
 
-                    $this->template->add_js('jquery.min.js');
-                    $this->template->add_js('bootstrap.min.js');
-
-                    $this->template->add_js('jquery-ui-1.10.1.custom.min.js');
                     $this->template->add_js('jquery.sidr.min.js');
                     $this->template->add_js('breakpoints.js');
                     $this->template->add_js('select2.min.js');
@@ -353,8 +418,6 @@ class Form_medical extends MX_Controller {
                     $this->template->add_js('core.js');
                     $this->template->add_js('purl.js');
                     $this->template->add_js('jquery.maskMoney.js');
-
-                    $this->template->add_js('main.js');
                     $this->template->add_js('respond.min.js');
 
                     $this->template->add_js('jquery.bootstrap.wizard.min.js');
@@ -362,38 +425,8 @@ class Form_medical extends MX_Controller {
                     $this->template->add_js('form_medical.js');
                     
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
-                    $this->template->add_css('plugins/select2/select2.css');
-                     
-                }elseif(in_array($view, array('form_medical/approval/supervisor',
-                                              'form_medical/approval/kabagian',
-                                              'form_medical/approval/hr')))
-                {
-                    $this->template->set_layout('default');
-
-                    $this->template->add_js('jquery.min.js');
-                    $this->template->add_js('bootstrap.min.js');
-
-                    $this->template->add_js('jquery-ui-1.10.1.custom.min.js');
-                    $this->template->add_js('jquery.sidr.min.js');
-                    $this->template->add_js('breakpoints.js');
-                    $this->template->add_js('select2.min.js');
-
-                    $this->template->add_js('core.js');
-                    $this->template->add_js('purl.js');
-
-                    $this->template->add_js('main.js');
-                    $this->template->add_js('respond.min.js');
-
-                    $this->template->add_js('jquery.bootstrap.wizard.min.js');
-                    $this->template->add_js('bootstrap-datepicker.js');
-                    $this->template->add_js('jquery.validate.min.js');
-                    $this->template->add_js('form_medical.js');
-
-                    
-                    $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
-                    $this->template->add_css('plugins/select2/select2.css');
-                    $this->template->add_css('approval_img.css');
-                    
+                    $this->template->add_css('plugins/select2/select2.css');  
+                    $this->template->add_css('approval_img.css');  
                 }
 
 

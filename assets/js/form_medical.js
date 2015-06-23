@@ -24,22 +24,68 @@ $(document).ready(function() {
     $('#btnRemove').show();
     });
 
+    //approval Medical
+    $('button[data-loading-text]').click(function () {
+    $(this).button('loading');
+    });
+
     var url = $.url();
     var baseurl = url.attr('protocol')+'://'+url.attr('host')+'/'+url.segment(1)+'/';
-    var medical_url = baseurl+'form_medical';
-    var uri1 = medical_url+'/do_approve/'+url.segment(4);
+    var uri1 = url.segment(2)+'/do_approve/'+url.segment(4)+'/lv1';
+    var uri2 = url.segment(2)+'/do_approve/'+url.segment(4)+'/lv2';
+    var uri3 = url.segment(2)+'/do_approve/'+url.segment(4)+'/lv3';
+    var uri4 = url.segment(2)+'/do_approve/'+url.segment(4)+'/hrd';
 
-    $('#btnAppMedical').click(function(){
-        $('#formApp').submit(function(ev){
+    $('#btn_app_lv1').click(function(){
+        $('#formMedical').submit(function(ev){
             $.ajax({
                 type: 'POST',
-                url: uri1,
-                data: $('#formApp').serialize(),
+                url: baseurl+uri1,
+                data: $('#formMedical').serialize(),
                 success: function() {
-                    setTimeout(function(){
-                        location.reload()},
-                        500
-                    )
+                     location.reload()
+                }
+            });
+            ev.preventDefault(); 
+        });  
+    });
+
+    $('#btn_app_lv2').click(function(){
+        $('#formMedical').submit(function(ev){
+            $.ajax({
+                type: 'POST',
+                url: baseurl+uri2,
+                data: $('#formMedical').serialize(),
+                success: function() {
+                     location.reload()
+                }
+            });
+            ev.preventDefault(); 
+        });  
+    });
+
+    $('#btn_app_lv3').click(function(){
+        $('#formMedical').submit(function(ev){
+            $.ajax({
+                type: 'POST',
+                url: baseurl+uri3,
+                data: $('#formMedical').serialize(),
+                success: function() {
+                     location.reload()
+                }
+            });
+            ev.preventDefault(); 
+        });  
+    });
+
+    $('#btn_app_hrd').click(function(){
+        $('#formMedical').submit(function(ev){
+            $.ajax({
+                type: 'POST',
+                url: baseurl+uri4,
+                data: $('#formMedical').serialize(),
+                success: function() {
+                     location.reload()
                 }
             });
             ev.preventDefault(); 
