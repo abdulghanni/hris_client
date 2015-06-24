@@ -243,6 +243,7 @@ class Form_cuti extends MX_Controller {
            if ($this->form_cuti_model->update($id,$data)) {
                 return TRUE;
             }
+            
             $this->cek_all_approval($id);
         }
     }
@@ -362,16 +363,16 @@ class Form_cuti extends MX_Controller {
 
     function cek_all_approval($id)
     {
-        $app_lv1 = getValue('is_app_lv1', 'users_cuti', array('id'=>'where/11'));
-        $app_lv2 = getValue('is_app_lv2', 'users_cuti', array('id'=>'where/11'));
-        $app_lv3 = getValue('is_app_lv3', 'users_cuti', array('id'=>'where/11'));
-        $app_hrd = getValue('is_app_hrd', 'users_cuti', array('id'=>'where/11'));
+        $app_lv1 = getValue('is_app_lv1', 'users_cuti', array('id'=>'where/'.$id));
+        $app_lv2 = getValue('is_app_lv2', 'users_cuti', array('id'=>'where/'.$id));
+        $app_lv3 = getValue('is_app_lv3', 'users_cuti', array('id'=>'where/'.$id));
+        $app_hrd = getValue('is_app_hrd', 'users_cuti', array('id'=>'where/'.$id));
 
-        if(!empty(getValue('user_app_lv1', 'users_cuti', array('id'=>'where/11'))) && empty(getValue('user_app_lv2', 'users_cuti', array('id'=>'where/11'))) && empty(getValue('user_app_lv3', 'users_cuti', array('id'=>'where/11')))){
+        if(!empty(getValue('user_app_lv1', 'users_cuti', array('id'=>'where/'.$id))) && empty(getValue('user_app_lv2', 'users_cuti', array('id'=>'where/'.$id))) && empty(getValue('user_app_lv3', 'users_cuti', array('id'=>'where/'.$id)))){
             $total_app = '2';
-        }elseif(!empty(getValue('user_app_lv1', 'users_cuti', array('id'=>'where/11'))) && !empty(getValue('user_app_lv2', 'users_cuti', array('id'=>'where/11'))) && empty(getValue('user_app_lv3', 'users_cuti', array('id'=>'where/11')))){
+        }elseif(!empty(getValue('user_app_lv1', 'users_cuti', array('id'=>'where/'.$id))) && !empty(getValue('user_app_lv2', 'users_cuti', array('id'=>'where/'.$id))) && empty(getValue('user_app_lv3', 'users_cuti', array('id'=>'where/'.$id)))){
             $total_app = '3';
-        }elseif(!empty(getValue('user_app_lv1', 'users_cuti', array('id'=>'where/11'))) && !empty(getValue('user_app_lv2', 'users_cuti', array('id'=>'where/11'))) && !empty(getValue('user_app_lv3', 'users_cuti', array('id'=>'where/11')))){
+        }elseif(!empty(getValue('user_app_lv1', 'users_cuti', array('id'=>'where/'.$id))) && !empty(getValue('user_app_lv2', 'users_cuti', array('id'=>'where/'.$id))) && !empty(getValue('user_app_lv3', 'users_cuti', array('id'=>'where/'.$id)))){
             $total_app = '4';
         }else{
             $total_app = '0';

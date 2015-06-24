@@ -199,7 +199,8 @@ class Form_spd_luar_group extends MX_Controller {
         
         if($this->form_validation->run() == FALSE)
         {
-            echo json_encode(array('st'=>0, 'errors'=>validation_errors('<div class="alert alert-danger" role="alert">', '</div>')));
+            //echo json_encode(array('st'=>0, 'errors'=>validation_errors('<div class="alert alert-danger" role="alert">', '</div>')));
+            redirect('form_spd_luar_group/input','refresh');
         }
         else
         {
@@ -233,7 +234,8 @@ class Form_spd_luar_group extends MX_Controller {
             {
                 $task_receiver_id = explode(',',$task_receiver);
                 $this->send_spd_mail($spd_id, $sender_id, $task_receiver_id);
-                echo json_encode(array('st' =>1));   
+                //echo json_encode(array('st' =>1));   
+                redirect('form_spd_luar_group','refresh');
             }
         }
     }

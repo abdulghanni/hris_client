@@ -20,7 +20,7 @@
               <h4>Form <a href="<?php echo site_url('form_spd_luar_group')?>">Perjalanan Dinas <span class="semi-bold">Luar Kota (Group)</span></a></h4>
             </div>
             <div class="grid-body no-border">
-              <form class="form-no-horizontal-spacing" id="add_spd_luar_group" action="<?php echo site_url() ?>form_spd_luar_group/add" method="post"> 
+              <form class="form-no-horizontal-spacing" id="" action="<?php echo site_url() ?>form_spd_luar_group/add" method="post"> 
                 <div class="row column-seperation">
                   <div class="col-md-4">
                     <h4>Yang Memberi Tugas</h4>
@@ -159,7 +159,7 @@
                           </div>
                           <div class="col-md-8">
                             <div class="input-append date success no-padding">
-                              <input type="text" class="form-control" name="date_spd_start" value="">
+                              <input type="text" class="form-control" name="date_spd_start" value="" required>
                               <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span> 
                             </div>
                           </div>
@@ -170,7 +170,7 @@
                           </div>
                           <div class="col-md-8">
                             <div class="input-append date success no-padding">
-                              <input type="text" class="form-control" name="date_spd_end" value="">
+                              <input type="text" class="form-control" name="date_spd_end" value="" required>
                               <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span> 
                             </div>
                           </div>

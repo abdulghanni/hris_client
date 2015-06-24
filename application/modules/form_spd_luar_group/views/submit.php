@@ -25,7 +25,13 @@
                   <div class="col-md-5">
                     <h4>Yang Memberi Tugas</h4>
                     <?php if ($td_num_rows > 0) {
-                      foreach ($task_detail as $td) { ?>
+                      foreach ($task_detail as $td) { 
+                        $a = strtotime($td->date_spd_end);
+                        $b = strtotime($td->date_spd_start);
+
+                        $j = $a - $b;
+                        $jml_pjd = floor($j/(60*60*24)+1);
+                        ?>
                     <div class="row form-row">
                       <div class="col-md-3">
                         <label class="form-label text-right">Nama</label>
@@ -134,9 +140,9 @@
                         <td><?php echo get_user_organization($receiver[$i])?></td>
                         <td><?php echo get_user_position($receiver[$i])?></td>
                         <td><?php echo $ci->get_biaya_pjd($td->id, $receiver[$i])['grade']?></td>
-                        <td><?php echo $ci->get_biaya_pjd($td->id, $receiver[$i])['hotel']?></td>
-                        <td><?php echo $ci->get_biaya_pjd($td->id, $receiver[$i])['uang_makan']?></td>
-                        <td><?php echo $ci->get_biaya_pjd($td->id, $receiver[$i])['uang_saku']?></td>
+                        <td>Rp. <?php echo number_format($ci->get_biaya_pjd($td->id, $receiver[$i])['hotel']*$jml_pjd,2)?></td>
+                        <td>Rp. <?php echo number_format($ci->get_biaya_pjd($td->id, $receiver[$i])['uang_makan']*$jml_pjd,2)?></td>
+                        <td>Rp. <?php echo number_format($ci->get_biaya_pjd($td->id, $receiver[$i])['uang_saku']*$jml_pjd,2)?></td>
                         <td class="text-center"><?php echo in_array($receiver[$i], $receiver_submit)?"<i class='icon-ok-sign' title = 'Submitted'></i>":"<i class='icon-minus' title = 'Pending'></i>"?></td>
                       </tr>
                       <?php endfor?>

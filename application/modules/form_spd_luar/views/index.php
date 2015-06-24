@@ -58,7 +58,7 @@
                                     <a href="<?php echo base_url() ?>form_spd_luar/submit/<?php echo $spd->id ?>"><h4><?php echo $spd->title ?></h4>
                                       <div class="small-text-custom">
                                         <span>Pemberi tugas : </span><?php echo $spd->creator ?><br/>
-                                        <span>Penerima tugas : </span><?php echo $spd->receiver ?><br/>
+                                        <span>Penerima tugas : </span><?php echo get_name($spd->task_receiver) ?><br/>
                                         <span>Tanggal : </span><?php echo dateIndo($spd->date_spd_start) ?><br/>
                                         <span>Tempat : </span><?php echo $spd->destination ?><br />
                                         <span>Kota Tujuan : </span><?php echo $spd->city_to ?>
