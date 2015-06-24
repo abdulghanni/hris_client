@@ -37,7 +37,7 @@
                         </select>
                         <?php }else{?>
                             <?php if($subordinate->num_rows() > 0){?>
-                            <select id="emp" class="" style="width:100%" name="emp">
+                            <select id="emp" class="select2" style="width:100%" name="emp">
                                 <?php foreach($subordinate->result() as $row):?>
                             <option value="<?php echo $row->id?>"><?php echo get_name($row->id) ?></option>
                             <?php endforeach;?>
