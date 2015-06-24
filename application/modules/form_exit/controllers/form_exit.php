@@ -113,14 +113,6 @@ class Form_exit extends MX_Controller {
 
     function add_inventory($exit_id, $type)
     {
-        if (!$this->ion_auth->logged_in())
-        {
-            //redirect them to the login page
-            redirect('auth/login', 'refresh');
-        }elseif (!$this->ion_auth->is_admin_bagian()) //remove this elseif if you want to enable this for non-admins
-        {
-            echo 'Anda Tidak Punya Hak Akses Ke Halaman Ini';
-        }
 
         $num_rows = getAll('users_exit', array('id'=>'where/'.$exit_id))->num_rows();
 

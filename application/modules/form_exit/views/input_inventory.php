@@ -18,7 +18,7 @@
                 <h4>Form Input <span class="semi-bold">Inventaris Karyawan</span></h4>
               </div>
               <div class="grid-body no-border">
-                 <?php echo form_open('form_exit/add_inventory/'.$exit_id.'/'.$type,array("id"=>"formaddexit"));?>
+                 <?php echo form_open('form_exit/add_inventory/'.$exit_id.'/'.$type,array("id"=>""));?>
                 <div class="row column-seperation">
                   <div class="col-md-12">    
                     <div class="row form-row">
