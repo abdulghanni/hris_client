@@ -20,7 +20,7 @@
 		                </div>
                   		<div class="grid-body no-border">
 
-                  		<h6 class="bold">BAGIAN : <?php echo $bagian?></h6>
+                  		<h6 class="bold">BAGIAN : <div id="organization"><?php echo $bagian?></div></h6>
 					 		<div class="col-md-4">
                                 <div class="row">
                                     <button type="button" id="btnAdd" class="btn btn-primary btn-lg" onclick="addRow('dataTable')"><i class="icon-plus"></i>&nbsp;<?php echo lang('add_button');?></button>
@@ -183,9 +183,13 @@
 
 	var cell2=row.insertCell(1);
 	cell2.innerHTML=rowCount+1-1;
-
+  <?php if(is_admin()){?>
 	var cell3=row.insertCell(2);
-	cell3.innerHTML = "<select name='emp[]' class='select2' style='width:100%'><?php for($i=0;$i<sizeof($all_users);$i++):?><option value='<?php echo $all_users[$i]['id']?>' ><?php echo $all_users[$i]['username'].' - '.$all_users[$i]['nik']?></option><?php endfor;?></select>";  
+	cell3.innerHTML = "<select name='emp[]' class='select2' style='width:100%'><?php for($i=0;$i<sizeof($all_users);$i++):?><option value='<?php echo $all_users[$i]['nik']?>'><?php echo $all_users[$i]['username'].' - '.$all_users[$i]['nik']?></option><?php endfor;?></select>";  
+  <?php }else{?>
+  var cell3=row.insertCell(2);
+  cell3.innerHTML = "<select name='emp[]' class='select2' style='width:100%'><?php foreach ($user_atasan as $key => $up) :?><option value='<?php echo $up['ID'] ?>'><?php echo $up['NAME'].' - '.$up['ID'] ?></option><?php endforeach;?></select>";  
+  <?php } ?>
 
 	var cell4=row.insertCell(3);
 	cell4.innerHTML = '<input name="pasien[]" type="text" class="form-control" required="required">';
@@ -208,6 +212,7 @@
       getAtasan1();
       getAtasan2();
       getAtasan3();
+      getEmployeeOrg();
     }
 
     function getAtasan1()
@@ -248,6 +253,19 @@
          });
          return false;
      }
+
+     function getEmployeeOrg()
+    {
+        emp = document.getElementById("emp").value;
+        $.ajax({
+             url:"<?php echo base_url();?>form_medical/get_emp_org/"+emp+"",
+             success: function(response){
+             $("#organization").text(response);
+             },
+             dataType:"html"
+         });
+         return false;
+    }
 
 
 </script>

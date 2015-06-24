@@ -376,6 +376,23 @@ class Form_medical extends MX_Controller {
         $this->load->view('dropdown_atasan',$data);
     }
 
+    public function get_emp_org($id)
+    {
+
+        $url = get_api_key().'users/employement/EMPLID/'.get_nik($id).'/format/json';
+            $headers = get_headers($url);
+            $response = substr($headers[0], 9, 3);
+            if ($response != "404") {
+                $getuser_info = file_get_contents($url);
+                $user_info = json_decode($getuser_info, true);
+                $org_nm = $user_info['ORGANIZATION'];
+            } else {
+                $org_nm = '';
+            }
+        
+        echo $org_nm;
+    }
+
     function _render_page($view, $data=null, $render=false)
     {
         $data = (empty($data)) ? $this->data : $data;
