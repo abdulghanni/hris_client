@@ -42,7 +42,14 @@
 </div>
 <?php
 if ($td_num_rows > 0) {
-  foreach ($task_detail as $td) : ?>
+  foreach ($task_detail as $td) : 
+
+    $a = strtotime($td->date_spd_end);
+    $b = strtotime($td->date_spd_start);
+
+    $j = $a - $b;
+    $jml_pjd = floor($j/(60*60*24)+1);
+    ?>
 <table width="1200" height="128" border="0" class="style3">
 <tr class="style4"><td>Yang bertanda tangan dibawah ini : </td></tr>
 <tr><td height="30"></td></tr>
@@ -72,30 +79,31 @@ if ($td_num_rows > 0) {
 <tr><td height="30"></td></tr>
 </table>
 
-<table width="1200" height="128" border="1" class="style3">
+<table width="1500" height="128" border="1" class="style3">
   <thead>
     <tr>
-      <th>Nama</th>
-      <th>Dept/Bagian</th>
-      <th>Jabatan</th>
-      <th>Golongan</th>
-      <th>Hotel</th>
-      <th>Uang Makan</th>
-      <th>Uang Saku</th>
-      <th>Submit</th>
+      <th width="17%">Nama</th>
+      <th width="15%">Dept/Bagian</th>
+      <th width="20%">Jabatan</th>
+      <th width="10%">Golongan</th>
+      <th width="10%">Hotel</th>
+      <th width="10%">Uang Makan</th>
+      <th width="10%">Uang Saku</th>
+      <th width="8%">Submit</th>
     </tr>
   </thead>
   <tbody>
-    <?php for($i=0;$i<sizeof($receiver);$i++):?>
+    <?php for($i=0;$i<sizeof($receiver);$i++):
+    ?>
     <tr>
-    <td><?php echo get_name($receiver[$i])?></td>
+    <td height="50"><?php echo get_name($receiver[$i])?></td>
       <td><?php echo get_user_organization($receiver[$i])?></td>
       <td><?php echo get_user_position($receiver[$i])?></td>
       <td><?php echo $ci->get_biaya_pjd($td->id, $receiver[$i])['grade']?></td>
-      <td><?php echo $ci->get_biaya_pjd($td->id, $receiver[$i])['hotel']?></td>
-      <td><?php echo $ci->get_biaya_pjd($td->id, $receiver[$i])['uang_makan']?></td>
-      <td><?php echo $ci->get_biaya_pjd($td->id, $receiver[$i])['uang_saku']?></td>
-      <td class="text-center"><?php echo in_array($receiver[$i], $receiver_submit)?"Ya":"-"?></td>
+      <td>Rp. <?php echo number_format($ci->get_biaya_pjd($td->id, $receiver[$i])['hotel']*$jml_pjd)?></td>
+      <td>Rp. <?php echo number_format($ci->get_biaya_pjd($td->id, $receiver[$i])['uang_makan']*$jml_pjd)?></td>
+      <td>Rp. <?php echo number_format($ci->get_biaya_pjd($td->id, $receiver[$i])['uang_saku']*$jml_pjd)?></td>
+      <td align="center"><?php echo in_array($receiver[$i], $receiver_submit)?"Ya":"-"?></td>
     </tr>
     <?php endfor?>
   </tbody>
