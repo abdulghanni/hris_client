@@ -64,11 +64,11 @@
                                       $sess_id = $this->session->userdata('user_id');  
                                       $mgr_id = (!empty($mgr_ga_nas)) ? $mgr_ga_nas : 'D0001';
                                         if($row->is_app_mgr == 1){
-                                          echo "<a href='".site_url('form_exit/approval/'.$row->id)."''>
+                                          echo "<a href='".site_url('form_exit/detail/'.$row->id)."''>
                                                   $approval_status_mgr
                                                 </a>";
                                         }elseif($row->is_app_mgr == 0 && get_nik($sess_id) == $mgr_id){
-                                          echo "<a href='".site_url('form_exit/approval/'.$row->id)."''>
+                                          echo "<a href='".site_url('form_exit/detail/'.$row->id)."''>
                                                   <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-paste'></i></button>
                                                 </a>";
                                         }else{
@@ -79,11 +79,11 @@
                                     <td class="text-center">
                                       <?php
                                         if($row->is_app_koperasi == 1){
-                                          echo "<a href='".site_url('form_exit/approval/'.$row->id)."''>
+                                          echo "<a href='".site_url('form_exit/detail/'.$row->id)."''>
                                                   $approval_status_koperasi
                                                 </a>";
                                         }elseif($row->is_app_koperasi == 0 && get_nik($sess_id) == $koperasi){
-                                          echo "<a href='".site_url('form_exit/approval/'.$row->id)."''>
+                                          echo "<a href='".site_url('form_exit/detail/'.$row->id)."''>
                                                   <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-paste'></i></button>
                                                 </a>";
                                         }else{
@@ -94,11 +94,11 @@
                                     <td class="text-center">
                                       <?php
                                         if($row->is_app_perpus == 1){
-                                          echo "<a href='".site_url('form_exit/approval/'.$row->id)."''>
+                                          echo "<a href='".site_url('form_exit/detail/'.$row->id)."''>
                                                   $approval_status_perpus
                                                 </a>";
                                         }elseif($row->is_app_perpus == 0 && get_nik($sess_id) == $perpustakaan){
-                                          echo "<a href='".site_url('form_exit/approval/'.$row->id)."''>
+                                          echo "<a href='".site_url('form_exit/detail/'.$row->id)."''>
                                                   <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-paste'></i></button>
                                                 </a>";
                                         }else{
@@ -109,11 +109,11 @@
                                     <td class="text-center">
                                       <?php
                                         if($row->is_app_hrd == 1){
-                                          echo "<a href='".site_url('form_exit/approval/'.$row->id)."''>
+                                          echo "<a href='".site_url('form_exit/detail/'.$row->id)."''>
                                                   $approval_status_hrd
                                                 </a>";
                                         }elseif($row->is_app_hrd == 0 && get_nik($sess_id) == $hrd){
-                                          echo "<a href='".site_url('form_exit/approval/'.$row->id)."''>
+                                          echo "<a href='".site_url('form_exit/detail/'.$row->id)."''>
                                                   <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-paste'></i></button>
                                                 </a>";
                                         }else{
@@ -124,11 +124,11 @@
                                     <td class="text-center">
                                       <?php
                                         if($row->is_app == 1){
-                                          echo "<a href='".site_url('form_exit/approval/'.$row->id)."''>
+                                          echo "<a href='".site_url('form_exit/detail/'.$row->id)."''>
                                                   $approval_status
                                                 </a>";
                                         }elseif($row->is_app == 0 && is_admin()){
-                                          echo "<a href='".site_url('form_exit/approval/'.$row->id)."''>
+                                          echo "<a href='".site_url('form_exit/detail/'.$row->id)."''>
                                                   <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-paste'></i></button>
                                                 </a>";
                                         }else{

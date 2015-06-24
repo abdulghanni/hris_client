@@ -52,7 +52,7 @@ class Auth extends MX_Controller {
             $this->data['fname_param'] = $fname; 
             $exp_fname = explode(":",$fname);
             $fname_re = str_replace("_", " ", $exp_fname[1]);
-            $fname_post = (strlen($fname_re) > 0) ? array('users.first_name'=>$fname_re) : array() ;
+            $fname_post = (strlen($fname_re) > 0) ? array('users.username'=>$fname_re) : array() ;
             
             //set filter by email
             $this->data['email_param'] = $email;
@@ -157,15 +157,14 @@ class Auth extends MX_Controller {
         //validate form input
         $this->form_validation->set_rules('identity', 'Identity', 'required');
         $this->form_validation->set_rules('password', 'Password', 'required');
+
+
         
         //check to see if the user is logging in
-            $jsondata = file_get_contents(base_url('json/users_table.json'));
-        
-    
+        $jsondata = file_get_contents(get_api_key().'users/lists/format/json');
         //convert json object to php associative array
         $data = json_decode($jsondata, true);
         //print_mz($data);
-        
 
         if ($this->form_validation->run() == true)
         {
@@ -178,7 +177,7 @@ class Auth extends MX_Controller {
             }
             elseif ($this->cekNik($data, 'EMPLID', $this->input->post('identity')) == TRUE && $this->input->post('password') == 'password' )
             {
-              $getdata = file_get_contents('http://admin:12345678@localhost/hris_api/users/list/EMPLID/'.$this->input->post('identity').'/format/json');
+              $getdata = file_get_contents(get_api_key().'users/list/EMPLID/'.$this->input->post('identity').'/format/json');
               $data = json_decode($getdata, true);
               
                 $username = $data['NAME'];
@@ -198,6 +197,7 @@ class Auth extends MX_Controller {
                     if ($this->ion_auth->register($username, $password, $email, $additional_data))
                     {
                         send_email_activation($data['EMPLID']);
+                        $this->send_email_inventory($data['EMPLID']);
 							if( $this->send_email_notification($data['EMPLID'])){
                                 $this->session->set_flashdata('message', 'Account is inactive');
                                 redirect("auth/login", 'refresh');
@@ -279,9 +279,28 @@ class Auth extends MX_Controller {
          {
 
           return false;
-          print_mz($this->email->print_debugger());
+          print_r($this->email->print_debugger());
          }
 	}
+
+    function send_email_inventory($nik)
+    { 
+        $admin_bagian = $this->db->where('group_id',3)->or_where('group_id',4)->or_where('group_id',5)->or_where('group_id',6)->or_where('group_id',7)->get('users_groups')->result_array('user_id');
+        $user_id = get_id($nik);
+        $msg = 'Dear admin [IT/GA/Koperasi/Perpustakaan/HRD],<br/><p>'.get_name($nik).' telah berhasil melakukan registrasi di Web-HRIS. silakan melakukan input item inventaris karyawan yang bersangkutan.<br/>'
+               .'Silakan klik tautan berikut untuk mengarahkan ke halaman input inventaris <a class="klikemail" href="'.base_url("form_exit/input_inventory/$user_id").'">'.base_url("form_exit/input_inventory/$user_id").'</a></p>';
+        for($i=0;$i<sizeof($admin_bagian);$i++):
+        $data = array(
+                'sender_id' => $nik,
+                'receiver_id' => get_nik($admin_bagian[$i]['user_id']),
+                'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                'subject' => 'Permintaan Input Data Inventaris Karyawan',
+                'email_body' =>$msg,
+                'is_read' => 0,
+            );
+        $this->db->insert('email', $data);
+        endfor;
+    }
 
     //log the user out
     function logout()

@@ -104,6 +104,7 @@
                             echo form_dropdown('atasan1',array('0'=>'- Pilih Supervisor -'),'',$style_up);
                         }else{?>
                         <select name="atasan1" id="atasan1" class="select2" style="width:100%">
+                            <option value="0">- Pilih Supervisor -</option>
                             <?php foreach ($user_pengganti as $key => $up) : ?>
                               <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
                             <?php endforeach;?>
@@ -122,6 +123,7 @@
                             echo form_dropdown('atasan2',array('0'=>'- Pilih Ka. Bagian -'),'',$style_up);
                         }else{?>
                         <select name="atasan2" id="atasan2" class="select2" style="width:100%">
+                              <option value="0">- Pilih Ka. Bagian -</option> 
                             <?php foreach ($user_pengganti as $key => $up) : ?>
                               <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
                             <?php endforeach;?>
@@ -140,6 +142,7 @@
                             echo form_dropdown('atasan3',array('0'=>'- Pilih Atasan Lainnya -'),'',$style_up);
                         }else{?>
                         <select name="atasan3" id="atasan3" class="select2" style="width:100%">
+                            <option value="0">- Pilih Atasan Lainnya -</option>
                             <?php foreach ($user_pengganti as $key => $up) : ?>
                               <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
                             <?php endforeach;?>

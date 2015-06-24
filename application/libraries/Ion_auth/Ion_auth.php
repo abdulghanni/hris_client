@@ -464,18 +464,18 @@ class Ion_auth
         return $this->in_group($admin_group, $id);
     }
 
-    public function is_admin_HRD($id=false)
+    public function is_admin_hrd($id=false)
     {
-        $this->ion_auth_model->trigger_events('is_admin_HRD');
+        $this->ion_auth_model->trigger_events('is_admin_hrd');
 
         $admin_group = $this->config->item('admin_HRD', 'ion_auth');
 
         return $this->in_group($admin_group, $id);
     }
 
-    public function is_admin_IT($id=false)
+    public function is_admin_it($id=false)
     {
-        $this->ion_auth_model->trigger_events('is_admin_IT');
+        $this->ion_auth_model->trigger_events('is_admin_it');
 
         $admin_group = $this->config->item('admin_IT', 'ion_auth');
 

@@ -33,6 +33,7 @@ $lang['login_forgot_password'] = 'Forgot your password?';
 $lang['index_heading']           = 'Users';
 $lang['index_subheading']        = 'Below is a list of the users.';
 $lang['index_fname_th']          = 'First Name';
+$lang['index_fullname_th']          = 'Name';
 $lang['index_ftitle_th']          = 'Title';
 $lang['index_lname_th']          = 'Last Name';
 $lang['index_email_th']          = 'Email';

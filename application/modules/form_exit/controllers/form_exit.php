@@ -35,11 +35,8 @@ class Form_exit extends MX_Controller {
             $perpus = $this->data['perpustakaan'] = $this->get_emp_by_pos('PST2');//P1463 
             $hrd = $this->data['hrd'] = $this->get_emp_by_pos('PST129');
 
-            if(is_admin() || $user_nik == $mgr || $user_nik == $koperasi || $user_nik == $perpus || $user_nik == $hrd){
-                $form_exit = $this->data['form_exit'] = $this->form_exit_model->form_exit_admin();
-            }else{
-                $form_exit = $this->data['form_exit'] = $this->form_exit_model->form_exit();
-            }
+            $form_exit = $this->data['form_exit'] = $this->form_exit_model->form_exit();
+
 
             $this->_render_page('form_exit/index');
         }
@@ -53,17 +50,132 @@ class Form_exit extends MX_Controller {
             redirect('auth/login', 'refresh');
         }
 
-            if(is_admin()){
-                $form_exit = $this->data['form_exit'] = $this->form_exit_model->form_exit_admin();
-            }else{
-                $form_exit = $this->data['form_exit'] = $this->form_exit_model->form_exit();
-            }
-
             $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
-            $this->data['all_users'] = getAll('users', array('active'=>'where/1'));
+            $this->data['all_users'] = getAll('users', array('active'=>'where/1', 'username'=>'order/asc'), array('!=id'=>'1'));
             $this->data['subordinate'] = getAll('users', array('superior_id'=>'where/'.get_nik($sess_id)));
             $this->data['exit_type'] = getAll('exit_type', array('is_deleted'=>'where/0'));
             $this->_render_page('form_exit/input', $this->data);
+    }
+
+    function input_inventory($user_id)
+    {
+        if (!$this->ion_auth->logged_in())
+        {
+            redirect('auth/login', 'refresh');
+        }elseif (!$this->ion_auth->is_admin_bagian())
+        {
+            echo 'Anda Tidak Punya Hak Akses Ke Halaman Ini';
+        }else{
+
+            if($this->ion_auth->is_admin_it()){
+                $group_id = 2;
+                $type = 'it';
+            }elseif($this->ion_auth->is_admin_hrd()){
+                $group_id = 1;
+                $type = 'hrd';
+            }elseif($this->ion_auth->is_admin_logistik()){
+                $group_id = 3;
+                $type = 'logistik';
+            }elseif($this->ion_auth->is_admin_perpustakaan()){
+                $group_id = 4;
+                $type = 'perpus';
+            }elseif($this->ion_auth->is_admin_koperasi()){
+                $group_id = 5;
+                $type = 'koperasi';
+            }else{
+                $group_id = 0;
+            }
+
+            $num_rows = getAll('users_exit', array('user_id'=>'where/'.$user_id))->num_rows();
+            $num_rows_exit = getAll('users_exit')->num_rows();
+            if($num_rows>0){
+               $exit_id = getValue('id', 'users_exit', array('user_id'=>'where/'.$user_id));
+               $this->data['is_submit'] = getValue('is_submit_'.$type,'users_exit', array('id'=>'where/'.$exit_id));
+               $this->data['user_submit'] = getValue('user_submit_'.$type,'users_exit', array('id'=>'where/'.$exit_id));
+               $this->data['date_submit'] = getValue('date_submit_'.$type,'users_exit', array('id'=>'where/'.$exit_id));
+               $this->data['exit_id']  = getValue('id', 'users_exit', array('user_id'=>'where/'.$user_id));
+            }else{
+                $exit_id = $this->db->select('id')->order_by('id', 'asc')->get('users_exit')->last_row();
+                $this->data['exit_id']  = ($num_rows_exit>0)?$exit_id->id+1:1;
+                $this->data['is_submit'] = 0;
+            }
+
+            $this->data['user_id'] = $user_id;
+            $this->data['user_nik'] = get_nik($user_id);
+            $this->data['type'] = $type;
+            $this->data['inventory'] = GetAll('inventory', array('type_inventory_id'=>'where/'.$group_id));
+            $i =$this->db->select('*')->from('users_inventory')->join('inventory', 'users_inventory.inventory_id = inventory.id', 'left')->where('inventory.type_inventory_id', $group_id)->where('users_inventory.user_id', $user_id)->get();
+           //print_mz($i->result());
+            $this->data['users_inventory'] = $i;
+            $this->_render_page('form_exit/input_inventory', $this->data);
+        }
+    }
+
+    function add_inventory($exit_id, $type)
+    {
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }elseif (!$this->ion_auth->is_admin_bagian()) //remove this elseif if you want to enable this for non-admins
+        {
+            echo 'Anda Tidak Punya Hak Akses Ke Halaman Ini';
+        }
+
+        $num_rows = getAll('users_exit', array('id'=>'where/'.$exit_id))->num_rows();
+
+            if($num_rows>0){
+                $exit_data = array(
+                'id_comp_session'=>1,
+                'user_id'=>$this->input->post('emp'),
+                'edited_by'=>$this->session->userdata('user_id'),
+                'edited_on' => date('Y-m-d',strtotime('now')),
+                );
+                $this->db->where('id',$exit_id)->update('users_exit', $exit_data);
+            }else{
+                $exit_data = array(
+                            'id_comp_session'=>1,
+                            'user_id'=>$this->input->post('emp'),
+                            'created_by'=>$this->session->userdata('user_id'),
+                            'created_on' => date('Y-m-d',strtotime('now')),
+                            );
+                $this->db->insert('users_exit', $exit_data);
+            }
+
+        $inventory_id = $this->input->post('inventory_id');
+        
+        $x='';
+        $x2='';
+        for ($i=1; $i<=sizeof($inventory_id);$i++) {
+            $x .= $this->input->post('is_available_'.$i).',';
+            $x2 .= $this->input->post('note_'.$i).',';
+        }
+
+        $is_available = explode(',',$x);
+        $note = explode(',',$x2);
+        for($i=0;$i<sizeof($inventory_id);$i++){
+            $data = array(
+                'user_id' => $this->input->post('emp'),
+                'user_exit_id'=>$exit_id,
+                'inventory_id' => $inventory_id[$i],
+                'is_available'=>$is_available[$i],
+                'note'=>$note[$i],
+                'created_by'=>$this->session->userdata('user_id'),
+                'created_on' => date('Y-m-d',strtotime('now')),
+                );
+
+            $this->db->insert('users_inventory', $data);
+        }
+
+        $data2 = array(
+            'is_submit_'.$type => 1,
+            'user_submit_'.$type =>$this->session->userdata('user_id'),
+            'date_submit_'.$type => date('Y-m-d',strtotime('now')),
+            );
+        $this->db->where('id',$exit_id)->update('users_exit', $data2);
+        $user_id = $this->input->post('emp');
+
+        redirect('form_exit/input_inventory/'.$user_id,'refresh');
     }
     
     function add()
@@ -75,21 +187,21 @@ class Form_exit extends MX_Controller {
         else
         {
             $this->form_validation->set_rules('date_exit' , 'Tanggal Akhir Kerja', 'trim|required');
-            $this->form_validation->set_rules('seragam' , 'Seragam', 'trim|required');
-            $this->form_validation->set_rules('id_card' , 'ID Card', 'trim|required');
+            //$this->form_validation->set_rules('seragam' , 'Seragam', 'trim|required');
+            //$this->form_validation->set_rules('id_card' , 'ID Card', 'trim|required');
             //$this->form_validation->set_rules('kendaraan' , 'Kendaraan', 'trim|required');
             //$this->form_validation->set_rules('stnk' , 'STNK', 'trim|required');
             //$this->form_validation->set_rules('gadget' , 'HP/Laptop/Ipad', 'trim|required');
-            $this->form_validation->set_rules('laporan' , 'Laporan Serah terima', 'trim|required');
-            $this->form_validation->set_rules('saldo' , 'Rekonsiliasi Saldo', 'trim|required');
-            $this->form_validation->set_rules('koperasi' , 'Pinjaman Koperasi', 'trim|required');
-            $this->form_validation->set_rules('buku' , 'Pinjaman Buku Perpustakaan', 'trim|required');
-            $this->form_validation->set_rules('ikatan' , 'Ikatan Dinas', 'trim|required');
-            $this->form_validation->set_rules('pesangon' , 'Uang Pesangon', 'trim|required');
-            $this->form_validation->set_rules('uang_ganti' , 'Uang Pengganti Hak', 'trim|required');
-            $this->form_validation->set_rules('uang_jasa' , 'Uang Jasa', 'trim|required');
-            $this->form_validation->set_rules('skkerja' , 'Surat Keterangan Kerja', 'trim|required');
-            $this->form_validation->set_rules('ijazah' , 'Ijazah', 'trim|required');
+            //$this->form_validation->set_rules('laporan' , 'Laporan Serah terima', 'trim|required');
+            //$this->form_validation->set_rules('saldo' , 'Rekonsiliasi Saldo', 'trim|required');
+            //$this->form_validation->set_rules('koperasi' , 'Pinjaman Koperasi', 'trim|required');
+            //$this->form_validation->set_rules('buku' , 'Pinjaman Buku Perpustakaan', 'trim|required');
+            //$this->form_validation->set_rules('ikatan' , 'Ikatan Dinas', 'trim|required');
+            //$this->form_validation->set_rules('pesangon' , 'Uang Pesangon', 'trim|required');
+            //$this->form_validation->set_rules('uang_ganti' , 'Uang Pengganti Hak', 'trim|required');
+            //$this->form_validation->set_rules('uang_jasa' , 'Uang Jasa', 'trim|required');
+            //$this->form_validation->set_rules('skkerja' , 'Surat Keterangan Kerja', 'trim|required');
+            //$this->form_validation->set_rules('ijazah' , 'Ijazah', 'trim|required');
 
             if($this->form_validation->run() == FALSE)
             {
@@ -98,68 +210,46 @@ class Form_exit extends MX_Controller {
             else
             {
                 
-                $num_rows = getAll('users_exit')->num_rows();
-
-                if($num_rows>0){
-                    $exit_id = getAll('users_exit')->last_row();
-                    $exit_id = $exit_id->id+1;
-                }else{
-                    $exit_id = 1;
+                $user_inventory_id = $this->input->post('inventory_id');
+                $x='';
+                $x2='';
+                for ($i=1; $i<=sizeof($user_inventory_id);$i++) {
+                    $x .= $this->input->post('is_available_'.$i).',';
+                    $x2 .= $this->input->post('note_'.$i).',';
                 }
 
-                
+                $is_available = explode(',',$x);
+                $note = explode(',',$x2);
+
+                for($i=0;$i<sizeof($user_inventory_id);$i++){
+                    $data = array(
+                        'is_available'=>$is_available[$i],
+                        'note'=>$note[$i],
+                        'edited_by'=>$this->session->userdata('user_id'),
+                        'edited_on' => date('Y-m-d',strtotime('now')),
+                        );
+                    $this->db->where('id', $user_inventory_id[$i]);
+                    $this->db->update('users_inventory', $data);
+                }
+
+                $num_rows = getAll('users_exit')->num_rows();
                 $user_id= $this->input->post('emp');
+                $exit_id = getValue('id','users_exit', array('user_id'=>'where/'.$user_id));
                 $creator_id = $this->session->userdata('user_id');
                 $data1 = array(
-                    'user_id' => $user_id,
                     'id_comp_session' => 1,
                     'date_exit' => date('Y-m-d',strtotime($this->input->post('date_exit'))),
                     'exit_type_id' => $this->input->post('exit_type_id'),
-                    'user_exit_inventaris_id' => $exit_id,
+                    'is_purposed' =>1,
                     'user_exit_rekomendasi_id'   => $exit_id,
                     'created_on'            => date('Y-m-d',strtotime('now')),
                     'created_by'            => $creator_id,
                     );
-                
-                $data2 = array(
-                    'user_exit_id' =>$exit_id,
-                    'is_seragam' =>$this->input->post('seragam'),
-                    'keterangan_seragam' =>$this->input->post('keterangan_seragam'),
-                    'is_id_card' =>$this->input->post('id_card'),
-                    'keterangan_id_card' =>$this->input->post('keterangan_id_card'),
-                    'is_motor' =>$this->input->post('motor'),
-                    'keterangan_motor' =>$this->input->post('keterangan_motor'),
-                    'is_mobil' =>$this->input->post('mobil'),
-                    'keterangan_mobil' =>$this->input->post('keterangan_mobil'),
-                    'is_stnk_motor' =>$this->input->post('stnk_motor'),
-                    'keterangan_stnk_motor' =>$this->input->post('keterangan_stnk_motor'),
-                    'is_stnk_mobil' =>$this->input->post('stnk_mobil'),
-                    'keterangan_stnk_mobil' =>$this->input->post('keterangan_stnk_mobil'),
-                    'is_hp' =>$this->input->post('hp'),
-                    'keterangan_hp' =>$this->input->post('keterangan_hp'),
-                    'is_laptop' =>$this->input->post('laptop'),
-                    'keterangan_laptop' =>$this->input->post('keterangan_laptop'),
-                    'is_ipad' =>$this->input->post('ipad'),
-                    'keterangan_ipad' =>$this->input->post('keterangan_ipad'),
-                    'is_laporan' =>$this->input->post('laporan'),
-                    'keterangan_laporan' =>$this->input->post('keterangan_laporan'),
-                    'is_saldo' =>$this->input->post('saldo'),
-                    'keterangan_saldo' =>$this->input->post('keterangan_saldo'),
-                    'is_pinjaman_koperasi' =>$this->input->post('koperasi'),
-                    'keterangan_pinjaman_koperasi' =>$this->input->post('keterangan_koperasi'),
-                    'is_pinjaman_buku' =>$this->input->post('buku'),
-                    'keterangan_pinjaman_buku' =>$this->input->post('keterangan_buku'),
-                    'is_ikatan' =>$this->input->post('ikatan'),
-                    'keterangan_ikatan' =>$this->input->post('keterangan_ikatan'),
-                    'is_kartu_kredit' =>$this->input->post('kartu_kredit'),
-                    'keterangan_kartu_kredit' =>$this->input->post('keterangan_kartu_kredit'),
-                    'is_pinjaman_subsidi' =>$this->input->post('pinjaman_subsidi'),
-                    'keterangan_pinjaman_subsidi' =>$this->input->post('keterangan_pinjaman_subsidi'),
-                    'created_on'            => date('Y-m-d',strtotime('now')),
-                    'created_by'            => $creator_id,
-                );
-                
+                $this->db->where('user_id', $user_id);
+                $this->db->update('users_exit', $data1);
+
                 $data3 = array(
+                    'id' => $exit_id,
                     'user_exit_id' =>$exit_id,
                     'is_pesangon' =>$this->input->post('pesangon'),
                     'is_uang_ganti' =>$this->input->post('uang_ganti'),
@@ -170,19 +260,21 @@ class Form_exit extends MX_Controller {
                     'created_on'            => date('Y-m-d',strtotime('now')),
                     'created_by'            => $creator_id,
                 );
-                
-                    if ($this->form_validation->run() == true && $this->form_exit_model->add($data1, $data2, $data3))
-                    {
-                        $this->send_approval_request($exit_id, $user_id, $creator_id);
-                        echo json_encode(array('st' =>1));     
-                    }
+                $rekomendasi_num_rows = getAll('users_exit_rekomendasi', array('id'=>'where/'.$exit_id))->num_rows();
+                if($rekomendasi_num_rows>0){
+                    $this->db->where('id', $exit_id)->update('users_exit_rekomendasi', $data3);
+                }else{
+                $this->db->insert('users_exit_rekomendasi', $data3);
+                }
+                $this->send_approval_request($exit_id, $user_id, $creator_id);
+                echo json_encode(array('st' =>1));
             }
         }
     }
 
     function send_approval_request($id, $user_id, $creator_id)
     {
-        $url = base_url().'form_exit/approval/'.$id;
+        $url = base_url().'form_exit/detail/'.$id;
         
         //approval to manager ga nasional
         $data1 = array(
@@ -249,12 +341,8 @@ class Form_exit extends MX_Controller {
         }
         else
         {
-            if(is_admin()){
-                $form_exit = $this->data['form_exit'] = $this->form_exit_model->form_exit_admin($id);
-            }else{
-                $form_exit = $this->data['form_exit'] = $this->form_exit_model->form_exit($id);
-            }
-            
+            $user_id = getValue('user_id','users_exit', array('id'=>'where/'.$id));
+            $form_exit = $this->data['form_exit'] = $this->form_exit_model->form_exit($id, $user_id);
             $user_id = getAll('users_exit', array('id'=>'where/'.$id, ))->row()->user_id;
             $this->get_user_info($user_id);
             $this->data['mgr_ga_nas'] = $this->get_emp_by_pos('PST242');
@@ -263,44 +351,24 @@ class Form_exit extends MX_Controller {
             $this->data['hrd'] = $this->get_emp_by_pos('PST129');
             
             $this->data['sess_id'] = $this->session->userdata('user_id');
-            $this->data['inventaris'] = getAll('users_exit_inventaris', array('user_exit_id'=>'where/'.$id, ))->row();
+            $i =$this->db->select('*')->from('users_inventory')->join('inventory', 'users_inventory.inventory_id = inventory.id', 'left')->where('users_inventory.user_id', $user_id)->get();
+           
+            $this->data['users_inventory'] = $i;
             $this->data['rekomendasi'] = getAll('users_exit_rekomendasi', array('user_exit_id'=>'where/'.$id, ))->row();
+            $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
 
             $this->_render_page('form_exit/detail', $this->data);
         }
     }
 
-    function approval($id)
+    public function get_inventory_list()
     {
-        if(!$this->ion_auth->logged_in())
-        {
-            redirect('auth/login', 'refresh');
-        }
-        else
-        {
+        $user_id = $this->input->post('id');
 
-            $user_nik = $this->data['sess_id'] = get_nik($this->session->userdata('user_id'));
-            $mgr = $this->data['mgr_ga_nas'] = (!empty($this->get_emp_by_pos('PST242')))?$this->get_emp_by_pos('PST242'):'D0001';
-            $koperasi = $this->data['koperasi'] = $this->get_emp_by_pos('PST263');
-            $perpus = $this->data['perpustakaan'] = $this->get_emp_by_pos('PST2');
-            $hrd = $this->data['hrd'] = $this->get_emp_by_pos('PST129');
-
-            if(is_admin() || $user_nik == $mgr || $user_nik == $koperasi || $user_nik == $perpus || $user_nik == $hrd){
-                $form_exit = $this->data['form_exit'] = $this->form_exit_model->form_exit_admin($id);
-            }else{
-                $form_exit = $this->data['form_exit'] = $this->form_exit_model->form_exit($id);
-            }
-
-            $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
-            $user_id = getAll('users_exit', array('id'=>'where/'.$id, ))->row()->user_id;
-            $this->get_user_info($user_id);
-            
-            $this->data['sess_id'] = $this->session->userdata('user_id');
-            $this->data['inventaris'] = getAll('users_exit_inventaris', array('user_exit_id'=>'where/'.$id, ))->row();
-            $this->data['rekomendasi'] = getAll('users_exit_rekomendasi', array('user_exit_id'=>'where/'.$id, ))->row();
-
-            $this->_render_page('form_exit/approval', $this->data);
-        }
+        $i =$this->db->select('users_inventory.id as id, users_inventory.is_available, users_inventory.note, inventory.title as title')->from('users_inventory')->join('inventory', 'users_inventory.inventory_id = inventory.id', 'left')->where('users_inventory.user_id', $user_id)->get();
+           //print_mz($i->result());
+        $this->data['users_inventory'] = $i;
+        $this->load->view('inventory_list',$this->data);
     }
 
     function do_approve($id, $type)
@@ -349,7 +417,7 @@ class Form_exit extends MX_Controller {
 
     function approval_mail($id, $type, $approval_status)
     {
-        $url = base_url().'form_exit/approval/'.$id;
+        $url = base_url().'form_exit/detail/'.$id;
         $approver = get_name(get_nik($this->session->userdata('user_id')));
         $receiver_id = getAll('users_exit', array('id' => 'where/'.$id))->row('user_id');
          $approval_status = $this->db->where('id', $approval_status)->get('approval_status')->row('title');
@@ -376,7 +444,7 @@ class Form_exit extends MX_Controller {
 
     function update_approval_mail($id, $type, $approval_status)
     {
-        $url = base_url().'form_exit/approval/'.$id;
+        $url = base_url().'form_exit/detail/'.$id;
         $approver = get_name(get_nik($this->session->userdata('user_id')));
         $receiver_id = getAll('users_exit', array('id' => 'where/'.$id))->row('user_id');
         $approval_status = $this->db->where('id', $approval_status)->get('approval_status')->row('title');
@@ -403,25 +471,21 @@ class Form_exit extends MX_Controller {
 
     function detail_email($id)
     {
-        $user_nik = $this->data['sess_id'] = get_nik($this->session->userdata('user_id'));
-        $mgr = $this->data['mgr_ga_nas'] = (!empty($this->get_emp_by_pos('PST242')))?$this->get_emp_by_pos('PST242'):'D0001';
-        $koperasi = $this->data['koperasi'] = $this->get_emp_by_pos('PST263');
-        $perpus = $this->data['perpustakaan'] = $this->get_emp_by_pos('PST2');
-        $hrd = $this->data['hrd'] = $this->get_emp_by_pos('PST129');
-
-        if(is_admin() || $user_nik == $mgr || $user_nik == $koperasi || $user_nik == $perpus || $user_nik == $hrd){
-            $form_exit = $this->data['form_exit'] = $this->form_exit_model->form_exit_admin($id);
-        }else{
-            $form_exit = $this->data['form_exit'] = $this->form_exit_model->form_exit($id);
-        }
-
-        $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
+        $user_id = getValue('user_id','users_exit', array('id'=>'where/'.$id));
+        $form_exit = $this->data['form_exit'] = $this->form_exit_model->form_exit($id, $user_id);
         $user_id = getAll('users_exit', array('id'=>'where/'.$id, ))->row()->user_id;
         $this->get_user_info($user_id);
+        $this->data['mgr_ga_nas'] = $this->get_emp_by_pos('PST242');
+        $this->data['koperasi'] = $this->get_emp_by_pos('PST263');
+        $this->data['perpustakaan'] = $this->get_emp_by_pos('PST2');
+        $this->data['hrd'] = $this->get_emp_by_pos('PST129');
         
         $this->data['sess_id'] = $this->session->userdata('user_id');
-        $this->data['inventaris'] = getAll('users_exit_inventaris', array('user_exit_id'=>'where/'.$id, ))->row();
+        $i =$this->db->select('*')->from('users_inventory')->join('inventory', 'users_inventory.inventory_id = inventory.id', 'left')->where('users_inventory.user_id', $user_id)->get();
+       
+        $this->data['users_inventory'] = $i;
         $this->data['rekomendasi'] = getAll('users_exit_rekomendasi', array('user_exit_id'=>'where/'.$id, ))->row();
+        $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
 
         return $this->load->view('form_exit/exit_mail', $this->data, TRUE);
     }
@@ -625,6 +689,7 @@ class Form_exit extends MX_Controller {
                     
                 }
                 elseif(in_array($view, array('form_exit/input',
+                                             'form_exit/input_inventory',
                                              'form_exit/detail',)))
                 {
 

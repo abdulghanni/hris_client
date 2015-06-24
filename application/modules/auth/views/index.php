@@ -103,7 +103,7 @@
                                             <label for="checkbox10"></label>
                                         </div>
                                     </th>
-                                    <th width="10%"><?php echo anchor('auth/index/'.$fname_param.'/'.$email_param.'/first_name/'.(($sort_order == 'asc' && $sort_by == 'first_name') ? 'desc' : 'asc'), lang('index_fname_th'));?></th>
+                                    <th width="10%"><?php echo anchor('auth/index/'.$fname_param.'/'.$email_param.'/username/'.(($sort_order == 'asc' && $sort_by == 'username') ? 'desc' : 'asc'), lang('index_fullname_th'));?></th>
                                     <!-- <th width="10%"><?php echo anchor('auth/index/'.$fname_param.'/'.$email_param.'/last_name/'.(($sort_order == 'asc' && $sort_by == 'last_name') ? 'desc' : 'asc'), lang('index_lname_th'));?></th> -->
                                     <th width="10%"><?php echo anchor('auth/index/'.$fname_param.'/'.$email_param.'/email/'.(($sort_order == 'asc' && $sort_by == 'email') ? 'desc' : 'asc'), lang('index_email_th'));?></th>
                                     <th width="10%"><?php echo lang('index_groups_th');?></th>
@@ -120,7 +120,7 @@
                                             <label for="checkbox11"></label>
                                         </div>
                                     </td>
-                                    <td valign="middle"><?php echo $user->first_name;?></td>
+                                    <td valign="middle"><?php echo $user->username;?></td>
                                     <!-- <td valign="middle"><span class="muted"><?php echo $user->last_name;?></span></td> -->
                                     <td valign="middle"><span class="muted"><?php echo $user->email;?></span></td>
                                     <td valign="middle"><span class="muted">

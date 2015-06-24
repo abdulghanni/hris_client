@@ -11,9 +11,21 @@ $(document).ready(function() {
 	        get_employee_pos(empId);
 	        get_employee_nik(empId);
 	        get_employee_bu(empId);
+          getInvList(empId);
 	    })
 	    .change();
 
+  function getInvList(empId)
+   {
+      $.ajax({
+          type: 'POST',
+          url: 'get_inventory_list',
+          data: {id : empId},
+          success: function(data) {
+              $('#inventory').html(data);
+          }
+      });
+   }
 	 function get_employee_org(empId)
 	    {
 	        $.ajax({
