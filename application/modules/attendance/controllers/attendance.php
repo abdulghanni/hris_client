@@ -19,7 +19,7 @@ class attendance extends MX_Controller {
   	
     $webmaster_id = permissionBiasa();
 	$dt_temp = date("d");
-	$dt_temp = date("d", mktime(1, 1, 1, date("m"), date("d")-1, date("Y")));
+	//$dt_temp = date("d", mktime(1, 1, 1, date("m"), date("d")-1, date("Y")));
     $this->baca_cron($dt_temp, date("m"), date("Y"));
     if(!$this->ion_auth->is_admin()) $nik="nik".GetValue("nik", "users", array("id"=> "where/".$webmaster_id));
     $data['segment'] = $this->uri->segment(7);

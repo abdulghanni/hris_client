@@ -320,7 +320,7 @@ class Person extends MX_Controller {
 		
 		//Mazhters
 		$dt_temp = date("d");
-		$dt_temp = date("d", mktime(1, 1, 1, date("m"), date("d")-1, date("Y")));
+		//$dt_temp = date("d", mktime(1, 1, 1, date("m"), date("d")-1, date("Y")));
 		$this->baca_cron($dt_temp, date("m"), date("Y"));
 		$mchID = GetValue("mchID", "users", array("id"=> "where/".$id));
 		$q = GetAll("view_att", array("mchID"=> "where/".$mchID));
