@@ -36,7 +36,7 @@
   <tr>
     <td width="220" height="30"><span class="style3">NIK</span></td>
     <td width="10"><div align="center" class="style3">:</div></td>
-    <td width="274"><div align="left" class="style3"><?php echo (!empty($user_info))?$user_info['EMPLID']:'-';?></div></td>
+    <td width="274"><div align="left" class="style3"><?php echo $user_nik?></div></td>
     <td height="40"><span class="style3">Nama Karyawan </span></td>
     <td><div align="center" class="style3">:</div></td>
     <td><span class="style3"><?php echo get_name($row->user_id)?> </span></td>
@@ -44,15 +44,15 @@
   <tr>
     <td width="200"><span class="style3">Jabatan</span></td>
     <td width="10"><div align="center" class="style3">:</div></td>
-    <td width="300"><span class="style3"><?php echo (!empty($user_info))?$user_info['POSITION']:'-';?></span></td>
+    <td width="300"><span class="style3"><?php echo get_user_position($user_nik)?></span></td>
     <td><span class="style3">Tanggal Mulai Kerja</span></td>
     <td><div align="center" class="style3">:</div></td>
-    <td><span class="style3"><?php echo (!empty($user_info))?dateIndo($user_info['SENIORITYDATE']):'-';?></span></td>
+    <td><span class="style3"><?php echo dateIndo(get_user_sen_date($user_nik))?></span></td>
   </tr>
   <tr>
     <td height="40"><span class="style3">Wilayah </span></td>
     <td><div align="center" class="style3">:</div></td>
-    <td><span class="style3"><?php echo (!empty($user_info))?$user_info['BU']:'-';?></span></td>
+    <td><span class="style3"><?php echo get_user_bu($user_nik)?></span></td>
     <td><span class="style3">Tanggal Keluar </span></td>
     <td><div align="center" class="style3">:</div></td>
     <td><span class="style3"><?php echo dateIndo($row->date_exit)?> </span></td>
@@ -72,124 +72,43 @@
       <th width="100" scope="col">Status</th>
       <th width="400" scope="col">Keterangan</th>
     </tr>
-    <tr>
-      <td height="40" align="center">1</td>
-      <td>&nbsp;Baju Seragam</td>
-      <td align="center">&nbsp;<?php echo ($row->is_seragam == 1) ? 'Ada' : 'Tidak';?></td>
-      <td>&nbsp;<?php echo $row->keterangan_seragam?></td>
-    </tr>
-    
-    <tr>
-      <td height="40" align="center">2</td>
-      <td>&nbsp;ID Card</td>
-      <td align="center">&nbsp;<?php echo ($row->is_id_card == 1) ? 'Ada' : 'Tidak';?></td>
-      <td>&nbsp;<?php echo $row->keterangan_id_card?></td>
-    </tr>
-    <tr>
-      <td height="40" align="center">3</td>
-      <td>&nbsp;Sepeda Motor</td>
-      <td align="center">&nbsp;<?php echo ($row->is_motor == 1) ? 'Ada' : 'Tidak';?></td>
-      <td>&nbsp;<?php echo $row->keterangan_motor?></td>
-    </tr>
-    <tr>
-      <td height="40" align="center">4</td>
-      <td>&nbsp;Mobil</td>
-      <td align="center">&nbsp;<?php echo ($row->is_mobil == 1) ? 'Ada' : 'Tidak';?></td>
-      <td>&nbsp;<?php echo $row->keterangan_mobil?></td>
-    </tr>
-    <tr>
-      <td height="40" align="center">5</td>
-      <td>&nbsp;STNK Motor</td>
-      <td align="center">&nbsp;<?php echo ($row->is_stnk_motor == 1) ? 'Ada' : 'Tidak';?></td>
-      <td>&nbsp;<?php echo $row->keterangan_stnk_motor?></td>
-    </tr>
-    <tr>
-      <td height="40" align="center">6</td>
-      <td>&nbsp;STNK Mobil</td>
-      <td align="center">&nbsp;<?php echo ($row->is_stnk_mobil == 1) ? 'Ada' : 'Tidak';?></td>
-      <td>&nbsp;<?php echo $row->keterangan_stnk_mobil?></td>
-    </tr>
-    <tr>
-      <td height="40" align="center">7</td>
-      <td>&nbsp;Hp</td>
-      <td align="center">&nbsp;<?php echo ($row->is_hp == 1) ? 'Ada' : 'Tidak';?></td>
-      <td>&nbsp;<?php echo $row->keterangan_hp?></td>
-    </tr>
-    <tr>
-      <td height="40" align="center">8</td>
-      <td>&nbsp;Laptop</td>
-      <td align="center">&nbsp;<?php echo ($row->is_laptop == 1) ? 'Ada' : 'Tidak';?></td>
-      <td>&nbsp;<?php echo $row->keterangan_laptop?></td>
-    </tr>
-    <tr>
-      <td height="40" align="center">9</td>
-      <td>&nbsp;Ipad</td>
-      <td align="center">&nbsp;<?php echo ($row->is_ipad == 1) ? 'Ada' : 'Tidak';?></td>
-      <td>&nbsp;<?php echo $row->keterangan_ipad?></td>
-    </tr>
-    <tr>
-      <td height="40" align="center">10</td>
-      <td>&nbsp;Laporan Serah Terima</td>
-      <td align="center">&nbsp;<?php echo ($row->is_laporan == 1) ? 'Ada' : 'Tidak';?></td>
-      <td>&nbsp;<?php echo $row->keterangan_laporan?></td>
-    </tr>
-    <tr>
-      <td height="40" align="center">11</td>
-      <td>&nbsp;Rekonsiliasi Saldo</td>
-      <td align="center">&nbsp;<?php echo ($row->is_saldo == 1) ? 'Ada' : 'Tidak';?></td>
-      <td>&nbsp;<?php echo $row->keterangan_saldo?></td>
-    </tr>
-    <tr>
-      <td height="40" align="center">12</td>
-      <td>&nbsp;Pinjaman Koperasi</td>
-      <td align="center">&nbsp;<?php echo ($row->is_pinjaman_koperasi == 1) ? 'Ada' : 'Tidak';?></td>
-      <td>&nbsp;<?php echo $row->keterangan_pinjaman_koperasi?></td>
-    </tr>
-    <tr>
-      <td height="40" align="center">13</td>
-      <td>&nbsp;Pinjaman Buku Perpustakaan</td>
-      <td align="center">&nbsp;<?php echo ($row->is_pinjaman_buku == 1) ? 'Ada' : 'Tidak';?></td>
-      <td>&nbsp;<?php echo $row->keterangan_pinjaman_buku?></td>
-    </tr>
-    <tr>
-      <td height="40" align="center">14</td>
-      <td>&nbsp;Ikatan Dinas</td>
-      <td align="center">&nbsp;<?php echo ($row->is_ikatan == 1) ? 'Ada' : 'Tidak';?></td>
-      <td>&nbsp;<?php echo $row->keterangan_ikatan?></td>
-    </tr>
-    <tr>
-      <td height="40" align="center">15</td>
-      <td>&nbsp;Kartu Kredit</td>
-      <td align="center">&nbsp;<?php echo ($row->is_kartu_kredit == 1) ? 'Ada' : 'Tidak';?></td>
-      <td>&nbsp;<?php echo $row->keterangan_kartu_kredit?></td>
-    </tr>
-    <tr>
-      <td height="40" align="center">16</td>
-      <td>&nbsp;Pinjaman Subsidi</td>
-      <td align="center">&nbsp;<?php echo ($row->is_pinjaman_subsidi == 1) ? 'Ada' : 'Tidak';?></td>
-      <td>&nbsp;<?php echo $row->keterangan_pinjaman_subsidi?></td>
-    </tr>
+    <?php 
+    $i=0;
+    if($users_inventory->num_rows()>0){
+      foreach ($users_inventory->result() as $inv) :
+        $radio_label = ($inv->is_available==1)?'Ada':'Tidak';
+        ?>
+  <tr>
+    <td>&nbsp;<?php echo 1+$i++?></td>
+    <td>&nbsp;<?php echo $inv->title?></td>
+    <td align="center"><?php echo $radio_label?></td>
+    <td>&nbsp;<?php echo $inv->note?></td>
+  </tr>
+      <?php endforeach;}?>
   </tbody>
 </table>
 <table width="1000" align="center">
   <tbody>
     <tr>
-      <th width="250" height="250"></th>
-      <th width="250">&nbsp;&nbsp;&nbsp;&nbsp;Mengetahui,</th>
-      <th width="250"></th>
-      <th width="250"></th>
+      <th width="200" height="250"></th>
+      <th width="200">&nbsp;&nbsp;&nbsp;&nbsp;Mengetahui,</th>
+      <th width="200"></th>
+      <th width="200"></th>
+      <th width="200"></th>
     </tr>
     <tr>
       <td height="80" align="center"><?php echo get_name($row->user_app_mgr)?><br/><?php echo dateIndo($row->date_app_mgr)?></td>
       <td align="center"><?php echo get_name($row->user_app_koperasi)?><br/><?php echo dateIndo($row->date_app_koperasi)?></td>
       <td align="center"><?php echo get_name($row->user_app_perpus)?><br/><?php echo dateIndo($row->date_app_perpus)?></td>
       <td align="center"><?php echo get_name($row->user_app_hrd)?><br/><?php echo dateIndo($row->date_app_hrd)?></td>
+      <td align="center"><?php echo get_name($row->user_app_it)?><br/><?php echo dateIndo($row->date_app_it)?></td>
     </tr>
     <tr >
       <td align="center">Manager GA Nasional</td>
       <td align="center">SIE Koperasi</td>
       <td align="center">Perpustakaan</td>
       <td align="center">HRD Database</td>
+      <td align="center">IT</td>
     </tr>
   </tbody>
 </table>
@@ -274,34 +193,66 @@
 <p class="style4">Catatan HRD</p>
 <textarea class="style4" rows="4" width="100%"><?php echo $row->note_hrd?></textarea>
 <?php } ?>
-<?php if(!empty($row->note_app)){?>
-<p class="style4">Catatan Khusus</p>
-<textarea class="style4" rows="4" width="100%"><?php echo $row->note_app?></textarea>
+<?php if(!empty($row->note_it)){?>
+<p class="style4">Catatan IT</p>
+<textarea class="style4" rows="4" width="100%"><?php echo $row->note_it?></textarea>
+<?php } ?>
+<?php if(!empty($row->note_lv1)){?>
+<p class="style4">Catatan Supervisor</p>
+<textarea class="style4" rows="4" width="100%"><?php echo $row->note_lv1?></textarea>
+<?php } ?>
+<?php if(!empty($row->note_lv2)){?>
+<p class="style4">Catatan Ka. Bagian</p>
+<textarea class="style4" rows="4" width="100%"><?php echo $row->note_lv2?></textarea>
+<?php } ?>
+<?php if(!empty($row->note_lv3)){?>
+<p class="style4">Catatan Atasan Lainnya</p>
+<textarea class="style4" rows="4" width="100%"><?php echo $row->note_lv3?></textarea>
 <?php } ?>
 <br />
 <p>&nbsp;</p>
 <table width="1000" align="center">
   <tbody>
     <tr>
-      <td width="250" height="10" align="center">Hormat Kami,</td>
-      <td width="250"></td>
-      <td width="250"></td>
-      <td width="250" align="center">Mengetahui/Menyetujui,</td>
+      <td width="333" height="10" align="center">Hormat Kami,</td>
+      <td width="333" align="center">Mengetahui/Menyetujui,</td>
+      <td width="333" align="center">Mengetahui/Menyetujui,</td>
     </tr>
     <tr>
       <td height="117" align="center"><?php echo get_name($row->created_by)?><br/><?php echo dateIndo($row->created_on)?></td>
-      <td align="center"></td>
-      <td align="center"></td>
-      <td align="center"><?php echo get_name($row->user_app)?><br/><?php echo dateIndo($row->date_app)?></td>
+      <td align="center"><?php echo get_name($row->user_app_lv1)?><br/><?php echo dateIndo($row->date_app_lv1)?></td>
+      <td align="center"><?php echo get_name($row->user_app_lv2)?><br/><?php echo dateIndo($row->date_app_lv2)?></td>
     </tr>
     <tr >
       <td align="center">Atasan Langsung</td>
-      <td align="center"></td>
-      <td align="center"></td>
-      <td align="center">ASM/Mgr/Kacab/BDM/CoE</td>
+      <td align="center"><?php echo get_user_position($row->user_app_lv1);?></td>
+      <td align="center"><?php echo get_user_position($row->user_app_lv2);?></td>
     </tr>
   </tbody>
 </table>
+<br />
+<p>&nbsp;</p>
+<?php if(!empty($row->user_app_lv3)){?>
+<table width="1000" align="center">
+  <tbody>
+    <tr>
+      <td width="333" height="10" align="center"></td>
+      <td width="333" align="center">Mengetahui/Menyetujui,</td>
+      <td width="333" align="center"></td>
+    </tr>
+    <tr>
+      <td height="117" align="center"></td>
+      <td align="center"><?php echo get_name($row->user_app_lv3)?><br/><?php echo dateIndo($row->date_app_lv3)?></td>
+      <td align="center"></td>
+    </tr>
+    <tr >
+      <td align="center"></td>
+      <td align="center"><?php echo get_user_position($row->user_app_lv3);?></td>
+      <td align="center"></td>
+    </tr>
+  </tbody>
+</table>
+<?php }?>
 
 <?php endforeach;?>
 </body>

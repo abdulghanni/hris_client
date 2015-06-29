@@ -41,8 +41,13 @@
   <p align="center" class="style6">Form Surat Tugas / Ijin </p>
 </div>
 <?php
-	if ($tc_num_rows > 0) {
-	foreach ($task_creator as $tc) :
+	if ($td_num_rows > 0) {
+  foreach ($task_detail as $td) : 
+    $a = strtotime($td->date_spd_end);
+    $b = strtotime($td->date_spd_start);
+
+    $j = $a - $b;
+    $jml_pjd = floor($j/(60*60*24)+1);
 ?>
 <table width="988" height="128" border="0" style="padding-left:30px;" class="style3">
 <tr class="style4"><td>Yang bertanda tangan dibawah ini : </td></tr>
@@ -50,21 +55,18 @@
   <tr>
     <td width="275" height="40"><span class="style3">Nama</span></td>
     <td width="10" height="40"><div align="center">:</div></td>
-    <td width="440" height="40"><?php echo $tc->user_name ?></td>
+    <td width="440" height="40"><?php echo get_name($td->task_creator) ?></td>
   </tr>
   <tr>
     <td height="40"><span class="style3">Bagian / Dept </span></td>
     <td height="40"><div align="center">:</div></td>
-    <td height="40"><?php echo (!empty($user_info))?$user_info['ORGANIZATION']:'-';?></td>
+    <td height="40"><?php echo get_user_organization($td->task_creator)?></td>
   </tr>
   <tr>
     <td height="40"><span class="style3">Jabatan</span></td>
     <td height="40"><div align="center">:</div></td>
-    <td height="40"><?php echo (!empty($user_info))?$user_info['POSITION']:'-';?></td>
+    <td height="40"><?php echo get_user_position($td->task_creator)?></td>
   </tr>
-<?php endforeach; 
-}
-?> 
 
 <tr><td height="40"></td></tr>
 <tr class="style4"><td>Memberi tugas / ijin kepada : </td></tr>
@@ -72,27 +74,19 @@
   <tr>
     <td width="275" height="40"><span class="style3">Nama</span></td>
     <td width="10" height="40"><div align="center">:</div></td>
-    <td width="440" height="40"><?php echo $task_receiver_nm ?></td>
+    <td width="440" height="40"><?php echo get_name($td->task_receiver) ?></td>
   </tr>
   <tr>
     <td height="40"><span class="style3">Bagian / Dept </span></td>
     <td height="40"><div align="center">:</div></td>
-    <td height="40"><?php echo $task_receiver_org ?></td>
+    <td height="40"><?php echo get_user_organization($td->task_receiver) ?></td>
   </tr>
   <tr>
     <td height="40"><span class="style3">Jabatan</span></td>
     <td height="40"><div align="center">:</div></td>
-    <td height="40"><?php echo $task_receiver_pos ?></td>
+    <td height="40"><?php echo get_user_position($td->task_receiver) ?></td>
   </tr>
-  <?php if ($td_num_rows > 0) {
-      foreach ($task_detail as $td) { 
 
-        $a = strtotime($td->date_spd_end);
-        $b = strtotime($td->date_spd_start);
-
-        $j = $a - $b;
-        $jml_pjd = floor($j/(60*60*24)+1);
-        ?>
   <tr>
     <td height="40"><span class="style3">Melakukan tugas / ijin ke </span></td>
     <td height="40"><div align="center">:</div></td>
@@ -172,8 +166,7 @@
 <span class="semi-bold"><?php echo get_name($td->task_creator) ?></span><br/>
 <span class="small"><?php echo dateIndo($td->created_on) ?></span><br/>
 </div> 
-<?php  }
-} ?>
+<?php endforeach;}?>
 
 <div style="clear: both; margin: 0pt; padding: 0pt; "></div>
 <p>&nbsp;</p>

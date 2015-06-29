@@ -39,16 +39,16 @@
                               <?php
                                 $report_num = getAll('users_spd_dalam_report', array('user_spd_dalam_id'=>'where/'.$spd->id))->num_rows();
                                 if ($spd->is_submit == 1 && $report_num == 1) {
-                                  $btn_dis = "disabled=\"disabled\"";
+                                  $btn_dis = '';//"disabled=\"disabled\"";
                                   $btn_sub = "Submitted";
                                   $report_disable = (get_nik($sess_id) == $spd->task_receiver)?'':'';
                                 }elseif($spd->is_submit == 1 && $report_num == 0){
-                                  $btn_dis = "disabled=\"disabled\"";
+                                  $btn_dis = '';//"disabled=\"disabled\"";
                                   $btn_sub = "Submitted";
                                   $report_disable = (get_nik($sess_id) == $spd->task_receiver)?'':'disabled';
                                 }else{
                                   $btn_dis = '';
-                                  $report_disable = 'disabled';
+                                  $report_disable = '';//'disabled';
                                   $btn_sub = "Submit";
                                 }
                                 $btn_rep = ($report_num>0)?'View Report':(($report_num < 1 && get_nik($sess_id) == $spd->task_receiver)?'Create Report':'Report');
@@ -57,7 +57,7 @@
                                   <td>
                                     <a href="<?php echo base_url() ?>form_spd_dalam/submit/<?php echo $spd->id ?>"><h4><?php echo $spd->title ?></h4>
                                       <div class="small-text-custom">
-                                        <span>Pemberi tugas : </span><?php echo $spd->creator ?><br/>
+                                        <span>Pemberi tugas : </span><?php echo get_name($spd->task_creator) ?><br/>
                                         <span>Penerima tugas : </span><?php echo (!empty(get_name($spd->task_receiver)))?get_name($spd->task_receiver):'-' ?><br/>
                                         <span>Tanggal : </span><?php echo dateIndo($spd->date_spd) .', '. date('H:i',strtotime($spd->start_time)) .' - '. date('H:i',strtotime($spd->end_time)) ?> WIB<br/>
                                         <span>Tempat : </span><?php echo $spd->destination ?>
@@ -89,6 +89,31 @@
                                 <?php } ?>
                             </tbody>
                         </table>
+                        <?php if($_num_rows>0):?>
+                          <div class="row">
+                            <div class="col-md-4 page_limit">
+                                <?php echo form_open(uri_string());?>
+                                <?php 
+                                    $selectComponentData = array(
+                                        10  => '10',
+                                        25 => '25',
+                                        50 =>'50',
+                                        75 => '75',
+                                        100 => '100',);
+                                    $selectComponentJs = 'class="select2" onChange="this.form.submit()" id="limit"';
+                                    echo "Per page: ".form_dropdown('limit', $selectComponentData, $limit, $selectComponentJs);
+                                    echo '&nbsp;'.lang('found_subheading').'&nbsp;'.$num_rows_all.'&nbsp;'.'Pengajuan';
+                                ?>
+                                <?php echo form_close();?>
+                            </div>
+
+                            <div class="col-md-10">
+                              <ul class="dataTables_paginate paging_bootstrap pagination">
+                                  <?php echo $halaman;?>
+                              </ul>
+                            </div>
+                          </div>
+                        <?php endif; ?>
                 </div>
             </div>
         </div>

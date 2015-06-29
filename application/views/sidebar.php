@@ -66,15 +66,17 @@
           <li > <a href="datatables.html">Parameter pengaturan </a> </li>
         </ul>
       </li> -->
+      <?php if(is_admin_bagian()){?>
       <li class=""> <a href="javascript:;"> <i class="icon-group"></i> <span class="title">Manage Company</span> <span class="arrow "></span> </a>
         <ul class="sub-menu">
-          <li > <a href="<?php echo site_url('comp_session')?>">Company Session</a> </li>
+          <!--<li > <a href="<?php echo site_url('comp_session')?>">Company Session</a> </li>
           <li > <a href="<?php echo site_url('organization')?>">Organization</a> </li>
           <li > <a href="<?php echo site_url('position')?>">Position</a> </li>
           <!--<li > <a href="<?php echo site_url('library_table')?>">Library Reference Table</a> </li>-->
-          
+          <li ><a href="<?php echo site_url('inventory')?>"><i class="icon-briefcase"></i> Inventaris</a> </li>
         </ul>
-      </li>      
+      </li>  
+      <?php } ?>    
     </ul>
     <a href="#" class="scrollup">Scroll</a>
     <div class="clearfix"></div>

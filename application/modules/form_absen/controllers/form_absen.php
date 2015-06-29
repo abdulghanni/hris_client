@@ -475,18 +475,11 @@ class form_absen extends MX_Controller {
 
                     $this->template->add_js('jquery.sidr.min.js');
                     $this->template->add_js('breakpoints.js');
+                    $this->template->add_js('core.js');
                     $this->template->add_js('select2.min.js');
 
-                    $this->template->add_js('purl.js');
-                    $this->template->add_js('core.js');
+                    $this->template->add_js('form_index.js');
 
-                    $this->template->add_js('respond.min.js');
-
-                    $this->template->add_js('jquery.bootstrap.wizard.min.js');
-                    $this->template->add_js('jquery.validate.min.js');
-                    $this->template->add_js('form_absen.js');
-
-                    
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                     $this->template->add_css('plugins/select2/select2.css');
                     

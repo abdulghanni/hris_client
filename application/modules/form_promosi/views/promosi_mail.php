@@ -1,9 +1,14 @@
-<div class="grid-body no-border">
+<div class="col-md-12">
+            <div class="grid simple">
+              <div class="grid-title no-border">
+                <h4>Form Pengajuan <span class="semi-bold"><a href="<?php echo site_url('form_promosi')?>">Promosi</a></span></h4>
+              </div>
+              <div class="grid-body no-border">
                 <?php
-                $att = array('class' => 'form-no-horizontal-spacing', 'id' => 'formaddpromosi');
+                $att = array('class' => 'form-no-horizontal-spacing', 'id' => '');
                 echo form_open('form_promosi/add', $att);
-                if($form_promosi->num_rows()>0){
-                  foreach($form_promosi->result() as $row):
+                if($_num_rows>0){
+                  foreach($form_promosi as $row):
                 ?>
                   <div class="row column-seperation">
                     <div class="col-md-5">
@@ -130,6 +135,7 @@
                       
                     </div>
                 </div>
-              <?php endforeach;}?>
-              </form>
-              </div>
+          </div>
+        </div>
+      </div>
+      <?php endforeach;} ?>

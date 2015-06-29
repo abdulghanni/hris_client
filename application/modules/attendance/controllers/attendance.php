@@ -189,7 +189,7 @@ class attendance extends MX_Controller {
 		$this->template->add_js('jquery.sidr.min.js');
 		$this->template->add_js('breakpoints.js');
 		$this->template->add_js('select2.min.js');
-		$this->template->add_js('persondetail.js');
+		//$this->template->add_js('persondetail.js');
 		$this->template->add_js('core.js');
 		$this->template->add_js('bootstrap-datepicker.js');
 		$this->template->add_js('jquery.animateNumbers.js');

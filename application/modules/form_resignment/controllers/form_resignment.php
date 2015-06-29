@@ -199,17 +199,17 @@ class Form_resignment extends MX_Controller {
             );
             $approval_status = $this->input->post('app_status_'.$type);
 
-             $is_app = getValue('is_app_'.$type, 'users_resignment', array('id'=>'where/'.$id));
+            $is_app = getValue('is_app_'.$type, 'users_resignment', array('id'=>'where/'.$id));
             $approval_status = $this->input->post('app_status_'.$type);
+
+           if ($this->form_resignment_model->update($id,$data)) {
+               redirect('form_resignment/detail/'.$id, 'refresh');
+            }
 
             if($is_app==0){
                 $this->approval_mail($id, $approval_status);
             }else{
                 $this->update_approval_mail($id, $approval_status);
-            }
-
-           if ($this->form_resignment_model->update($id,$data)) {
-               redirect('form_resignment/detail/'.$id, 'refresh');
             }
         }
     }
@@ -501,8 +501,8 @@ class Form_resignment extends MX_Controller {
                     $this->template->add_js('breakpoints.js');
                     $this->template->add_js('core.js');
                     $this->template->add_js('select2.min.js');
-                    $this->template->add_js('purl.js');
-                    $this->template->add_js('form_resignment.js');
+
+                    $this->template->add_js('form_index.js');
 
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                     $this->template->add_css('plugins/select2/select2.css');
@@ -521,48 +521,17 @@ class Form_resignment extends MX_Controller {
                     $this->template->add_js('core.js');
                     $this->template->add_js('purl.js');
 
-                    $this->template->add_js('main.js');
                     $this->template->add_js('respond.min.js');
 
                     $this->template->add_js('jquery.bootstrap.wizard.min.js');
                     $this->template->add_js('jquery.validate.min.js');
                     $this->template->add_js('bootstrap-datepicker.js');
-                    $this->template->add_js('bootstrap-timepicker.js');
                     $this->template->add_js('form_resignment.js');
                     
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                     $this->template->add_css('plugins/select2/select2.css');
                     $this->template->add_css('datepicker.css');
-                    $this->template->add_css('bootstrap-timepicker.css');
-                    $this->template->add_css('approval_img.css');
-                     
-                }elseif(in_array($view, array('form_resignment/approval')))
-                {
-                    $this->template->set_layout('default');
-
-                    $this->template->add_js('jquery.min.js');
-                    $this->template->add_js('bootstrap.min.js');
-
-                    $this->template->add_js('jquery-ui-1.10.1.custom.min.js');
-                    $this->template->add_js('jquery.sidr.min.js');
-                    $this->template->add_js('breakpoints.js');
-                    $this->template->add_js('select2.min.js');
-
-                    $this->template->add_js('core.js');
-                    $this->template->add_js('purl.js');
-
-                    $this->template->add_js('main.js');
-                    $this->template->add_js('respond.min.js');
-
-                    $this->template->add_js('jquery.bootstrap.wizard.min.js');
-                    $this->template->add_js('jquery.validate.min.js');
-                    $this->template->add_js('form_resignment.js');
-
-                    
-                    $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
-                    $this->template->add_css('plugins/select2/select2.css');
-                    $this->template->add_css('approval_img.css');
-                    
+                    $this->template->add_css('approval_img.css');  
                 }
 
 

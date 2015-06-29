@@ -183,6 +183,24 @@
 
                       <div class="row form-row">
                         <div class="col-md-2">
+                          <label class="form-label text-right">Ikatan</label>
+                        </div>
+                        <div class="col-md-7">
+                          <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Tujuan pelatihan" value="<?php echo $user->ikatan?>" disabled="disabled">
+                        </div>
+                      </div>
+
+                      <div class="row form-row">
+                        <div class="col-md-2">
+                          <label class="form-label text-right">Waktu</label>
+                        </div>
+                        <div class="col-md-7">
+                          <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Tujuan pelatihan" value="<?php echo $user->waktu?>" disabled="disabled">
+                        </div>
+                      </div>
+
+                      <div class="row form-row">
+                        <div class="col-md-2">
                           <label for="besar_biaya" class="form-label text-right">Besar Biaya (Rp.)</label>
                         </div>
                         <div class="col-md-7">

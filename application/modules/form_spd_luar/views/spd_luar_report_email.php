@@ -1,4 +1,6 @@
-<div class="grid simple">
+<div class="row">
+        <div class="col-md-12">
+          <div class="grid simple">
             <div class="grid-title no-border">
               <h4>Laporan Kegiatan Perjalanan Dinas <a href="<?php echo site_url('form_spd_luar')?>"><span class="semi-bold">Luar Kota</span></a></h4></h4>
             </div>
@@ -14,7 +16,7 @@
                         <label class="form-label text-left">Nama</label>
                       </div>
                       <div class="col-md-8">
-                        <input name="name" id="name" type="text"  class="form-control" placeholder="Nama" value="<?php echo $task_receiver_nm ?>" disabled="disabled">  
+                        <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama" value="<?php echo get_name($td->task_receiver)?>" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
@@ -22,7 +24,7 @@
                         <label class="form-label text-left">Dept/Bagian</label>
                       </div>
                       <div class="col-md-8">
-                        <input name="dept" id="dept" type="text"  class="form-control" placeholder="Dept/Bagian" value="<?php echo $task_receiver_org ?>" disabled="disabled">
+                        <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama" value="<?php echo get_user_organization($td->task_receiver)?>" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
@@ -30,7 +32,7 @@
                         <label class="form-label text-left">Jabatan</label>
                       </div>
                       <div class="col-md-8">
-                        <input name="dept" id="dept" type="text"  class="form-control" placeholder="Jabatan" value="<?php echo $task_receiver_pos ?>" disabled="disabled">
+                        <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama" value="<?php echo get_user_position($td->task_receiver)?>" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
@@ -103,7 +105,7 @@
                     <h4>Laporan Kegiatan PJD</h4>
                     <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
                    
-                    <div class="row form-row">
+                   <div class="row form-row">
                       <div class="col-md-4">
                         <label class="form-label text-left">Sudah Terlaksana : </label>
                       </div>
@@ -147,36 +149,11 @@
                                                 <?php } ?>
                       </div>
                     </div>
-
                   </div>
                   </div>
-
-
-                <div class="form-actions text-center">
-                    <!-- <div class="col-md-12 text-center"> -->
-                      <div class="row wf-spd">
-                        <div class="col-md-6 pull-right">
-                  <p>Yang bersangkutan</p>
-                  <?php if ($this->session->userdata('user_id') == $td->task_receiver && $n_report== 0|| get_nik($this->session->userdata('user_id')) == $td->task_receiver && $n_report== 0) { ?>
-                    <button class="btn btn-danger btn-cons" type="submit"><i class="icon-ok"></i> Save</button>
-                    <a href="<?php echo site_url('form_spd_luar')?>"><button class="btn btn-white btn-cons" type="button">Cancel</button></a>
-                    <?php }elseif ($this->session->userdata('user_id') != $td->task_receiver && $n_report== 0) { ?>
-                            <p class="">...............................</p>
-                          <?php }elseif($this->session->userdata('user_id') == $td->task_receiver && $n_report== 1|| get_nik($this->session->userdata('user_id')) == $td->task_receiver && $n_report== 1){ ?>
-                          <p class="wf-submit">
-                            <span class="semi-bold"><?php echo $task_receiver_nm ?></span><br/>
-                            <span class="small"><?php echo dateIndo($created_on) ?></span><br/>
-                          </p>
-                          <?php }else{?>
-                          <p class="wf-submit">
-                            <span class="semi-bold"><?php echo $task_receiver_nm ?></span><br/>
-                            <span class="small"><?php echo dateIndo($created_on) ?></span><br/>
-                          </p>
-                          <?php } ?>
-                  </div>
-                </div>
-
                 <?php endforeach; } ?>
               </form>
             </div>
           </div>
+        </div>
+      </div>

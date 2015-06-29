@@ -34,7 +34,7 @@ $(document).ready(function() {
     var uri1 = url.segment(2)+'/do_approve/'+url.segment(4)+'/lv1';
     var uri2 = url.segment(2)+'/do_approve/'+url.segment(4)+'/lv2';
     var uri3 = url.segment(2)+'/do_approve/'+url.segment(4)+'/lv3';
-    var uri4 = url.segment(2)+'/do_approve/'+url.segment(4)+'/hrd';
+    var uri4 = url.segment(2)+'/do_approve_hrd/'+url.segment(4);
 
     $('#btn_app_lv1').click(function(){
         $('#formMedical').submit(function(ev){
@@ -79,18 +79,52 @@ $(document).ready(function() {
     });
 
     $('#btn_app_hrd').click(function(){
-        $('#formMedical').submit(function(ev){
+        var $btn = $(this).button('loading');
+        $('#formAppHrd').submit(function(ev){
             $.ajax({
                 type: 'POST',
                 url: baseurl+uri4,
-                data: $('#formMedical').serialize(),
+                data: $('#formAppHrd').serialize(),
                 success: function() {
-                     location.reload()
+                    $("[data-dismiss=modal]").trigger({ type: "click" });
+                    location.reload(),
+                    $btn.button('reset')
                 }
             });
             ev.preventDefault(); 
         });  
     });
+
+    resetcheckbox();
+    $('#selectall').click(function(event) {  //on click
+        if (this.checked) { // check select status
+            $('.checkbox1').each(function() { //loop through each checkbox
+                this.checked = true;  //select all checkboxes with class "checkbox1"              
+            });
+        } else {
+            $('.checkbox1').each(function() { //loop through each checkbox
+                this.checked = false; //deselect all checkboxes with class "checkbox1"                      
+            });
+        }
+    });
+
+function  resetcheckbox(){
+    $('input:checkbox').each(function() { //loop through each checkbox
+    this.checked = false; //deselect all checkboxes with class "checkbox1"                      
+       });
+    }
+
+    $('input[type="checkbox"]').on('change', function(e){
+        if($(this).prop('checked'))
+        {
+            $(this).next().val(1);
+            //$(this).next().disabled = true;
+        } else {
+            $(this).next().val(0);
+            //$(this).next().disabled = true;
+        }
+});
+
 
 });	
 

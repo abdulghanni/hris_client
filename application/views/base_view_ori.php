@@ -13,9 +13,9 @@
 
         <!-- favicon.ico and apple-touch-icon.png -->
 
-        <!-- Bootstrap core CSS -->
+        <!-- Bootstrap core CSS 
         <link rel="stylesheet" href="<?php echo assets_url('css/bootstrap.min.css'); ?>">
-        <!-- Custom styles -->
+        <!-- Custom styles 
         <link rel="stylesheet" href="<?php echo assets_url('css/main.css'); ?>">
         <?php echo $css; ?>
         <!-- / -->

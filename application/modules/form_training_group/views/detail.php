@@ -199,6 +199,24 @@
 
                       <div class="row form-row">
                         <div class="col-md-2">
+                          <label class="form-label text-right">Ikatan</label>
+                        </div>
+                        <div class="col-md-7">
+                          <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Tujuan pelatihan" value="<?php echo $user->ikatan?>" disabled="disabled">
+                        </div>
+                      </div>
+
+                      <div class="row form-row">
+                        <div class="col-md-2">
+                          <label class="form-label text-right">Waktu</label>
+                        </div>
+                        <div class="col-md-7">
+                          <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Tujuan pelatihan" value="<?php echo $user->waktu?>" disabled="disabled">
+                        </div>
+                      </div>
+
+                      <div class="row form-row">
+                        <div class="col-md-2">
                           <label for="besar_biaya" class="form-label text-right">Besar Biaya (Rp.)</label>
                         </div>
                         <div class="col-md-7">
@@ -515,6 +533,42 @@
                           <?php if($pembiayaan->num_rows()>0){
                               foreach ($pembiayaan->result_array() as $key => $value) {
                               $selected = ($user->pembiayaan_id <> 0 && $user->pembiayaan_id == $value['id']) ? 'selected = selected' : '';
+                              echo '<option value="'.$value['id'].'" '.$selected.'>'.$value['title'].'</option>';
+                              }}else{
+                              echo '<option value="0">'.'No Data'.'</option>';
+                              }
+                              ?>
+
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row form-row">
+                    <div class="col-md-3">
+                      <label class="form-label text-right">Tipe Ikatan Dinas</label>
+                    </div>
+                    <div class="col-md-9">
+                      <select name="ikatan" class="select2" id="ikatan" style="width:100%" >
+                          <?php if($ikatan->num_rows()>0){
+                              foreach ($ikatan->result_array() as $key => $value) {
+                              $selected = ($user->ikatan_dinas_id <> 0 && $user->ikatan_dinas_id == $value['id']) ? 'selected = selected' : '';
+                              echo '<option value="'.$value['id'].'" '.$selected.'>'.$value['title'].'</option>';
+                              }}else{
+                              echo '<option value="0">'.'No Data'.'</option>';
+                              }
+                              ?>
+
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row form-row">
+                    <div class="col-md-3">
+                      <label class="form-label text-right">Waktu</label>
+                    </div>
+                    <div class="col-md-9">
+                      <select name="waktu" class="select2" id="waktu" style="width:100%" >
+                          <?php if($waktu->num_rows()>0){
+                              foreach ($waktu->result_array() as $key => $value) {
+                              $selected = ($user->waktu_id <> 0 && $user->waktu_id == $value['id']) ? 'selected = selected' : '';
                               echo '<option value="'.$value['id'].'" '.$selected.'>'.$value['title'].'</option>';
                               }}else{
                               echo '<option value="0">'.'No Data'.'</option>';

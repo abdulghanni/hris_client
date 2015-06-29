@@ -31,12 +31,14 @@
   <!-- <p align="left"><img src="<?php echo assets_url('img/erlangga.jpg')?>" width="296" height="80" /></p>-->
   <p align="center" class="style6">Form Pengajuan Promosi</p>
 </div>
-<?php foreach($form_promosi->result() as $row):?>
+<?php foreach($form_promosi as $row):
+$user_nik = get_nik($row->user_id);
+?>
 <table width="1000" height="135" border="0" align="center" style="padding-left:30px">
   <tr>
     <td width="275" height="45"><span class="style3">NIK</span></td>
     <td width="10" height="45"><div align="center">:</div></td>
-    <td width="445" height="45"><span class="style3"><?php echo (!empty($user_info))?$user_info['EMPLID']:'-';?></span></td>
+    <td width="445" height="45"><span class="style3"><?php echo $user_nik;?></span></td>
   </tr>
   <tr>
     <td height="45"><span class="style3">Nama Karyawan</span></td>
@@ -61,7 +63,7 @@
   <tr>
     <td height="45"><span class="style3">Tanggal Pengangkatan</span></td>
     <td height="45"><div align="center">:</div></td>
-    <td height="45"><span class="style3"><?php echo (!empty($user_info))?dateIndo($user_info['SENIORITYDATE']):'-';?></span></td>
+    <td height="45"><span class="style3"><?php echo dateIndo(get_seniority_date($user_nik));?></span></td>
   </tr>
 </table>
 
@@ -71,7 +73,7 @@
   <tr>
     <td width="275" height="45"><span class="style3">Unit Bisnis</span></td>
     <td width="10" height="45"><div align="center">:</div></td>
-    <td width="445" height="45"><span class="style3"><?php echo get_bu_name($row->new_bu)?></span></td>
+    <td width="445" height="45"><span class="style3"><?php echo get_bu_name(substr($row->new_bu,0,2))?></span></td>
   </tr>
   <tr>
     <td height="45"><span class="style3">Dept/Bagian</span></td>

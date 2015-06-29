@@ -187,8 +187,11 @@ class Form_medical extends MX_Controller {
         $user_id = getValue('user_id', 'users_medical', array('id'=>'where/'.$id));
         $sess_id= $this->session->userdata('user_id');
         $this->data['sess_nik'] = get_nik($sess_id);
+        $this->data['is_app_hrd'] = getValue('is_app_hrd', 'users_medical', array('id'=>'where/'.$id));
         $this->data['bagian'] = get_user_organization(get_nik($user_id));
         $this->data['detail'] = $this->form_medical_model->form_medical_detail($id)->result_array();
+        $this->data['detail_hrd'] = $this->form_medical_model->form_medical_hrd($id)->result_array();
+        $this->data['total_medical_hrd'] = $this->form_medical_model->get_total_medical_hrd($id);
         $form_medical = $this->data['form_medical'] = $this->form_medical_model->form_medical($id)->result();
         $this->data['_num_rows'] = $this->form_medical_model->form_medical($id)->num_rows();
             
@@ -217,6 +220,58 @@ class Form_medical extends MX_Controller {
        }
 
        $this->approval_mail($id);
+    }
+
+    function do_approve_hrd($id)
+    {   
+        if(!$this->ion_auth->logged_in())
+        {
+            redirect('auth/login', 'refresh');
+        }
+
+        $user_id = get_nik($this->session->userdata('user_id'));
+        $date_now = date('Y-m-d');
+        $is_app_hrd = getValue('is_app_hrd', 'users_medical', array('id'=>'where/'.$id));
+        $medical_detail_id = $this->input->post('detail_id');
+        $rupiah = $this->input->post('rupiah_update');
+        $approve = $this->input->post('checkbox1');
+        
+        if($is_app_hrd == 0){
+            for($i=0;$i<sizeof($medical_detail_id);$i++):
+                $data = array(
+                        'user_medical_detail_id' => $medical_detail_id[$i],
+                        'rupiah' => $rupiah[$i],
+                        'is_approve' => $approve[$i],
+                        'created_by' => $user_id,
+                        'created_on' => $date_now,
+                    ); 
+
+                $this->db->insert('users_medical_hrd', $data);
+            endfor;
+        }else{
+            for($i=0;$i<sizeof($medical_detail_id);$i++):
+                $data = array(
+                        'rupiah' => $rupiah[$i],
+                        'is_approve' => $approve[$i],
+                        'edited_by' => $user_id,
+                        'edited_on' => $date_now,
+                    ); 
+                $this->db->where('user_medical_detail_id', $medical_detail_id[$i]);
+                $this->db->update('users_medical_hrd', $data);
+            endfor;
+        }
+        
+
+        $data2 = array(
+        'is_app_hrd' => 1,
+        'user_app_hrd' => $user_id, 
+        'date_app_hrd' => $date_now,
+        );
+        
+        $this->form_medical_model->update($id,$data2);
+        $this->approval_mail($id);
+
+        redirect('form_medical/detail/'.$id, 'refresh');
     }
 
     function send_approval_request($id, $user_id)
@@ -307,10 +362,17 @@ class Form_medical extends MX_Controller {
             //redirect them to the login page
             redirect('auth/login', 'refresh');
         }
-
         $user_id = getValue('user_id', 'users_medical', array('id'=>'where/'.$id));
+        $sess_id= $this->session->userdata('user_id');
+        $this->data['sess_nik'] = get_nik($sess_id);
+        $this->data['is_app_hrd'] = getValue('is_app_hrd', 'users_medical', array('id'=>'where/'.$id));
         $this->data['bagian'] = get_user_organization(get_nik($user_id));
         $this->data['detail'] = $this->form_medical_model->form_medical_detail($id)->result_array();
+        $this->data['detail_hrd'] = $this->form_medical_model->form_medical_hrd($id)->result_array();
+        $this->data['total_medical_hrd'] = $this->form_medical_model->get_total_medical_hrd($id);
+        $form_medical = $this->data['form_medical'] = $this->form_medical_model->form_medical($id)->result();
+        $this->data['_num_rows'] = $this->form_medical_model->form_medical($id)->num_rows();
+
         return $this->load->view('form_medical/medical_mail', $this->data, TRUE);
     }
 
@@ -322,14 +384,22 @@ class Form_medical extends MX_Controller {
             redirect('auth/login', 'refresh');
         }
 
+        
+        $form_medical = $this->data['form_medical'] = $this->form_medical_model->form_medical($id)->result();
+
         $user_id = getValue('user_id', 'users_medical', array('id'=>'where/'.$id));
         $this->data['bagian'] = get_user_organization(get_nik($user_id));
         $this->data['detail'] = $this->form_medical_model->form_medical_detail($id)->result_array();
+        $this->data['detail_hrd'] = $this->form_medical_model->form_medical_hrd($id)->result_array();
+        $this->data['total_medical_hrd'] = $this->form_medical_model->get_total_medical_hrd($id);
         $this->data['created_by'] = getValue('user_id', 'users_medical', array('id'=>'where/'.$id));
         $this->data['created_on'] = getValue('created_on', 'users_medical', array('id'=>'where/'.$id));
         $this->data['is_app'] = getValue('is_app_lv1', 'users_medical', array('id'=>'where/'.$id));
         $this->data['user_app'] = getValue('user_app_lv1', 'users_medical', array('id'=>'where/'.$id));
         $this->data['date_app'] = getValue('date_app_lv1', 'users_medical', array('id'=>'where/'.$id));
+        $this->data['is_app_hrd'] = getValue('is_app_hrd', 'users_medical', array('id'=>'where/'.$id));
+        $this->data['user_app_hrd'] = getValue('user_app_hrd', 'users_medical', array('id'=>'where/'.$id));
+        $this->data['date_app_hrd'] = getValue('date_app_hrd', 'users_medical', array('id'=>'where/'.$id));
 
         $this->data['id'] = $id;
         $title = $this->data['title'] = 'REKAPITULASI RAWAT JALAN & INAP - '.$id;
@@ -405,18 +475,11 @@ class Form_medical extends MX_Controller {
                     $this->template->set_layout('default');
                     $this->template->add_js('jquery.sidr.min.js');
                     $this->template->add_js('breakpoints.js');
+                    $this->template->add_js('core.js');
                     $this->template->add_js('select2.min.js');
 
-                    $this->template->add_js('core.js');
-                    $this->template->add_js('purl.js');
+                    $this->template->add_js('form_index.js');
 
-                    $this->template->add_js('main.js');
-                    $this->template->add_js('respond.min.js');
-
-                    $this->template->add_js('jquery.bootstrap.wizard.min.js');
-                    $this->template->add_js('jquery.validate.min.js');
-
-                    
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                     $this->template->add_css('plugins/select2/select2.css');
                     

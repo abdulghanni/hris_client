@@ -80,6 +80,9 @@ $config['tables']['recruitment']  = 'users_recruitment';
 $config['tables']['users_medical']  = 'users_medical';
 $config['tables']['users_resignment']  = 'users_resignment';
 $config['tables']['alasan_resign']  = 'alasan_resign';
+$config['tables']['users_promosi']  = 'users_promosi';
+$config['tables']['users_demolition']  = 'users_demolition';
+$config['tables']['users_exit']  = 'users_exit';
 
 /*
  | Users table column and Group table column you want to join WITH.

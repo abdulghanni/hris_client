@@ -415,7 +415,7 @@
 
 
 
-  <!--approval recruitment Modal Lv1 -->
+<!--approval recruitment Modal Lv1 -->
 <div class="modal fade" id="submitrecruitmentModalLv1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog" id="modaldialog">
     <div class="modal-content">

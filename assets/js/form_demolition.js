@@ -31,42 +31,86 @@ $(document).ready(function() {
         return false;
     });
 
-    var url = $.url();
-    var baseurl = url.attr('protocol')+'://'+url.attr('host')+'/';
-    var demolition_url = baseurl+'hris_client/form_demolition';
-    $('#btn_app').click(function(){
-                  $('#formApp').submit(function(ev){
-                      $.ajax({
-                          type: 'POST',
-                          url: demolition_url+'/do_approve/'+url.segment(4),
-                          data: $('#formApp').serialize(),
-                          success: function() {
-                              setTimeout(function(){
-                                  location.reload()},
-                                  1000
-                              )
-                          }
-                      });
-                      ev.preventDefault(); 
-                  });  
-              });
+    //approval script
 
-    $('#btn_app_update').click(function(){
-                  $('#formUpdateApp').submit(function(ev){
-                      $.ajax({
-                          type: 'POST',
-                          url: demolition_url+'/do_approve/'+url.segment(4),
-                          data: $('#formUpdateApp').serialize(),
-                          success: function() {
-                              setTimeout(function(){
-                                  location.reload()},
-                                  1000
-                              )
-                          }
-                      });
-                      ev.preventDefault(); 
-                  });  
-              });
+    var url = $.url();
+    var baseurl = url.attr('protocol')+'://'+url.attr('host')+'/'+url.segment(1)+'/';
+    var uri1 = url.segment(2)+'/do_approve/'+url.segment(4)+'/lv1';
+    var uri2 = url.segment(2)+'/do_approve/'+url.segment(4)+'/lv2';
+    var uri3 = url.segment(2)+'/do_approve/'+url.segment(4)+'/lv3';
+    var uri4 = url.segment(2)+'/do_approve/'+url.segment(4)+'/hrd';
+    
+    $('button[data-loading-text]').click(function () {
+    $(this).button('loading');
+    });
+
+    $('#btn_app_lv1').click(function(){
+        var $btn = $(this).button('loading');
+        $('#formAppLv1').submit(function(ev){
+            $.ajax({
+                type: 'POST',
+                url: baseurl+uri1,
+                data: $('#formAppLv1').serialize(),
+                success: function() {
+                     $("[data-dismiss=modal]").trigger({ type: "click" });
+                     location.reload(),
+                     $btn.button('reset')
+                }
+            });
+            ev.preventDefault(); 
+        });  
+    });
+
+    $('#btn_app_lv2').click(function(){
+        var $btn = $(this).button('loading');
+        $('#formAppLv2').submit(function(ev){
+            $.ajax({
+                type: 'POST',
+                url: baseurl+uri2,
+                data: $('#formAppLv2').serialize(),
+                success: function() {
+                     $("[data-dismiss=modal]").trigger({ type: "click" });
+                     location.reload(),
+                     $btn.button('reset')
+                }
+            });
+            ev.preventDefault(); 
+        });  
+    });
+
+    $('#btn_app_lv3').click(function(){
+        var $btn = $(this).button('loading');
+        $('#formAppLv3').submit(function(ev){
+            $.ajax({
+                type: 'POST',
+                url: baseurl+uri3,
+                data: $('#formAppLv3').serialize(),
+                success: function() {
+                    $("[data-dismiss=modal]").trigger({ type: "click" });
+                    location.reload(),
+                    $btn.button('reset')
+                }
+            });
+            ev.preventDefault(); 
+        });  
+    });
+
+    $('#btn_app_hrd').click(function(){
+        var $btn = $(this).button('loading');
+        $('#formAppHrd').submit(function(ev){
+            $.ajax({
+                type: 'POST',
+                url: baseurl+uri4,
+                data: $('#formAppHrd').serialize(),
+                success: function() {
+                    $("[data-dismiss=modal]").trigger({ type: "click" });
+                    location.reload(),
+                    $btn.button('reset')
+                }
+            });
+            ev.preventDefault(); 
+        });  
+    });
 
     $("#emp").change(function() {
             var empId = $(this).val();
@@ -77,7 +121,10 @@ $(document).ready(function() {
             get_employee_nik(empId);
             get_employee_bu(empId);
             get_employee_buid(empId);
-            get_employee_sen_date(empId)
+            get_employee_sendate(empId);
+            getAtasan1(empId);
+            getAtasan2(empId);
+            getAtasan3(empId);
         })
         .change();
 
@@ -165,15 +212,51 @@ $(document).ready(function() {
                 });
         }
 
-        function get_employee_sen_date(empId)
+        function get_employee_sendate(empId)
         {
             $.ajax({
                     type: 'POST',
-                    url: 'get_emp_sen_date',
+                    url: 'get_emp_sendate',
                     data: {id : empId},
                     success: function(data) {
-                        $('#seniority_date').val(data);
+                        $('#sen_date').val(data);
                     }
                 });
+        }
+
+        function getAtasan1(empId)
+        {
+         $.ajax({
+                type: 'POST',
+                url: 'get_atasan',
+                data: {id : empId},
+                success: function(data) {
+                    $('#atasan1').html(data);
+                }
+            });
+        }
+
+        function getAtasan2(empId)
+        {
+         $.ajax({
+                type: 'POST',
+                url: 'get_atasan',
+                data: {id : empId},
+                success: function(data) {
+                    $('#atasan2').html(data);
+                }
+            });
+        }
+
+        function getAtasan3(empId)
+        {
+         $.ajax({
+                type: 'POST',
+                url: 'get_atasan',
+                data: {id : empId},
+                success: function(data) {
+                    $('#atasan3').html(data);
+                }
+            });
         }
 }); 

@@ -30,10 +30,10 @@
                                   <th width="10%">NIK</th>
                                   <th width="25%">Nama</th>
                                   <th width="15%">Tanggal Keluar</th>
-                                  <th width="10%" style="text-align:center;">appr. spv</th>
-                                  <th width="10%" style="text-align:center;">appr. ka. bag</th>
-                                  <th width="10%" style="text-align:center;">appr. Atasan Lainnya</th>
-                                  <th width="10%" style="text-align:center;">appr. HRD</th>
+                                  <th width="10%" class="text-center">appr. spv</th>
+                                  <th width="10%" class="text-center">appr. ka. bag</th>
+                                  <th width="10%" class="text-center">appr. Atasan Lainnya</th>
+                                  <th width="10%" class="text-center">appr. HRD</th>
                                   <th width="10%" class="text-center">Cetak</th>
                                 </tr>
                               </thead>
@@ -102,16 +102,16 @@
                                     <td>
                                       <?php echo dateIndo($user->date_resign)?>
                                     </td>
-                                    <td style="text-align:center;">
+                                    <td class="text-center">
                                       <?php echo $txt_app_lv1;?>
                                     </td>
-                                    <td style="text-align:center;">
+                                    <td class="text-center">
                                       <?php echo $txt_app_lv2; ?>
                                     </td>
-                                    <td style="text-align:center;">
+                                    <td class="text-center">
                                       <?php echo $txt_app_lv3; ?>
                                     </td>
-                                    <td style="text-align:center;">
+                                    <td class="text-center">
                                       <?php echo $txt_app_hrd; ?>
                                     </td>
                                     <td class="text-center">

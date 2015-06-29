@@ -1278,12 +1278,12 @@ class Ion_auth_model extends CI_Model
                 $this->tables['users'].'.id as id',
                 $this->tables['users'].'.id as user_id'
             ));
-
-            if($is_admin_bagian==1){
+            if($is_admin_bagian==1)$this->db->where('id != ', 1);
+            /*if($is_admin_bagian==1){
                 for($i=0;$i<sizeof($user)-1;$i++):
                 $this->db->or_like('nik', $user[$i]);
                 endfor;
-            }
+            }*/
         }
 
         //filter by group id(s) if passed

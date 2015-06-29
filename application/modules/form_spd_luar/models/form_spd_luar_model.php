@@ -295,31 +295,32 @@ class Form_spd_luar_model extends CI_Model
         }
         else
         {
-            $sess_nik = (!empty(get_nik($this->session->userdata('user_id'))))?get_nik($this->session->userdata('user_id')):$this->session->userdata('user_id');
-            
+            $sess_id = $this->session->userdata('user_id');
+            $sess_nik = get_nik($sess_id);
+            $is_admin = is_admin();
+            if(!empty(is_have_subordinate(get_nik($sess_id)))){
+            $sub_id = get_subordinate($sess_id);
+            }else{
+                $sub_id = '';
+            }
+
+            if(!empty(is_have_subsubordinate($sess_id))){
+            $subsub_id = 'OR '.get_subsubordinate($sess_id);
+            }else{
+                $subsub_id = '';
+            }
+
             //default selects
             $this->db->select(array(
                 $this->tables['users_spd_luar'].'.*',
                 $this->tables['users_spd_luar'].'.id as id',
                 $this->tables['users_spd_luar'].'.id as form_spd_luar_id',
             
-                $this->tables['users'].'.username as receiver',
-                'creator.username as creator',
-                $this->tables['users_employement'].'.position_id as position_id',
-                $this->tables['users_employement'].'.organization_id as organization_id',
-                $this->tables['users_employement'].'.seniority_date as seniority_date',
-                $this->tables['position'].'.title as position_nm',
-                $this->tables['organization'].'.title as organization_title',
                 $this->tables['transportation'].'.title as transportation_nm',
                 'city_to.title as city_to',
                 'city_from.title as city_from',
             ));
 
-            $this->db->join('users', 'users_spd_luar.task_receiver = users.nik', 'left');
-            $this->db->join('users as creator', 'users_spd_luar.task_creator = creator.nik', 'left');
-            $this->db->join('users_employement', 'users.id = users_employement.user_id', 'left');
-            $this->db->join('organization', 'users_employement.organization_id = organization.id', 'left');
-            $this->db->join('position', 'users_employement.position_id = position.id', 'left');
             $this->db->join('transportation', 'users_spd_luar.transportation_id = transportation.id');
             $this->db->join('city as city_to','users_spd_luar.to_city_id = city_to.id');
             $this->db->join('city as city_from','users_spd_luar.from_city_id = city_from.id');
@@ -327,8 +328,10 @@ class Form_spd_luar_model extends CI_Model
              if($id != null){
                 $this->db->where('users_spd_luar.id', $id);
             }
-            $this->db->where('users_spd_luar.task_receiver', $sess_nik);
-            $this->db->or_where('users_spd_luar.task_creator', $sess_nik);;
+
+            if($is_admin!=1){
+            $this->db->where("(users_spd_dalam.task_receiver = '$sess_nik' OR users_spd_dalam.task_creator = '$sess_nik' )",null, false);
+            }
             $this->db->where('users_spd_luar.is_deleted', 0);
             $this->db->order_by('users_spd_luar.id', 'desc');
         }
@@ -384,110 +387,6 @@ class Form_spd_luar_model extends CI_Model
 
         return $this;
     }
-
-
-    public function form_spd_luar_admin($id = null)
-    {
-        $this->trigger_events('form_spd_luar');
-
-        if (isset($this->_ion_select) && !empty($this->_ion_select))
-        {
-            foreach ($this->_ion_select as $select)
-            {
-                $this->db->select($select);
-            }
-
-            $this->_ion_select = array();
-        }
-        else
-        {
-            //default selects
-            $this->db->select(array(
-                $this->tables['users_spd_luar'].'.*',
-                $this->tables['users_spd_luar'].'.id as id',
-                $this->tables['users_spd_luar'].'.id as form_spd_luar_id',
-            
-                $this->tables['users'].'.username as receiver',
-                'creator.username as creator',
-                $this->tables['users_employement'].'.position_id as position_id',
-                $this->tables['users_employement'].'.organization_id as organization_id',
-                $this->tables['users_employement'].'.seniority_date as seniority_date',
-                $this->tables['position'].'.title as position_nm',
-                $this->tables['organization'].'.title as organization_title',
-                $this->tables['transportation'].'.title as transportation_nm',
-                'city_to.title as city_to',
-                'city_from.title as city_from',
-            ));
-
-            $this->db->join('users', 'users_spd_luar.task_receiver = users.nik', 'left');
-            $this->db->join('users as creator', 'users_spd_luar.task_creator = creator.nik', 'left');
-            $this->db->join('users_employement', 'users.id = users_employement.user_id', 'left');
-            $this->db->join('organization', 'users_employement.organization_id = organization.id', 'left');
-            $this->db->join('position', 'users_employement.position_id = position.id', 'left');
-            $this->db->join('transportation', 'users_spd_luar.transportation_id = transportation.id');
-            $this->db->join('city as city_to','users_spd_luar.to_city_id = city_to.id');
-            $this->db->join('city as city_from','users_spd_luar.from_city_id = city_from.id');
-
-             if($id != null){
-                $this->db->where('users_spd_luar.id', $id);
-            }
-            $this->db->where('users_spd_luar.is_deleted', 0);
-            $this->db->order_by('users_spd_luar.id', 'desc');
-
-        }
-
-        $this->trigger_events('extra_where');
-
-        //run each where that was passed
-
-        if (isset($this->_ion_where) && !empty($this->_ion_where))
-        {
-            foreach ($this->_ion_where as $where)
-            {
-                $this->db->where($where);
-            }
-
-            $this->_ion_where = array();
-        }
-
-        if (isset($this->_ion_like) && !empty($this->_ion_like))
-        {
-            foreach ($this->_ion_like as $like)
-            {
-                $this->db->or_like($like);
-            }
-
-            $this->_ion_like = array();
-        }
-
-        if (isset($this->_ion_limit) && isset($this->_ion_offset))
-        {
-            $this->db->limit($this->_ion_limit, $this->_ion_offset);
-
-            $this->_ion_limit  = NULL;
-            $this->_ion_offset = NULL;
-        }
-        else if (isset($this->_ion_limit))
-        {
-            $this->db->limit($this->_ion_limit);
-
-            $this->_ion_limit  = NULL;
-        }
-
-        //set the order
-        if (isset($this->_ion_order_by) && isset($this->_ion_order))
-        {
-            $this->db->order_by($this->_ion_order_by, $this->_ion_order);
-
-            $this->_ion_order    = NULL;
-            $this->_ion_order_by = NULL;
-        }
-
-        $this->response = $this->db->get($this->tables['users_spd_luar']);
-
-        return $this;
-    }
-
 
     public function form_spd_luar_report()
     {
@@ -1038,154 +937,6 @@ class Form_spd_luar_model extends CI_Model
         }
 
         $this->response = $this->db->get($this->tables['users']);
-
-        return $this;
-    }
-
-    public function get_transportation()
-    {
-        $this->trigger_events('form_spd_luar_input');
-
-        if (isset($this->_ion_select) && !empty($this->_ion_select))
-        {
-            foreach ($this->_ion_select as $select)
-            {
-                $this->db->select($select);
-            }
-
-            $this->_ion_select = array();
-        }
-        else
-        {
-            //default selects
-            $this->db->select(array(
-                $this->tables['transportation'].'.*'
-            
-            ));
-        }
-
-        $this->trigger_events('extra_where');
-
-        //run each where that was passed
-
-        if (isset($this->_ion_where) && !empty($this->_ion_where))
-        {
-            foreach ($this->_ion_where as $where)
-            {
-                $this->db->where($where);
-            }
-
-            $this->_ion_where = array();
-        }
-
-        if (isset($this->_ion_like) && !empty($this->_ion_like))
-        {
-            foreach ($this->_ion_like as $like)
-            {
-                $this->db->or_like($like);
-            }
-
-            $this->_ion_like = array();
-        }
-
-        if (isset($this->_ion_limit) && isset($this->_ion_offset))
-        {
-            $this->db->limit($this->_ion_limit, $this->_ion_offset);
-
-            $this->_ion_limit  = NULL;
-            $this->_ion_offset = NULL;
-        }
-        else if (isset($this->_ion_limit))
-        {
-            $this->db->limit($this->_ion_limit);
-
-            $this->_ion_limit  = NULL;
-        }
-
-        //set the order
-        if (isset($this->_ion_order_by) && isset($this->_ion_order))
-        {
-            $this->db->order_by($this->_ion_order_by, $this->_ion_order);
-
-            $this->_ion_order    = NULL;
-            $this->_ion_order_by = NULL;
-        }
-
-        $this->response = $this->db->get($this->tables['transportation']);
-
-        return $this;
-    }
-
-    public function get_city()
-    {
-        $this->trigger_events('form_spd_luar_input');
-
-        if (isset($this->_ion_select) && !empty($this->_ion_select))
-        {
-            foreach ($this->_ion_select as $select)
-            {
-                $this->db->select($select);
-            }
-
-            $this->_ion_select = array();
-        }
-        else
-        {
-            //default selects
-            $this->db->select(array(
-                $this->tables['city'].'.*'
-            
-            ));
-        }
-
-        $this->trigger_events('extra_where');
-
-        //run each where that was passed
-
-        if (isset($this->_ion_where) && !empty($this->_ion_where))
-        {
-            foreach ($this->_ion_where as $where)
-            {
-                $this->db->where($where);
-            }
-
-            $this->_ion_where = array();
-        }
-
-        if (isset($this->_ion_like) && !empty($this->_ion_like))
-        {
-            foreach ($this->_ion_like as $like)
-            {
-                $this->db->or_like($like);
-            }
-
-            $this->_ion_like = array();
-        }
-
-        if (isset($this->_ion_limit) && isset($this->_ion_offset))
-        {
-            $this->db->limit($this->_ion_limit, $this->_ion_offset);
-
-            $this->_ion_limit  = NULL;
-            $this->_ion_offset = NULL;
-        }
-        else if (isset($this->_ion_limit))
-        {
-            $this->db->limit($this->_ion_limit);
-
-            $this->_ion_limit  = NULL;
-        }
-
-        //set the order
-        if (isset($this->_ion_order_by) && isset($this->_ion_order))
-        {
-            $this->db->order_by($this->_ion_order_by, $this->_ion_order);
-
-            $this->_ion_order    = NULL;
-            $this->_ion_order_by = NULL;
-        }
-
-        $this->response = $this->db->get($this->tables['city']);
 
         return $this;
     }

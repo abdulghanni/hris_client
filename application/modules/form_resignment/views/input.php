@@ -247,7 +247,6 @@
   <!-- END PAGE -->
 
   <script type="text/javascript">
-
     function getDropDown()
     {
       getAtasan1();

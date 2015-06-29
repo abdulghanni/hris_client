@@ -95,6 +95,7 @@ class Form_recruitment extends MX_Controller {
         $this->data['jenis_kelamin'] = getAll('jenis_kelamin', array('is_deleted' => 'where/0'));
         $this->data['pendidikan'] = getAll('recruitment_pendidikan', array('is_deleted' => 'where/0'));
         $this->data['komputer'] = getAll('recruitment_komputer', array('is_deleted' => 'where/0'));
+        $this->data['brevet'] = getAll('recruitment_brevet', array('is_deleted' => 'where/0'));
         $this->data['sess_id'] = $this->session->userdata('user_id');
         $this->data['all_users'] = getAll('users', array('active'=>'where/1', 'username'=>'order/asc'), array('!=id'=>'1'));
         $this->get_bu();
@@ -187,7 +188,7 @@ class Form_recruitment extends MX_Controller {
                         'komunikasi' => $this->input->post('komunikasi'),
                         'grafika' => $this->input->post('grafika'),
                         'desain' => $this->input->post('desain'),
-                        'brevet' => $this->input->post('brevet'),
+                        'brevet_id' => $this->input->post('brevet'),
                         'lain_lain' => $this->input->post('lain-lain'),
                         'portofolio' => $this->input->post('portofolio'),
                         'pengalaman' => $this->input->post('pengalaman'),
@@ -604,18 +605,11 @@ class Form_recruitment extends MX_Controller {
 
                     $this->template->add_js('jquery.sidr.min.js');
                     $this->template->add_js('breakpoints.js');
+                    $this->template->add_js('core.js');
                     $this->template->add_js('select2.min.js');
 
-                    $this->template->add_js('core.js');
-                    $this->template->add_js('purl.js');
+                    $this->template->add_js('form_index.js');
 
-                    $this->template->add_js('respond.min.js');
-
-                    $this->template->add_js('jquery.bootstrap.wizard.min.js');
-                    $this->template->add_js('jquery.validate.min.js');
-                    $this->template->add_js('form_recruitment.js');
-
-                    
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                     $this->template->add_css('plugins/select2/select2.css');
                     
@@ -645,35 +639,7 @@ class Form_recruitment extends MX_Controller {
                     $this->template->add_css('datepicker.css');
                     $this->template->add_css('approval_img.css');
                      
-                }elseif(in_array($view, array('form_recruitment/approval')))
-                {
-                    $this->template->set_layout('default');
-
-                    $this->template->add_js('jquery.min.js');
-                    $this->template->add_js('bootstrap.min.js');
-
-                    $this->template->add_js('jquery-ui-1.10.1.custom.min.js');
-                    $this->template->add_js('jquery.sidr.min.js');
-                    $this->template->add_js('breakpoints.js');
-                    $this->template->add_js('select2.min.js');
-
-                    $this->template->add_js('core.js');
-                    $this->template->add_js('purl.js');
-
-                    $this->template->add_js('main.js');
-                    $this->template->add_js('respond.min.js');
-
-                    $this->template->add_js('jquery.bootstrap.wizard.min.js');
-                    $this->template->add_js('jquery.validate.min.js');
-                    $this->template->add_js('form_recruitment.js');
-
-                    
-                    $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
-                    $this->template->add_css('plugins/select2/select2.css');
-                    $this->template->add_css('approval_img.css');
-                    
                 }
-
 
             if ( ! empty($data['title']))
             {

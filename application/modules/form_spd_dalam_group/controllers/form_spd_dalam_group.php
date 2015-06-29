@@ -30,8 +30,7 @@ class Form_spd_dalam_group extends MX_Controller {
         }
         else
         {
-            $this->data['sess_id'] = $this->session->userdata('user_id');
-            //set the flash data error message if there is one
+            $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
             $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
 
             //set sort order
@@ -56,9 +55,28 @@ class Form_spd_dalam_group extends MX_Controller {
             
             $this->data['num_rows_all'] = $this->form_spd_dalam_group_model->like($ftitle_post)->where('users_spd_dalam_group.is_deleted',0)->form_spd_dalam_group()->num_rows();
 
-            //list of filterize limit form_spd_dalam_group for pagination 
-            $this->data['form_spd_dalam_group'] = $this->form_spd_dalam_group_model->like($ftitle_post)->where('users_spd_dalam_group.is_deleted',0)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->form_spd_dalam_group()->result();
+            $form_spd_dalam_group = $this->data['form_spd_dalam_group'] = $this->form_spd_dalam_group_model->like($ftitle_post)->where('users_spd_dalam_group.is_deleted',0)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->form_spd_dalam_group()->result();
             $this->data['_num_rows'] = $this->form_spd_dalam_group_model->like($ftitle_post)->where('users_spd_dalam_group.is_deleted',0)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->form_spd_dalam_group()->num_rows();
+            
+
+             //config pagination
+             $config['base_url'] = base_url().'form_spd_dalam_group/index/fn:'.$exp_ftitle[1].'/'.$sort_by.'/'.$sort_order.'/';
+             $config['total_rows'] = $this->data['num_rows_all'];
+             $config['per_page'] = $limit;
+             $config['uri_segment'] = 6;
+
+            //inisialisasi config
+             $this->pagination->initialize($config);
+
+            //create pagination
+            $this->data['halaman'] = $this->pagination->create_links();
+
+            $this->data['ftitle_search'] = array(
+                'name'  => 'title',
+                'id'    => 'title',
+                'type'  => 'text',
+                'value' => $this->form_validation->set_value('title'),
+            );
             
             $this->_render_page('form_spd_dalam_group/index', $this->data);
         }
@@ -777,16 +795,15 @@ class Form_spd_dalam_group extends MX_Controller {
                 {
                     $this->template->set_layout('default');
 
-                    $this->template->add_js('jquery.min.js');
-                    $this->template->add_js('bootstrap.min.js');
-                    
-                    
-                    $this->template->add_js('core.js');
-                    $this->template->add_js('jquery-ui-1.10.1.custom.min.js');
                     $this->template->add_js('jquery.sidr.min.js');
+                    $this->template->add_js('breakpoints.js');
+                    $this->template->add_js('core.js');
+                    $this->template->add_js('select2.min.js');
 
-                    
+                    $this->template->add_js('form_index.js');
+
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
+                    $this->template->add_css('plugins/select2/select2.css');
                     
                 }
                 elseif(in_array($view, array('form_spd_dalam_group/input',
@@ -798,9 +815,6 @@ class Form_spd_dalam_group extends MX_Controller {
 
                     $this->template->set_layout('default');
 
-                    $this->template->add_js('jquery.min.js');
-                    $this->template->add_js('bootstrap.min.js');
-
                     $this->template->add_js('jquery-ui-1.10.1.custom.min.js');
                     $this->template->add_js('jquery.sidr.min.js');
                     $this->template->add_js('breakpoints.js');
@@ -809,7 +823,6 @@ class Form_spd_dalam_group extends MX_Controller {
                     $this->template->add_js('core.js');
                     $this->template->add_js('purl.js');
 
-                    $this->template->add_js('main.js');
                     $this->template->add_js('respond.min.js');
 
                     $this->template->add_js('jquery.bootstrap.wizard.min.js');

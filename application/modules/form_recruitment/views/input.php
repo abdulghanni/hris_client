@@ -227,7 +227,13 @@
                         <label class="form-label text-right">Brevet</label>
                       </div>
                       <div class="col-md-10">
-                        <input name="brevet" id="form3LastName" type="text"  class="form-control" placeholder="brevet" value="">
+                        <select name="brevet" id="brevet" class="form-custom select2" style="width:100%">
+                          <?php if($brevet->num_rows()>0){?>
+                          <option value="0">- Pilih Brevet</option>
+                          <?php foreach($brevet->result() as $row):?>
+                          <option value="<?php echo $row->id?>"><?php echo $row->title?></option>
+                        <?php endforeach;}?>
+                        </select>
                       </div>
                     </div>
                     <div class="row form-row">
