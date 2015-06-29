@@ -16,6 +16,101 @@
 		}
 	}
 
+	if (!function_exists('is_admin_bagian'))
+	{	
+		function is_admin_bagian()
+		{
+			$CI =& get_instance();
+			
+			if($CI->ion_auth->is_admin_bagian())
+			{
+				return TRUE;
+			}else{
+				return FALSE;
+			}
+		}
+	}
+
+	//TO CHECK IS USER ADMIN IN ION AUTH LIBRARY
+	if (!function_exists('is_admin_hrd'))
+	{	
+		function is_admin_hrd()
+		{
+			$CI =& get_instance();
+			
+			if($CI->ion_auth->is_admin_hrd())
+			{
+				return TRUE;
+			}else{
+				return FALSE;
+			}
+		}
+	}
+
+	//TO CHECK IS USER ADMIN IN ION AUTH LIBRARY
+	if (!function_exists('is_admin_it'))
+	{	
+		function is_admin_it()
+		{
+			$CI =& get_instance();
+			
+			if($CI->ion_auth->is_admin_it())
+			{
+				return TRUE;
+			}else{
+				return FALSE;
+			}
+		}
+	}
+
+	//TO CHECK IS USER ADMIN IN ION AUTH LIBRARY
+	if (!function_exists('is_admin_logistik'))
+	{	
+		function is_admin_logistik()
+		{
+			$CI =& get_instance();
+			
+			if($CI->ion_auth->is_admin_logistik())
+			{
+				return TRUE;
+			}else{
+				return FALSE;
+			}
+		}
+	}
+
+	//TO CHECK IS USER ADMIN IN ION AUTH LIBRARY
+	if (!function_exists('is_admin_koperasi'))
+	{	
+		function is_admin_koperasi()
+		{
+			$CI =& get_instance();
+			
+			if($CI->ion_auth->is_admin_koperasi())
+			{
+				return TRUE;
+			}else{
+				return FALSE;
+			}
+		}
+	}
+
+	//TO CHECK IS USER ADMIN IN ION AUTH LIBRARY
+	if (!function_exists('is_admin_perpus'))
+	{	
+		function is_admin_perpus()
+		{
+			$CI =& get_instance();
+			
+			if($CI->ion_auth->is_admin_perpustakaan())
+			{
+				return TRUE;
+			}else{
+				return FALSE;
+			}
+		}
+	}
+
 	//TO CHECK IS USER HAVE AUTHORIZATION TO SEE FORM CUTI LIST
 	if (!function_exists('is_authorized'))
 	{	

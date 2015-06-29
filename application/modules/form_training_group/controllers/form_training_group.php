@@ -101,6 +101,8 @@ class form_training_group extends MX_Controller {
             $this->data['training_type'] = GetAll('training_type', array('is_deleted' => 'where/0'));
             $this->data['penyelenggara'] = GetAll('penyelenggara', array('is_deleted' => 'where/0'));
             $this->data['pembiayaan'] = GetAll('pembiayaan', array('is_deleted' => 'where/0'));
+            $this->data['ikatan'] = GetAll('training_ikatan_dinas', array('is_deleted' => 'where/0'));
+            $this->data['waktu'] = GetAll('training_waktu', array('is_deleted' => 'where/0'));
             $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
 
             $this->_render_page('form_training_group/detail', $this->data);
@@ -221,6 +223,8 @@ class form_training_group extends MX_Controller {
         'training_type_id' => $this->input->post('training_type'),
         'penyelenggara_id' => $this->input->post('penyelenggara'),
         'pembiayaan_id' => $this->input->post('pembiayaan'),
+        'ikatan_dinas_id' => $this->input->post('ikatan'),
+        'waktu_id' => $this->input->post('waktu'),
         'besar_biaya' => $this->input->post('besar_biaya'),
         'tempat' => $this->input->post('tempat'),
         'narasumber' => $this->input->post('narasumber'),
@@ -512,15 +516,11 @@ class form_training_group extends MX_Controller {
 
                     $this->template->add_js('jquery.sidr.min.js');
                     $this->template->add_js('breakpoints.js');
+                    $this->template->add_js('core.js');
                     $this->template->add_js('select2.min.js');
 
-                    $this->template->add_js('core.js');
+                    $this->template->add_js('form_index.js');
 
-                    $this->template->add_js('respond.min.js');
-
-                    $this->template->add_js('main.js');
-
-                    
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                     $this->template->add_css('plugins/select2/select2.css');
                     

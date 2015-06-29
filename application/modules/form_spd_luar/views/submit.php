@@ -22,71 +22,67 @@
                 <div class="row column-seperation">
                   <div class="col-md-5">
                     <h4>Yang Memberi Tugas</h4>   
-                    <?php
-                    if ($tc_num_rows > 0) {
-                    foreach ($task_creator as $tc) :?>  
-                    <div class="row form-row">
-                      <div class="col-md-3">
-                        <label class="form-label text-right">Nama</label>
-                      </div>
-                      <div class="col-md-9">
-                        <input name="name" id="name" type="text"  class="form-control" placeholder="Nama" value="<?php echo $tc->user_name?>" disabled="disabled">
-                      </div>
-                    </div>
-                    <div class="row form-row">
-                      <div class="col-md-3">
-                        <label class="form-label text-right">Dept/Bagian</label>
-                      </div>
-                      <div class="col-md-9">
-                        <input name="org" id="org" type="text"  class="form-control" placeholder="Nama" value="<?php echo (!empty($user_info))?$user_info['ORGANIZATION']:'-';?>" disabled="disabled">
-                      </div>
-                    </div>
-                    <div class="row form-row">
-                      <div class="col-md-3">
-                        <label class="form-label text-right">Jabatan</label>
-                      </div>
-                      <div class="col-md-9">
-                        <input name="position" id="position" type="text"  class="form-control" placeholder="Nama" value="<?php echo (!empty($user_info))?$user_info['POSITION']:'-';?>" disabled="disabled">
-                      </div>
-                    </div>
-                    <?php endforeach; 
-                    }
-                    ?> 
-                  </div>
-                  <div class="col-md-7">
-                    <h4>Memberi tugas / Ijin Kepada</h4>
-                        <div class="row form-row">
-                      <div class="col-md-3">
-                        <label class="form-label text-right">Nama</label>
-                      </div>
-                      <div class="col-md-9">
-                        <input name="name" id="name" type="text"  class="form-control" placeholder="Nama" value="<?php echo $task_receiver_nm ?>" disabled="disabled">  
-                      </div>
-                    </div>
-                    <div class="row form-row">
-                      <div class="col-md-3">
-                        <label class="form-label text-right">Dept/Bagian</label>
-                      </div>
-                      <div class="col-md-9">
-                        <input name="dept" id="dept" type="text"  class="form-control" placeholder="Dept/Bagian" value="<?php echo $task_receiver_org ?>" disabled="disabled">
-                      </div>
-                    </div>
-                    <div class="row form-row">
-                      <div class="col-md-3">
-                        <label class="form-label text-right">Jabatan</label>
-                      </div>
-                      <div class="col-md-9">
-                        <input name="dept" id="dept" type="text"  class="form-control" placeholder="Jabatan" value="<?php echo $task_receiver_pos ?>" disabled="disabled">
-                      </div>
-                    </div>
-                        <?php if ($td_num_rows > 0) {
+                    <?php if ($td_num_rows > 0) {
                       foreach ($task_detail as $td) { 
                         $a = strtotime($td->date_spd_end);
                         $b = strtotime($td->date_spd_start);
 
                         $j = $a - $b;
                         $jml_pjd = floor($j/(60*60*24)+1);
-                        ?>
+                        ?> 
+                    <div class="row form-row">
+                      <div class="col-md-3">
+                        <label class="form-label text-right">Nama</label>
+                      </div>
+                      <div class="col-md-9">
+                        <input name="name" id="name" type="text"  class="form-control" placeholder="Nama" value="<?php echo get_name($td->task_creator) ?>" disabled="disabled">
+                      </div>
+                    </div>
+                    <div class="row form-row">
+                      <div class="col-md-3">
+                        <label class="form-label text-right">Dept/Bagian</label>
+                      </div>
+                      <div class="col-md-9">
+                        <input name="org" id="org" type="text"  class="form-control" placeholder="Nama" value="<?php echo get_user_organization($td->task_creator)?>" disabled="disabled">
+                      </div>
+                    </div>
+                    <div class="row form-row">
+                      <div class="col-md-3">
+                        <label class="form-label text-right">Jabatan</label>
+                      </div>
+                      <div class="col-md-9">
+                        <input name="position" id="position" type="text"  class="form-control" placeholder="Nama" value="<?php echo get_user_position($td->task_creator)?>" disabled="disabled">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-7">
+                    <h4>Memberi tugas / Ijin Kepada</h4>
+                    
+                    <div class="row form-row">
+                      <div class="col-md-3">
+                        <label class="form-label text-right">Nama</label>
+                      </div>
+                      <div class="col-md-9">
+                        <input name="name" id="name" type="text"  class="form-control" placeholder="Nama" value="<?php echo get_name($td->task_receiver)?>" disabled="disabled">  
+                      </div>
+                    </div>
+                    <div class="row form-row">
+                      <div class="col-md-3">
+                        <label class="form-label text-right">Dept/Bagian</label>
+                      </div>
+                      <div class="col-md-9">
+                        <input name="dept" id="dept" type="text"  class="form-control" placeholder="Dept/Bagian" value="<?php echo get_user_organization($td->task_receiver)?>" disabled="disabled">
+                      </div>
+                    </div>
+                    <div class="row form-row">
+                      <div class="col-md-3">
+                        <label class="form-label text-right">Jabatan</label>
+                      </div>
+                      <div class="col-md-9">
+                        <input name="dept" id="dept" type="text"  class="form-control" placeholder="Jabatan" value="<?php echo get_user_organization($td->task_receiver)?>" disabled="disabled">
+                      </div>
+                    </div>
+                        
                     <div class="row form-row">
                       <div class="col-md-3">
                         <label class="form-label text-right">Tujuan</label>
@@ -181,7 +177,7 @@
                             <p class="">...............................</p>
                           <?php }else{ ?>
                           <p class="wf-submit">
-                            <span class="semi-bold"><?php echo $task_receiver_nm ?></span><br/>
+                            <span class="semi-bold"><?php echo get_name($td->task_receiver) ?></span><br/>
                             <span class="small"><?php echo dateIndo($td->date_submit) ?></span><br/>
                           </p>
                           <?php } ?>
@@ -189,7 +185,7 @@
                         <div class="col-md-6">
                           <p>Yang memberi tugas / ijin</p>
                           <p class="wf-approve-sp">
-                            <span class="semi-bold"><?php echo $task_creator_nm ?></span><br/>
+                            <span class="semi-bold"><?php echo get_name($td->task_creator) ?></span><br/>
                             <span class="small"><?php echo dateIndo($td->created_on) ?></span><br/>
                           </p>
                           <?php  }

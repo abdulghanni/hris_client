@@ -17,3 +17,13 @@
     z-index:-1;
 }
 
+
+@media screen and (min-width: 768px){
+	#submitMedicalModalHrd .modal-dialog{
+		width: 900px;
+	}
+}
+
+#submitMedicalModalHrd .modal-dialog{
+		width: 75%;
+	}

@@ -317,6 +317,8 @@ class Form_training_group_model extends CI_Model
                 $this->tables['penyelenggara'].'.title as penyelenggara',
                 $this->tables['pembiayaan'].'.title as pembiayaan',
                 $this->tables['training_type'].'.title as training_type',
+                'training_ikatan_dinas.title as ikatan',
+                'training_waktu.title as waktu',
                 'status_lv1.title as approval_status_lv1',
                 'status_lv2.title as approval_status_lv2',
                 'status_lv3.title as approval_status_lv3',
@@ -326,6 +328,8 @@ class Form_training_group_model extends CI_Model
             $this->db->join('penyelenggara', 'users_training_group.penyelenggara_id = penyelenggara.id', 'LEFT');
             $this->db->join('pembiayaan', 'users_training_group.pembiayaan_id = pembiayaan.id', 'LEFT');
             $this->db->join('training_type', 'users_training_group.training_type_id = training_type.id', 'LEFT');
+            $this->db->join('training_ikatan_dinas', 'users_training_group.ikatan_dinas_id = training_ikatan_dinas.id', 'LEFT');
+            $this->db->join('training_waktu', 'users_training_group.waktu_id = training_waktu.id', 'LEFT');
             $this->db->join('approval_status as status_lv1', 'users_training_group.approval_status_id_lv1 = status_lv1.id', 'left');
             $this->db->join('approval_status as status_lv2', 'users_training_group.approval_status_id_lv2 = status_lv2.id', 'left');
             $this->db->join('approval_status as status_lv3', 'users_training_group.approval_status_id_lv3 = status_lv3.id', 'left');

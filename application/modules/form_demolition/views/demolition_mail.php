@@ -3,8 +3,8 @@
                   <div class="row column-seperation">
                     <div class="col-md-5">
                       <h4>Informasi karyawan</h4>
-                      <?php if($form_demolition->num_rows()>0){
-                        foreach($form_demolition->result() as $row):?>
+                      <?php if($_num_rows>0){
+                        foreach($form_demolition as $row):?>
                       <div class="row form-row">
                         <div class="col-md-3">
                           <label class="form-label text-right">NIK</label>

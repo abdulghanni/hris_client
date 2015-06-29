@@ -17,31 +17,29 @@
         <div class="col-md-12">
           <div class="grid simple">
             <div class="grid-title no-border">
-              <h4>Form Perjalanan Dinas <span class="semi-bold">Luar Kota</span></h4>
+              <h4>Form Perjalanan Dinas <span class="semi-bold"><a href="<?php echo site_url('form_spd_dalam')?>">Luar Kota</a></span></h4>
             </div>
             <div class="grid-body no-border">
               <form class="form-no-horizontal-spacing" id="add_spd_luar" action="<?php echo site_url() ?>form_spd_luar/add" method="post"> 
                 <div class="row column-seperation">
                   <div class="col-md-5">
-                    <h4>Yang Memberi Tugas</h4>
-                    <?php if ($tc_num_rows > 0) {
-                      foreach ($task_creator as $tc) : ?>  
+                    <h4>Yang Memberi Tugas</h4> 
                     <div class="row form-row">
                       <div class="col-md-3">
                         <label class="form-label text-right">Nama</label>
                       </div>
                       <div class="col-md-9">
-                        <?php if(is_admin()){?>
-                      <select id="emp_tc" class="select2" style="width:100%" name="emp_tc" onChange="getTr()">
-                        <?php
-                        foreach ($all_users as $up) {?>
-                          <option value="<?php echo (!empty(get_nik($up->id))) ? get_nik($up->id) : $up->id ?>"><?php echo $up->user_name; ?></option>
-                        <?php } ?>
-                      </select>
-                      <?php }else{ ?>
-                        <select id="emp_tc" style="width:100%" name="emp_tc">
-                          <option value="<?php echo (!empty(get_nik($tc->user_id))) ? get_nik($tc->user_id) : $tc->user_id ?>"><?php echo $tc->user_name; ?></option>
-                      </select>
+                      <?php if(is_admin()){?>
+                        <select id="emp_tc" class="select2" style="width:100%" name="emp_tc">
+                          <?php
+                          foreach ($all_users->result() as $u) :
+                            $selected = $u->id == $sess_id ? 'selected = selected' : '';?>
+                            <option value="<?php echo get_nik($u->id)?>" <?php echo $selected?>><?php echo $u->username; ?></option>
+                          <?php endforeach; ?>
+                        </select>
+                      <?php }else{?>
+                        <input type="text" class="form-control" value="<?php echo get_name($sess_nik)?>" disabled>
+                        <input type="hidden" name="emp_tc" value="<?php echo $sess_nik?>">
                       <?php } ?>
                       </div>
                     </div>
@@ -50,7 +48,7 @@
                         <label class="form-label text-right">Dept/Bagian</label>
                       </div>
                       <div class="col-md-9">
-                        <input name="org_tc" id="org_tc" type="text"  class="form-control" placeholder="Dept/Bagian" value="<?php echo get_user_organization($sess_nik);?>" disabled="disabled">
+                        <input name="org_tc" id="org_tc" type="text"  class="form-control" placeholder="Nama" value="<?php echo get_user_organization($sess_nik);?>" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
@@ -58,11 +56,9 @@
                         <label class="form-label text-right">Jabatan</label>
                       </div>
                       <div class="col-md-9">
-                        <input name="pos_tc" id="pos_tc" type="text"  class="form-control" placeholder="Jabatan" value="<?php echo get_user_position($sess_nik);?>" disabled="disabled">
+                        <input name="pos_tc" id="pos_tc" type="text"  class="form-control" placeholder="Nama" value="<?php echo get_user_position($sess_nik);?>" disabled="disabled">
                       </div>
-                    </div>
-                    <?php  endforeach;
-                    } ?>   
+                    </div> 
                     
                   </div>
                   <div class="col-md-7">
@@ -78,15 +74,9 @@
                             echo form_dropdown('employee',array('Pilih User'=>'- Pilih User -'),'',$style_tr);
                         }else{?>
                         <select id="employee_sel" class="select2" style="width:100%" name="employee" >
-                          <?php if (!empty($task_receiver))  {
-                            foreach ($task_receiver as $key => $up) { ?>
-                              <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
-                            <?php }
-                          }else{
-                            foreach ($task_receiver_2 as $up) { ?>
-                              <option value="<?php echo (!empty(get_nik($up->id))) ? get_nik($up->id) : $up->id ?>"><?php echo $up->first_name.' '.$up->last_name; ?></option>
-                            <?php }
-                            }} ?>
+                          <?php foreach ($user_atasan as $key => $up) : ?>
+                            <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
+                          <?php endforeach;}?>
                         </select>
                       </div>
                     </div>

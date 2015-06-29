@@ -2,9 +2,9 @@
 $(document).ready(function() {
 			var selectedItems=0;
 			var url = $.url();
-			var baseurl = url.attr('protocol')+'://'+url.attr('host')+'/';
-			var email_url = baseurl+'hris_client/email/';
-			var email_sent_url = baseurl+'hris_client/email/sent';
+    		var baseurl = url.attr('protocol')+'://'+url.attr('host')+'/'+url.segment(1)+'/';
+			var email_url = baseurl+'email/';
+			var email_sent_url = baseurl+'email/sent';
 			//Table Row Click Event
 			$('.clickable').click( function() {
 				$('#inbox-wrapper').addClass('animated fadeOut');

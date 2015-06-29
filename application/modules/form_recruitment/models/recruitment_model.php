@@ -319,7 +319,7 @@ class Recruitment_model extends CI_Model
             'kualifikasi'.'.*', 'kemampuan'.'.*',
             'status.title as status', 'urgensi.title as urgensi',
             'jurusan.title as jurusan', 'ipk.title as ipk','toefl.title as toefl',
-
+            'brevet.title as brevet'
             ));
             
             
@@ -329,6 +329,7 @@ class Recruitment_model extends CI_Model
             $this->db->join('recruitment_status as status', 'users_recruitment.status_id = status.id', 'left');
             $this->db->join('recruitment_urgensi as urgensi', 'users_recruitment.urgensi_id = urgensi.id', 'left');
             $this->db->join('recruitment_jurusan as jurusan', 'kualifikasi.jurusan = jurusan.id', 'left');
+            $this->db->join('recruitment_brevet as brevet', 'kemampuan.brevet_id = brevet.id', 'left');
             $this->db->join('ipk as ipk', 'kualifikasi.ipk = ipk.id', 'left');
             $this->db->join('toefl as toefl', 'kualifikasi.toefl = toefl.id', 'left');
            

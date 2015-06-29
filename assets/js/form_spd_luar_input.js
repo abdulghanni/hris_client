@@ -14,7 +14,22 @@ $(document).ready(function() {
        });
 
       
-      function get_employee_org(empId)
+      $("#emp_tc").change(function() {
+        var empId = $(this).val();
+        get_employee_org_tc(empId);
+        get_employee_pos_tc(empId);
+        getAtasan1(empId);
+    })
+    .change();
+
+    $("#employee_sel").change(function() {
+        var empId = $(this).val();
+        get_employee_org(empId);
+        get_employee_pos(empId);
+    })
+    .change();
+
+    function get_employee_org(empId)
     {
         $.ajax({
                 type: 'POST',
@@ -37,20 +52,6 @@ $(document).ready(function() {
                 }
             });
     }
-
-    $("#employee_sel").change(function() {
-        var empId = $(this).val();
-        get_employee_org(empId);
-        get_employee_pos(empId);
-    })
-    .change();
-
-     $("#emp_tc").change(function() {
-        var empId = $(this).val();
-        get_employee_org_tc(empId);
-        get_employee_pos_tc(empId);
-    })
-    .change();
 
     function get_employee_org_tc(empId)
     {
@@ -76,9 +77,21 @@ $(document).ready(function() {
             });
     }
 
+    function getAtasan1(empId)
+    {
+     $.ajax({
+            type: 'POST',
+            url: 'get_atasan',
+            data: {id : empId},
+            success: function(data) {
+                $('#employee_sel').html(data);
+            }
+        });
+    }
+
     //add spd_luar
     var url = $.url();
-    var baseurl = url.attr('protocol')+'://'+url.attr('host')+'/hris_client/';
+    var baseurl = url.attr('protocol')+'://'+url.attr('host')+'/'+url.segment(1)+'/';
     var spd_luar_url = baseurl+'form_spd_luar';
                 $('#add_spd_luar').submit(function(response){
                     $.post($('#add_spd_luar').attr('action'), $('#add_spd_luar').serialize(),function(json){

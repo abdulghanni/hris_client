@@ -385,6 +385,52 @@ class Form_medical_model extends CI_Model
         $this->db->order_by('karyawan_id', 'asc');
         return $q = $this->db->get();
     }
+
+    public function form_medical_hrd($id)
+    {
+        $r = getValue('user_medical_detail_id', 'users_medical', array('id'=>'where/'.$id));
+        $r = explode(',', $r);
+        $this->db->select('users_medical_detail.karyawan_id, users_medical_detail.pasien, medical_hubungan.title as hubungan, medical_jenis_pemeriksaan.title as jenis, users_medical_hrd.rupiah as rupiah, users_medical_hrd.is_approve');
+        $this->db->from('users_medical_detail');
+
+        $this->db->join('medical_hubungan', 'users_medical_detail.hubungan_id = medical_hubungan.id');
+        $this->db->join('medical_jenis_pemeriksaan', 'users_medical_detail.jenis_pemeriksaan_id = medical_jenis_pemeriksaan.id');
+        $this->db->join('users_medical_hrd', 'users_medical_detail.id = users_medical_hrd.user_medical_detail_id');
+
+        for($i=0;$i<sizeof($r)-1;$i++):
+        $this->db->or_where('users_medical_detail.id',$r[$i]);
+        endfor;
+
+        $this->db->order_by('karyawan_id', 'asc');
+        return $q = $this->db->get();
+    }
+
+    public function get_total_medical_hrd($id)
+    {
+        $r = getValue('user_medical_detail_id', 'users_medical', array('id'=>'where/'.$id));
+        $r = explode(',', $r);
+        $qq = '';
+        for($i=0;$i<sizeof($r)-1;$i++):
+            if($i == sizeof($r)-2){
+                 $qq.= ' user_medical_detail_id = '.$r[$i];
+            }else{
+            $qq.= ' user_medical_detail_id = '.$r[$i].' OR ';
+        }
+        endfor;
+
+        $this->db->select_sum('users_medical_hrd.rupiah');
+        $this->db->from('users_medical_detail');
+
+        $this->db->join('users_medical_hrd', 'users_medical_detail.id = users_medical_hrd.user_medical_detail_id');
+        $this->db->where('is_approve', 1);
+
+        //$this->db->or_where('users_medical_detail.id',$r[$i]);
+        $this->db->where("($qq)",null, false);
+
+        $this->db->order_by('karyawan_id', 'asc');
+        return $q = $this->db->get()->row('rupiah');
+    }
+
     public function delete($id)
     {
         $this->trigger_events('pre_delete_frm_medical');

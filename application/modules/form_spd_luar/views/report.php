@@ -31,7 +31,7 @@
                         <label class="form-label text-left">Nama</label>
                       </div>
                       <div class="col-md-8">
-                        <input name="name" id="name" type="text"  class="form-control" placeholder="Nama" value="<?php echo $task_receiver_nm ?>" disabled="disabled">  
+                        <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama" value="<?php echo get_name($td->task_receiver)?>" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
@@ -39,7 +39,7 @@
                         <label class="form-label text-left">Dept/Bagian</label>
                       </div>
                       <div class="col-md-8">
-                        <input name="dept" id="dept" type="text"  class="form-control" placeholder="Dept/Bagian" value="<?php echo $task_receiver_org ?>" disabled="disabled">
+                        <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama" value="<?php echo get_user_organization($td->task_receiver)?>" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
@@ -47,7 +47,7 @@
                         <label class="form-label text-left">Jabatan</label>
                       </div>
                       <div class="col-md-8">
-                        <input name="dept" id="dept" type="text"  class="form-control" placeholder="Jabatan" value="<?php echo $task_receiver_pos ?>" disabled="disabled">
+                        <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama" value="<?php echo get_user_position($td->task_receiver)?>" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
@@ -178,7 +178,7 @@
                   </div>
 
 
-                <div class="form-actions text-center">
+                 <div class="form-actions text-center">
                     <!-- <div class="col-md-12 text-center"> -->
                       <div class="row wf-spd">
                         <div class="col-md-6 pull-right">
@@ -190,12 +190,12 @@
                             <p class="">...............................</p>
                           <?php }elseif($this->session->userdata('user_id') == $td->task_receiver && $n_report== 1|| get_nik($this->session->userdata('user_id')) == $td->task_receiver && $n_report== 1){ ?>
                           <p class="wf-submit">
-                            <span class="semi-bold"><?php echo $task_receiver_nm ?></span><br/>
+                            <span class="semi-bold"><?php echo get_name($td->task_receiver) ?></span><br/>
                             <span class="small"><?php echo dateIndo($created_on) ?></span><br/>
                           </p>
-                          <?php }else{?>
+                           <?php }else{?>
                           <p class="wf-submit">
-                            <span class="semi-bold"><?php echo $task_receiver_nm ?></span><br/>
+                            <span class="semi-bold"><?php echo get_name($td->task_receiver) ?></span><br/>
                             <span class="small"><?php echo dateIndo($created_on) ?></span><br/>
                           </p>
                           <?php } ?>

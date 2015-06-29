@@ -89,6 +89,31 @@
                                 <?php } ?>
                             </tbody>
                         </table>
+                        <?php if($_num_rows>0):?>
+                          <div class="row">
+                            <div class="col-md-4 page_limit">
+                                <?php echo form_open(uri_string());?>
+                                <?php 
+                                    $selectComponentData = array(
+                                        10  => '10',
+                                        25 => '25',
+                                        50 =>'50',
+                                        75 => '75',
+                                        100 => '100',);
+                                    $selectComponentJs = 'class="select2" onChange="this.form.submit()" id="limit"';
+                                    echo "Per page: ".form_dropdown('limit', $selectComponentData, $limit, $selectComponentJs);
+                                    echo '&nbsp;'.lang('found_subheading').'&nbsp;'.$num_rows_all.'&nbsp;'.'Pengajuan';
+                                ?>
+                                <?php echo form_close();?>
+                            </div>
+
+                            <div class="col-md-10">
+                              <ul class="dataTables_paginate paging_bootstrap pagination">
+                                  <?php echo $halaman;?>
+                              </ul>
+                            </div>
+                          </div>
+                        <?php endif; ?>
                 </div>
             </div>
         </div>

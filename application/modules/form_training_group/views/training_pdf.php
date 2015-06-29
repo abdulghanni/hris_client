@@ -85,6 +85,16 @@ foreach($form_training_group as $user):
       <td>&nbsp;<?php echo $user->pembiayaan?></td>
     </tr>
     <tr>
+      <td height="45" align="center">6</td>
+      <td>&nbsp;Tipe Ikatan Dinas</td>
+      <td>&nbsp;<?php echo $user->ikatan?></td>
+    </tr>
+    <tr>
+      <td height="45" align="center">6</td>
+      <td>&nbsp;Waktu</td>
+      <td>&nbsp;<?php echo $user->waktu?></td>
+    </tr>
+    <tr>
       <td height="45" align="center">7</td>
       <td>&nbsp;Besar Biaya</td>
       <td>&nbsp;Rp.&nbsp;<?php echo $user->besar_biaya?></td>
