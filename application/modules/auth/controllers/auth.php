@@ -193,11 +193,17 @@ class Auth extends MX_Controller {
                     'marital_id'            => $data['MARITALSTATUS'],
                     
                     );
-                    
+                $nik = $this->input->post('identity');
+
                     if ($this->ion_auth->register($username, $password, $email, $additional_data))
                     {
                         send_email_activation($data['EMPLID']);
                         $this->send_email_inventory($data['EMPLID']);
+                        $mch = array(
+                                        'mchID' => get_mchid($nik),
+                                    );
+                        $this->db->where('nik', $nik);
+                        $this->db->update('users', $mch);
 							if( $this->send_email_notification($data['EMPLID'])){
                                 $this->session->set_flashdata('message', 'Account is inactive');
                                 redirect("auth/login", 'refresh');
