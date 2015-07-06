@@ -8,11 +8,19 @@
 .tg td{ height:40px;font-family:Arial, sans-serif;font-size:14px;padding:12px 16px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
 .tg th{height:40px; font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:12px 16px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
 .jobdesc{font-family:Arial, sans-serif;font-size:10px;padding:12px 16px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+.approval-img-md{
+    height:10%;
+    width:12%;
+    z-index:-1;
+}
 </style>
 </head>
 <body>
 <h2 align="center">Formulir Permintaan SDM Baru</h2>
-<?php foreach($form_recruitment->result() as $row):?>
+<?php foreach($form_recruitment->result() as $row):
+$approved = assets_url('img/approved_stamp.png');
+$rejected = assets_url('img/rejected_stamp.png');
+?>
 <table class="tg" width="1000px" align="center">
   <tr>
     <td class="tg-031e">Unit Bisnis</td>
@@ -131,7 +139,7 @@
     <td height="100" colspan="4">Catatan Pengaju<br/></td>
   </tr>
   </table>
-  <textarea class="jobdesc" rows="4" width="1000px" align="center"><?php echo $row->note_pengaju?></textarea>
+  <textarea class="jobdesc" rows="2" width="1000px" align="center"><?php echo $row->note_pengaju?></textarea>
   <table class="tg" width="1000px" align="center">
   <tr>
     <td class="tg-031e" colspan="2" align="center">Pemohon</td>
@@ -172,11 +180,11 @@
     <td class="tg-031e">Tanda Tangan</td>
     <td class="tg-031e"></td>
     <td class="tg-031e">Tanda Tangan</td>
-    <td class="tg-031e"></td>
+    <td class="tg-031e" align="center"><?php echo ($row->approval_status_id_lv1 == 1)?"<img class=approval-img-md src=$approved>":(($row->approval_status_id_lv1 == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
     <td class="tg-031e">Tanda Tangan</td>
-    <td class="tg-031e"></td>
+    <td class="tg-031e" align="center"><?php echo ($row->approval_status_id_lv2 == 1)?"<img class=approval-img-md src=$approved>":(($row->approval_status_id_lv2 == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
     <td class="tg-031e">Tanda Tangan</td>
-    <td class="tg-031e"></td>
+    <td class="tg-031e" align="center"><?php echo ($row->approval_status_id_hrd == 1)?"<img class=approval-img-md src=$approved>":(($row->approval_status_id_hrd == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
   </tr>
 </table>
 <?php endforeach;?>

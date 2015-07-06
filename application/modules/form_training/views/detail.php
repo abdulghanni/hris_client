@@ -32,7 +32,7 @@
                             <label class="form-label text-right">Nama</label>
                           </div>
                           <div class="col-md-9">
-                            <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama" value="<?php echo get_name($user->created_by)?>" disabled="disabled">
+                            <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama" value="<?php echo get_name($user->user_pengaju_id)?>" disabled="disabled">
                           </div>
                         </div>
                         <div class="row form-row">
@@ -40,7 +40,7 @@
                             <label class="form-label text-right">Dept/Bagian</label>
                           </div>
                           <div class="col-md-9">
-                            <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama" value="<?php echo get_user_organization(get_nik($user->created_by))?>" disabled="disabled">
+                            <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama" value="<?php echo get_user_organization(get_nik($user->user_pengaju_id))?>" disabled="disabled">
                           </div>
                         </div>
                         <div class="row form-row">
@@ -48,7 +48,7 @@
                             <label class="form-label text-right">Jabatan</label>
                           </div>
                           <div class="col-md-9">
-                            <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama" value="<?php echo get_user_position(get_nik($user->created_by))?>" disabled="disabled">
+                            <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama" value="<?php echo get_user_position(get_nik($user->user_pengaju_id))?>" disabled="disabled">
                           </div>
                         </div>
                       </div>
@@ -60,7 +60,7 @@
                             <label class="form-label text-right">Nama</label>
                           </div>
                           <div class="col-md-9">
-                            <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama" value="<?php echo get_name($user->user_id)?>" disabled="disabled">
+                            <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama" value="<?php echo get_name($user->user_peserta_id)?>" disabled="disabled">
                           </div>
                         </div>
                         <div class="row form-row">

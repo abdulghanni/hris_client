@@ -6,21 +6,26 @@
 <style type="text/css">
 <!--
 .style3 {
-  font-size: 16px;
-  font-weight: bold;
+  font-size: 20px;
 }
 .style4 {
-  font-size: 10px;
+  font-size: 16px;
 }
 .style6 {
   color: #000000;
   font-weight: bold;
-  font-size: 18px;
+  font-size: 24px;
 }
 .style7 {
   padding-left: 20px;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: bold;
+}
+
+.approval-img-md{
+    height:12%;
+    width:15%;
+    z-index:-1;
 }
 -->
 </style>
@@ -28,12 +33,14 @@
 
 <body>
 <div align="center">
-  <!-- <p align="left"><img src="<?php echo assets_url('img/erlangga.jpg')?>" width="296" height="80" /></p>-->
+  <p align="left"><img src="<?php echo assets_url('img/erlangga.jpg')?>" width="296" height="80" /></p>
   <p align="center" class="style6">Form Pengajuan Promosi</p>
 </div>
 <?php foreach($form_promosi as $row):
 $user_nik = get_nik($row->user_id);
-?>
+$pengaju_nik = get_nik($row->created_by);
+$approved = assets_url('img/approved_stamp.png');
+$rejected = assets_url('img/rejected_stamp.png');?>
 <table width="1000" height="135" border="0" align="center" style="padding-left:30px">
   <tr>
     <td width="275" height="45"><span class="style3">NIK</span></td>
@@ -61,13 +68,12 @@ $user_nik = get_nik($row->user_id);
     <td height="45"><span class="style3"><?php echo get_position_name($row->old_pos)?></span></td>
   </tr>
   <tr>
-    <td height="45"><span class="style3">Tanggal Pengangkatan</span></td>
+    <td height="45"><span class="style3">Tanggal Mulai Bekerja</span></td>
     <td height="45"><div align="center">:</div></td>
     <td height="45"><span class="style3"><?php echo dateIndo(get_seniority_date($user_nik));?></span></td>
   </tr>
 </table>
 
-<p>&nbsp;</p>
 <p class="style7">Promosi yang diajukan</p>
 <table width="1000" height="135" border="0" style="padding-left:30px;">
   <tr>
@@ -98,31 +104,70 @@ $user_nik = get_nik($row->user_id);
 </table>
 <?php if(!empty($row->note_hrd)){?>
 <p class="style4">Catatan</p>
-<textarea class="style4" rows="4" width="100%"><?php echo $row->note_hrd?></textarea>
+<textarea class="style4" rows="2" width="100%"><?php echo $row->note_hrd?></textarea>
 <?php } ?>
 <br />
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
 
 <table width="1000" align="center">
   <tbody>
     <tr>
-      <td width="250" height="10" align="center" class="style3">Yang Mengajukan</td>
-      <td width="250"></td>
-      <td width="250"></td>
-      <td width="250" align="center" class="style3">Menyetujui,</td>
+      <th width="250" height="50">Diajukan Oleh,</th>
+      <th width="250"></th>
+      <th width="250">&nbsp;&nbsp;Mengetahui</th>
+      <th width="250"></th>
     </tr>
     <tr>
-      <td height="117" align="center" class="style3"><?php echo get_name($row->created_by)?><br/><?php echo dateIndo($row->created_on)?></td>
-      <td align="center"></td>
-      <td align="center"></td>
-      <td align="center" class="style3"><?php echo get_name($row->user_approved)?><br/><?php echo dateIndo($row->date_approved)?></td>
+      <td width="250" align="center"></td>
+      <td width="250" align="center"><?php echo ($row->app_status_id_lv1 == 1)?"<img class=approval-img-md src=$approved>":(($row->app_status_id_lv1 == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
+      <td width="250" align="center"><?php echo ($row->app_status_id_lv2 == 1)?"<img class=approval-img-md src=$approved>":(($row->app_status_id_lv2 == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
+      <td width="250" align="center"><?php echo ($row->app_status_id_hrd == 1)?"<img class=approval-img-md src=$approved>":(($row->app_status_id_hrd == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
+    </tr>
+    <tr>
+      <td height="80" align="center" class="style3"><?php echo get_name($row->created_by)?></td>
+    <?php if(!empty($row->user_app_lv1)){?>
+      <td height="80" align="center" class="style3"><?php echo get_name($row->user_app_lv1)?></td>
+    <?php }?>
+    <?php if(!empty($row->user_app_lv2)){?>
+      <td align="center" class="style3"><?php echo get_name($row->user_app_lv2)?></td>
+    <?php }?>
+      <td align="center" class="style3"><?php echo get_name($row->user_app_hrd)?></td>
+    </tr>
+    <tr>
+      <td align="center"><?php echo dateIndo($row->created_on)?><br/><?php echo get_user_position($pengaju_nik)?></td>
+    <?php if(!empty($row->user_app_lv1)){?>
+      <td align="center"><?php echo dateIndo($row->date_app_lv1)?><br/>(Supervisor)</td>
+    <?php }?>
+    <?php if(!empty($row->user_app_lv2)){?>
+      <td align="center"><?php echo dateIndo($row->date_app_lv2)?><br/>(Ka. Bagian)</td>
+      <?php }?>
+      <td align="center"><?php echo dateIndo($row->date_app_hrd)?><br/>(HRD)</td>
     </tr>
   </tbody>
 </table>
+
+<?php if(!empty($row->user_app_lv3)){?>
+<table width="1000" align="center">
+  <tbody>
+    <tr>
+      <td width="333" align="center"></td>
+      <td width="333" align="center"><?php echo ($row->app_status_lv3 == 1)?"<img class=approval-img-md src=$approved>":(($row->app_status_id_lv3 == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
+      <td width="333" align="center"></td>
+    </tr>
+    <tr>
+      <td height="80" align="center" class="style3"></td>
+      <td align="center" class="style3"><?php echo get_name($row->user_app_lv3)?></td>
+      <td align="center" class="style3"></td>
+    </tr>
+    <tr>
+      <td align="center"><?php echo dateIndo($row->date_app_lv1)?><br/></td>
+    <?php if(!empty($row->user_app_lv3)){?>
+      <td align="center"><?php echo dateIndo($row->date_app_lv3)?><br/><?php echo '('.get_user_position($row->user_app_lv3).')'?></td>
+      <?php }?>
+      <td align="center"></td>
+    </tr>
+  </tbody>
+</table>
+<?php }?>
 
 <?php endforeach;?>
 </body>

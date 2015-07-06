@@ -10,6 +10,7 @@ class Form_resignment extends MX_Controller {
         $this->load->library('authentication', NULL, 'ion_auth');
         $this->load->library('form_validation');
         $this->load->helper('url');
+        $this->load->library('approval');
         
         $this->load->database();
         $this->load->model('form_resignment/form_resignment_model','form_resignment_model');
@@ -110,6 +111,67 @@ class Form_resignment extends MX_Controller {
         else
         {
             $this->form_validation->set_rules('date_resign' , 'Tanggal Akhir Kerja', 'trim|required');
+            if($this->form_validation->run() == FALSE)
+            {
+            //echo json_encode(array('st'=>0, 'errors'=>validation_errors('<div class="alert alert-danger" role="alert">', '</div>')));
+                redirect('form_resignment/input', 'refresh');
+            }
+            else
+            {
+                $user_id= $this->input->post('emp');
+
+                $data = array(
+                    'id_comp_session' => 1,
+                    'date_resign' => date('Y-m-d',strtotime($this->input->post('date_resign'))),
+                    'user_app_lv1'          => $this->input->post('atasan1'),
+                    'user_app_lv2'          => $this->input->post('atasan2'),
+                    'user_app_lv3'          => $this->input->post('atasan3'),
+                    'created_on'            => date('Y-m-d',strtotime('now')),
+                    'created_by'            => $this->session->userdata('user_id'),
+                    );
+
+                    if ($this->form_validation->run() == true && $this->form_resignment_model->create_($user_id, $data))
+                    {
+                     $resignment_id = $this->db->insert_id();
+                     $user_app_lv1 = getValue('user_app_lv1', 'users_resignment', array('id'=>'where/'.$resignment_id));
+                     if(!empty($user_app_lv1)):
+                        $this->approval->request('lv1', 'resignment', $resignment_id, $user_id, $this->detail_email($resignment_id));
+                     else:
+                        $this->approval->request('hrd', 'resignment', $resignment_id, $user_id, $this->detail_email($resignment_id));
+                     endif;
+                     redirect('form_resignment', 'refresh');
+                     //echo json_encode(array('st' =>1));     
+                    }
+            }
+        }
+    }
+
+    function detail($id)
+    {
+        if(!$this->ion_auth->logged_in())
+        {
+            redirect('auth/login', 'refresh');
+        }
+
+        $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
+        $user_id = getValue('user_id', 'users_resignment', array('id'=>'where/'.$id));
+        $this->data['user_nik'] = get_nik($user_id);
+        $form_resignment = $this->data['form_resignment'] = $this->form_resignment_model->form_resignment($id)->result();
+        $this->data['_num_rows'] = $this->form_resignment_model->form_resignment($id)->num_rows();
+        
+        $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
+        $this->_render_page('form_resignment/detail', $this->data);
+    }
+
+    function add_wawancara()
+    {
+        if(!$this->ion_auth->logged_in())
+        {
+            redirect('auth/login', 'refresh');
+        }
+        else
+        {
+            $this->form_validation->set_rules('date_resign' , 'Tanggal Akhir Kerja', 'trim|required');
             //$this->form_validation->set_rules('alasan_resign_id' , 'Alasan berhenti kerja', 'trim|required');
             $this->form_validation->set_rules('desc_resign' , 'Alasan utama berhenti kerja', 'trim|required');
             $this->form_validation->set_rules('procedure_resign' , 'Prosedur perusahaan', 'trim|required');
@@ -141,25 +203,23 @@ class Form_resignment extends MX_Controller {
                     'created_by'            => $this->session->userdata('user_id'),
                     );
 
-                $num_rows = getAll('users_resignment')->num_rows();
-
-                if($num_rows>0){
-                    $resignment_id = getAll('users_resignment')->last_row();
-                    $resignment_id = $resignment_id->id+1;
-                }else{
-                    $resignment_id = 1;
-                }
-
                     if ($this->form_validation->run() == true && $this->form_resignment_model->create_($user_id, $data))
                     {
-                        $this->send_approval_request($resignment_id, $user_id);
-                        echo json_encode(array('st' =>1));     
+                     $resignment_id = $this->db->insert_id();
+                     $user_app_lv1 = getValue('user_app_lv1', 'users_resignment', array('id'=>'where/'.$resignment_id));
+                     if(!empty($user_app_lv1)):
+                        $this->approval->request('lv1', 'resignment', $resignment_id, $user_id, $this->detail_email($resignment_id));
+                     else:
+                        $this->approval->request('hrd', 'resignment', $resignment_id, $user_id, $this->detail_email($resignment_id));
+                     endif;
+                     redirect('form_resignment', 'refresh');
+                     //echo json_encode(array('st' =>1));     
                     }
             }
         }
     }
 
-    function detail($id)
+    function detail_wawancara($id)
     {
         if(!$this->ion_auth->logged_in())
         {
@@ -202,111 +262,51 @@ class Form_resignment extends MX_Controller {
             $is_app = getValue('is_app_'.$type, 'users_resignment', array('id'=>'where/'.$id));
             $approval_status = $this->input->post('app_status_'.$type);
 
-           if ($this->form_resignment_model->update($id,$data)) {
-               redirect('form_resignment/detail/'.$id, 'refresh');
-            }
-
+           $this->form_resignment_model->update($id,$data);
+           $user_resignment_id = getValue('user_id', 'users_resignment', array('id'=>'where/'.$id));
             if($is_app==0){
-                $this->approval_mail($id, $approval_status);
+                $this->approval->approve('resignment', $id, $approval_status, $this->detail_email($id));
             }else{
-                $this->update_approval_mail($id, $approval_status);
+                $this->approval->update_approve('resignment', $id, $approval_status, $this->detail_email($id));
             }
+            if($type !== 'hrd'){
+                $lv = substr($type, -1)+1;
+                $lv_app = 'lv'.$lv;
+                $user_app = ($lv<4) ? getValue('user_app_'.$lv_app, 'users_resignment', array('id'=>'where/'.$id)):0;
+                if(!empty($user_app)):
+                    $this->approval->request($lv_app, 'resignment', $id, $user_resignment_id, $this->detail_email($id));
+                else:
+                    $this->approval->request('hrd', 'resignment', $id, $user_resignment_id, $this->detail_email($id));
+                endif;
+            }
+            redirect('form_resignment/detail/'.$id, 'refresh');
         }
-    }
-
-    function send_approval_request($id, $user_id)
-    {
-        $url = base_url().'form_resignment/detail/'.$id;
-        $user_app_lv1 = getValue('user_app_lv1', 'users_resignment', array('id'=>'where/'.$id));
-        $user_app_lv2 = getValue('user_app_lv2', 'users_resignment', array('id'=>'where/'.$id));
-        $user_app_lv3 = getValue('user_app_lv3', 'users_resignment', array('id'=>'where/'.$id));
-        
-        //approval to LV1
-        if(!empty($user_app_lv1)){
-            $data1 = array(
-                    'sender_id' => get_nik($user_id),
-                    'receiver_id' => $user_app_lv1,
-                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                    'subject' => 'Pengajuan Karyawan Keluar',
-                    'email_body' => get_name($user_id).' mengajukan Karyawan Keluar, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
-                    'is_read' => 0,
-                );
-            $this->db->insert('email', $data1);
-        }
-
-        //approval to LV2
-        if(!empty($user_app_lv2)){
-            $data2 = array(
-                    'sender_id' => get_nik($user_id),
-                    'receiver_id' => $user_app_lv2,
-                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                    'subject' => 'Pengajuan Karyawan Keluar',
-                    'email_body' => get_name($user_id).' mengajukan Karyawan Keluar, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
-                    'is_read' => 0,
-                );
-            $this->db->insert('email', $data2);
-        }
-
-        //approval to LV3
-        if(!empty($user_app_lv3)){
-            $data3 = array(
-                    'sender_id' => get_nik($user_id),
-                    'receiver_id' => $user_app_lv3,
-                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                    'subject' => 'Pengajuan Karyawan Keluar',
-                    'email_body' => get_name($user_id).' mengajukan Karyawan Keluar, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
-                    'is_read' => 0,
-                );
-            $this->db->insert('email', $data3);
-        }
-
-        //approval to hrd
-            $data4 = array(
-                    'sender_id' => get_nik($user_id),
-                    'receiver_id' => 1,
-                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                    'subject' => 'Pengajuan Karyawan Keluar',
-                    'email_body' => get_name($user_id).' mengajukan Karyawan Keluar, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
-                    'is_read' => 0,
-                );
-            $this->db->insert('email', $data4);
-    }
-
-    function approval_mail($id, $approval_status)
-    {
-        $url = base_url().'form_resignment/detail/'.$id;
-        $approver = get_name(get_nik($this->session->userdata('user_id')));
-        $receiver_id = getValue('user_id', 'users_resignment', array('id'=>'where/'.$id));
-        $approval_status = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));;
-        $data = array(
-                'sender_id' => get_nik($this->session->userdata('user_id')),
-                'receiver_id' => get_nik($receiver_id),
-                'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                'subject' => 'Status Pengajuan Karyawan Keluar dari Atasan',
-                'email_body' => "Status pengajuan Karyawan Keluar anda $approval_status oleh $approver untuk detail silakan <a class='klikmail' href=$url>Klik disini</a><br/>".$this->detail_email($id),
-                'is_read' => 0,
-            );
-        $this->db->insert('email', $data);
-    }
-
-    function update_approval_mail($id, $approval_status)
-    {
-        $url = base_url().'form_resignment/detail/'.$id;
-        $approver = get_name(get_nik($this->session->userdata('user_id')));
-        $receiver_id = getValue('user_id', 'users_resignment', array('id'=>'where/'.$id));
-        $approval_status = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));;
-        $data = array(
-                'sender_id' => get_nik($this->session->userdata('user_id')),
-                'receiver_id' => get_nik($receiver_id),
-                'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                'subject' => 'Perubahan Status Pengajuan Karyawan Keluar dari Atasan',
-                'email_body' => "$approver melakukan perubahan status pengajuan Karyawan Keluar anda menjadi $approval_status, untuk detail silakan <a class='klikmail' href=$url>Klik disini</a><br/>".$this->detail_email($id),
-                'is_read' => 0,
-            );
-        $this->db->insert('email', $data);
     }
 
     function detail_email($id)
+    {
+        if(!$this->ion_auth->logged_in())
+        {
+            redirect('auth/login', 'refresh');
+        }
+
+        if(!$this->ion_auth->logged_in())
+        {
+            redirect('auth/login', 'refresh');
+        }
+
+        $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
+        $user_id = getValue('user_id', 'users_resignment', array('id'=>'where/'.$id));
+        $this->data['user_nik'] = get_nik($user_id);
+        $form_resignment = $this->data['form_resignment'] = $this->form_resignment_model->form_resignment($id)->result();
+        $this->data['_num_rows'] = $this->form_resignment_model->form_resignment($id)->num_rows();
+        
+        $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
+
+        return $this->load->view('form_resignment/resignment_mail', $this->data, TRUE);
+    }
+
+    function detail_email_wawancara($id)
     {
         if(!$this->ion_auth->logged_in())
         {
@@ -326,115 +326,55 @@ class Form_resignment extends MX_Controller {
 
         return $this->load->view('form_resignment/resignment_mail', $this->data, TRUE);
     }
-
-    public function get_atasan($id)
-    {
-        $url = get_api_key().'users/superior/EMPLID/'.get_nik($id).'/format/json';
-        $headers = get_headers($url);
-        $response = substr($headers[0], 9, 3);
-        if ($response != "404") {
-            $get_task_receiver = file_get_contents($url);
-            $task_receiver = json_decode($get_task_receiver, true);
-             foreach ($task_receiver as $row)
-                {
-                    $result['0']= '-- Pilih Atasan --';
-                    $result[$row['ID']]= ucwords(strtolower($row['NAME']));
-                }
-        } else {
-           $result['-']= '- Tidak ada user dengan departemen yang sama -';
-        }
-        $data['result']=$result;
-        $this->load->view('dropdown_atasan',$data);
-    }
-
+    
     function get_user_atasan()
     {
-            $user_id = $this->session->userdata('user_id');
-            $url_org = get_api_key().'users/superior/EMPLID/'.get_nik($user_id).'/format/json';
-            $headers_org = get_headers($url_org);
-            $response = substr($headers_org[0], 9, 3);
-            if ($response != "404") {
-            $get_user_pengganti = file_get_contents($url_org);
-            $user_pengganti = json_decode($get_user_pengganti, true);
-            return $this->data['user_atasan'] = $user_pengganti;
-            }else{
-             return $this->data['user_atasan'] = 'Tidak ada karyawan dengan departement yang sama';
-            }
-    }
-
-    public function get_emp_org()
-    {
-        $id = $this->input->post('id');
-
-        $url = get_api_key().'users/employement/EMPLID/'.get_nik($id).'/format/json';
-            $headers = get_headers($url);
-            $response = substr($headers[0], 9, 3);
-            if ($response != "404") {
-                $getuser_info = file_get_contents($url);
-                $user_info = json_decode($getuser_info, true);
-                $org_nm = $user_info['ORGANIZATION'];
-            } else {
-                $org_nm = '';
-            }
-        
-        echo $org_nm;
-    }
-
-    public function get_emp_pos()
-    {
-        $id = $this->input->post('id');
-
-        $url = get_api_key().'users/employement/EMPLID/'.get_nik($id).'/format/json';
-            $headers = get_headers($url);
-            $response = substr($headers[0], 9, 3);
-            if ($response != "404") {
-                $getuser_info = file_get_contents($url);
-                $user_info = json_decode($getuser_info, true);
-                $pos_nm = $user_info['POSITION'];
-            } else {
-                $pos_nm = '';
-            }
-
-        echo $pos_nm;
-    }
-
-    public function get_emp_nik()
-    {
-        $id = $this->input->post('id');
-
-        $url = get_api_key().'users/employement/EMPLID/'.get_nik($id).'/format/json';
-            $headers = get_headers($url);
-            $response = substr($headers[0], 9, 3);
-            if ($response != "404") {
-                $getuser_info = file_get_contents($url);
-                $user_info = json_decode($getuser_info, true);
-                $nik = $user_info['EMPLID'];
-            } else {
-                $nik = '';
-            }
-
-        echo $nik;
-    }
-
-    public function get_emp_bu()
-    {
-        $id = $this->input->post('id');
-
-        $url = get_api_key().'users/employement/EMPLID/'.get_nik($id).'/format/json';
-            $headers = get_headers($url);
-            $response = substr($headers[0], 9, 3);
-            if ($response != "404") {
-                $getuser_info = file_get_contents($url);
-                $user_info = json_decode($getuser_info, true);
-                $bu_nm = $user_info['BU'];
-            } else {
-                $bu_nm = '';
-            }
-
-        echo $bu_nm;
+        $id = $this->session->userdata('user_id');
+        $url = get_api_key().'users/superior/EMPLID/'.get_nik($id).'/format/json';
+        $url_atasan_satu_bu = get_api_key().'users/atasan_satu_bu/EMPLID/'.get_nik($id).'/format/json';
+        $headers = get_headers($url);
+        $headers2 = get_headers($url_atasan_satu_bu);
+        $response = substr($headers[0], 9, 3);
+        $response2 = substr($headers2[0], 9, 3);
+        if ($response != "404") {
+            $get_atasan = file_get_contents($url);
+            $atasan = json_decode($get_atasan, true);
+            return $this->data['user_atasan'] = $atasan;
+        }elseif($response == "404" && $response2 != "404") {
+           $get_atasan = file_get_contents($url_atasan_satu_bu);
+           $atasan = json_decode($get_atasan, true);
+           return $this->data['user_atasan'] = $atasan;
+        }else{
+            return $this->data['user_atasan'] = '- Karyawan Tidak Memiliki Atasan -';
+        }
     }
 
     function form_resignment_pdf($id)
+    {
+        if(!$this->ion_auth->logged_in())
+        {
+            redirect('auth/login', 'refresh');
+        }
+        
+        $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
+        $user_id = getValue('user_id', 'users_resignment', array('id'=>'where/'.$id));
+        $this->data['user_nik'] = get_nik($user_id);
+        $form_resignment = $this->data['form_resignment'] = $this->form_resignment_model->form_resignment($id)->result();
+        $this->data['_num_rows'] = $this->form_resignment_model->form_resignment($id)->num_rows();
+
+        $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
+
+        $this->data['id'] = $id;
+        $title = $this->data['title'] = 'Form Karyawan Keluar-'.get_name($user_id);
+        $this->load->library('mpdf60/mpdf');
+        $html = $this->load->view('resignment_pdf', $this->data, true); 
+        $mpdf = new mPDF();
+        $mpdf = new mPDF('A4');
+        $mpdf->WriteHTML($html);
+        $mpdf->Output($id.'-'.$title.'.pdf', 'I');
+    }
+
+    function form_resignment_wawancara_pdf($id)
     {
         if(!$this->ion_auth->logged_in())
         {
@@ -460,30 +400,6 @@ class Form_resignment extends MX_Controller {
         $mpdf = new mPDF('A4');
         $mpdf->WriteHTML($html);
         $mpdf->Output($id.'-'.$title.'.pdf', 'I');
-    }
-
-    function _get_csrf_nonce()
-    {
-        $this->load->helper('string');
-        $key   = random_string('alnum', 8);
-        $value = random_string('alnum', 20);
-        $this->session->set_flashdata('csrfkey', $key);
-        $this->session->set_flashdata('csrfvalue', $value);
-
-        return array($key => $value);
-    }
-
-    function _valid_csrf_nonce()
-    {
-        if ($this->input->post($this->session->flashdata('csrfkey')) !== FALSE &&
-            $this->input->post($this->session->flashdata('csrfkey')) == $this->session->flashdata('csrfvalue'))
-        {
-            return TRUE;
-        }
-        else
-        {
-            return FALSE;
-        }
     }
 
     function _render_page($view, $data=null, $render=false)
@@ -526,6 +442,7 @@ class Form_resignment extends MX_Controller {
                     $this->template->add_js('jquery.bootstrap.wizard.min.js');
                     $this->template->add_js('jquery.validate.min.js');
                     $this->template->add_js('bootstrap-datepicker.js');
+                    $this->template->add_js('emp_dropdown.js');
                     $this->template->add_js('form_resignment.js');
                     
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');

@@ -85,11 +85,11 @@
                                     }
 
                                      //Approval HRD
-                                    if(is_admin()&&$row->is_app_lv3 == 0){
+                                    if(is_admin()&&$row->is_app_hrd == 0){
                                       $txt_app_hrd = "<a href='".site_url('form_recruitment/detail/'.$row->id)."''>
                                                       <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-edit'></i></button>
                                                       </a>";
-                                    }elseif($row->is_app_lv3 == 1){
+                                    }elseif($row->is_app_hrd == 1){
                                       $txt_app_hrd =  "<a href='".site_url('form_recruitment/detail/'.$row->id)."''>$approval_status_hrd</a>";
                                     }
                                    ?>

@@ -122,9 +122,20 @@ $(document).ready(function() {
             get_employee_bu(empId);
             get_employee_buid(empId);
             get_employee_sendate(empId);
+        })
+        .change();
+
+    $("#empDemolition").change(function() {
+            var empId = $(this).val();
+            get_employee_org(empId);
+            get_employee_pos(empId);
+            get_employee_orgid(empId);
+            get_employee_posid(empId);
+            get_employee_nik(empId);
+            get_employee_bu(empId);
+            get_employee_buid(empId);
+            get_employee_sendate(empId);
             getAtasan1(empId);
-            getAtasan2(empId);
-            getAtasan3(empId);
         })
         .change();
 
@@ -219,7 +230,7 @@ $(document).ready(function() {
                     url: 'get_emp_sendate',
                     data: {id : empId},
                     success: function(data) {
-                        $('#sen_date').val(data);
+                        $('#seniority_date').val(data);
                     }
                 });
         }
@@ -228,34 +239,10 @@ $(document).ready(function() {
         {
          $.ajax({
                 type: 'POST',
-                url: 'get_atasan',
+                url: baseurl+'dropdown/get_atasan/'+empId,
                 data: {id : empId},
                 success: function(data) {
                     $('#atasan1').html(data);
-                }
-            });
-        }
-
-        function getAtasan2(empId)
-        {
-         $.ajax({
-                type: 'POST',
-                url: 'get_atasan',
-                data: {id : empId},
-                success: function(data) {
-                    $('#atasan2').html(data);
-                }
-            });
-        }
-
-        function getAtasan3(empId)
-        {
-         $.ajax({
-                type: 'POST',
-                url: 'get_atasan',
-                data: {id : empId},
-                success: function(data) {
-                    $('#atasan3').html(data);
                 }
             });
         }

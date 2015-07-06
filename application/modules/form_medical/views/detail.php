@@ -98,7 +98,7 @@
                           if(!empty($detail_hrd)){
                              $total = $detail_hrd[0]['rupiah'];
                               for($i=0;$i<sizeof($detail_hrd);$i++):
-                              $is_approve = ($detail_hrd[$i]['is_approve'] == 1) ? 'Ya':'Tidak';
+                              $is_approve = ($detail_hrd[$i]['is_approve'] == 1) ? "<i class='icon-ok-sign' title = 'Ya'></i>":"<i class='icon-remove-sign' title = 'Tidak'></i>";
                               ?>
                           <tr>
                             <td><?php echo get_nik($detail_hrd[$i]['karyawan_id'])?></td>
@@ -107,7 +107,7 @@
                             <td><?php echo $detail_hrd[$i]['hubungan']?></td>
                             <td><?php echo $detail_hrd[$i]['jenis']?></td>
                             <td><?php echo  'Rp. '.number_format($detail_hrd[$i]['rupiah'], 0)?></td>
-                            <td><?php echo $is_approve?></td>
+                            <td align="center"><?php echo $is_approve?></td>
                           </tr>
                             <?php
                             endfor;}
@@ -193,7 +193,7 @@
                           <p>Mengetahui,</p>
                           <p class="wf-approve-sp">
                           <?php if($row->is_app_lv2==1) {
-                            echo "<img class=approval_img src=$approved>"?>
+                            echo "<img class=approval-img-sm src=$approved>"?>
                             <span class="semi-bold"></span><br/>
                             <span class="small"></span><br/>
                             <span class="semi-bold"><?php echo get_name($row->user_app_lv2) ?></span><br/>

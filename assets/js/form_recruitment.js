@@ -1,5 +1,5 @@
 $(document).ready(function() {				
-	$(".select2").select2();
+  $(".select2").select2();
   $('#limit').select2();
 
 	 $('#formaddrecruitment').submit(function(response){
@@ -13,23 +13,12 @@ $(document).ready(function() {
         return false;
     });
 
-	  var url = $.url();
+	var url = $.url();
     var baseurl = url.attr('protocol')+'://'+url.attr('host')+'/'+url.segment(1)+'/';
     var uri1 = url.segment(2)+'/do_approve/'+url.segment(4)+'/lv1';
     var uri2 = url.segment(2)+'/do_approve/'+url.segment(4)+'/lv2';
     var uri3 = url.segment(2)+'/do_approve/'+url.segment(4)+'/lv3';
     var uri4 = url.segment(2)+'/do_approve/'+url.segment(4)+'/hrd';
-
-    $('#formaddresign').submit(function(response){
-        $.post($('#formaddresign').attr('action'), $('#formaddresign').serialize(),function(json){
-            if(json.st == 0){
-                $('#MsgBad').html(json.errors).fadeIn();
-            }else{
-                window.location.href = baseurl+url.segment(2);
-            }
-        }, 'json');
-        return false;
-    });
             
     //approval script
 

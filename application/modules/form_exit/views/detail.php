@@ -247,6 +247,29 @@
                             </p>
                           </div>
                         </div>
+                        <?php if(!empty($row->user_app_asset)){?>
+                        <div class="row text-center">
+                            <p class="wf-approve-sp">
+                              <?php if($row->is_app_asset == 1){
+                              echo ($row->app_status_id_asset == 1)? "<img class=approval-img-sm src=$approved>":(($row->app_status_id_asset == 2) ? "<img class=approval_img_md src=$rejected>":'');?><br/>
+                              <span class="semi-bold"><?php echo get_name($row->user_app_asset)?></span><br/>
+                              <span class="small"><?php echo dateIndo($row->date_app_asset)?></span><br/>
+                              <?php }elseif($row->is_app_asset == 0 && $sess_nik === $row->user_app_asset){?>
+                              <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitexitModalasset"><i class="icon-ok"></i>Submit</div>
+                              <span class="semi-bold"></span><br/>
+                              <span class="semi-bold"></span><br/>
+                              <span class="small"></span>
+                              <?php }else{?>
+                              <span class="semi-bold"></span><br/>
+                              <span class="semi-bold"></span><br/>
+                              <span class="semi-bold"></span><br/>
+                              <span class="small"></span><br/>
+                              <?php } ?>
+                              <span class="semi-bold"></span><br/>
+                              <span class="semi-bold">Asset Management</span>
+                            </p>
+                        </div>
+                        <?php } ?>
                       </div> 
                     </div>
                       
@@ -960,6 +983,57 @@
   </div>
 </div>
 <!--end approve modal Lv3--> 
+
+<!--approval exit Modal asset -->
+<div class="modal fade" id="submitexitModalasset" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" id="modaldialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Approval Form exit - Atasan Lainnya</h4>
+      </div>
+      <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
+      <div class="modal-body">
+        <form class="form-no-horizontal-spacing"  id="formAppAsset">
+            <div class="row form-row">
+              <div class="col-md-12">
+                <label class="form-label text-left">Status Approval </label>
+              </div>
+              <div class="col-md-12">
+                <div class="radio">
+                  <?php 
+                  if($approval_status->num_rows() > 0){
+                    foreach($approval_status->result() as $app){
+                      $checked = ($app->id <> 0 && $app->id == $row->app_status_id_asset) ? 'checked = "checked"' : '';
+                      ?>
+                  <input id="app_status_asset<?php echo $app->id?>" type="radio" name="app_status_asset" value="<?php echo $app->id?>" <?php echo $checked?>>
+                  <label for="app_status_asset<?php echo $app->id?>"><?php echo $app->title?></label>
+                  <?php }}else{?>
+                  <input id="app_status" type="radio" name="app_status_asset" value="0">
+                  <label for="app_status">No Data</label>
+                    <?php } ?>
+                </div>
+              </div>
+            </div>
+            <div class="row form-row">
+              <div class="col-md-12">
+                <label class="form-label text-left">Note (Atasan) : </label>
+              </div>
+              <div class="col-md-12">
+                <textarea name="note_asset" class="custom-txtarea-form" placeholder="Note atasan isi disini"><?php echo $row->note_asset?></textarea>
+              </div>
+            </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="icon-remove"></i>&nbsp;<?php echo lang('close_button')?></button> 
+        <button id="btnAppAsset"  class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
+      </div>
+        <?php echo form_close()?>
+    </div>
+  </div>
+</div>
+<!--end approve modal asset--> 
+
 
 <?php endforeach;?>
 

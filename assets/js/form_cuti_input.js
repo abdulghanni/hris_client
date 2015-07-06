@@ -1,6 +1,5 @@
 $(document).ready(function() {
     $(".select2").select2();
-
     //Date Pickers
     $(".datepicker_start").datepicker({format: "yyyy-mm-dd", todayHighlight: true})
     $(".datepicker_end").datepicker({format: "yyyy-mm-dd", todayHighlight: true})
@@ -74,6 +73,7 @@ $(document).ready(function() {
         }
         
     });
+});
 
     /*   
     $(document).ready(function(){
@@ -89,76 +89,3 @@ $(document).ready(function() {
         });
     });
     */
-
-
-    function get_employee_org(empId)
-    {
-        $.ajax({
-                type: 'POST',
-                url: 'get_emp_org',
-                data: {id : empId},
-                success: function(data) {
-                    $('#organization').val(data);
-                }
-            });
-    }
-
-    function get_employee_pos(empId)
-    {
-        $.ajax({
-                type: 'POST',
-                url: 'get_emp_pos',
-                data: {id : empId},
-                success: function(data) {
-                    $('#position').val(data);
-                }
-            });
-    }
-
-    function get_employee_sen_date(empId)
-    {
-        $.ajax({
-                type: 'POST',
-                url: 'get_emp_sen_date',
-                data: {id : empId},
-                success: function(data) {
-                    $('#seniority_date').val(data);
-                }
-            });
-    }
-
-    function get_employee_nik(empId)
-    {
-        $.ajax({
-                type: 'POST',
-                url: 'get_emp_nik',
-                data: {id : empId},
-                success: function(data) {
-                    $('#nik').val(data);
-                }
-            });
-    }
-
-    function get_employee_sisa_cuti(empId)
-    {
-        $.ajax({
-                type: 'POST',
-                url: 'get_emp_sisa_cuti',
-                data: {id : empId},
-                success: function(data) {
-                    $('#sisa_cuti').val(data);
-                }
-            });
-    }
-
-    $("#emp_id").change(function() {
-        var empId = $(this).val();
-        get_employee_org(empId);
-        get_employee_pos(empId);
-        get_employee_sen_date(empId);
-        get_employee_nik(empId);
-        get_employee_sisa_cuti(empId);
-    })
-    .change();
-
-});

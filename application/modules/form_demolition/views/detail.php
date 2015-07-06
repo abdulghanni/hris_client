@@ -68,7 +68,7 @@
                       </div>
                       <div class="row form-row">
                         <div class="col-md-3">
-                          <label class="form-label text-right">Tanggal Pengangkatan</label>
+                          <label class="form-label text-right">Tanggal Mulai Kerja</label>
                         </div>
                         <div class="col-md-9">
                           <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama" value="<?php echo dateIndo(get_user_sen_date($user_nik))?>" disabled="disabled">
@@ -79,17 +79,79 @@
                     </div>
                     <div class="col-md-7">
                       <h4>Demolition Yang Diajukan</h4>
-                      <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
+                     <div class="row form-row">
+                        <div class="col-md-4">
+                          <label class="form-label text-left">Unit Bisnis Baru</label>
+                        </div>
+                        <div class="col-md-8">
+                          <input name="nik" id="form3LastName" type="text"  class="form-control " placeholder="Nama" value="<?php echo get_bu_name(substr($row->new_bu,0,2))?>" disabled="disabled">
+                        </div>
+                      </div>
+
+                      <div class="row form-row">
+                        <div class="col-md-4">
+                          <label class="form-label text-left">Dept/Bagian Baru</label>
+                        </div>
+                        <div class="col-md-8">
+                          <input name="nik" id="form3LastName" type="text"  class="form-control " placeholder="Nama" value="<?php echo get_organization_name($row->new_org)?>" disabled="disabled">
+                        </div>
+                      </div>
+
+                      <div class="row form-row">
+                        <div class="col-md-4">
+                          <label class="form-label text-left">Jabatan Baru</label>
+                        </div>
+                       <div class="col-md-8">
+                          <input name="nik" id="form3LastName" type="text"  class="form-control " placeholder="Nama" value="<?php echo get_position_name($row->new_pos)?>" disabled="disabled">
+                        </div>
+                      </div>
+                      <div class="row form-row">
+                        <div class="col-md-4">
+                          <label class="form-label text-left">Tgl. Demolition</label>
+                        </div>
+                        <div class="col-md-8">
+                          <input type="text" class="form-control" name="date_demolition" value="<?php echo dateIndo($row->date_demolition)?>" disabled="disabled">
+                        </div>
+                      </div>
                       <div class="row form-row">
                         <div class="col-md-4">
                           <label class="form-label text-left">Alasan Demolition</label>
                         </div>
                         <div class="col-md-8">
-                          <input name="alasan" id="alasan" type="text"  class="form-control " placeholder="Alasan" value="<?php echo $row->alasan_demolition?>" disabled="disabled" >
+                          <textarea name="alasan" id="alasan" type="text"  class="form-control" placeholder="Alasan demolition" disabled="disabled"><?php echo $row->alasan?></textarea>
                         </div>
                       </div>
-
-                      <?php //if(!empty($row->note_hrd)){?>
+                      <?php if(!empty($row->note_lv1)){?>
+                      <div class="row form-row">
+                        <div class="col-md-4">
+                          <label class="form-label text-left">Note (Supervisor): </label>
+                        </div>
+                        <div class="col-md-8">
+                          <textarea name="notes_spv" class="custom-txtarea-form" disabled="disabled"><?php echo $row->note_lv1 ?></textarea>
+                        </div>
+                      </div>
+                      <?php } ?>
+                      <?php if(!empty($row->note_lv2)){?>
+                      <div class="row form-row">
+                        <div class="col-md-4">
+                          <label class="form-label text-left">Note (Ka. Bagian): </label>
+                        </div>
+                        <div class="col-md-8">
+                          <textarea name="notes_spv" class="custom-txtarea-form" disabled="disabled"><?php echo $row->note_lv2 ?></textarea>
+                        </div>
+                      </div>
+                      <?php } ?>
+                      <?php if(!empty($row->note_lv3)){?>
+                      <div class="row form-row">
+                        <div class="col-md-4">
+                          <label class="form-label text-left">Note (Atasan Lainnya): </label>
+                        </div>
+                        <div class="col-md-8">
+                          <textarea name="notes_spv" class="custom-txtarea-form" disabled="disabled"><?php echo $row->note_lv3 ?></textarea>
+                        </div>
+                      </div>
+                      <?php } ?>
+                      <?php if(!empty($row->note_hrd)){?>
                       <div class="row form-row">
                         <div class="col-md-4">
                           <label class="form-label text-left">Note (hrd): </label>
@@ -98,11 +160,8 @@
                           <textarea name="notes_spv" class="custom-txtarea-form" disabled="disabled"><?php echo $row->note_hrd ?></textarea>
                         </div>
                       </div>
-                      <?php //} ?>
-
-
+                      <?php } ?>
                       </div>
-                      
                     </div>
                 </div>
                 <div class="form-actions">
@@ -110,13 +169,13 @@
                   <div class="row form-row">
                     <div class="col-md-12 text-center">
                     <?php  if($row->is_app_lv1 == 1 && get_nik($sess_id) == $row->user_app_lv1){?>
-                        <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitpromosiModalLv1"><i class='icon-edit'> Edit Approval</i></div>
+                        <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitdemolitionModalLv1"><i class='icon-edit'> Edit Approval</i></div>
                       <?php }elseif($row->is_app_lv2 == 1 && get_nik($sess_id) == $row->user_app_lv2){?>
-                        <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitpromosiModalLv2"><i class='icon-edit'> Edit Approval</i></div>
+                        <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitdemolitionModalLv2"><i class='icon-edit'> Edit Approval</i></div>
                       <?php }elseif($row->is_app_lv3 == 1 && get_nik($sess_id) == $row->user_app_lv3){?>
-                        <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitpromosiModalLv3"><i class='icon-edit'> Edit Approval</i></div>
+                        <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitdemolitionModalLv3"><i class='icon-edit'> Edit Approval</i></div>
                       <?php }elseif($row->is_app_hrd == 1 && get_nik($sess_id) == $row->user_app_hrd){?>
-                        <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitpromosiModalHrd"><i class='icon-edit'> Edit Approval</i></div>
+                        <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitdemolitionModalHrd"><i class='icon-edit'> Edit Approval</i></div>
                       <?php } ?>
                     </div>
                 </div>
@@ -143,7 +202,7 @@
                       $approved = assets_url('img/approved_stamp.png');
                       $rejected = assets_url('img/rejected_stamp.png');
                       if(!empty($row->user_app_lv1) && $row->is_app_lv1 == 0 && get_nik($sess_id) == $row->user_app_lv1){?>
-                      <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitpromosiModalLv1"><i class="icon-ok"></i>Submit</div>
+                      <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitdemolitionModalLv1"><i class="icon-ok"></i>Submit</div>
                       <span class="small"></span>
                         <span class="semi-bold"></span><br/>
                         <span class="small"></span><br/>
@@ -172,7 +231,7 @@
                     <div class="col-md-12"><span class="semi-bold">Mengetahui / Menyetujui,</span><br/><br/></div>
                     <?php
                      if(!empty($row->user_app_lv2) && $row->is_app_lv2 == 0 && get_nik($sess_id) == $row->user_app_lv2){?>
-                        <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitpromosiModalLv2"><i class="icon-ok"></i>Submit</div>
+                        <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitdemolitionModalLv2"><i class="icon-ok"></i>Submit</div>
                         <span class="small"></span>
                         <span class="semi-bold"></span><br/>
                         <span class="small"></span><br/>
@@ -200,7 +259,7 @@
                     <p class="wf-approve-sp">
                     <div class="col-md-12"><span class="semi-bold">Diterima HRD</span><br/><br/></div>
                       <?php if($row->is_app_hrd == 0 && is_admin()){?>
-                        <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitpromosiModalHrd"><i class="icon-ok"></i>Submit</div>
+                        <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitdemolitionModalHrd"><i class="icon-ok"></i>Submit</div>
                         <span class="small"></span>
                         <span class="semi-bold"></span><br/>
                         <span class="small"></span><br/>
@@ -236,7 +295,7 @@
                     $approved = assets_url('img/approved_stamp.png');
                     $rejected = assets_url('img/rejected_stamp.png');
                     if(!empty($row->user_app_lv3) && $row->is_app_lv3 == 0 && get_nik($sess_id) == $row->user_app_lv3){?>
-                      <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitpromosiModalLv3"><i class="icon-ok"></i>Submit</div>
+                      <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitdemolitionModalLv3"><i class="icon-ok"></i>Submit</div>
                       <span class="small"></span>
                       <span class="semi-bold"></span><br/>
                       <span class="small"></span><br/>
@@ -275,13 +334,13 @@
 </div>  
 <!-- END PAGE --> 
 
-<!--approval promosi Modal Lv1 -->
-<div class="modal fade" id="submitpromosiModalLv1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<!--approval demolition Modal Lv1 -->
+<div class="modal fade" id="submitdemolitionModalLv1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog" id="modaldialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Approval Form promosi - Supervisor</h4>
+        <h4 class="modal-title" id="myModalLabel">Approval Form demolition - Supervisor</h4>
       </div>
       <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
       <div class="modal-body">
@@ -325,13 +384,13 @@
 </div>
 <!--end approve modal lv1--> 
 
-<!--approval promosi Modal Lv2 -->
-<div class="modal fade" id="submitpromosiModalLv2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<!--approval demolition Modal Lv2 -->
+<div class="modal fade" id="submitdemolitionModalLv2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog" id="modaldialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Approval Form promosi - Ka. Bagian</h4>
+        <h4 class="modal-title" id="myModalLabel">Approval Form demolition - Ka. Bagian</h4>
       </div>
       <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
       <div class="modal-body">
@@ -375,13 +434,13 @@
 </div>
 <!--end approve modal Lv2--> 
 
-<!--approval promosi Modal Lv3 -->
-<div class="modal fade" id="submitpromosiModalLv3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<!--approval demolition Modal Lv3 -->
+<div class="modal fade" id="submitdemolitionModalLv3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog" id="modaldialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Approval Form promosi - Atasan Lainnya</h4>
+        <h4 class="modal-title" id="myModalLabel">Approval Form demolition - Atasan Lainnya</h4>
       </div>
       <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
       <div class="modal-body">
@@ -425,13 +484,13 @@
 </div>
 <!--end approve modal Lv3--> 
 
-<!--approval promosi Modal HRD -->
-<div class="modal fade" id="submitpromosiModalHrd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<!--approval demolition Modal HRD -->
+<div class="modal fade" id="submitdemolitionModalHrd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog" id="modaldialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Approval Form promosi - HRD</h4>
+        <h4 class="modal-title" id="myModalLabel">Approval Form demolition - HRD</h4>
       </div>
       <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
       <div class="modal-body">

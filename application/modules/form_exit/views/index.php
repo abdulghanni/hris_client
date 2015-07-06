@@ -37,6 +37,7 @@
                                   <th width="2%" class="text-center">Approval Perpustakaan</th>
                                   <th width="2%" class="text-center">Approval HRD</th>
                                   <th width="2%" class="text-center">Approval IT</th>
+                                  <th width="2%" class="text-center">Approval Asset Mgr</th>
                                   <th width="2%" class="text-center">appr. spv</th>
                                   <th width="2%" class="text-center">appr. ka.bag</th>
                                   <th width="2%" class="text-center">appr. Atasan Lainnya</th>
@@ -46,7 +47,7 @@
                               <tbody>
                                   <?php if($_num_rows>0){
                                       foreach($form_exit as $row):
-                                      $txt_app_lv1 = $txt_app_lv2 = $txt_app_lv3 = $txt_app_hrd = $txt_app_mgr = $txt_app_koperasi = $txt_app_perpus = $txt_app_it = "<i class='icon-minus' title = 'Pending'></i>";
+                                      $txt_app_lv1 = $txt_app_lv2 = $txt_app_lv3 = $txt_app_asset =  $txt_app_hrd = $txt_app_mgr = $txt_app_koperasi = $txt_app_perpus = $txt_app_it = "<i class='icon-minus' title = 'Pending'></i>";
                                       $approval_status = ($row->app_status_id== 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($row->app_status_id== 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
                                       $approval_status_mgr = ($row->app_status_id_mgr== 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($row->app_status_id_mgr== 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
                                       $approval_status_koperasi = ($row->app_status_id_koperasi== 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($row->app_status_id_koperasi== 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
@@ -57,6 +58,7 @@
                                       $approval_status_lv1 = ($row->app_status_id_lv1 == 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($row->app_status_id_lv1 == 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
                                       $approval_status_lv2 = ($row->app_status_id_lv2 == 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($row->app_status_id_lv2 == 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
                                       $approval_status_lv3 = ($row->app_status_id_lv3 == 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($row->app_status_id_lv3 == 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
+                                      $approval_status_asset = ($row->app_status_id_asset == 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($row->app_status_id_asset == 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
                                   
                                    //Approval Level 1
                                     if(!empty($row->user_app_lv1) && $row->is_app_lv1 == 0 && $sess_nik == $row->user_app_lv1){
@@ -92,6 +94,16 @@
                                         $txt_app_lv3 = "<a href='".site_url('form_exit/detail/'.$row->id)."''>$approval_status_lv3</a>";
                                       }else{
                                       $txt_app_lv3 = "<i class='icon-circle' title = 'Tidak Butuh Approval'></i>";
+                                    }
+
+                                    if(!empty($row->user_app_asset) && $row->is_app_asset == 0 && $sess_nik == $row->user_app_asset){
+                                        $txt_app_asset = "<a href='".site_url('form_exit/detail/'.$row->id)."''>
+                                                        <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-edit'></i></button>
+                                                        </a>";
+                                      }elseif(!empty($row->user_app_asset)){
+                                        $txt_app_asset = "<a href='".site_url('form_exit/detail/'.$row->id)."''>$approval_status_asset</a>";
+                                      }else{
+                                      $txt_app_asset = "<i class='icon-circle' title = 'Tidak Butuh Approval'></i>";
                                     }
 
                                      //Approval HRD
@@ -164,6 +176,9 @@
                                     </td>
                                     <td class="text-center">
                                       <?php echo $txt_app_it; ?>
+                                    </td>
+                                    <td class="text-center">
+                                      <?php echo $txt_app_asset; ?>
                                     </td>
                                     <td class="text-center">
                                       <?php echo $txt_app_lv1;?>

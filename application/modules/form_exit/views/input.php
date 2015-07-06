@@ -19,7 +19,8 @@
                 <h4>Form Rekomendasi <span class="semi-bold"><a href="<?php echo site_url('form_exit')?>">Karyawan Keluar</a></span></h4>
               </div>
               <div class="grid-body no-border">
-                 <?php echo form_open("form_exit/add",array("id"=>"formaddexit"));?>
+                 <?php //echo form_open("form_exit/add",array("id"=>"formaddexit"));?>
+                 <?php echo form_open("form_exit/add",array("id"=>""));?>
                 <div class="row column-seperation">
                   <div class="col-md-12">    
                     <div class="row form-row">
@@ -28,7 +29,7 @@
                       </div>
                       <div class="col-md-3">
                         <?php if(is_admin()){?>
-                          <select id="emp" class="select2" style="width:100%" name="emp">
+                          <select id="empExit" class="select2" style="width:100%" name="emp">
                           <?php
                           foreach ($all_users->result() as $u) :
                             $selected = $u->id == $sess_id ? 'selected = selected' : '';?>
@@ -203,7 +204,7 @@
                       <?php if(is_admin()){
                         $style_up='class="select2" style="width:100%" id="atasan1"';
                             echo form_dropdown('atasan1',array('0'=>'- Pilih Supervisor -'),'',$style_up);
-                        }else{?>
+                        } else {?>
                         <select name="atasan1" id="atasan1" class="select2" style="width:100%">
                             <option value="0">- Pilih Supervisor -</option>
                             <?php foreach ($user_atasan as $key => $up) : ?>
@@ -214,22 +215,14 @@
                       </div>
                     </div>
 
-                    <div class="row form-row">
+                   <div class="row form-row">
                       <div class="col-md-2">
                         <label class="form-label text-left"><?php echo 'Ka. Bagian' ?></label>
                       </div>
                       <div class="col-md-4">
-                      <?php if(is_admin()){
-                        $style_up='class="select2" style="width:100%" id="atasan2"';
-                            echo form_dropdown('atasan2',array('0'=>'- Pilih Ka. Bagian -'),'',$style_up);
-                        }else{?>
                         <select name="atasan2" id="atasan2" class="select2" style="width:100%">
                             <option value="0">- Pilih Ka. Bagian -</option>
-                            <?php foreach ($user_atasan as $key => $up) : ?>
-                            <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
-                            <?php endforeach;?>
                         </select>
-                      <?php }?>
                       </div>
                     </div>
 
@@ -238,19 +231,14 @@
                         <label class="form-label text-left"><?php echo 'Atasan Lainnya' ?></label>
                       </div>
                       <div class="col-md-4">
-                      <?php if(is_admin()){
-                        $style_up='class="select2" style="width:100%" id="atasan3"';
-                            echo form_dropdown('atasan3',array('0'=>'- Pilih Atasan Lainnya -'),'',$style_up);
-                        }else{?>
                         <select name="atasan3" id="atasan3" class="select2" style="width:100%">
                             <option value="0">- Pilih Atasan Lainnya -</option>
-                            <?php foreach ($user_atasan as $key => $up) : ?>
-                            <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
-                            <?php endforeach;?>
                         </select>
-                            <?php }?>
                       </div>
                     </div>
+
+
+                    <div id="asmen"></div>
 
                     </div>
 

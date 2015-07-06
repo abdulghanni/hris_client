@@ -45,7 +45,7 @@
                         
                         <div class="row column-seperation">
                             <div <?php ( ! empty($message)) && print('class="alert alert-info"'); ?> id="infoMessage"><?php echo $message;?></div>
-                            <?php echo form_open_multipart(uri_string());?>
+                            <?php echo form_open_multipart(uri_string(), array('id'=>'formedituser'));?>
                                 <div class="col-md-6">
                                     <h4><?php echo lang('employee_information_subheading')?></h4>
                                     <div class="form-group">
@@ -119,13 +119,13 @@
                                             <i class=""></i>
                                                 <select name="superior_id" class="select2" id="superior_id" style="width:100%">
                                                     <?php if (!empty($user_superior))  {
-                                                        echo '<option value="0">'.' -- Select User -- '.'</option>';
+                                                        echo '<option value="0">'.' -- Pilih Atasan -- '.'</option>';
 														foreach ($user_superior as $key => $up) {
                                                           $selected = ($up['ID'] == $selected_superior) ? 'selected = selected' : '';
 														  echo '<option value="'.$up['ID'].'" '.$selected.'>'.$up['NAME'].'</option>';
 														}
 													  }else{?>
-														  <option value="0">No Data</option>
+														  <option value="0">Tidak ada karyawan dengan grade lebih tinggi</option>
 														<?php }?>
                                                 </select>
                                             </div>

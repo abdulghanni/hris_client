@@ -85,18 +85,18 @@
                                     }
 
                                      //Approval HRD
-                                    if(is_admin()&&$user->is_app_lv3 == 0){
+                                    if(is_admin()&&$user->is_app_hrd == 0){
                                       $txt_app_hrd = "<a href='".site_url('form_demolition/detail/'.$user->id)."''>
                                                       <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-edit'></i></button>
                                                       </a>";
-                                    }elseif($user->is_app_lv3 == 1){
+                                    }elseif($user->is_app_hrd == 1){
                                       $txt_app_hrd =  "<a href='".site_url('form_demolition/detail/'.$user->id)."''>$approval_status_hrd</a>";
                                     }
                                   ?>
                                   <tr>
                                     <td><a href="<?php echo site_url('form_demolition/detail/'.$user->id)?>"><?php echo get_name($user->created_by)?></a></td>
                                     <td><?php echo get_name($user->user_id)?></td>
-                                    <td><?php echo $user->alasan_demolition?></td>
+                                    <td><?php echo $user->alasan?></td>
                                     <td class="text-center">
                                       <?php echo $txt_app_lv1;?>
                                     </td>

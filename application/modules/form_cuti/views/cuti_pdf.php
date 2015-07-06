@@ -7,7 +7,6 @@
 <!--
 .style3 {
   font-size: 20px;
-  font-weight: bold;
 }
 .style4 {
   font-size: 22px;
@@ -21,8 +20,14 @@
 }
 .style7 {
   padding-left: 20px;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: bold;
+}
+
+.approval-img-md{
+    height:12%;
+    width:15%;
+    z-index:-1;
 }
 -->
 </style>
@@ -38,6 +43,8 @@ $user_nik = get_nik($user->user_id);
 $submission_date = dateIndo($user->created_on);
 $date_start_cuti = dateIndo($user->date_mulai_cuti);
 $date_end_cuti = dateIndo($user->date_selesai_cuti);
+$approved = assets_url('img/approved_stamp.png');
+$rejected = assets_url('img/rejected_stamp.png');
 ?>
 <table width="1000" height="135" border="0" align="center" style="padding-left:30px">
   <tr>
@@ -172,41 +179,44 @@ $date_end_cuti = dateIndo($user->date_selesai_cuti);
 <table width="1000" align="center">
   <tbody>
     <tr>
-      <th width="250" height="250"></th>
+      <th width="250" height="75"></th>
       <th width="250">Disetujui Oleh,</th>
       <th width="250"></th>
       <th width="250"></th>
     </tr>
     <tr>
+      <td width="250" align="center"><?php echo ($user->approval_status_id_lv1 == 1)?"<img class=approval-img-md src=$approved>":(($user->approval_status_id_lv1 == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
+      <td width="250" align="center"><?php echo ($user->approval_status_id_lv2 == 1)?"<img class=approval-img-md src=$approved>":(($user->approval_status_id_lv2 == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
+      <td width="250" align="center"><?php echo ($user->approval_status_id_lv3 == 1)?"<img class=approval-img-md src=$approved>":(($user->approval_status_id_lv3 == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
+      <td width="250" align="center"><?php echo ($user->approval_status_id_hrd == 1)?"<img class=approval-img-md src=$approved>":(($user->approval_status_id_hrd == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
+    </tr>
+    <tr>
     <?php if(!empty($user->user_app_lv1)){?>
-      <td height="80" align="center"><?php echo get_name($user->user_app_lv1)?><br/><?php echo dateIndo($user->date_app_lv1)?></td>
+      <td height="80" align="center" class="style3"><?php echo get_name($user->user_app_lv1)?></td>
     <?php }?>
     <?php if(!empty($user->user_app_lv2)){?>
-      <td align="center"><?php echo get_name($user->user_app_lv2)?><br/><?php echo dateIndo($user->date_app_lv2)?></td>
+      <td align="center" class="style3"><?php echo get_name($user->user_app_lv2)?></td>
     <?php }?>
     <?php if(!empty($user->user_app_lv3)){?>
-      <td align="center"><?php echo get_name($user->user_app_lv3)?><br/><?php echo dateIndo($user->date_app_lv3)?></td>
+      <td align="center" class="style3"><?php echo get_name($user->user_app_lv3)?></td>
     <?php }?>
-      <td align="center"><?php echo get_name($user->user_app_hrd)?><br/><?php echo dateIndo($user->date_app_hrd)?></td>
+      <td align="center" class="style3"><?php echo get_name($user->user_app_hrd)?></td>
     </tr>
     <tr >
     <?php if(!empty($user->user_app_lv1)){?>
-      <td align="center">(Supervisor)</td>
+      <td align="center"><?php echo dateIndo($user->date_app_lv1)?><br/>(Supervisor)</td>
     <?php }?>
     <?php if(!empty($user->user_app_lv2)){?>
-      <td align="center">(Ka. Bagian)</td>
+      <td align="center"><?php echo dateIndo($user->date_app_lv2)?><br/>(Ka. Bagian)</td>
       <?php }?>
     <?php if(!empty($user->user_app_lv3)){?>
-      <td align="center"><?php echo '('.get_user_position($user->user_app_lv3).')'?></td>
+      <td align="center"><?php echo dateIndo($user->date_app_lv3)?><br/><?php echo '('.get_user_position($user->user_app_lv3).')'?></td>
     <?php } ?>
-      <td align="center">(HRD Database)</td>
+      <td align="center"><?php echo dateIndo($user->date_app_hrd)?><br/>(HRD)</td>
     </tr>
   </tbody>
 </table>
 <?php endforeach; ?>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
 <p>&nbsp;</p>
 </body>
 </html>

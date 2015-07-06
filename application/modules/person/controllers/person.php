@@ -83,34 +83,16 @@ class Person extends MX_Controller {
         $user_jabatan = $this->person_model->getUserJabatan($id);
         $user_award = $this->person_model->getUserAward($id);
         $user_ikatan = $this->person_model->getUserIkatanDinas($id);
-		
-		//employee identity
-		$this->data['id'] = $user->id;
-        $this->data['nik'] = (!empty($user->nik)) ? $user->nik : '-';
-        $this->data['bod'] = (!empty($user->bod)) ? $user->bod : '-';
-        $this->data['first_name'] = (!empty($user->first_name)) ? $user->first_name : '';
-        $this->data['last_name'] = (!empty($user->last_name)) ? $user->last_name : '';
-        $this->data['business_unit'] = (!empty($user->organization_title)) ? $user->organization_title : '';
-        $this->data['marital'] = (!empty($user->marital_title)) ? $user->marital_title : '';
-        $this->data['phone'] = (!empty($user->phone)) ? $user->phone : '';
-        $this->data['email'] = (!empty($user->email)) ? $user->email : '';
-        $this->data['previous_email'] = (!empty($user->previous_email)) ? $user->previous_email : '';
-        $this->data['bb_pin'] = (!empty($user->bb_pin)) ? $user->bb_pin : ''; 
-        $this->data['photo'] = (!empty($user->photo)) ? $user->photo : '';
-        $this->data['s_kk'] = $this->form_validation->set_value('kk', $user->scan_kk);
-        $this->data['s_akta'] = $this->form_validation->set_value('akta', $user->scan_akta); 
-        $user_folder = $user->id.$user->first_name;
-        $this->data['u_folder'] = $user_folder;
-		
-		$jsondata = file_get_contents(base_url('json/users_employement.json'));
+	
+		$jsondata = file_get_contents(get_api_key().'users/lists/format/json');
 		$data = json_decode($jsondata, true);
 		
 
 		if ($this->cekNik($data, 'EMPLID', $user->nik) == TRUE){
-		$getdata = file_get_contents('http://admin:12345678@localhost/hris_api/users/list/EMPLID/'.$user->nik.'/format/json');
+		$getdata = file_get_contents(get_api_key().'users/list/EMPLID/'.$user->nik.'/format/json');
 		$data = json_decode($getdata, true);
-		
-		 $url = 'http://admin:12345678@localhost/hris_api/users/employement/EMPLID/'.$user->nik.'/format/json';
+
+		 $url = get_api_key().'users/employement/EMPLID/'.$user->nik.'/format/json';
             $headers = get_headers($url);
             $response = substr($headers[0], 9, 3);
             if ($response != "404") {
@@ -120,8 +102,27 @@ class Person extends MX_Controller {
             } else {
                 //$this->data['user_info'] = $this->form_cuti_model->where('users.id',$user_id)->form_cuti_input()->result();
             }
+
+            //employee identity
+		$this->data['id'] = $user->id;
+        $this->data['nik'] = (!empty($user->nik)) ? $user->nik : '-';
+        $this->data['bod'] = (!empty($user->bod)) ? $user->bod : '-';
+        $this->data['first_name'] = (!empty($user->first_name)) ? $user->first_name : '';
+        $this->data['last_name'] = (!empty($user->last_name)) ? $user->last_name : '';
+        $this->data['business_unit'] = (!empty($user->organization_title)) ? $user->organization_title : '';
+        $this->data['marital'] = (!empty($user->marital_title)) ? $user->marital_title : '';
+        $this->data['phone'] = (!empty($user->phone)) ? $user->phone : '';
+        $this->data['email'] = (!empty($user->email)) ? $user->email : '';
+        $this->data['previous_email'] = (!empty($user_info['PREVIOUSEMAIL'])) ? $user_info['PREVIOUSEMAIL'] : '-';
+        $this->data['bb_pin'] = (!empty($user_info['PINBB'])) ? $user_info['PINBB'] : '-'; 
+        $this->data['photo'] = (!empty($user->photo)) ? $user->photo : '';
+        $this->data['s_kk'] = $this->form_validation->set_value('kk', $user->scan_kk);
+        $this->data['s_akta'] = $this->form_validation->set_value('akta', $user->scan_akta); 
+        $user_folder = $user->id.$user->first_name;
+        $this->data['u_folder'] = $user_folder;
+		
 			
-			$url = 'http://admin:12345678@localhost/hris_api/users/course/EMPLID/'.$user->nik.'/format/json';
+			$url = get_api_key().'users/course/EMPLID/'.$user->nik.'/format/json';
 			$headers = get_headers($url);
 			$response = substr($headers[0], 9, 3);
 			if ($response != "404") {
@@ -131,48 +132,21 @@ class Person extends MX_Controller {
 			} else {
 				$this->data['course'] = $user_course->result_array();
 			}
-			
-		//Certificate Tab Api
-		/* $jsoncertificate= file_get_contents(base_url('json/VIRTUALNETWORKTABLE.json'));
-		$certificatedata = json_decode($jsoncertificate, true);
-			if ($this->cekNik($certificatedata, 'REFERENCE', $user->nik) == TRUE){
-			$getcertificate = file_get_contents('http://admin:12345678@localhost/hris_api/users/certificate/EMPLID/'.$user->nik.'/format/json');
-			$certificate = json_decode($getcertificate, true);
-			$this->data['certificate'] = $certificate;
-			
-			}else{
-				$this->data['certificate'] = $user_certificate->result_array();
-			} */
-		
-		$url = 'http://admin:12345678@localhost/hris_api/users/certificate/EMPLID/'.$user->nik.'/format/json';
+		$url = get_api_key().'users/certificate/EMPLID/'.$user->nik.'/format/json';
 		$headers = get_headers($url);
 		$response = substr($headers[0], 9, 3);
 		if ($response != "404") {
-			$getcertificate = file_get_contents('http://admin:12345678@localhost/hris_api/users/certificate/EMPLID/'.$user->nik.'/format/json');
+			$getcertificate = file_get_contents(get_api_key().'users/certificate/EMPLID/'.$user->nik.'/format/json');
 					$certificate = json_decode($getcertificate, true);
 					$this->data['certificate'] = $certificate;
 		} else {
 			$this->data['certificate'] = $user_certificate->result_array();
 		}
-		
-		
-
-		//Award Tab API
-		/* $jsonaward = file_get_contents(base_url('json/EMPLAWARDWARNING.json'));
-		$awarddata = json_decode($jsonaward, true);
-			if ($this->cekNik($awarddata, 'EMPLID', $user->nik) == TRUE){
-			$getaward = file_get_contents('http://admin:12345678@localhost/hris_api/users/award/EMPLID/'.$user->nik.'/format/json');
-			$award = json_decode($getaward, true);
-			$this->data['award'] = $award;
-			}else{
-				$this->data['award'] = $user_award->result_array();
-			} */
-			
-			$url = 'http://admin:12345678@localhost/hris_api/users/award/EMPLID/'.$user->nik.'/format/json';
+			$url = get_api_key().'users/award/EMPLID/'.$user->nik.'/format/json';
 			$headers = get_headers($url);
 			$response = substr($headers[0], 9, 3);
 			if ($response != "404") {
-				$getaward = file_get_contents('http://admin:12345678@localhost/hris_api/users/award/EMPLID/'.$user->nik.'/format/json');
+				$getaward = file_get_contents(get_api_key().'users/award/EMPLID/'.$user->nik.'/format/json');
 						$award = json_decode($getaward, true);
 						$this->data['award'] = $award;
 			} else {
@@ -181,11 +155,11 @@ class Person extends MX_Controller {
 			
 		//Education Tab API
 		
-		$url = 'http://admin:12345678@localhost/hris_api/users/education/EMPLID/'.$user->nik.'/format/json';
+		$url = get_api_key().'users/education/EMPLID/'.$user->nik.'/format/json';
 			$headers = get_headers($url);
 			$response = substr($headers[0], 9, 3);
 			if ($response != "404") {
-				$geteducation = file_get_contents('http://admin:12345678@localhost/hris_api/users/education/EMPLID/'.$user->nik.'/format/json');
+				$geteducation = file_get_contents(get_api_key().'users/education/EMPLID/'.$user->nik.'/format/json');
 						$education = json_decode($geteducation, true);
 						$this->data['education'] = $education;
 			} else {
@@ -194,11 +168,11 @@ class Person extends MX_Controller {
 			
 		//Experience Tab API
 		
-		$url = 'http://admin:12345678@localhost/hris_api/users/experience/EMPLID/'.$user->nik.'/format/json';
+		$url = get_api_key().'users/experience/EMPLID/'.$user->nik.'/format/json';
 			$headers = get_headers($url);
 			$response = substr($headers[0], 9, 3);
 			if ($response != "404") {
-				$getexperience = file_get_contents('http://admin:12345678@localhost/hris_api/users/experience/EMPLID/'.$user->nik.'/format/json');
+				$getexperience = file_get_contents(get_api_key().'users/experience/EMPLID/'.$user->nik.'/format/json');
 						$experience = json_decode($getexperience, true);
 						$this->data['experience'] = $experience;
 			} else {
@@ -206,11 +180,11 @@ class Person extends MX_Controller {
 			}
 			
 		//SK Tab API
-			$url = 'http://admin:12345678@localhost/hris_api/users/sk/EMPLID/'.$user->nik.'/format/json';
+			$url = get_api_key().'users/sk/EMPLID/'.$user->nik.'/format/json';
 			$headers = get_headers($url);
 			$response = substr($headers[0], 9, 3);
 			if ($response != "404") {
-				$getsk = file_get_contents('http://admin:12345678@localhost/hris_api/users/sk/EMPLID/'.$user->nik.'/format/json');
+				$getsk = file_get_contents(get_api_key().'users/sk/EMPLID/'.$user->nik.'/format/json');
 						$sk = json_decode($getsk, true);
 						$this->data['sk'] = $sk;
 			} else {
@@ -218,11 +192,11 @@ class Person extends MX_Controller {
 			}
 		
 		//STI Tab API
-			$url = 'http://admin:12345678@localhost/hris_api/users/sti/EMPLID/'.$user->nik.'/format/json';
+			$url = get_api_key().'users/sti/EMPLID/'.$user->nik.'/format/json';
 			$headers = get_headers($url);
 			$response = substr($headers[0], 9, 3);
 			if ($response != "404") {
-				$getsti = file_get_contents('http://admin:12345678@localhost/hris_api/users/sti/EMPLID/'.$user->nik.'/format/json');
+				$getsti = file_get_contents(get_api_key().'users/sti/EMPLID/'.$user->nik.'/format/json');
 						$sti = json_decode($getsti, true);
 						$this->data['sti'] = $sti;
 			} else {
@@ -231,11 +205,11 @@ class Person extends MX_Controller {
 			
 		//Riwayat_jabatan Tab API
 
-			$url = 'http://admin:12345678@localhost/hris_api/users/jabatan/EMPLID/'.$user->nik.'/format/json';
+			$url = get_api_key().'users/jabatan/EMPLID/'.$user->nik.'/format/json';
 			$headers = get_headers($url);
 			$response = substr($headers[0], 9, 3);
 			if ($response != "404") {
-				$getjabatan = file_get_contents('http://admin:12345678@localhost/hris_api/users/jabatan/EMPLID/'.$user->nik.'/format/json');
+				$getjabatan = file_get_contents(get_api_key().'users/jabatan/EMPLID/'.$user->nik.'/format/json');
 						$jabatan = json_decode($getjabatan, true);
 						$this->data['jabatan'] = $jabatan;
 			} else {
@@ -243,21 +217,17 @@ class Person extends MX_Controller {
 			}
 			
 		//Ikatan_Dinas Tab API
-
-			$url = 'http://admin:12345678@localhost/hris_api/users/ikatan_dinas/EMPLID/'.$user->nik.'/format/json';
+			$url = get_api_key().'users/ikatan_dinas/EMPLID/'.$user->nik.'/format/json';
 			$headers = get_headers($url);
 			$response = substr($headers[0], 9, 3);
 			if ($response != "404") {
-				$getikatan_dinas = file_get_contents('http://admin:12345678@localhost/hris_api/users/ikatan_dinas/EMPLID/'.$user->nik.'/format/json');
+				$getikatan_dinas = file_get_contents(get_api_key().'users/ikatan_dinas/EMPLID/'.$user->nik.'/format/json');
 						$ikatan_dinas = json_decode($getikatan_dinas, true);
 						$this->data['ikatan_dinas'] = $ikatan_dinas;
 			} else {
 				$this->data['ikatan_dinas'] = $user_exp->result_array();
 			}
-		
-		
-		
-		//print_mz($data);
+
 		$this->data['aviva'] = (!empty($user_emp->aviva)) ? $user_emp->aviva : (!empty($user_info['AVIVA'])) ? $user_info['AVIVA'] : '-';
         $this->data['bpjs_kerja'] = (!empty($user_emp->aviva)) ? $user_emp->aviva : (!empty($user_info['JAMSOSTEK'])) ? $user_info['JAMSOSTEK'] : '-';
         $this->data['ktp'] = (!empty($user_emp->aviva)) ? $user_emp->aviva : (!empty($user_info['KTP'])) ? $user_info['KTP'] : '-';
@@ -270,6 +240,8 @@ class Person extends MX_Controller {
         $this->data['bumida_date'] = (!empty($user_info['BPJS'])) ? $user_info['BUMIDADATE'] : '-';
 		$this->data['seniority_date'] = (!empty($user_emp->seniority_date)) ? $user_emp->seniority_date : (!empty($user_info['SENIORITYDATE'])) ? $user_info['SENIORITYDATE'] : '-';
         $this->data['position'] = (!empty($user_emp->position)) ? $user_emp->position : (!empty($user_info['POSITION'])) ? $user_info['POSITION'] : '-';
+        $this->data['organization'] = (!empty($user_info['ORGANIZATION'])) ? $user_info['ORGANIZATION'] : '-';
+        $this->data['bu'] = (!empty($user_info['BU'])) ? $user_info['BU'] : '-';
         $this->data['empl_status'] = (!empty($user_emp->empl_status)) ? $user_emp->empl_status : (!empty($user_info['EMPLOYEESTATUS'])) ? $user_info['EMPLOYEESTATUS'] : '-';
         $this->data['employee_status'] = (!empty($user_emp->employee_status)) ? $user_emp->employee_status : (!empty($user_info['STATUS'])) ? $user_info['STATUS'] : '-';
         $this->data['cost_center'] = (!empty($user_emp->cost_center)) ? $user_emp->cost_center : (!empty($user_info['COSTCENTER'])) ? $user_info['COSTCENTER'] : '-';

@@ -98,11 +98,11 @@
                                   ?>
                                   <tr>
                                     <td>
-                                      <a href="<?php echo site_url('form_training/detail/'.$user->id)?>"><?php echo get_name($user->created_by)?></a>
+                                      <a href="<?php echo site_url('form_training/detail/'.$user->id)?>"><?php echo get_name($user->user_pengaju_id)?></a>
                                     </td>
 
                                     <td>
-                                      <a href="<?php echo site_url('form_training/detail/'.$user->id)?>"><?php echo get_name($user->user_id)?></a>
+                                      <a href="<?php echo site_url('form_training/detail/'.$user->id)?>"><?php echo get_name($user->user_peserta_id)?></a>
                                     </td>
 
                                     <td>

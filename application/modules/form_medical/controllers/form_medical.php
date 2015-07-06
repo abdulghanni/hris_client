@@ -9,11 +9,10 @@ class Form_medical extends MX_Controller {
         parent::__construct();
         $this->load->library('authentication', NULL, 'ion_auth');
         $this->load->library('form_validation');
-        $this->load->library('rest');
+        $this->load->library('approval');
         $this->load->helper('url');
         
         $this->load->database();
-		$this->load->model('person/person_model','person_model');
         $this->load->model('form_medical/form_medical_model','form_medical_model');
         
         $this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
@@ -64,7 +63,6 @@ class Form_medical extends MX_Controller {
             $form_medical = $this->data['form_medical'] = $this->form_medical_model->like($ftitle_post)->where('is_deleted',0)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->form_medical()->result();
             $this->data['_num_rows'] = $this->form_medical_model->like($ftitle_post)->where('is_deleted',0)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->form_medical()->num_rows();
             
-
              //config pagination
              $config['base_url'] = base_url().'form_medical/index/fn:'.$exp_ftitle[1].'/'.$sort_by.'/'.$sort_order.'/';
              $config['total_rows'] = $this->data['num_rows_all'];
@@ -103,6 +101,7 @@ class Form_medical extends MX_Controller {
         $this->data['sess_id'] = $this->session->userdata('user_id');
         $this->data['all_users'] = getAll('users', array('active'=>'where/1', 'username'=>'order/asc'), array('!=id'=>'1'));
         $this->get_user_atasan();
+        $this->get_user_same_org();
         $this->_render_page('form_medical/input', $this->data);
     }
 
@@ -170,11 +169,16 @@ class Form_medical extends MX_Controller {
                 'created_on' => date('Y-m-d',strtotime('now')),
                 );
 
-            $this->db->insert('users_medical_detail', $data_medical_detail);
-            endfor;
-            $user_id = $this->input->post('pengaju');
-            $this->send_approval_request($last_medical_id, $user_id);
-            redirect('form_medical', 'refresh');
+                $this->db->insert('users_medical_detail', $data_medical_detail);
+                endfor;
+                $user_id = $this->input->post('pengaju');
+                $user_app_lv1 = getValue('user_app_lv1', 'users_medical', array('id'=>'where/'.$last_medical_id));
+                if(!empty($user_app_lv1)):
+                    $this->approval->request('lv1', 'medical', $last_medical_id, $user_id, $this->detail_email($last_medical_id));
+                else:
+                    $this->approval->request('hrd', 'medical', $last_medical_id, $user_id, $this->detail_email($last_medical_id));
+                endif;
+                redirect('form_medical', 'refresh');
     }
 
     function detail($id)
@@ -215,11 +219,19 @@ class Form_medical extends MX_Controller {
         'date_app_'.$type => $date_now,
         );
         
-       if ($this->form_medical_model->update($id,$data)) {
-           return TRUE;
-       }
-
+       $this->form_medical_model->update($id,$data);
+       $user_id = getValue('user_id', 'users_medical', array('id'=>'where/'.$id));
        $this->approval_mail($id);
+       if($type !== 'hrd'){
+            $lv = substr($type, -1)+1;
+            $lv_app = 'lv'.$lv;
+            $user_app = ($lv<4) ? getValue('user_app_'.$lv_app, 'users_medical', array('id'=>'where/'.$id)):0;
+            if(!empty($user_app)):
+                $this->approval->request($lv_app, 'medical', $id, $user_id, $this->detail_email($id));
+            else:
+                $this->approval->request('hrd', 'medical', $id, $user_id, $this->detail_email($id));
+            endif;
+        }
     }
 
     function do_approve_hrd($id)
@@ -373,7 +385,7 @@ class Form_medical extends MX_Controller {
         $form_medical = $this->data['form_medical'] = $this->form_medical_model->form_medical($id)->result();
         $this->data['_num_rows'] = $this->form_medical_model->form_medical($id)->num_rows();
 
-        return $this->load->view('form_medical/medical_mail', $this->data, TRUE);
+        $this->load->view('form_medical/medical_mail', $this->data);
     }
 
     function form_medical_pdf($id)
@@ -392,14 +404,9 @@ class Form_medical extends MX_Controller {
         $this->data['detail'] = $this->form_medical_model->form_medical_detail($id)->result_array();
         $this->data['detail_hrd'] = $this->form_medical_model->form_medical_hrd($id)->result_array();
         $this->data['total_medical_hrd'] = $this->form_medical_model->get_total_medical_hrd($id);
-        $this->data['created_by'] = getValue('user_id', 'users_medical', array('id'=>'where/'.$id));
-        $this->data['created_on'] = getValue('created_on', 'users_medical', array('id'=>'where/'.$id));
-        $this->data['is_app'] = getValue('is_app_lv1', 'users_medical', array('id'=>'where/'.$id));
-        $this->data['user_app'] = getValue('user_app_lv1', 'users_medical', array('id'=>'where/'.$id));
-        $this->data['date_app'] = getValue('date_app_lv1', 'users_medical', array('id'=>'where/'.$id));
-        $this->data['is_app_hrd'] = getValue('is_app_hrd', 'users_medical', array('id'=>'where/'.$id));
-        $this->data['user_app_hrd'] = getValue('user_app_hrd', 'users_medical', array('id'=>'where/'.$id));
-        $this->data['date_app_hrd'] = getValue('date_app_hrd', 'users_medical', array('id'=>'where/'.$id));
+        $form_medical = $this->data['form_medical'] = $this->form_medical_model->form_medical($id)->result();
+        $this->data['_num_rows'] = $this->form_medical_model->form_medical($id)->num_rows();
+            
 
         $this->data['id'] = $id;
         $title = $this->data['title'] = 'REKAPITULASI RAWAT JALAN & INAP - '.$id;
@@ -413,54 +420,39 @@ class Form_medical extends MX_Controller {
 
     function get_user_atasan()
     {
-            $user_id = $this->session->userdata('user_id');
-            $url_org = get_api_key().'users/superior/EMPLID/'.get_nik($user_id).'/format/json';
-            $headers_org = get_headers($url_org);
-            $response = substr($headers_org[0], 9, 3);
-            if ($response != "404") {
-            $get_user_pengganti = file_get_contents($url_org);
-            $user_pengganti = json_decode($get_user_pengganti, true);
-            return $this->data['user_atasan'] = $user_pengganti;
-            }else{
-             return $this->data['user_atasan'] = 'Tidak ada karyawan dengan departement yang sama';
-            }
-    }
-
-    public function get_atasan($id)
-    {
+        $id = $this->session->userdata('user_id');
         $url = get_api_key().'users/superior/EMPLID/'.get_nik($id).'/format/json';
+        $url_atasan_satu_bu = get_api_key().'users/atasan_satu_bu/EMPLID/'.get_nik($id).'/format/json';
         $headers = get_headers($url);
+        $headers2 = get_headers($url_atasan_satu_bu);
         $response = substr($headers[0], 9, 3);
+        $response2 = substr($headers2[0], 9, 3);
         if ($response != "404") {
-            $get_task_receiver = file_get_contents($url);
-            $task_receiver = json_decode($get_task_receiver, true);
-             foreach ($task_receiver as $row)
-                {
-                    $result['0']= '-- Pilih Atasan --';
-                    $result[$row['ID']]= ucwords(strtolower($row['NAME']));
-                }
-        } else {
-           $result['-']= '- Tidak ada user dengan departemen yang sama -';
+            $get_atasan = file_get_contents($url);
+            $atasan = json_decode($get_atasan, true);
+            return $this->data['user_atasan'] = $atasan;
+        }elseif($response == "404" && $response2 != "404") {
+           $get_atasan = file_get_contents($url_atasan_satu_bu);
+           $atasan = json_decode($get_atasan, true);
+           return $this->data['user_atasan'] = $atasan;
+        }else{
+            return $this->data['user_atasan'] = '- Karyawan Tidak Memiliki Atasan -';
         }
-        $data['result']=$result;
-        $this->load->view('dropdown_atasan',$data);
     }
 
-    public function get_emp_org($id)
+    function get_user_same_org()
     {
-
-        $url = get_api_key().'users/employement/EMPLID/'.get_nik($id).'/format/json';
-            $headers = get_headers($url);
-            $response = substr($headers[0], 9, 3);
-            if ($response != "404") {
-                $getuser_info = file_get_contents($url);
-                $user_info = json_decode($getuser_info, true);
-                $org_nm = $user_info['ORGANIZATION'];
-            } else {
-                $org_nm = '';
-            }
-        
-        echo $org_nm;
+        $user_id = $this->session->userdata('user_id');
+        $url_org = get_api_key().'users/org/EMPLID/'.get_nik($user_id).'/format/json';
+        $headers_org = get_headers($url_org);
+        $response = substr($headers_org[0], 9, 3);
+        if ($response != "404") {
+        $get_user_pengganti = file_get_contents($url_org);
+        $user_pengganti = json_decode($get_user_pengganti, true);
+        return $this->data['user_same_org'] = $user_pengganti;
+        }else{
+         return $this->data['user_same_org'] = 'Tidak ada karyawan dengan departement yang sama';
+        }
     }
 
     function _render_page($view, $data=null, $render=false)
@@ -502,6 +494,7 @@ class Form_medical extends MX_Controller {
 
                     $this->template->add_js('jquery.bootstrap.wizard.min.js');
                     $this->template->add_js('jquery.validate.min.js');
+                    $this->template->add_js('emp_dropdown.js');
                     $this->template->add_js('form_medical.js');
                     
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');

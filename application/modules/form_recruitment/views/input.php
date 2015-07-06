@@ -21,7 +21,7 @@
             </div>
             <div class="grid-body no-border">
               <?php
-                $att = array('class' => 'form-no-horizontal-spacing', 'id' => 'formaddrecruitment');
+                $att = array('class' => 'form-no-horizontal-spacing', /*'id' => 'formaddrecruitment'*/);
                 echo form_open('form_recruitment/add', $att);
                 ?>
                 <div class="row column-seperation">
@@ -309,11 +309,11 @@
                         </select>
                         <?php }else{ ?>
                         <select name="atasan1" id="atasan1" class="select2" style="width:100%">
-                            <option value="0">- Pilih Supervisor2 -</option>
+                            <option value="0">- Pilih Supervisor -</option>
                             <?php foreach ($user_atasan as $key => $up) : ?>
                               <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
                             <?php endforeach;?>
-                        </select>
+                          </select>
                             <?php }?>
                       </div>
                     </div>
@@ -323,23 +323,9 @@
                         <label class="form-label text-left"><?php echo 'Ka. Bagian' ?></label>
                       </div>
                       <div class="col-md-5">
-                      <?php if(is_admin()){?>
-                        <select id="atasan2" class="select2" style="width:100%" name="atasan2">
-                        <option value="0">- Pilih Ka. Bagian -</option>
-                          <?php
-                          foreach ($all_users->result() as $u) :
-                            $selected = $u->id == $sess_id ? 'selected = selected' : '';?>
-                            <option value="<?php echo $u->nik?>" <?php echo $selected?>><?php echo $u->username?></option>
-                          <?php endforeach; ?>
-                        </select>
-                        <?php }else{ ?>
                         <select name="atasan2" id="atasan2" class="select2" style="width:100%">
                             <option value="0">- Pilih Ka. Bagian -</option>
-                            <?php foreach ($user_atasan as $key => $up) : ?>
-                            <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
-                            <?php endforeach;?>
                         </select>
-                      <?php }?>
                       </div>
                     </div>
 
@@ -348,24 +334,9 @@
                         <label class="form-label text-left"><?php echo 'Atasan Lainnya' ?></label>
                       </div>
                       <div class="col-md-5">
-                      <?php if(is_admin()){
-                        ?>
-                        <select id="atasan3" class="select2" style="width:100%" name="atasan3">
-                        <option value="0">- Pilih Atasan Lainnya -</option>
-                          <?php
-                          foreach ($all_users->result() as $u) :
-                            $selected = $u->id == $sess_id ? 'selected = selected' : '';?>
-                            <option value="<?php echo $u->nik?>" <?php echo $selected?>><?php echo $u->username?></option>
-                          <?php endforeach; ?>
-                        </select>
-                        <?php }else{ ?>
                         <select name="atasan3" id="atasan3" class="select2" style="width:100%">
                             <option value="0">- Pilih Atasan Lainnya -</option>
-                            <?php foreach ($user_atasan as $key => $up) : ?>
-                            <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
-                            <?php endforeach;?>
                         </select>
-                            <?php }?>
                       </div>
                     </div>
 

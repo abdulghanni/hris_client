@@ -3,6 +3,13 @@
 <head>
 <meta charset="utf-8">
 <title><?php echo $title?></title>
+<style type="text/css">
+.approval-img-md{
+    height:10%;
+    width:12%;
+    z-index:-1;
+}
+</style>
 </head>
 
 <body>
@@ -10,7 +17,9 @@
 <p>&nbsp;</p>
 <table width="1000" border="1" align="center">
 <?php
-foreach($form_training as $user):?>
+foreach($form_training as $user):
+$approved = assets_url('img/approved_stamp.png');
+$rejected = assets_url('img/rejected_stamp.png');?>
   <tbody>
     <tr>
       <th width="44" height="45" scope="col">No.</th>
@@ -20,12 +29,12 @@ foreach($form_training as $user):?>
     <tr>
       <td height="45" align="center">1</td>
       <td>&nbsp;NIK</td>
-      <td>&nbsp;<?php echo get_nik($user->user_id)?></td>
+      <td>&nbsp;<?php echo get_nik($user->user_peserta_id)?></td>
     </tr>
     <tr>
       <td height="45" align="center">2</td>
       <td>&nbsp;Nama Karyawan</td>
-      <td>&nbsp;<?php echo get_name($user->user_id)?></td>
+      <td>&nbsp;<?php echo get_name($user->user_peserta_id)?></td>
     </tr>
     <tr>
       <td height="45" align="center">3</td>
@@ -57,9 +66,9 @@ foreach($form_training as $user):?>
       <th width="333" scope="col">Mengetahui HRD</th>
     </tr>
     <tr>
-      <td height="117" align="center"><br/><br/><br/><br/><br/><?php echo get_name($user->created_by)?><br/><?php echo dateIndo($user->created_on)?></td>
-      <td align="center"><br/><br/><br/><br/><br/><?php echo get_name($user->user_app_lv1)?><br/><?php echo dateIndo($user->date_app_lv1)?></td>
-      <td align="center"><br/><br/><br/><br/><br/><?php echo get_name($user->user_app_hrd)?><br/><?php echo dateIndo($user->date_app_hrd)?></td>
+      <td height="117" align="center"><br/><br/><br/><br/><br/><?php echo get_name($user->user_pengaju_id)?><br/><?php echo dateIndo($user->created_on)?></td>
+      <td align="center"><?php echo ($user->approval_status_id_lv1 == 1)?"<img class=approval-img-md src=$approved>":(($user->approval_status_id_lv1 == 2) ? "<img class=approval-img-md src=$rejected>":'<br/><br/><br/><br/><br/>');?><br/><br/><?php echo get_name($user->user_app_lv1)?><br/><?php echo dateIndo($user->date_app_lv1)?></td>
+      <td align="center"><?php echo ($user->approval_status_id_hrd == 1)?"<img class=approval-img-md src=$approved>":(($user->approval_status_id_hrd == 2) ? "<img class=approval-img-md src=$rejected>":'<br/><br/><br/><br/><br/>');?><br/><br/><?php echo get_name($user->user_app_hrd)?><br/><?php echo dateIndo($user->date_app_hrd)?></td>
     </tr>
   </tbody>
 </table>

@@ -1,4 +1,10 @@
-<div class="grid-body no-border">
+<div class="row">
+          <div class="col-md-12">
+            <div class="grid simple">
+              <div class="grid-title no-border">
+                <h4>Form <span class="semi-bold"><a href="<?php echo site_url('form_demolition')?>">Demolition</a></span></h4>
+              </div>
+              <div class="grid-body no-border">
                 <form class="form-no-horizontal-spacing" id=""> 
                   <div class="row column-seperation">
                     <div class="col-md-5">
@@ -26,7 +32,7 @@
                           <label class="form-label text-right">Unit Bisnis</label>
                         </div>
                         <div class="col-md-9">
-                          <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama" value="<?php echo (!empty($user_info))?$user_info['BU']:'-';?>" disabled="disabled">
+                          <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama" value="<?php echo get_user_bu($user_nik)?>" disabled="disabled">
                         </div>
                       </div>
                       <div class="row form-row">
@@ -34,7 +40,7 @@
                           <label class="form-label text-right">Dept/Bagian</label>
                         </div>
                         <div class="col-md-9">
-                          <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama" value="<?php echo (!empty($user_info))?$user_info['ORGANIZATION']:'-';?>" disabled="disabled">
+                          <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama" value="<?php echo get_user_organization($user_nik)?>" disabled="disabled">
                         </div>
                       </div>
                       <div class="row form-row">
@@ -42,15 +48,15 @@
                           <label class="form-label text-right">Jabatan</label>
                         </div>
                         <div class="col-md-9">
-                          <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama" value="<?php echo (!empty($user_info))?$user_info['POSITION']:'-';?>" disabled="disabled">
+                          <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama" value="<?php echo get_user_position($user_nik)?>" disabled="disabled">
                         </div>
                       </div>
                       <div class="row form-row">
                         <div class="col-md-3">
-                          <label class="form-label text-right">Tanggal Pengangkatan</label>
+                          <label class="form-label text-right">Tanggal Mulai Kerja</label>
                         </div>
                         <div class="col-md-9">
-                          <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama" value="<?php echo (!empty($user_info['SENIORITYDATE']))?dateIndo($user_info['SENIORITYDATE']):'-'?>" disabled="disabled">
+                          <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama" value="<?php echo dateIndo(get_user_sen_date($user_nik))?>" disabled="disabled">
                         </div>
                       </div>
                       
@@ -58,31 +64,79 @@
                     </div>
                     <div class="col-md-7">
                       <h4>Demolition Yang Diajukan</h4>
-                      <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
+                     <div class="row form-row">
+                        <div class="col-md-4">
+                          <label class="form-label text-left">Unit Bisnis Baru</label>
+                        </div>
+                        <div class="col-md-8">
+                          <input name="nik" id="form3LastName" type="text"  class="form-control " placeholder="Nama" value="<?php echo get_bu_name(substr($row->new_bu,0,2))?>" disabled="disabled">
+                        </div>
+                      </div>
+
+                      <div class="row form-row">
+                        <div class="col-md-4">
+                          <label class="form-label text-left">Dept/Bagian Baru</label>
+                        </div>
+                        <div class="col-md-8">
+                          <input name="nik" id="form3LastName" type="text"  class="form-control " placeholder="Nama" value="<?php echo get_organization_name($row->new_org)?>" disabled="disabled">
+                        </div>
+                      </div>
+
+                      <div class="row form-row">
+                        <div class="col-md-4">
+                          <label class="form-label text-left">Jabatan Baru</label>
+                        </div>
+                       <div class="col-md-8">
+                          <input name="nik" id="form3LastName" type="text"  class="form-control " placeholder="Nama" value="<?php echo get_position_name($row->new_pos)?>" disabled="disabled">
+                        </div>
+                      </div>
+                      <div class="row form-row">
+                        <div class="col-md-4">
+                          <label class="form-label text-left">Tgl. Demolition</label>
+                        </div>
+                        <div class="col-md-8">
+                          <input type="text" class="form-control" name="date_demolition" value="<?php echo dateIndo($row->date_demolition)?>" disabled="disabled">
+                        </div>
+                      </div>
                       <div class="row form-row">
                         <div class="col-md-4">
                           <label class="form-label text-left">Alasan Demolition</label>
                         </div>
                         <div class="col-md-8">
-                          <input name="alasan" id="alasan" type="text"  class="form-control " placeholder="Alasan" value="<?php echo $row->alasan_demolition?>" disabled="disabled" >
+                          <textarea name="alasan" id="alasan" type="text"  class="form-control" placeholder="Alasan demolition" disabled="disabled"><?php echo $row->alasan?></textarea>
                         </div>
                       </div>
-
+                      <?php if(!empty($row->note_lv1)){?>
                       <div class="row form-row">
                         <div class="col-md-4">
-                          <label class="form-label text-left">Memenuhi Syarat</label>
+                          <label class="form-label text-left">Note (Supervisor): </label>
                         </div>
-
                         <div class="col-md-8">
-                          <label class="radio-inline">
-                            <input type="radio" name="syarat" id="syarat1" required value="1" <?php echo ($row->memenuhi_syarat==1)?'checked="checked"':''?>>Ya
-                          </label>
-                          <label class="radio-inline">
-                            <input type="radio" name="syarat" id="syarat2" value="0" <?php echo ($row->memenuhi_syarat==0)?'checked="checked"':''?>>Tidak
-                          </label>
+                          <textarea name="notes_spv" class="custom-txtarea-form" disabled="disabled"><?php echo $row->note_lv1 ?></textarea>
                         </div>
                       </div>
-
+                      <?php } ?>
+                      <?php if(!empty($row->note_lv2)){?>
+                      <div class="row form-row">
+                        <div class="col-md-4">
+                          <label class="form-label text-left">Note (Ka. Bagian): </label>
+                        </div>
+                        <div class="col-md-8">
+                          <textarea name="notes_spv" class="custom-txtarea-form" disabled="disabled"><?php echo $row->note_lv2 ?></textarea>
+                        </div>
+                      </div>
+                      <?php } ?>
+                      <?php if(!empty($row->note_lv3)){?>
+                      <div class="row form-row">
+                        <div class="col-md-4">
+                          <label class="form-label text-left">Note (Atasan Lainnya): </label>
+                        </div>
+                        <div class="col-md-8">
+                          <textarea name="notes_spv" class="custom-txtarea-form" disabled="disabled"><?php echo $row->note_lv3 ?></textarea>
+                        </div>
+                      </div>
+                      <?php } ?>
+                      <?php if(!empty($row->note_hrd)){?>
                       <div class="row form-row">
                         <div class="col-md-4">
                           <label class="form-label text-left">Note (hrd): </label>
@@ -91,9 +145,12 @@
                           <textarea name="notes_spv" class="custom-txtarea-form" disabled="disabled"><?php echo $row->note_hrd ?></textarea>
                         </div>
                       </div>
-                      
+                      <?php } ?>
+                      </div>
                     </div>
                 </div>
-              </form>
-            <?php endforeach;} ?>
-              </div>
+              <?php endforeach;}?>
+            </form>
+          </div>
+        </div>
+      </div>

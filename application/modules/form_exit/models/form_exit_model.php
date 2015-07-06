@@ -323,6 +323,7 @@ class Form_exit_model extends CI_Model
                 'status_hrd.title as approval_status_mgr',
                 'status_hrd.title as approval_status_koperasi',
                 'status_hrd.title as approval_status_perpus',
+                'status_asset.title as approval_status_asset',
             ));
             $this->db->join('users', 'users.id = users_exit.user_id', 'LEFT');
             $this->db->join('exit_type', 'users_exit.exit_type_id = exit_type.id', 'LEFT');
@@ -334,10 +335,11 @@ class Form_exit_model extends CI_Model
             $this->db->join('approval_status as status_mgr', 'users_exit.app_status_id_mgr = status_mgr.id', 'left');
             $this->db->join('approval_status as status_perpus', 'users_exit.app_status_id_perpus = status_perpus.id', 'left');
             $this->db->join('approval_status as status_koperasi', 'users_exit.app_status_id_koperasi = status_koperasi.id', 'left');
+            $this->db->join('approval_status as status_asset', 'users_exit.app_status_id_asset = status_asset.id', 'left');
             if($id != null)$this->db->where('users_exit.id', $id);
             if($is_admin!=1){
                 //$this->db->where("(users_exit.user_id= $sess_id $sub_id $subsub_id )",null, false);
-                $this->db->where("(users_exit.user_id = $sess_id OR  users_exit.user_app_lv1 = '$sess_nik' OR users_exit.user_app_lv2 = '$sess_nik' OR users_exit.user_app_lv3 = '$sess_nik' OR users_exit.created_by = '$sess_id')",null, false);
+                $this->db->where("(users_exit.user_id = $sess_id OR  users_exit.user_app_lv1 = '$sess_nik' OR users_exit.user_app_lv2 = '$sess_nik' OR users_exit.user_app_lv3 = '$sess_nik' OR users_exit.user_app_asset = '$sess_nik' OR users_exit.created_by = '$sess_id')",null, false);
             }
             $this->db->where('is_purposed', 1);
             $this->db->order_by('users_exit.id', 'desc');

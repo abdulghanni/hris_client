@@ -314,14 +314,14 @@ class Form_resignment_model extends CI_Model
             $this->db->select(array(
                 $this->tables['users_resignment'].'.*',
                 $this->tables['users_resignment'].'.id as id',
-                $this->tables['alasan_resign'].'.title as alasan',
+                //$this->tables['alasan_resign'].'.title as alasan',
                 'status_lv1.title as approval_status_lv1',
                 'status_lv2.title as approval_status_lv2',
                 'status_lv3.title as approval_status_lv3',
                 'status_hrd.title as approval_status_hrd',
             ));
             $this->db->join('users', 'users.id = users_resignment.user_id', 'LEFT');
-            $this->db->join('alasan_resign', 'users_resignment.alasan_resign_id = alasan_resign.id', 'LEFT');
+            //$this->db->join('alasan_resign', 'users_resignment.alasan_resign_id = alasan_resign.id', 'LEFT');
             $this->db->join('approval_status as status_lv1', 'users_resignment.app_status_id_lv1 = status_lv1.id', 'left');
             $this->db->join('approval_status as status_lv2', 'users_resignment.app_status_id_lv2 = status_lv2.id', 'left');
             $this->db->join('approval_status as status_lv3', 'users_resignment.app_status_id_lv3 = status_lv3.id', 'left');

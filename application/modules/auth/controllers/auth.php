@@ -23,8 +23,7 @@ class Auth extends MX_Controller {
 
     //redirect if needed, otherwise display the user list
     function index($fname = "fn:",$email = "em:",$sort_by = "id", $sort_order = "asc", $offset = 0)
-    {
-
+    { 
         if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page
@@ -819,10 +818,10 @@ class Auth extends MX_Controller {
         $currentGroups = $this->ion_auth->get_users_groups($id)->result();
 
         //validate form input
-        $this->form_validation->set_rules('first_name', $this->lang->line('edit_user_validation_fname_label'), 'required|xss_clean');
-        $this->form_validation->set_rules('last_name', $this->lang->line('edit_user_validation_lname_label'), 'required|xss_clean');
-        $this->form_validation->set_rules('bod', $this->lang->line('edit_user_validation_bod_label'), 'required|xss_clean');
-        $this->form_validation->set_rules('marital_id', $this->lang->line('edit_user_validation_marital_label'), 'required|xss_clean');
+        $this->form_validation->set_rules('first_name', $this->lang->line('edit_user_validation_fname_label'), 'xss_clean');
+        $this->form_validation->set_rules('last_name', $this->lang->line('edit_user_validation_lname_label'), 'xss_clean');
+        $this->form_validation->set_rules('bod', $this->lang->line('edit_user_validation_bod_label'), 'xss_clean');
+        $this->form_validation->set_rules('marital_id', $this->lang->line('edit_user_validation_marital_label'), 'xss_clean');
         $this->form_validation->set_rules('groups', $this->lang->line('edit_user_validation_groups_label'), 'xss_clean');
         $this->form_validation->set_rules('photo', $this->lang->line('edit_user_validation_photo_label'), 'xss_clean');
 
@@ -1024,7 +1023,6 @@ class Auth extends MX_Controller {
             'name'  => 'bod',
             'id'    => 'bod',
             'type'  => 'text',
-            'required'  => 'required',
             'value' => $this->form_validation->set_value('bod', $user->bod),
         );
 
@@ -1032,14 +1030,12 @@ class Auth extends MX_Controller {
             'name'  => 'first_name',
             'id'    => 'first_name',
             'type'  => 'text',
-            'required'  => 'required',
             'value' => $this->form_validation->set_value('first_name', $user->first_name),
         );
         $this->data['last_name'] = array(
             'name'  => 'last_name',
             'id'    => 'last_name',
             'type'  => 'text',
-            'required'  => 'required',
             'value' => $this->form_validation->set_value('last_name', $user->last_name),
         );
         $this->data['company'] = array(
@@ -1096,15 +1092,21 @@ class Auth extends MX_Controller {
             'type' => 'password'
         );
 		
-		$url_superior = 'http://admin:12345678@localhost/hris_api/users/superior/EMPLID/'.$user->nik.'/format/json';
-			$headers_superior = get_headers($url_superior);
-            $response = substr($headers_superior[0], 9, 3);
-            if ($response != "404") {
-			$get_user_pengganti = file_get_contents($url_superior);
-			$user_superior = json_decode($get_user_pengganti, true);
-			$this->data['user_superior'] = $user_superior;
+        $url_superior = get_api_key().'users/superior/EMPLID/'.$user->nik.'/format/json';
+		$url_atasan_satu_bu = get_api_key().'users/atasan_satu_bu/EMPLID/'.$user->nik.'/format/json';
+		$headers_superior = get_headers($url_superior);
+        $response = substr($headers_superior[0], 9, 3);
+        if ($response != "404") {
+        	$get_user_pengganti = file_get_contents($url_superior);
+        	$user_superior = json_decode($get_user_pengganti, true);
+        	$this->data['user_superior'] = $user_superior;
             $r = $this->data['selected_superior'] = $this->db->where('id', $id)->get('users')->row('superior_id');
-			}
+		}else{
+            $get_user_pengganti = file_get_contents($url_atasan_satu_bu);
+            $user_superior = json_decode($get_user_pengganti, true);
+            $this->data['user_superior'] = $user_superior;
+            $r = $this->data['selected_superior'] = $this->db->where('id', $id)->get('users')->row('superior_id');
+        }
 
         $this->data['marital_id'] = $this->form_validation->set_value('email', $user->marital_id);
         $this->data['s_photo'] = $this->form_validation->set_value('photo', $user->photo);

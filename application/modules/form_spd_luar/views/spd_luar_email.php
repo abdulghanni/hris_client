@@ -1,16 +1,15 @@
-        <div class="row">
-        <div class="col-md-12">
-          <div class="grid simple">
+<div class="grid simple">
             <div class="grid-title no-border">
               <h4>Form Perjalanan Dinas <a href="<?php echo site_url('form_spd_luar')?>"><span class="semi-bold">Luar Kota</span></a></h4>
             </div>
             <div class="grid-body no-border">
-              <form class="form-no-horizontal-spacing" id="form_spd_dalam" action="<?php echo site_url().'form_spd_luar/do_submit/'.$id = $this->uri->segment(3, 0);?>" method="post"> 
+              <!--<form class="form-no-horizontal-spacing" id="form_spd_dalam" action="<?php echo site_url().'form_spd_luar/do_submit/'.$id = $this->uri->segment(3, 0);?>" method="post">-->
+              <form class="form-no-horizontal-spacing" id="formSpdLuar"> 
                 <div class="row column-seperation">
                   <div class="col-md-5">
                     <h4>Yang Memberi Tugas</h4>   
                     <?php if ($td_num_rows > 0) {
-                      foreach ($task_detail as $td) { 
+                      foreach ($task_detail as $td) :
                         $a = strtotime($td->date_spd_end);
                         $b = strtotime($td->date_spd_start);
 
@@ -131,29 +130,35 @@
 
                   <hr/>
                   <h5 class="text-center"><span class="semi-bold">Ketentuan Biaya Perjalanan Dinas</span></h5>
+                  <p>&nbsp;</p>
+                      <p class="bold">Grade Penerima Tugas : <span id="grade" class="semi-bold"><?php echo get_grade($tc_id)?></span></p>
+                        <div class="row form-row">
+                          <div class="col-md-12">
                           <table class="table table-bordered">
                             <thead>
                               <tr>
-                                <th>Golongan</th>
-                                <th>Hotel</th>
-                                <th>Uang Makan</th>
-                                <th>Uang Saku</th>
+                                <th width="2%">No</th>
+                                <th width="40%">Jenis Biaya</th>
+                                <th width="40%">Jumlah Biaya</th>
                               </tr>
                             </thead>
                             <tbody>
+                            <?php $i=1;foreach($biaya_pjd->result() as $row):?>
                               <tr>
-                                <td><?php echo $biaya_pjd['grade']?></td>
-                                <td>Rp. <?php echo number_format($biaya_pjd['hotel']*$jml_pjd, 2)?></td>
-                                <td>Rp. <?php echo number_format($biaya_pjd['uang_makan']*$jml_pjd, 2)?></td>
-                                <td>Rp. <?php echo number_format($biaya_pjd['uang_saku']*$jml_pjd, 2)?></td>
+                                <td><?php echo $i++?></td>
+                                <td><?php echo $row->jenis_biaya?></td>
+                                <td>Rp. <?php echo number_format($row->jumlah_biaya*$jml_pjd, 2)?></td>
                               </tr>
+                            <?php endforeach ?>
                             </tbody>
                           </table>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
+
               </form>
                   </div>  
             </div>
-          </div>
-        </div>
+            <?php endforeach;}?>

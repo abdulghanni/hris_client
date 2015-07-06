@@ -337,7 +337,7 @@ class Form_training_model extends CI_Model
 			if($id != null)$this->db->where('users_training.id', $id);
             if($is_admin!=1){
                 //$this->db->where("(users_training.user_id= $sess_id $sub_id $subsub_id )",null, false);
-                $this->db->where("(users_training.user_id = $sess_id OR  users_training.user_app_lv1 = '$sess_nik' OR users_training.user_app_lv2 = '$sess_nik' OR users_training.user_app_lv3 = '$sess_nik' OR users_training.created_by = '$sess_id')",null, false);
+                $this->db->where("(users_training.user_pengaju_id = $sess_id OR users_training.user_peserta_id = $sess_id OR  users_training.user_app_lv1 = '$sess_nik' OR users_training.user_app_lv2 = '$sess_nik' OR users_training.user_app_lv3 = '$sess_nik' OR users_training.created_by = '$sess_id')",null, false);
             }
             
             
@@ -576,7 +576,7 @@ class Form_training_model extends CI_Model
     public function create_($user_id = FALSE, $additional_data = array())
     {
 
-        $data = array('user_id'=>$user_id);
+        $data = array('user_pengaju_id'=>$user_id);
 
         //filter out any data passed that doesnt have a matching column in the form training table
         //and merge the set group data and the additional data

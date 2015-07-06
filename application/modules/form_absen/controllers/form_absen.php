@@ -9,10 +9,10 @@ class form_absen extends MX_Controller {
         $this->load->library('authentication', NULL, 'ion_auth');
         $this->load->library('form_validation');
         $this->load->library('rest');
+        $this->load->library('approval');
         $this->load->helper('url');
         
         $this->load->database();
-		$this->load->model('person/person_model','person_model');
         $this->load->model('form_absen/form_absen_model','form_absen_model');
         
         $this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
@@ -98,12 +98,9 @@ class form_absen extends MX_Controller {
             $user_id= getValue('user_id', 'users_absen', array('id'=>'where/'.$id));
             $this->data['user_nik'] = $sess_nik = get_nik($user_id);
             $this->data['sess_id'] = $this->session->userdata('user_id');
-            
             //$this->data['comp_session'] = $this->form_absen_model->render_session()->result();
-            
             $form_absen = $this->data['form_absen'] = $this->form_absen_model->where('is_deleted',0)->form_absen_detail($id)->result();
             $this->data['_num_rows'] = $this->form_absen_model->where('is_deleted',0)->form_absen_detail($id)->num_rows();
-            
             
             $this->_render_page('form_absen/detail', $this->data);
         }
@@ -147,7 +144,8 @@ class form_absen extends MX_Controller {
 
             if($this->form_validation->run() == FALSE)
             {
-            echo json_encode(array('st'=>0, 'errors'=>validation_errors('<div class="alert alert-danger" role="alert">', '</div>')));
+            //echo json_encode(array('st'=>0, 'errors'=>validation_errors('<div class="alert alert-danger" role="alert">', '</div>')));
+            redirect('form_absen/input', 'refresh');
             }
             else
             {
@@ -186,38 +184,19 @@ class form_absen extends MX_Controller {
                     $this->db->insert('attendance', $data2);
                 }
 
-                $num_rows = getAll('users_absen')->num_rows();
-                
-                if($num_rows>0)
-                {    
-                    $last_absen_id = getAll('users_absen')->last_row();
-                    $absen_id = $last_absen_id->id + 1;
-                }else{
-                    $absen_id = 1;
-                } 
                 if ($this->form_validation->run() == true && $this->form_absen_model->create_($user_id,$data))
                 {
-                 $this->send_approval_request($absen_id, $user_id);
-                 echo json_encode(array('st' =>1));     
-                }
-            }
-        }
-    }
+                 $absen_id = $this->db->insert_id();
+                 $user_app_lv1 = getValue('user_app_lv1', 'users_absen', array('id'=>'where/'.$absen_id));
+                 if(!empty($user_app_lv1)):
+                    $this->approval->request('lv1', 'absen', $absen_id, $user_id, $this->detail_email($absen_id));
+                 else:
+                    $this->approval->request('hrd', 'absen', $absen_id, $user_id, $this->detail_email($absen_id));
+                 endif;
 
-    function get_sisa_absen($user_id = null)
-    {
-        //$id = $this->session->userdata('user_id');
-        if($user_id !=null)
-        {
-            $url = get_api_key().'users/sisa_absen/EMPLID/'.get_nik($user_id).'/format/json';
-            $headers = get_headers($url);
-            $response = substr($headers[0], 9, 3);
-            if ($response != "404") {
-                $getsisa_absen = file_get_contents($url);
-                $sisa_absen = json_decode($getsisa_absen, true);
-                return $sisa_absen;
-            } else {
-                return '-';
+                  redirect('form_absen', 'refresh');
+                 //echo json_encode(array('st' =>1));     
+                }
             }
         }
     }
@@ -238,85 +217,20 @@ class form_absen extends MX_Controller {
         'date_app_'.$type => $date_now,
         );
         
-       if ($this->form_absen_model->update($id,$data)) {
-           return TRUE;
-       }
-
-       $this->approval_mail($id);
-    }
-
-    function send_approval_request($id, $user_id)
-    {
-        $url = base_url().'form_absen/detail/'.$id;
-        $user_app_lv1 = getValue('user_app_lv1', 'users_absen', array('id'=>'where/'.$id));
-        $user_app_lv2 = getValue('user_app_lv2', 'users_absen', array('id'=>'where/'.$id));
-        $user_app_lv3 = getValue('user_app_lv3', 'users_absen', array('id'=>'where/'.$id));
-        
-        //approval to LV1
-        if(!empty($user_app_lv1)){
-            $data1 = array(
-                    'sender_id' => get_nik($user_id),
-                    'receiver_id' => $user_app_lv1,
-                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                    'subject' => 'Pengajuan Keterangan Tidak Absen',
-                    'email_body' => get_name($user_id).' mengajukan Keterangan Tidak Absen, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
-                    'is_read' => 0,
-                );
-            $this->db->insert('email', $data1);
+        $this->form_absen_model->update($id,$data);
+        $approval_status = 1;
+        $this->approval->approve('absen', $id, $approval_status, $this->detail_email($id));
+        if($type !== 'hrd'){
+        $lv = substr($type, -1)+1;
+        $lv = 'lv'.$lv;
+        $user_app = getValue('user_app_'.$lv, 'users_absen', array('id'=>'where/'.$id));
+        $user_absen_id = getValue('user_id', 'users_absen', array('id'=>'where/'.$id));
+        if(!empty($user_app)):
+            $this->approval->request($lv, 'absen', $id, $user_absen_id, $this->detail_email($id));
+        else:
+            $this->approval->request('hrd', 'absen', $id, $user_absen_id, $this->detail_email($id));
+        endif;
         }
-
-        //approval to LV2
-        if(!empty($user_app_lv2)){
-            $data2 = array(
-                    'sender_id' => get_nik($user_id),
-                    'receiver_id' => $user_app_lv2,
-                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                    'subject' => 'Pengajuan Keterangan Tidak Absen',
-                    'email_body' => get_name($user_id).' mengajukan Keterangan Tidak Absen, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
-                    'is_read' => 0,
-                );
-            $this->db->insert('email', $data2);
-        }
-
-        //approval to LV3
-        if(!empty($user_app_lv3)){
-            $data3 = array(
-                    'sender_id' => get_nik($user_id),
-                    'receiver_id' => $user_app_lv3,
-                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                    'subject' => 'Pengajuan Keterangan Tidak Absen',
-                    'email_body' => get_name($user_id).' mengajukan Keterangan Tidak Absen, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
-                    'is_read' => 0,
-                );
-            $this->db->insert('email', $data3);
-        }
-
-        //approval to hrd
-            $data4 = array(
-                    'sender_id' => get_nik($user_id),
-                    'receiver_id' => 1,
-                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                    'subject' => 'Pengajuan Keterangan Tidak Absen',
-                    'email_body' => get_name($user_id).' mengajukan Keterangan Tidak Absen, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
-                    'is_read' => 0,
-                );
-            $this->db->insert('email', $data4);
-    }
-
-    function approval_mail($id)
-    {
-        $url = base_url().'form_absen/detail/'.$id;
-        $approver = get_name(get_nik($this->session->userdata('user_id')));
-        $receiver_id = getValue('user_id', 'users_absen', array('id'=>'where/'.$id));
-        $data = array(
-                'sender_id' => get_nik($this->session->userdata('user_id')),
-                'receiver_id' => get_nik($receiver_id),
-                'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                'subject' => 'Status Pengajuan Permohonan Tidak Absen dari Atasan',
-                'email_body' => "Status pengajuan Permohonan Tidak Absen anda Disetujui oleh $approver untuk detail silakan <a class='klikmail' href=$url>Klik disini</a><br/>".$this->detail_email($id),
-                'is_read' => 0,
-            );
-        $this->db->insert('email', $data);
     }
 
     function detail_email($id)
@@ -362,66 +276,51 @@ class form_absen extends MX_Controller {
         $mpdf->Output($id.'-'.$title.'.pdf', 'I');
     }
 
-
-    public function get_emp_org()
+    function get_user_atasan()
     {
-        $id = $this->input->post('id');
+        $id = $this->session->userdata('user_id');
+        $url = get_api_key().'users/superior/EMPLID/'.get_nik($id).'/format/json';
+        $url_atasan_satu_bu = get_api_key().'users/atasan_satu_bu/EMPLID/'.get_nik($id).'/format/json';
+        $headers = get_headers($url);
+        $headers2 = get_headers($url_atasan_satu_bu);
+        $response = substr($headers[0], 9, 3);
+        $response2 = substr($headers2[0], 9, 3);
+        if ($response != "404") {
+            $get_atasan = file_get_contents($url);
+            $atasan = json_decode($get_atasan, true);
+            return $this->data['user_atasan'] = $atasan;
+        }elseif($response == "404" && $response2 != "404") {
+           $get_atasan = file_get_contents($url_atasan_satu_bu);
+           $atasan = json_decode($get_atasan, true);
+           return $this->data['user_atasan'] = $atasan;
+        }else{
+            return $this->data['user_atasan'] = '- Karyawan Tidak Memiliki Atasan -';
+        }
+    }
 
-        $url = get_api_key().'users/employement/EMPLID/'.get_nik($id).'/format/json';
+     function get_sisa_absen($user_id = null)
+    {
+        //$id = $this->session->userdata('user_id');
+        if($user_id !=null)
+        {
+            $url = get_api_key().'users/sisa_cuti/EMPLID/'.get_nik($user_id).'/format/json';
             $headers = get_headers($url);
             $response = substr($headers[0], 9, 3);
             if ($response != "404") {
-                $getuser_info = file_get_contents($url);
-                $user_info = json_decode($getuser_info, true);
-                $org_nm = $user_info['ORGANIZATION'];
+                $getsisa_absen = file_get_contents($url);
+                $sisa_absen = json_decode($getsisa_absen, true);
+                return $sisa_absen;
             } else {
-                $org_nm = '';
+                return '-';
             }
-        
-        echo $org_nm;
-    }
-
-    public function get_atasan($id)
-    {
-        $url = get_api_key().'users/superior/EMPLID/'.get_nik($id).'/format/json';
-        $headers = get_headers($url);
-        $response = substr($headers[0], 9, 3);
-        if ($response != "404") {
-            $get_task_receiver = file_get_contents($url);
-            $task_receiver = json_decode($get_task_receiver, true);
-             foreach ($task_receiver as $row)
-                {
-                    $result['0']= '-- Pilih Atasan --';
-                    $result[$row['ID']]= ucwords(strtolower($row['NAME']));
-                }
-        } else {
-           $result['-']= '- Tidak ada user dengan departemen yang sama -';
         }
-        $data['result']=$result;
-        $this->load->view('dropdown_atasan',$data);
-    }
-
-    function get_user_atasan()
-    {
-            $user_id = $this->session->userdata('user_id');
-            $url_org = get_api_key().'users/superior/EMPLID/'.get_nik($user_id).'/format/json';
-            $headers_org = get_headers($url_org);
-            $response = substr($headers_org[0], 9, 3);
-            if ($response != "404") {
-            $get_user_pengganti = file_get_contents($url_org);
-            $user_pengganti = json_decode($get_user_pengganti, true);
-            return $this->data['user_atasan'] = $user_pengganti;
-            }else{
-             return $this->data['user_atasan'] = 'Tidak ada karyawan dengan departement yang sama';
-            }
     }
 
     function update_sisa_absen($recid, $sisa_absen)
     { 
-     
         $method = 'post';
         $params =  array();
-        $uri = get_api_key().'users/sisa_absen/RECID/'.$recid.'/ENTITLEMENT/'.$sisa_absen;
+        $uri = get_api_key().'users/sisa_cuti/RECID/'.$recid.'/ENTITLEMENT/'.$sisa_absen;
 
         $this->rest->format('application/json');
 
@@ -434,30 +333,6 @@ class form_absen extends MX_Controller {
         }     
         else  
         {  
-            return FALSE;
-        }
-    }
-
-    function _get_csrf_nonce()
-    {
-        $this->load->helper('string');
-        $key   = random_string('alnum', 8);
-        $value = random_string('alnum', 20);
-        $this->session->set_flashdata('csrfkey', $key);
-        $this->session->set_flashdata('csrfvalue', $value);
-
-        return array($key => $value);
-    }
-
-    function _valid_csrf_nonce()
-    {
-        if ($this->input->post($this->session->flashdata('csrfkey')) !== FALSE &&
-            $this->input->post($this->session->flashdata('csrfkey')) == $this->session->flashdata('csrfvalue'))
-        {
-            return TRUE;
-        }
-        else
-        {
             return FALSE;
         }
     }
@@ -501,6 +376,7 @@ class form_absen extends MX_Controller {
                     $this->template->add_js('jquery.bootstrap.wizard.min.js');
                     $this->template->add_js('jquery.validate.min.js');
                     $this->template->add_js('bootstrap-datepicker.js');
+                    $this->template->add_js('emp_dropdown.js');
                     $this->template->add_js('form_absen.js');
                     
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');

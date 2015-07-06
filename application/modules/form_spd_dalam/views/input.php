@@ -30,7 +30,7 @@
                       </div>
                       <div class="col-md-9">
                       <?php if(is_admin()){?>
-                        <select id="emp_tc" class="select2" style="width:100%" name="emp_tc">
+                        <select id="emp" class="select2" style="width:100%" name="emp_tc">
                           <?php
                           foreach ($all_users->result() as $u) :
                             $selected = $u->id == $sess_id ? 'selected = selected' : '';?>
@@ -48,7 +48,7 @@
                         <label class="form-label text-right">Dept/Bagian</label>
                       </div>
                       <div class="col-md-9">
-                        <input name="org_tc" id="org_tc" type="text"  class="form-control" placeholder="Nama" value="<?php echo get_user_organization($sess_nik);?>" disabled="disabled">
+                        <input name="org_tc" id="organization" type="text"  class="form-control" placeholder="Nama" value="<?php echo get_user_organization($sess_nik);?>" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
@@ -56,7 +56,54 @@
                         <label class="form-label text-right">Jabatan</label>
                       </div>
                       <div class="col-md-9">
-                        <input name="pos_tc" id="pos_tc" type="text"  class="form-control" placeholder="Nama" value="<?php echo get_user_position($sess_nik);?>" disabled="disabled">
+                        <input name="pos_tc" id="position" type="text"  class="form-control" placeholder="Nama" value="<?php echo get_user_position($sess_nik);?>" disabled="disabled">
+                      </div>
+                    </div>
+
+                    <div class="row form-row">
+                      <div class="col-md-3">
+                        <label class="bold form-label text-right"><?php echo 'Approval' ?></label>
+                      </div>
+                    </div>
+
+                    <div class="row form-row">
+                      <div class="col-md-3">
+                        <label class="form-label text-right"><?php echo 'Supervisor' ?></label>
+                      </div>
+                      <div class="col-md-9">
+                      <?php if(is_admin()){
+                        $style_up='class="select2" style="width:100%" id="atasan1"';
+                            echo form_dropdown('atasan1',array('0'=>'- Pilih Supervisor -'),'',$style_up);
+                        }else{?>
+                        <select name="atasan1" id="atasan1" class="select2" style="width:100%">
+                            <option value="0">- Pilih Supervisor -</option>
+                            <?php foreach ($user_atasan as $key => $up) : ?>
+                              <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
+                            <?php endforeach;?>
+                        </select>
+                        <?php }?>
+                      </div>
+                    </div>
+
+                   <div class="row form-row">
+                      <div class="col-md-3">
+                        <label class="form-label text-right"><?php echo 'Ka. Bagian' ?></label>
+                      </div>
+                      <div class="col-md-9">
+                        <select name="atasan2" id="atasan2" class="select2" style="width:100%">
+                            <option value="0">- Pilih Ka. Bagian -</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="row form-row">
+                      <div class="col-md-3">
+                        <label class="form-label text-right"><?php echo 'Atasan Lainnya' ?></label>
+                      </div>
+                      <div class="col-md-9">
+                        <select name="atasan3" id="atasan3" class="select2" style="width:100%">
+                            <option value="0">- Pilih Atasan Lainnya -</option>
+                        </select>
                       </div>
                     </div> 
                     
@@ -70,12 +117,12 @@
                       </div>
                       <div class="col-md-9">
                         <?php if(is_admin()){
-                        $style_tr='class="select2" style="width:100%" id="employee_sel"';
+                        $style_tr='class="select2" style="width:100%" id="penerima_tugas"';
                             echo form_dropdown('employee',array('Pilih User'=>'- Pilih User -'),'',$style_tr);
                         }else{?>
-                        <select id="employee_sel" class="select2" style="width:100%" name="employee" >
-                          <?php foreach ($user_atasan as $key => $up) : ?>
-                            <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
+                        <select id="penerima_tugas" class="select2" style="width:100%" name="employee" >
+                          <?php foreach ($penerima_tugas as $key => $up) : ?>
+                            <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME'].' - '.$up['ID']; ?></option>
                           <?php endforeach;}?>
                         </select>
                       </div>

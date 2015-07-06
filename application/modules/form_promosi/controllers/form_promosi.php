@@ -9,6 +9,7 @@ class Form_promosi extends MX_Controller {
         parent::__construct();
         $this->load->library('authentication', NULL, 'ion_auth');
         $this->load->library('form_validation');
+        $this->load->library('approval');
         $this->load->helper('url');
         
         $this->load->database();
@@ -128,7 +129,8 @@ class Form_promosi extends MX_Controller {
             
             if($this->form_validation->run() == FALSE)
             {
-                echo json_encode(array('st'=>0, 'errors'=>validation_errors('<div class="alert alert-danger" role="alert">', '</div>')));
+                //echo json_encode(array('st'=>0, 'errors'=>validation_errors('<div class="alert alert-danger" role="alert">', '</div>')));
+                redirect('form_promosi/input', 'refresh');
             }
             else
             {
@@ -149,20 +151,18 @@ class Form_promosi extends MX_Controller {
                     'created_by'            => $this->session->userdata('user_id')
                 );
 
-                $num_rows = getAll('users_promosi')->num_rows();
-
-                if($num_rows>0){
-                    $promosi_id = $this->db->select('id')->order_by('id', 'asc')->get('users_promosi')->last_row();
-                    $promosi_id = $promosi_id->id+1;
-                }else{
-                    $promosi_id = 1;
-                }
-
                 if ($this->form_validation->run() == true && $this->form_promosi_model->create_($user_id, $additional_data))
                 {
-                    $promosi_url = base_url().'form_promosi';
-                    $this->send_approval_request($promosi_id, $user_id);
-                    echo json_encode(array('st' =>1, 'promosi_url' => $promosi_url));    
+                     $promosi_id = $this->db->insert_id();
+                     $user_app_lv1 = getValue('user_app_lv1', 'users_promosi', array('id'=>'where/'.$promosi_id));
+                     if(!empty($user_app_lv1)):
+                        $this->approval->request('lv1', 'promosi', $promosi_id, $user_id, $this->detail_email($promosi_id));
+                     else:
+                        $this->approval->request('hrd', 'promosi', $promosi_id, $user_id, $this->detail_email($promosi_id));
+                     endif;
+                     $this->send_user_notification($promosi_id, $user_id);
+                     redirect('form_promosi', 'refresh');
+                    //echo json_encode(array('st' =>1, 'promosi_url' => $promosi_url));
                 }
             }
         }
@@ -191,123 +191,45 @@ class Form_promosi extends MX_Controller {
             $is_app = getValue('is_app_'.$type, 'users_promosi', array('id'=>'where/'.$id));
             $approval_status = $this->input->post('app_status_'.$type);
 
-           if ($this->form_promosi_model->update($id,$data)) {
-               redirect('form_promosi/detail/'.$id, 'refresh');
-            }
+            $this->form_promosi_model->update($id,$data);
 
+            $user_promosi_id = getValue('user_id', 'users_promosi', array('id'=>'where/'.$id));
             if($is_app==0){
-                $this->approval_mail($id, $approval_status);
+                $this->approval->approve('promosi', $id, $approval_status, $this->detail_email($id));
             }else{
-                $this->update_approval_mail($id, $approval_status);
+                $this->approval->update_approve('promosi', $id, $approval_status, $this->detail_email($id));
             }
+            if($type !== 'hrd'){
+                $lv = substr($type, -1)+1;
+                $lv_app = 'lv'.$lv;
+                $user_app = ($lv<4) ? getValue('user_app_'.$lv_app, 'users_promosi', array('id'=>'where/'.$id)):0;
+                if(!empty($user_app)):
+                    $this->approval->request($lv_app, 'promosi', $id, $user_promosi_id, $this->detail_email($id));
+                else:
+                    $this->approval->request('hrd', 'promosi', $id, $user_promosi_id, $this->detail_email($id));
+                endif;
+            }
+            redirect('form_promosi/detail/'.$id, 'refresh');
         }
     }
 
-
-    function send_approval_request($id, $user_id)
+    function send_user_notification($id, $user_id)
     {
         $url = base_url().'form_promosi/detail/'.$id;
-        $user_app_lv1 = getValue('user_app_lv1', 'users_promosi', array('id'=>'where/'.$id));
-        $user_app_lv2 = getValue('user_app_lv2', 'users_promosi', array('id'=>'where/'.$id));
-        $user_app_lv3 = getValue('user_app_lv3', 'users_promosi', array('id'=>'where/'.$id));
         $pengaju_id = $this->session->userdata('user_id');
-        
-        //approval to LV1
-        if(!empty($user_app_lv1)){
-            $data1 = array(
-                    'sender_id' => get_nik($pengaju_id),
-                    'receiver_id' => $user_app_lv1,
-                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                    'subject' => 'Pengajuan Promosi Karyawan',
-                    'email_body' => get_name($pengaju_id).' mengajukan Promosi untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
-                    'is_read' => 0,
-                );
-            $this->db->insert('email', $data1);
-        }
-
-        //approval to LV2
-        if(!empty($user_app_lv2)){
-            $data2 = array(
-                    'sender_id' => get_nik($pengaju_id),
-                    'receiver_id' => $user_app_lv2,
-                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                    'subject' => 'Pengajuan Promosi Karyawan',
-                    'email_body' => get_name($pengaju_id).' mengajukan Promosi untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
-                    'is_read' => 0,
-                );
-            $this->db->insert('email', $data2);
-        }
-
-        //approval to LV3
-        if(!empty($user_app_lv3)){
-            $data3 = array(
-                    'sender_id' => get_nik($pengaju_id),
-                    'receiver_id' => $user_app_lv3,
-                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                    'subject' => 'Pengajuan Promosi Karyawan',
-                    'email_body' => get_name($pengaju_id).' mengajukan Promosi untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
-                    'is_read' => 0,
-                );
-            $this->db->insert('email', $data3);
-        }
-
-        //approval to hrd
-            $data4 = array(
-                    'sender_id' => get_nik($pengaju_id),
-                    'receiver_id' => 1,
-                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                    'subject' => 'Pengajuan Promosi Karyawan',
-                    'email_body' => get_name($pengaju_id).' mengajukan Promosi untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
-                    'is_read' => 0,
-                );
-            $this->db->insert('email', $data4);
 
         //Notif to karyawan
-             $data4 = array(
-                    'sender_id' => get_nik($pengaju_id),
-                    'receiver_id' => get_nik($user_id),
-                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                    'subject' => 'Pengajuan Promosi Karyawan',
-                    'email_body' => get_name($pengaju_id).' mengajukan Promosi untuk Anda, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
-                    'is_read' => 0,
-                );
-            $this->db->insert('email', $data4);
-    }
-
-    function approval_mail($id, $approval_status)
-    {
-        $url = base_url().'form_promosi/detail/'.$id;
-        $approver = get_name(get_nik($this->session->userdata('user_id')));
-        $receiver_id = getValue('created_by', 'users_promosi', array('id'=>'where/'.$id));
-        $approval_status = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
-        $data = array(
-                'sender_id' => get_nik($this->session->userdata('user_id')),
-                'receiver_id' => get_nik($receiver_id),
+        $data4 = array(
+                'sender_id' => get_nik($pengaju_id),
+                'receiver_id' => get_nik($user_id),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                'subject' => 'Status Pengajuan Promosi dari Atasan',
-                'email_body' => "Status pengajuan Promosi anda $approval_status oleh $approver untuk detail silakan <a class='klikmail' href=$url>Klik disini</a><br/>".$this->detail_email($id),
+                'subject' => 'Pengajuan Promosi Karyawan',
+                'email_body' => get_name($pengaju_id).' mengajukan Promosi untuk Anda, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
                 'is_read' => 0,
             );
-        $this->db->insert('email', $data);
+        $this->db->insert('email', $data4);
     }
-
-    function update_approval_mail($id, $approval_status)
-    {
-        $url = base_url().'form_promosi/detail/'.$id;
-        $approver = get_name(get_nik($this->session->userdata('user_id')));
-        $receiver_id = getValue('created_by', 'users_promosi', array('id'=>'where/'.$id));
-        $approval_status = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
-        $data = array(
-                'sender_id' => get_nik($this->session->userdata('user_id')),
-                'receiver_id' => get_nik($receiver_id),
-                'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                'subject' => 'Perubahan Status Pengajuan Promosi dari Atasan',
-                'email_body' => "$approver melakukan perubahan status pengajuan Promosi anda menjadi $approval_status, untuk detail silakan <a class='klikmail' href=$url>Klik disini</a><br/>".$this->detail_email($id),
-                'is_read' => 0,
-            );
-        $this->db->insert('email', $data);
-    }
-
+    
     function detail_email($id)
     {
         $this->data['sess_id'] = $this->session->userdata('user_id');
@@ -394,41 +316,26 @@ class Form_promosi extends MX_Controller {
         }
     }
 
-    public function get_atasan()
-    {
-
-        $id = $this->input->post('id');
-        $url = get_api_key().'users/superior/EMPLID/'.get_nik($id).'/format/json';
-        $headers = get_headers($url);
-        $response = substr($headers[0], 9, 3);
-        if ($response != "404") {
-            $get_task_receiver = file_get_contents($url);
-            $task_receiver = json_decode($get_task_receiver, true);
-             foreach ($task_receiver as $row)
-                {
-                    $result['0']= '-- Pilih Atasan --';
-                    $result[$row['ID']]= ucwords(strtolower($row['NAME']));
-                }
-        } else {
-           $result['-']= '- Tidak ada user dengan departemen yang sama -';
-        }
-        $data['result']=$result;
-        $this->load->view('dropdown_atasan',$data);
-    }
-    
     function get_user_atasan()
     {
-            $user_id = $this->session->userdata('user_id');
-            $url_org = get_api_key().'users/superior/EMPLID/'.get_nik($user_id).'/format/json';
-            $headers_org = get_headers($url_org);
-            $response = substr($headers_org[0], 9, 3);
-            if ($response != "404") {
-            $get_user_pengganti = file_get_contents($url_org);
-            $user_pengganti = json_decode($get_user_pengganti, true);
-            return $this->data['user_atasan'] = $user_pengganti;
-            }else{
-             return $this->data['user_atasan'] = 'Tidak ada karyawan dengan departement yang sama';
-            }
+        $id = $this->session->userdata('user_id');
+        $url = get_api_key().'users/superior/EMPLID/'.get_nik($id).'/format/json';
+        $url_atasan_satu_bu = get_api_key().'users/atasan_satu_bu/EMPLID/'.get_nik($id).'/format/json';
+        $headers = get_headers($url);
+        $headers2 = get_headers($url_atasan_satu_bu);
+        $response = substr($headers[0], 9, 3);
+        $response2 = substr($headers2[0], 9, 3);
+        if ($response != "404") {
+            $get_atasan = file_get_contents($url);
+            $atasan = json_decode($get_atasan, true);
+            return $this->data['user_atasan'] = $atasan;
+        }elseif($response == "404" && $response2 != "404") {
+           $get_atasan = file_get_contents($url_atasan_satu_bu);
+           $atasan = json_decode($get_atasan, true);
+           return $this->data['user_atasan'] = $atasan;
+        }else{
+            return $this->data['user_atasan'] = '- Karyawan Tidak Memiliki Atasan -';
+        }
     }
 
     public function get_emp_org()
@@ -666,6 +573,7 @@ class Form_promosi extends MX_Controller {
                     $this->template->add_js('jquery.bootstrap.wizard.min.js');
                     $this->template->add_js('jquery.validate.min.js');
                     $this->template->add_js('bootstrap-datepicker.js');
+                    $this->template->add_js('emp_dropdown.js');
                     $this->template->add_js('form_promosi.js');
                     
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');

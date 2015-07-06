@@ -5,14 +5,19 @@
 <title><?php echo $title?></title>
 <style type="text/css">
 <!--
+tbody td{
+  border-collapse:collapse;border-spacing:0; height:40px;font-family:Arial, sans-serif;font-size:14px;padding:12px 16px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;
+}
+
+th{
+  border-collapse:collapse;border-spacing:0; height:40px;font-family:Arial, sans-serif;font-size:14px;padding:12px 16px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;
+}
 .style3 {
-  font-size: 20px;
-  font-weight: bold;
+  font-size: 14px;
 }
 .style4 {
-  font-size: 28px;
+  font-size: 20px;
   font-weight: bold;
-  text-align: center;
 }
 
 .style5 {
@@ -22,14 +27,19 @@
 }
 
 .style6 {
-  color: #000000;
   font-weight: bold;
-  font-size: 26px;
+  font-size: 20px;
 }
 .style7 {
   padding-left: 20px;
   font-size: 17px;
   font-weight: bold;
+}
+
+.approval-img-md{
+    height:12%;
+    width:15%;
+    z-index:-1;
 }
 -->
 </style>
@@ -41,13 +51,13 @@
   <p align="center" class="style6">REKAPITULASI RAWAT JALAN & INAP</p>
 </div>
 
-<table width="1200" height="128" border="0" class="style3">
+<table width="1200" height="128" border="0" class="style4">
 <tr><td height="40"></td></tr>
 <tr><td>Bagian : <?php echo $bagian?></td></tr>
 <tr><td height="30"></td></tr>
 </table>
 
-<table width="1000" height="128" border="1" class="style3">
+<table width="1000" height="128" class="style3">
   <thead>
     <tr>
       <th width="7%">NIK</th>
@@ -65,6 +75,7 @@
 	     $total = $detail_hrd[0]['rupiah'];
 	      for($i=0;$i<sizeof($detail_hrd);$i++):
 	      $is_approve = ($detail_hrd[$i]['is_approve'] == 1) ? 'Ya':'Tidak';
+        $approved = assets_url('img/approved_stamp.png');
 	      ?>
 	  <tr>
 	    <td><?php echo get_nik($detail_hrd[$i]['karyawan_id'])?></td>
@@ -79,58 +90,51 @@
 	    endfor;}
 	    ?>
 	    <tr>
-	    <td align="right" colspan="5">Total : </td><td><?php echo 'Rp. '.number_format($total_medical_hrd, 0)?></td>
+	    <td align="right" colspan="5">Total : </td><td colspan="2"><?php echo 'Rp. '.number_format($total_medical_hrd, 0)?></td>
 	   </tr>
 	</tbody>
 </table>
-<br/>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
-
+<?php foreach ($form_medical as $row):?>
 <table width="1000" align="center">
-  <tbody>
     <tr>
       <td width="333" height="10" align="center" class="style3">Hormat Kami,</td>
       <td width="333" align="center" class="style3">Menyetujui,</td>
       <td width="333" align="center" class="style3">Mengetahui</td>
     </tr>
     <tr>
-      <td height="117" align="center" class="style3"><?php echo get_name($created_by)?><br/><?php echo dateIndo($created_on) ?><br/><?php echo (!empty(get_user_position(get_nik($created_by)))) ? get_user_position(get_nik($created_by)) : ''?></td>
-      <td align="center" class="style3"><?php echo get_name($is_app_hrd)?><br/><?php echo dateIndo($user_app_hrd) ?><br/><?php echo (!empty(get_user_position($user_app_hrd))) ? get_user_position($user_app_hrd) : ''?></td>
-      <td align="center" class="style3"><?php echo get_name($user_app)?><br/><?php echo dateIndo($date_app) ?><br/><?php echo (!empty(get_user_position($user_app))) ? get_user_position($user_app) : ''?></td>
+      <td align="center"></td>
+      <td align="center"><?php echo ($row->is_app_hrd == 1)?"<img class=approval-img-md src=$approved>":'<span class="small"></span><br/>';?></td>
+      <td align="center"><?php echo ($row->is_app_lv1 == 1)?"<img class=approval-img-md src=$approved>":'<span class="small"></span><br/>';?></td>
     </tr>
-  </tbody>
+    <tr>
+      <td height="100" align="center" class="style3"><?php echo get_name($row->user_id)?><br/><br/><?php echo dateIndo($row->created_on) ?><br/><?php echo (!empty(get_user_position(get_nik($row->user_id)))) ? get_user_position(get_nik($row->user_id)) : ''?></td>
+      <td align="center" class="style3"><?php echo get_name($row->user_app_hrd)?><br/><br/><?php echo dateIndo($row->date_app_hrd) ?><br>HRD</td>
+      <td align="center" class="style3"><?php echo get_name($row->user_app_lv1)?><br/><br/><?php echo dateIndo($row->date_app_lv1) ?><br/><?php echo (!empty(get_user_position($row->user_app_lv1))) ? get_user_position($row->user_app_lv1) : ''?></td>
+    </tr>
 </table>
-<!--
-<div style="float: left; text-align: center; width: 30%;" class="style5">
-<p>Hormat Kami,</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<?php echo get_name($created_by)?>
-<br/>
-<?php echo (!empty(get_user_position(get_nik($created_by)))) ? get_user_position(get_nik($created_by)) : ''?><br/>
-<?php echo dateIndo($created_on) ?>
-</div>
-
-<div style="float: center;text-align: center; width: 30%;" class="style5">
-<p>Disetujui, </p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<span class="semi-bold"><?php echo (!empty($user_app_hrd))?get_name($user_app_hrd):'' ?></span><br/>
-<?php echo (!empty($user_app_hrd)) ? get_user_position($user_app_hrd) : ''?><br/>
-<?php echo dateIndo($date_app_hrd) ?>
-</div>
-
-<div style="float: right;text-align: center; width: 30%;" class="style5">
-<p>Mengetahui, </p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<span class="semi-bold"><?php echo (!empty($user_app))?get_name($user_app):'' ?></span><br/>
-<?php echo (!empty($user_app)) ? get_user_position($user_app) : ''?><br/>
-<?php echo dateIndo($date_app) ?>
-</div>
--->
-<div style="clear: both; margin: 0pt; padding: 0pt; "></div>
-<p>&nbsp;</p>
+<?php if(!empty($row->user_app_lv2)):?>
+<table width="1000" align="center">
+    <tr>
+      <td width="500" align="center" class="style3">Mengetahui</td>
+      <?php if(!empty($row->user_app_lv3)){?>
+      <td width="500" align="center" class="style3">Mengetahui</td>
+      <?php } ?>
+    </tr>
+    <tr>
+      <td align="center"><?php echo ($row->is_app_lv2 == 1)?"<img class=approval-img-md src=$approved>":'<span class="small"></span><br/>';?></td>
+      <?php if(!empty($row->user_app_lv3)){?>
+      <td align="center"><?php echo ($row->is_app_lv3 == 1)?"<img class=approval-img-md src=$approved>":'<span class="small"></span><br/>';?></td>
+      <?php } ?>
+    </tr>
+    <tr>
+      <td height="100" align="center" class="style3"><?php echo get_name($row->user_app_lv2)?><br/><br/><?php echo dateIndo($$row->date_app_lv2) ?><br/><?php echo (!empty(get_user_position(get_nik($row->user_app_lv2)))) ? get_user_position(get_nik($$row->user_app_lv2)) : ''?></td>
+      <?php if(!empty($row->user_app_lv3)){?>
+      <td align="center" class="style3"><?php echo get_name($row->user_app_lv3)?><br/><br/><?php echo dateIndo($row->date_app_lv3) ?><br/><?php echo (!empty(get_user_position($row->user_app_lv3))) ? get_user_position($row->user_app_lv3) : ''?></td>
+      <?php } ?>
+    </tr>
+</table>
+<?php endif; ?>
+<?php endforeach?>
 </body>
 </html>

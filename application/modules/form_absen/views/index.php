@@ -29,10 +29,10 @@
                             <th width="10%">Tanggal</th>
                             <th width="20%">Nama</th>
                             <th width="20%">Keterangan</th>
-                            <th width="10%" style="text-align:center;">appr. spv</th>
-                            <th width="10%" style="text-align:center;">appr. ka. bag</th>
-                            <th width="10%" style="text-align:center;">appr. Atasan Lainnya</th>
-                            <th width="10%" style="text-align:center;">appr. HRD</th>
+                            <th width="10%" class="text-center">appr. spv</th>
+                            <th width="10%" class="text-center">appr. ka. bag</th>
+                            <th width="10%" class="text-center">appr. Atasan Lainnya</th>
+                            <th width="10%" class="text-center">appr. HRD</th>
                             <th width="10%" class="text-center">cetak</th>
                           </tr>
                         </thead>
@@ -72,15 +72,15 @@
 
                           //Approval Level 3
 
-                          if(!empty($absen->user_app_lv3) && $absen->is_app_lv3 == 0 && $sess_nik == $absen->user_app_lv3){
+                          if(empty($absen->user_app_lv3)){
+                             $txt_app_lv3 = "<i class='icon-circle' title = 'Tidak Butuh Approval'></i>";
+                            }elseif(!empty($absen->user_app_lv3 && $absen->is_app_lv3 == 1)){
+                              $txt_app_lv3 = "<a href='".site_url('form_absen/detail/'.$absen->id)."''>$approval_status_lv3</a>";
+                            }elseif(!empty($absen->user_app_lv3) && $absen->is_app_lv3 == 0 && $sess_nik == $absen->user_app_lv3){
                               $txt_app_lv3 = "<a href='".site_url('form_absen/detail/'.$absen->id)."''>
                                               <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-edit'></i></button>
                                               </a>";
-                            }elseif(!empty($absen->user_app_lv3) && $absen->is_app_lv3 == 1){
-                              $txt_app_lv3 = "<a href='".site_url('form_absen/detail/'.$absen->id)."''>$approval_status_lv3</a>";
-                            }else{
-                            $txt_app_lv3 = "<i class='icon-circle' title = 'Tidak Butuh Approval'></i>";
-                          }
+                            }
 
                           //Approval HRD
                             if(is_admin()&&$absen->is_app_hrd == 0){
@@ -94,21 +94,26 @@
                           ?>
                             <tr>
                               <td>
-                                <a href="<?php echo site_url('form_absen/detail/'.$absen->id)?>"><?php echo dateIndo($absen->date_tidak_hadir)?>
+                                <a href="<?php echo site_url('form_absen/detail/'.$absen->id)?>">
+                                  <?php echo dateIndo($absen->date_tidak_hadir)?>
                                 </a>
                               </td>
-                              <td><?php echo get_name($absen->user_id)?></td>
+                              <td>
+                                <a href="<?php echo site_url('form_absen/detail/'.$absen->id)?>">
+                                  <?php echo get_name($absen->user_id)?>
+                                </a>
+                              </td>
                               <td><?php echo $absen->keterangan_absen;?> </td>
-                              <td style="text-align:center;">
+                              <td class="text-center">
                                 <?php echo $txt_app_lv1;?>
                               </td>
-                              <td style="text-align:center;">
+                              <td class="text-center">
                                 <?php echo $txt_app_lv2;?>
                               </td>
-                              <td style="text-align:center;">
+                              <td class="text-center">
                                 <?php echo $txt_app_lv3;?>
                               </td>
-                              <td style="text-align:center;">
+                              <td class="text-center">
                                 <?php echo $txt_app_hrd;?>
                               </td>
                               <td class="text-center">

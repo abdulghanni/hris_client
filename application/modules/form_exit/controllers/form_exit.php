@@ -212,7 +212,7 @@ class Form_exit extends MX_Controller {
     }
     
     function add()
-    {
+    {   
         if(!$this->ion_auth->logged_in())
         {
             redirect('auth/login', 'refresh');
@@ -238,7 +238,8 @@ class Form_exit extends MX_Controller {
 
             if($this->form_validation->run() == FALSE)
             {
-            echo json_encode(array('st'=>0, 'errors'=>validation_errors()));
+            //echo json_encode(array('st'=>0, 'errors'=>validation_errors()));
+                redirect('form_exit/input','refresh');
             }
             else
             {
@@ -277,6 +278,7 @@ class Form_exit extends MX_Controller {
                     'user_app_lv1'          => $this->input->post('atasan1'),
                     'user_app_lv2'          => $this->input->post('atasan2'),
                     'user_app_lv3'          => $this->input->post('atasan3'),
+                    'user_app_asset'          => $this->input->post('asset_mng'),
                     'created_on'            => date('Y-m-d',strtotime('now')),
                     'created_by'            => $creator_id,
                     );
@@ -302,7 +304,8 @@ class Form_exit extends MX_Controller {
                 $this->db->insert('users_exit_rekomendasi', $data3);
                 }
                 $this->send_approval_request($exit_id, $user_id, $creator_id);
-                echo json_encode(array('st' =>1));
+                redirect('form_exit','refresh');
+                //echo json_encode(array('st' =>1));
             }
         }
     }
@@ -310,9 +313,10 @@ class Form_exit extends MX_Controller {
     function send_approval_request($id, $user_id, $creator_id)
     {
         $url = base_url().'form_exit/detail/'.$id;
-        $user_app_lv1 = getValue('user_app_lv1', 'users_promosi', array('id'=>'where/'.$id));
-        $user_app_lv2 = getValue('user_app_lv2', 'users_promosi', array('id'=>'where/'.$id));
-        $user_app_lv3 = getValue('user_app_lv3', 'users_promosi', array('id'=>'where/'.$id));
+        $user_app_lv1 = getValue('user_app_lv1', 'users_exit', array('id'=>'where/'.$id));
+        $user_app_lv2 = getValue('user_app_lv2', 'users_exit', array('id'=>'where/'.$id));
+        $user_app_lv3 = getValue('user_app_lv3', 'users_exit', array('id'=>'where/'.$id));
+        $user_app_asset = getValue('user_app_asset', 'users_exit', array('id'=>'where/'.$id));
 
         $admin_bagian = $this->db->where('group_id',3)->or_where('group_id',4)->or_where('group_id',5)->or_where('group_id',6)->or_where('group_id',7)->get('users_groups')->result_array('user_id');
         for($i=0;$i<sizeof($admin_bagian);$i++):
@@ -366,6 +370,18 @@ class Form_exit extends MX_Controller {
             $this->db->insert('email', $data3);
         }
 
+        if(!empty($user_app_asset)){
+            $data4 = array(
+                'sender_id' => get_nik($creator_id),
+                'receiver_id' => $user_app_asset,
+                'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                'subject' => 'Pengajuan Rekomendasi Karyawan Keluar',
+                'email_body' =>get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
+                'is_read' => 0,
+                );
+            $this->db->insert('email', $data4);
+        }
+
     }
 
   
@@ -382,6 +398,7 @@ class Form_exit extends MX_Controller {
             $user_id = getValue('user_id', 'users_exit', array('id'=>'where/'.$id));
             $this->data['user_nik'] = get_nik($user_id);
             $this->data['sess_id'] = $sess_id = $this->session->userdata('user_id');
+            $this->data['sess_nik'] = get_nik($sess_id);
             $i =$this->db->select('*')->from('users_inventory')->join('inventory', 'users_inventory.inventory_id = inventory.id', 'left')->where('users_inventory.user_id', $user_id)->get();
            
             $this->data['users_inventory'] = $i;
@@ -537,17 +554,24 @@ class Form_exit extends MX_Controller {
 
     function get_user_atasan()
     {
-            $user_id = $this->session->userdata('user_id');
-            $url_org = get_api_key().'users/superior/EMPLID/'.get_nik($user_id).'/format/json';
-            $headers_org = get_headers($url_org);
-            $response = substr($headers_org[0], 9, 3);
-            if ($response != "404") {
-            $get_user_pengganti = file_get_contents($url_org);
-            $user_pengganti = json_decode($get_user_pengganti, true);
-            return $this->data['user_atasan'] = $user_pengganti;
-            }else{
-             return $this->data['user_atasan'] = 'Tidak ada karyawan dengan departement yang sama';
-            }
+        $id = $this->session->userdata('user_id');
+        $url = get_api_key().'users/superior/EMPLID/'.get_nik($id).'/format/json';
+        $url_atasan_satu_bu = get_api_key().'users/atasan_satu_bu/EMPLID/'.get_nik($id).'/format/json';
+        $headers = get_headers($url);
+        $headers2 = get_headers($url_atasan_satu_bu);
+        $response = substr($headers[0], 9, 3);
+        $response2 = substr($headers2[0], 9, 3);
+        if ($response != "404") {
+            $get_atasan = file_get_contents($url);
+            $atasan = json_decode($get_atasan, true);
+            return $this->data['user_atasan'] = $atasan;
+        }elseif($response == "404" && $response2 != "404") {
+           $get_atasan = file_get_contents($url_atasan_satu_bu);
+           $atasan = json_decode($get_atasan, true);
+           return $this->data['user_atasan'] = $atasan;
+        }else{
+            return $this->data['user_atasan'] = '- Karyawan Tidak Memiliki Atasan -';
+        }
     }
     
     function get_emp_by_pos($posid)
@@ -726,6 +750,7 @@ class Form_exit extends MX_Controller {
                     $this->template->add_js('jquery.bootstrap.wizard.min.js');
                     $this->template->add_js('jquery.validate.min.js');
                     $this->template->add_js('bootstrap-datepicker.js');
+                    $this->template->add_js('emp_dropdown.js');
                     $this->template->add_js('form_exit.js');
                     
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');

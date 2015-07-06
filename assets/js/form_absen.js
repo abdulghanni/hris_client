@@ -8,25 +8,6 @@ $('.input-append.date').datepicker({
     todayHighlight: true
 });
 
-$("#emp").change(function() {
-        var empId = $(this).val();
-        get_employee_org(empId);
-    })
-    .change();
-
- function get_employee_org(empId)
-    {
-        $.ajax({
-                type: 'POST',
-                url: 'get_emp_org',
-                data: {id : empId},
-                success: function(data) {
-                    $('#organization').val(data);
-                }
-            });
-    }
-      
-
 //approval absen
 $('button[data-loading-text]').click(function () {
     $(this).button('loading');
@@ -96,7 +77,7 @@ $('button[data-loading-text]').click(function () {
     });
 
 //input absen
-    $('#formaddabsen').submit(function(response){
+    /*$('#formaddabsen').submit(function(response){
         $.post($('#formaddabsen').attr('action'), $('#formaddabsen').serialize(),function(json){
             if(json.st == 0){
                 $('#MsgBad').html(json.errors).fadeIn();
@@ -105,5 +86,5 @@ $('button[data-loading-text]').click(function () {
             }
         }, 'json');
         return false;
-    });
+    });*/
 });

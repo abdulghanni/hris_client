@@ -20,7 +20,7 @@
               </div>
               <div class="grid-body no-border">
                 <?php
-                $att = array('class' => 'form-no-horizontal-spacing', 'id' => 'formadddemolition');
+                $att = array('class' => 'form-no-horizontal-spacing', /*'id' => 'formadddemolition'*/);
                 echo form_open('form_demolition/add', $att);
                 ?>
                   <div class="row column-seperation">
@@ -33,7 +33,7 @@
                         </div>
                         <div class="col-md-9">
                           <?php if(is_admin()){?>
-                            <select id="emp" class="select2" style="width:100%" name="emp">
+                            <select id="empDemolition" class="select2" style="width:100%" name="emp">
                               <?php
                               foreach ($all_users->result() as $u) :
                                 $selected = $u->id == $sess_id ? 'selected = selected' : '';?>
@@ -42,7 +42,7 @@
                             </select>
                         <?php }else{?>
                             <?php if($subordinate->num_rows() > 0){?>
-                            <select id="emp" class="" style="width:100%" name="emp">
+                            <select id="emp" class="select2" style="width:100%" name="emp">
                                 <?php foreach($subordinate->result() as $row):?>
                             <option value="<?php echo $row->id?>"><?php echo get_name($row->id) ?></option>
                             <?php endforeach;?>
@@ -124,54 +124,83 @@
                       </div>
 
                       <div class="row form-row">
-                        <div class="col-md-3">
-                          <label class="form-label text-left"><?php echo 'Ka. Bagian' ?></label>
-                        </div>
-                        <div class="col-md-9">
-                        <?php if(is_admin()){
-                          $style_up='class="select2" style="width:100%" id="atasan2"';
-                              echo form_dropdown('atasan2',array('0'=>'- Pilih Ka. Bagian -'),'',$style_up);
-                          }else{?>
-                          <select name="atasan2" id="atasan2" class="select2" style="width:100%">
-                              <option value="0">- Pilih Ka. Bagian -</option>
-                              <?php foreach ($user_atasan as $key => $up) : ?>
-                              <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
-                              <?php endforeach;?>
-                          </select>
-                        <?php }?>
-                        </div>
+                      <div class="col-md-3">
+                        <label class="form-label text-left"><?php echo 'Ka. Bagian' ?></label>
                       </div>
+                      <div class="col-md-9">
+                        <select name="atasan2" id="atasan2" class="select2" style="width:100%">
+                            <option value="0">- Pilih Ka. Bagian -</option>
+                        </select>
+                      </div>
+                    </div>
 
-                      <div class="row form-row">
-                        <div class="col-md-3">
-                          <label class="form-label text-left"><?php echo 'Atasan Lainnya' ?></label>
-                        </div>
-                        <div class="col-md-9">
-                        <?php if(is_admin()){
-                          $style_up='class="select2" style="width:100%" id="atasan3"';
-                              echo form_dropdown('atasan3',array('0'=>'- Pilih Atasan Lainnya -'),'',$style_up);
-                          }else{?>
-                          <select name="atasan3" id="atasan3" class="select2" style="width:100%">
-                              <option value="0">- Pilih Atasan Lainnya -</option>
-                              <?php foreach ($user_atasan as $key => $up) : ?>
-                              <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
-                              <?php endforeach;?>
-                          </select>
-                              <?php }?>
-                        </div>
+                    <div class="row form-row">
+                      <div class="col-md-3">
+                        <label class="form-label text-left"><?php echo 'Atasan Lainnya' ?></label>
                       </div>
+                      <div class="col-md-9">
+                        <select name="atasan3" id="atasan3" class="select2" style="width:100%">
+                            <option value="0">- Pilih Atasan Lainnya -</option>
+                        </select>
+                      </div>
+                    </div>
 
                     </div>
 
                     <div class="col-md-7">
                       <h4>Demolition Yang Diajukan</h4>
-                      <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
+                      <div class="row form-row">
+                        <div class="col-md-4">
+                          <label class="form-label text-left">Unit Bisnis Baru</label>
+                        </div>
+                        <div class="col-md-8">
+                          <?php
+                            $style_bu='class="select2" style="width:100%" id="bu"  onChange="tampilOrg()"';
+                            echo form_dropdown('bu',$bu,'',$style_bu);
+                          ?>
+                        </div>
+                      </div>
+
+                      <div class="row form-row">
+                        <div class="col-md-4">
+                          <label class="form-label text-left">Dept/Bagian Baru</label>
+                        </div>
+                        <div class="col-md-8">
+                          <?php
+                            $style_org='class="select2" id="org" onChange="tampilPos()" style="width:100%"';
+                            echo form_dropdown("org",array('Pilih Organization'=>'- Pilih Organization -'),'',$style_org);
+                          ?>
+                        </div>
+                      </div>
+
+                      <div class="row form-row">
+                        <div class="col-md-4">
+                          <label class="form-label text-left">Jabatan Baru</label>
+                        </div>
+                       <div class="col-md-8">
+                          <?php
+                            $style_pos='class="select2" id="pos" style="width:100%"';
+                            echo form_dropdown("pos",array('Pilih Position'=>'- Pilih Position -'),'',$style_pos);
+                          ?>
+                        </div>
+                      </div>
+                      <div class="row form-row">
+                        <div class="col-md-4">
+                          <label class="form-label text-left">Tgl. Demolition</label>
+                        </div>
+                        <div class="col-md-8">
+                          <div class="input-append date success no-padding">
+                          <input type="text" class="form-control" name="date_demolition" required>
+                          <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span> 
+                        </div>
+                        </div>
+                      </div>
                       <div class="row form-row">
                         <div class="col-md-4">
                           <label class="form-label text-left">Alasan Demolition</label>
                         </div>
                         <div class="col-md-8">
-                          <input name="alasan" id="alasan" type="text"  class="form-control " placeholder="Alasan" value="" >
+                          <textarea name="alasan" id="alasan" class="form-control" placeholder="Alasan Demolition" required></textarea>
                         </div>
                       </div>
                     </div>

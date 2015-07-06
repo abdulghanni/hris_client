@@ -330,7 +330,9 @@ class Form_spd_luar_model extends CI_Model
             }
 
             if($is_admin!=1){
-            $this->db->where("(users_spd_dalam.task_receiver = '$sess_nik' OR users_spd_dalam.task_creator = '$sess_nik' )",null, false);
+            $this->db->where("(users_spd_luar.task_receiver = '$sess_nik' OR users_spd_luar.task_creator = '$sess_nik' 
+                               OR users_spd_luar.user_app_lv1 = '$sess_nik'  OR users_spd_luar.user_app_lv2 = '$sess_nik'  OR users_spd_luar.user_app_lv3 = '$sess_nik' 
+                    )",null, false);
             }
             $this->db->where('users_spd_luar.is_deleted', 0);
             $this->db->order_by('users_spd_luar.id', 'desc');

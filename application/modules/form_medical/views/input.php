@@ -20,7 +20,7 @@
 		                </div>
                   		<div class="grid-body no-border">
 
-                  		<h6 class="bold">BAGIAN : <div id="organization"><?php echo $bagian?></div></h6>
+                  		<h6 class="bold">BAGIAN : <span class="semi-bold" id="organization"><?php echo $bagian?></span></h6>
 					 		<div class="col-md-4">
                                 <div class="row">
                                     <button type="button" id="btnAdd" class="btn btn-primary btn-lg" onclick="addRow('dataTable')"><i class="icon-plus"></i>&nbsp;<?php echo lang('add_button');?></button>
@@ -54,7 +54,7 @@
                         <label class="form-label text-left"><?php echo 'Pembuat Rekapitulasi' ?></label>
                       </div>
                       <div class="col-md-5">
-                        <select id="emp" class="select2" style="width:100%" name="pengaju" onchange="getDropDown()">
+                        <select id="emp" class="select2" style="width:100%" name="pengaju">
                           <?php
                           foreach ($all_users->result() as $u) :
                             $selected = $u->id == $sess_id ? 'selected = selected' : '';?>
@@ -188,7 +188,7 @@
 	cell3.innerHTML = "<select name='emp[]' class='select2' style='width:100%'><?php for($i=0;$i<sizeof($all_users);$i++):?><option value='<?php echo $all_users[$i]['nik']?>'><?php echo $all_users[$i]['username'].' - '.$all_users[$i]['nik']?></option><?php endfor;?></select>";  
   <?php }else{?>
   var cell3=row.insertCell(2);
-  cell3.innerHTML = "<select name='emp[]' class='select2' style='width:100%'><?php foreach ($user_atasan as $key => $up) :?><option value='<?php echo $up['ID'] ?>'><?php echo $up['NAME'].' - '.$up['ID'] ?></option><?php endforeach;?></select>";  
+  cell3.innerHTML = "<select name='emp[]' class='select2' style='width:100%'><?php foreach ($user_same_org as $key => $up) :?><option value='<?php echo $up['ID'] ?>'><?php echo $up['NAME'].' - '.$up['ID'] ?></option><?php endforeach;?></select>";  
   <?php } ?>
 
 	var cell4=row.insertCell(3);
@@ -206,66 +206,4 @@
 
 
 	function deleteRow(tableID){try{var table=document.getElementById(tableID);var rowCount=table.rows.length;for(var i=0;i<rowCount;i++){var row=table.rows[i];var chkbox=row.cells[0].childNodes[0];if(null!=chkbox&&true==chkbox.checked){table.deleteRow(i);rowCount--;i--;}}}catch(e){alert(e);}}
-
-    function getDropDown()
-    {
-      getAtasan1();
-      getAtasan2();
-      getAtasan3();
-      getEmployeeOrg();
-    }
-
-    function getAtasan1()
-     {
-         emp = document.getElementById("emp").value;
-         $.ajax({
-             url:"<?php echo base_url();?>form_medical/get_atasan/"+emp+"",
-             success: function(response){
-             $("#atasan1").html(response);
-             },
-             dataType:"html"
-         });
-         return false;
-     }
-
-     function getAtasan2()
-     {
-         emp = document.getElementById("emp").value;
-         $.ajax({
-             url:"<?php echo base_url();?>form_medical/get_atasan/"+emp+"",
-             success: function(response){
-             $("#atasan2").html(response);
-             },
-             dataType:"html"
-         });
-         return false;
-     }
-
-     function getAtasan3()
-     {
-         emp = document.getElementById("emp").value;
-         $.ajax({
-             url:"<?php echo base_url();?>form_medical/get_atasan/"+emp+"",
-             success: function(response){
-             $("#atasan3").html(response);
-             },
-             dataType:"html"
-         });
-         return false;
-     }
-
-     function getEmployeeOrg()
-    {
-        emp = document.getElementById("emp").value;
-        $.ajax({
-             url:"<?php echo base_url();?>form_medical/get_emp_org/"+emp+"",
-             success: function(response){
-             $("#organization").text(response);
-             },
-             dataType:"html"
-         });
-         return false;
-    }
-
-
 </script>

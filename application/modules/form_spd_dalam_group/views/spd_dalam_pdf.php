@@ -5,6 +5,14 @@
 <title><?php echo $title?></title>
 <style type="text/css">
 <!--
+tbody td{
+  border-collapse:collapse;border-spacing:0; height:40px;font-family:Arial, sans-serif;font-size:14px;padding:12px 16px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;
+}
+
+th{
+  border-collapse:collapse;border-spacing:0; height:40px;font-family:Arial, sans-serif;font-size:14px;padding:12px 16px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;
+}
+
 .style3 {
   font-size: 20px;
   font-weight: bold;
@@ -41,46 +49,54 @@
   <p align="center" class="style6">Form Surat Tugas / Ijin </p>
 </div>
 <?php
-	if ($tc_num_rows > 0) {
-	foreach ($task_creator as $tc) : 
+	if ($td_num_rows > 0) {
+	foreach ($task_detail as $td) : 
 ?>
-<table width="988" height="128" border="0" style="padding-left:30px;" class="style3">
-<tr class="style4"><td>Yang bertanda tangan dibawah ini : </td></tr>
-<tr><td height="30"></td></tr>
+<p class="style7">Yang Memberi Tugas</p>
+<table width="1000" height="128" border="0" style="padding-left:30px;" class="style3">
   <tr>
     <td width="275" height="40"><span class="style3">Nama</span></td>
     <td width="10" height="40"><div align="center">:</div></td>
-    <td width="440" height="40"><?php echo $tc->user_name ?></td>
+    <td width="440" height="40"><?php echo get_name($td->task_creator) ?></td>
   </tr>
   <tr>
     <td height="40"><span class="style3">Bagian / Dept </span></td>
     <td height="40"><div align="center">:</div></td>
-    <td height="40"><?php echo (!empty($user_info))?$user_info['ORGANIZATION']:'-';?></td>
+    <td height="40"><?php echo get_user_organization($td->task_creator)?></td>
   </tr>
   <tr>
     <td height="40"><span class="style3">Jabatan</span></td>
     <td height="40"><div align="center">:</div></td>
-    <td height="40"><?php echo (!empty($user_info))?$user_info['POSITION']:'-';?></td>
+    <td height="40"><?php echo get_user_position($td->task_creator);?></td>
   </tr>
-<?php endforeach; 
-}
-?> 
+</table>
 
-<tr><td height="40"></td></tr>
-<tr class="style4"><td>Memberi tugas / ijin kepada : </td></tr>
-<tr><td height="30"></td></tr>
+<p class="style7">Memberi tugas / Ijin Kepada</p>
+<table width="1000" align="center" height="128" style="padding-left:30px;" class="style3">
+  <thead>
+    <tr>
+      <th width="7%">NIK</th>
+      <th width="25%">Nama</th>
+      <th width="25%">Dept/Bagian</th>
+      <th width="15%">Jabatan</th>
+    </tr>
+  </thead>
+  <tbody>
+  <?php 
+  $receiver = getAll('users_spd_dalam_group', array('id'=>'where/'.$id))->row('task_receiver');
+  $p = explode(",", $receiver);
+  $n='';
+  for($i=0;$i<sizeof($p);$i++):?>
   <tr>
-    <td width="275" height="10"><span class="style3">Nama</span></td>
-    <td width="10" height="10"><div align="center">:</div></td>
-    <td width="440" height="10"></td>
+  <td><?php echo $p[$i]?></td>
+  <td><?php echo get_name($p[$i])?></td>
+  <td><?php echo get_user_organization($p[$i])?></td>
+  <td><?php echo get_user_position($p[$i])?></td>
   </tr>
-  <tr>
-    <td width="275" height="80"><span class="style3"></span></td>
-    <td width="10" height="80"><div align="center"></div></td>
-    <td width="440" height="80"><?php echo $task_receiver_nm ?></td>
-  </tr>
-  <?php if ($td_num_rows > 0) {
-      foreach ($task_detail as $td) { ?>
+<?php endfor;?>
+  </tbody>
+  </table>
+ <table width="1000" align="center" height="128" style="padding-left:30px;" class="style3">
   <tr>
     <td height="40"><span class="style3">Melakukan tugas / ijin ke </span></td>
     <td height="40"><div align="center">:</div></td>
@@ -102,7 +118,6 @@
     <td height="40"><?php echo date('H:i:s',strtotime($td->start_time)) ?> s/d <?php echo date('H:i:s',strtotime($td->end_time)) ?></td>
   </tr>
 </table>
-<p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 
@@ -129,10 +144,6 @@
 <span class="semi-bold"><?php echo get_name($td->task_creator) ?></span><br/>
 <span class="small"><?php echo dateIndo($td->created_on) ?></span><br/>
 </div> 
-<?php  }
-} ?>
-
-<div style="clear: both; margin: 0pt; padding: 0pt; "></div>
-<p>&nbsp;</p>
+<?php endforeach;}?>
 </body>
 </html>

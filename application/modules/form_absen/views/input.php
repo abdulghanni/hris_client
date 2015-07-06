@@ -10,8 +10,6 @@
     </div>
     <div class="clearfix"></div>
     <div class="content">  
-		
-		
 	    <div id="container">
 	    	<div class="row">
         <div class="col-md-12">
@@ -20,7 +18,8 @@
               <h4>Form Keterangan Tidak <a href="<?php echo site_url('form_absen')?>"><span class="semi-bold">Absen</span></a></h4>
             </div>
             <div class="grid-body no-border">
-              <form class="form-no-horizontal-spacing" id="formaddabsen" action="<?php echo site_url('form_absen/add')?>"> 
+              <!--<form class="form-no-horizontal-spacing" id="formaddabsen" action="<?php echo site_url('form_absen/add')?>">--> 
+              <?php echo form_open('form_absen/add')?>;
                 <div class="row column-seperation">
                   <div class="col-md-12">    
                     <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
@@ -32,7 +31,7 @@
                       <div class="col-md-9">
                       <?php 
                       if(is_admin()){?>
-                        <select id="emp" class="select2" style="width:100%" name="emp" onchange="getDropDown()">
+                        <select id="emp" class="select2" style="width:100%" name="emp">
                           <?php
                           foreach ($all_users->result() as $u) :
                             $selected = $u->id == $sess_id ? 'selected = selected' : '';?>
@@ -136,49 +135,32 @@
                             <?php foreach ($user_atasan as $key => $up) : ?>
                               <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
                             <?php endforeach;?>
-                          </select>
-                            <?php }?>
+                        </select>
+                        <?php }?>
                       </div>
                     </div>
 
-                    <div class="row form-row">
+                   <div class="row form-row">
                       <div class="col-md-3">
-                        <label class="form-label text-right"><?php echo 'Ka. Bagian' ?></label>
+                        <label class="form-label text-left"><?php echo 'Ka. Bagian' ?></label>
                       </div>
                       <div class="col-md-9">
-                      <?php if(is_admin()){
-                        $style_up='class="select2" style="width:100%" id="atasan2"';
-                            echo form_dropdown('atasan2',array('0'=>'- Pilih Ka. Bagian -'),'',$style_up);
-                        }else{?>
                         <select name="atasan2" id="atasan2" class="select2" style="width:100%">
                             <option value="0">- Pilih Ka. Bagian -</option>
-                            <?php foreach ($user_atasan as $key => $up) : ?>
-                            <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
-                            <?php endforeach;?>
                         </select>
-                      <?php }?>
                       </div>
                     </div>
 
                     <div class="row form-row">
                       <div class="col-md-3">
-                        <label class="form-label text-right"><?php echo 'Atasan Lainnya' ?></label>
+                        <label class="form-label text-left"><?php echo 'Atasan Lainnya' ?></label>
                       </div>
                       <div class="col-md-9">
-                      <?php if(is_admin()){
-                        $style_up='class="select2" style="width:100%" id="atasan3"';
-                            echo form_dropdown('atasan3',array('0'=>'- Pilih Atasan Lainnya -'),'',$style_up);
-                        }else{?>
                         <select name="atasan3" id="atasan3" class="select2" style="width:100%">
                             <option value="0">- Pilih Atasan Lainnya -</option>
-                            <?php foreach ($user_atasan as $key => $up) : ?>
-                            <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
-                            <?php endforeach;?>
                         </select>
-                            <?php }?>
                       </div>
                     </div>
-
                   </div>
                 </div>
                 <div class="form-actions">
@@ -192,58 +174,6 @@
           </div>
         </div>
       </div>
-	          	
-		
-      </div>
-		
+    </div>
 	</div>  
 	<!-- END PAGE --> 
-
-  <script type="text/javascript">
-
-    function getDropDown()
-    {
-      getAtasan1();
-      getAtasan2();
-      getAtasan3();
-    }
-
-    function getAtasan1()
-     {
-         emp = document.getElementById("emp").value;
-         $.ajax({
-             url:"<?php echo base_url();?>form_absen/get_atasan/"+emp+"",
-             success: function(response){
-             $("#atasan1").html(response);
-             },
-             dataType:"html"
-         });
-         return false;
-     }
-
-     function getAtasan2()
-     {
-         emp = document.getElementById("emp").value;
-         $.ajax({
-             url:"<?php echo base_url();?>form_absen/get_atasan/"+emp+"",
-             success: function(response){
-             $("#atasan2").html(response);
-             },
-             dataType:"html"
-         });
-         return false;
-     }
-
-     function getAtasan3()
-     {
-         emp = document.getElementById("emp").value;
-         $.ajax({
-             url:"<?php echo base_url();?>form_absen/get_atasan/"+emp+"",
-             success: function(response){
-             $("#atasan3").html(response);
-             },
-             dataType:"html"
-         });
-         return false;
-     }
-  </script>

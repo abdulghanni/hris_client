@@ -1,13 +1,30 @@
 $(document).ready(function() {	
-	
-
-	
+	$(".select2").select2();
 	//Date Pickers
 	  $('.input-append.date').datepicker({
   			format: "dd-mm-yyyy",
 			autoclose: true,
 			todayHighlight: true
 	   });
+
+	  $( "#formedituser" ).validate({
+	  rules: {
+	    password: {
+	      required : false,
+	      minlength: 8,
+	    },
+
+	    password_confirm: {
+	      required : false,
+	      minlength: 8,
+	      equalTo : password,
+	    }
+	  },
+	    messages: {
+	        password: "Password harus berisi delapan karakter atau lebih",
+	        password_confirm: "Password Konfirmasi harus sama dengan password baru",
+	    }
+	});
 
 	$( "#formkk" ).validate({
 	  rules: {

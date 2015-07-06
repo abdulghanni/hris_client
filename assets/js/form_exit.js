@@ -4,7 +4,19 @@ $(document).ready(function() {
                 autoclose: true,
                 todayHighlight: true
        });
-       
+    var url = $.url();
+    var baseurl = url.attr('protocol')+'://'+url.attr('host')+'/'+url.segment(1)+'/';
+    var uri1 = url.segment(2)+'/do_approve/'+url.segment(4)+'/lv1';
+    var uri2 = url.segment(2)+'/do_approve/'+url.segment(4)+'/lv2';
+    var uri3 = url.segment(2)+'/do_approve/'+url.segment(4)+'/lv3';
+    var uriMgr = url.segment(2)+'/do_approve/'+url.segment(4)+'/mgr';
+    var uriKoperasi = url.segment(2)+'/do_approve/'+url.segment(4)+'/koperasi';
+    var uriPerpus = url.segment(2)+'/do_approve/'+url.segment(4)+'/perpus';
+    var uriHrd = url.segment(2)+'/do_approve/'+url.segment(4)+'/hrd';
+    var uriIt = url.segment(2)+'/do_approve/'+url.segment(4)+'/it';
+    var uriAsset = url.segment(2)+'/do_approve/'+url.segment(4)+'/asset';
+    var uridropdown = baseurl+'dropdown/get_atasan/';
+    var exit_url = baseurl+url.segment(2);    
        $("#emp").change(function() {
 	        var empId = $(this).val();
 	        get_employee_org(empId);
@@ -12,11 +24,21 @@ $(document).ready(function() {
 	        get_employee_nik(empId);
 	        get_employee_bu(empId);
           getInvList(empId);
-          getAtasan1(empId);
-          getAtasan2(empId);
-          getAtasan3(empId);
+          getAsmen(empId);
 	    })
 	    .change();
+
+      $("#empExit").change(function() {
+          var empId = $(this).val();
+          get_employee_org(empId);
+          get_employee_pos(empId);
+          get_employee_nik(empId);
+          get_employee_bu(empId);
+          getInvList(empId);
+          getAtasan1(empId);
+          getAsmen(empId);
+      })
+      .change();
 
   function getInvList(empId)
    {
@@ -29,6 +51,19 @@ $(document).ready(function() {
           }
       });
    }
+
+   function getAsmen(empId)
+   {
+      $.ajax({
+          type: 'POST',
+          url: baseurl+'dropdown/get_asmen/',
+          data: {id : empId},
+          success: function(data) {
+              $('#asmen').html(data);
+          }
+      });
+   }
+
 	 function get_employee_org(empId)
 	    {
 	        $.ajax({
@@ -77,54 +112,17 @@ $(document).ready(function() {
 	            });
 	    }
 
-      function getAtasan1(empId)
+    function getAtasan1(empId)
         {
          $.ajax({
                 type: 'POST',
-                url: 'get_atasan',
+                url: uridropdown+empId,
                 data: {id : empId},
                 success: function(data) {
                     $('#atasan1').html(data);
                 }
             });
         }
-
-        function getAtasan2(empId)
-        {
-         $.ajax({
-                type: 'POST',
-                url: 'get_atasan',
-                data: {id : empId},
-                success: function(data) {
-                    $('#atasan2').html(data);
-                }
-            });
-        }
-
-        function getAtasan3(empId)
-        {
-         $.ajax({
-                type: 'POST',
-                url: 'get_atasan',
-                data: {id : empId},
-                success: function(data) {
-                    $('#atasan3').html(data);
-                }
-            });
-        }
-            
-    var url = $.url();
-    var baseurl = url.attr('protocol')+'://'+url.attr('host')+'/'+url.segment(1)+'/';
-    var uri1 = url.segment(2)+'/do_approve/'+url.segment(4)+'/lv1';
-    var uri2 = url.segment(2)+'/do_approve/'+url.segment(4)+'/lv2';
-    var uri3 = url.segment(2)+'/do_approve/'+url.segment(4)+'/lv3';
-    var uriMgr = url.segment(2)+'/do_approve/'+url.segment(4)+'/mgr';
-    var uriKoperasi = url.segment(2)+'/do_approve/'+url.segment(4)+'/koperasi';
-    var uriPerpus = url.segment(2)+'/do_approve/'+url.segment(4)+'/perpus';
-    var uriHrd = url.segment(2)+'/do_approve/'+url.segment(4)+'/hrd';
-    var uriIt = url.segment(2)+'/do_approve/'+url.segment(4)+'/it';
-
-    var exit_url = baseurl+url.segment(2);
 
     $('#formaddexit').submit(function(response){
                   $.post($('#formaddexit').attr('action'), $('#formaddexit').serialize(),function(json){
@@ -267,6 +265,22 @@ $(document).ready(function() {
                           type: 'POST',
                           url: baseurl+uriIt,
                           data: $('#formAppIt').serialize(),
+                          success: function() {
+                              $("[data-dismiss=modal]").trigger({ type: "click" });
+                              location.reload(),
+                              $btn.button('reset')
+                          }
+                      });
+                      ev.preventDefault(); 
+                  });  
+              });
+      $('#btnAppAsset').click(function(){
+        var $btn = $(this).button('loading');
+                  $('#formAppAsset').submit(function(ev){
+                      $.ajax({
+                          type: 'POST',
+                          url: baseurl+uriAsset,
+                          data: $('#formAppAsset').serialize(),
                           success: function() {
                               $("[data-dismiss=modal]").trigger({ type: "click" });
                               location.reload(),

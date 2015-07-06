@@ -3,6 +3,13 @@
 <head>
 <meta charset="utf-8">
 <title><?php echo $title?></title>
+<style type="text/css">
+.approval-img-md{
+    height:10%;
+    width:12%;
+    z-index:-1;
+}
+</style>
 </head>
 
 <body>
@@ -13,6 +20,8 @@
 foreach($form_training_group as $user):
   $peserta = getAll('users_training_group', array('id'=>'where/'.$user->id))->row('user_peserta_id');
   $p = explode(",", $peserta);
+  $approved = assets_url('img/approved_stamp.png');
+  $rejected = assets_url('img/rejected_stamp.png');?>
   ?>
   <tbody>
     <tr>
@@ -53,10 +62,10 @@ foreach($form_training_group as $user):
       <th width="333" scope="col">Persetujuan Atasan</th>
       <th width="333" scope="col">Mengetahui HRD</th>
     </tr>
-    <tr>
+   <tr>
       <td height="117" align="center"><br/><br/><br/><br/><br/><?php echo get_name($user->user_pengaju_id)?><br/><?php echo dateIndo($user->created_on)?></td>
-      <td align="center"><br/><br/><br/><br/><br/><?php echo get_name($user->user_app_lv1)?><br/><?php echo dateIndo($user->date_app_lv1)?></td>
-      <td align="center"><br/><br/><br/><br/><br/><?php echo get_name($user->user_app_hrd)?><br/><?php echo dateIndo($user->date_app_hrd)?></td>
+      <td align="center"><?php echo ($user->approval_status_id_lv1 == 1)?"<img class=approval-img-md src=$approved>":(($user->approval_status_id_lv1 == 2) ? "<img class=approval-img-md src=$rejected>":'<br/><br/><br/><br/><br/>');?><br/><br/><?php echo get_name($user->user_app_lv1)?><br/><?php echo dateIndo($user->date_app_lv1)?></td>
+      <td align="center"><?php echo ($user->approval_status_id_hrd == 1)?"<img class=approval-img-md src=$approved>":(($user->approval_status_id_hrd == 2) ? "<img class=approval-img-md src=$rejected>":'<br/><br/><br/><br/><br/>');?><br/><br/><?php echo get_name($user->user_app_hrd)?><br/><?php echo dateIndo($user->date_app_hrd)?></td>
     </tr>
   </tbody>
 </table>

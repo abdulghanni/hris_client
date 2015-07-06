@@ -9,6 +9,7 @@ class Form_recruitment extends MX_Controller {
         parent::__construct();
         $this->load->library('authentication', NULL, 'ion_auth');
         $this->load->library('form_validation');
+        $this->load->library('approval');
         $this->load->helper('url');
         
         $this->load->database();
@@ -137,7 +138,8 @@ class Form_recruitment extends MX_Controller {
             */
             if($this->form_validation->run() == FALSE)
             {
-                echo json_encode(array('st'=>0, 'errors'=>validation_errors('<div class="alert alert-danger" role="alert">', '</div>')));
+                //echo json_encode(array('st'=>0, 'errors'=>validation_errors('<div class="alert alert-danger" role="alert">', '</div>')));
+                redirect('form_recruitment/input', 'refresh');
             }
             else
             {
@@ -201,9 +203,15 @@ class Form_recruitment extends MX_Controller {
 
                 if ($this->form_validation->run() == true && $this->recruitment_model->create_($data1, $data2, $data3))
                 {
-                    $recruitment_url = base_url().'form_recruitment';
-                    $this->send_approval_request($recruitment_id, $user_id);
-                    echo json_encode(array('st' =>1, 'recruitment_url' => $recruitment_url));    
+                     $recruitment_id = $this->db->insert_id();
+                     $user_app_lv1 = getValue('user_app_lv1', 'users_recruitment', array('id'=>'where/'.$recruitment_id));
+                     if(!empty($user_app_lv1)):
+                        $this->approval->request('lv1', 'recruitment', $recruitment_id, $user_id, $this->detail_email($recruitment_id));
+                     else:
+                        $this->approval->request('hrd', 'recruitment', $recruitment_id, $user_id, $this->detail_email($recruitment_id));
+                     endif;
+                     redirect('form_recruitment','refresh');
+                    //echo json_encode(array('st' =>1, 'recruitment_url' => $recruitment_url));    
                 }
             } 
     }
@@ -232,29 +240,7 @@ class Form_recruitment extends MX_Controller {
         $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
         $this->_render_page('form_recruitment/detail', $this->data);
     }
-
-    function approval($id)
-    {
-        if (!$this->ion_auth->logged_in())
-        {
-            //redirect them to the login page
-            redirect('auth/login', 'refresh');
-        }
-        $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
-        $this->data['session_id'] = $this->session->userdata('user_id');
-        $this->data['recruitment'] = $this->recruitment_model->recruitment($id)->result();
-        $this->data['status'] = getAll('recruitment_status', array('is_deleted' => 'where/0'));
-        $this->data['urgensi'] = getAll('recruitment_urgensi', array('is_deleted' => 'where/0'));
-        $jk = explode(',', getAll('users_recruitment_kualifikasi', array('id' => 'where/'.$id))->row('jenis_kelamin_id'));
-        $pendidikan = explode(',', getAll('users_recruitment_kualifikasi', array('id' => 'where/'.$id))->row('pendidikan_id'));
-        $komputer = explode(',', getAll('users_recruitment_kemampuan', array('id' => 'where/'.$id))->row('komputer'));
-        $this->data['jenis_kelamin'] = $this->recruitment_model->get_jk($jk);
-        $this->data['pendidikan'] = $this->recruitment_model->get_pendidikan($pendidikan);
-        $this->data['komputer'] = $this->recruitment_model->get_komputer($komputer);
-        $this->data['position_pengaju'] = $this->get_user_position($this->recruitment_model->recruitment($id)->row_array()['user_id']);
-        $this->_render_page('form_recruitment/approval', $this->data);
-    }
-
+    
     function do_approve($id, $type)
     {
         if(!$this->ion_auth->logged_in())
@@ -274,129 +260,25 @@ class Form_recruitment extends MX_Controller {
             'note_'.$type => $this->input->post('note_'.$type)
             );
             $approval_status = $this->input->post('app_status_'.$type);
-           if ($this->recruitment_model->update($id,$data)) {
-               $this->approval_mail($id, $approval_status);
-               redirect('form_recruitment/approval/'.$id, 'refresh');
+            $this->recruitment_model->update($id,$data);
+            $user_recruitment_id = getValue('user_id', 'users_recruitment', array('id'=>'where/'.$id));
+            if($is_app==0){
+                $this->approval->approve('recruitment', $id, $approval_status, $this->detail_email($id));
+            }else{
+                $this->approval->update_approve('recruitment', $id, $approval_status, $this->detail_email($id));
             }
-        }
-    }
-
-    function update_approve($type, $id)
-    {
-        if(!$this->ion_auth->logged_in())
-        {
-            redirect('auth/login', 'refresh');
-        }
-        else
-        {
-            $user_id = $this->session->userdata('user_id');
-            $date_now = date('Y-m-d');
-
-            $data = array(
-            'is_app_'.$type => 1, 
-            'approval_status_id_'.$type => $this->input->post('update_app_status_'.$type),
-            'user_app_'.$type => $user_id, 
-            'date_app_'.$type => $date_now,
-            'note_'.$type => $this->input->post('update_note_'.$type)
-            );
-            $approval_status = $this->input->post('update_app_status_'.$type);
-           if ($this->recruitment_model->update($id,$data)) {
-               $this->update_approval_mail($id, $approval_status, $type);
-               redirect('form_recruitment/approval/'.$id, 'refresh');
+            if($type !== 'hrd'){
+                $lv = substr($type, -1)+1;
+                $lv_app = 'lv'.$lv;
+                $user_app = ($lv<4) ? getValue('user_app_'.$lv_app, 'users_recruitment', array('id'=>'where/'.$id)):0;
+                if(!empty($user_app)):
+                    $this->approval->request($lv_app, 'recruitment', $id, $user_recruitment_id, $this->detail_email($id));
+                else:
+                    $this->approval->request('hrd', 'recruitment', $id, $user_recruitment_id, $this->detail_email($id));
+                endif;
             }
+               redirect('form_recruitment/approval/'.$id, 'refresh');
         }
-    }
-
-    function send_approval_request($id, $user_id)
-    {
-        $url = base_url().'form_recruitment/detail/'.$id;
-        $user_app_lv1 = getValue('user_app_lv1', 'users_recruitment', array('id'=>'where/'.$id));
-        $user_app_lv2 = getValue('user_app_lv2', 'users_recruitment', array('id'=>'where/'.$id));
-        $user_app_lv3 = getValue('user_app_lv3', 'users_recruitment', array('id'=>'where/'.$id));
-        
-        //approval to LV1
-        if(!empty($user_app_lv1)){
-            $data1 = array(
-                    'sender_id' => get_nik($user_id),
-                    'receiver_id' => $user_app_lv1,
-                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                    'subject' => 'Pengajuan Permintaan SDM Baru',
-                    'email_body' => get_name($user_id).' mengajukan Permintaan SDM Baru, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
-                    'is_read' => 0,
-                );
-            $this->db->insert('email', $data1);
-        }
-
-        //approval to LV2
-        if(!empty($user_app_lv2)){
-            $data2 = array(
-                    'sender_id' => get_nik($user_id),
-                    'receiver_id' => $user_app_lv2,
-                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                    'subject' => 'Pengajuan Permintaan SDM Baru',
-                    'email_body' => get_name($user_id).' mengajukan Permintaan SDM Baru, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
-                    'is_read' => 0,
-                );
-            $this->db->insert('email', $data2);
-        }
-
-        //approval to LV3
-        if(!empty($user_app_lv3)){
-            $data3 = array(
-                    'sender_id' => get_nik($user_id),
-                    'receiver_id' => $user_app_lv3,
-                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                    'subject' => 'Pengajuan Permintaan SDM Baru',
-                    'email_body' => get_name($user_id).' mengajukan Permintaan SDM Baru, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
-                    'is_read' => 0,
-                );
-            $this->db->insert('email', $data3);
-        }
-
-        //approval to hrd
-            $data4 = array(
-                    'sender_id' => get_nik($user_id),
-                    'receiver_id' => 1,
-                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                    'subject' => 'Pengajuan Permintaan SDM Baru',
-                    'email_body' => get_name($user_id).' mengajukan Permintaan SDM Baru, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
-                    'is_read' => 0,
-                );
-            $this->db->insert('email', $data4);
-    }
-
-    function approval_mail($id, $approval_status)
-    {
-        $url = base_url().'form_resignment/detail/'.$id;
-        $approver = get_name(get_nik($this->session->userdata('user_id')));
-        $receiver_id = getValue('user_id', 'users_resignment', array('id'=>'where/'.$id));
-        $approval_status = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));;
-        $data = array(
-                'sender_id' => get_nik($this->session->userdata('user_id')),
-                'receiver_id' => get_nik($receiver_id),
-                'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                'subject' => 'Status Permintaan SDM Baru dari Atasan',
-                'email_body' => "Status Permintaan SDM Baru anda $approval_status oleh $approver untuk detail silakan <a class='klikmail' href=$url>Klik disini</a><br/>".$this->detail_email($id),
-                'is_read' => 0,
-            );
-        $this->db->insert('email', $data);
-    }
-
-    function update_approval_mail($id, $approval_status, $type)
-    {
-        $url = base_url().'form_resignment/detail/'.$id;
-        $approver = get_name(get_nik($this->session->userdata('user_id')));
-        $receiver_id = getValue('user_id', 'users_resignment', array('id'=>'where/'.$id));
-        $approval_status = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));;
-        $data = array(
-                'sender_id' => get_nik($this->session->userdata('user_id')),
-                'receiver_id' => get_nik($receiver_id),
-                'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                'subject' => 'Perubahan Status Permintaan SDM Baru dari Atasan',
-                'email_body' => "$approver melakukan perubahan status Permintaan SDM Baru anda menjadi $approval_status, untuk detail silakan <a class='klikmail' href=$url>Klik disini</a><br/>".$this->detail_email($id),
-                'is_read' => 0,
-            );
-        $this->db->insert('email', $data);
     }
 
     function detail_email($id)
@@ -416,17 +298,24 @@ class Form_recruitment extends MX_Controller {
 
     function get_user_atasan()
     {
-            $user_id = $this->session->userdata('user_id');
-            $url_org = get_api_key().'users/superior/EMPLID/'.get_nik($user_id).'/format/json';
-            $headers_org = get_headers($url_org);
-            $response = substr($headers_org[0], 9, 3);
-            if ($response != "404") {
-            $get_user_pengganti = file_get_contents($url_org);
-            $user_pengganti = json_decode($get_user_pengganti, true);
-            return $this->data['user_atasan'] = $user_pengganti;
-            }else{
-             return $this->data['user_atasan'] = 'Tidak ada karyawan dengan departement yang sama';
-            }
+        $id = $this->session->userdata('user_id');
+        $url = get_api_key().'users/superior/EMPLID/'.get_nik($id).'/format/json';
+        $url_atasan_satu_bu = get_api_key().'users/atasan_satu_bu/EMPLID/'.get_nik($id).'/format/json';
+        $headers = get_headers($url);
+        $headers2 = get_headers($url_atasan_satu_bu);
+        $response = substr($headers[0], 9, 3);
+        $response2 = substr($headers2[0], 9, 3);
+        if ($response != "404") {
+            $get_atasan = file_get_contents($url);
+            $atasan = json_decode($get_atasan, true);
+            return $this->data['user_atasan'] = $atasan;
+        }elseif($response == "404" && $response2 != "404") {
+           $get_atasan = file_get_contents($url_atasan_satu_bu);
+           $atasan = json_decode($get_atasan, true);
+           return $this->data['user_atasan'] = $atasan;
+        }else{
+            return $this->data['user_atasan'] = '- Karyawan Tidak Memiliki Atasan -';
+        }
     }
 
     function get_bu()
@@ -632,6 +521,7 @@ class Form_recruitment extends MX_Controller {
                     $this->template->add_js('jquery.bootstrap.wizard.min.js');
                     $this->template->add_js('jquery.validate.min.js');
                     $this->template->add_js('bootstrap-datepicker.js');
+                    $this->template->add_js('emp_dropdown.js');
                     $this->template->add_js('form_recruitment.js');
                     
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');

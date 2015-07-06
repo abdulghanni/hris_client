@@ -11,7 +11,7 @@
     <div class="content">
         <div class="page-title">
             <i class="icon-custom-left"></i>
-            <h3><?php echo lang('list_of_subheading')?>&nbsp;<span class="semi-bold"><?php echo lang('users_subheading');?></span></h3> 
+            <h3>Daftar Inventaris Karyawan</span></h3> 
         </div>
         <div class="row">
             <div class="col-md-12">

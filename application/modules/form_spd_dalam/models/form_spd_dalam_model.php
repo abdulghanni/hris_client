@@ -320,26 +320,25 @@ class Form_spd_dalam_model extends CI_Model
             $this->db->join('approval_status as status_lv2', 'users_spd_dalam.approval_status_id_lv2 = status_lv2.id', 'left');
             $this->db->join('approval_status as status_lv3', 'users_spd_dalam.approval_status_id_lv3 = status_lv3.id', 'left');
             $this->db->join('approval_status as status_hrd', 'users_spd_dalam.approval_status_id_hrd = status_hrd.id', 'left');
-            
+            */
 
 
             //$this->db->where('users_spd_dalam.is_deleted', 0);
-            if($is_admin!=1){
-                //$this->db->where("(users_spd_dalam.user_id= $sess_id $sub_id $subsub_id )",null, false);
-                $this->db->or_where('users_spd_dalam.user_id', $sess_id);
-                $this->db->or_where('users_spd_dalam.user_app_lv1', $sess_nik);
-                $this->db->or_where('users_spd_dalam.user_app_lv2', $sess_nik);
-                $this->db->or_where('users_spd_dalam.user_app_lv3', $sess_nik);
-            }*/
 
             if($id != null){
                 $this->db->where('users_spd_dalam.id', $id);
             }
-            
-            $this->db->where('users_spd_dalam.is_deleted', 0);
             if($is_admin!=1){
-            $this->db->where("(users_spd_dalam.task_receiver = '$sess_nik' OR users_spd_dalam.task_creator = '$sess_nik' )",null, false);
+                //$this->db->where("(users_spd_dalam.user_id= $sess_id $sub_id $subsub_id )",null, false);
+                $this->db->where("(users_spd_dalam.task_receiver = '$sess_nik' OR users_spd_dalam.task_creator = '$sess_nik' 
+                                    OR users_spd_dalam.user_app_lv1 = '$sess_nik'  OR users_spd_dalam.user_app_lv2 = '$sess_nik'  OR users_spd_dalam.user_app_lv3 = '$sess_nik' 
+                    )",null, false);
             }
+
+            $this->db->where('users_spd_dalam.is_deleted', 0);
+            //if($is_admin!=1){
+            //$this->db->where("(users_spd_dalam.task_receiver = '$sess_nik' OR users_spd_dalam.task_creator = '$sess_nik' )",null, false);
+            //}
             $this->db->order_by('users_spd_dalam.id', 'desc');
         }
 

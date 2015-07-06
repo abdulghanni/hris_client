@@ -27,9 +27,10 @@
                             <thead>
                               <tr>
                                 <th width="90%">Kegiatan</th>
-                                <!-- <th width="9%">Pemberi tugas</th>
-                                <th width="10%">Waktu</th>
-                                <th width="10%">Keterangan</th> -->
+                                <th width="10%" class="text-center">appr. spv</th>
+                                <th width="10%" class="text-center">appr. ka. bag</th>
+                                <th width="10%" class="text-center">appr. Atasan Lainnya</th>
+                                <th width="10%" class="text-center">appr. HRD</th>
                                 <th width="10%" colspan="2" class="text-center">Action</th>
                               </tr>
                             </thead>
@@ -37,6 +38,58 @@
                               <?php if ($_num_rows > 0) { ?>
                               <?php foreach ($form_spd_dalam_group as $spd) : ?>
                               <?php
+
+                              $txt_app_lv1 = $txt_app_lv2 = $txt_app_lv3 = $txt_app_hrd = "<i class='icon-minus' title = 'Pending'></i>";
+                              $approval_status_lv1 = "<i class='icon-ok-sign' title = 'Approved'></i>";
+                              $approval_status_lv2 = "<i class='icon-ok-sign' title = 'Approved'></i>";
+                              $approval_status_lv3 = "<i class='icon-ok-sign' title = 'Approved'></i>";
+                              $approval_status_hrd = "<i class='icon-ok-sign' title = 'Approved'></i>";
+
+                            //Approval Level 1
+                              if(empty($spd->user_app_lv1)){
+                                 $txt_app_lv1 = "<i class='icon-circle' title = 'Tidak Butuh Approval'></i>";
+                                }elseif(!empty($spd->user_app_lv1 && $spd->is_app_lv1 == 1)){
+                                  $txt_app_lv1 = "<a href='".site_url('form_spd_dalam/submit/'.$spd->id)."''>$approval_status_lv2</a>";
+                                }elseif(!empty($spd->user_app_lv1) && $spd->is_app_lv1 == 0 && $sess_nik == $spd->user_app_lv1){
+                                  $txt_app_lv1 = "<a href='".site_url('form_spd_dalam/submit/'.$spd->id)."''>
+                                                  <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-edit'></i></button>
+                                                  </a>";
+                                }
+                              
+
+                              //ApprovalLevel 2
+                              
+                              if(empty($spd->user_app_lv2)){
+                                 $txt_app_lv2 = "<i class='icon-circle' title = 'Tidak Butuh Approval'></i>";
+                                }elseif(!empty($spd->user_app_lv2 && $spd->is_app_lv2 == 1)){
+                                  $txt_app_lv2 = "<a href='".site_url('form_spd_dalam/submit/'.$spd->id)."''>$approval_status_lv2</a>";
+                                }elseif(!empty($spd->user_app_lv2) && $spd->is_app_lv2 == 0 && $sess_nik == $spd->user_app_lv2){
+                                  $txt_app_lv2 = "<a href='".site_url('form_spd_dalam/submit/'.$spd->id)."''>
+                                                  <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-edit'></i></button>
+                                                  </a>";
+                                }
+
+                              //Approval Level 3
+
+                              if(empty($spd->user_app_lv3)){
+                                 $txt_app_lv3 = "<i class='icon-circle' title = 'Tidak Butuh Approval'></i>";
+                                }elseif(!empty($spd->user_app_lv3 && $spd->is_app_lv3 == 1)){
+                                  $txt_app_lv3 = "<a href='".site_url('form_spd_dalam/submit/'.$spd->id)."''>$approval_status_lv3</a>";
+                                }elseif(!empty($spd->user_app_lv3) && $spd->is_app_lv3 == 0 && $sess_nik == $spd->user_app_lv3){
+                                  $txt_app_lv3 = "<a href='".site_url('form_spd_dalam/submit/'.$spd->id)."''>
+                                                  <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-edit'></i></button>
+                                                  </a>";
+                                }
+
+                              //Approval HRD
+                                if(is_admin()&&$spd->is_app_hrd == 0){
+                                  $txt_app_hrd = "<a href='".site_url('form_spd_dalam/submit/'.$spd->id)."''>
+                                                  <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-edit'></i></button>
+                                                  </a>";
+                                }elseif($spd->is_app_hrd == 1){
+                                  $txt_app_hrd =  "<a href='".site_url('form_spd_dalam/submit/'.$spd->id)."''>$approval_status_hrd</a>";
+                                }
+
                                 $peserta = getAll('users_spd_dalam_group', array('id'=>'where/'.$spd->id))->row('task_receiver');
                                 $p = explode(",", $peserta);
                                 $user_submit = getAll('users_spd_dalam_group', array('id'=>'where/'.$spd->id))->row('user_submit');
@@ -63,6 +116,18 @@
                                         <span>Tempat : </span><?php echo $spd->destination ?>
                                       </div>
                                     </a>
+                                  </td>
+                                  <td class="text-center">
+                                    <?php echo $txt_app_lv1;?>
+                                  </td>
+                                  <td class="text-center">
+                                    <?php echo $txt_app_lv2;?>
+                                  </td>
+                                  <td class="text-center">
+                                    <?php echo $txt_app_lv3;?>
+                                  </td>
+                                  <td class="text-center">
+                                    <?php echo $txt_app_hrd;?>
                                   </td>
                                   <td>
                                     <div class="list-actions" class="text-center">

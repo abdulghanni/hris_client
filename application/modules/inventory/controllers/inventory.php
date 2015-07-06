@@ -145,21 +145,21 @@ class Inventory extends MX_Controller {
             redirect('auth/login', 'refresh');
         
         }elseif($this->ion_auth->is_admin_bagian() || $sess_nik==$superior_hrd || $sess_nik==$superior_it || $sess_nik==$superior_logistik || $sess_nik==$superior_koperasi || $sess_nik==$superior_perpus){
-
-            if($this->ion_auth->is_admin_it() || $sess_nik==$superior_it){
+          //  die($sess_nik.'=='.$superior_it);
+            if($this->ion_auth->is_admin_it() || $sess_nik===$superior_it){
                 $group_id = 2;
                 $type = 'it';
-            }elseif($this->ion_auth->is_admin_hrd() ||$sess_nik==$superior_hrd){
+            }elseif($this->ion_auth->is_admin_hrd() ||$sess_nik===$superior_hrd){
                 $group_id = 1;
                 $type = 'hrd';
-            }elseif($this->ion_auth->is_admin_logistik() || $sess_nik==$superior_logistik){
+            }elseif($this->ion_auth->is_admin_logistik() || $sess_nik===$superior_logistik){
                 $group_id = 3;
                 $type = 'logistik';
-            }elseif($this->ion_auth->is_admin_perpustakaan() || $sess_nik==$superior_perpus){
-                $group_id = 4;
-                $type = 'perpus';
-            }elseif($this->ion_auth->is_admin_koperasi() || $sess_nik==$superior_koperasi){
+            }elseif($this->ion_auth->is_admin_perpustakaan() || $sess_nik===$superior_perpus){
                 $group_id = 5;
+                $type = 'perpus';
+            }elseif($this->ion_auth->is_admin_koperasi() || $sess_nik===$superior_koperasi){
+                $group_id = 4;
                 $type = 'koperasi';
             }else{
                 $group_id = 0;
@@ -441,17 +441,24 @@ class Inventory extends MX_Controller {
 
     function get_user_atasan()
     {
-            $user_id = $this->session->userdata('user_id');
-            $url_org = get_api_key().'users/superior/EMPLID/'.get_nik($user_id).'/format/json';
-            $headers_org = get_headers($url_org);
-            $response = substr($headers_org[0], 9, 3);
-            if ($response != "404") {
-            $get_user_pengganti = file_get_contents($url_org);
-            $user_pengganti = json_decode($get_user_pengganti, true);
-            return $this->data['user_atasan'] = $user_pengganti;
-            }else{
-             return $this->data['user_atasan'] = 'Tidak ada karyawan dengan departement yang sama';
-            }
+        $id = $this->session->userdata('user_id');
+        $url = get_api_key().'users/superior/EMPLID/'.get_nik($id).'/format/json';
+        $url_atasan_satu_bu = get_api_key().'users/atasan_satu_bu/EMPLID/'.get_nik($id).'/format/json';
+        $headers = get_headers($url);
+        $headers2 = get_headers($url_atasan_satu_bu);
+        $response = substr($headers[0], 9, 3);
+        $response2 = substr($headers2[0], 9, 3);
+        if ($response != "404") {
+            $get_atasan = file_get_contents($url);
+            $atasan = json_decode($get_atasan, true);
+            return $this->data['user_atasan'] = $atasan;
+        }elseif($response == "404" && $response2 != "404") {
+           $get_atasan = file_get_contents($url_atasan_satu_bu);
+           $atasan = json_decode($get_atasan, true);
+           return $this->data['user_atasan'] = $atasan;
+        }else{
+            return $this->data['user_atasan'] = '- Karyawan Tidak Memiliki Atasan -';
+        }
     }
 
     function _valid_csrf_nonce()

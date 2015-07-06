@@ -9,6 +9,8 @@ class Form_demolition extends MX_Controller {
         parent::__construct();
         $this->load->library('authentication', NULL, 'ion_auth');
         $this->load->library('form_validation');
+        $this->load->library('approval');
+
         $this->load->helper('url');
         
         $this->load->database();
@@ -135,7 +137,14 @@ class Form_demolition extends MX_Controller {
             {
                 $user_id = $this->input->post('emp');
                 $additional_data = array(
-                    'alasan_demolition'           => $this->input->post('alasan'),
+                    'old_bu'       => $this->input->post('old_bu'),
+                    'old_org'     => $this->input->post('old_org'),
+                    'old_pos'           => $this->input->post('old_pos'),
+                    'new_bu'        => $this->input->post('bu'),
+                    'new_org'        => $this->input->post('org'),
+                    'new_pos'           => $this->input->post('pos'),
+                    'date_demolition'           => date('Y-m-d',strtotime($this->input->post('date_demolition'))),
+                    'alasan'           => $this->input->post('alasan'),
                     'user_app_lv1'          => $this->input->post('atasan1'),
                     'user_app_lv2'          => $this->input->post('atasan2'),
                     'user_app_lv3'          => $this->input->post('atasan3'),
@@ -143,20 +152,18 @@ class Form_demolition extends MX_Controller {
                     'created_by'            => $this->session->userdata('user_id')
                 );
 
-                $num_rows = getAll('users_demolition')->num_rows();
-
-                if($num_rows>0){
-                    $demolition_id = $this->db->select('id')->order_by('id', 'asc')->get('users_demolition')->last_row();
-                    $demolition_id = $demolition_id->id+1;
-                }else{
-                    $demolition_id = 1;
-                }
-
                 if ($this->form_validation->run() == true && $this->form_demolition_model->create_($user_id, $additional_data))
                 {
-                    $demolition_url = base_url().'form_demolition';
-                    $this->send_approval_request($demolition_id, $user_id);
-                    echo json_encode(array('st' =>1, 'demolition_url' => $demolition_url));    
+                     $demolition_id = $this->db->insert_id();
+                     $user_app_lv1 = getValue('user_app_lv1', 'users_demolition', array('id'=>'where/'.$demolition_id));
+                     if(!empty($user_app_lv1)):
+                        $this->approval->request('lv1', 'demolition', $demolition_id, $user_id, $this->detail_email($demolition_id));
+                     else:
+                        $this->approval->request('hrd', 'demolition', $demolition_id, $user_id, $this->detail_email($demolition_id));
+                     endif;
+                     $this->send_user_notification($demolition_id, $user_id);
+                     redirect('form_demolition', 'refresh');
+                    //echo json_encode(array('st' =>1, 'demolition_url' => $demolition_url));    
                 }
             }
         }
@@ -185,76 +192,32 @@ class Form_demolition extends MX_Controller {
             $is_app = getValue('is_app_'.$type, 'users_demolition', array('id'=>'where/'.$id));
             $approval_status = $this->input->post('app_status_'.$type);
 
-           if ($this->form_demolition_model->update($id,$data)) {
-               redirect('form_demolition/detail/'.$id, 'refresh');
-            }
-
+            $this->form_demolition_model->update($id,$data);
+            $user_demolition_id = getValue('user_id', 'users_demolition', array('id'=>'where/'.$id));
             if($is_app==0){
-                $this->approval_mail($id, $approval_status);
+                $this->approval->approve('demolition', $id, $approval_status, $this->detail_email($id));
             }else{
-                $this->update_approval_mail($id, $approval_status);
+                $this->approval->update_approve('demolition', $id, $approval_status, $this->detail_email($id));
             }
+            if($type !== 'hrd'){
+                $lv = substr($type, -1)+1;
+                $lv_app = 'lv'.$lv;
+                $user_app = ($lv<4) ? getValue('user_app_'.$lv_app, 'users_demolition', array('id'=>'where/'.$id)):0;
+                if(!empty($user_app)):
+                    $this->approval->request($lv_app, 'demolition', $id, $user_demolition_id, $this->detail_email($id));
+                else:
+                    $this->approval->request('hrd', 'demolition', $id, $user_demolition_id, $this->detail_email($id));
+                endif;
+            }
+            redirect('form_demolition/detail/'.$id, 'refresh');
         }
     }
 
 
-    function send_approval_request($id, $user_id)
+    function send_user_notification($id, $user_id)
     {
         $url = base_url().'form_demolition/detail/'.$id;
-        $user_app_lv1 = getValue('user_app_lv1', 'users_demolition', array('id'=>'where/'.$id));
-        $user_app_lv2 = getValue('user_app_lv2', 'users_demolition', array('id'=>'where/'.$id));
-        $user_app_lv3 = getValue('user_app_lv3', 'users_demolition', array('id'=>'where/'.$id));
         $pengaju_id = $this->session->userdata('user_id');
-        
-        //approval to LV1
-        if(!empty($user_app_lv1)){
-            $data1 = array(
-                    'sender_id' => get_nik($pengaju_id),
-                    'receiver_id' => $user_app_lv1,
-                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                    'subject' => 'Pengajuan demolition Karyawan',
-                    'email_body' => get_name($pengaju_id).' mengajukan demolition untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
-                    'is_read' => 0,
-                );
-            $this->db->insert('email', $data1);
-        }
-
-        //approval to LV2
-        if(!empty($user_app_lv2)){
-            $data2 = array(
-                    'sender_id' => get_nik($pengaju_id),
-                    'receiver_id' => $user_app_lv2,
-                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                    'subject' => 'Pengajuan demolition Karyawan',
-                    'email_body' => get_name($pengaju_id).' mengajukan demolition untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
-                    'is_read' => 0,
-                );
-            $this->db->insert('email', $data2);
-        }
-
-        //approval to LV3
-        if(!empty($user_app_lv3)){
-            $data3 = array(
-                    'sender_id' => get_nik($pengaju_id),
-                    'receiver_id' => $user_app_lv3,
-                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                    'subject' => 'Pengajuan demolition Karyawan',
-                    'email_body' => get_name($pengaju_id).' mengajukan demolition untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
-                    'is_read' => 0,
-                );
-            $this->db->insert('email', $data3);
-        }
-
-        //approval to hrd
-            $data4 = array(
-                    'sender_id' => get_nik($pengaju_id),
-                    'receiver_id' => 1,
-                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                    'subject' => 'Pengajuan demolition Karyawan',
-                    'email_body' => get_name($pengaju_id).' mengajukan demolition untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
-                    'is_read' => 0,
-                );
-            $this->db->insert('email', $data4);
 
         //Notif to karyawan
              $data4 = array(
@@ -268,43 +231,11 @@ class Form_demolition extends MX_Controller {
             $this->db->insert('email', $data4);
     }
 
-    function approval_mail($id, $approval_status)
-    {
-        $url = base_url().'form_demolition/detail/'.$id;
-        $approver = get_name(get_nik($this->session->userdata('user_id')));
-        $receiver_id = getValue('created_by', 'users_demolition', array('id'=>'where/'.$id));
-        $approval_status = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));;
-        $data = array(
-                'sender_id' => get_nik($this->session->userdata('user_id')),
-                'receiver_id' => get_nik($receiver_id),
-                'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                'subject' => 'Status Pengajuan demolition dari Atasan',
-                'email_body' => "Status pengajuan demolition anda $approval_status oleh $approver untuk detail silakan <a class='klikmail' href=$url>Klik disini</a><br/>".$this->detail_email($id),
-                'is_read' => 0,
-            );
-        $this->db->insert('email', $data);
-    }
-
-    function update_approval_mail($id, $approval_status)
-    {
-        $url = base_url().'form_demolition/detail/'.$id;
-        $approver = get_name(get_nik($this->session->userdata('user_id')));
-        $receiver_id = getValue('created_by', 'users_demolition', array('id'=>'where/'.$id));
-        $approval_status = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));;
-        $data = array(
-                'sender_id' => get_nik($this->session->userdata('user_id')),
-                'receiver_id' => get_nik($receiver_id),
-                'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                'subject' => 'Perubahan Status Pengajuan demolition dari Atasan',
-                'email_body' => "$approver melakukan perubahan status pengajuan demolition anda menjadi $approval_status, untuk detail silakan <a class='klikmail' href=$url>Klik disini</a><br/>".$this->detail_email($id),
-                'is_read' => 0,
-            );
-        $this->db->insert('email', $data);
-    }
-
     function detail_email($id)
     {
         $this->data['sess_id'] = $this->session->userdata('user_id');
+        $user_id = getValue('user_id', 'users_demolition', array('id'=>'where/'.$id));
+        $this->data['user_nik'] = get_nik($user_id);
         $form_demolition = $this->data['form_demolition'] = $this->form_demolition_model->form_demolition($id)->result();
         $this->data['_num_rows'] = $this->form_demolition_model->form_demolition($id)->num_rows();
 
@@ -412,17 +343,24 @@ class Form_demolition extends MX_Controller {
     
     function get_user_atasan()
     {
-            $user_id = $this->session->userdata('user_id');
-            $url_org = get_api_key().'users/superior/EMPLID/'.get_nik($user_id).'/format/json';
-            $headers_org = get_headers($url_org);
-            $response = substr($headers_org[0], 9, 3);
-            if ($response != "404") {
-            $get_user_pengganti = file_get_contents($url_org);
-            $user_pengganti = json_decode($get_user_pengganti, true);
-            return $this->data['user_atasan'] = $user_pengganti;
-            }else{
-             return $this->data['user_atasan'] = 'Tidak ada karyawan dengan departement yang sama';
-            }
+        $id = $this->session->userdata('user_id');
+        $url = get_api_key().'users/superior/EMPLID/'.get_nik($id).'/format/json';
+        $url_atasan_satu_bu = get_api_key().'users/atasan_satu_bu/EMPLID/'.get_nik($id).'/format/json';
+        $headers = get_headers($url);
+        $headers2 = get_headers($url_atasan_satu_bu);
+        $response = substr($headers[0], 9, 3);
+        $response2 = substr($headers2[0], 9, 3);
+        if ($response != "404") {
+            $get_atasan = file_get_contents($url);
+            $atasan = json_decode($get_atasan, true);
+            return $this->data['user_atasan'] = $atasan;
+        }elseif($response == "404" && $response2 != "404") {
+           $get_atasan = file_get_contents($url_atasan_satu_bu);
+           $atasan = json_decode($get_atasan, true);
+           return $this->data['user_atasan'] = $atasan;
+        }else{
+            return $this->data['user_atasan'] = '- Karyawan Tidak Memiliki Atasan -';
+        }
     }
 
     public function get_emp_org()
@@ -576,11 +514,13 @@ class Form_demolition extends MX_Controller {
             redirect('auth/login', 'refresh');
         }else{
            
-            $this->data['sess_id'] = $this->session->userdata('user_id');
-            $form_demolition = $this->data['form_demolition'] = $this->form_demolition_model->form_demolition($id)->result();
-            $this->data['_num_rows'] = $this->form_demolition_model->form_demolition($id)->num_rows();
+        $this->data['sess_id'] = $this->session->userdata('user_id');
+        $user_id = getValue('user_id', 'users_demolition', array('id'=>'where/'.$id));
+        $this->data['user_nik'] = get_nik($user_id);
+        $form_demolition = $this->data['form_demolition'] = $this->form_demolition_model->form_demolition($id)->result();
+        $this->data['_num_rows'] = $this->form_demolition_model->form_demolition($id)->num_rows();
 
-            $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
+        $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
 
             $this->data['id'] = $id;
             $title = $this->data['title'] = 'Form Pengajuan Demolition-'.get_name($user_id);
@@ -657,6 +597,7 @@ class Form_demolition extends MX_Controller {
                     $this->template->add_js('jquery.bootstrap.wizard.min.js');
                     $this->template->add_js('jquery.validate.min.js');
                     $this->template->add_js('bootstrap-datepicker.js');
+                    $this->template->add_js('emp_dropdown.js');
                     $this->template->add_js('form_demolition.js');
                     
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');

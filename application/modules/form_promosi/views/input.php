@@ -20,7 +20,7 @@
               </div>
               <div class="grid-body no-border">
                 <?php
-                $att = array('class' => 'form-no-horizontal-spacing', 'id' => 'formaddpromosi');
+                $att = array('class' => 'form-no-horizontal-spacing', /*'id' => 'formaddpromosi'*/);
                 echo form_open('form_promosi/add', $att);
                 ?>
                   <div class="row column-seperation">
@@ -33,7 +33,7 @@
                         </div>
                         <div class="col-md-9">
                           <?php if(is_admin()){?>
-                            <select id="emp" class="select2" style="width:100%" name="emp">
+                            <select id="empPromosi" class="select2" style="width:100%" name="emp">
                               <?php
                               foreach ($all_users->result() as $u) :
                                 $selected = $u->id == $sess_id ? 'selected = selected' : '';?>
@@ -128,17 +128,9 @@
                         <label class="form-label text-left"><?php echo 'Ka. Bagian' ?></label>
                       </div>
                       <div class="col-md-9">
-                      <?php if(is_admin()){
-                        $style_up='class="select2" style="width:100%" id="atasan2"';
-                            echo form_dropdown('atasan2',array('0'=>'- Pilih Ka. Bagian -'),'',$style_up);
-                        }else{?>
                         <select name="atasan2" id="atasan2" class="select2" style="width:100%">
                             <option value="0">- Pilih Ka. Bagian -</option>
-                            <?php foreach ($user_atasan as $key => $up) : ?>
-                            <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
-                            <?php endforeach;?>
                         </select>
-                      <?php }?>
                       </div>
                     </div>
 
@@ -147,17 +139,9 @@
                         <label class="form-label text-left"><?php echo 'Atasan Lainnya' ?></label>
                       </div>
                       <div class="col-md-9">
-                      <?php if(is_admin()){
-                        $style_up='class="select2" style="width:100%" id="atasan3"';
-                            echo form_dropdown('atasan3',array('0'=>'- Pilih Atasan Lainnya -'),'',$style_up);
-                        }else{?>
                         <select name="atasan3" id="atasan3" class="select2" style="width:100%">
                             <option value="0">- Pilih Atasan Lainnya -</option>
-                            <?php foreach ($user_atasan as $key => $up) : ?>
-                            <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
-                            <?php endforeach;?>
                         </select>
-                            <?php }?>
                       </div>
                     </div>
 

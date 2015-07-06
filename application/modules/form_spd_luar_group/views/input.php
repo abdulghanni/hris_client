@@ -23,45 +23,88 @@
               <form class="form-no-horizontal-spacing" id="" action="<?php echo site_url() ?>form_spd_luar_group/add" method="post"> 
                 <div class="row column-seperation">
                   <div class="col-md-4">
-                    <h4>Yang Memberi Tugas</h4>
-                    <?php if ($tc_num_rows > 0) {
-                      foreach ($task_creator as $tc) : ?>  
+                    <h4>Yang Memberi Tugas</h4> 
                     <div class="row form-row">
                       <div class="col-md-3">
                         <label class="form-label text-left">Nama</label>
                       </div>
                       <div class="col-md-9">
                       <?php if(is_admin()){?>
-                      <select id="emp_tc" class="select2" style="width:100%" name="emp_tc" onChange="getTr()">
+                      <select id="emp" class="select2" style="width:100%" name="emp_tc" onChange="getTr()">
                         <?php
                         foreach ($all_users as $up) { ?>
-                          <option value="<?php echo (!empty(get_nik($up->id))) ? get_nik($up->id) : $up->id ?>"><?php echo $up->user_name; ?></option>
+                          <option value="<?php echo (!empty(get_nik($up->id))) ? get_nik($up->id) : $up->id ?>"><?php echo $up->username; ?></option>
                         <?php } ?>
                       </select>
                       <?php }else{ ?>
                         <input type="text"  class="form-control" placeholder="Nama" value="<?php echo get_name($sess_id)?>" readonly>
-                        <input id="emp_tc" onload="getTr()" name="emp_tc" type="hidden"  class="form-control" placeholder="Nama" value="<?php echo get_nik($sess_id)?>">
+                        <input id="emp" onload="getTr()" name="emp_tc" type="hidden"  class="form-control" placeholder="Nama" value="<?php echo get_nik($sess_id)?>">
                       <?php } ?>
                       </div>
                     </div>
                     <div class="row form-row">
                       <div class="col-md-3">
-                        <label class="form-label text-left">Dept/Bagian</label>
+                        <label class="form-label text-right">Dept/Bagian</label>
                       </div>
                       <div class="col-md-9">
-                        <input name="org_tc" id="org_tc" type="text"  class="form-control" placeholder="Dept/Bagian" value="<?php echo (!empty($user_info))?$user_info['ORGANIZATION']:'-';?>" disabled="disabled">
+                        <input name="org_tc" id="organization" type="text"  class="form-control" placeholder="Nama" value="<?php echo get_user_organization($sess_nik);?>" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
                       <div class="col-md-3">
-                        <label class="form-label text-left">Jabatan</label>
+                        <label class="form-label text-right">Jabatan</label>
                       </div>
                       <div class="col-md-9">
-                        <input name="pos_tc" id="pos_tc" type="text"  class="form-control" placeholder="Jabatan" value="<?php echo (!empty($user_info))?$user_info['POSITION']:'-';?>" disabled="disabled">
+                        <input name="pos_tc" id="position" type="text"  class="form-control" placeholder="Nama" value="<?php echo get_user_position($sess_nik);?>" disabled="disabled">
+                      </div>
+                    </div> 
+
+                    <div class="row form-row">
+                      <div class="col-md-3">
+                        <label class="bold form-label text-right"><?php echo 'Approval' ?></label>
                       </div>
                     </div>
-                    <?php  endforeach;
-                    } ?>   
+
+                    <div class="row form-row">
+                      <div class="col-md-3">
+                        <label class="form-label text-right"><?php echo 'Supervisor' ?></label>
+                      </div>
+                      <div class="col-md-9">
+                      <?php if(is_admin()){
+                        $style_up='class="select2" style="width:100%" id="atasan1"';
+                            echo form_dropdown('atasan1',array('0'=>'- Pilih Supervisor -'),'',$style_up);
+                        }else{?>
+                        <select name="atasan1" id="atasan1" class="select2" style="width:100%">
+                            <option value="0">- Pilih Supervisor -</option>
+                            <?php foreach ($user_atasan as $key => $up) : ?>
+                              <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
+                            <?php endforeach;?>
+                        </select>
+                        <?php }?>
+                      </div>
+                    </div>
+
+                   <div class="row form-row">
+                      <div class="col-md-3">
+                        <label class="form-label text-right"><?php echo 'Ka. Bagian' ?></label>
+                      </div>
+                      <div class="col-md-9">
+                        <select name="atasan2" id="atasan2" class="select2" style="width:100%">
+                            <option value="0">- Pilih Ka. Bagian -</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="row form-row">
+                      <div class="col-md-3">
+                        <label class="form-label text-right"><?php echo 'Atasan Lainnya' ?></label>
+                      </div>
+                      <div class="col-md-9">
+                        <select name="atasan3" id="atasan3" class="select2" style="width:100%">
+                            <option value="0">- Pilih Atasan Lainnya -</option>
+                        </select>
+                      </div>
+                    </div> 
                     
                   </div>
                   <div class="col-md-8">
@@ -74,7 +117,7 @@
                       <?php 
                       if(is_admin() || !is_admin()){?>
                       <div class="col-md-9">
-                        <div id="peserta" >
+                        <div id="peserta_spd" >
                         </div>
                       </div>
                     <?php}else{?>
@@ -199,11 +242,11 @@
   <script type="text/javascript">
     function getTr()
      {
-         tcid = document.getElementById("emp_tc").value;
+         tcid = document.getElementById("emp").value;
          $.ajax({
              url:"<?php echo base_url();?>form_spd_luar_group/get_tr/"+tcid+"",
              success: function(response){
-             $("#peserta").html(response);
+             $("#peserta_spd").html(response);
              },
              dataType:"html"
          });

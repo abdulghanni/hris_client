@@ -7,15 +7,9 @@
 <!--
 .style3 {
   font-size: 20px;
-  font-weight: bold;
 }
 .style4 {
   font-size: 22px;
-  font-weight: bold;
-  text-align: center;
-}
-.style5 {
-  font-size: 14px;
   font-weight: bold;
   text-align: center;
 }
@@ -26,8 +20,14 @@
 }
 .style7 {
   padding-left: 20px;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: bold;
+}
+
+.approval-img-md{
+    height:12%;
+    width:15%;
+    z-index:-1;
 }
 -->
 </style>
@@ -38,7 +38,10 @@
   <p align="left"><img src="<?php echo assets_url('img/erlangga.jpg')?>" width="296" height="80" /></p>
   <p align="center" class="style6">Form Keterangan Tidak Absen</p>
 </div>
-<?php foreach($form_absen as $row):?>
+<?php foreach($form_absen as $row):
+$approved = assets_url('img/approved_stamp.png');
+$rejected = assets_url('img/rejected_stamp.png');
+?>
 <table width="1000" height="135" border="0" style="padding-left:30px;">
   <tr>
     <td width="275" height="40"><span class="style3">No</span></td>
@@ -71,43 +74,47 @@
     <td height="40"><span class="style3"><?php echo $row->alasan?></span></td>
   </tr>
 </table>
+<p>&nbsp;</p>
 <table width="1000" align="center">
   <tbody>
     <tr>
-      <th width="250" height="250"></th>
-      <th width="250">Disetujui Oleh,</th>
+      <th width="250" height="75"></th>
+      <th width="250">&nbsp;&nbsp;&nbsp;Mengetahui,</th>
       <th width="250"></th>
       <th width="250"></th>
     </tr>
     <tr>
+      <td width="250" align="center"><?php echo ($row->is_app_lv1 == 1)?"<img class=approval-img-md src=$approved>":'<span class="small"></span><br/>';?></td>
+      <td width="250" align="center"><?php echo ($row->is_app_lv2 == 1)?"<img class=approval-img-md src=$approved>":'<span class="small"></span><br/>';?></td>
+      <td width="250" align="center"><?php echo ($row->is_app_lv3 == 1)?"<img class=approval-img-md src=$approved>":'<span class="small"></span><br/>';?></td>
+      <td width="250" align="center"><?php echo ($row->is_app_hrd == 1)?"<img class=approval-img-md src=$approved>":'<span class="small"></span><br/>';?></td>
+    </tr>
+    <tr>
     <?php if(!empty($row->user_app_lv1)){?>
-      <td height="80" align="center"><?php echo get_name($row->user_app_lv1)?><br/><?php echo dateIndo($row->date_app_lv1)?></td>
+      <td height="80" align="center" class="style3"><?php echo get_name($row->user_app_lv1)?></td>
     <?php }?>
     <?php if(!empty($row->user_app_lv2)){?>
-      <td align="center"><?php echo get_name($row->user_app_lv2)?><br/><?php echo dateIndo($row->date_app_lv2)?></td>
+      <td align="center" class="style3"><?php echo get_name($row->user_app_lv2)?></td>
     <?php }?>
     <?php if(!empty($row->user_app_lv3)){?>
-      <td align="center"><?php echo get_name($row->user_app_lv3)?><br/><?php echo dateIndo($row->date_app_lv3)?></td>
+      <td align="center" class="style3"><?php echo get_name($row->user_app_lv3)?></td>
     <?php }?>
-      <td align="center"><?php echo get_name($row->user_app_hrd)?><br/><?php echo dateIndo($row->date_app_hrd)?></td>
+      <td align="center" class="style3"><?php echo get_name($row->user_app_hrd)?></td>
     </tr>
     <tr >
     <?php if(!empty($row->user_app_lv1)){?>
-      <td align="center">(Supervisor)</td>
+      <td align="center"><?php echo dateIndo($row->date_app_lv1)?><br/>(Supervisor)</td>
     <?php }?>
     <?php if(!empty($row->user_app_lv2)){?>
-      <td align="center">(Ka. Bagian)</td>
+      <td align="center"><?php echo dateIndo($row->date_app_lv2)?><br/>(Ka. Bagian)</td>
       <?php }?>
     <?php if(!empty($row->user_app_lv3)){?>
-      <td align="center"><?php echo '('.get_user_position($row->user_app_lv3).')'?></td>
+      <td align="center"><?php echo dateIndo($row->date_app_lv3)?><br/><?php echo '('.get_user_position($row->user_app_lv3).')'?></td>
     <?php } ?>
-      <td align="center">(HRD Database)</td>
+      <td align="center"><?php echo dateIndo($row->date_app_hrd)?><br/>(HRD)</td>
     </tr>
   </tbody>
 </table>
-
-<div style="clear: both; margin: 0pt; padding: 0pt; "></div>
-<p>&nbsp;</p>
 <?php endforeach; ?>
 <p>&nbsp;</p>
 <p>&nbsp;</p>

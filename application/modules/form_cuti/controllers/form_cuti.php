@@ -10,6 +10,7 @@ class Form_cuti extends MX_Controller {
         $this->load->library('authentication', NULL, 'ion_auth');
         $this->load->library('form_validation');
         $this->load->library('rest');
+        $this->load->library('approval');
         $this->load->helper('url');
         
         $this->load->database();
@@ -100,24 +101,23 @@ class Form_cuti extends MX_Controller {
         {
 
             $user_id = $this->session->userdata('user_id');
-
-            $this->get_user_info();
+            $user_nik = get_nik($user_id);
             $this->get_user_pengganti();
-            $this->data['sisa_cuti'] = (!empty($this->get_sisa_cuti($user_id)[0]['ENTITLEMENT'])) ? $this->get_sisa_cuti($user_id)[0]['ENTITLEMENT'] : '-';
+            $this->get_user_atasan();
+            $this->data['sisa_cuti'] = (!empty($this->get_sisa_cuti($user_nik)[0]['ENTITLEMENT'])) ? $this->get_sisa_cuti($user_nik)[0]['ENTITLEMENT'] : '-';
 
-             $u = $this->data['all_users'] = getAll('users', array('active'=>'where/1', 'username'=>'order/asc'), array('!=id'=>'1'));
+            $u = $this->data['all_users'] = getAll('users', array('active'=>'where/1', 'username'=>'order/asc'), array('!=id'=>'1'));
             foreach ($u->result_array() as $row)
-                    {
-                        $result[$row['nik']]= ucwords(strtolower($row['username']));
-                    }
+            {
+                $result[$row['id']]= ucwords(strtolower($row['username']));
+            }
             $this->data['users']=$result;
 
             // form cuti yang akan diambil
             $this->data['comp_session'] = $this->form_cuti_model->render_session()->result();
             $this->data['alasan_cuti'] = $this->get_type_cuti();
-           
 
-            $this->data['_num_rows'] = $this->form_cuti_model->where('users.id',$user_id)->form_cuti_input()->num_rows();
+            //$this->data['_num_rows'] = $this->form_cuti_model->where('users.id',$user_id)->form_cuti_input()->num_rows();
 
             $this->_render_page('form_cuti/input', $this->data);
         }
@@ -139,7 +139,7 @@ class Form_cuti extends MX_Controller {
         }
         else
         {
-            $user_id= get_id($this->input->post('emp'));
+            $user_id= $this->input->post('emp');
             
             $start_cuti = $this->input->post('start_cuti');
             $end_cuti = $this->input->post('end_cuti');
@@ -167,29 +167,24 @@ class Form_cuti extends MX_Controller {
                 'created_by'            => $this->session->userdata('user_id')
             );
 
-            $leave_request_id = $this->get_last_leave_request_id();
-            
-            $num_rows = getAll('users_cuti')->num_rows();
-
-            if($num_rows>0){
-                $cuti_id = $this->db->select('id')->order_by('id', 'asc')->get('users_cuti')->last_row();
-                $cuti_id = $cuti_id->id+1;
-            }else{
-                $cuti_id = 1;
-            }
-
             if ($this->form_validation->run() == true && $this->form_cuti_model->create_($user_id,$additional_data))
             {
-                 //$cuti_url = base_url().'form_cuti';
-                 $this->send_approval_request($cuti_id, $user_id);
-                 //echo json_encode(array('st' =>1, 'cuti_url' => $cuti_url));
+                 $cuti_id = $this->db->insert_id();
+                 $leave_request_id = $this->get_last_leave_request_id();
+                 $user_app_lv1 = getValue('user_app_lv1', 'users_cuti', array('id'=>'where/'.$cuti_id));
+                 if(!empty($user_app_lv1)):
+                    $this->approval->request('lv1', 'cuti', $cuti_id, $user_id, $this->detail_email($cuti_id));
+                 else:
+                    $this->approval->request('hrd', 'cuti', $cuti_id, $user_id, $this->detail_email($cuti_id));
+                 endif;
+
                  $this->insert_leave_request($user_id, $additional_data, $leave_request_id);
                  redirect('form_cuti', 'refresh');   
             }
         }
     }
 
-    function approval($id)
+    function detail($id)
     {
         if (!$this->ion_auth->logged_in())
         {
@@ -200,13 +195,13 @@ class Form_cuti extends MX_Controller {
 
         $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
         $user_id = getValue('user_id', 'users_cuti', array('id'=>'where/'.$id));
-
+        $user_nik = get_nik($user_id);
         $cuti_details = $this->data['form_cuti'] = $this->form_cuti_model->form_cuti_supervisor($id)->result();
 		$this->data['_num_rows'] = $this->form_cuti_model->form_cuti_supervisor($id)->num_rows();
 
         $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
-        $this->data['sisa_cuti'] = (!empty($this->get_sisa_cuti($user_id)[0]['ENTITLEMENT'])) ? $this->get_sisa_cuti($user_id)[0]['ENTITLEMENT'] : '-';
-        $this->_render_page('form_cuti/approval', $this->data);
+        $this->data['sisa_cuti'] = (!empty($this->get_sisa_cuti($user_nik)[0]['ENTITLEMENT'])) ? $this->get_sisa_cuti($user_nik)[0]['ENTITLEMENT'] : '-';
+        $this->_render_page('form_cuti/detail', $this->data);
     }
 
     function do_approve($id, $type)
@@ -230,114 +225,29 @@ class Form_cuti extends MX_Controller {
             'date_app_'.$type => $date_now,
             'note_app_'.$type => $this->input->post('note_'.$type)
             );
-                
             $is_app = getValue('is_app_'.$type, 'users_cuti', array('id'=>'where/'.$id));
             $approval_status = $this->input->post('app_status_'.$type);
-
+            
+            $this->form_cuti_model->update($id,$data);
+            $user_cuti_id = getValue('user_id', 'users_cuti', array('id'=>'where/'.$id));
             if($is_app==0){
-                $this->approval_mail($id, $approval_status);
+                $this->approval->approve('cuti', $id, $approval_status, $this->detail_email($id));
             }else{
-                $this->update_approval_mail($id, $approval_status);
+                $this->approval->update_approve('cuti', $id, $approval_status, $this->detail_email($id));
             }
-
-           if ($this->form_cuti_model->update($id,$data)) {
-                return TRUE;
+            if($type !== 'hrd'){
+                $lv = substr($type, -1)+1;
+                $lv_app = 'lv'.$lv;
+                $user_app = ($lv<4) ? getValue('user_app_'.$lv_app, 'users_cuti', array('id'=>'where/'.$id)):0;
+                if(!empty($user_app)):
+                    $this->approval->request($lv_app, 'cuti', $id, $user_cuti_id, $this->detail_email($id));
+                else:
+                    $this->approval->request('hrd', 'cuti', $id, $user_cuti_id, $this->detail_email($id));
+                endif;
             }
             
             $this->cek_all_approval($id);
         }
-    }
-
-    function send_approval_request($id, $user_id)
-    {
-        $url = base_url().'form_cuti/approval/'.$id;
-        $user_app_lv1 = getValue('user_app_lv1', 'users_cuti', array('id'=>'where/'.$id));
-        $user_app_lv2 = getValue('user_app_lv2', 'users_cuti', array('id'=>'where/'.$id));
-        $user_app_lv3 = getValue('user_app_lv3', 'users_cuti', array('id'=>'where/'.$id));
-        
-        //approval to LV1
-        if(!empty($user_app_lv1)){
-            $data1 = array(
-                    'sender_id' => get_nik($user_id),
-                    'receiver_id' => $user_app_lv1,
-                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                    'subject' => 'Pengajuan Permohonan Cuti',
-                    'email_body' => get_name($user_id).' mengajukan permohonan cuti, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
-                    'is_read' => 0,
-                );
-            $this->db->insert('email', $data1);
-        }
-
-        //approval to LV2
-        if(!empty($user_app_lv2)){
-            $data2 = array(
-                    'sender_id' => get_nik($user_id),
-                    'receiver_id' => $user_app_lv2,
-                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                    'subject' => 'Pengajuan Permohonan Cuti',
-                    'email_body' => get_name($user_id).' mengajukan permohonan cuti, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
-                    'is_read' => 0,
-                );
-            $this->db->insert('email', $data2);
-        }
-
-        //approval to LV3
-        if(!empty($user_app_lv3)){
-            $data3 = array(
-                    'sender_id' => get_nik($user_id),
-                    'receiver_id' => $user_app_lv3,
-                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                    'subject' => 'Pengajuan Permohonan Cuti',
-                    'email_body' => get_name($user_id).' mengajukan permohonan cuti, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
-                    'is_read' => 0,
-                );
-            $this->db->insert('email', $data3);
-        }
-
-        //approval to hrd
-            $data4 = array(
-                    'sender_id' => get_nik($user_id),
-                    'receiver_id' => 1,
-                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                    'subject' => 'Pengajuan Permohonan Cuti',
-                    'email_body' => get_name($user_id).' mengajukan permohonan cuti, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
-                    'is_read' => 0,
-                );
-            $this->db->insert('email', $data4);
-    }
-
-    function approval_mail($id, $approval_status)
-    {
-        $url = base_url().'form_cuti/approval/'.$id;
-        $approver = get_name(get_nik($this->session->userdata('user_id')));
-        $receiver_id = getValue('user_id', 'users_cuti', array('id'=>'where/'.$id));
-        $approval_status = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));;
-        $data = array(
-                'sender_id' => get_nik($this->session->userdata('user_id')),
-                'receiver_id' => get_nik($receiver_id),
-                'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                'subject' => 'Status Pengajuan Permohonan Cuti dari Atasan',
-                'email_body' => "Status pengajuan permohonan cuti anda $approval_status oleh $approver untuk detail silakan <a href=$url>Klik disini</a><br/>".$this->detail_email($id),
-                'is_read' => 0,
-            );
-        $this->db->insert('email', $data);
-    }
-
-    function update_approval_mail($id, $approval_status)
-    {
-        $url = base_url().'form_cuti/approval/'.$id;
-        $approver = get_name(get_nik($this->session->userdata('user_id')));
-        $receiver_id = getValue('user_id', 'users_cuti', array('id'=>'where/'.$id));
-        $approval_status = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));;
-        $data = array(
-                'sender_id' => get_nik($this->session->userdata('user_id')),
-                'receiver_id' => get_nik($receiver_id),
-                'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                'subject' => 'Perubahan Status Pengajuan Permohonan Cuti dari Atasan',
-                'email_body' => "$approver melakukan perubahan status pengajuan permohonan cuti anda menjadi $approval_status, untuk detail silakan <a href=$url>Klik disini</a><br/>".$this->detail_email($id),
-                'is_read' => 0,
-            );
-        $this->db->insert('email', $data);
     }
 
     function detail_email($id)
@@ -350,13 +260,12 @@ class Form_cuti extends MX_Controller {
 
         $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
         $user_id = getValue('user_id', 'users_cuti', array('id'=>'where/'.$id));
-
+        $user_nik = get_nik($user_id);
         $cuti_details = $this->data['form_cuti'] = $this->form_cuti_model->form_cuti_supervisor($id)->result();
         $this->data['_num_rows'] = $this->form_cuti_model->form_cuti_supervisor($id)->num_rows();
 
         $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
-        $this->data['sisa_cuti'] = (!empty($this->get_sisa_cuti($user_id)[0]['ENTITLEMENT'])) ? $this->get_sisa_cuti($user_id)[0]['ENTITLEMENT'] : '-';
-        $this->_render_page('form_cuti/approval', $this->data);
+        $this->data['sisa_cuti'] = (!empty($this->get_sisa_cuti($user_nik)[0]['ENTITLEMENT'])) ? $this->get_sisa_cuti($user_nik)[0]['ENTITLEMENT'] : '-';
 
         return $this->load->view('form_cuti/cuti_email', $this->data, true);
     }
@@ -375,7 +284,7 @@ class Form_cuti extends MX_Controller {
         }elseif(!empty(getValue('user_app_lv1', 'users_cuti', array('id'=>'where/'.$id))) && !empty(getValue('user_app_lv2', 'users_cuti', array('id'=>'where/'.$id))) && !empty(getValue('user_app_lv3', 'users_cuti', array('id'=>'where/'.$id)))){
             $total_app = '4';
         }else{
-            $total_app = '0';
+            $total_app = '1';
         }
 
         switch ($total_app) {
@@ -388,8 +297,8 @@ class Form_cuti extends MX_Controller {
             case "4":
                 if($app_lv1==1 && $app_lv2==1 && $app_lv3==1 && $app_hrd==1){$this->update_attendance($id);}else{return false;};
                 break;
-            case "0":
-                return false;
+            case "1":
+                if($app_hrd==1){$this->update_attendance($id);}else{return false;};
                 break;
         }
 
@@ -420,8 +329,8 @@ class Form_cuti extends MX_Controller {
          }
 
         $jml_hari_cuti = getValue('jumlah_hari','users_cuti', array('id' => 'where/'.$id));
-        $recid = $this->get_sisa_cuti(get_id($user_nik))[0]['RECID'];
-        $sisa_cuti = $this->get_sisa_cuti(get_id($user_nik))[0]['ENTITLEMENT'] - $jml_hari_cuti;
+        $recid = $this->get_sisa_cuti($user_nik)[0]['RECID'];
+        $sisa_cuti = $this->get_sisa_cuti($user_nik)[0]['ENTITLEMENT'] - $jml_hari_cuti;
 
         $this->update_sisa_cuti($recid, $sisa_cuti);
     }
@@ -438,12 +347,13 @@ class Form_cuti extends MX_Controller {
 
         $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
         $user_id = getValue('user_id', 'users_cuti', array('id'=>'where/'.$id));
+        $user_nik = get_nik($user_id);
 
         $cuti_details = $this->data['form_cuti'] = $this->form_cuti_model->form_cuti_supervisor($id)->result();
         $this->data['_num_rows'] = $this->form_cuti_model->form_cuti_supervisor($id)->num_rows();
 
         $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
-        $this->data['sisa_cuti'] = (!empty($this->get_sisa_cuti($user_id)[0]['ENTITLEMENT'])) ? $this->get_sisa_cuti($user_id)[0]['ENTITLEMENT'] : '-';
+        $this->data['sisa_cuti'] = (!empty($this->get_sisa_cuti($user_nik )[0]['ENTITLEMENT'])) ? $this->get_sisa_cuti($user_nik)[0]['ENTITLEMENT'] : '-';
         $this->data['id'] = $id;
         $title = $this->data['title'] = 'Form Cuti-'.get_name($user_id);
 
@@ -453,52 +363,6 @@ class Form_cuti extends MX_Controller {
         $mpdf = new mPDF('A4');
         $mpdf->WriteHTML($html);
         $mpdf->Output($id.'-'.$title.'.pdf', 'I');
-    }
-
-
-    function get_sisa_cuti($user_id = null)
-    {
-        if($user_id !=null)
-        {
-            $url = get_api_key().'users/sisa_cuti/EMPLID/'.get_nik($user_id).'/format/json';
-            $headers = get_headers($url);
-            $response = substr($headers[0], 9, 3);
-            if ($response != "404") {
-                $getsisa_cuti = file_get_contents($url);
-                $sisa_cuti = json_decode($getsisa_cuti, true);
-                return $sisa_cuti;
-            } else {
-                return '-';
-            }
-        }
-    }
-
-    function get_last_leave_request_id()
-    {
-        $url = get_api_key().'users/last_leave_request_id/format/json';
-        $headers = get_headers($url);
-        $response = substr($headers[0], 9, 3);
-        if ($response != "404") {
-            $getleave_request_id = file_get_contents($url);
-            $leave_request_id = json_decode($getleave_request_id, true);
-            return $leave_request_id;
-        } else {
-            return '';
-        }
-    }
-
-    function get_type_cuti()
-    {
-        $url = get_api_key().'users/type_cuti/format/json';
-        $headers = get_headers($url);
-        $response = substr($headers[0], 9, 3);
-        if ($response != "404") {
-            $gettype_cuti = file_get_contents($url);
-            $type_cuti = json_decode($gettype_cuti, true);
-            return $type_cuti;
-        } else {
-            return '';
-        }
     }
 
     function update_sisa_cuti($recid, $sisa_cuti)
@@ -525,7 +389,6 @@ class Form_cuti extends MX_Controller {
 
     function insert_leave_request($user_id, $data = array(), $leave_request_id)
     {
-        //print_mz($user_id.$data);
         $user_id = get_nik($user_id);
         $leaveid = substr($leave_request_id[0]['IDLEAVEREQUEST'],2)+1;
         $leaveid = sprintf('%06d', $leaveid);
@@ -547,7 +410,7 @@ class Form_cuti extends MX_Controller {
                '/LEAVEDATEFROM/'.$data['date_mulai_cuti'].
                '/REQUESTDATE/'.$data['created_on'].
                '/IDLEAVEREQUEST/'.$IDLEAVEREQUEST.
-               '/STATUSFLAG/'.'1'.
+               '/STATUSFLAG/'.'3'.
                '/IDPERSONSUBSTITUTE/'.$data['user_pengganti'].
                '/TRAVELLINGLOCATION/'.$alamat_cuti.
                '/MODIFIEDDATETIME/'.$data['created_on'].
@@ -579,25 +442,10 @@ class Form_cuti extends MX_Controller {
         }
     }
 
-    function get_user_info()
-    {
-            $user_id = $this->session->userdata('user_id');
-            $url = get_api_key().'users/employement/EMPLID/'.get_nik($user_id).'/format/json';
-            $headers = get_headers($url);
-            $response = substr($headers[0], 9, 3);
-            if ($response != "404") {
-                $getuser_info = file_get_contents($url);
-                $user_info = json_decode($getuser_info, true);
-                return $this->data['user_info'] = $user_info;
-            } else {
-                $this->data['user_info'] = '';
-            }
-    }
-
     function get_user_pengganti()
     {
             $user_id = $this->session->userdata('user_id');
-            $url_org = get_api_key().'users/superior/EMPLID/'.get_nik($user_id).'/format/json';
+            $url_org = get_api_key().'users/org/EMPLID/'.get_nik($user_id).'/format/json';
             $headers_org = get_headers($url_org);
             $response = substr($headers_org[0], 9, 3);
             if ($response != "404") {
@@ -609,142 +457,70 @@ class Form_cuti extends MX_Controller {
             }
     }
 
-    public function get_emp_pos()
+    function get_user_atasan()
     {
-        $id = $this->input->post('id');
-
-        $url = get_api_key().'users/employement/EMPLID/'.$id.'/format/json';
-            $headers = get_headers($url);
-            $response = substr($headers[0], 9, 3);
-            if ($response != "404") {
-                $getuser_info = file_get_contents($url);
-                $user_info = json_decode($getuser_info, true);
-                $pos_nm = $user_info['POSITION'];
-            } else {
-                $pos_nm = '';
-            }
-
-        echo $pos_nm;
-    }
-
-    public function get_emp_org()
-    {
-        $id = $this->input->post('id');
-
-        $url = get_api_key().'users/employement/EMPLID/'.$id.'/format/json';
-            $headers = get_headers($url);
-            $response = substr($headers[0], 9, 3);
-            if ($response != "404") {
-                $getuser_info = file_get_contents($url);
-                $user_info = json_decode($getuser_info, true);
-                $org_nm = $user_info['ORGANIZATION'];
-            } else {
-                $org_nm = '';
-            }
-        
-        echo $org_nm;
-    }
-
-    public function get_emp_sen_date()
-    {
-        $id = $this->input->post('id');
-
-        $url = get_api_key().'users/employement/EMPLID/'.$id.'/format/json';
-            $headers = get_headers($url);
-            $response = substr($headers[0], 9, 3);
-            if ($response != "404") {
-                $getuser_info = file_get_contents($url);
-                $user_info = json_decode($getuser_info, true);
-                $sen_date= dateIndo($user_info['SENIORITYDATE']);
-            } else {
-                $sen_date = '';
-            }
-
-        echo $sen_date;
-    }
-
-    public function get_emp_nik()
-    {
-        $id = $this->input->post('id');
-
-        $url = get_api_key().'users/employement/EMPLID/'.$id.'/format/json';
-            $headers = get_headers($url);
-            $response = substr($headers[0], 9, 3);
-            if ($response != "404") {
-                $getuser_info = file_get_contents($url);
-                $user_info = json_decode($getuser_info, true);
-                $nik= $user_info['EMPLID'];
-            } else {
-                $nik = '';
-            }
-
-        echo $nik;
-    }
-
-    function get_emp_sisa_cuti()
-    {
-        $id = $this->input->post('id');
-
-        $url = get_api_key().'users/sisa_cuti/EMPLID/'.$id.'/format/json';
-            $headers = get_headers($url);
-            $response = substr($headers[0], 9, 3);
-            if ($response != "404") {
-                $getuser_info = file_get_contents($url);
-                $user_info = json_decode($getuser_info, true);
-                $sisa_cuti = $user_info[0]['ENTITLEMENT'];
-            } else {
-                $sisa_cuti = '';
-            }
-
-        echo $sisa_cuti;
-    }
-
-    public function get_up($id)
-    {
-        $url = get_api_key().'users/superior/EMPLID/'.$id.'/format/json';
-        //print_r($url);
-            $headers = get_headers($url);
-            $response = substr($headers[0], 9, 3);
-            if ($response != "404") {
-                $get_task_receiver = file_get_contents($url);
-                $task_receiver = json_decode($get_task_receiver, true);
-                 foreach ($task_receiver as $row)
-                    {
-                        $result['0']= '-- Pilih User --';
-                        $result[$row['ID']]= ucwords(strtolower($row['NAME']));
-                    }
-            } else {
-               $result['-']= '- Tidak ada user dengan departemen yang sama -';
-            }
-        $data['result']=$result;
-        $this->load->view('dropdown_up',$data);
-    }
-
-
-
-    function _get_csrf_nonce()
-    {
-        $this->load->helper('string');
-        $key   = random_string('alnum', 8);
-        $value = random_string('alnum', 20);
-        $this->session->set_flashdata('csrfkey', $key);
-        $this->session->set_flashdata('csrfvalue', $value);
-
-        return array($key => $value);
-    }
-
-    function _valid_csrf_nonce()
-    {
-        if ($this->input->post($this->session->flashdata('csrfkey')) !== FALSE &&
-            $this->input->post($this->session->flashdata('csrfkey')) == $this->session->flashdata('csrfvalue'))
-        {
-            return TRUE;
-        }
-        else
-        {
-            return FALSE;
+        $id = $this->session->userdata('user_id');
+        $url = get_api_key().'users/superior/EMPLID/'.get_nik($id).'/format/json';
+        $url_atasan_satu_bu = get_api_key().'users/atasan_satu_bu/EMPLID/'.get_nik($id).'/format/json';
+        $headers = get_headers($url);
+        $headers2 = get_headers($url_atasan_satu_bu);
+        $response = substr($headers[0], 9, 3);
+        $response2 = substr($headers2[0], 9, 3);
+        if ($response != "404") {
+            $get_atasan = file_get_contents($url);
+            $atasan = json_decode($get_atasan, true);
+            return $this->data['user_atasan'] = $atasan;
+        }elseif($response == "404" && $response2 != "404") {
+           $get_atasan = file_get_contents($url_atasan_satu_bu);
+           $atasan = json_decode($get_atasan, true);
+           return $this->data['user_atasan'] = $atasan;
+        }else{
+            return $this->data['user_atasan'] = '- Karyawan Tidak Memiliki Atasan -';
         }
     }
+
+    function get_sisa_cuti($user_nik)
+    {   
+        $url = get_api_key().'users/sisa_cuti/EMPLID/'.$user_nik.'/format/json';
+        $headers = get_headers($url);
+        $response = substr($headers[0], 9, 3);
+        if ($response != "404") {
+            $getsisa_cuti = file_get_contents($url);
+            $sisa_cuti = json_decode($getsisa_cuti, true);
+            return $sisa_cuti;
+        } else {
+            return '-';
+        }
+    }
+
+    function get_last_leave_request_id()
+    {
+        $url = get_api_key().'users/last_leave_request_id/format/json';
+        $headers = get_headers($url);
+        $response = substr($headers[0], 9, 3);
+        if ($response != "404") {
+            $getleave_request_id = file_get_contents($url);
+            $leave_request_id = json_decode($getleave_request_id, true);
+            return $leave_request_id;
+        } else {
+            return '';
+        }
+    }
+
+    function get_type_cuti()
+    {
+        $url = get_api_key().'users/type_cuti/format/json';
+        $headers = get_headers($url);
+        $response = substr($headers[0], 9, 3);
+        if ($response != "404") {
+            $gettype_cuti = file_get_contents($url);
+            $type_cuti = json_decode($gettype_cuti, true);
+            return $type_cuti;
+        } else {
+            return '';
+        }
+    }
+
 
     function _render_page($view, $data=null, $render=false)
     {
@@ -784,13 +560,14 @@ class Form_cuti extends MX_Controller {
 
                     $this->template->add_js('bootstrap-datepicker.js');
                     $this->template->add_js('jquery.validate.min.js');
+                    $this->template->add_js('emp_dropdown.js');
                     $this->template->add_js('form_cuti_input.js');
                     
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                     $this->template->add_css('plugins/select2/select2.css');
                     $this->template->add_css('datepicker.css');
                      
-                }elseif(in_array($view, array('form_cuti/approval')))
+                }elseif(in_array($view, array('form_cuti/detail')))
                 {
                     $this->template->set_layout('default');
 

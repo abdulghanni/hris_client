@@ -302,6 +302,25 @@
 				                      	<input type="text" class="form-control" value="<?php echo $position?>" disabled="disabled">
 				                        </div>
 						        	</div>
+
+						        	<div class="row form-row">
+				                		<div class="col-md-3">
+					                      <label class="form-label"><?php echo lang('organization')?></label>
+					                    </div>
+					                   	<div class="col-md-9">
+				                      	<input type="text" class="form-control" value="<?php echo $organization?>" disabled="disabled">
+				                        </div>
+						        	</div>
+
+						        	<div class="row form-row">
+				                		<div class="col-md-3">
+					                      <label class="form-label"><?php echo 'Business Unit'?></label>
+					                    </div>
+					                   	<div class="col-md-9">
+				                      	<input type="text" class="form-control" value="<?php echo $bu?>" disabled="disabled">
+				                        </div>
+						        	</div>
+
 						        	<div class="row form-row">
 				                		<div class="col-md-3">
 					                      <label class="form-label"><?php echo lang('empl_status')?></label>

@@ -20,7 +20,7 @@
             </div>
             <div class="grid-body no-border">
               <?php
-                $att = array('class' => 'form-no-horizontal-spacing', 'id' => 'formaddcuti');
+                $att = array('class' => 'form-no-horizontal-spacing', 'id' => '');
                 echo form_open('form_cuti/add', $att);
                ?>
                 <div class="row column-seperation">
@@ -28,6 +28,7 @@
                     <h4><?php echo lang('emp_info') ?></h4>
                     <?php 
                       $sess_id = $this->session->userdata('user_id');
+                      $sess_nik = get_nik($sess_id);
                       //$cur_sess = date('Y');
 
                       //$sisa_cuti = $user->hak_cuti;
@@ -38,12 +39,11 @@
                       </div>
                       <div class="col-md-9">
                         <?php if(is_admin()){
-                        $style_up='class="select2" style="width:100%" id="emp_id" onChange="getDropDown()"';
+                        $style_up='class="select2" style="width:100%" id="emp"';
                             echo form_dropdown('emp',$users,'',$style_up);
                         }else{?>
-                        <select name="emp" id="emp" class="form-control" style="width:100%">
-                              <option value="<?php echo get_nik($sess_id)?>"><?php echo get_name($sess_id)?></option>
-                        </select>
+                        <input type="text" class="form-control" value="<?php echo get_name($sess_id)?>" readonly>
+                        <input type="hidden" name="emp" value="<?php echo $sess_id?>">
                         <?php } ?>
                       </div>
                     </div>
@@ -52,7 +52,7 @@
                         <label class="form-label text-right">NIK</label>
                       </div>
                       <div class="col-md-9">
-                        <input name="no" id="nik" type="text"  class="form-control" placeholder="NIK" value="<?php echo (!empty($user_info['EMPLID']))?$user_info['EMPLID']:$sess_id; ?>" disabled="disabled">
+                        <input name="no" id="nik" type="text"  class="form-control" placeholder="NIK" value="<?php echo $sess_nik ?>" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
@@ -60,7 +60,7 @@
                         <label class="form-label text-right"><?php echo lang('start_working') ?></label>
                       </div>
                       <div class="col-md-9">
-                        <input name="seniority_date" id="seniority_date" type="text"  class="form-control" placeholder="Lama Bekerja" value="<?php echo (!empty($user_info['SENIORITYDATE']))?dateIndo($user_info['SENIORITYDATE']):'-'; ?>" disabled="disabled">
+                        <input name="seniority_date" id="seniority_date" type="text"  class="form-control" placeholder="Lama Bekerja" value="<?php echo dateIndo(get_user_sen_date($sess_nik)) ?>" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
@@ -68,7 +68,7 @@
                         <label class="form-label text-right"><?php echo lang('dept_div') ?></label>
                       </div>
                       <div class="col-md-9">
-                        <input name="organization" id="organization" type="text"  class="form-control" placeholder="Organization" value="<?php echo (!empty($user_info['ORGANIZATION']))?$user_info['ORGANIZATION']:'-'; ?>" disabled="disabled">
+                        <input name="organization" id="organization" type="text"  class="form-control" placeholder="Organization" value="<?php echo get_user_organization($sess_nik) ?>" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
@@ -76,7 +76,7 @@
                         <label class="form-label text-right"><?php echo lang('position') ?></label>
                       </div>
                       <div class="col-md-9">
-                        <input name="position" id="position" type="text"  class="form-control" placeholder="Jabatan" value="<?php echo (!empty($user_info['POSITION']))?$user_info['POSITION']:'-' ?>" disabled="disabled">
+                        <input name="position" id="position" type="text"  class="form-control" placeholder="Jabatan" value="<?php echo get_user_position($sess_nik) ?>" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
@@ -105,7 +105,7 @@
                         }else{?>
                         <select name="atasan1" id="atasan1" class="select2" style="width:100%">
                             <option value="0">- Pilih Supervisor -</option>
-                            <?php foreach ($user_pengganti as $key => $up) : ?>
+                            <?php foreach ($user_atasan as $key => $up) : ?>
                               <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
                             <?php endforeach;?>
                           </select>
@@ -124,11 +124,8 @@
                         }else{?>
                         <select name="atasan2" id="atasan2" class="select2" style="width:100%">
                               <option value="0">- Pilih Ka. Bagian -</option> 
-                            <?php foreach ($user_pengganti as $key => $up) : ?>
-                              <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
-                            <?php endforeach;?>
-                          </select>
-                            <?php }?>
+                        </select>
+                        <?php }?>
                       </div>
                     </div>
 
@@ -143,11 +140,8 @@
                         }else{?>
                         <select name="atasan3" id="atasan3" class="select2" style="width:100%">
                             <option value="0">- Pilih Atasan Lainnya -</option>
-                            <?php foreach ($user_pengganti as $key => $up) : ?>
-                              <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
-                            <?php endforeach;?>
-                          </select>
-                            <?php }?>
+                        </select>
+                      <?php }?>
                       </div>
                     </div>
                     
@@ -282,64 +276,3 @@
   </div>  
   <!-- END PAGE -->
 
-  <script type="text/javascript">
-
-    function getDropDown()
-    {
-      getAtasan1();
-      getAtasan2();
-      getAtasan3();
-      getUp();
-    }
-    function getAtasan1()
-     {
-         emp_id = document.getElementById("emp_id").value;
-         $.ajax({
-             url:"<?php echo base_url();?>form_cuti/get_up/"+emp_id+"",
-             success: function(response){
-             $("#atasan1").html(response);
-             },
-             dataType:"html"
-         });
-         return false;
-     }
-
-     function getAtasan2()
-     {
-         emp_id = document.getElementById("emp_id").value;
-         $.ajax({
-             url:"<?php echo base_url();?>form_cuti/get_up/"+emp_id+"",
-             success: function(response){
-             $("#atasan2").html(response);
-             },
-             dataType:"html"
-         });
-         return false;
-     }
-
-     function getAtasan3()
-     {
-         emp_id = document.getElementById("emp_id").value;
-         $.ajax({
-             url:"<?php echo base_url();?>form_cuti/get_up/"+emp_id+"",
-             success: function(response){
-             $("#atasan3").html(response);
-             },
-             dataType:"html"
-         });
-         return false;
-     }
-
-     function getUp()
-     {
-         emp_id = document.getElementById("emp_id").value;
-         $.ajax({
-             url:"<?php echo base_url();?>form_cuti/get_up/"+emp_id+"",
-             success: function(response){
-             $("#user_pengganti").html(response);
-             },
-             dataType:"html"
-         });
-         return false;
-     }
-  </script>

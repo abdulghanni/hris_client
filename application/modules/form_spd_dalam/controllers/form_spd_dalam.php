@@ -9,6 +9,7 @@ class Form_spd_dalam extends MX_Controller {
         parent::__construct();
         $this->load->library('authentication', NULL, 'ion_auth');
         $this->load->library('form_validation');
+        $this->load->library('approval');
         $this->load->helper('url');
         
         $this->load->database();
@@ -29,7 +30,8 @@ class Form_spd_dalam extends MX_Controller {
         }
         else
         {
-            $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
+            $sess_id= $this->data['sess_id'] = $this->session->userdata('user_id');
+            $this->data['sess_nik'] = $sess_nik = get_nik($sess_id);
             $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
 
             //set sort order
@@ -90,7 +92,7 @@ class Form_spd_dalam extends MX_Controller {
         }
         else
         {
-
+            $sess_id= $this->data['sess_id'] = $this->session->userdata('user_id');
             $data_result = $this->data['task_detail'] = $this->form_spd_dalam_model->where('users_spd_dalam.id',$id)->form_spd_dalam($id)->result();
             $this->data['td_num_rows'] = $this->form_spd_dalam_model->where('users_spd_dalam.id',$id)->form_spd_dalam()->num_rows($id);
 
@@ -114,6 +116,38 @@ class Form_spd_dalam extends MX_Controller {
        }
     }
 
+    function do_approve($id, $type)
+    {
+        if(!$this->ion_auth->logged_in())
+        {
+            redirect('auth/login', 'refresh');
+        }
+
+        $user_id = get_nik($this->session->userdata('user_id'));
+        $date_now = date('Y-m-d');
+
+        $data = array(
+        'is_app_'.$type => 1,
+        'user_app_'.$type => $user_id, 
+        'date_app_'.$type => $date_now,
+        );
+        
+        $this->form_spd_dalam_model->update($id,$data);
+        $approval_status = 1;
+        $this->approval->approve('spd_dalam', $id, $approval_status, $this->detail_email_submit($id));
+        if($type !== 'hrd'){
+        $lv = substr($type, -1)+1;
+        $lv = 'lv'.$lv;
+        $user_app = getValue('user_app_'.$lv, 'users_spd_dalam', array('id'=>'where/'.$id));
+        $user_spd_dalam_id = getValue('task_creator', 'users_spd_dalam', array('id'=>'where/'.$id));
+        if(!empty($user_app)):
+            $this->approval->request($lv, 'spd_dalam', $id, $user_spd_dalam_id, $this->detail_email_submit($id));
+        else:
+            $this->approval->request('hrd', 'spd_dalam', $id, $user_spd_dalam_id, $this->detail_email_submit($id));
+        endif;
+        }
+    }
+
     public function input()
     {
         $user_id = $this->session->userdata('user_id');
@@ -129,6 +163,7 @@ class Form_spd_dalam extends MX_Controller {
             $this->data['sess_nik'] = get_nik($sess_id);
             $this->data['all_users'] = getAll('users', array('active'=>'where/1', 'username'=>'order/asc'), array('!=id'=>'1'));
             $this->get_user_atasan();
+            $this->get_penerima_tugas();
 
             $this->_render_page('form_spd_dalam/input', $this->data);
         }
@@ -161,6 +196,9 @@ class Form_spd_dalam extends MX_Controller {
                 'date_spd'              => date('Y-m-d', strtotime($this->input->post('date_spd'))),
                 'start_time'            => $this->input->post('spd_start_time'),
                 'end_time'              => $this->input->post('spd_end_time'),
+                'user_app_lv1'          => $this->input->post('atasan1'),
+                'user_app_lv2'          => $this->input->post('atasan2'),
+                'user_app_lv3'          => $this->input->post('atasan3'),
                 'created_on'            => date('Y-m-d',strtotime('now')),
                 'created_by'            => $this->session->userdata('user_id')
             );
@@ -225,8 +263,6 @@ class Form_spd_dalam extends MX_Controller {
                 $this->data['hasil'] = '';
                 $this->data['attachment'] = '-';
                 $this->data['disabled'] = '';
-
-            
             }else{
                 foreach ($report as $key) {
                 $this->data['id_report'] = $key->id;
@@ -481,78 +517,41 @@ class Form_spd_dalam extends MX_Controller {
         }
     }
 
-
-    public function get_emp_org()
+    function get_penerima_tugas()
     {
-        $id = $this->input->post('id');
-
-        $url = get_api_key().'users/employement/EMPLID/'.$id.'/format/json';
-            $headers = get_headers($url);
-            $response = substr($headers[0], 9, 3);
+            $user_id = $this->session->userdata('user_id');
+            $url_org = get_api_key().'users/bawahan_satu_bu/EMPLID/'.get_nik($user_id).'/format/json';
+            $headers_org = get_headers($url_org);
+            $response = substr($headers_org[0], 9, 3);
             if ($response != "404") {
-                $getuser_info = file_get_contents($url);
-                $user_info = json_decode($getuser_info, true);
-                $org_nm = $user_info['ORGANIZATION'];
-            } else {
-                $org_nm = '';
+            $get_penerima_tugas = file_get_contents($url_org);
+            $penerima_tugas = json_decode($get_penerima_tugas, true);
+            return $this->data['penerima_tugas'] = $penerima_tugas;
+            }else{
+             return $this->data['penerima_tugas'] = 'Tidak ada karyawan dengan departement yang sama';
             }
-        
-        echo $org_nm;
-    }
-
-    public function get_emp_pos()
-    {
-        $id = $this->input->post('id');
-
-        $url = get_api_key().'users/employement/EMPLID/'.$id.'/format/json';
-            $headers = get_headers($url);
-            $response = substr($headers[0], 9, 3);
-            if ($response != "404") {
-                $getuser_info = file_get_contents($url);
-                $user_info = json_decode($getuser_info, true);
-                $pos_nm = $user_info['POSITION'];
-            } else {
-                $pos_nm = '';
-            }
-
-        echo $pos_nm;
-    }
-   
-    public function get_atasan()
-    {
-
-        $id = $this->input->post('id');
-        $url = get_api_key().'users/superior/EMPLID/'.$id.'/format/json';
-        $headers = get_headers($url);
-        $response = substr($headers[0], 9, 3);
-        if ($response != "404") {
-            $get_task_receiver = file_get_contents($url);
-            $task_receiver = json_decode($get_task_receiver, true);
-             foreach ($task_receiver as $row)
-                {
-                    $result['0']= '-- Pilih Atasan --';
-                    $result[$row['ID']]= ucwords(strtolower($row['NAME']));
-                }
-        } else {
-           $result['-']= '- Tidak ada user dengan departemen yang sama -';
-        }
-        $data['result']=$result;
-        $this->load->view('dropdown_tc',$data);
     }
 
     function get_user_atasan()
     {
-            $user_id = $this->session->userdata('user_id');
-            $url_org = get_api_key().'users/superior/EMPLID/'.get_nik($user_id).'/format/json';
-            $headers_org = get_headers($url_org);
-            $response = substr($headers_org[0], 9, 3);
-            if ($response != "404") {
-            $get_user_pengganti = file_get_contents($url_org);
-            $user_pengganti = json_decode($get_user_pengganti, true);
-            return $this->data['user_atasan'] = $user_pengganti;
-            }else{
-             return $this->data['user_atasan'] = 'Tidak ada karyawan dengan departement yang sama';
-            }
+        $id = $this->session->userdata('user_id');
+        $url = get_api_key().'users/superior/EMPLID/'.get_nik($id).'/format/json';
+        $url_atasan_satu_bu = get_api_key().'users/atasan_satu_bu/EMPLID/'.get_nik($id).'/format/json';
+        $headers = get_headers($url);
+        $headers2 = get_headers($url_atasan_satu_bu);
+        $response = substr($headers[0], 9, 3);
+        $response2 = substr($headers2[0], 9, 3);
+        if ($response != "404") {
+            $get_atasan = file_get_contents($url);
+            $atasan = json_decode($get_atasan, true);
+            return $this->data['user_atasan'] = $atasan;
+        }elseif($response == "404" && $response2 != "404") {
+           $get_atasan = file_get_contents($url_atasan_satu_bu);
+           $atasan = json_decode($get_atasan, true);
+           return $this->data['user_atasan'] = $atasan;
+        }else{
+            return $this->data['user_atasan'] = '- Karyawan Tidak Memiliki Atasan -';
+        }
     }
     
     function pdf($id)
@@ -632,11 +631,6 @@ class Form_spd_dalam extends MX_Controller {
                 {
 
                     $this->template->set_layout('default');
-
-                    $this->template->add_js('jquery.min.js');
-                    $this->template->add_js('bootstrap.min.js');
-
-                    $this->template->add_js('jquery-ui-1.10.1.custom.min.js');
                     $this->template->add_js('jquery.sidr.min.js');
                     $this->template->add_js('breakpoints.js');
                     $this->template->add_js('select2.min.js');
@@ -650,12 +644,14 @@ class Form_spd_dalam extends MX_Controller {
                     $this->template->add_js('jquery.validate.min.js');
                     $this->template->add_js('bootstrap-datepicker.js');
                     $this->template->add_js('bootstrap-timepicker.js');
-                    $this->template->add_js('form_spd_dalam_input.js');
+                    $this->template->add_js('emp_dropdown.js');
+                    $this->template->add_js('form_spd_dalam.js');
                     
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                     $this->template->add_css('plugins/select2/select2.css');
                     $this->template->add_css('datepicker.css');
                     $this->template->add_css('bootstrap-timepicker.css');
+                    $this->template->add_css('approval_img.css');
                      
                 }
 

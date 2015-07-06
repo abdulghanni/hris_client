@@ -9,6 +9,7 @@ class Form_spd_luar_group extends MX_Controller {
         parent::__construct();
         $this->load->library('authentication', NULL, 'ion_auth');
         $this->load->library('form_validation');
+        $this->load->library('approval');
         $this->load->helper('url');
         
         $this->load->database();
@@ -31,6 +32,7 @@ class Form_spd_luar_group extends MX_Controller {
         else
         {
             $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
+            $this->data['sess_nik'] = $sess_nik = get_nik($sess_id);
             $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
 
             //set sort order
@@ -84,13 +86,6 @@ class Form_spd_luar_group extends MX_Controller {
 
     function submit($id=0)
     {
-        $user_id = $this->session->userdata('user_id');
-        if ($id == 0) {
-            $task_id = $this->uri->segment(3);
-        }else{
-            $task_id = $id;
-        }
-
         if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page
@@ -98,10 +93,12 @@ class Form_spd_luar_group extends MX_Controller {
         }
         else
         {
-           
-            $data_result = $this->data['task_detail'] = $this->form_spd_luar_group_model->where('users_spd_luar_group.id',$task_id)->form_spd_luar_group($id)->result();
-            $this->data['td_num_rows'] = $this->form_spd_luar_group_model->where('users_spd_luar_group.id',$task_id)->form_spd_luar_group()->num_rows($id);
+            $sess_id= $this->data['sess_id'] = $this->session->userdata('user_id');
+            $sess_nik = get_nik($sess_id);
+            $data_result = $this->data['task_detail'] = $this->form_spd_luar_group_model->where('users_spd_luar_group.id',$id)->form_spd_luar_group($id)->result();
+            $this->data['td_num_rows'] = $this->form_spd_luar_group_model->where('users_spd_luar_group.id',$id)->form_spd_luar_group($id)->num_rows();
         
+            
             $receiver = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('task_receiver');
             $creator = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('task_creator');
             $user_submit = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('user_submit');
@@ -138,6 +135,38 @@ class Form_spd_luar_group extends MX_Controller {
        }
     }
 
+    function do_approve($id, $type)
+    {
+        if(!$this->ion_auth->logged_in())
+        {
+            redirect('auth/login', 'refresh');
+        }
+
+        $user_id = get_nik($this->session->userdata('user_id'));
+        $date_now = date('Y-m-d');
+
+        $data = array(
+        'is_app_'.$type => 1,
+        'user_app_'.$type => $user_id, 
+        'date_app_'.$type => $date_now,
+        );
+        
+        $this->form_spd_luar_group_model->update($id,$data);
+        $approval_status = 1;
+        $this->approval->approve('spd_luar_group', $id, $approval_status, $this->detail_email_submit($id));
+        if($type !== 'hrd'){
+        $lv = substr($type, -1)+1;
+        $lv = 'lv'.$lv;
+        $user_app = getValue('user_app_'.$lv, 'users_spd_luar_group', array('id'=>'where/'.$id));
+        $user_spd_luar_group_id = getValue('task_creator', 'users_spd_luar_group', array('id'=>'where/'.$id));
+        if(!empty($user_app)):
+            $this->approval->request($lv, 'spd_luar_group', $id, $user_spd_luar_group_id, $this->detail_email_submit($id));
+        else:
+            $this->approval->request('hrd', 'spd_luar_group', $id, $user_spd_luar_group_id, $this->detail_email_submit($id));
+        endif;
+        }
+    }
+
     public function input()
     {
         $user_id = $this->data['sess_id'] = $this->session->userdata('user_id');
@@ -150,29 +179,12 @@ class Form_spd_luar_group extends MX_Controller {
         else
         {
             $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
-            //set the flash data error message if there is one
-            $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
-
-            //get task creator name
-            $query_result = $this->form_spd_luar_group_model->where('users.id',$user_id)->get_emp_detail()->result();
-            foreach ($query_result as $qr) {
-                $this->data['task_creator_nm'] = $qr->first_name." ".$qr->last_name;
-            }
-
-            //get user org_id
-            $data_result = $this->form_spd_luar_group_model->where('users.id',$user_id)->get_org_id()->result();
-            foreach ($data_result as $dr) {
-                $org_id = $dr->organization_id;
-            }
-
-            //get tast receiver name
-            $query_result = $this->form_spd_luar_group_model->where('users_employement.organization_id',$org_id)->get_emp_detail()->result();
-            foreach ($query_result as $qr) {
-                $this->data['task_receiver_nm'] = $qr->first_name." ".$qr->last_name;
-            }
+            $this->data['sess_nik'] = get_nik($sess_id);
+            $this->data['all_users'] = getAll('users', array('active'=>'where/1', 'username'=>'order/asc'), array('!=id'=>'1'))->result();
 
             //get_task_receiver_from_same_organization
             $this->get_task_receiver();
+            $this->get_user_atasan();
             $this->get_user_info($user_id);
             $url = get_api_key().'users/org/EMPLID/'.get_nik($sess_id).'/format/json';
             $headers = get_headers($url);
@@ -184,22 +196,12 @@ class Form_spd_luar_group extends MX_Controller {
                $this->data['subordinate'] =  '';
             }
 
-            $this->data['all_users'] = $this->form_spd_luar_group_model->render_emp()->result();
-
-            //get task creator detail
-            $this->data['task_creator'] = $this->form_spd_luar_group_model->where('users.id',$user_id)->get_emp_detail()->result();
-            $this->data['tc_num_rows'] = $this->form_spd_luar_group_model->where('users.id',$user_id)->get_emp_detail()->num_rows();
-
             $this->data['transportation_list'] = getAll('transportation', array('is_deleted'=>'where/0'))->result();
             $this->data['tl_num_rows'] = getAll('transportation', array('is_deleted'=>'where/0'))->num_rows();
 
             $this->data['city_list'] = getAll('city', array('is_deleted'=>'where/0'))->result();
             $this->data['cl_num_rows'] = getAll('city', array('is_deleted'=>'where/0'))->num_rows();
 
-            $this->data['employee_list'] = $this->form_spd_luar_group_model->where('users_employement.organization_id',$org_id)->render_emp()->result();
-            $this->data['el_num_rows'] = $this->form_spd_luar_group_model->where('users_employement.organization_id',$org_id)->render_emp()->num_rows();
-            
-            //$this->data['subordinate'] = getAll('users', array('superior_id'=>'where/'.get_nik($sess_id)));
             $this->_render_page('form_spd_luar_group/input', $this->data);
         }
     }
@@ -233,6 +235,9 @@ class Form_spd_luar_group extends MX_Controller {
                 'from_city_id'          => $this->input->post('city_from'),
                 'to_city_id'            => $this->input->post('city_to'),
                 'transportation_id'     => $this->input->post('vehicle'),
+                'user_app_lv1'          => $this->input->post('atasan1'),
+                'user_app_lv2'          => $this->input->post('atasan2'),
+                'user_app_lv3'          => $this->input->post('atasan3'),
                 'created_on'            => date('Y-m-d',strtotime('now')),
                 'created_by'            => $this->session->userdata('user_id')
             );
@@ -662,43 +667,6 @@ class Form_spd_luar_group extends MX_Controller {
         }
     } 
 
-
-    public function get_emp_org()
-    {
-        $id = $this->input->post('id');
-
-        $url = get_Api_key().'users/employement/EMPLID/'.$id.'/format/json';
-            $headers = get_headers($url);
-            $response = substr($headers[0], 9, 3);
-            if ($response != "404") {
-                $getuser_info = file_get_contents($url);
-                $user_info = json_decode($getuser_info, true);
-                $org_nm = $user_info['ORGANIZATION'];
-            } else {
-                $org_nm = '';
-            }
-        
-        echo $org_nm;
-    }
-
-    public function get_emp_pos()
-    {
-        $id = $this->input->post('id');
-
-        $url = get_Api_key().'users/employement/EMPLID/'.$id.'/format/json';
-            $headers = get_headers($url);
-            $response = substr($headers[0], 9, 3);
-            if ($response != "404") {
-                $getuser_info = file_get_contents($url);
-                $user_info = json_decode($getuser_info, true);
-                $pos_nm = $user_info['POSITION'];
-            } else {
-                $pos_nm = '';
-            }
-
-        echo $pos_nm;
-    }
-    
     function get_user_info($user_id)
     {
         $url = get_Api_key().'users/employement/EMPLID/'.$user_id.'/format/json';
@@ -765,6 +733,29 @@ class Form_spd_luar_group extends MX_Controller {
 
         $this->load->view('dropdown_tc',$data);
     }
+
+    function get_user_atasan()
+    {
+        $id = $this->session->userdata('user_id');
+        $url = get_api_key().'users/superior/EMPLID/'.get_nik($id).'/format/json';
+        $url_atasan_satu_bu = get_api_key().'users/atasan_satu_bu/EMPLID/'.get_nik($id).'/format/json';
+        $headers = get_headers($url);
+        $headers2 = get_headers($url_atasan_satu_bu);
+        $response = substr($headers[0], 9, 3);
+        $response2 = substr($headers2[0], 9, 3);
+        if ($response != "404") {
+            $get_atasan = file_get_contents($url);
+            $atasan = json_decode($get_atasan, true);
+            return $this->data['user_atasan'] = $atasan;
+        }elseif($response == "404" && $response2 != "404") {
+           $get_atasan = file_get_contents($url_atasan_satu_bu);
+           $atasan = json_decode($get_atasan, true);
+           return $this->data['user_atasan'] = $atasan;
+        }else{
+            return $this->data['user_atasan'] = '- Karyawan Tidak Memiliki Atasan -';
+        }
+    }
+
     
     function pdf($id)
     {
@@ -845,8 +836,6 @@ class Form_spd_luar_group extends MX_Controller {
                 {
 
                     $this->template->set_layout('default');
-                    
-                    $this->template->add_js('jquery-ui-1.10.1.custom.min.js');
                     $this->template->add_js('jquery.sidr.min.js');
                     $this->template->add_js('breakpoints.js');
                     $this->template->add_js('select2.min.js');
@@ -859,14 +848,15 @@ class Form_spd_luar_group extends MX_Controller {
                     $this->template->add_js('jquery.bootstrap.wizard.min.js');
                     $this->template->add_js('jquery.validate.min.js');
                     $this->template->add_js('bootstrap-datepicker.js');
-                    $this->template->add_js('jquery.slimscroll.js');
                     $this->template->add_js('bootstrap-timepicker.js');
-                    $this->template->add_js('form_spd_luar_group_input.js');
+                    $this->template->add_js('emp_dropdown.js');
+                    $this->template->add_js('form_spd_luar_group.js');
                     
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                     $this->template->add_css('plugins/select2/select2.css');
                     $this->template->add_css('datepicker.css');
-                     
+                    $this->template->add_css('bootstrap-timepicker.css');
+                    $this->template->add_css('approval_img.css');
                 }
 
 
