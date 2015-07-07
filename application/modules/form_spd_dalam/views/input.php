@@ -20,7 +20,8 @@
               <h4>Form Perjalanan Dinas <span class="semi-bold"><a href="<?php echo site_url('form_spd_dalam')?>">Dalam Kota</a></span></h4>
             </div>
             <div class="grid-body no-border">
-              <form class="form-no-horizontal-spacing" id="add_spd_dalam" action="<?php echo site_url() ?>form_spd_dalam/add" method="post"> 
+              <!--<form class="form-no-horizontal-spacing" id="add_spd_dalam" action="<?php echo site_url() ?>form_spd_dalam/add" method="post"> -->
+              <?php echo form_open('form_spd_dalam/add');?>
                 <div class="row column-seperation">
                   <div class="col-md-5">
                     <h4>Yang Memberi Tugas</h4> 

@@ -276,6 +276,12 @@ class Form_spd_luar extends MX_Controller {
                      $this->db->insert('users_spd_luar_biaya', $data2);
                      endfor;
                  }
+                $user_app_lv1 = getValue('user_app_lv1', 'users_spd_luar', array('id'=>'where/'.$spd_id));
+                 if(!empty($user_app_lv1)):
+                    $this->approval->request('lv1', 'spd_luar', $spd_id, $sender_id, $this->detail_email_submit($spd_id));
+                 else:
+                    $this->approval->request('hrd', 'spd_luar', $spd_id, $sender_id, $this->detail_email_submit($spd_id));
+                 endif;
                 $this->send_spd_mail($spd_id, $user_id, $sender_id);
                 redirect('form_spd_luar', 'refresh'); 
                 //echo json_encode(array('st' =>1));   

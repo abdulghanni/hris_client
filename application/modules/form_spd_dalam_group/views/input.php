@@ -20,7 +20,8 @@
               <h4>Form <a href="<?php echo site_url('form_spd_dalam_group')?>">Perjalanan Dinas <span class="semi-bold">Dalam Kota (Group)</span></a></h4>
             </div>
             <div class="grid-body no-border">
-              <form class="form-no-horizontal-spacing" id="add_spd_dalam_group" action="<?php echo site_url() ?>form_spd_dalam_group/add" method="post"> 
+              <!--<form class="form-no-horizontal-spacing" id="add_spd_dalam_group" action="<?php echo site_url() ?>form_spd_dalam_group/add" method="post"> -->
+              <?php echo form_open('form_spd_dalam_group/add');?>
                 <div class="row column-seperation">
                   <div class="col-md-5">
                     <h4>Yang Memberi Tugas</h4>

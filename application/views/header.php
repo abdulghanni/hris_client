@@ -41,6 +41,20 @@
             </div> 
           </ul>-->
       </div>
+
+      <div class="btn-group pull-right" style="margin-top:15px;">
+        <a class="btn btn-primary" href="#"><i class="icon-gear"></i> Profile</a>
+        <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
+          <span class="icon-caret-down"></span></a>
+        <ul class="dropdown-menu">
+          <li><a href="<?php echo site_url('auth/edit_user/'.$this->session->userdata('user_id'))?>"><i class="icon-fixed-width icon-pencil"></i> Edit Profile</a></li>
+          <li><a href="<?php echo site_url('email')?>"><i class="icon-fixed-width icon-envelope"></i> Mail  <span class="badge" id="msgs-badge"><?php echo $email_unread; ?></span></a></li>
+          
+          <li class="divider"></li>
+          <li><a href="<?php echo site_url('auth/logout')?>"><i class="icon-fixed-width icon-sign-out"></i> Sign Out</a></li>
+        </ul>
+      </div>
+
       <!-- END TOP NAVIGATION MENU -->
     </div> 
     <!-- END TOP NAVIGATION MENU --> 

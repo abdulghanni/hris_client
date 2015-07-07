@@ -70,7 +70,7 @@ class Person extends MX_Controller {
         }
         else
         {
-
+        $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
         $this->data['csrf'] = $this->_get_csrf_nonce();
         $user = $this->person_model->getUsers($id)->row();
         $user_emp = $this->person_model->getUserEmp($id)->row();

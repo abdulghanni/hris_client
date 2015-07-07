@@ -242,21 +242,19 @@ class Form_spd_luar_group extends MX_Controller {
                 'created_by'            => $this->session->userdata('user_id')
             );
 
-            $num_rows = getAll('users_spd_luar_group')->num_rows();
-
-             if($num_rows>0){
-                $spd_id = $this->db->select('id')->order_by('id', 'asc')->get('users_spd_luar_group')->last_row();
-                $spd_id = $spd_id->id+1;
-            }else{
-                $spd_id = 1;
-            }
-
             $sender_id = $this->input->post('emp_tc');
 
             if ($this->form_validation->run() == true && $this->form_spd_luar_group_model->create_($task_receiver,$additional_data))
             {
+                $spd_id = $this->db->insert_id();
                 $task_receiver_id = explode(',',$task_receiver);
                 $this->send_spd_mail($spd_id, $sender_id, $task_receiver_id);
+                $user_app_lv1 = getValue('user_app_lv1', 'users_spd_luar_group', array('id'=>'where/'.$spd_id));
+                 if(!empty($user_app_lv1)):
+                    $this->approval->request('lv1', 'spd_luar_group', $spd_id, $sender_id, $this->detail_email_submit($spd_id));
+                 else:
+                    $this->approval->request('hrd', 'spd_luar_group', $spd_id, $sender_id, $this->detail_email_submit($spd_id));
+                 endif;
                 //echo json_encode(array('st' =>1));   
                 redirect('form_spd_luar_group','refresh');
             }

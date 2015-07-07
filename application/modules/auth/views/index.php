@@ -94,6 +94,7 @@
                             </div>
                         <?php echo form_close()?>
                         <br/>
+                        <div <?php ( ! empty($message)) && print('class="alert alert-info text-center"'); ?> id="infoMessage"><?php echo $message;?></div>
                         <table class="table table-bordered">
                             <thead>
                                 <tr>

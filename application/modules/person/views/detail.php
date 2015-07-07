@@ -101,9 +101,8 @@
 					</div>
 				</div>			
 			</div>
-			
-			<div class="row">		
-				
+			<div class="row">
+		   		<div <?php ( ! empty($message)) && print('class="alert alert-info text-center"'); ?> id="infoMessage"><?php echo $message;?></div>
 				<div class="col-md-12">
 		          <div class="tabbable tabs-left">
 		            <ul class="nav nav-tabs" id="tab-1">

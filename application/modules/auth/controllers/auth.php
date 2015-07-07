@@ -9,6 +9,8 @@ class Auth extends MX_Controller {
         parent::__construct();
         $this->load->library('authentication', NULL, 'ion_auth');
         $this->load->library('form_validation');
+        $this->load->library('approval');
+        $this->load->library('rest');
         $this->load->helper('url');
         
         $this->load->database();
@@ -178,7 +180,6 @@ class Auth extends MX_Controller {
             {
               $getdata = file_get_contents(get_api_key().'users/list/EMPLID/'.$this->input->post('identity').'/format/json');
               $data = json_decode($getdata, true);
-              
                 $username = $data['NAME'];
                 $email    = (!empty($data['EMAIL'])) ? $data['EMAIL'] : $this->input->post('identity');
                 $password = $this->input->post('password');
@@ -190,7 +191,8 @@ class Auth extends MX_Controller {
                     'bod'                   => date('Y-m-d',strtotime($data['BIRTHDATE'])),
                     'phone'                 => $data['PHONE'],
                     'marital_id'            => $data['MARITALSTATUS'],
-                    
+                    'previous_email'        => $data['SMS'],
+                    'bb_pin'                => $data['PINBLACKBERRY'],
                     );
                 $nik = $this->input->post('identity');
 
@@ -827,6 +829,50 @@ class Auth extends MX_Controller {
 
        if (isset($_POST) && !empty($_POST))
         {
+            $first_name = getValue( 'first_name', 'users', array('id'=>'where/'.$id));
+            $last_name =getValue('last_name','users', array('id'=>'where/'.$id));
+            $bod = getValue('bod','users', array('id'=>'where/'.$id));
+            $marital_id = getValue('marital_id','users', array('id'=>'where/'.$id));
+            $phone = getValue('phone','users', array('id'=>'where/'.$id));
+            $previous_email = getValue('previous_email','users', array('id'=>'where/'.$id));
+            $bb_pin = getValue('bb_pin','users', array('id'=>'where/'.$id));
+
+             $first_name_n = $this->input->post('first_name');
+             $last_name_n = $this->input->post('last_name');
+             $bod_n = date('Y-m-d',strtotime($this->input->post('bod')));
+             $marital_id_n = $this->input->post('marital_id');
+             $phone_n = $this->input->post('phone');
+             $previous_email_n = $this->input->post('previous_email');
+             $bb_pin_n = $this->input->post('bb_pin');
+
+             if($first_name !== $first_name_n || $last_name !== $last_name_n || $bod_n !== $bod_n || $marital_id_n !== $marital_id || $phone_n !== $phone || $previous_email !== $previous_email_n || $bb_pin !==$bb_pin_n)
+             {
+                $data_n = array(
+                        'user_id' => $id,
+                        'first_name_new' => (!empty($first_name_n))?$first_name_n:$first_name,
+                        'last_name_new' => (!empty($last_name_n))?$last_name_n:$last_name,
+                        'bod_new'   => (!empty($bod_n))?$bod_n:$bod,
+                        'marital_id_new' => (!empty($marital_id_n))?$marital_id_n:$marital_id,
+                        'phone_new' => (!empty($phone_n))?$phone_n:$phone,
+                        'previous_email_new' => (!empty($previous_email_n))?$previous_email_n:$previous_email,
+                        'bb_pin_new' => (!empty($bb_pin_n))?$bb_pin_n:$bb_pin
+                    );
+                $num_rows = getAll('users_edit_approval', array('user_id'=>'where/'.$id))->num_rows();
+                if($num_rows > 0){
+                    $this->db->where('user_id', $id);
+                    $this->db->update('users_edit_approval', $data_n);
+                    $edit_id = getValue('id', 'users_edit_approval', array('user_id'=>'where/'.$id));
+                }else{
+                    $this->db->insert('users_edit_approval', $data_n);
+                    $edit_id = $this->db->insert_id();
+                }
+                    $this->approval->edit_user($edit_id);
+
+                $this->session->set_flashdata('message', '<div class="alert alert-info" role="alert">'.'Pengajuan perubahan data pribadi anda sudah terkirim ke administrator untuk disetujui'.'</div>');
+             }
+
+
+            //if()
             // do we have a valid request?
             /*if ($this->_valid_csrf_nonce() === FALSE || $id != $this->input->post('id'))
             {
@@ -910,26 +956,12 @@ class Auth extends MX_Controller {
             if(!$this->upload->do_upload('photo'))
             {
                             $data = array(
-                            'first_name' => $this->input->post('first_name'),
-                            'last_name'  => $this->input->post('last_name'),
-                            'bod'                   => date('Y-m-d',strtotime($this->input->post('bod'))),
-                            'marital_id'      => $this->input->post('marital_id'),
-                            'phone'      => $this->input->post('phone'),
-                            'previous_email'      => $this->input->post('previous_email'),
-                            'bb_pin'      => $this->input->post('bb_pin'),
                             'superior_id' => $this->input->post('superior_id'),
                             );
 
             }else{
             $image_name = $upload_data['file_name'];
             $data = array(
-                            'first_name' => $this->input->post('first_name'),
-                            'last_name'  => $this->input->post('last_name'),
-                            'bod'                   => date('Y-m-d',strtotime($this->input->post('bod'))),
-                            'marital_id'      => $this->input->post('marital_id'),
-                            'phone'      => $this->input->post('phone'),
-                            'previous_email'      => $this->input->post('previous_email'),
-                            'bb_pin'      => $this->input->post('bb_pin'),
                             'photo'     =>$image_name,
 							'superior_id' => $this->input->post('superior_id'),
                          );
@@ -966,14 +998,14 @@ class Auth extends MX_Controller {
 
                 //check to see if we are creating the user
                 //redirect them back to the admin page
-                $this->session->set_flashdata('message', "User Saved");
                 if ($this->ion_auth->is_admin())
                 {
+                    $this->session->set_flashdata('message', "Perubahan Tersimpan");
                     redirect('auth', 'refresh');
                 }
                 else
                 {
-                    redirect('/', 'refresh');
+                    redirect('person/detail/'.$id,'refresh');
                 }
             }
 
@@ -1059,13 +1091,6 @@ class Auth extends MX_Controller {
             'value' => $this->form_validation->set_value('email', $user->email),
         );
 
-        $this->data['mobile_phone'] = array(
-            'name'  => 'mobile_phone',
-            'id'    => 'mobile_phone',
-            'type'  => 'text',
-            'value' => $this->form_validation->set_value('mobile_phone', $user->mobile_phone),
-        );
-
         $this->data['previous_email'] = array(
             'name'  => 'previous_email',
             'id'    => 'previous_email',
@@ -1091,22 +1116,9 @@ class Auth extends MX_Controller {
             'id'   => 'password_confirm',
             'type' => 'password'
         );
-		
-        $url_superior = get_api_key().'users/superior/EMPLID/'.$user->nik.'/format/json';
-		$url_atasan_satu_bu = get_api_key().'users/atasan_satu_bu/EMPLID/'.$user->nik.'/format/json';
-		$headers_superior = get_headers($url_superior);
-        $response = substr($headers_superior[0], 9, 3);
-        if ($response != "404") {
-        	$get_user_pengganti = file_get_contents($url_superior);
-        	$user_superior = json_decode($get_user_pengganti, true);
-        	$this->data['user_superior'] = $user_superior;
-            $r = $this->data['selected_superior'] = $this->db->where('id', $id)->get('users')->row('superior_id');
-		}else{
-            $get_user_pengganti = file_get_contents($url_atasan_satu_bu);
-            $user_superior = json_decode($get_user_pengganti, true);
-            $this->data['user_superior'] = $user_superior;
-            $r = $this->data['selected_superior'] = $this->db->where('id', $id)->get('users')->row('superior_id');
-        }
+
+        $this->get_superior($id);
+        $this->data['selected_superior'] = $this->db->where('id', $id)->get('users')->row('superior_id');
 
         $this->data['marital_id'] = $this->form_validation->set_value('email', $user->marital_id);
         $this->data['s_photo'] = $this->form_validation->set_value('photo', $user->photo);
@@ -1121,6 +1133,201 @@ class Auth extends MX_Controller {
 
 
         $this->_render_page('auth/edit_user', $this->data);
+    }
+
+    function edit_user_approval($id)
+    {
+        $user = getJoin('users', 'users_edit_approval', 'users.id = users_edit_approval.user_id', 'left', 'users.*,users_edit_approval.*', array('users_edit_approval.id'=>'where/'.$id))->row();//print_mz($user);
+        $this->data['user'] = $user;
+        $user_id = getValue('user_id','users_edit_approval', array('id'=>'where/'.$id));
+        $marital = getJoin('users', 'marital', 'users.marital_id = marital.id', 'left', 'marital.title as marital', array('users.id'=>'where/'.$user_id))->row()->marital;
+        $marital_n = getJoin('users_edit_approval', 'marital', 'users_edit_approval.marital_id_new = marital.id', 'left', 'marital.title as marital', array('users_edit_approval.id'=>'where/'.$id))->row()->marital;
+        $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'), array('!=id'=>'3'));
+        if(!empty($user)):
+        $this->data['bod'] = array(
+            'name'  => 'bod',
+            'id'    => 'bod',
+            'type'  => 'text',
+            'disabled'  => 'disabled',
+            'value' => $this->form_validation->set_value('bod', dateIndo($user->bod)),
+        );
+
+        $this->data['first_name'] = array(
+            'name'  => 'first_name',
+            'id'    => 'first_name',
+            'type'  => 'text',
+            'disabled'  => 'disabled',
+            'value' => $this->form_validation->set_value('first_name', $user->first_name),
+        );
+        $this->data['last_name'] = array(
+            'name'  => 'last_name',
+            'id'    => 'last_name',
+            'type'  => 'text',
+            'disabled'  => 'disabled',
+            'value' => $this->form_validation->set_value('last_name', $user->last_name),
+        );
+
+        $this->data['marital'] = array(
+            'name'  => 'marital',
+            'id'    => 'marital',
+            'type'  => 'text',
+            'disabled'  => 'disabled',
+            'value' => $this->form_validation->set_value('marital', $marital),
+        );
+
+        $this->data['phone'] = array(
+            'name'  => 'phone',
+            'id'    => 'phone',
+            'type'  => 'text',
+            'disabled'  => 'disabled',
+            'value' => $this->form_validation->set_value('phone', $user->phone),
+        );
+
+        $this->data['email'] = array(
+            'name'  => 'email',
+            'id'    => 'email',
+            'type'  => 'text',
+            'disabled'  => 'disabled',
+            'value' => $this->form_validation->set_value('email', $user->email),
+        );
+
+        $this->data['previous_email'] = array(
+            'name'  => 'previous_email',
+            'id'    => 'previous_email',
+            'type'  => 'text',
+            'disabled'  => 'disabled',
+            'value' => $this->form_validation->set_value('previous_email', $user->previous_email),
+        );
+
+        $this->data['bb_pin'] = array(
+            'name'  => 'bb_pin',
+            'id'    => 'bb_pin',
+            'type'  => 'text',
+            'disabled'  => 'disabled',
+            'value' => $this->form_validation->set_value('bb_pin', $user->bb_pin),
+        );
+
+        $this->data['bod_n'] = array(
+            'name'  => 'bod',
+            'id'    => 'bod',
+            'type'  => 'text',
+            'disabled'  => 'disabled',
+            'value' => $this->form_validation->set_value('bod', dateIndo($user->bod_new)),
+        );
+
+        $this->data['first_name_n'] = array(
+            'name'  => 'first_name',
+            'id'    => 'first_name',
+            'type'  => 'text',
+            'disabled'  => 'disabled',
+            'value' => $this->form_validation->set_value('first_name', $user->first_name_new),
+        );
+        $this->data['last_name_n'] = array(
+            'name'  => 'last_name',
+            'id'    => 'last_name',
+            'type'  => 'text',
+            'disabled'  => 'disabled',
+            'value' => $this->form_validation->set_value('last_name', $user->last_name_new),
+        );
+        $this->data['marital_n'] = array(
+            'name'  => 'marital',
+            'id'    => 'marital',
+            'type'  => 'text',
+            'disabled'  => 'disabled',
+            'value' => $this->form_validation->set_value('marital', $marital_n),
+        );
+        $this->data['phone_n'] = array(
+            'name'  => 'phone',
+            'id'    => 'phone',
+            'type'  => 'text',
+            'disabled'  => 'disabled',
+            'value' => $this->form_validation->set_value('phone', $user->phone_new),
+        );
+
+        $this->data['previous_email_n'] = array(
+            'name'  => 'previous_email',
+            'id'    => 'previous_email',
+            'type'  => 'text',
+            'disabled'  => 'disabled',
+            'value' => $this->form_validation->set_value('previous_email', $user->previous_email_new),
+        );
+
+        $this->data['bb_pin_n'] = array(
+            'name'  => 'bb_pin',
+            'id'    => 'bb_pin',
+            'type'  => 'text',
+            'disabled'  => 'disabled',
+            'value' => $this->form_validation->set_value('bb_pin', $user->bb_pin_new),
+        );
+
+        $this->data['is_app'] = $user->is_app;
+        $this->data['user_app'] = $user->user_app;
+        $this->data['date_app'] = $user->date_app;
+        $this->data['app_status_id'] = $user->app_status_id;
+        $this->data['note'] = $user->note;
+        endif;
+
+        $this->_render_page('auth/edit_user_approval', $this->data);
+    }
+
+    function do_approve($id)
+    {
+        if(!$this->ion_auth->logged_in())
+        {
+            redirect('auth/login', 'refresh');
+        }
+        else
+        {
+            $user = getJoin('users', 'users_edit_approval', 'users.id = users_edit_approval.user_id', 'left', 'users.*,users_edit_approval.*', array('users_edit_approval.id'=>'where/'.$id))->row();
+            $user_id = get_nik($this->session->userdata('user_id'));
+            $date_now = date('Y-m-d');
+
+            $data = array(
+            'is_app' => 1,
+            'app_status_id' => $this->input->post('app_status'), 
+            'user_app' => $user_id, 
+            'date_app' => $date_now,
+            'note' => $this->input->post('note')
+            );
+            $this->db->where('id', $id);
+            $this->db->update('users_edit_approval',$data);
+
+            $data_n = array(
+                'first_name_new' => $user->first_name_new,
+                'last_name_new' => $user->last_name_new,
+                'bod_new'   => $user->bod_new,
+                'marital_id_new' => $user->marital_id_new,
+                'phone_new' => (!empty($user->phone_new))?$user->phone_new:0,
+                'previous_email_new' => (!empty($user->previous_email_new))?$user->previous_email_new:0,
+                'bb_pin_new' => (!empty($user->bb_pin_new))?$user->bb_pin_new:0,
+                );
+            $approval_status = $this->input->post('app_status');
+            $this->approval->approve('edit_user', $id, $approval_status, '');
+            if($approval_status==1):print_mz($this->update_employeetable($user->user_id, $data_n));endif;
+        }
+    }
+
+    function update_employeetable($nik, $data = array())
+    {
+        $method = 'post';
+        $params =  array();
+        $uri = get_api_key().'users/edit_employee/EMPLID/'.get_nik($nik).'/FIRSTNAME/'.$data['first_name_new'].'/LASTNAME/'.$data['last_name_new'].'/BIRTHDATE/'.$data['bod_new'].'/PHONE/'.$data['phone_new'].'/MARITALSTATUS/'.$data['marital_id_new'].'/SMS/'.$data['previous_email_new'].'/PINBLACKBERRY/'.$data['bb_pin_new'];
+
+        $this->rest->format('application/json');
+
+        $result = $this->rest->{$method}($uri, $params);
+
+
+        if(isset($result->status) && $result->status == 'success')  
+        {  
+            //return true;
+            return $this->rest->debug();
+        }     
+        else  
+        {  
+            //return false;
+            return $this->rest->debug();
+        }
     }
 
     function do_upload_file($id, $type)
@@ -1159,6 +1366,28 @@ class Auth extends MX_Controller {
 
             $this->ion_auth->update($user->id, $data);
             redirect('auth/edit_user/'.$user->id, 'refresh');     
+    }
+
+    function get_superior($id)
+    {
+        $url_superior = get_api_key().'users/superior/EMPLID/'.get_nik($id).'/format/json';
+        $url_atasan_satu_bu = get_api_key().'users/atasan_satu_bu/EMPLID/'.get_nik($id).'/format/json';
+        $headers_superior = get_headers($url_superior);
+        $headers_atasan_satu_bu = get_headers($url_atasan_satu_bu);
+        $response = substr($headers_superior[0], 9, 3);
+        $response2 = substr($headers_atasan_satu_bu[0], 9, 3);
+        if ($response != "404") {
+            $get_user_pengganti = file_get_contents($url_superior);
+            $user_superior = json_decode($get_user_pengganti, true);
+            $this->data['user_superior'] = $user_superior;
+            $r = $this->data['selected_superior'] = $this->db->where('id', $id)->get('users')->row('superior_id');
+        }elseif ($response2 != "404"){
+            $get_user_pengganti = file_get_contents($url_atasan_satu_bu);
+            $user_superior = json_decode($get_user_pengganti, true);
+            return $this->data['user_superior'] = $user_superior;
+        }else{
+             return $this->data['user_superior'] = FALSE;
+        }
     }
 
     function detail($id, $sort_by = "id", $sort_order = "asc", $offset = 0)
@@ -1250,7 +1479,6 @@ class Auth extends MX_Controller {
     public function get_pos_group($id){
         $filter = array("id"=>$id,"is_deleted"=>0);
         $q = GetALL('position',$filter);
-        //die(print_mz($q));
         if($q->num_rows() > 0)
         {
             $value = $q->row_array();
@@ -3197,12 +3425,11 @@ class Auth extends MX_Controller {
                     $this->template->add_css('datepicker.css');
                     $this->template->add_css('plugins/select2/select2.css');
                 }
-                elseif(in_array($view, array('auth/edit_user')))
+                elseif(in_array($view, array('auth/edit_user'
+                    )))
                 {
 
                     $this->template->set_layout('default');
-
-                    /*$this->template->add_js('jquery-1.8.3.min.js');*/
                     $this->template->add_js('jquery-ui-1.10.1.custom.min.js');
                     $this->template->add_js('jqueryblockui.js');
                     $this->template->add_js('jquery.sidr.min.js');
@@ -3222,6 +3449,20 @@ class Auth extends MX_Controller {
                     $this->template->add_css('pace-theme-flash.css');
                     $this->template->add_css('datepicker.css');
                     $this->template->add_css('prettyPhoto.css');
+                }elseif(in_array($view, array('auth/edit_user_approval'
+                    )))
+                {
+
+                    $this->template->set_layout('default');
+                     $this->template->add_js('jquery.sidr.min.js');
+                    $this->template->add_js('breakpoints.js');
+
+                    $this->template->add_js('core.js');
+                    $this->template->add_js('purl.js');
+
+                    $this->template->add_js('respond.min.js');
+                    $this->template->add_js('edit_user_approval.js');
+                    $this->template->add_css('approval_img.css');
                 }
                 elseif(in_array($view, array('auth/detail',
                                              'auth/detail_course',

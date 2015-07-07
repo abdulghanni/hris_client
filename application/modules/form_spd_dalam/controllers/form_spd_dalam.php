@@ -180,7 +180,8 @@ class Form_spd_dalam extends MX_Controller {
         
         if($this->form_validation->run() == FALSE)
         {
-            echo json_encode(array('st'=>0, 'errors'=>validation_errors('<div class="alert alert-danger" role="alert">', '</div>')));
+            //echo json_encode(array('st'=>0, 'errors'=>validation_errors('<div class="alert alert-danger" role="alert">', '</div>')));
+            redirect('form_spd_dalam/input','refresh');
         }
         else
         {
@@ -203,22 +204,20 @@ class Form_spd_dalam extends MX_Controller {
                 'created_by'            => $this->session->userdata('user_id')
             );
 
-            $num_rows = getAll('users_spd_dalam')->num_rows();
-
-             if($num_rows>0){
-                $spd_id = $this->db->select('id')->order_by('id', 'asc')->get('users_spd_dalam')->last_row();
-                $spd_id = $spd_id->id+1;
-            }else{
-                $spd_id = 1;
-            }
-
             $sender_id = $this->input->post('emp_tc');
 
             if ($this->form_validation->run() == true && $this->form_spd_dalam_model->create_($user_id,$additional_data))
             {
-                
-                $this->send_spd_mail($spd_id, $user_id, $sender_id);
-                echo json_encode(array('st' =>1));   
+                $spd_id = $this->db->insert_id();
+                $user_app_lv1 = getValue('user_app_lv1', 'users_spd_dalam', array('id'=>'where/'.$spd_id));
+                 if(!empty($user_app_lv1)):
+                    $this->approval->request('lv1', 'spd_dalam', $spd_id, $sender_id, $this->detail_email_submit($spd_id));
+                 else:
+                    $this->approval->request('hrd', 'spd_dalam', $spd_id, $sender_id, $this->detail_email_submit($spd_id));
+                 endif;
+                 $this->send_spd_mail($spd_id, $user_id, $sender_id);
+                 redirect('form_spd_dalam', 'refresh');
+                //echo json_encode(array('st' =>1));   
             }
         }
     }

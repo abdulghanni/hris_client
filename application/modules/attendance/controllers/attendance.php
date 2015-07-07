@@ -282,5 +282,30 @@ class attendance extends MX_Controller {
 		die();	
 	}
 
+	function task_cron() 
+	{
+		$tanggal=date("d");
+		$bulan=date("m");
+		$tahun=date("Y");
+		
+		$this->baca_cron($tanggal, $bulan, $tahun);
+		
+		$sql = "select * from users where mchID > 0 AND active='1' AND mchID not in (select nik from attendance where tanggal='".$tanggal."' AND bulan='".$bulan."' AND tahun='".$tahun."')";
+		die($sql);
+		$q = $this->db->query($sql);
+		foreach($q->result_array() as $r)
+		{
+			$sql_absen = "INSERT INTO attendance set nik='".$r['mchID']."',
+							jhk='1', sakit='0', alpa='1', pc='0', cuti='0', jh='0',
+							ijin='0', tanggal='".$tanggal."', bulan='".$bulan."', tahun='".$tahun."',
+							scan_masuk='', scan_pulang='',
+							terlambat='0', plg_cepat='0',
+							lembur='0', jam_kerja='0', keterangan='',
+							modify_user_id='1', modify_date='".date("Y-m-d H:i:s")."',
+							create_user_id='1', create_date='".date("Y-m-d H:i:s")."'";
+			$this->db->query($sql_absen);
+		}
+	}
+
 }
 ?>
