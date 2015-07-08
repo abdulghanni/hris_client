@@ -7,7 +7,13 @@ $(document).ready(function() {
                 todayHighlight: true
        });
 
-     $('button[data-loading-text]').click(function () {
+    $('#btnAdd').on('click', function () {
+    $(document).find("select.select2").select2();
+    $('.rupiah').maskMoney({precision: 0});
+    $('#btnRemove').show();
+    });
+
+    $('button[data-loading-text]').click(function () {
     $(this).button('loading');
     });
 

@@ -1,4 +1,7 @@
 <!-- BEGIN PAGE CONTAINER-->
+<style>
+th{border:2;}
+</style>
   <div class="page-content"> 
     <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
     <div id="portlet-config" class="modal hide">
@@ -22,7 +25,7 @@
             <div class="grid-body no-border">
               <!--<form class="form-no-horizontal-spacing" id="form_spd_dalam" action="<?php echo site_url().'form_spd_luar_group/do_submit/'.$id = $this->uri->segment(3, 0);?>" method="post">-->
               <form class="form-no-horizontal-spacing" id="formSpdLuar"> <div class="row column-seperation">
-                  <div class="col-md-5">
+                  <div class="col-md-12">
                     <h4>Yang Memberi Tugas</h4>
                     <?php if ($td_num_rows > 0) {
                       foreach ($task_detail as $td) { 
@@ -33,87 +36,129 @@
                         $jml_pjd = floor($j/(60*60*24)+1);
                         ?>
                     <div class="row form-row">
-                      <div class="col-md-3">
-                        <label class="form-label text-right">Nama</label>
+                      <div class="col-md-2">
+                        <label class="form-label text-left">Nama</label>
                       </div>
-                      <div class="col-md-9">
+                      <div class="col-md-5">
                         <input name="name" id="name" type="text"  class="form-control" placeholder="Nama" value="<?php echo get_name($td->task_creator) ?>" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
-                      <div class="col-md-3">
-                        <label class="form-label text-right">Dept/Bagian</label>
+                      <div class="col-md-2">
+                        <label class="form-label text-left">Dept/Bagian</label>
                       </div>
-                      <div class="col-md-9">
+                      <div class="col-md-5">
                         <input name="org" id="org" type="text"  class="form-control" placeholder="Nama" value="<?php echo (!empty($user_info))?$user_info['ORGANIZATION']:'-';?>" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
-                      <div class="col-md-3">
-                        <label class="form-label text-right">Jabatan</label>
+                      <div class="col-md-2">
+                        <label class="form-label text-left">Jabatan</label>
                       </div>
-                      <div class="col-md-9">
+                      <div class="col-md-5">
                         <input name="position" id="position" type="text"  class="form-control" placeholder="Nama" value="<?php echo (!empty($user_info))?$user_info['POSITION']:'-';?>" disabled="disabled">
                       </div>
                     </div>
                   </div>
-                  <div class="col-md-7">
+                  <p>&nbsp;</p>
+                  <hr/>
+                  <div class="col-md-12">
                     <h4>Memberi tugas / Ijin Kepada</h4>
-                    
+                    <p></p>
                     <div class="row form-row">
-                      <div class="col-md-3">
+                      <div class="col-md-12">
+                        <table id="dataTable" class="table table-bordered">
+                          <thead>
+                            <tr>
+                                <th rowspan="2" class="text-center" width="2%">NIK</th>
+                                <th rowspan="2" align="center" class="text-center" valign="middle" width="10%">Nama</th>
+                                <th rowspan="2" class="text-center" width="2%">Grade</th>
+                                <th colspan="<?php echo $biaya_tambahan->num_rows()+3?>" class="text-center">Biaya Perjalanan Dinas</th>
+                            </tr>
+                            <tr>
+                              <th width="5%">Hotel</th>
+                              <th width="5%">Uang Makan</th>
+                              <th width="5%">Uang Saku</th>
+                            <?php foreach($biaya_tambahan->result() as $row):?>
+                              <th width="5%"><?php echo $row->title?></th>
+                            <?php endforeach;?>
+                            </tr>
+                          </thead>
+                            <tbody>
+                            <?php foreach ($biaya_pjd_group->result() as $pjd):?>
+                              <tr>
+                                <td><?php echo $pjd->user_id?></td>
+                                <td><?php echo get_name($pjd->user_id)?></td>
+                                <td><?php echo get_grade($pjd->user_id)?></td>
+                                <td><?php echo $pjd->hotel?></td>
+                                <td><?php echo $pjd->uang_makan?></td>
+                                <td><?php echo $pjd->uang_saku?></td>
+                                <td><?php echo $pjd->biaya_entertain?></td>
+                                <td><?php echo $pjd->biaya_taxi?></td>
+                                <td><?php echo $pjd->biaya_toll?></td>
+                                <td><?php echo $pjd->biaya_bbm?></td>
+                                <td><?php echo $pjd->biaya_tiket_pesawat?></td>
+                                <td><?php echo $pjd->biaya_lain?></td>
+                              </tr>
+                            <?php endforeach;?>
+                            </tbody>
+                          </table>
+                      </div>
+                    </div>
+                    <div class="row form-row">
+                      <div class="col-md-2">
                         <label class="form-label text-left">Tujuan</label>
                       </div>
-                      <div class="col-md-9">
+                      <div class="col-md-5">
                         <input name="destination" id="destination" type="text"  class="form-control" placeholder="Tujuan" value="<?php echo $td->destination ?>" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
-                      <div class="col-md-3">
+                      <div class="col-md-2">
                         <label class="form-label text-left">Dalam Rangka</label>
                       </div>
-                      <div class="col-md-9">
+                      <div class="col-md-5">
                         <input name="title" id="title" type="text"  class="form-control" placeholder="Dalam Rangka" value="<?php echo $td->title; ?>" disabled="disabled">
                       </div>
                     </div>
                       <div class="row form-row">
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                           <label class="form-label text-left">Kota Tujuan</label>
                         </div>
-                        <div class="col-md-9">
+                        <div class="col-md-5">
                           <input name="title" id="title" type="text"  class="form-control" placeholder="Kota Tujuan" value="<?php echo $td->city_to; ?>" disabled>
                         </div>
                       </div>
                       <div class="row form-row">
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                           <label class="form-label text-left">Dari</label>
                         </div>
-                        <div class="col-md-9">
+                        <div class="col-md-5">
                           <input name="title" id="title" type="text"  class="form-control" placeholder="Kota Asal" value="<?php echo $td->city_from; ?>" disabled>
                         </div>
                       </div>
                       <div class="row form-row">
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                           <label class="form-label text-left">Kendaraan</label>
                         </div>
-                        <div class="col-md-9">
+                        <div class="col-md-5">
                           <input name="title" id="title" type="text"  class="form-control" placeholder="Kendaraan" value="<?php echo $td->transportation_nm; ?>" disabled>
                         </div>
                       </div>
                       <div class="row form-row">
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                           <label class="form-label text-left">Tgl. Berangkat</label>
                         </div>
                         <div class="col-md-8">
-                          <input name="title" id="title" type="text"  class="form-control" placeholder="Tanggal Berangkat" value="<?php echo $td->date_spd_start; ?>" disabled>
+                          <input name="title" id="title" type="text"  class="form-control" placeholder="Tanggal Berangkat" value="<?php echo dateIndo($td->date_spd_start); ?>" disabled>
                         </div>
                       </div>
                       <div class="row form-row">
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                           <label class="form-label text-left">Tgl. Pulang</label>
                         </div>
                         <div class="col-md-8">
-                          <input name="title" id="title" type="text"  class="form-control" placeholder="Tanggal Pulang" value="<?php echo $td->date_spd_end; ?>" disabled>
+                          <input name="title" id="title" type="text"  class="form-control" placeholder="Tanggal Pulang" value="<?php echo dateIndo($td->date_spd_end); ?>" disabled>
                         </div>
                       </div>
                   </div>

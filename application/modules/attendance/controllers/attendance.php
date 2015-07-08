@@ -291,7 +291,7 @@ class attendance extends MX_Controller {
 		$this->baca_cron($tanggal, $bulan, $tahun);
 		
 		$sql = "select * from users where mchID > 0 AND active='1' AND mchID not in (select nik from attendance where tanggal='".$tanggal."' AND bulan='".$bulan."' AND tahun='".$tahun."')";
-		die($sql);
+		
 		$q = $this->db->query($sql);
 		foreach($q->result_array() as $r)
 		{

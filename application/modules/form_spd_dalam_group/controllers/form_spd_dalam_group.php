@@ -186,20 +186,10 @@ class Form_spd_dalam_group extends MX_Controller {
             $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
             $this->data['sess_nik'] = get_nik($sess_id);
 
-            //$this->get_task_receiver();
-            $url = get_api_key().'users/org/EMPLID/'.get_nik($sess_id).'/format/json';
-            $headers = get_headers($url);
-            $response = substr($headers[0], 9, 3);
-            if ($response != "404") {
-                $get_task_receiver = file_get_contents($url);
-                $this->data['subordinate'] = $task_receiver = json_decode($get_task_receiver, true);
-            } else {
-               $this->data['subordinate'] =  '';
-            }
-
-            $this->data['all_users'] = getAll('users', array('active'=>'where/1', 'username'=>'order/asc'), array('!=id'=>'1'));
+            $this->data['all_users'] = $this->ion_auth->where('id != ', 1)->users();
             $this->get_user_atasan();
             $this->get_penerima_tugas();
+            $this->get_penerima_tugas_satu_bu();
             $this->_render_page('form_spd_dalam_group/input', $this->data);
         }
     }
@@ -618,6 +608,21 @@ function get_user_atasan()
             return $this->data['penerima_tugas'] = $penerima_tugas;
             }else{
              return $this->data['penerima_tugas'] = 'Tidak ada karyawan dengan departement yang sama';
+            }
+    }
+
+    function get_penerima_tugas_satu_bu()
+    {
+            $user_id = $this->session->userdata('user_id');
+            $url_org = get_api_key().'users/emp_satu_bu/EMPLID/'.get_nik($user_id).'/format/json';
+            $headers_org = get_headers($url_org);
+            $response = substr($headers_org[0], 9, 3);
+            if ($response != "404") {
+            $get_penerima_tugas = file_get_contents($url_org);
+            $penerima_tugas = json_decode($get_penerima_tugas, true);
+            return $this->data['penerima_tugas_satu_bu'] = $penerima_tugas;
+            }else{
+             return $this->data['penerima_tugas_satu_bu'] = 'Tidak ada karyawan dengan Bussiness Unit yang sama';
             }
     }
     

@@ -30,7 +30,7 @@
                         <label class="form-label text-right">Nama</label>
                       </div>
                       <div class="col-md-9">
-                      <?php if(is_admin()){?>
+                      <?php if(is_admin() || is_admin_bagian()){?>
                         <select id="emp" class="select2" style="width:100%" name="emp_tc">
                           <?php
                           foreach ($all_users->result() as $u) :

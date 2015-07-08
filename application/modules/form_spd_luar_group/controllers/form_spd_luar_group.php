@@ -84,7 +84,7 @@ class Form_spd_luar_group extends MX_Controller {
         }
     }
 
-    function submit($id=0)
+    function submit($id)
     {
         if (!$this->ion_auth->logged_in())
         {
@@ -102,6 +102,8 @@ class Form_spd_luar_group extends MX_Controller {
             $receiver = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('task_receiver');
             $creator = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('task_creator');
             $user_submit = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('user_submit');
+            $this->data['biaya_pjd_group'] = getAll('users_spd_luar_group_biaya', array('user_spd_luar_group_id'=>'where/'.$id));
+            $this->data['biaya_tambahan'] = getAll('pjd_biaya', array('type_grade' => 'where/0'));
             $this->data['receiver'] = $p = explode(",", $receiver);
             $this->data['receiver_submit'] = explode(",", $user_submit);
             $this->data['ci'] = $this;
@@ -180,25 +182,15 @@ class Form_spd_luar_group extends MX_Controller {
         {
             $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
             $this->data['sess_nik'] = get_nik($sess_id);
-            $this->data['all_users'] = getAll('users', array('active'=>'where/1', 'username'=>'order/asc'), array('!=id'=>'1'))->result();
-
-            //get_task_receiver_from_same_organization
-            $this->get_task_receiver();
+            $this->data['all_users'] = $this->ion_auth->where('id != ', 1)->users();
+            $this->data['selected'] = getValue('id','users', array('id'=>'where/'.$sess_id));
+            $this->data['biaya_tambahan'] = getAll('pjd_biaya', array('type_grade' => 'where/0'));
+            $this->get_penerima_tugas();
+            $this->get_penerima_tugas_satu_bu();
             $this->get_user_atasan();
-            $this->get_user_info($user_id);
-            $url = get_api_key().'users/org/EMPLID/'.get_nik($sess_id).'/format/json';
-            $headers = get_headers($url);
-            $response = substr($headers[0], 9, 3);
-            if ($response != "404") {
-                $get_task_receiver = file_get_contents($url);
-                $this->data['subordinate'] = $task_receiver = json_decode($get_task_receiver, true);
-            } else {
-               $this->data['subordinate'] =  '';
-            }
 
             $this->data['transportation_list'] = getAll('transportation', array('is_deleted'=>'where/0'))->result();
             $this->data['tl_num_rows'] = getAll('transportation', array('is_deleted'=>'where/0'))->num_rows();
-
             $this->data['city_list'] = getAll('city', array('is_deleted'=>'where/0'))->result();
             $this->data['cl_num_rows'] = getAll('city', array('is_deleted'=>'where/0'))->num_rows();
 
@@ -208,7 +200,6 @@ class Form_spd_luar_group extends MX_Controller {
 
     public function add()
     {
-
         $this->form_validation->set_rules('destination', 'Tujuan', 'trim|required');
         $this->form_validation->set_rules('title', 'Tanggal Terakhir Cuti', 'trim|required');
         $this->form_validation->set_rules('date_spd_start', 'Tanggal Berangkat', 'trim|required');
@@ -247,8 +238,29 @@ class Form_spd_luar_group extends MX_Controller {
             if ($this->form_validation->run() == true && $this->form_spd_luar_group_model->create_($task_receiver,$additional_data))
             {
                 $spd_id = $this->db->insert_id();
+                $tr = $this->input->post('peserta');
+                for($i=0;$i<sizeof($tr);$i++):
+                    $data = array(
+                        'user_spd_luar_group_id' => $spd_id,
+                        'user_id'   => $tr[$i],
+                        'hotel'=> $this->get_biaya_pjd($tr[$i])['hotel'], 
+                        'uang_makan'=> $this->get_biaya_pjd($tr[$i])['uang_makan'],
+                        'uang_saku'=> $this->get_biaya_pjd($tr[$i])['uang_saku'],
+                        'biaya_entertain' => str_replace( ',', '', $this->input->post('entertain')[$i]),
+                        'biaya_taxi' => str_replace( ',', '', $this->input->post('taxi')[$i]),
+                        'biaya_toll' => str_replace( ',', '', $this->input->post('toll')[$i]),
+                        'biaya_bbm' => str_replace( ',', '', $this->input->post('bbm')[$i]),
+                        'biaya_tiket_pesawat' => str_replace( ',', '', $this->input->post('tiket_pesawat')[$i]),
+                        'biaya_lain' => str_replace( ',', '', $this->input->post('lain')[$i]),
+                        'created_on'            => date('Y-m-d',strtotime('now')),
+                        'created_by'            => $this->session->userdata('user_id')
+                        );
+
+                    $this->db->insert('users_spd_luar_group_biaya', $data);
+                endfor;
                 $task_receiver_id = explode(',',$task_receiver);
                 $this->send_spd_mail($spd_id, $sender_id, $task_receiver_id);
+
                 $user_app_lv1 = getValue('user_app_lv1', 'users_spd_luar_group', array('id'=>'where/'.$spd_id));
                  if(!empty($user_app_lv1)):
                     $this->approval->request('lv1', 'spd_luar_group', $spd_id, $sender_id, $this->detail_email_submit($spd_id));
@@ -534,6 +546,8 @@ class Form_spd_luar_group extends MX_Controller {
             $receiver = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('task_receiver');
             $creator = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('task_creator');
             $user_submit = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('user_submit');
+            $this->data['biaya_pjd_group'] = getAll('users_spd_luar_group_biaya', array('user_spd_luar_group_id'=>'where/'.$id));
+            $this->data['biaya_tambahan'] = getAll('pjd_biaya', array('type_grade' => 'where/0'));
             $this->data['receiver'] = $p = explode(",", $receiver);
             $this->data['receiver_submit'] = explode(",", $user_submit);
 
@@ -591,9 +605,8 @@ class Form_spd_luar_group extends MX_Controller {
         }
     }
 
-    function get_biaya_pjd($id, $task_receiver_id)
+    function get_biaya_pjd($task_receiver_id)
     {
-        $spd_id = getAll('users_spd_luar', array('id' => 'where/'.$id));
         $grade = get_grade($task_receiver_id);
         $pos_group = get_pos_group($task_receiver_id);
 
@@ -677,6 +690,36 @@ class Form_spd_luar_group extends MX_Controller {
         } else {
             return $this->data['user_info'] = '';
         }
+    }
+
+    function get_penerima_tugas()
+    {
+            $user_id = $this->session->userdata('user_id');
+            $url_org = get_api_key().'users/bawahan_satu_bu/EMPLID/'.get_nik($user_id).'/format/json';
+            $headers_org = get_headers($url_org);
+            $response = substr($headers_org[0], 9, 3);
+            if ($response != "404") {
+            $get_penerima_tugas = file_get_contents($url_org);
+            $penerima_tugas = json_decode($get_penerima_tugas, true);
+            return $this->data['penerima_tugas'] = $penerima_tugas;
+            }else{
+             return $this->data['penerima_tugas'] = 'Tidak ada karyawan dengan departement yang sama';
+            }
+    }
+
+    function get_penerima_tugas_satu_bu()
+    {
+            $user_id = $this->session->userdata('user_id');
+            $url_org = get_api_key().'users/emp_satu_bu/EMPLID/'.get_nik($user_id).'/format/json';
+            $headers_org = get_headers($url_org);
+            $response = substr($headers_org[0], 9, 3);
+            if ($response != "404") {
+            $get_penerima_tugas = file_get_contents($url_org);
+            $penerima_tugas = json_decode($get_penerima_tugas, true);
+            return $this->data['penerima_tugas_satu_bu'] = $penerima_tugas;
+            }else{
+             return $this->data['penerima_tugas_satu_bu'] = 'Tidak ada karyawan dengan Bussiness Unit yang sama';
+            }
     }
 
     function get_receiver_info($receiver_nik)
@@ -847,6 +890,7 @@ class Form_spd_luar_group extends MX_Controller {
                     $this->template->add_js('jquery.validate.min.js');
                     $this->template->add_js('bootstrap-datepicker.js');
                     $this->template->add_js('bootstrap-timepicker.js');
+                    $this->template->add_js('jquery.maskMoney.js');
                     $this->template->add_js('emp_dropdown.js');
                     $this->template->add_js('form_spd_luar_group.js');
                     

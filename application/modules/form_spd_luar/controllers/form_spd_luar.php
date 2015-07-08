@@ -269,7 +269,7 @@ class Form_spd_luar extends MX_Controller {
                     for($i=0;$i<sizeof($biaya_tambahan_id);$i++):
                     $data2 = array('user_spd_luar_id' => $spd_id,
                                   'pjd_biaya_id' =>$biaya_tambahan_id[$i],
-                                  'jumlah_biaya' =>$biaya_tambahan[$i],
+                                  'jumlah_biaya' =>str_replace( ',', '', $biaya_tambahan[$i]),
                                   'created_by'=> $this->session->userdata('user_id'),
                                   'created_on'            => date('Y-m-d',strtotime('now')),
                      );
@@ -776,6 +776,7 @@ class Form_spd_luar extends MX_Controller {
                     $this->template->add_js('jquery.validate.min.js');
                     $this->template->add_js('bootstrap-datepicker.js');
                     $this->template->add_js('bootstrap-timepicker.js');
+                    $this->template->add_js('jquery.maskMoney.js');
                     $this->template->add_js('emp_dropdown.js');
                     $this->template->add_js('form_spd_luar.js');
                     

@@ -22,7 +22,7 @@
               <?php echo form_open('form_training/add');?>
                 <div class="row column-seperation">
                   <div class="col-md-12">
-                  <?php if(is_admin()){?>
+                  <?php if(is_admin() || is_admin_bagian()){?>
                     <div class="row form-row">
                       <div class="col-md-2">
                         <label class="form-label text-right">Nama Pengaju</label>
@@ -47,7 +47,7 @@
                       </div>
                       <div class="col-md-10">
                           <?php 
-                          if(is_admin()){?>
+                          if(is_admin()||is_admin_bagian()){?>
                             <select id="peserta" class="select2" style="width:100%" name="peserta">
                                 <option value="0">- Pilih Peserta Training - </option>
                             </select>

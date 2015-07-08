@@ -30,7 +30,7 @@
                         <label class="form-label text-right">Nama</label>
                       </div>
                       <div class="col-md-9">
-                      <?php if(is_admin()){?>
+                      <?php if(is_admin()||is_admin_bagian()){?>
                       <select id="emp" class="select2" style="width:100%" name="emp_tc" onchange="getTr()">
                         <?php
                         foreach ($all_users->result() as $up) { ?>
@@ -220,7 +220,7 @@
      }
   </script>
 
-<?php $all_users = $all_users->result_array();?>
+<?php $all_users = $all_users->result();?>
 <script type="text/javascript">
   function addRow(tableID){
   var table=document.getElementById(tableID);
@@ -236,10 +236,14 @@
 
   var cell2=row.insertCell(1);
   cell2.innerHTML=rowCount+1-1;
+  
   <?php if(is_admin()){?>
   var cell3=row.insertCell(2);
-  cell3.innerHTML = "<select name='peserta[]' class='select2' style='width:100%'><?php for($i=0;$i<sizeof($all_users);$i++):?><option value='<?php echo $all_users[$i]['nik']?>'><?php echo $all_users[$i]['username'].' - '.$all_users[$i]['nik']?></option><?php endfor;?></select>";  
-  <?php }else{?>
+  cell3.innerHTML = "<select name='peserta[]' class='select2' style='width:100%'><?php foreach ($all_users as $key) :?><option value='<?php echo $key->nik ?>'><?php echo $key->username.' - '.$key->nik ?></option><?php endforeach;?></select>";  
+  <?php }elseif(is_admin_bagian()){?>
+  var cell3=row.insertCell(2);
+  cell3.innerHTML = "<select name='peserta[]' class='select2' style='width:100%'><?php foreach ($penerima_tugas_satu_bu as $key => $up) :?><option value='<?php echo $up['ID'] ?>'><?php echo $up['NAME'].' - '.$up['ID'] ?></option><?php endforeach;?></select>"; 
+  <?php } else { ?>
   var cell3=row.insertCell(2);
   cell3.innerHTML = "<select name='peserta[]' class='select2' style='width:100%'><?php foreach ($penerima_tugas as $key => $up) :?><option value='<?php echo $up['ID'] ?>'><?php echo $up['NAME'].' - '.$up['ID'] ?></option><?php endforeach;?></select>";  
   <?php } ?>

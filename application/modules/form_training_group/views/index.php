@@ -18,7 +18,7 @@
               <div class="grid simple ">
                 <div class="grid-title no-border">
                   <h4>Daftar Permintaan <span class="semi-bold">Pelatihan Group</span></h4>
-                  <?php if(is_have_subordinate($sess_id)||is_admin()){?>
+                  <?php if(is_have_subordinate($sess_id)||is_admin()||is_admin_bagian()){?>
                   <div class="tools"> 
                     <a href="<?php echo site_url('form_training_group/input')?>" class="config"></a>
                   </div>

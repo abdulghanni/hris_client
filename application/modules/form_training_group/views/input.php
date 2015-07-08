@@ -28,7 +28,7 @@
                       </div>
                       <div class="col-md-10">
                           <?php 
-                          if(is_admin()){?>
+                          if(is_admin() || is_admin_bagian()){?>
                             <select id="emp" class="select2" style="width:100%" name="emp">
                               <?php
                               foreach ($all_users->result() as $u) :

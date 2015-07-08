@@ -120,7 +120,7 @@ class form_training extends MX_Controller {
 
         $form_training = $this->data['training'] = $this->form_training_model->form_training($sess_id);
 
-        $this->data['all_users'] = getAll('users', array('active'=>'where/1', 'username'=>'order/asc'), array('!=id'=>'1'));
+        $this->data['all_users'] = $this->ion_auth->where('id != ', 1)->users();
         $this->data['subordinate'] = getAll('users', array('superior_id'=>'where/'.get_nik($sess_id)));
         $this->get_user_atasan();
 

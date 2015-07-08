@@ -53,15 +53,27 @@ $("#emp").change(function() {
             getEmpPos(empId);
             getPenerimaTugasLuar(empId);
             break;
-        case 'form_spd_luar_group':
         case 'form_spd_dalam_group':
             getAtasan1(empId);
             getEmpOrg(empId);
             getEmpPos(empId);
             break;
+        case 'form_spd_luar_group':
+            getAtasan1(empId);
+            getEmpOrg(empId);
+            getEmpPos(empId);
+            //getPenerimaTugasLuarGroup(empId);
+            break;
     }
 })
 .change();
+
+$("#peserta_luar_fuck").change(function() {
+var $span = $("#peserta_luar_fuck");
+$span.attr('id', function (index) {
+    alert(index);
+});
+}).change();
 
 $("#peserta").change(function() {
     var empId = $(this).val();
@@ -84,6 +96,13 @@ $("#penerima_tugas_luar").change(function() {
     getEmpPosTr(empId);
     getEmpGrade(empId);
     getBiayaFix(empId);
+})
+.change();
+
+$("#penerima_tugas_luar").change(function() {
+    var empId = $(this).val();
+    getEmpOrgTr(empId);
+    getEmpPosTr(empId);
 })
 .change();
 

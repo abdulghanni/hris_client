@@ -161,7 +161,7 @@ class Form_spd_dalam extends MX_Controller {
         {
             $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
             $this->data['sess_nik'] = get_nik($sess_id);
-            $this->data['all_users'] = getAll('users', array('active'=>'where/1', 'username'=>'order/asc'), array('!=id'=>'1'));
+            $this->data['all_users'] = $this->ion_auth->where('id != ', 1)->users();
             $this->get_user_atasan();
             $this->get_penerima_tugas();
 

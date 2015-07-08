@@ -121,7 +121,7 @@ class form_training_group extends MX_Controller {
         $sess_nik = $this->data['sess_nik'] = get_nik($sess_id);
         $form_training_group = $this->data['training'] = $this->form_training_group_model->form_training_group($sess_id);
 
-        $this->data['all_users'] = getAll('users', array('active'=>'where/1', 'username'=>'order/asc'), array('!=id'=>'1'));
+        $this->data['all_users'] = $this->ion_auth->where('id != ', 1)->users();
         $this->data['subordinate'] = getAll('users', array('superior_id'=>'where/'.get_nik($sess_id)));
         $this->get_user_atasan();
 
