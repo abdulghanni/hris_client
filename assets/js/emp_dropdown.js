@@ -68,13 +68,6 @@ $("#emp").change(function() {
 })
 .change();
 
-$("#peserta_luar_fuck").change(function() {
-var $span = $("#peserta_luar_fuck");
-$span.attr('id', function (index) {
-    alert(index);
-});
-}).change();
-
 $("#peserta").change(function() {
     var empId = $(this).val();
     getEmpOrg(empId);
@@ -96,6 +89,7 @@ $("#penerima_tugas_luar").change(function() {
     getEmpPosTr(empId);
     getEmpGrade(empId);
     getBiayaFix(empId);
+    $('.rupiah').maskMoney({precision: 0});
 })
 .change();
 

@@ -7,20 +7,12 @@
 <!--
 .style3 {
   font-size: 20px;
-  font-weight: bold;
 }
 .style4 {
-  font-size: 28px;
+  font-size: 22px;
   font-weight: bold;
   text-align: center;
 }
-
-.style5 {
-  font-size: 14px;
-  font-weight: bold;
-  text-align: center;
-}
-
 .style6 {
   color: #000000;
   font-weight: bold;
@@ -28,9 +20,10 @@
 }
 .style7 {
   padding-left: 20px;
-  font-size: 17px;
+  font-size: 16px;
   font-weight: bold;
 }
+
 -->
 </style>
 </head>
@@ -61,16 +54,14 @@ if ($td_num_rows > 0) {
   <tr>
     <td height="40"><span class="style3">Bagian / Dept </span></td>
     <td height="40"><div align="center">:</div></td>
-    <td height="40"><?php echo (!empty($user_info))?$user_info['ORGANIZATION']:'-';?></td>
+    <td height="40"><?php echo get_user_organization($td->task_creator)?></td>
   </tr>
   <tr>
     <td height="40"><span class="style3">Jabatan</span></td>
     <td height="40"><div align="center">:</div></td>
-    <td height="40"><?php echo (!empty($user_info))?$user_info['POSITION']:'-';?></td>
+    <td height="40"><?php echo get_user_position($td->task_creator);?></td>
   </tr>
-<?php endforeach; 
-}
-?> 
+<?php endforeach; }?> 
 </table>
 
 <table width="1200" height="128" border="0" class="style3">
@@ -82,13 +73,12 @@ if ($td_num_rows > 0) {
 <table width="1500" height="128" border="1" class="style3">
   <thead>
     <tr>
-      <th width="17%">Nama</th>
-      <th width="15%">Dept/Bagian</th>
+      <th width="2%">No</th>
+      <th width="5%">NIK</th>
+      <th width="20%">Nama</th>
+      <th width="5%">Golongan</th>
+      <th width="20%">Dept/Bagian</th>
       <th width="20%">Jabatan</th>
-      <th width="10%">Golongan</th>
-      <th width="10%">Hotel</th>
-      <th width="10%">Uang Makan</th>
-      <th width="10%">Uang Saku</th>
       <th width="8%">Submit</th>
     </tr>
   </thead>
@@ -96,13 +86,12 @@ if ($td_num_rows > 0) {
     <?php for($i=0;$i<sizeof($receiver);$i++):
     ?>
     <tr>
-    <td height="50"><?php echo get_name($receiver[$i])?></td>
-      <td><?php echo get_user_organization($receiver[$i])?></td>
-      <td><?php echo get_user_position($receiver[$i])?></td>
-      <td><?php echo $ci->get_biaya_pjd($td->id, $receiver[$i])['grade']?></td>
-      <td>Rp. <?php echo number_format($ci->get_biaya_pjd($td->id, $receiver[$i])['hotel']*$jml_pjd)?></td>
-      <td>Rp. <?php echo number_format($ci->get_biaya_pjd($td->id, $receiver[$i])['uang_makan']*$jml_pjd)?></td>
-      <td>Rp. <?php echo number_format($ci->get_biaya_pjd($td->id, $receiver[$i])['uang_saku']*$jml_pjd)?></td>
+    <td height="50" align="center"><?php echo $i+1?></td>
+    <td  align="center"><?php echo $receiver[$i]?></td>
+    <td>&nbsp;<?php echo get_name($receiver[$i])?></td>
+      <td  align="center"><?php echo get_grade($receiver[$i])?></td>
+      <td>&nbsp;<?php echo get_user_organization($receiver[$i])?></td>
+      <td>&nbsp;<?php echo get_user_position($receiver[$i])?></td>
       <td align="center"><?php echo in_array($receiver[$i], $receiver_submit)?"Ya":"-"?></td>
     </tr>
     <?php endfor?>
@@ -111,7 +100,7 @@ if ($td_num_rows > 0) {
 <br/>
 <table width="1200" height="128" border="0" style="" class="style3">
   <?php if ($td_num_rows > 0) {
-      foreach ($task_detail as $td) { 
+      foreach ($task_detail as $td):
 
         $a = strtotime($td->date_spd_end);
         $b = strtotime($td->date_spd_start);
@@ -150,11 +139,54 @@ if ($td_num_rows > 0) {
     <td height="40"><?php echo dateIndo($td->date_spd_start) ?> s/d <?php echo dateIndo($td->date_spd_end) ?></td>
   </tr>
 </table>
+<?php endforeach;}?>
+<table width="1200" height="128" border="0" class="style3">
+<tr><td height="40"></td></tr>
+<tr><td>Ketentuan Biaya Perjalan Dinas : </td></tr>
+<tr><td height="30"></td></tr>
+</table>
+<table width="1650" height="128" border="1" class="style3">
+  <thead>
+    <tr>
+      <th width="1%">No</th>
+      <th width="7%">NIK</th>
+      <th width="15%">Nama</th>
+      <th width="8%">Hotel</th>
+      <th width="8%">Uang Makan</th>
+      <th width="8%">Uang Saku</th>
+      <th width="8%">Entertain</th>
+      <th width="8%">Taxi</th>
+      <th width="8%">Toll</th>
+      <th width="8%">BBM</th>
+      <th width="8%">Tiket Pesawat</th>
+      <th width="8%">Lain-lain</th>
+    </tr>
+  </thead>
+  <tbody>
+    <?php $i=1; foreach ($biaya_pjd_group->result() as $pjd):?>
+    <tr>
+    <td height="50"  align="center"><?php echo $i++?></td>
+    <td  align="center"><?php echo $pjd->user_id?></td>
+    <td>&nbsp;<?php echo get_name($pjd->user_id)?></td>
+    <td>Rp. <?php echo  number_format($pjd->hotel*$jml_pjd, 0)?></td>
+    <td>Rp. <?php echo  number_format($pjd->uang_makan*$jml_pjd, 0)?></td>
+    <td>Rp. <?php echo  number_format($pjd->uang_saku*$jml_pjd, 0)?></td>
+    <td>Rp. <?php echo  number_format($pjd->biaya_entertain*$jml_pjd, 0)?></td>
+    <td>Rp. <?php echo  number_format($pjd->biaya_taxi*$jml_pjd, 0)?></td>
+    <td>Rp. <?php echo  number_format($pjd->biaya_toll*$jml_pjd, 0)?></td>
+    <td>Rp. <?php echo  number_format($pjd->biaya_bbm*$jml_pjd, 0)?></td>
+    <td>Rp. <?php echo  number_format($pjd->biaya_tiket_pesawat*$jml_pjd, 0)?></td>
+    <td>Rp. <?php echo  number_format($pjd->biaya_lain*$jml_pjd, 0)?></td>
+    </tr>
+    <?php endforeach?>
+  </tbody>
+</table>
 
 <p>&nbsp;</p>
-<p>&nbsp;</p>
-
-<div style="float: left; text-align: center; width: 50%;" class="style5">
+<?php if ($td_num_rows > 0) {
+  foreach ($task_detail as $td):
+?>
+<div style="float: left; text-align: center; width: 45%;" class="style5">
 <p>Yang bersangkutan</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
@@ -176,17 +208,13 @@ if ($td_num_rows > 0) {
 <?php } ?>
 </div>
 
-<div style="float: right;text-align: center; width: 50%;" class="style5">
+<div style="float: right;text-align: center; width: 45%;" class="style5">
 <p>Yang memberi tugas / ijin</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <span class="semi-bold"><?php echo get_name($td->task_creator) ?></span><br/>
 <span class="small"><?php echo dateIndo($td->created_on) ?></span><br/>
 </div> 
-<?php  }
-} ?>
-
-<div style="clear: both; margin: 0pt; padding: 0pt; "></div>
-<p>&nbsp;</p>
+<?php endforeach;} ?>
 </body>
 </html>

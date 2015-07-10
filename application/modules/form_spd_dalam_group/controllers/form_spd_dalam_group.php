@@ -210,6 +210,8 @@ class Form_spd_dalam_group extends MX_Controller {
         }
         else
         {
+            $sess_id = $this->session->userdata('user_id');
+            $sess_nik = get_nik($sess_id);
             $task_receiver    = implode(',',$this->input->post('peserta'));
 
             $start_spd_dalam = $this->input->post('start_spd_dalam');
@@ -225,22 +227,26 @@ class Form_spd_dalam_group extends MX_Controller {
                 'user_app_lv2'          => $this->input->post('atasan2'),
                 'user_app_lv3'          => $this->input->post('atasan3'),
                 'created_on'            => date('Y-m-d',strtotime('now')),
-                'created_by'            => $this->session->userdata('user_id')
+                'created_by'            => $sess_id,
             );
 
-            $sender_id = $this->input->post('emp_tc');
+            $task_creator = $this->input->post('emp_tc');
+            $created_by = $sess_nik;
 
             if ($this->form_validation->run() == true && $this->form_spd_dalam_group_model->create_($task_receiver,$additional_data))
             {
                 $spd_id = $this->db->insert_id();
                 $user_app_lv1 = getValue('user_app_lv1', 'users_spd_dalam_group', array('id'=>'where/'.$spd_id));
+                if($task_creator!==$created_by):
+                    $this->approval->by_admin('spd_dalam_group', $spd_id, $created_by, $task_creator, $this->detail_email_submit($spd_id));
+                endif;
                  if(!empty($user_app_lv1)):
-                    $this->approval->request('lv1', 'spd_dalam_group', $spd_id, $sender_id, $this->detail_email_submit($spd_id));
+                    $this->approval->request('lv1', 'spd_dalam_group', $spd_id, $task_creator, $this->detail_email_submit($spd_id));
                  else:
-                    $this->approval->request('hrd', 'spd_dalam_group', $spd_id, $sender_id, $this->detail_email_submit($spd_id));
+                    $this->approval->request('hrd', 'spd_dalam_group', $spd_id, $task_creator, $this->detail_email_submit($spd_id));
                  endif;
                 $task_receiver_id = explode(',',$task_receiver);
-                $this->send_spd_mail($spd_id, $sender_id, $task_receiver_id);
+                $this->send_spd_mail($spd_id, $task_creator, $task_receiver_id);
                 redirect('form_spd_dalam_group','refresh');
                 //echo json_encode(array('st' =>1));   
             }

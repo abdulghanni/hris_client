@@ -7,20 +7,12 @@
 <!--
 .style3 {
   font-size: 20px;
-  font-weight: bold;
 }
 .style4 {
-  font-size: 28px;
+  font-size: 22px;
   font-weight: bold;
   text-align: center;
 }
-
-.style5 {
-  font-size: 14px;
-  font-weight: bold;
-  text-align: center;
-}
-
 .style6 {
   color: #000000;
   font-weight: bold;
@@ -28,9 +20,10 @@
 }
 .style7 {
   padding-left: 20px;
-  font-size: 17px;
+  font-size: 16px;
   font-weight: bold;
 }
+
 -->
 </style>
 </head>
@@ -49,7 +42,7 @@
     $j = $a - $b;
     $jml_pjd = floor($j/(60*60*24)+1);
 ?>
-<table width="988" height="128" border="0" style="padding-left:30px;" class="style3">
+<table width="1000" height="128" border="0" style="padding-left:30px;" class="style3">
 <tr class="style4"><td>Yang bertanda tangan dibawah ini : </td></tr>
 <tr><td height="30"></td></tr>
   <tr>
@@ -75,6 +68,11 @@
     <td width="275" height="40"><span class="style3">Nama</span></td>
     <td width="10" height="40"><div align="center">:</div></td>
     <td width="440" height="40"><?php echo get_name($td->task_receiver) ?></td>
+  </tr>
+  <tr>
+    <td height="40"><span class="style3">Golongan </span></td>
+    <td height="40"><div align="center">:</div></td>
+    <td height="40"><?php echo get_grade($td->task_receiver) ?></td>
   </tr>
   <tr>
     <td height="40"><span class="style3">Bagian / Dept </span></td>
@@ -119,28 +117,6 @@
   </tr>
 </table>
 
-<h5 align="center"><span class="semi-bold">Ketentuan Biaya Perjalanan Dinas</span></h5>
-                          <table width="988" height="128" border="1" class="style3">
-                            <thead>
-                              <tr>
-                                <th>Golongan</th>
-                                <th>Hotel</th>
-                                <th>Uang Makan</th>
-                                <th>Uang Saku</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <td><?php echo $biaya_pjd['grade']?></td>
-                                <td>Rp. <?php echo number_format($biaya_pjd['hotel']*$jml_pjd, 2)?></td>
-                                <td>Rp. <?php echo number_format($biaya_pjd['uang_makan']*$jml_pjd, 2)?></td>
-                                <td>Rp. <?php echo number_format($biaya_pjd['uang_saku']*$jml_pjd, 2)?></td>
-                              </tr>
-                            </tbody>
-                          </table>
-
-<p>&nbsp;</p>
-<p>&nbsp;</p>
 <p>&nbsp;</p>
 
 <div style="float: left; text-align: center; width: 50%;" class="style5">
@@ -170,5 +146,27 @@
 
 <div style="clear: both; margin: 0pt; padding: 0pt; "></div>
 <p>&nbsp;</p>
+
+<pagebreak />
+<h5 align="center"><span class="semi-bold">Ketentuan Biaya Perjalanan Dinas</span></h5>
+<table width="800" height="128" border="1" class="style3" style="float:center;margin-left:25%;margin-right:25%;">
+  <thead>
+    <tr>
+      <th width="4%" height="50">No</th>
+      <th width="48%">Jenis Biaya</th>
+      <th width="48%">Jumlah Biaya</th>
+    </tr>
+  </thead>
+  <tbody>
+    <?php $i=1;foreach($biaya_pjd->result() as $row):?>
+      <tr>
+        <td align="center" height="40"><?php echo $i++?></td>
+        <td><?php echo $row->jenis_biaya?></td>
+        <td>Rp. <?php echo number_format($row->jumlah_biaya*$jml_pjd, 0)?></td>
+      </tr>
+    <?php endforeach ?>
+  </tbody>
+</table>
+
 </body>
 </html>

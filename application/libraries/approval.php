@@ -1,5 +1,15 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-
+/**
+* Name:  Approval
+*
+*
+* Author: Abdul Ghanni
+*         abdul.ghanni2@gmail.com
+*
+*
+* Requirements: PHP5 or above
+*
+*/
 class Approval {
 
     public function request($lv, $form, $id, $user_id, $detail)
@@ -18,18 +28,22 @@ class Approval {
                 $isi_email = get_name($user_id).' mengajukan '.$form.', untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$detail;
                 break;
             case "spd_dalam":
+                $url = base_url().'form_'.$form.'/submit/'.$id;
                 $form = 'Perjalanan Dinas Dalam Kota';
                 $isi_email = get_name($user_id).' membuat surat perintah perjalanan dinas dalam kota, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$detail;
                 break;
             case "spd_luar":
+                $url = base_url().'form_'.$form.'/submit/'.$id;
                 $form = 'Perjalanan Dinas Luar Kota';
                 $isi_email = get_name($user_id).' membuat surat perintah perjalanan dinas luar kota, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$detail;
                 break;
             case "spd_dalam_group":
+                $url = base_url().'form_'.$form.'/submit/'.$id;
                 $form = 'Perjalanan Dinas Dalam Kota(Group)';
                 $isi_email = get_name($user_id).' membuat surat perintah perjalanan dinas dalam kota(Group), untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$detail;
                 break;
             case "spd_luar_group":
+                $url = base_url().'form_'.$form.'/submit/'.$id;
                 $form = 'Perjalanan Dinas Luar Kota(Group)';
                 $isi_email = get_name($user_id).' membuat surat perintah perjalanan dinas Luar kota(Group), untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$detail;
                 break;
@@ -92,6 +106,45 @@ class Approval {
 	            $CI->db->insert('email', $data);
 	        endif;
         }
+    }
+
+    public function by_admin($form, $id, $created_by, $created_for, $detail)
+    {
+        $CI =& get_instance();
+        $url = base_url().'form_'.$form.'/detail/'.$id;
+        switch ($form) {
+            case "spd_dalam":
+                $url = base_url().'form_'.$form.'/submit/'.$id;
+                $form = 'Perjalanan Dinas Dalam Kota';
+                break;
+            case "spd_luar":
+                $url = base_url().'form_'.$form.'/submit/'.$id;
+                $form = 'Perjalanan Dinas Luar Kota';
+                break;
+            case "spd_dalam_group":
+                $url = base_url().'form_'.$form.'/submit/'.$id;
+                $form = 'Perjalanan Dinas Dalam Kota (Group)';
+                break;
+            case "spd_luar_group":
+                $url = base_url().'form_'.$form.'/submit/'.$id;
+                $form = 'Perjalanan Dinas Luar Kota (Group)';
+                break;
+            
+            /*
+            default:
+                # code...
+                break;
+            */
+        }
+        $data = array(
+                'sender_id' => $created_by,
+                'receiver_id' => $created_for,
+                'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                'subject' => 'Pengajuan '.ucfirst($form),
+                'email_body' => get_name($created_by).' membuat pengajuan '.$form.' atas nama anda, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$detail,
+                'is_read' => 0,
+            );
+        $CI->db->insert('email', $data);
     }
 
     public function approve($form, $id, $approval_status, $detail)

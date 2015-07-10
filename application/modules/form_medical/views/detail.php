@@ -306,7 +306,7 @@
                       <input name="rupiah_update[]" type="text" id="rupiah_update<?php echo $i?>" value="<?php echo $detail[$i]['rupiah']?>" style="display:none"> 
                     </td>
                     <td class="text-center" valign="middle" class="small-cell">
-                      <input type="checkbox" name="checkbox1_checkbox[]" id="checkbox1_checkbox" />
+                      <input type="checkbox" name="checkbox1_checkbox[]" id="checkbox1_checkbox" class="checkbox1" />
                       <input type="hidden" name="checkbox1[]" value="0" />
                     </td>
                   </tr>

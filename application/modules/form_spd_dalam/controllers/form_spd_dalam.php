@@ -185,6 +185,8 @@ class Form_spd_dalam extends MX_Controller {
         }
         else
         {
+            $sess_id = $this->session->userdata('user_id');
+            $sess_nik = get_nik($sess_id);
             $user_id    = $this->input->post('employee');
 
             $start_spd_dalam = $this->input->post('start_spd_dalam');
@@ -201,22 +203,25 @@ class Form_spd_dalam extends MX_Controller {
                 'user_app_lv2'          => $this->input->post('atasan2'),
                 'user_app_lv3'          => $this->input->post('atasan3'),
                 'created_on'            => date('Y-m-d',strtotime('now')),
-                'created_by'            => $this->session->userdata('user_id')
+                'created_by'            => $sess_id,
             );
 
-            $sender_id = $this->input->post('emp_tc');
-
+            $task_creator = $this->input->post('emp_tc');
+            $created_by = $sess_nik;
             if ($this->form_validation->run() == true && $this->form_spd_dalam_model->create_($user_id,$additional_data))
             {
                 $spd_id = $this->db->insert_id();
                 $user_app_lv1 = getValue('user_app_lv1', 'users_spd_dalam', array('id'=>'where/'.$spd_id));
-                 if(!empty($user_app_lv1)):
-                    $this->approval->request('lv1', 'spd_dalam', $spd_id, $sender_id, $this->detail_email_submit($spd_id));
-                 else:
-                    $this->approval->request('hrd', 'spd_dalam', $spd_id, $sender_id, $this->detail_email_submit($spd_id));
-                 endif;
-                 $this->send_spd_mail($spd_id, $user_id, $sender_id);
-                 redirect('form_spd_dalam', 'refresh');
+                if($task_creator!==$created_by):
+                    $this->approval->by_admin('spd_dalam', $spd_id, $created_by, $task_creator, $this->detail_email_submit($spd_id));
+                endif;
+                if(!empty($user_app_lv1)):
+                    $this->approval->request('lv1', 'spd_dalam', $spd_id, $task_creator, $this->detail_email_submit($spd_id));
+                else:
+                    $this->approval->request('hrd', 'spd_dalam', $spd_id, $task_creator, $this->detail_email_submit($spd_id));
+                endif;
+                $this->send_spd_mail($spd_id, $user_id, $task_creator);
+                redirect('form_spd_dalam', 'refresh');
                 //echo json_encode(array('st' =>1));   
             }
         }
@@ -562,16 +567,16 @@ class Form_spd_dalam extends MX_Controller {
         }
         else
         {
-
+            $this->data['title'] = $title = 'SPD - Dalam Kota';
             $data_result = $this->data['task_detail'] = $this->form_spd_dalam_model->where('users_spd_dalam.id',$id)->form_spd_dalam($id)->result();
             $this->data['td_num_rows'] = $this->form_spd_dalam_model->where('users_spd_dalam.id',$id)->form_spd_dalam()->num_rows($id);
-
+            $creator = getAll('users_spd_dalam', array('id'=>'where/'.$id))->row('task_creator');
             $this->load->library('mpdf60/mpdf');
             $html = $this->load->view('spd_dalam_pdf', $this->data, true); 
             $mpdf = new mPDF();
             $mpdf = new mPDF('A4');
             $mpdf->WriteHTML($html);
-            $mpdf->Output($id.'-'.$title.'-'.$task_creator.'pdf', 'I');
+            $mpdf->Output($id.'-'.$title.'-'.$creator.'pdf', 'I');
         }
         
     }

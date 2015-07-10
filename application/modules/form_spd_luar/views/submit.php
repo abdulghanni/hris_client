@@ -162,7 +162,7 @@
                               <tr>
                                 <td><?php echo $i++?></td>
                                 <td><?php echo $row->jenis_biaya?></td>
-                                <td>Rp. <?php echo number_format($row->jumlah_biaya*$jml_pjd, 2)?></td>
+                                <td>Rp. <?php echo number_format($row->jumlah_biaya*$jml_pjd, 0)?></td>
                               </tr>
                             <?php endforeach ?>
                             </tbody>

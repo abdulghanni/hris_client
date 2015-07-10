@@ -110,6 +110,12 @@ class Form_spd_luar extends MX_Controller {
 
     public function do_submit($id)
     {
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+
         $date_now = date('Y-m-d');
 
         $receiver_id = $this->db->where('id', $id)->get('users_spd_luar')->row('task_creator');
@@ -159,6 +165,12 @@ class Form_spd_luar extends MX_Controller {
 
     public function update()
     {
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+
         $user_id = $this->session->userdata('user_id');
         $date_now = date('Y-m-d');
         $spd_id = $this->input->post('spd_id');
@@ -228,6 +240,8 @@ class Form_spd_luar extends MX_Controller {
         }
         else
         {
+            $sess_id = $this->session->userdata('user_id');
+            $sess_nik = get_nik($sess_id);
             $user_id    = $this->input->post('employee');
             $additional_data = array(
                 'task_creator'          => $this->input->post('emp_tc'),
@@ -242,12 +256,13 @@ class Form_spd_luar extends MX_Controller {
                 'user_app_lv2'          => $this->input->post('atasan2'),
                 'user_app_lv3'          => $this->input->post('atasan3'),
                 'created_on'            => date('Y-m-d',strtotime('now')),
-                'created_by'            => $this->session->userdata('user_id')
+                'created_by'            => $sess_id,
             );
             
 
 
-            $sender_id = $this->input->post('emp_tc');
+            $task_creator = $this->input->post('emp_tc');
+            $created_by = $sess_nik;
 
             if ($this->form_validation->run() == true && $this->form_spd_luar_model->create_($user_id,$additional_data))
             {
@@ -277,12 +292,15 @@ class Form_spd_luar extends MX_Controller {
                      endfor;
                  }
                 $user_app_lv1 = getValue('user_app_lv1', 'users_spd_luar', array('id'=>'where/'.$spd_id));
+                if($task_creator!==$created_by):
+                    $this->approval->by_admin('spd_luar', $spd_id, $created_by, $task_creator, $this->detail_email_submit($spd_id));
+                endif;
                  if(!empty($user_app_lv1)):
-                    $this->approval->request('lv1', 'spd_luar', $spd_id, $sender_id, $this->detail_email_submit($spd_id));
+                    $this->approval->request('lv1', 'spd_luar', $spd_id, $task_creator, $this->detail_email_submit($spd_id));
                  else:
-                    $this->approval->request('hrd', 'spd_luar', $spd_id, $sender_id, $this->detail_email_submit($spd_id));
+                    $this->approval->request('hrd', 'spd_luar', $spd_id, $task_creator, $this->detail_email_submit($spd_id));
                  endif;
-                $this->send_spd_mail($spd_id, $user_id, $sender_id);
+                $this->send_spd_mail($spd_id, $user_id, $task_creator);
                 redirect('form_spd_luar', 'refresh'); 
                 //echo json_encode(array('st' =>1));   
             }
@@ -638,18 +656,26 @@ class Form_spd_luar extends MX_Controller {
 
     function pdf($id)
     {
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+
+        $this->data['title'] = $title = 'SPD - Luar Kota';
         $data_result = $this->data['task_detail'] = $this->form_spd_luar_model->where('users_spd_luar.id',$id)->form_spd_luar($id)->result();
         $this->data['td_num_rows'] = $this->form_spd_luar_model->where('users_spd_luar.id',$id)->form_spd_luar($id)->num_rows();
 
-        $task_receiver_id = getValue('task_receiver', 'users_spd_luar', array('id' => 'where/'.$id));
-        $this->data['biaya_pjd'] = $this->get_biaya_pjd($id, $task_receiver_id);
+        $creator = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('task_creator');
+        $this->data['tc_id'] = $task_receiver_id = getValue('task_receiver', 'users_spd_luar', array('id' => 'where/'.$id));
+        $this->data['biaya_pjd'] = getJoin('users_spd_luar_biaya','pjd_biaya','users_spd_luar_biaya.pjd_biaya_id = pjd_biaya.id','left', 'users_spd_luar_biaya.*, pjd_biaya.title as jenis_biaya', array('user_spd_luar_id'=>'where/'.$id));
 
         $this->load->library('mpdf60/mpdf');
         $html = $this->load->view('spd_luar_pdf', $this->data, true); 
         $mpdf = new mPDF();
         $mpdf = new mPDF('A4');
         $mpdf->WriteHTML($html);
-        $mpdf->Output($id.'-'.$title.'-'.$task_creator.'pdf', 'I');
+        $mpdf->Output($id.'-'.$title.'-'.$creator.'pdf', 'I');
     }
 
     function detail_email_submit($id)
