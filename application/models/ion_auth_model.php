@@ -902,7 +902,7 @@ class Ion_auth_model extends CI_Model
             'email'      => $email,
             'ip_address' => $ip_address,
             'created_on' => time(),
-            'last_login' => time(),
+            //'last_login' => time(),
             'active'     => ($manual_activation === false ? 1 : 0)
         );
 

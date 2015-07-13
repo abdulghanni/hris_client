@@ -55,7 +55,7 @@ class Person extends MX_Controller {
         redirect(base_url()."person/detail/".$id);
     }
 
-    function detail($id)
+    function detail($id, $first_login = FALSE)
     {
         if (!$this->ion_auth->logged_in())
         {
@@ -103,10 +103,12 @@ class Person extends MX_Controller {
                 //$this->data['user_info'] = $this->form_cuti_model->where('users.id',$user_id)->form_cuti_input()->result();
             }
 
-            //employee identity
+        //employee identity
 		$this->data['id'] = $user->id;
         $this->data['nik'] = (!empty($user->nik)) ? $user->nik : '-';
         $this->data['bod'] = (!empty($user->bod)) ? $user->bod : '-';
+        $this->data['is_birthday_reminder'] = $user->is_birthday_reminder;
+        $this->data['first_login'] = $first_login;
         $this->data['first_name'] = (!empty($user->first_name)) ? $user->first_name : '';
         $this->data['last_name'] = (!empty($user->last_name)) ? $user->last_name : '';
         $this->data['business_unit'] = (!empty($user->organization_title)) ? $user->organization_title : '';
@@ -315,11 +317,17 @@ class Person extends MX_Controller {
 			$this->data['persen_terlambat'] = 0;
 		}
 		//End Mazhters
-		
+        if(date("m-d")!==date('m-d',strtotime($user->bod)) && $user->is_birthday_reminder == 1) $this->db->query("update users set is_birthday_reminder = 0 where id = $id");
         $this->_render_page('person/detail', $this->data);
         }
     }
 	
+    function update_bd_reminder()
+    {
+        $id = $this->input->post('id');
+        $data = array('is_birthday_reminder' => 1, );
+        $this->db->where('id', $id)->update('users', $data);
+    }
 	function cekNik($array, $key, $val) {
     foreach ($array as $item)
         if (isset($item[$key]) && $item[$key] == $val)
@@ -383,16 +391,14 @@ class Person extends MX_Controller {
                 $this->template->add_js('jquery.sidr.min.js');
                 $this->template->add_js('breakpoints.js');
                 $this->template->add_js('select2.min.js');
+                $this->template->add_js('purl.js');
                 $this->template->add_js('persondetail.js');
                 $this->template->add_js('core.js');
-                $this->template->add_js('bootstrap-datepicker.js');
                 $this->template->add_js('jquery.animateNumbers.js');
-                $this->template->add_js('jqueryblockui.js');
                 $this->template->add_js('jquery.prettyPhoto.js');
 
                 $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                 $this->template->add_css('plugins/select2/select2.css');
-                $this->template->add_css('datepicker.css');
                 $this->template->add_css('prettyPhoto.css');
             }
 

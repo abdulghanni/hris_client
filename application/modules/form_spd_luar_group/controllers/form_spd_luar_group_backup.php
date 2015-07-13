@@ -106,9 +106,6 @@ class Form_spd_luar_group extends MX_Controller {
             $this->data['biaya_tambahan'] = getAll('pjd_biaya', array('type_grade' => 'where/0'));
             $this->data['receiver'] = $p = explode(",", $receiver);
             $this->data['receiver_submit'] = explode(",", $user_submit);
-            $this->data['id']=$id;
-            $b = $this->data['biaya_pjd'] = $this->db->distinct()->select('users_spd_luar_group_biaya.pjd_biaya_id as biaya_id, pjd_biaya.title as jenis_biaya')->from('users_spd_luar_group_biaya')->join('pjd_biaya','pjd_biaya.id = users_spd_luar_group_biaya.pjd_biaya_id', 'left')->where('user_spd_luar_group_id', $id)->where('pjd_biaya.type_grade', 0)->get();//print_mz($this->data['biaya_pjd']->result());                   
-            $this->data['detail'] = $this->db->distinct()->select('user_id')->where('user_spd_luar_group_id', $id)->get('users_spd_luar_group_biaya');
             $this->data['ci'] = $this;
             
 
@@ -245,28 +242,30 @@ class Form_spd_luar_group extends MX_Controller {
 
             $task_creator = $this->input->post('emp_tc');
             $created_by = $sess_nik;
-            $biaya_tambahan_id = $this->input->post('biaya_tambahan_id');
-            $biaya_tambahan = $this->input->post('jumlah_biaya_tambahan');
+
             if ($this->form_validation->run() == true && $this->form_spd_luar_group_model->create_($task_receiver,$additional_data))
             {
                 $spd_id = $this->db->insert_id();
                 $tr = $this->input->post('peserta');
-                if(!empty($biaya_tambahan_id)){
-                    for($i=0;$i<sizeof($tr);$i++){
-                        for($j=0;$j<sizeof($biaya_tambahan_id);$j++):
-                            $data = array(
-                            'user_spd_luar_group_id' => $spd_id,
-                            'user_id' => $tr[$i],
-                            'pjd_biaya_id'=>$biaya_tambahan_id[$j],
-                            'jumlah_biaya'=>str_replace( ',', '', $biaya_tambahan[$j]),
-                            'created_on'            => date('Y-m-d',strtotime('now')),
-                            'created_by'            => $sess_id
-                            );
-                            $this->db->insert('users_spd_luar_group_biaya', $data);
-                        endfor;
-                    }
-                 }
+                for($i=0;$i<sizeof($tr);$i++):
+                    $data = array(
+                        'user_spd_luar_group_id' => $spd_id,
+                        'user_id'   => $tr[$i],
+                        'hotel'=> $this->get_biaya_pjd($tr[$i])['hotel'], 
+                        'uang_makan'=> $this->get_biaya_pjd($tr[$i])['uang_makan'],
+                        'uang_saku'=> $this->get_biaya_pjd($tr[$i])['uang_saku'],
+                        'biaya_entertain' => str_replace( ',', '', $this->input->post('entertain')[$i]),
+                        'biaya_taxi' => str_replace( ',', '', $this->input->post('taxi')[$i]),
+                        'biaya_toll' => str_replace( ',', '', $this->input->post('toll')[$i]),
+                        'biaya_bbm' => str_replace( ',', '', $this->input->post('bbm')[$i]),
+                        'biaya_tiket_pesawat' => str_replace( ',', '', $this->input->post('tiket_pesawat')[$i]),
+                        'biaya_lain' => str_replace( ',', '', $this->input->post('lain')[$i]),
+                        'created_on'            => date('Y-m-d',strtotime('now')),
+                        'created_by'            => $this->session->userdata('user_id')
+                        );
 
+                    $this->db->insert('users_spd_luar_group_biaya', $data);
+                endfor;
                 $task_receiver_id = explode(',',$task_receiver);
                 $this->send_spd_mail($spd_id, $task_creator, $task_receiver_id);
 
@@ -280,7 +279,7 @@ class Form_spd_luar_group extends MX_Controller {
                     $this->approval->request('hrd', 'spd_luar_group', $spd_id, $task_creator, $this->detail_email_submit($spd_id));
                  endif;
                 //echo json_encode(array('st' =>1));   
-                redirect('form_spd_luar_group/input_biaya/'.$spd_id,'refresh');
+                redirect('form_spd_luar_group','refresh');
             }
         }
     }
@@ -568,12 +567,9 @@ class Form_spd_luar_group extends MX_Controller {
         else
         {
            
-            $sess_id= $this->data['sess_id'] = $this->session->userdata('user_id');
-            $sess_nik = get_nik($sess_id);
             $data_result = $this->data['task_detail'] = $this->form_spd_luar_group_model->where('users_spd_luar_group.id',$id)->form_spd_luar_group($id)->result();
-            $this->data['td_num_rows'] = $this->form_spd_luar_group_model->where('users_spd_luar_group.id',$id)->form_spd_luar_group($id)->num_rows();
+            $this->data['td_num_rows'] = $this->form_spd_luar_group_model->where('users_spd_luar_group.id',$id)->form_spd_luar_group()->num_rows($id);
         
-            
             $receiver = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('task_receiver');
             $creator = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('task_creator');
             $user_submit = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('user_submit');
@@ -581,55 +577,13 @@ class Form_spd_luar_group extends MX_Controller {
             $this->data['biaya_tambahan'] = getAll('pjd_biaya', array('type_grade' => 'where/0'));
             $this->data['receiver'] = $p = explode(",", $receiver);
             $this->data['receiver_submit'] = explode(",", $user_submit);
-            $this->data['id']=$id;
-            $b = $this->data['biaya_pjd'] = $this->db->distinct()->select('users_spd_luar_group_biaya.pjd_biaya_id as biaya_id, pjd_biaya.title as jenis_biaya')->from('users_spd_luar_group_biaya')->join('pjd_biaya','pjd_biaya.id = users_spd_luar_group_biaya.pjd_biaya_id', 'left')->where('user_spd_luar_group_id', $id)->where('pjd_biaya.type_grade', 0)->get();//print_mz($this->data['biaya_pjd']->result());                   
-            $this->data['detail'] = $this->db->distinct()->select('user_id')->where('user_spd_luar_group_id', $id)->get('users_spd_luar_group_biaya');
+
+
             $this->data['ci'] = $this;
 
             return $this->load->view('form_spd_luar_group/spd_luar_group_mail', $this->data, TRUE);
         }
     } 
-
-    function input_biaya($id)
-    {
-        $this->data['id']=$id;
-        $b = $this->data['biaya_pjd'] = $this->db->distinct()->select('users_spd_luar_group_biaya.pjd_biaya_id as biaya_id, pjd_biaya.title as jenis_biaya')->from('users_spd_luar_group_biaya')->join('pjd_biaya','pjd_biaya.id = users_spd_luar_group_biaya.pjd_biaya_id', 'left')->where('user_spd_luar_group_id', $id)->where('pjd_biaya.type_grade', 0)->get();                  
-        $this->data['detail'] = $this->db->distinct()->select('user_id')->where('user_spd_luar_group_id', $id)->get('users_spd_luar_group_biaya');
-        $this->data['ci'] = $this;
-        $this->_render_page('input_biaya', $this->data);
-    }
-
-    function update_biaya($id)
-    {
-        $spd_id = $id;
-        $biaya_fix_id = $this->input->post('biaya_fix_id');
-        $biaya_tambahan_id = $this->input->post('biaya_tambahan_id');
-        $biaya_fix = $this->input->post('biaya_fix');
-        $biaya_tambahan = $this->input->post('biaya_tambahan');
-        $tr = $this->input->post('emp');
-        for($i=0;$i<sizeof($biaya_fix_id);$i++):
-            $data = array(
-            'user_spd_luar_group_id' => $spd_id,
-            'user_id' => $tr[$i],
-            'pjd_biaya_id'=>$biaya_fix_id[$i],
-            'jumlah_biaya'=>str_replace( ',', '', $biaya_fix[$i]),
-            'created_on'            => date('Y-m-d',strtotime('now')),
-            'created_by'            => $this->session->userdata('user_id'),
-            );
-            $this->db->insert('users_spd_luar_group_biaya', $data);
-        endfor;
-            for($j=0;$j<sizeof($biaya_tambahan_id);$j++):
-            $data = array(
-            'jumlah_biaya'=>str_replace( ',', '', $biaya_tambahan[$j]),
-            'edited_on'            => date('Y-m-d',strtotime('now')),
-            'edited_by'            => $this->session->userdata('user_id'),
-            );
-
-            $this->db->where('id', $biaya_tambahan_id[$j])->update('users_spd_luar_group_biaya', $data);
-        endfor;
-
-        redirect('form_spd_luar_group', 'refresh');
-    }
 
     function detail_email_report($id, $user_id)
     {
@@ -677,28 +631,77 @@ class Form_spd_luar_group extends MX_Controller {
         }
     }
 
-    function get_biaya_pjd($id)
+    function get_biaya_pjd($task_receiver_id)
     {
-        $grade = get_grade($id);
-            $pos_group = get_pos_group($id);
+        $grade = get_grade($task_receiver_id);
+        $pos_group = get_pos_group($task_receiver_id);
 
-            if($grade == 'G08' && $pos_group == 'AMD')
-            {
-                return $this->data['biaya_fix'] = getAll('pjd_biaya', array('type_grade'=>'where/7'));
-            }elseif($grade == 'G08' && $pos_group == 'MGR')
-            {
-               return $this->data['biaya_fix'] = getAll('pjd_biaya', array('type_grade'=>'where/6'));
-            }elseif($grade == 'G08' && $pos_group == 'KACAB'){
-                return $this->data['biaya_fix'] = getAll('pjd_biaya', array('type_grade'=>'where/5'));
-            }elseif($grade == 'G07'){
-               return $this->data['biaya_fix'] = getAll('pjd_biaya', array('type_grade'=>'where/4'));
-            }elseif($grade == 'G06' || $grade == 'G05'){
-                return $this->data['biaya_fix'] = getAll('pjd_biaya', array('type_grade'=>'where/3'));
-            }elseif($grade == 'G04' || $grade == 'G03'){
-                return $this->data['biaya_fix'] = getAll('pjd_biaya', array('type_grade'=>'where/2'));
-            }elseif($grade == 'G02' || $grade == 'G01'){
-                return $this->data['biaya_fix'] = getAll('pjd_biaya', array('type_grade'=>'where/1'));
-            }
+        if($grade == 'G08' && $pos_group == 'AMD')
+        {
+            $biaya_pjd = array(
+                    'grade' => "$grade($pos_group)",
+                    'hotel' => 450000,
+                    'uang_makan' => 200000,
+                    'uang_saku' => 0
+                );
+
+            return $biaya_pjd;
+        }elseif($grade == 'G08' && $pos_group == 'MGR')
+        {
+            $biaya_pjd = array(
+                    'grade' => "$grade($pos_group)",
+                    'hotel' => 325000,
+                    'uang_makan' => 150000,
+                    'uang_saku' => 0,
+                );
+
+            return $biaya_pjd;
+        }elseif($grade == 'G08' && $pos_group == 'KACAB'){
+            $biaya_pjd = array(
+                    'grade' => "$grade($pos_group)",
+                    'hotel' => 400000,
+                    'uang_makan' => 150000,
+                    'uang_saku' => 0,
+                );
+
+            return $biaya_pjd;
+        }elseif($grade == 'G07'){
+            $biaya_pjd = array(
+                    'grade' => "$grade($pos_group)",
+                    'hotel' => 275000,
+                    'uang_makan' => 45000,
+                    'uang_saku' => 45000,
+                );
+
+            return $biaya_pjd;
+        }elseif($grade == 'G06' || $grade == 'G05'){
+            $biaya_pjd = array(
+                    'grade' => "$grade($pos_group)",
+                    'hotel' => 250000,
+                    'uang_makan' => 35000,
+                    'uang_saku' => 40000
+                );
+
+            return $biaya_pjd;
+        }elseif($grade == 'G04' || $grade == 'G03'){
+            $biaya_pjd = array(
+                    'grade' => "$grade($pos_group)",
+                    'hotel' => 200000,
+                    'uang_makan' => 30000,
+                    'uang_saku' => 35000,
+                );
+
+            return $biaya_pjd;
+        }elseif($grade == 'G02' || $grade == 'G01'){
+            $biaya_pjd = array(
+                    'grade' => "$grade($pos_group)",
+                    'hotel' => 200000,
+                    'uang_makan' => 30000,
+                    'uang_saku' => 30000,
+                );
+
+            return $biaya_pjd;
+        }
     } 
 
     function get_penerima_tugas()
@@ -763,23 +766,15 @@ class Form_spd_luar_group extends MX_Controller {
         }
 
         $this->data['title'] = $title = 'SPD - Luar Kota (Group)';
-        $sess_id= $this->data['sess_id'] = $this->session->userdata('user_id');
-        $sess_nik = get_nik($sess_id);
         $data_result = $this->data['task_detail'] = $this->form_spd_luar_group_model->where('users_spd_luar_group.id',$id)->form_spd_luar_group($id)->result();
-        $this->data['td_num_rows'] = $this->form_spd_luar_group_model->where('users_spd_luar_group.id',$id)->form_spd_luar_group($id)->num_rows();
+        $this->data['td_num_rows'] = $this->form_spd_luar_group_model->where('users_spd_luar_group.id',$id)->form_spd_luar_group()->num_rows($id);
     
-        
         $receiver = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('task_receiver');
         $creator = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('task_creator');
         $user_submit = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('user_submit');
-        $this->data['biaya_pjd_group'] = getAll('users_spd_luar_group_biaya', array('user_spd_luar_group_id'=>'where/'.$id));
-        $this->data['biaya_tambahan'] = getAll('pjd_biaya', array('type_grade' => 'where/0'));
         $this->data['receiver'] = $p = explode(",", $receiver);
         $this->data['receiver_submit'] = explode(",", $user_submit);
-        $this->data['id']=$id;
-        $b = $this->data['biaya_pjd'] = $this->db->distinct()->select('users_spd_luar_group_biaya.pjd_biaya_id as biaya_id, pjd_biaya.title as jenis_biaya')->from('users_spd_luar_group_biaya')->join('pjd_biaya','pjd_biaya.id = users_spd_luar_group_biaya.pjd_biaya_id', 'left')->where('user_spd_luar_group_id', $id)->where('pjd_biaya.type_grade', 0)->get();//print_mz($this->data['biaya_pjd']->result());                   
-        $this->data['detail'] = $this->db->distinct()->select('user_id')->where('user_spd_luar_group_id', $id)->get('users_spd_luar_group_biaya');
-        $this->data['ci'] = $this;
+        $this->data['biaya_pjd_group'] = getAll('users_spd_luar_group_biaya', array('user_spd_luar_group_id'=>'where/'.$id));
 
         $this->load->library('mpdf60/mpdf');
         $html = $this->load->view('spd_luar_group_pdf', $this->data, true); 

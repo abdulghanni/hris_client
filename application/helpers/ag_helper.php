@@ -180,6 +180,22 @@
 		}
 	}
 
+	if (!function_exists('get_id_by_email'))
+	{	
+		function get_id_by_email($email)
+		{
+			$CI =& get_instance();
+			if($email !== 0)
+			{
+			$q = $CI->db->select('id')->from('users')->where('email', $email)->get()->row('id');
+			
+				return $q;
+			}else{
+				return FALSE;
+			}
+		}
+	}
+
 	if (!function_exists('get_name'))
 	{	
 		function get_name($nik)

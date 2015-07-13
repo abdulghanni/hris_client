@@ -10,7 +10,7 @@
 	    <div class="clearfix"></div>
 	    <div class="content">  
 			<div class="page-title">	
-				<h3>Dashboard User</h3>		
+				<h3>Dashboard User</h3>	
 			</div>
 			
 		   <div id="container">
@@ -1630,3 +1630,46 @@
 		<!-- END PAGE --> 
 		</div>
 	</div>
+
+	<!-- Birthday Reminder -->
+	<?php if(date("m-d")===date('m-d',strtotime($bod)) && $is_birthday_reminder == 0){?>
+	    <div id="boxes">
+		  <div id="dialog" class="window">
+		  	<div class="bd-month"><?php echo date('M',strtotime($bod))?></div>
+		  	<div class="bd-date"><?php echo date('d',strtotime($bod))?></div>
+		  	<div class="bd-text">Happy<br/>Birthday</div>
+		  </div>
+		  <div id="mask"></div>
+		</div>
+	<?php } ?>
+
+	<!--Modal password change reminder if first login-->
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Info</h4>
+      </div>
+      <div class="modal-body">
+        <p>Ini adalah pertama kali anda login di Web HRIS-Erlangga, silakan ubah password dan pilih atasan anda di menu edit user malalui tautan berikut :</p> <br/>
+        <b><a href="<?php echo site_url('auth/edit_user/'.$id)?>"><?php echo site_url('auth/edit_user/')?></a><b>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="<?php echo assets_url('js/jquery-1.8.3.min.js'); ?>"></script>
+<script type="text/javascript">
+	<?php if($first_login == 1){?>
+		$(document).ready(function(){
+		$("#btn").trigger({ type: "click" });
+	});
+	<?php } ?>
+</script>
+
+<button type="button" id="btn" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal" style="display:none">
+  Launch demo modal
+</button>	

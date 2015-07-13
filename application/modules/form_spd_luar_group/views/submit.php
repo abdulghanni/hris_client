@@ -69,38 +69,29 @@ th{border:2;}
                       <div class="col-md-12">
                         <table id="dataTable" class="table table-bordered">
                           <thead>
-                            <tr>
-                                <th rowspan="2" class="text-center" width="2%">NIK</th>
-                                <th rowspan="2" align="center" class="text-center" valign="middle" width="10%">Nama</th>
-                                <th rowspan="2" class="text-center" width="2%">Grade</th>
-                                <th colspan="<?php echo $biaya_tambahan->num_rows()+3?>" class="text-center">Biaya Perjalanan Dinas</th>
-                            </tr>
-                            <tr>
-                              <th width="5%">Hotel</th>
-                              <th width="5%">Uang Makan</th>
-                              <th width="5%">Uang Saku</th>
-                            <?php foreach($biaya_tambahan->result() as $row):?>
-                              <th width="5%"><?php echo $row->title?></th>
-                            <?php endforeach;?>
-                            </tr>
-                          </thead>
-                            <tbody>
-                            <?php foreach ($biaya_pjd_group->result() as $pjd):?>
                               <tr>
-                                <td><?php echo $pjd->user_id?></td>
-                                <td><?php echo get_name($pjd->user_id)?></td>
-                                <td><?php echo get_grade($pjd->user_id)?></td>
-                                <td><?php echo $pjd->hotel?></td>
-                                <td><?php echo $pjd->uang_makan?></td>
-                                <td><?php echo $pjd->uang_saku?></td>
-                                <td><?php echo $pjd->biaya_entertain?></td>
-                                <td><?php echo $pjd->biaya_taxi?></td>
-                                <td><?php echo $pjd->biaya_toll?></td>
-                                <td><?php echo $pjd->biaya_bbm?></td>
-                                <td><?php echo $pjd->biaya_tiket_pesawat?></td>
-                                <td><?php echo $pjd->biaya_lain?></td>
+                                <th width="2%">No</th>
+                                <th width="5%">NIK</th>
+                                <th width="20%">Nama</th>
+                                <th width="5%">Golongan</th>
+                                <th width="20%">Dept/Bagian</th>
+                                <th width="20%">Jabatan</th>
+                                <th width="8%">Submit</th>
                               </tr>
-                            <?php endforeach;?>
+                            </thead>
+                            <tbody>
+                              <?php for($i=0;$i<sizeof($receiver);$i++):
+                              ?>
+                              <tr>
+                              <td height="50" align="center"><?php echo $i+1?></td>
+                              <td  align="center"><?php echo $receiver[$i]?></td>
+                              <td>&nbsp;<?php echo get_name($receiver[$i])?></td>
+                                <td  align="center"><?php echo get_grade($receiver[$i])?></td>
+                                <td>&nbsp;<?php echo get_user_organization($receiver[$i])?></td>
+                                <td>&nbsp;<?php echo get_user_position($receiver[$i])?></td>
+                                <td align="center"><?php echo in_array($receiver[$i], $receiver_submit)?"Ya":"-"?></td>
+                              </tr>
+                              <?php endfor?>
                             </tbody>
                           </table>
                       </div>
@@ -149,7 +140,7 @@ th{border:2;}
                         <div class="col-md-2">
                           <label class="form-label text-left">Tgl. Berangkat</label>
                         </div>
-                        <div class="col-md-8">
+                        <div class="col-md-5">
                           <input name="title" id="title" type="text"  class="form-control" placeholder="Tanggal Berangkat" value="<?php echo dateIndo($td->date_spd_start); ?>" disabled>
                         </div>
                       </div>
@@ -157,16 +148,57 @@ th{border:2;}
                         <div class="col-md-2">
                           <label class="form-label text-left">Tgl. Pulang</label>
                         </div>
-                        <div class="col-md-8">
+                        <div class="col-md-5">
                           <input name="title" id="title" type="text"  class="form-control" placeholder="Tanggal Pulang" value="<?php echo dateIndo($td->date_spd_end); ?>" disabled>
                         </div>
                       </div>
                   </div>
 
                   &nbsp;<hr/>
+
+                  <h5 class="text-center"><span class="semi-bold">Ketentuan Biaya Perjalan Dinas Luar Kota (Group)</span></h5>
+
+                    <table class="table table-bordered">
+                      <thead>
+                        <tr>
+                          <th width="15%">Nama</th>
+                          <th width="1%">Gol</th>
+                          <th width="10%">Uang Makan</th>
+                          <th width="10%">Uang Saku</th>
+                          <th width="10%">Hotel</th>
+                          <?php foreach($biaya_pjd->result() as $b):?>
+                          <th width="10%"><?php echo $b->jenis_biaya?></th>
+                        <?php endforeach; ?> 
+                        </tr>
+                      </thead>
+                      <tbody>
+                      <?php foreach ($detail->result() as $key):?>
+                        <tr>
+                          <td>
+                            
+                            <?php echo get_name($key->user_id)?>
+                          </td>
+                          <td class="text-center">
+                            <?php echo get_grade($key->user_id)?>
+                          </td>
+                          <?php $c = $ci->db->select('users_spd_luar_group_biaya.jumlah_biaya')->from('users_spd_luar_group_biaya')->join('pjd_biaya','pjd_biaya.id = users_spd_luar_group_biaya.pjd_biaya_id', 'left')->where('user_spd_luar_group_id', $id)->where('user_id', $key->user_id)->where('pjd_biaya.type_grade != ', 0)->get();
+                              foreach ($c->result() as $c) { ?>
+                          <td><?php echo number_format($c->jumlah_biaya*$jml_pjd, 0)?>
+                          </td>
+                          <?php } ?>
+                          <?php
+                            $b = $ci->db->select('users_spd_luar_group_biaya.jumlah_biaya')->from('users_spd_luar_group_biaya')->join('pjd_biaya','pjd_biaya.id = users_spd_luar_group_biaya.pjd_biaya_id', 'left')->where('user_spd_luar_group_id', $id)->where('user_id', $key->user_id)->where('pjd_biaya.type_grade', 0)->get();
+                              foreach ($b->result() as $b) {
+                          ?>
+                          <td><?php echo number_format($b->jumlah_biaya*$jml_pjd, 0)?></td>
+                            <?php } ?>
+                        </tr>
+                      <?php endforeach ?>
+                      </tbody>
+                    </table>
+
               
                 </div>
-              </div>
                 <div class="form-actions text-center">
                     <!-- <div class="col-md-12 text-center"> -->
                       <div class="row wf-spd">

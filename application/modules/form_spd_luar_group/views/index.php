@@ -105,7 +105,7 @@
                                   <td>
                                     <a href="<?php echo base_url() ?>form_spd_luar_group/submit/<?php echo $spd->id ?>"><h4><?php echo $spd->title ?></h4>
                                       <div class="small-text-custom">
-                                        <span>Pemberi tugas : </span><?php echo $spd->creator ?><br/>
+                                        <span>Pemberi tugas : </span><?php echo get_name($spd->task_creator) ?><br/>
                                         <span>Penerima tugas : </span>
                                         <?php
                                           for($i=0;$i<sizeof($p);$i++):

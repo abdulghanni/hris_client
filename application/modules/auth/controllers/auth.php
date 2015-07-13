@@ -169,10 +169,14 @@ class Auth extends MX_Controller {
 
         if ($this->form_validation->run() == true)
         {
+            $nik = $this->input->post('identity');
+            $email    = (!empty($data['EMAIL'])) ? $data['EMAIL'] : $this->input->post('identity');
+            $user_id = (!empty(get_id($nik)))?get_id($nik):get_id_by_email($email);
+            $last_login = $this->db->select('last_login')->where('nik', $nik)->or_where('email', $email)->get('users')->row('last_login');
+            $first_login = (!empty($last_login)) ? '' : '1';
             if ($this->ion_auth->login($this->input->post('identity'), $this->input->post('password')))
             {
-                //if the login is successful
-                //redirect them back to the home page
+                if(!is_admin())redirect('person/detail/'.$user_id.'/'.$first_login,'refresh');
                 $this->session->set_flashdata('message', $this->ion_auth->messages());
                 redirect('/', 'refresh');
             }
@@ -181,7 +185,6 @@ class Auth extends MX_Controller {
               $getdata = file_get_contents(get_api_key().'users/list/EMPLID/'.$this->input->post('identity').'/format/json');
               $data = json_decode($getdata, true);
                 $username = $data['NAME'];
-                $email    = (!empty($data['EMAIL'])) ? $data['EMAIL'] : $this->input->post('identity');
                 $password = $this->input->post('password');
 
                 $additional_data = array(
@@ -194,7 +197,7 @@ class Auth extends MX_Controller {
                     'previous_email'        => $data['SMS'],
                     'bb_pin'                => $data['PINBLACKBERRY'],
                     );
-                $nik = $this->input->post('identity');
+                
 
                     if ($this->ion_auth->register($username, $password, $email, $additional_data))
                     {

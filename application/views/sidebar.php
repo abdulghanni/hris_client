@@ -23,7 +23,7 @@
   <!-- BEGIN SIDEBAR MENU --> 
     <ul>  
       <li class="start active "> 
-        <a href="<?php echo site_url('auth')?>"> <i class="icon-custom-home"></i> <span class="title">Halaman Depan</span> <span class="selected"></span> </a> 
+        <a href="<?php echo base_url()?>"> <i class="icon-custom-home"></i> <span class="title">Halaman Depan</span> <span class="selected"></span> </a> 
       </li>      
       <li class=""> <a href="<?php echo site_url('attendance')?>"> <i class="icon-signin"></i> <span class="title">Kehadiran</span></a>
       </li>

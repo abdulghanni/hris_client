@@ -12,7 +12,7 @@
     font-style: normal;
 
 }
-
+@import url(http://fonts.googleapis.com/css?family=Dancing+Script:400,700);
 @font-face {
     font-family: 'Open Sans';
     src: url('../fonts/OpenSans-Light-webfont.eot');
@@ -7101,5 +7101,71 @@ ul.my-friends li .profile-pic{
 
 .klikmail{
 	font-style: bold;
-	font-size:15px !important;
+	font-size:17px !important;
+}
+#mask {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 9000;
+  background-color: #000;
+  display: none;
+}
+
+#boxes .window {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 350px;
+  height: 500px;
+  display: none;
+  z-index: 9999;
+  padding: 20px;
+  border-radius: 15px;
+  text-align: center;
+}
+
+#boxes #dialog {
+  background-image: url("../img/bd-popup.jpeg");
+  width: 350px;
+  height: 500px;
+  padding: 10px;
+  background-color: #ffffff;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  font-family: 'Segoe UI Light', sans-serif;
+  font-size: 15pt;
+}
+
+#popupfoot {
+  font-size: 16pt;
+  position: absolute;
+  bottom: 0px;
+  width: 250px;
+  left: 250px;
+}
+.bd-month{
+	font-size: 12px;
+	margin-top: 178px;
+	margin-left: 20px;
+	font-family: 'Open Sans';
+	font-weight: 600;	
+	color: #fff;
+}
+.bd-date{
+	margin-left: 20px;
+	font-size: 36px;
+	font-family: 'Open Sans';
+	font-weight: 900;	
+	color: #444;
+}
+.bd-text{
+	margin-top: 20px;
+	margin-left: 15px;
+	font-size: 60px;
+	font-weight: 900;	
+	color: #fff;
+	font-family: 'Dancing Script', cursive;
 }

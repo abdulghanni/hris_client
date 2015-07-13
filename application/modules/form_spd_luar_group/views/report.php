@@ -41,7 +41,7 @@
                         <label class="form-label text-left">Dept/Bagian</label>
                       </div>
                       <div class="col-md-9">
-                        <input name="org" id="org" type="text"  class="form-control" placeholder="Nama" value="<?php echo (!empty($user_info))?$user_info['ORGANIZATION']:'-';?>" disabled="disabled">
+                        <input name="org" id="org" type="text"  class="form-control" placeholder="Nama" value="<?php echo get_user_organization($td->task_creator)?>" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
@@ -49,7 +49,7 @@
                         <label class="form-label text-left">Jabatan</label>
                       </div>
                       <div class="col-md-9">
-                        <input name="position" id="position" type="text"  class="form-control" placeholder="Nama" value="<?php echo (!empty($user_info))?$user_info['POSITION']:'-';?>" disabled="disabled">
+                        <input name="position" id="position" type="text"  class="form-control" placeholder="Nama" value="<?php echo get_user_position($td->task_creator)?>" disabled="disabled">
                       </div>
                     </div>
                      <div class="row form-row">
@@ -97,7 +97,7 @@
                           <label class="form-label text-left">Tgl. Berangkat</label>
                         </div>
                         <div class="col-md-8">
-                          <input name="title" id="title" type="text"  class="form-control" placeholder="Tanggal Berangkat" value="<?php echo $td->date_spd_start; ?>" disabled>
+                          <input name="title" id="title" type="text"  class="form-control" placeholder="Tanggal Berangkat" value="<?php echo dateIndo($td->date_spd_start); ?>" disabled>
                         </div>
                       </div>
                       <div class="row form-row">
@@ -105,7 +105,7 @@
                           <label class="form-label text-left">Tgl. Pulang</label>
                         </div>
                         <div class="col-md-8">
-                          <input name="title" id="title" type="text"  class="form-control" placeholder="Tanggal Pulang" value="<?php echo $td->date_spd_end; ?>" disabled>
+                          <input name="title" id="title" type="text"  class="form-control" placeholder="Tanggal Pulang" value="<?php echo dateIndo($td->date_spd_end); ?>" disabled>
                         </div>
                       </div>
                   </div>

@@ -122,19 +122,20 @@ th{
 <p>&nbsp;</p>
 
 <div style="float: left; text-align: center; width: 50%;" class="style5">
+<?php if($td->task_creator !== get_nik($td->created_by)):?>
 <p>Yang bersangkutan</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
-<?php if ($this->session->userdata('user_id') == $td->task_receiver && $td->is_submit == 0|| get_nik($this->session->userdata('user_id')) == $td->task_receiver && $td->is_submit == 0) { ?>
-<p class="">...............................</p>
-<?php }elseif ($this->session->userdata('user_id') != $td->task_receiver && $td->is_submit == 0) { ?>
-<p class="">...............................</p>
-<?php }else{ ?>
 <p class="wf-submit">
-<span class="semi-bold"><?php echo get_name($td->task_receiver) ?></span><br/>
-<span class="small"><?php echo dateIndo($td->date_submit) ?></span><br/>
+<span class="semi-bold">
+<?php
+    echo get_name($td->created_by);
+?>
+</span><br/>
+<span class="small"><?php echo dateIndo($td->created_on) ?></span><br/>
+<span class="small"><?php echo get_user_position(get_nik($td->created_by)) ?></span><br/>
 </p>
-<?php } ?>
+<?php endif; ?>
 </div>
 
 <div style="float: right;text-align: center; width: 50%;" class="style5">

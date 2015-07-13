@@ -148,38 +148,40 @@ if ($td_num_rows > 0) {
 <table width="1650" height="128" border="1" class="style3">
   <thead>
     <tr>
-      <th width="1%">No</th>
-      <th width="7%">NIK</th>
       <th width="15%">Nama</th>
-      <th width="8%">Hotel</th>
-      <th width="8%">Uang Makan</th>
-      <th width="8%">Uang Saku</th>
-      <th width="8%">Entertain</th>
-      <th width="8%">Taxi</th>
-      <th width="8%">Toll</th>
-      <th width="8%">BBM</th>
-      <th width="8%">Tiket Pesawat</th>
-      <th width="8%">Lain-lain</th>
+        <th width="5%">Gol</th>
+        <th width="10%">Uang Makan</th>
+        <th width="10%">Uang Saku</th>
+        <th width="10%">Hotel</th>
+        <?php foreach($biaya_pjd->result() as $b):?>
+        <th width="10%"><?php echo $b->jenis_biaya?></th>
+      <?php endforeach; ?> 
     </tr>
   </thead>
   <tbody>
-    <?php $i=1; foreach ($biaya_pjd_group->result() as $pjd):?>
-    <tr>
-    <td height="50"  align="center"><?php echo $i++?></td>
-    <td  align="center"><?php echo $pjd->user_id?></td>
-    <td>&nbsp;<?php echo get_name($pjd->user_id)?></td>
-    <td>Rp. <?php echo  number_format($pjd->hotel*$jml_pjd, 0)?></td>
-    <td>Rp. <?php echo  number_format($pjd->uang_makan*$jml_pjd, 0)?></td>
-    <td>Rp. <?php echo  number_format($pjd->uang_saku*$jml_pjd, 0)?></td>
-    <td>Rp. <?php echo  number_format($pjd->biaya_entertain*$jml_pjd, 0)?></td>
-    <td>Rp. <?php echo  number_format($pjd->biaya_taxi*$jml_pjd, 0)?></td>
-    <td>Rp. <?php echo  number_format($pjd->biaya_toll*$jml_pjd, 0)?></td>
-    <td>Rp. <?php echo  number_format($pjd->biaya_bbm*$jml_pjd, 0)?></td>
-    <td>Rp. <?php echo  number_format($pjd->biaya_tiket_pesawat*$jml_pjd, 0)?></td>
-    <td>Rp. <?php echo  number_format($pjd->biaya_lain*$jml_pjd, 0)?></td>
-    </tr>
-    <?php endforeach?>
-  </tbody>
+    <?php foreach ($detail->result() as $key):?>
+      <tr>
+        <td height="50">
+          
+          <?php echo get_name($key->user_id)?>
+        </td>
+        <td align="center">
+          <?php echo get_grade($key->user_id)?>
+        </td>
+        <?php $c = $ci->db->select('users_spd_luar_group_biaya.jumlah_biaya')->from('users_spd_luar_group_biaya')->join('pjd_biaya','pjd_biaya.id = users_spd_luar_group_biaya.pjd_biaya_id', 'left')->where('user_spd_luar_group_id', $id)->where('user_id', $key->user_id)->where('pjd_biaya.type_grade != ', 0)->get();
+            foreach ($c->result() as $c) { ?>
+        <td><?php echo number_format($c->jumlah_biaya*$jml_pjd, 0)?>
+        </td>
+        <?php } ?>
+        <?php
+          $b = $ci->db->select('users_spd_luar_group_biaya.jumlah_biaya')->from('users_spd_luar_group_biaya')->join('pjd_biaya','pjd_biaya.id = users_spd_luar_group_biaya.pjd_biaya_id', 'left')->where('user_spd_luar_group_id', $id)->where('user_id', $key->user_id)->where('pjd_biaya.type_grade', 0)->get();
+            foreach ($b->result() as $b) {
+        ?>
+        <td><?php echo number_format($b->jumlah_biaya*$jml_pjd, 0)?></td>
+          <?php } ?>
+      </tr>
+    <?php endforeach ?>
+    </tbody>
 </table>
 
 <p>&nbsp;</p>
@@ -187,25 +189,21 @@ if ($td_num_rows > 0) {
   foreach ($task_detail as $td):
 ?>
 <div style="float: left; text-align: center; width: 45%;" class="style5">
+<?php if($td->task_creator !== get_nik($td->created_by)):?>
 <p>Yang bersangkutan</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
-<?php if ($this->session->userdata('user_id') == $td->task_receiver && $td->is_submit == 0|| get_nik($this->session->userdata('user_id')) == $td->task_receiver && $td->is_submit == 0) { ?>
-<p class="">...............................</p>
-<?php }elseif ($this->session->userdata('user_id') != $td->task_receiver && $td->is_submit == 0) { ?>
-<p class="">...............................</p>
-<?php }else{ ?>
 <p class="wf-submit">
 <span class="semi-bold">
 <?php
-  for($i=0;$i<sizeof($receiver_submit);$i++):
-    echo get_name($receiver_submit[$i]).',';
-  endfor;
+    echo get_name($td->created_by);
 ?>
 </span><br/>
-<span class="small"><?php echo dateIndo($td->date_submit) ?></span><br/>
+<span class="small"><?php echo dateIndo($td->created_on) ?></span><br/>
+<span class="small"><?php echo get_user_position(get_nik($td->created_by)) ?></span><br/>
 </p>
-<?php } ?>
+<?php endif; ?>
+
 </div>
 
 <div style="float: right;text-align: center; width: 45%;" class="style5">
