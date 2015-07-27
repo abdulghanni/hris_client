@@ -323,11 +323,9 @@ class Form_absen_model extends CI_Model
             $this->db->join('users', 'users_absen.user_id = users.id', 'left');
 			
             if($is_admin!=1){
-                //$this->db->where("(users_absen.user_id= $sess_id $sub_id $subsub_id )",null, false);
-                $this->db->or_where('users_absen.user_id', $sess_id);
-                $this->db->or_where('users_absen.user_app_lv1', $sess_nik);
-                $this->db->or_where('users_absen.user_app_lv2', $sess_nik);
-                $this->db->or_where('users_absen.user_app_lv3', $sess_nik);
+                 $this->db->where("(users_absen.user_id = '$sess_id' 
+                               OR users_absen.user_app_lv1 = '$sess_nik'  OR users_absen.user_app_lv2 = '$sess_nik'  OR users_absen.user_app_lv3 = '$sess_nik' 
+                )",null, false);
             }
             
             $this->db->order_by('users_absen.id', 'desc');

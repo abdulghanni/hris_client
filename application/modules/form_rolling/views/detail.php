@@ -17,20 +17,21 @@
           <div class="col-md-12">
             <div class="grid simple">
               <div class="grid-title no-border">
-                <h4>Form <span class="semi-bold">rolling</span></h4>
+                <h4>Form <span class="semi-bold"><a href="<?php echo site_url('form_rolling')?>">Rolling</a></span></h4>
               </div>
               <div class="grid-body no-border">
                 <form class="form-no-horizontal-spacing" id=""> 
                   <div class="row column-seperation">
                     <div class="col-md-5">
                       <h4>Informasi karyawan</h4>
+                      <?php if($_num_rows>0){
+                        foreach($form_rolling as $row):?>
                       <div class="row form-row">
                         <div class="col-md-3">
                           <label class="form-label text-right">NIK</label>
-                          
                         </div>
                         <div class="col-md-9">
-                          <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama" value="P1864" disabled="disabled">
+                          <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama" value="<?php echo get_nik($row->user_id)?>" disabled="disabled">
                         </div>
                       </div>
                       <div class="row form-row">
@@ -38,7 +39,7 @@
                           <label class="form-label text-right">Nama</label>
                         </div>
                         <div class="col-md-9">
-                          <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama" value="Wahyu Sucianto" disabled="disabled">
+                          <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama" value="<?php echo get_name($row->user_id)?>" disabled="disabled">
                         </div>
                       </div>          
                       <div class="row form-row">
@@ -46,7 +47,7 @@
                           <label class="form-label text-right">Unit Bisnis</label>
                         </div>
                         <div class="col-md-9">
-                          <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama" value="Bandung" disabled="disabled">
+                          <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama" value="<?php echo get_user_bu($user_nik)?>" disabled="disabled">
                         </div>
                       </div>
                       <div class="row form-row">
@@ -54,7 +55,7 @@
                           <label class="form-label text-right">Dept/Bagian</label>
                         </div>
                         <div class="col-md-9">
-                          <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama" value="Administration/IT" disabled="disabled">
+                          <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama" value="<?php echo get_user_organization($user_nik)?>" disabled="disabled">
                         </div>
                       </div>
                       <div class="row form-row">
@@ -62,29 +63,28 @@
                           <label class="form-label text-right">Jabatan</label>
                         </div>
                         <div class="col-md-9">
-                          <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama" value="IT Infrastruktur" disabled="disabled">
+                          <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama" value="<?php echo get_user_position($user_nik)?>" disabled="disabled">
                         </div>
                       </div>
                       <div class="row form-row">
                         <div class="col-md-3">
-                          <label class="form-label text-right">Tanggal Pengangkatan</label>
+                          <label class="form-label text-right">Tanggal Mulai Kerja</label>
                         </div>
                         <div class="col-md-9">
-                          <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama" value="01-01-2000" disabled="disabled">
+                          <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama" value="<?php echo dateIndo(get_user_sen_date($user_nik))?>" disabled="disabled">
                         </div>
                       </div>
                       
                       
                     </div>
                     <div class="col-md-7">
-                      <h4>rolling Yang Diajukan</h4>
-
-                      <div class="row form-row">
+                      <h4>Rolling Yang Diajukan</h4>
+                     <div class="row form-row">
                         <div class="col-md-4">
                           <label class="form-label text-left">Unit Bisnis Baru</label>
                         </div>
                         <div class="col-md-8">
-                          <input name="alasan_cuti" id="alasan_cuti" type="text"  class="form-control" placeholder="Nama" value="NaN" disabled="disabled">
+                          <input name="nik" id="form3LastName" type="text"  class="form-control " placeholder="Nama" value="<?php echo get_bu_name(substr($row->new_bu,0,2))?>" disabled="disabled">
                         </div>
                       </div>
 
@@ -93,76 +93,447 @@
                           <label class="form-label text-left">Dept/Bagian Baru</label>
                         </div>
                         <div class="col-md-8">
-                          <input name="alasan_cuti" id="alasan_cuti" type="text"  class="form-control" placeholder="Nama" value="NaN" disabled="disabled">
+                          <input name="nik" id="form3LastName" type="text"  class="form-control " placeholder="Nama" value="<?php echo get_organization_name($row->new_org)?>" disabled="disabled">
                         </div>
                       </div>
-
-                      <div class="row form-row">
-                        <div class="col-md-4">
-                          <label class="form-label text-left">Posisi Baru</label>
-                        </div>
-                        <div class="col-md-8">
-                          <input name="alasan_cuti" id="alasan_cuti" type="text"  class="form-control" placeholder="Nama" value="NaN" disabled="disabled">
-                        </div>
-                      </div>
-
 
                       <div class="row form-row">
                         <div class="col-md-4">
                           <label class="form-label text-left">Jabatan Baru</label>
                         </div>
-                        <div class="col-md-8">
-                          <input name="alasan_cuti" id="alasan_cuti" type="text"  class="form-control" placeholder="Nama" value="NaN" disabled="disabled">
+                       <div class="col-md-8">
+                          <input name="nik" id="form3LastName" type="text"  class="form-control " placeholder="Nama" value="<?php echo get_position_name($row->new_pos)?>" disabled="disabled">
                         </div>
                       </div>
                       <div class="row form-row">
                         <div class="col-md-4">
-                          <label class="form-label text-left">Tgl. Pengangkatan</label>
+                          <label class="form-label text-left">Tgl. rolling</label>
                         </div>
                         <div class="col-md-8">
-                          <input name="alasan_cuti" id="alasan_cuti" type="text"  class="form-control" placeholder="Nama" value="NaN" disabled="disabled">
+                          <input type="text" class="form-control" name="date_rolling" value="<?php echo dateIndo($row->date_rolling)?>" disabled="disabled">
                         </div>
                       </div>
                       <div class="row form-row">
                         <div class="col-md-4">
-                          <label class="form-label text-left">Alasan Pengangkatan</label>
+                          <label class="form-label text-left">Alasan rolling</label>
                         </div>
                         <div class="col-md-8">
-                          <input name="alasan_cuti" id="alasan_cuti" type="text"  class="form-control" placeholder="Nama" value="NaN" disabled="disabled">
+                          <textarea name="alasan" id="alasan" type="text"  class="form-control" placeholder="Alasan rolling" disabled="disabled"><?php echo $row->alasan?></textarea>
                         </div>
                       </div>
-                      
+                      <?php if(!empty($row->note_lv1)){?>
+                      <div class="row form-row">
+                        <div class="col-md-4">
+                          <label class="form-label text-left">Note (Supervisor): </label>
+                        </div>
+                        <div class="col-md-8">
+                          <textarea name="notes_spv" class="form-control" disabled="disabled"><?php echo $row->note_lv1 ?></textarea>
+                        </div>
+                      </div>
+                      <?php } ?>
+                      <?php if(!empty($row->note_lv2)){?>
+                      <div class="row form-row">
+                        <div class="col-md-4">
+                          <label class="form-label text-left">Note (Ka. Bagian): </label>
+                        </div>
+                        <div class="col-md-8">
+                          <textarea name="notes_spv" class="form-control" disabled="disabled"><?php echo $row->note_lv2 ?></textarea>
+                        </div>
+                      </div>
+                      <?php } ?>
+                      <?php if(!empty($row->note_lv3)){?>
+                      <div class="row form-row">
+                        <div class="col-md-4">
+                          <label class="form-label text-left">Note (Atasan Lainnya): </label>
+                        </div>
+                        <div class="col-md-8">
+                          <textarea name="notes_spv" class="form-control" disabled="disabled"><?php echo $row->note_lv3 ?></textarea>
+                        </div>
+                      </div>
+                      <?php } ?>
+                      <?php if(!empty($row->note_hrd)){?>
+                      <div class="row form-row">
+                        <div class="col-md-4">
+                          <label class="form-label text-left">Note (hrd): </label>
+                        </div>
+                        <div class="col-md-8">
+                          <textarea name="notes_spv" class="form-control" disabled="disabled"><?php echo $row->note_hrd ?></textarea>
+                        </div>
+                      </div>
+                      <?php } ?>
+                      </div>
                     </div>
                 </div>
-                <div class="form-actions text-center">
-                    <!-- <div class="col-md-12 text-center"> -->
-                      <div class="row wf-cuti">
-                        <div class="col-md-6">
-                          <p>Yang mengajukan</p>
-                          <p class="wf-approve-sp">
-                            <span class="semi-bold">Rodrigo Palacio</span><br/>
-                            <span class="small">26 November 2014</span><br/>
-                          </p>
-                        </div>
-                        <div class="col-md-6">
-                          <p>Menyetujui</p>
-                          <p class="wf-approve-sp">
-                            <span class="semi-bold">Rodrigo Palacio</span><br/>
-                            <span class="small">26 November 2014</span><br/>
-                          </p>
-                          
-                        </div>
-                      </div>
-                    <!-- /div> -->
+                <div class="form-actions">
+
+                  <div class="row form-row">
+                    <div class="col-md-12 text-center">
+                    <?php  if($row->is_app_lv1 == 1 && get_nik($sess_id) == $row->user_app_lv1){?>
+                        <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitrollingModalLv1"><i class='icon-edit'> Edit Approval</i></div>
+                      <?php }elseif($row->is_app_lv2 == 1 && get_nik($sess_id) == $row->user_app_lv2){?>
+                        <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitrollingModalLv2"><i class='icon-edit'> Edit Approval</i></div>
+                      <?php }elseif($row->is_app_lv3 == 1 && get_nik($sess_id) == $row->user_app_lv3){?>
+                        <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitrollingModalLv3"><i class='icon-edit'> Edit Approval</i></div>
+                      <?php }elseif($row->is_app_hrd == 1 && get_nik($sess_id) == $row->user_app_hrd){?>
+                        <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitrollingModalHrd"><i class='icon-edit'> Edit Approval</i></div>
+                      <?php } ?>
+                    </div>
+                </div>
+
+                <div class="row wf-cuti">
+
+                  <div class="col-md-12 text-center">
+                  <div class="col-md-3">
+                    <p class="wf-approve-sp">
+                    <div class="col-md-12"><span class="semi-bold">Pemohon,</span><br/><br/></div>
+                      <span class="small"></span><br/>
+                      <span class="small"></span><br/>
+                      <span class="semi-bold"></span><br/>
+                      <span class="semi-bold"><?php echo get_name($row->created_by)?></span><br/>
+                      <span class="small"><?php echo dateIndo($row->created_on)?></span><br/>
+                      <span class="semi-bold"><?php echo get_user_position(get_nik($row->created_by))?></span>
+                    </p>
                   </div>
-              </form>
+
+                  <div class="col-md-3">
+                    <p class="wf-approve-sp">
+                    <div class="col-md-12"><span class="semi-bold">Mengetahui / Menyetujui,</span><br/><br/></div>
+                      <?php 
+                      $approved = assets_url('img/approved_stamp.png');
+                      $rejected = assets_url('img/rejected_stamp.png');
+                      if(!empty($row->user_app_lv1) && $row->is_app_lv1 == 0 && get_nik($sess_id) == $row->user_app_lv1){?>
+                      <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitrollingModalLv1"><i class="icon-ok"></i>Submit</div>
+                      <span class="small"></span>
+                        <span class="semi-bold"></span><br/>
+                        <span class="small"></span><br/>
+                        <span class="semi-bold"></span>
+                        <span class="semi-bold">(Supervisor)</span>
+                      <?php }elseif(!empty($row->user_app_lv1) && $row->is_app_lv1 == 1){
+                        echo ($row->app_status_id_lv1 == 1)?"<img class=approval_img_md src=$approved>":(($row->app_status_id_lv1 == 2) ? "<img class=approval_img_md src=$rejected>":'<span class="small"></span><br/>');?>
+                        <span class="small"></span><br/>
+                        <span class="semi-bold"><?php echo get_name($row->user_app_lv1)?></span><br/>
+                        <span class="small"><?php echo dateIndo($row->date_app_lv1)?></span><br/>
+                        <span class="semi-bold"></span><br/>
+                        <span class="semi-bold">(Supervisor)</span>
+                      <?php }else{?>
+                        <span class="small"></span><br/>
+                        <span class="small"></span><br/>
+                        <span class="semi-bold"></span><br/>
+                        <span class="small"></span><br/>
+                        <span class="semi-bold"></span><br/>
+                        <span class="semi-bold"><?php echo (!empty($row->user_app_lv1))?'(Supervisor)':'';?></span>
+                      <?php } ?>
+                    </p>
+                  </div>
+                    
+                  <div class="col-md-3">
+                    <p class="wf-approve-sp">
+                    <div class="col-md-12"><span class="semi-bold">Mengetahui / Menyetujui,</span><br/><br/></div>
+                    <?php
+                     if(!empty($row->user_app_lv2) && $row->is_app_lv2 == 0 && get_nik($sess_id) == $row->user_app_lv2){?>
+                        <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitrollingModalLv2"><i class="icon-ok"></i>Submit</div>
+                        <span class="small"></span>
+                        <span class="semi-bold"></span><br/>
+                        <span class="small"></span><br/>
+                        <span class="semi-bold"></span><br/>
+                        <span class="semi-bold">(Ka. Bagian)</span>
+                      <?php }elseif(!empty($row->user_app_lv2) && $row->is_app_lv2 == 1){
+                        echo ($row->app_status_id_lv2 == 1)?"<img class=approval_img_md src=$approved>":(($row->app_status_id_lv2 == 2) ? "<img class=approval_img_md src=$rejected>":'<span class="small"></span><br/>');?>
+                        <span class="small"></span><br/>
+                        <span class="semi-bold"><?php echo get_name($row->user_app_lv2)?></span><br/>
+                        <span class="small"><?php echo dateIndo($row->date_app_lv2)?></span><br/>
+                        <span class="semi-bold"></span><br/>
+                        <span class="semi-bold">(Ka. Bagian)</span>
+                      <?php }else{?>
+                        <span class="small"></span><br/>
+                        <span class="small"></span><br/>
+                        <span class="semi-bold"></span><br/>
+                        <span class="small"></span><br/>
+                        <span class="semi-bold"></span><br/>
+                        <span class="semi-bold"><?php echo (!empty($row->user_app_lv2))?'(Ka. Bagian)':'';?></span>
+                      <?php } ?>
+                    </p>
+                  </div>
+                    
+                  <div class="col-md-3">
+                    <p class="wf-approve-sp">
+                    <div class="col-md-12"><span class="semi-bold">Diterima HRD</span><br/><br/></div>
+                      <?php if($row->is_app_hrd == 0 && is_admin()){?>
+                        <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitrollingModalHrd"><i class="icon-ok"></i>Submit</div>
+                        <span class="small"></span>
+                        <span class="semi-bold"></span><br/>
+                        <span class="small"></span><br/>
+                        <span class="semi-bold"></span><br/>
+                        <span class="semi-bold">(HRD)</span>
+                      <?php }elseif($row->is_app_hrd == 1){
+                        echo ($row->app_status_id_hrd == 1)?"<img class=approval_img_md src=$approved>":(($row->app_status_id_hrd == 2) ? "<img class=approval_img_md src=$rejected>":'<span class="small"></span><br/>');?>
+                        <span class="small"></span><br/>
+                        <span class="semi-bold"><?php echo get_name($row->user_app_hrd)?></span><br/>
+                        <span class="small"><?php echo dateIndo($row->date_app_hrd)?></span><br/>
+                        <span class="semi-bold"></span><br/>
+                        <span class="semi-bold">(HRD)</span>
+                      <?php }else{?>
+                        <span class="small"></span><br/>
+                        <span class="small"></span><br/>
+                        <span class="semi-bold"></span><br/>
+                        <span class="small"></span><br/>
+                        <span class="semi-bold"></span><br/>
+                        <span class="semi-bold">(HRD)</span>
+                      <?php } ?>
+                    </p>
+                  </div>
+                  <!--PST242, PST263, PST2, PST129-->
+                </div>
+              </div> 
+
+              <?php if(!empty($row->user_app_lv3)){?>
+              <div class="col-md-12 text-xenter">
+                <div class="col-md-12 text-center">
+                  <p class="wf-approve-sp">
+                  <div class="col-md-12"><span class="semi-bold">Mengetahui / Menyetujui,</span><br/><br/></div>
+                    <?php 
+                    $approved = assets_url('img/approved_stamp.png');
+                    $rejected = assets_url('img/rejected_stamp.png');
+                    if(!empty($row->user_app_lv3) && $row->is_app_lv3 == 0 && get_nik($sess_id) == $row->user_app_lv3){?>
+                      <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitrollingModalLv3"><i class="icon-ok"></i>Submit</div>
+                      <span class="small"></span>
+                      <span class="semi-bold"></span><br/>
+                      <span class="small"></span><br/>
+                      <span class="semi-bold"></span><br/>
+                      <span class="semi-bold">(<?php echo get_user_position($row->user_app_lv3)?>)</span>
+                    <?php }elseif(!empty($row->user_app_lv3) && $row->is_app_lv3 == 1){
+                      echo ($row->app_status_id_lv3 == 1)?"<img class=approval_img_md src=$approved>":(($row->app_status_id_lv3 == 2) ? "<img class=approval_img_md src=$rejected>":'<span class="small"></span><br/>');?>
+                      <span class="small"></span><br/>
+                      <span class="semi-bold"><?php echo get_name($row->user_app_lv3)?></span><br/>
+                      <span class="small"><?php echo dateIndo($row->date_app_lv3)?></span><br/>
+                      <span class="semi-bold"></span><br/>
+                      <span class="semi-bold">(<?php echo get_user_position($row->user_app_lv3)?>)</span>
+                    <?php }else{?>
+                      <span class="small"></span><br/>
+                      <span class="small"></span><br/>
+                      <span class="semi-bold"></span><br/>
+                      <span class="small"></span><br/>
+                      <span class="semi-bold"></span><br/>
+                      <span class="semi-bold"><?php echo (!empty($row->user_app_lv3))?get_user_position($row->user_app_lv3):'';?></span>
+                    <?php } ?>
+                  </p>
+                </div>
               </div>
-            </div>
+              <?php } ?>
+
+              </div>
+            </form>
           </div>
         </div>
+      </div>
+    </div>
               
     
-      </div>
+  </div>
     
-  </div>  
-  <!-- END PAGE --> 
+</div>  
+<!-- END PAGE --> 
+
+<!--approval rolling Modal Lv1 -->
+<div class="modal fade" id="submitrollingModalLv1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" id="modaldialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Approval Form rolling - Supervisor</h4>
+      </div>
+      <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
+      <div class="modal-body">
+        <form class="form-no-horizontal-spacing"  id="formAppLv1">
+            <div class="row form-row">
+              <div class="col-md-12">
+                <label class="form-label text-left">Status Approval </label>
+              </div>
+              <div class="col-md-12">
+                <div class="radio">
+                  <?php 
+                  if($approval_status->num_rows() > 0){
+                    foreach($approval_status->result() as $app){
+                      $checked = ($app->id <> 0 && $app->id == $row->app_status_id_lv1) ? 'checked = "checked"' : '';
+                      ?>
+                  <input id="app_status_lv1<?php echo $app->id?>" type="radio" name="app_status_lv1" value="<?php echo $app->id?>" <?php echo $checked?>>
+                  <label for="app_status_lv1<?php echo $app->id?>"><?php echo $app->title?></label>
+                  <?php }}else{?>
+                  <input id="app_status" type="radio" name="app_status_lv1" value="0">
+                  <label for="app_status">No Data</label>
+                    <?php } ?>
+                </div>
+              </div>
+            </div>
+            <div class="row form-row">
+              <div class="col-md-12">
+                <label class="form-label text-left">Note (Supervisor) : </label>
+              </div>
+              <div class="col-md-12">
+                <textarea name="note_lv1" class="form-control" placeholder="Note Supervisor isi disini"><?php echo $row->note_lv1?></textarea>
+              </div>
+            </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="icon-remove"></i>&nbsp;<?php echo lang('close_button')?></button> 
+        <button id="btn_app_lv1"  class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
+      </div>
+        <?php echo form_close()?>
+    </div>
+  </div>
+</div>
+<!--end approve modal lv1--> 
+
+<!--approval rolling Modal Lv2 -->
+<div class="modal fade" id="submitrollingModalLv2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" id="modaldialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Approval Form rolling - Ka. Bagian</h4>
+      </div>
+      <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
+      <div class="modal-body">
+        <form class="form-no-horizontal-spacing"  id="formAppLv2">
+            <div class="row form-row">
+              <div class="col-md-12">
+                <label class="form-label text-left">Status Approval </label>
+              </div>
+              <div class="col-md-12">
+                <div class="radio">
+                  <?php 
+                  if($approval_status->num_rows() > 0){
+                    foreach($approval_status->result() as $app){
+                      $checked = ($app->id <> 0 && $app->id == $row->app_status_id_lv2) ? 'checked = "checked"' : '';
+                      ?>
+                  <input id="app_status_lv2<?php echo $app->id?>" type="radio" name="app_status_lv2" value="<?php echo $app->id?>" <?php echo $checked?>>
+                  <label for="app_status_lv2<?php echo $app->id?>"><?php echo $app->title?></label>
+                  <?php }}else{?>
+                  <input id="app_status" type="radio" name="app_status_lv2" value="0">
+                  <label for="app_status">No Data</label>
+                    <?php } ?>
+                </div>
+              </div>
+            </div>
+            <div class="row form-row">
+              <div class="col-md-12">
+                <label class="form-label text-left">Note (Ka. Bagian) : </label>
+              </div>
+              <div class="col-md-12">
+                <textarea name="note_lv2" class="form-control" placeholder="Note Ka. Bagian isi disini"><?php echo $row->note_lv2?></textarea>
+              </div>
+            </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="icon-remove"></i>&nbsp;<?php echo lang('close_button')?></button> 
+        <button id="btn_app_lv2"  class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
+      </div>
+        <?php echo form_close()?>
+    </div>
+  </div>
+</div>
+<!--end approve modal Lv2--> 
+
+<!--approval rolling Modal Lv3 -->
+<div class="modal fade" id="submitrollingModalLv3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" id="modaldialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Approval Form rolling - Atasan Lainnya</h4>
+      </div>
+      <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
+      <div class="modal-body">
+        <form class="form-no-horizontal-spacing"  id="formAppLv3">
+            <div class="row form-row">
+              <div class="col-md-12">
+                <label class="form-label text-left">Status Approval </label>
+              </div>
+              <div class="col-md-12">
+                <div class="radio">
+                  <?php 
+                  if($approval_status->num_rows() > 0){
+                    foreach($approval_status->result() as $app){
+                      $checked = ($app->id <> 0 && $app->id == $row->app_status_id_lv3) ? 'checked = "checked"' : '';
+                      ?>
+                  <input id="app_status_lv3<?php echo $app->id?>" type="radio" name="app_status_lv3" value="<?php echo $app->id?>" <?php echo $checked?>>
+                  <label for="app_status_lv3<?php echo $app->id?>"><?php echo $app->title?></label>
+                  <?php }}else{?>
+                  <input id="app_status" type="radio" name="app_status_lv3" value="0">
+                  <label for="app_status">No Data</label>
+                    <?php } ?>
+                </div>
+              </div>
+            </div>
+            <div class="row form-row">
+              <div class="col-md-12">
+                <label class="form-label text-left">Note (Atasan) : </label>
+              </div>
+              <div class="col-md-12">
+                <textarea name="note_lv3" class="form-control" placeholder="Note atasan isi disini"><?php echo $row->note_lv3?></textarea>
+              </div>
+            </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="icon-remove"></i>&nbsp;<?php echo lang('close_button')?></button> 
+        <button id="btn_app_lv3"  class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
+      </div>
+        <?php echo form_close()?>
+    </div>
+  </div>
+</div>
+<!--end approve modal Lv3--> 
+
+<!--approval rolling Modal HRD -->
+<div class="modal fade" id="submitrollingModalHrd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" id="modaldialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Approval Form rolling - HRD</h4>
+      </div>
+      <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
+      <div class="modal-body">
+        <form class="form-no-horizontal-spacing"  id="formAppHrd">
+            <div class="row form-row">
+              <div class="col-md-12">
+                <label class="form-label text-left">Status Approval </label>
+              </div>
+              <div class="col-md-12">
+                <div class="radio">
+                  <?php 
+                  if($approval_status->num_rows() > 0){
+                    foreach($approval_status->result() as $app){
+                      $checked = ($app->id <> 0 && $app->id == $row->app_status_id_hrd) ? 'checked = "checked"' : '';
+                      ?>
+                  <input id="app_status_hrd<?php echo $app->id?>" type="radio" name="app_status_hrd" value="<?php echo $app->id?>" <?php echo $checked?>>
+                  <label for="app_status_hrd<?php echo $app->id?>"><?php echo $app->title?></label>
+                  <?php }}else{?>
+                  <input id="app_status" type="radio" name="app_status_hrd" value="0">
+                  <label for="app_status">No Data</label>
+                    <?php } ?>
+                </div>
+              </div>
+            </div>
+            <div class="row form-row">
+              <div class="col-md-12">
+                <label class="form-label text-left">Note (HRD) : </label>
+              </div>
+              <div class="col-md-12">
+                <textarea name="note_hrd" class="form-control" placeholder="Note HRD isi disini"><?php echo $row->note_hrd?></textarea>
+              </div>
+            </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="icon-remove"></i>&nbsp;<?php echo lang('close_button')?></button> 
+        <button id="btn_app_hrd"  class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
+      </div>
+        <?php echo form_close()?>
+    </div>
+  </div>
+</div>
+<!--end approve modal Lv2--> 
+
+
+
+<?php endforeach;} ?>

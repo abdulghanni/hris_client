@@ -45,7 +45,7 @@
           <li > <a href="<?php echo site_url('form_medical')?>">Medical</a> </li>
           <li > <a href="<?php echo site_url('form_promosi')?>">Promosi</a> </li>          
           <li > <a href="<?php echo site_url('form_demolition')?>">Demolition</a> </li>          
-          <!-- <li > <a href="<?php echo site_url('form_rolling')?>">Rolling</a> </li> -->         
+          <li > <a href="<?php echo site_url('form_rolling')?>">Rolling</a> </li>        
           <li > <a href="<?php echo site_url('form_exit')?>">Exit clearance</a> </li>          
           <!--<li > <a href="form_status.html">Status karyawan</a> </li> -->          
           <!--<li > <a href="<?php echo site_url('form_recruitment')?>">Retirement</a> </li> -->         

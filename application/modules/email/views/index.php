@@ -18,9 +18,33 @@
         <li><a href="<?php echo site_url('email/sent')?>">Sent</a></li>
       </ul>
       <div class="tab-content">
-        <!-- tabcertificate -->
         <div class="tab-pane active" id="tabpersonnel">
-          <div id="email-list">                 
+          <div id="email-list">    
+           <?php if($_num_rows > 0) { ?>   
+           <div class="row">
+                <div class="col-md-6">
+                <h4><?php echo lang('search_of_subheading')?>&nbsp;<span class="semi-bold"><?php echo 'Email';?></span></h4>
+                </div>
+            </div>
+            <?php echo form_open(site_url('email/keywords'))?>
+
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="row">
+                            <div class="col-md-3 search_label"><?php echo form_label('Email Subject','first_name')?></div>
+                            <div class="col-md-9"><input type="text" class="form-control" name="email_subject" /></div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-info"><i class="icon-search"></i>&nbsp;<?php echo lang('search_button')?></button>
+                            </div>
+                        </div>
+                    </div>    
+                </div>
+            <?php echo form_close()?>
+            <br/>          
             <table class="table table-fixed-layout table-hover" id="emails" > 
               <thead>
               <tr>
@@ -39,7 +63,6 @@
               </tr>
               </thead>
               <tbody>
-              <?php if($_num_rows > 0) { ?>
               <?php foreach ($email as $row):?>
               <tr id="<?php echo $row->id?>" <?php if($row->is_read == 0){?>style="background-color: #ffffcc;border: medium none;"<?php } ?>>
                <td valign="middle" class="small-cell">
@@ -78,6 +101,7 @@
               </tbody>
             </table>
 
+            <?php if($_num_rows > 0) : ?>
             <div class="row">
               <div class="col-md-4 page_limit">
                   <?php echo form_open(uri_string());?>
@@ -94,7 +118,7 @@
                   ?>
                   <?php echo form_close();?>
               </div>
-
+            <?php endif; ?>
               <div class="col-md-10">
                 <ul class="dataTables_paginate paging_bootstrap pagination">
                     <?php echo $halaman;?>

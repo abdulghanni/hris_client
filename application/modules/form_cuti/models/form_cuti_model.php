@@ -337,10 +337,9 @@ class Form_cuti_model extends CI_Model
             //$this->db->where('users_cuti.is_deleted', 0);
             if($is_admin!=1){
                 //$this->db->where("(users_cuti.user_id= $sess_id $sub_id $subsub_id )",null, false);
-                $this->db->or_where('users_cuti.user_id', $sess_id);
-                $this->db->or_where('users_cuti.user_app_lv1', $sess_nik);
-                $this->db->or_where('users_cuti.user_app_lv2', $sess_nik);
-                $this->db->or_where('users_cuti.user_app_lv3', $sess_nik);
+                $this->db->where("(users_cuti.user_id = '$sess_id' 
+                               OR users_cuti.user_app_lv1 = '$sess_nik'  OR users_cuti.user_app_lv2 = '$sess_nik'  OR users_cuti.user_app_lv3 = '$sess_nik' 
+                )",null, false);
             }
             $this->db->order_by('users_cuti.id', 'desc');
         }

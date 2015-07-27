@@ -79,38 +79,26 @@ $rejected = assets_url('img/rejected_stamp.png');
   <tbody>
     <tr>
       <th width="250" height="75"></th>
-      <th width="250">&nbsp;&nbsp;&nbsp;Mengetahui,</th>
+      <th width="250">Mengetahui,</th>
       <th width="250"></th>
       <th width="250"></th>
     </tr>
     <tr>
-      <td width="250" align="center"><?php echo ($row->is_app_lv1 == 1)?"<img class=approval-img-md src=$approved>":'<span class="small"></span><br/>';?></td>
-      <td width="250" align="center"><?php echo ($row->is_app_lv2 == 1)?"<img class=approval-img-md src=$approved>":'<span class="small"></span><br/>';?></td>
-      <td width="250" align="center"><?php echo ($row->is_app_lv3 == 1)?"<img class=approval-img-md src=$approved>":'<span class="small"></span><br/>';?></td>
-      <td width="250" align="center"><?php echo ($row->is_app_hrd == 1)?"<img class=approval-img-md src=$approved>":'<span class="small"></span><br/>';?></td>
+      <td width="250" align="center"><?php echo ($row->is_app_lv1 == 1)?"<img class=approval-img-md src=$approved>":(($row->is_app_lv1 == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
+      <td width="250" align="center"><?php echo ($row->is_app_lv2 == 1)?"<img class=approval-img-md src=$approved>":(($row->is_app_lv2 == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
+      <td width="250" align="center"><?php echo ($row->is_app_lv3 == 1)?"<img class=approval-img-md src=$approved>":(($row->is_app_lv3 == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
+      <td width="250" align="center"><?php echo ($row->is_app_hrd == 1)?"<img class=approval-img-md src=$approved>":(($row->is_app_hrd == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
     </tr>
     <tr>
-    <?php if(!empty($row->user_app_lv1)){?>
       <td height="80" align="center" class="style3"><?php echo get_name($row->user_app_lv1)?></td>
-    <?php }?>
-    <?php if(!empty($row->user_app_lv2)){?>
       <td align="center" class="style3"><?php echo get_name($row->user_app_lv2)?></td>
-    <?php }?>
-    <?php if(!empty($row->user_app_lv3)){?>
       <td align="center" class="style3"><?php echo get_name($row->user_app_lv3)?></td>
-    <?php }?>
       <td align="center" class="style3"><?php echo get_name($row->user_app_hrd)?></td>
     </tr>
     <tr >
-    <?php if(!empty($row->user_app_lv1)){?>
       <td align="center"><?php echo dateIndo($row->date_app_lv1)?><br/>(Supervisor)</td>
-    <?php }?>
-    <?php if(!empty($row->user_app_lv2)){?>
       <td align="center"><?php echo dateIndo($row->date_app_lv2)?><br/>(Ka. Bagian)</td>
-      <?php }?>
-    <?php if(!empty($row->user_app_lv3)){?>
-      <td align="center"><?php echo dateIndo($row->date_app_lv3)?><br/><?php echo '('.get_user_position($row->user_app_lv3).')'?></td>
-    <?php } ?>
+      <td align="center"><?php echo dateIndo($row->date_app_lv3)?><?php if(!empty($row->user_app_lv3)):?><br/><?php echo '('.get_user_position($row->user_app_lv3).')';endif;?></td>
       <td align="center"><?php echo dateIndo($row->date_app_hrd)?><br/>(HRD)</td>
     </tr>
   </tbody>

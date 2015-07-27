@@ -48,14 +48,22 @@ class Approval {
                 $isi_email = get_name($user_id).' membuat surat perintah perjalanan dinas Luar kota(Group), untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$detail;
                 break;
             case "promosi":
+                $pengaju_id = getValue('created_by', 'users_'.$form, array('id'=>'where/'.$id));
             	$form = 'Promosi Karyawan';
-                $pengaju_id = $CI->session->userdata('user_id');
                 $isi_email = get_name($pengaju_id).' mengajukan Promosi untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail;
-            	break;
+            	$user_id = $pengaju_id;
+                break;
             case "demolition":
+                $pengaju_id = getValue('created_by', 'users_'.$form, array('id'=>'where/'.$id));
                 $form = 'Demolition Karyawan';
-                $pengaju_id = $CI->session->userdata('user_id');
-                $isi_email = get_name($pengaju_id).' mengajukan Demolition untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail;
+                $isi_email = get_name($pengaju_id).' mengajukan Demolition karyawan untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail;
+                $user_id = $pengaju_id;
+                break;
+            case "rolling":
+                $pengaju_id = getValue('created_by', 'users_'.$form, array('id'=>'where/'.$id));
+                $form = 'Rolling Karyawan';
+                $isi_email = get_name($pengaju_id).' mengajukan rolling karyawan untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail;
+                $user_id = $pengaju_id;
                 break;
             case "recruitment":
                 $form = 'Recruitment Karyawan';
@@ -113,6 +121,30 @@ class Approval {
         $CI =& get_instance();
         $url = base_url().'form_'.$form.'/detail/'.$id;
         switch ($form) {
+            case "absen":
+                $form = 'Keterangan Tidak Absen';
+                $created_for = get_nik($created_for);
+                break;
+            case "cuti":
+                $form = 'Permohonan Cuti';
+                $created_for = get_nik($created_for);
+                break;
+            case "resignment":
+                $form = 'Resign';
+                $created_for = get_nik($created_for);
+                break;
+            case "training":
+                $form = 'Pelatihan Karyawan';
+                $created_for = get_nik($created_for);
+                break;
+            case "training_group":
+                $form = 'Pelatihan Karyawan (Group)';
+                $created_for = get_nik($created_for);
+                break;
+            case "medical":
+                $form = 'Rekapitulasi Rawat Jalan & Inap';
+                $created_for = get_nik($created_for);
+                break;
             case "spd_dalam":
                 $url = base_url().'form_'.$form.'/submit/'.$id;
                 $form = 'Perjalanan Dinas Dalam Kota';
@@ -156,24 +188,46 @@ class Approval {
         $approval_status = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
 
         switch ($form) {
-            case "promosi":
-                $receiver_id = getValue('created_by', 'users_'.$form, array('id'=>'where/'.$id));
-                break;
             case "edit_user":
                 $url = base_url().'edit_user_approval/'.$id;
                 $receiver_id = getValue('user_id', 'users_edit_approval', array('id'=>'where/'.$id));
                 $form = 'Perubahan Data Karywan';
                 break;
+            case "promosi":
+                $receiver_id = getValue('created_by', 'users_'.$form, array('id'=>'where/'.$id));
+                break;
             case "demolition":
                 $receiver_id = getValue('created_by', 'users_'.$form, array('id'=>'where/'.$id));
                 break;
+            case "rolling":
+                $receiver_id = getValue('created_by', 'users_'.$form, array('id'=>'where/'.$id));
+                break;
             case "spd_dalam":
+            $receiver_id = getValue('task_creator', 'users_'.$form, array('id'=>'where/'.$id));
+            $receiver_id = get_id($receiver_id);
+            $url = base_url().'form_'.$form.'/submit/'.$id;
+            $form = 'Perjalanan Dinas Dalam Kota';
+            break;
             case "spd_dalam_group":
+            $receiver_id = getValue('task_creator', 'users_'.$form, array('id'=>'where/'.$id));
+            $receiver_id = get_id($receiver_id);
+            $url = base_url().'form_'.$form.'/submit/'.$id;
+            $form = 'Perjalanan Dinas Dalam Kota (Group)';
+            break;
             case "spd_luar":
+            $receiver_id = getValue('task_creator', 'users_'.$form, array('id'=>'where/'.$id));
+            $receiver_id = get_id($receiver_id);
+            $url = base_url().'form_'.$form.'/submit/'.$id;
+            $form = 'Perjalanan Dinas Luar Kota';
+            break;
             case "spd_luar_group":
-                $receiver_id = getValue('task_creator', 'users_'.$form, array('id'=>'where/'.$id));
-                $receiver_id = get_id($receiver_id);
-                $url = base_url().'form_'.$form.'/submit/'.$id;
+            $receiver_id = getValue('task_creator', 'users_'.$form, array('id'=>'where/'.$id));
+            $receiver_id = get_id($receiver_id);
+            $url = base_url().'form_'.$form.'/submit/'.$id;
+            $form = 'Perjalanan Dinas Luar Kota (Group)';
+            break;
+            case "absen":
+                $form = 'Keterangan Tidak Absen';
                 break;
             default:
             $receiver_id = getValue('user_id', 'users_'.$form, array('id'=>'where/'.$id));
@@ -205,13 +259,8 @@ class Approval {
             case "demolition":
                 $receiver_id = getValue('created_by', 'users_'.$form, array('id'=>'where/'.$id));
                 break;
-            case "spd_dalam":
-            case "spd_dalam_group":
-            case "spd_luar":
-            case "spd_luar_group":
-                $receiver_id = getValue('task_creator', 'users_'.$form, array('id'=>'where/'.$id));
-                $receiver_id = get_id($receiver_id);
-                $url = base_url().'form_'.$form.'/submit/'.$id;
+            case "rolling":
+                $receiver_id = getValue('created_by', 'users_'.$form, array('id'=>'where/'.$id));
                 break;
             default:
             $receiver_id = getValue('user_id', 'users_'.$form, array('id'=>'where/'.$id));

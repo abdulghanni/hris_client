@@ -97,37 +97,37 @@ $rejected = assets_url('img/rejected_stamp.png');?>
       <td>&nbsp;<?php echo $user->pembiayaan?></td>
     </tr>
     <tr>
-      <td height="45" align="center">6</td>
+      <td height="45" align="center">10</td>
       <td>&nbsp;Tipe Ikatan Dinas</td>
       <td>&nbsp;<?php echo $user->ikatan?></td>
     </tr>
     <tr>
-      <td height="45" align="center">6</td>
+      <td height="45" align="center">11</td>
       <td>&nbsp;Waktu</td>
       <td>&nbsp;<?php echo $user->waktu?></td>
     </tr>
     <tr>
-      <td height="45" align="center">10</td>
+      <td height="45" align="center">12</td>
       <td>&nbsp;Besar Biaya</td>
       <td>&nbsp;Rp.&nbsp;<?php echo $user->besar_biaya?></td>
     </tr>
     <tr>
-      <td height="45" align="center">11</td>
+      <td height="45" align="center">13</td>
       <td>&nbsp;Nama Narasumber</td>
       <td>&nbsp;<?php echo $user->narasumber?></td>
     </tr>
     <tr>
-      <td height="45" align="center">12</td>
+      <td height="45" align="center">14</td>
       <td>&nbsp;Nama Vendor</td>
       <td>&nbsp;<?php echo $user->vendor?></td>
     </tr>
     <tr>
-      <td height="45" align="center">13</td>
+      <td height="45" align="center">15</td>
       <td>&nbsp;Tempat Pelaksanaan :&nbsp;&nbsp; <?php echo $user->tempat?></td>
       <td>&nbsp;Tanggal & Jam Pelaksaan :&nbsp;&nbsp;<?php echo dateIndo($user->tanggal_mulai)?> s/d <?php echo dateIndo($user->tanggal_akhir)?>&nbsp;&nbsp;<?php echo $user->jam_mulai?> s/d <?php echo $user->jam_akhir?> </td>
     </tr>
     <tr>
-      <td height="45" align="center">14</td>
+      <td height="45" align="center">16</td>
       <td>&nbsp;Lama Pelaksanaan</td>
       <td>&nbsp;<?php echo $user->lama_training_bulan.' Bulan'.' '.$user->lama_training_hari.' Hari'?></td>
     </tr>

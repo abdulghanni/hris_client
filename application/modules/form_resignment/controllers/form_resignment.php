@@ -44,7 +44,7 @@ class Form_resignment extends MX_Controller {
             $this->data['ftitle_param'] = $ftitle; 
             $exp_ftitle = explode(":",$ftitle);
             $ftitle_re = str_replace("_", " ", $exp_ftitle[1]);
-            $ftitle_post = (strlen($ftitle_re) > 0) ? array('form_resignment.title'=>$ftitle_re) : array() ;
+            $ftitle_post = (strlen($ftitle_re) > 0) ? array('users.username'=>$ftitle_re) : array() ;
             
             //set default limit in var $config['list_limit'] at application/config/ion_auth.php 
             $this->data['limit'] = $limit = (strlen($this->input->post('limit')) > 0) ? $this->input->post('limit') : 10 ;
@@ -80,6 +80,19 @@ class Form_resignment extends MX_Controller {
             );
 
             $this->_render_page('form_resignment/index', $this->data);
+        }
+    }
+
+    function keywords(){
+        if (!$this->ion_auth->logged_in())
+        {
+            redirect('auth/login', 'refresh');
+        }
+        else
+        {
+            $ftitle_post = (strlen($this->input->post('title')) > 0) ? strtolower(url_title($this->input->post('title'),'_')) : "" ;
+
+            redirect('form_resignment/index/fn:'.$ftitle_post, 'refresh');
         }
     }
 
@@ -119,7 +132,7 @@ class Form_resignment extends MX_Controller {
             else
             {
                 $user_id= $this->input->post('emp');
-
+                $sess_id = $this->session->userdata('user_id');
                 $data = array(
                     'id_comp_session' => 1,
                     'date_resign' => date('Y-m-d',strtotime($this->input->post('date_resign'))),
@@ -127,13 +140,16 @@ class Form_resignment extends MX_Controller {
                     'user_app_lv2'          => $this->input->post('atasan2'),
                     'user_app_lv3'          => $this->input->post('atasan3'),
                     'created_on'            => date('Y-m-d',strtotime('now')),
-                    'created_by'            => $this->session->userdata('user_id'),
+                    'created_by'            => $sess_id,
                     );
 
                     if ($this->form_validation->run() == true && $this->form_resignment_model->create_($user_id, $data))
                     {
                      $resignment_id = $this->db->insert_id();
                      $user_app_lv1 = getValue('user_app_lv1', 'users_resignment', array('id'=>'where/'.$resignment_id));
+                     if($user_id!==$sess_id):
+                     $this->approval->by_admin('resignment', $resignment_id, $sess_id, $user_id, $this->detail_email($resignment_id));
+                     endif;
                      if(!empty($user_app_lv1)):
                         $this->approval->request('lv1', 'resignment', $resignment_id, $user_id, $this->detail_email($resignment_id));
                      else:

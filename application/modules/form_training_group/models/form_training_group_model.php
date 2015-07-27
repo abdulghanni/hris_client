@@ -325,6 +325,7 @@ class Form_training_group_model extends CI_Model
                 'status_hrd.title as approval_status_hrd',
             ));
 
+            $this->db->join('users', 'users_training_group.user_pengaju_id = users.id', 'left');
             $this->db->join('penyelenggara', 'users_training_group.penyelenggara_id = penyelenggara.id', 'LEFT');
             $this->db->join('pembiayaan', 'users_training_group.pembiayaan_id = pembiayaan.id', 'LEFT');
             $this->db->join('training_type', 'users_training_group.training_type_id = training_type.id', 'LEFT');
@@ -337,7 +338,7 @@ class Form_training_group_model extends CI_Model
             if($id != null)$this->db->where('users_training_group.id', $id);
             if($is_admin!=1){
                 //$this->db->where("(users_training_group.user_id= $sess_id $sub_id $subsub_id )",null, false);
-                $this->db->where("(users_training_group.user_pengaju_id = $sess_id OR  users_training_group.user_app_lv1 = '$sess_nik' OR users_training_group.user_app_lv2 = '$sess_nik' OR users_training_group.user_app_lv3 = '$sess_nik' OR users_training_group.created_by = '$sess_id')",null, false);
+                $this->db->where("(users_training_group.user_pengaju_id = $sess_id OR users_training_group.user_peserta_id like '%$sess_nik%' OR  users_training_group.user_app_lv1 = '$sess_nik' OR users_training_group.user_app_lv2 = '$sess_nik' OR users_training_group.user_app_lv3 = '$sess_nik' OR users_training_group.created_by = '$sess_id')",null, false);
             }
             
             

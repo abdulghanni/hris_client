@@ -321,6 +321,8 @@ class Form_spd_luar_model extends CI_Model
                 'city_from.title as city_from',
             ));
 
+            $this->db->join('users', 'users.nik = users_spd_luar.task_receiver', 'LEFT');
+            $this->db->join('users as creator', 'creator.nik = users_spd_luar.task_creator', 'LEFT');
             $this->db->join('transportation', 'users_spd_luar.transportation_id = transportation.id');
             $this->db->join('city as city_to','users_spd_luar.to_city_id = city_to.id');
             $this->db->join('city as city_from','users_spd_luar.from_city_id = city_from.id');

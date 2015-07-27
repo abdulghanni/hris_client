@@ -44,7 +44,7 @@ class form_training extends MX_Controller {
             $this->data['ftitle_param'] = $ftitle; 
             $exp_ftitle = explode(":",$ftitle);
             $ftitle_re = str_replace("_", " ", $exp_ftitle[1]);
-            $ftitle_post = (strlen($ftitle_re) > 0) ? array('form_training.title'=>$ftitle_re) : array() ;
+            $ftitle_post = (strlen($ftitle_re) > 0) ? array('creator.username'=>$ftitle_re,'users.username'=>$ftitle_re) : array() ;
             
             //set default limit in var $config['list_limit'] at application/config/ion_auth.php 
             $this->data['limit'] = $limit = (strlen($this->input->post('limit')) > 0) ? $this->input->post('limit') : 10 ;
@@ -80,6 +80,19 @@ class form_training extends MX_Controller {
             );
 
             $this->_render_page('form_training/index', $this->data);
+        }
+    }
+
+    function keywords(){
+        if (!$this->ion_auth->logged_in())
+        {
+            redirect('auth/login', 'refresh');
+        }
+        else
+        {
+            $ftitle_post = (strlen($this->input->post('title')) > 0) ? strtolower(url_title($this->input->post('title'),'_')) : "" ;
+
+            redirect('form_training/index/fn:'.$ftitle_post, 'refresh');
         }
     }
 
@@ -143,8 +156,8 @@ class form_training extends MX_Controller {
         }
         else
         {
-            $user_id= $this->input->post('emp');
-
+            $user_id = $this->input->post('emp');
+            $sess_id = $this->session->userdata('user_id');
             $data = array(
                 'user_peserta_id' => $this->input->post('peserta'),
                 'id_comp_session' => 1,
@@ -154,7 +167,7 @@ class form_training extends MX_Controller {
                 'user_app_lv2'          => $this->input->post('atasan2'),
                 'user_app_lv3'          => $this->input->post('atasan3'),
                 'created_on'            => date('Y-m-d',strtotime('now')),
-                'created_by'            => $this->session->userdata('user_id'),
+                'created_by'            => $sess_id,
                 );
 
                 $user_peserta_id = $this->input->post('peserta');
@@ -162,6 +175,9 @@ class form_training extends MX_Controller {
                 {
                      $training_id = $this->db->insert_id();
                      $user_app_lv1 = getValue('user_app_lv1', 'users_training', array('id'=>'where/'.$training_id));
+                     if($user_id!==$sess_id):
+                     $this->approval->by_admin('training', $training_id, $sess_id, $user_id, $this->detail_email($training_id));
+                     endif;
                      if(!empty($user_app_lv1)):
                         $this->approval->request('lv1', 'training', $training_id, $user_id, $this->detail_email($training_id));
                      else:
@@ -195,14 +211,25 @@ class form_training extends MX_Controller {
             $is_app = getValue('is_app_'.$type, 'users_training', array('id'=>'where/'.$id));
             $approval_status = $this->input->post('app_status_'.$type);
 
+
+            $this->form_training_model->update($id,$data);
+
             if($is_app==0){
                 $this->approval_mail($id, $approval_status);
             }else{
                 $this->update_approval_mail($id, $approval_status);
             }
-
-           if ($this->form_training_model->update($id,$data)) {
-                return TRUE;
+            if($type !== 'hrd')
+            {
+                $pengaju_id = getValue('user_pengaju_id', 'users_training', array('id'=>'where/'.$id));
+                $lv = substr($type, -1)+1;
+                $lv_app = 'lv'.$lv;
+                $user_app = ($lv<4) ? getValue('user_app_'.$lv_app, 'users_training', array('id'=>'where/'.$id)):0;
+                if(!empty($user_app)):
+                    $this->approval->request($lv_app, 'training', $id, $pengaju_id, $this->detail_email($id));
+                else:
+                    $this->approval->request('hrd', 'training', $id, $pengaju_id, $this->detail_email($id));
+                endif;
             }
         }
     }

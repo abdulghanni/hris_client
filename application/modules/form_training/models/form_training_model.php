@@ -324,7 +324,8 @@ class Form_training_model extends CI_Model
                 'status_lv3.title as approval_status_lv3',
                 'status_hrd.title as approval_status_hrd',
             ));
-
+            $this->db->join('users', 'users.id = users_training.user_peserta_id', 'LEFT');
+            $this->db->join('users as creator', 'creator.id = users_training.user_pengaju_id', 'LEFT');
             $this->db->join('penyelenggara', 'users_training.penyelenggara_id = penyelenggara.id', 'LEFT');
             $this->db->join('pembiayaan', 'users_training.pembiayaan_id = pembiayaan.id', 'LEFT');
             $this->db->join('training_type', 'users_training.training_type_id = training_type.id', 'LEFT');

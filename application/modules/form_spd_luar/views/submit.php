@@ -158,11 +158,13 @@
                               </tr>
                             </thead>
                             <tbody>
-                            <?php $i=1;foreach($biaya_pjd->result() as $row):?>
+                            <?php $i=1;foreach($biaya_pjd->result() as $row):
+                              $jumlah_biaya = (!empty($row->type)) ? $row->jumlah_biaya*$jml_pjd : $row->jumlah_biaya;
+                            ?>
                               <tr>
                                 <td><?php echo $i++?></td>
                                 <td><?php echo $row->jenis_biaya?></td>
-                                <td>Rp. <?php echo number_format($row->jumlah_biaya*$jml_pjd, 0)?></td>
+                                <td>Rp. <?php echo number_format($jumlah_biaya, 0)?></td>
                               </tr>
                             <?php endforeach ?>
                             </tbody>

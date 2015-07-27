@@ -163,7 +163,7 @@
 
                         <?php if(!empty($row->user_app_lv1)){?>
                         <div class="col-md-4">
-                          <p>Mengethui,</p>
+                          <p>Mengetahui,</p>
                           <p class="wf-approve-sp">
                           <?php if($row->is_app_lv1==1) {
                             echo "<img class=approval_img src=$approved>"?>
@@ -278,10 +278,6 @@
                   <th width="15%" class="text-center">Jenis Pemeriksaan</th>
                   <th width="20%">Rupiah</th>
                   <th class="text-center"><div>Disetujui</div>
-                    <div class="checkbox check-success ">
-                      <input id="selectall" class="" type="checkbox">
-                      <label for="selectall"></label>
-                    </div>
                   </th>
                 </tr>
               </thead>

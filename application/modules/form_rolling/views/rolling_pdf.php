@@ -34,9 +34,9 @@
 <body>
 <div align="center">
   <p align="left"><img src="<?php echo assets_url('img/erlangga.jpg')?>" width="296" height="80" /></p>
-  <p align="center" class="style6">Form Pengajuan Promosi</p>
+  <p align="center" class="style6">Form Pengajuan Rolling</p>
 </div>
-<?php foreach($form_promosi as $row):
+<?php foreach($form_rolling as $row):
 $user_nik = get_nik($row->user_id);
 $pengaju_nik = get_nik($row->created_by);
 $approved = assets_url('img/approved_stamp.png');
@@ -74,7 +74,7 @@ $rejected = assets_url('img/rejected_stamp.png');?>
   </tr>
 </table>
 
-<p class="style7">Promosi yang diajukan</p>
+<p class="style7">rolling yang diajukan</p>
 <table width="1000" height="135" border="0" style="padding-left:30px;">
   <tr>
     <td width="275" height="45"><span class="style3">Unit Bisnis</span></td>
@@ -92,26 +92,37 @@ $rejected = assets_url('img/rejected_stamp.png');?>
     <td height="45"><span class="style3"><?php echo get_position_name($row->new_pos)?></span></td>
   </tr>
   <tr>
-    <td height="45"><span class="style3">Tanggal Pengangkatan </span></td>
+    <td height="45"><span class="style3">Tanggal rolling </span></td>
     <td height="45"><div align="center">:</div></td>
-    <td height="45"><span class="style3"><?php echo dateIndo($row->date_promosi)?></span></td>
+    <td height="45"><span class="style3"><?php echo dateIndo($row->date_rolling)?></span></td>
   </tr>
   <tr>
-    <td height="45"><span class="style3">Alasan Pengangkatan</span></td>
+    <td height="45"><span class="style3">Alasan rolling</span></td>
     <td height="45"><div align="center">:</div></td>
     <td height="45"><span class="style3"><?php echo $row->alasan?></span></td>
   </tr>
 </table>
+<?php if(!empty($row->note_lv1)){?>
+<p class="style4">Catatan Supervisor</p>
+<textarea class="style4" rows="2" width="100%"><?php echo $row->note_lv1?></textarea>
+<?php } ?>
+<?php if(!empty($row->note_lv2)){?>
+<p class="style4">Catatan Ka. Bagian</p>
+<textarea class="style4" rows="2" width="100%"><?php echo $row->note_lv2?></textarea>
+<?php } ?>
+<?php if(!empty($row->note_lv3)){?>
+<p class="style4">Catatan Atasan Lainnya</p>
+<textarea class="style4" rows="2" width="100%"><?php echo $row->note_lv3?></textarea>
+<?php } ?>
 <?php if(!empty($row->note_hrd)){?>
-<p class="style4">Catatan</p>
+<p class="style4">Catatan HRD</p>
 <textarea class="style4" rows="2" width="100%"><?php echo $row->note_hrd?></textarea>
 <?php } ?>
 <br />
-
 <table width="1000" align="center">
   <tbody>
     <tr>
-      <th width="250" height="50">Diajukan Oleh,</th>
+      <th width="250" height="75">Diajukan Oleh,</th>
       <th width="250"></th>
       <th width="250">&nbsp;&nbsp;Mengetahui</th>
       <th width="250"></th>

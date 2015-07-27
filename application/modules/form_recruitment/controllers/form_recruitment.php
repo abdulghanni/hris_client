@@ -41,7 +41,7 @@ class Form_recruitment extends MX_Controller {
         $this->data['ftitle_param'] = $ftitle; 
         $exp_ftitle = explode(":",$ftitle);
         $ftitle_re = str_replace("_", " ", $exp_ftitle[1]);
-        $ftitle_post = (strlen($ftitle_re) > 0) ? array('recruitment.subject'=>$ftitle_re) : array() ;
+        $ftitle_post = (strlen($ftitle_re) > 0) ? array('users.username'=>$ftitle_re) : array() ;
         
         //set default limit in var $config['list_limit'] at application/config/ion_auth.php 
         $this->data['limit'] = $limit = (strlen($this->input->post('limit')) > 0) ? $this->input->post('limit') : 10 ;
@@ -78,6 +78,19 @@ class Form_recruitment extends MX_Controller {
         );
         
         $this->_render_page('form_recruitment/index');
+    }
+
+    function keywords(){
+        if (!$this->ion_auth->logged_in())
+        {
+            redirect('auth/login', 'refresh');
+        }
+        else
+        {
+            $ftitle_post = (strlen($this->input->post('title')) > 0) ? strtolower(url_title($this->input->post('title'),'_')) : "" ;
+
+            redirect('form_recruitment/index/fn:'.$ftitle_post, 'refresh');
+        }
     }
 
     function input()

@@ -51,7 +51,7 @@ class Form_cuti extends MX_Controller {
             $this->data['ftitle_param'] = $ftitle; 
             $exp_ftitle = explode(":",$ftitle);
             $ftitle_re = str_replace("_", " ", $exp_ftitle[1]);
-            $ftitle_post = (strlen($ftitle_re) > 0) ? array('form_cuti.title'=>$ftitle_re) : array() ;
+            $ftitle_post = (strlen($ftitle_re) > 0) ? array('users.username'=>$ftitle_re) : array() ;
             
             //set default limit in var $config['list_limit'] at application/config/ion_auth.php 
             $this->data['limit'] = $limit = (strlen($this->input->post('limit')) > 0) ? $this->input->post('limit') : 10 ;
@@ -63,7 +63,7 @@ class Form_cuti extends MX_Controller {
             
             $this->data['num_rows_all'] = $this->form_cuti_model->like($ftitle_post)->where('is_deleted',0)->form_cuti()->num_rows();
 
-            $form_cuti = $this->data['form_cuti'] = $this->form_cuti_model->like($ftitle_post)->where('is_deleted',0)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->form_cuti()->result();
+            $form_cuti = $this->data['form_cuti'] = $this->form_cuti_model->like($ftitle_post)->where('is_deleted',0)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->form_cuti()->result();//lastq();
             $this->data['_num_rows'] = $this->form_cuti_model->like($ftitle_post)->where('is_deleted',0)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->form_cuti()->num_rows();
             
 
@@ -87,6 +87,19 @@ class Form_cuti extends MX_Controller {
             );
 
             $this->_render_page('form_cuti/index', $this->data);
+        }
+    }
+
+    function keywords(){
+        if (!$this->ion_auth->logged_in())
+        {
+            redirect('auth/login', 'refresh');
+        }
+        else
+        {
+            $ftitle_post = (strlen($this->input->post('title')) > 0) ? strtolower(url_title($this->input->post('title'),'_')) : "" ;
+
+            redirect('form_cuti/index/fn:'.$ftitle_post, 'refresh');
         }
     }
 
@@ -139,8 +152,8 @@ class Form_cuti extends MX_Controller {
         }
         else
         {
-            $user_id= $this->input->post('emp');
-            
+            $user_id = $this->input->post('emp');
+            $sess_id = $this->session->userdata('user_id');
             $start_cuti = $this->input->post('start_cuti');
             $end_cuti = $this->input->post('end_cuti');
 
@@ -164,7 +177,7 @@ class Form_cuti extends MX_Controller {
                 'user_app_lv2'          => $this->input->post('atasan2'),
                 'user_app_lv3'          => $this->input->post('atasan3'),
                 'created_on'            => date('Y-m-d',strtotime('now')),
-                'created_by'            => $this->session->userdata('user_id')
+                'created_by'            => $sess_id
             );
 
             if ($this->form_validation->run() == true && $this->form_cuti_model->create_($user_id,$additional_data))
@@ -172,6 +185,9 @@ class Form_cuti extends MX_Controller {
                  $cuti_id = $this->db->insert_id();
                  $leave_request_id = $this->get_last_leave_request_id();
                  $user_app_lv1 = getValue('user_app_lv1', 'users_cuti', array('id'=>'where/'.$cuti_id));
+                 if($user_id!==$sess_id):
+                    $this->approval->by_admin('cuti', $cuti_id, $sess_id, $user_id, $this->detail_email($cuti_id));
+                 endif;
                  if(!empty($user_app_lv1)):
                     $this->approval->request('lv1', 'cuti', $cuti_id, $user_id, $this->detail_email($cuti_id));
                  else:

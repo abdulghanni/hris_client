@@ -316,6 +316,8 @@ class Form_spd_dalam_model extends CI_Model
                 $this->tables['users_spd_dalam'].'.id as id',
             ));
 
+            $this->db->join('users', 'users.nik = users_spd_dalam.task_receiver', 'LEFT');
+            $this->db->join('users as creator', 'creator.nik = users_spd_dalam.task_creator', 'LEFT');
             /*$this->db->join('approval_status as status_lv1', 'users_spd_dalam.approval_status_id_lv1 = status_lv1.id', 'left');
             $this->db->join('approval_status as status_lv2', 'users_spd_dalam.approval_status_id_lv2 = status_lv2.id', 'left');
             $this->db->join('approval_status as status_lv3', 'users_spd_dalam.approval_status_id_lv3 = status_lv3.id', 'left');

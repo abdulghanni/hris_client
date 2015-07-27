@@ -3395,11 +3395,10 @@ class Auth extends MX_Controller {
                 if(in_array($view, array('auth/index')))
                 {
                     $this->template->set_layout('default');
-                    $this->template->add_js('jquery-ui-1.10.1.custom.min.js');
                     $this->template->add_js('jquery.sidr.min.js');
                     $this->template->add_js('breakpoints.js');
                     $this->template->add_js('select2.min.js');
-                    $this->template->add_js('list_user.js');
+                    //$this->template->add_js('list_user.js');
                     $this->template->add_js('core.js');
                     $this->template->add_js('main.js');
                     $this->template->add_js('respond.min.js');

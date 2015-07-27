@@ -54,7 +54,7 @@
                             <td valign="middle" halign="middle"><?php if($row->is_request_activation == 1){?><h2 class="label label-success"><a href="<?php echo site_url('email/activate/'.$row->userid)?>">inactive</h2><?php } ?></td>
                             <?php } ?>
                             <td valign="large"><a href="<?php echo site_url('email/detail/'.$row->id)?>"><?php echo get_name($row->receiver_id) ?></a></td>
-                            <td valign="large" class="tablefull"><span class="muted"><?php echo '<b>'.$row->subject.'</b>'.' - '.$row->email_body?></span></td>
+                            <td valign="large" class="tablefull"><span class="muted"><?php echo  word_limiter('<b>'.$row->subject.'</b>'.' - '.$row->email_body, 15)?></span></td>
                             <td class=""><span class="muted"><?php  $now = date('Y-m-d',strtotime('now'));
 
                               if (date('Y-m-d', strtotime($row->sent_on)) == $now)

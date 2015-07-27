@@ -48,7 +48,7 @@ class Form_medical extends MX_Controller {
             $this->data['ftitle_param'] = $ftitle; 
             $exp_ftitle = explode(":",$ftitle);
             $ftitle_re = str_replace("_", " ", $exp_ftitle[1]);
-            $ftitle_post = (strlen($ftitle_re) > 0) ? array('form_medical.title'=>$ftitle_re) : array() ;
+            $ftitle_post = (strlen($ftitle_re) > 0) ? array('users.username'=>$ftitle_re) : array() ;
             
             //set default limit in var $config['list_limit'] at application/config/ion_auth.php 
             $this->data['limit'] = $limit = (strlen($this->input->post('limit')) > 0) ? $this->input->post('limit') : 10 ;
@@ -83,6 +83,19 @@ class Form_medical extends MX_Controller {
             );
 
             $this->_render_page('form_medical/index', $this->data);
+        }
+    }
+
+    function keywords(){
+        if (!$this->ion_auth->logged_in())
+        {
+            redirect('auth/login', 'refresh');
+        }
+        else
+        {
+            $ftitle_post = (strlen($this->input->post('title')) > 0) ? strtolower(url_title($this->input->post('title'),'_')) : "" ;
+
+            redirect('form_medical/index/fn:'.$ftitle_post, 'refresh');
         }
     }
 
@@ -151,7 +164,7 @@ class Form_medical extends MX_Controller {
             'user_app_lv1'          => $this->input->post('atasan1'),
             'user_app_lv2'          => $this->input->post('atasan2'),
             'user_app_lv3'          => $this->input->post('atasan3'),
-            'created_by' => $this->session->userdata('user_id'),
+            'created_by' => $sess_id,
             'created_on' => date('Y-m-d',strtotime('now')),
             );
 
@@ -165,7 +178,7 @@ class Form_medical extends MX_Controller {
                 'hubungan_id'=>$medical_detail['hubungan_id'][$i],
                 'jenis_pemeriksaan_id'=>$medical_detail['jenis_pemeriksaan_id'][$i],
                 'rupiah'=>$medical_detail['rupiah'][$i],
-                'created_by' => $this->session->userdata('user_id'),
+                'created_by' => $sess_id,
                 'created_on' => date('Y-m-d',strtotime('now')),
                 );
 
@@ -173,6 +186,9 @@ class Form_medical extends MX_Controller {
                 endfor;
                 $user_id = $this->input->post('pengaju');
                 $user_app_lv1 = getValue('user_app_lv1', 'users_medical', array('id'=>'where/'.$last_medical_id));
+                if($user_id!==$sess_id):
+                     $this->approval->by_admin('medical', $last_medical_id, $sess_id, $user_id, $this->detail_email($last_medical_id));
+                     endif;
                 if(!empty($user_app_lv1)):
                     $this->approval->request('lv1', 'medical', $last_medical_id, $user_id, $this->detail_email($last_medical_id));
                 else:
@@ -385,7 +401,7 @@ class Form_medical extends MX_Controller {
         $form_medical = $this->data['form_medical'] = $this->form_medical_model->form_medical($id)->result();
         $this->data['_num_rows'] = $this->form_medical_model->form_medical($id)->num_rows();
 
-        $this->load->view('form_medical/medical_mail', $this->data);
+        return $this->load->view('form_medical/medical_mail', $this->data, true);
     }
 
     function form_medical_pdf($id)

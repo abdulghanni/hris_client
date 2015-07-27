@@ -23,6 +23,25 @@
                 </div>
               </div>
                 <div class="grid-body no-border"> 
+                        <?php if($_num_rows>0){?>
+                          <br/>   
+                          <?php echo form_open(site_url('form_spd_luar/keywords'))?>
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <div class="row">
+                                        <div class="col-md-3 search_label"><?php echo form_label('Nama','first_name')?></div>
+                                        <div class="col-md-9"><?php echo bs_form_input($ftitle_search)?></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <button type="submit" class="btn btn-info"><i class="icon-search"></i>&nbsp;<?php echo lang('search_button')?></button>
+                                        </div>
+                                    </div>
+                                </div>    
+                            </div>
+                        <?php echo form_close()?>    
                         <table class="table table-striped table-flip-scroll cf">
                             <thead>
                               <tr>
@@ -35,9 +54,7 @@
                               </tr>
                             </thead>
                             <tbody>
-                              <?php if ($_num_rows > 0) { ?>
-                              <?php foreach ($form_spd_luar as $spd) : ?>
-                              <?php 
+                              <?php foreach ($form_spd_luar as $spd) :
                               $txt_app_lv1 = $txt_app_lv2 = $txt_app_lv3 = $txt_app_hrd = "<i class='icon-minus' title = 'Pending'></i>";
                               $approval_status_lv1 = "<i class='icon-ok-sign' title = 'Approved'></i>";
                               $approval_status_lv2 = "<i class='icon-ok-sign' title = 'Approved'></i>";

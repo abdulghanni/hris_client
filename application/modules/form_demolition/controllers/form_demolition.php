@@ -45,7 +45,7 @@ class Form_demolition extends MX_Controller {
             $this->data['ftitle_param'] = $ftitle; 
             $exp_ftitle = explode(":",$ftitle);
             $ftitle_re = str_replace("_", " ", $exp_ftitle[1]);
-            $ftitle_post = (strlen($ftitle_re) > 0) ? array('form_demolition.title'=>$ftitle_re) : array() ;
+            $ftitle_post = (strlen($ftitle_re) > 0) ? array('creator.username'=>$ftitle_re,'users.username'=>$ftitle_re) : array() ;
             
             //set default limit in var $config['list_limit'] at application/config/ion_auth.php 
             $this->data['limit'] = $limit = (strlen($this->input->post('limit')) > 0) ? $this->input->post('limit') : 10 ;
@@ -57,7 +57,7 @@ class Form_demolition extends MX_Controller {
             
             $this->data['num_rows_all'] = $this->form_demolition_model->like($ftitle_post)->where('is_deleted',0)->form_demolition()->num_rows();
 
-            $form_demolition = $this->data['form_demolition'] = $this->form_demolition_model->like($ftitle_post)->where('is_deleted',0)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->form_demolition()->result();
+            $form_demolition = $this->data['form_demolition'] = $this->form_demolition_model->like($ftitle_post)->where('is_deleted',0)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->form_demolition()->result();//lastq();
             $this->data['_num_rows'] = $this->form_demolition_model->like($ftitle_post)->where('is_deleted',0)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->form_demolition()->num_rows();
             
 
@@ -81,6 +81,19 @@ class Form_demolition extends MX_Controller {
             );
 
             $this->_render_page('form_demolition/index', $this->data);
+        }
+    }
+
+    function keywords(){
+        if (!$this->ion_auth->logged_in())
+        {
+            redirect('auth/login', 'refresh');
+        }
+        else
+        {
+            $ftitle_post = (strlen($this->input->post('title')) > 0) ? strtolower(url_title($this->input->post('title'),'_')) : "" ;
+
+            redirect('form_demolition/index/fn:'.$ftitle_post, 'refresh');
         }
     }
 

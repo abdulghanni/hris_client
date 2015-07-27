@@ -22,7 +22,25 @@
                   <a href="<?php echo site_url() ?>form_spd_luar_group/input" class="config"></a>
                 </div>
               </div>
-                <div class="grid-body no-border"> 
+                <div class="grid-body no-border">
+                         <br/>   
+                            <?php echo form_open(site_url('form_spd_luar_group/keywords'))?>
+                              <div class="row">
+                                  <div class="col-md-5">
+                                      <div class="row">
+                                          <div class="col-md-4 search_label"><?php echo form_label('Nama Pengaju','first_name')?></div>
+                                          <div class="col-md-8"><?php echo bs_form_input($ftitle_search)?></div>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-2">
+                                      <div class="row">
+                                          <div class="col-md-12">
+                                              <button type="submit" class="btn btn-info"><i class="icon-search"></i>&nbsp;<?php echo lang('search_button')?></button>
+                                          </div>
+                                      </div>
+                                  </div>    
+                              </div>
+                          <?php echo form_close()?>     
                         <table class="table table-striped table-flip-scroll cf">
                             <thead>
                               <tr>

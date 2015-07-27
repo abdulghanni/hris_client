@@ -44,7 +44,7 @@ class form_training_group extends MX_Controller {
             $this->data['ftitle_param'] = $ftitle; 
             $exp_ftitle = explode(":",$ftitle);
             $ftitle_re = str_replace("_", " ", $exp_ftitle[1]);
-            $ftitle_post = (strlen($ftitle_re) > 0) ? array('form_training_group.title'=>$ftitle_re) : array() ;
+            $ftitle_post = (strlen($ftitle_re) > 0) ? array('users.username'=>$ftitle_re) : array() ;
             
             //set default limit in var $config['list_limit'] at application/config/ion_auth.php 
             $this->data['limit'] = $limit = (strlen($this->input->post('limit')) > 0) ? $this->input->post('limit') : 10 ;
@@ -82,6 +82,19 @@ class form_training_group extends MX_Controller {
         }
     }
 
+    function keywords(){
+        if (!$this->ion_auth->logged_in())
+        {
+            redirect('auth/login', 'refresh');
+        }
+        else
+        {
+            $ftitle_post = (strlen($this->input->post('title')) > 0) ? strtolower(url_title($this->input->post('title'),'_')) : "" ;
+
+            redirect('form_training_group/index/fn:'.$ftitle_post, 'refresh');
+        }
+    }
+
     function detail($id)
     {
         if (!$this->ion_auth->logged_in())
@@ -95,8 +108,8 @@ class form_training_group extends MX_Controller {
             $this->data['user_nik'] = $sess_nik = get_nik($user_id);
             $this->data['sess_id'] = $this->session->userdata('user_id');
 
-            $form_training_group = $this->data['form_training_group'] = $this->form_training_group_model->form_training_group($id)->result($id);
-            $this->data['_num_rows'] = $this->form_training_group_model->form_training_group($id)->num_rows($id);
+            $form_training_group = $this->data['form_training_group'] = $this->form_training_group_model->form_training_group($id)->result();
+            $this->data['_num_rows'] = $this->form_training_group_model->form_training_group($id)->num_rows();
 
             $this->data['training_type'] = GetAll('training_type', array('is_deleted' => 'where/0'));
             $this->data['penyelenggara'] = GetAll('penyelenggara', array('is_deleted' => 'where/0'));
@@ -141,12 +154,13 @@ class form_training_group extends MX_Controller {
 
             if($this->form_validation->run() == FALSE)
             {
-            echo json_encode(array('st'=>0, 'errors'=>validation_errors('<div class="alert alert-danger" role="alert">', '</div>')));
+            //echo json_encode(array('st'=>0, 'errors'=>validation_errors('<div class="alert alert-danger" role="alert">', '</div>')));
+                redirect('form_training_group/input','refresh');
             }
             else
             {
                 $user_id= $this->input->post('emp');
-
+                $sess_id = $this->session->userdata('user_id');
                 $data = array(
                     'user_peserta_id' => implode(',',$this->input->post('peserta')),
                     'id_comp_session' => 1,
@@ -156,7 +170,7 @@ class form_training_group extends MX_Controller {
                     'user_app_lv2'          => $this->input->post('atasan2'),
                     'user_app_lv3'          => $this->input->post('atasan3'),
                     'created_on'            => date('Y-m-d',strtotime('now')),
-                    'created_by'            => $this->session->userdata('user_id'),
+                    'created_by'            => $sess_id,
                     );
 
                 $peserta_id = implode(',',$this->input->post('peserta'));
@@ -166,6 +180,9 @@ class form_training_group extends MX_Controller {
                     {
                          $training_id = $this->db->insert_id();
                          $user_app_lv1 = getValue('user_app_lv1', 'users_training_group', array('id'=>'where/'.$training_id));
+                         if($user_id!==$sess_id):
+                         $this->approval->by_admin('training_group', $training_id, $sess_id, $user_id, $this->detail_email($training_id));
+                         endif;
                          if(!empty($user_app_lv1)):
                             $this->approval->request('lv1', 'training_group', $training_id, $user_id, $this->detail_email($training_id));
                          else:
@@ -201,14 +218,25 @@ class form_training_group extends MX_Controller {
             $is_app = getValue('is_app_'.$type, 'users_training_group', array('id'=>'where/'.$id));
             $approval_status = $this->input->post('app_status_'.$type);
 
-           if ($this->form_training_group_model->update($id,$data)) {
-                return TRUE;
-            }
+           $this->form_training_group_model->update($id,$data);
 
             if($is_app==0){
                 $this->approval_mail($id, $approval_status);
             }else{
                 $this->update_approval_mail($id, $approval_status);
+            }
+
+             if($type !== 'hrd')
+            {
+                $pengaju_id = getValue('user_pengaju_id', 'users_training_group', array('id'=>'where/'.$id));
+                $lv = substr($type, -1)+1;
+                $lv_app = 'lv'.$lv;
+                $user_app = ($lv<4) ? getValue('user_app_'.$lv_app, 'users_training_group', array('id'=>'where/'.$id)):0;
+                if(!empty($user_app)):
+                    $this->approval->request($lv_app, 'training_group', $id, $pengaju_id, $this->detail_email($id));
+                else:
+                    $this->approval->request('hrd', 'training_group', $id, $pengaju_id, $this->detail_email($id));
+                endif;
             }
         }
     }
@@ -263,7 +291,7 @@ class form_training_group extends MX_Controller {
                 'sender_id' => get_nik($sender_id),
                 'receiver_id' => get_nik($peserta_id[$i]),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                'subject' => 'Pengajuan Training Group',
+                'subject' => 'Pengajuan Training Karyawan (Group)',
                 'email_body' => get_name($sender_id).' mengajukan permohonan pelatihan group untuk anda, untuk melihat detail silakan <a class="klikmail" href='.$url.'/'.$id.'>Klik Disini</a><br/>'.$this->detail_email($id),
                 'is_read' => 0,
             );
@@ -281,7 +309,7 @@ class form_training_group extends MX_Controller {
                 'sender_id' => get_nik($this->session->userdata('user_id')),
                 'receiver_id' => get_nik($pengaju_id),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                'subject' => 'Status Pengajuan Permintaan Training Group dari Atasan',
+                'subject' => 'Status Pengajuan Training Karyawan (Group) dari Atasan',
                 'email_body' => "Status pengajuan permohonan training anda $approval_status oleh $approver untuk detail silakan <a class='klikmail' href=$url>Klik disini</a><br/>".$this->detail_email($id),
                 'is_read' => 0,
             );
@@ -298,7 +326,7 @@ class form_training_group extends MX_Controller {
                 'sender_id' => get_nik($this->session->userdata('user_id')),
                 'receiver_id' => get_nik($pengaju_id),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                'subject' => 'Perubahan Status Pengajuan Permintaan Training  Groupdari Atasan',
+                'subject' => 'Perubahan Status Pengajuan Training Karyawan (Group) dari Atasan',
                 'email_body' => "$approver melakukan perubahan status permintaan training group anda, Status permintaan anda kini $approval_status, untuk detail silakan <a class='klikmail' href=$url>Klik disini</a><br/>".$this->detail_email($id),
                 'is_read' => 0,
             );

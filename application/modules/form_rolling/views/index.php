@@ -25,29 +25,145 @@
                   <?php } ?>
                 </div>
                   <div class="grid-body no-border">
-                        
+                          <?php if($_num_rows>0){?>
+                          <br/>   
+                          <?php echo form_open(site_url('form_rolling/keywords'))?>
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <div class="row">
+                                        <div class="col-md-3 search_label"><?php echo form_label('Nama','first_name')?></div>
+                                        <div class="col-md-9"><?php echo bs_form_input($ftitle_search)?></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <button type="submit" class="btn btn-info"><i class="icon-search"></i>&nbsp;<?php echo lang('search_button')?></button>
+                                        </div>
+                                    </div>
+                                </div>    
+                            </div>
+                        <?php echo form_close()?>    
                           <table class="table table-striped table-flip-scroll cf">
                               <thead>
                                 <tr>
-                                  <th width="15%">Nama</th>
+                                  <th width="15%">Nama Pengaju</th>
+                                  <th width="15%">Nama Karyawan</th>
                                   <th width="15%">Jabatan Lama</th>
-                                  <th width="15%">Tanggal Pengangkatan</th>
                                   <th width="15%">Jabatan Baru</th>
-                                  <th width="15%">Tanggal Pengangkatan</th>
-                                  <th width="10%">Approval</th>
+                                  <th width="15%">Tanggal rolling</th>
+                                  <th width="5%" class="text-center">appr. spv</th>
+                                  <th width="5%" class="text-center">appr. ka. bag</th>
+                                  <th width="5%" class="text-center">appr. Atasan Lainnya</th>
+                                  <th width="5%" class="text-center">appr. HRD</th>
+                                  <th width="5%" class="text-center">Cetak</th>
                                 </tr>
                               </thead>
                               <tbody>
+                                <?php
+                                  foreach($form_rolling as $user):
+                                  $txt_app_lv1 = $txt_app_lv2 = $txt_app_lv3 = $txt_app_hrd = "<i class='icon-minus' title = 'Pending'></i>";
+                                    $approval_status_lv1 = ($user->app_status_id_lv1 == 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($user->app_status_id_lv1 == 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
+                                    $approval_status_lv2 = ($user->app_status_id_lv2 == 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($user->app_status_id_lv2 == 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
+                                    $approval_status_lv3 = ($user->app_status_id_lv3 == 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($user->app_status_id_lv3 == 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
+                                    $approval_status_hrd = ($user->app_status_id_hrd == 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($user->app_status_id_hrd == 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
+                                    
+                    
+                                    //Approval Level 1
+                                    if(!empty($user->user_app_lv1) && $user->is_app_lv1 == 0 && $sess_nik == $user->user_app_lv1){
+                                        $txt_app_lv1 = "<a href='".site_url('form_rolling/detail/'.$user->id)."''>
+                                                        <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-edit'></i></button>
+                                                        </a>";
+                                      }elseif(!empty($user->user_app_lv1)){
+                                        $txt_app_lv1 = "<a href='".site_url('form_rolling/detail/'.$user->id)."''>$approval_status_lv1</a>";
+                                      }else{
+                                      $txt_app_lv1 = "<i class='icon-circle' title = 'Tidak Butuh Approval'></i>";
+                                    }
+                                    
+
+                                    //ApprovalLevel 2
+                                    
+                                    if(!empty($user->user_app_lv2) && $user->is_app_lv2 == 0 && $sess_nik == $user->user_app_lv2){
+                                        $txt_app_lv2 = "<a href='".site_url('form_rolling/detail/'.$user->id)."''>
+                                                        <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-edit'></i></button>
+                                                        </a>";
+                                      }elseif(!empty($user->user_app_lv2)){
+                                        $txt_app_lv2 = "<a href='".site_url('form_rolling/detail/'.$user->id)."''>$approval_status_lv2</a>";
+                                      }else{
+                                      $txt_app_lv2 = "<i class='icon-circle' title = 'Tidak Butuh Approval'></i>";
+                                    }
+
+                                    //Approval Level 3
+
+                                    if(!empty($user->user_app_lv3) && $user->is_app_lv3 == 0 && $sess_nik == $user->user_app_lv3){
+                                        $txt_app_lv3 = "<a href='".site_url('form_rolling/detail/'.$user->id)."''>
+                                                        <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-edit'></i></button>
+                                                        </a>";
+                                      }elseif(!empty($user->user_app_lv3)){
+                                        $txt_app_lv3 = "<a href='".site_url('form_rolling/detail/'.$user->id)."''>$approval_status_lv3</a>";
+                                      }else{
+                                      $txt_app_lv3 = "<i class='icon-circle' title = 'Tidak Butuh Approval'></i>";
+                                    }
+
+                                     //Approval HRD
+                                    if(is_admin()&&$user->is_app_hrd == 0){
+                                      $txt_app_hrd = "<a href='".site_url('form_rolling/detail/'.$user->id)."''>
+                                                      <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-edit'></i></button>
+                                                      </a>";
+                                    }elseif($user->is_app_hrd == 1){
+                                      $txt_app_hrd =  "<a href='".site_url('form_rolling/detail/'.$user->id)."''>$approval_status_hrd</a>";
+                                    }
+                                  ?>
                                   <tr>
-                                    <td><a href="<?php echo site_url('form_rolling/detail')?>">Wahyu Sucianto</a></td>
-                                    <td>Staff HRD</td>
-                                    <td>19-04-2010</td>
-                                    <td>Manajer HRD</td>
-                                    <td>05-05-2015</td>
-                                    <td><a href="<?php echo site_url('form_rolling/approval_hrd')?>">Ya</td>
+                                    <td><a href="<?php echo site_url('form_rolling/detail/'.$user->id)?>"><?php echo get_name($user->created_by)?></a></td>
+                                    <td><?php echo get_name($user->user_id)?></td>
+                                    <td><?php echo get_position_name($user->old_pos)?></td>
+                                    <td><?php echo get_position_name($user->new_pos)?></td>
+                                    <td><?php echo dateIndo($user->date_rolling)?></td>
+                                    <td class="text-center">
+                                      <?php echo $txt_app_lv1;?>
+                                    </td>
+                                    <td class="text-center">
+                                      <?php echo $txt_app_lv2; ?>
+                                    </td>
+                                    <td class="text-center">
+                                      <?php echo $txt_app_lv3; ?>
+                                    </td>
+                                    <td class="text-center">
+                                      <?php echo $txt_app_hrd; ?>
+                                    </td>
+                                    <td class="text-center">
+                                       <a href="<?php echo site_url('form_rolling/form_rolling_pdf/'.$user->id)?>"><i class="icon-print"></i></a>
+                                    </td>
                                   </tr> 
+                                <?php endforeach;}?>
                               </tbody>
                           </table>
+                          <?php if($_num_rows>0):?>
+                          <div class="row">
+                            <div class="col-md-4 page_limit">
+                                <?php echo form_open(uri_string());?>
+                                <?php 
+                                    $selectComponentData = array(
+                                        10  => '10',
+                                        25 => '25',
+                                        50 =>'50',
+                                        75 => '75',
+                                        100 => '100',);
+                                    $selectComponentJs = 'class="select2" onChange="this.form.submit()" id="limit"';
+                                    echo "Per page: ".form_dropdown('limit', $selectComponentData, $limit, $selectComponentJs);
+                                    echo '&nbsp;'.lang('found_subheading').'&nbsp;'.$num_rows_all.'&nbsp;'.'Pengajuan';
+                                ?>
+                                <?php echo form_close();?>
+                            </div>
+
+                            <div class="col-md-10">
+                              <ul class="dataTables_paginate paging_bootstrap pagination">
+                                  <?php echo $halaman;?>
+                              </ul>
+                            </div>
+                          </div>
+                        <?php endif; ?>
                   </div>
               </div>
           </div>

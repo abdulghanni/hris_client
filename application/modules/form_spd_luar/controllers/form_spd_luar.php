@@ -46,7 +46,7 @@ class Form_spd_luar extends MX_Controller {
             $this->data['ftitle_param'] = $ftitle; 
             $exp_ftitle = explode(":",$ftitle);
             $ftitle_re = str_replace("_", " ", $exp_ftitle[1]);
-            $ftitle_post = (strlen($ftitle_re) > 0) ? array('form_spd_luar.title'=>$ftitle_re) : array() ;
+            $ftitle_post = (strlen($ftitle_re) > 0) ? array('creator.username'=>$ftitle_re,'users.username'=>$ftitle_re) : array() ;
             
             //set default limit in var $config['list_limit'] at application/config/ion_auth.php 
             $this->data['limit'] = $limit = (strlen($this->input->post('limit')) > 0) ? $this->input->post('limit') : 10 ;
@@ -85,6 +85,19 @@ class Form_spd_luar extends MX_Controller {
         }
     }
 
+    function keywords(){
+        if (!$this->ion_auth->logged_in())
+        {
+            redirect('auth/login', 'refresh');
+        }
+        else
+        {
+            $ftitle_post = (strlen($this->input->post('title')) > 0) ? strtolower(url_title($this->input->post('title'),'_')) : "" ;
+
+            redirect('form_spd_luar/index/fn:'.$ftitle_post, 'refresh');
+        }
+    }
+
     function submit($id)
     {
 
@@ -102,7 +115,7 @@ class Form_spd_luar extends MX_Controller {
         
             
             $this->data['tc_id'] = $task_receiver_id = getValue('task_receiver', 'users_spd_luar', array('id' => 'where/'.$id));
-            $this->data['biaya_pjd'] = getJoin('users_spd_luar_biaya','pjd_biaya','users_spd_luar_biaya.pjd_biaya_id = pjd_biaya.id','left', 'users_spd_luar_biaya.*, pjd_biaya.title as jenis_biaya', array('user_spd_luar_id'=>'where/'.$id));
+            $this->data['biaya_pjd'] = getJoin('users_spd_luar_biaya','pjd_biaya','users_spd_luar_biaya.pjd_biaya_id = pjd_biaya.id','left', 'users_spd_luar_biaya.*, pjd_biaya.title as jenis_biaya, pjd_biaya.type_grade as type', array('user_spd_luar_id'=>'where/'.$id));
 
             $this->_render_page('form_spd_luar/submit', $this->data);
         }
@@ -543,80 +556,6 @@ class Form_spd_luar extends MX_Controller {
             $this->db->insert('email', $data);
     }
 
-    function get_biaya_pjd($id, $task_receiver_id)
-    {
-        $spd_id = getAll('users_spd_luar', array('id' => 'where/'.$id));
-        $grade = get_grade($task_receiver_id);
-        $pos_group = get_pos_group($task_receiver_id);
-
-        if($grade == 'G08' && $pos_group == 'AMD')
-        {
-            $biaya_pjd = array(
-                    'grade' => "$grade($pos_group)",
-                    'hotel' => 450000,
-                    'uang_makan' => 200000,
-                    'uang_saku' => 0
-                );
-
-            return $biaya_pjd;
-        }elseif($grade == 'G08' && $pos_group == 'MGR')
-        {
-            $biaya_pjd = array(
-                    'grade' => "$grade($pos_group)",
-                    'hotel' => 325000,
-                    'uang_makan' => 150000,
-                    'uang_saku' => 0,
-                );
-
-            return $biaya_pjd;
-        }elseif($grade == 'G08' && $pos_group == 'KACAB'){
-            $biaya_pjd = array(
-                    'grade' => "$grade($pos_group)",
-                    'hotel' => 400000,
-                    'uang_makan' => 150000,
-                    'uang_saku' => 0,
-                );
-
-            return $biaya_pjd;
-        }elseif($grade == 'G07'){
-            $biaya_pjd = array(
-                    'grade' => "$grade($pos_group)",
-                    'hotel' => 275000,
-                    'uang_makan' => 45000,
-                    'uang_saku' => 45000,
-                );
-
-            return $biaya_pjd;
-        }elseif($grade == 'G06' || $grade == 'G05'){
-            $biaya_pjd = array(
-                    'grade' => "$grade($pos_group)",
-                    'hotel' => 250000,
-                    'uang_makan' => 35000,
-                    'uang_saku' => 40000
-                );
-
-            return $biaya_pjd;
-        }elseif($grade == 'G04' || $grade == 'G03'){
-            $biaya_pjd = array(
-                    'grade' => "$grade($pos_group)",
-                    'hotel' => 200000,
-                    'uang_makan' => 30000,
-                    'uang_saku' => 35000,
-                );
-
-            return $biaya_pjd;
-        }elseif($grade == 'G02' || $grade == 'G01'){
-            $biaya_pjd = array(
-                    'grade' => "$grade($pos_group)",
-                    'hotel' => 200000,
-                    'uang_makan' => 30000,
-                    'uang_saku' => 30000,
-                );
-
-            return $biaya_pjd;
-        }
-    } 
-
     function get_penerima_tugas()
     {
             $user_id = $this->session->userdata('user_id');
@@ -721,8 +660,8 @@ class Form_spd_luar extends MX_Controller {
 
             $receiver_user_id = $this->db->where('id', $id)->get('users_spd_luar')->row('task_receiver');
             
-            $date_spd = date_create($this->db->where('id', $id)->get('users_spd_luar')->row('date_spd'));
-            $date_now = date_create(date('Y-m-d',strtotime('now')));
+            $date_spd = date_create($this->db->where('id', $id)->get('users_spd_luar')->row('date_spd_start'));
+            $date_now = date_create($this->db->where('id', $id)->get('users_spd_luar')->row('date_spd_end'));;
             $this->data['lama_pjd'] = date_diff($date_spd, $date_now)->days + 1;
 
             $data_result = $this->data['task_detail'] = $this->form_spd_luar_model->where('users_spd_luar.id',$id)->form_spd_luar($id)->result();
@@ -754,7 +693,7 @@ class Form_spd_luar extends MX_Controller {
             }}
 
 
-            return $this->load->view('form_spd_luar/spd_luar_report_email', $this->data, TRUE);
+            return $this->load->view('form_spd_luar/spd_luar_report_email', $this->data, true);
         }
     }
 

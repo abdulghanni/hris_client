@@ -18,14 +18,32 @@
                   <h4><?php echo lang('list_of_submission'); ?> <a href="<?php echo site_url('form_cuti')?>"><span class="semi-bold"><?php echo lang('form_cuti_subheading'); ?></span></a></h4>
                   <div class="tools"> 
                     <a href="<?php echo site_url('form_cuti/input'); ?>" class="config"></a>
-                  </div>
+                  </div>  
                   <div class="grid-body no-border">
+                            <br/>   
+                            <?php echo form_open(site_url('form_cuti/keywords'))?>
+                              <div class="row">
+                                  <div class="col-md-5">
+                                      <div class="row">
+                                          <div class="col-md-4 search_label"><?php echo form_label('Nama Pengaju','first_name')?></div>
+                                          <div class="col-md-8"><?php echo bs_form_input($ftitle_search)?></div>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-2">
+                                      <div class="row">
+                                          <div class="col-md-12">
+                                              <button type="submit" class="btn btn-info"><i class="icon-search"></i>&nbsp;<?php echo lang('search_button')?></button>
+                                          </div>
+                                      </div>
+                                  </div>    
+                              </div>
+                          <?php echo form_close()?>     
                           <table class="table table-striped table-flip-scroll cf">
                               <thead>
                                 <tr>
-                                  <th width="20%"><?php echo 'Nama Pengaju' ?></th>
+                                  <th width="15%"><?php echo 'Nama Pengaju' ?></th>
                                   <th width="15%"><?php echo lang('date_mulai_cuti') ?></th>
-                                  <th width="20%"><?php echo lang('reason') ?></th>
+                                  <th width="15%"><?php echo lang('reason') ?></th>
                                   <th width="10%"><?php echo lang('count_day') ?></th>
                                   <th width="10%" style="text-align:center;">appr. spv</th>
                                   <th width="10%" style="text-align:center;">appr. ka. bag</th>
@@ -84,11 +102,11 @@
                                   }
 
                                   //Approval HRD
-                                    if(is_admin()&&$user->is_app_lv3 == 0){
+                                    if(is_admin()&&$user->is_app_hrd == 0){
                                       $txt_app_hrd = "<a href='".site_url('form_cuti/detail/'.$user->id)."''>
                                                       <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-edit'></i></button>
                                                       </a>";
-                                    }elseif($user->is_app_lv3 == 1){
+                                    }elseif($user->is_app_hrd == 1){
                                       $txt_app_hrd =  "<a href='".site_url('form_cuti/detail/'.$user->id)."''>$approval_status_hrd</a>";
                                     }
 

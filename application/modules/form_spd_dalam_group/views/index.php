@@ -23,6 +23,24 @@
                 </div>
               </div>
                 <div class="grid-body no-border"> 
+                             <br/>   
+                            <?php echo form_open(site_url('form_spd_dalam_group/keywords'))?>
+                              <div class="row">
+                                  <div class="col-md-5">
+                                      <div class="row">
+                                          <div class="col-md-4 search_label"><?php echo form_label('Nama Pengaju','first_name')?></div>
+                                          <div class="col-md-8"><?php echo bs_form_input($ftitle_search)?></div>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-2">
+                                      <div class="row">
+                                          <div class="col-md-12">
+                                              <button type="submit" class="btn btn-info"><i class="icon-search"></i>&nbsp;<?php echo lang('search_button')?></button>
+                                          </div>
+                                      </div>
+                                  </div>    
+                              </div>
+                          <?php echo form_close()?>     
                         <table class="table table-striped table-flip-scroll cf">
                             <thead>
                               <tr>
@@ -49,9 +67,9 @@
                               if(empty($spd->user_app_lv1)){
                                  $txt_app_lv1 = "<i class='icon-circle' title = 'Tidak Butuh Approval'></i>";
                                 }elseif(!empty($spd->user_app_lv1 && $spd->is_app_lv1 == 1)){
-                                  $txt_app_lv1 = "<a href='".site_url('form_spd_dalam/submit/'.$spd->id)."''>$approval_status_lv2</a>";
+                                  $txt_app_lv1 = "<a href='".site_url('form_spd_dalam_group/submit/'.$spd->id)."''>$approval_status_lv2</a>";
                                 }elseif(!empty($spd->user_app_lv1) && $spd->is_app_lv1 == 0 && $sess_nik == $spd->user_app_lv1){
-                                  $txt_app_lv1 = "<a href='".site_url('form_spd_dalam/submit/'.$spd->id)."''>
+                                  $txt_app_lv1 = "<a href='".site_url('form_spd_dalam_group/submit/'.$spd->id)."''>
                                                   <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-edit'></i></button>
                                                   </a>";
                                 }
@@ -62,9 +80,9 @@
                               if(empty($spd->user_app_lv2)){
                                  $txt_app_lv2 = "<i class='icon-circle' title = 'Tidak Butuh Approval'></i>";
                                 }elseif(!empty($spd->user_app_lv2 && $spd->is_app_lv2 == 1)){
-                                  $txt_app_lv2 = "<a href='".site_url('form_spd_dalam/submit/'.$spd->id)."''>$approval_status_lv2</a>";
+                                  $txt_app_lv2 = "<a href='".site_url('form_spd_dalam_group/submit/'.$spd->id)."''>$approval_status_lv2</a>";
                                 }elseif(!empty($spd->user_app_lv2) && $spd->is_app_lv2 == 0 && $sess_nik == $spd->user_app_lv2){
-                                  $txt_app_lv2 = "<a href='".site_url('form_spd_dalam/submit/'.$spd->id)."''>
+                                  $txt_app_lv2 = "<a href='".site_url('form_spd_dalam_group/submit/'.$spd->id)."''>
                                                   <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-edit'></i></button>
                                                   </a>";
                                 }
@@ -74,20 +92,20 @@
                               if(empty($spd->user_app_lv3)){
                                  $txt_app_lv3 = "<i class='icon-circle' title = 'Tidak Butuh Approval'></i>";
                                 }elseif(!empty($spd->user_app_lv3 && $spd->is_app_lv3 == 1)){
-                                  $txt_app_lv3 = "<a href='".site_url('form_spd_dalam/submit/'.$spd->id)."''>$approval_status_lv3</a>";
+                                  $txt_app_lv3 = "<a href='".site_url('form_spd_dalam_group/submit/'.$spd->id)."''>$approval_status_lv3</a>";
                                 }elseif(!empty($spd->user_app_lv3) && $spd->is_app_lv3 == 0 && $sess_nik == $spd->user_app_lv3){
-                                  $txt_app_lv3 = "<a href='".site_url('form_spd_dalam/submit/'.$spd->id)."''>
+                                  $txt_app_lv3 = "<a href='".site_url('form_spd_dalam_group/submit/'.$spd->id)."''>
                                                   <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-edit'></i></button>
                                                   </a>";
                                 }
 
                               //Approval HRD
                                 if(is_admin()&&$spd->is_app_hrd == 0){
-                                  $txt_app_hrd = "<a href='".site_url('form_spd_dalam/submit/'.$spd->id)."''>
+                                  $txt_app_hrd = "<a href='".site_url('form_spd_dalam_group/submit/'.$spd->id)."''>
                                                   <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-edit'></i></button>
                                                   </a>";
                                 }elseif($spd->is_app_hrd == 1){
-                                  $txt_app_hrd =  "<a href='".site_url('form_spd_dalam/submit/'.$spd->id)."''>$approval_status_hrd</a>";
+                                  $txt_app_hrd =  "<a href='".site_url('form_spd_dalam_group/submit/'.$spd->id)."''>$approval_status_hrd</a>";
                                 }
 
                                 $peserta = getAll('users_spd_dalam_group', array('id'=>'where/'.$spd->id))->row('task_receiver');
@@ -104,7 +122,7 @@
                                   <td>
                                     <a href="<?php echo base_url() ?>form_spd_dalam_group/submit/<?php echo $spd->id ?>"><h4><?php echo $spd->title ?></h4>
                                       <div class="small-text-custom">
-                                        <span>Pemberi tugas : </span><?php echo $spd->creator ?><br/>
+                                        <span>Pemberi tugas : </span><?php echo get_name($spd->task_creator) ?><br/>
                                         <span>Penerima tugas : </span>
                                         <?php
                                           for($i=0;$i<sizeof($p);$i++):

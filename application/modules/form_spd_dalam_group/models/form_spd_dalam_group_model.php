@@ -304,20 +304,9 @@ class form_spd_dalam_group_model extends CI_Model
                 $this->tables['users_spd_dalam_group'].'.id as id',
                 $this->tables['users_spd_dalam_group'].'.id as form_spd_dalam_group_id',
             
-                $this->tables['users'].'.first_name as first_name',
-                $this->tables['users'].'.last_name as last_name',
-               'creator.username as creator',
-                $this->tables['users_employement'].'.position_id as position_id',
-                $this->tables['users_employement'].'.organization_id as organization_id',
-                $this->tables['users_employement'].'.seniority_date as seniority_date',
-                $this->tables['organization'].'.title as organization_title',
             ));
 
-            $this->db->join('users', 'users_spd_dalam_group.task_receiver = users.id', 'left');
-            $this->db->join('users as creator', 'users_spd_dalam_group.task_creator = creator.nik', 'left');
-            $this->db->join('users_employement', 'users.id = users_employement.user_id', 'left');
-            $this->db->join('organization', 'users_employement.organization_id = organization.id', 'left');
-            $this->db->join('position', 'users_employement.position_id = position.id', 'left');
+            $this->db->join('users', 'users_spd_dalam_group.task_creator = users.nik', 'left');
 
             if($id != null){
                 $this->db->where('users_spd_dalam_group.id', $id);
@@ -325,7 +314,9 @@ class form_spd_dalam_group_model extends CI_Model
             
             $this->db->where('users_spd_dalam_group.is_deleted', 0);
             if(!is_admin()){
-                $this->db->where("(users_spd_dalam_group.task_receiver like '%$sess_nik%' OR users_spd_dalam_group.task_creator = '$sess_nik' OR users_spd_dalam_group.created_by = '$sess_id' )",null, false);
+                $this->db->where("(users_spd_dalam_group.task_receiver like '%$sess_nik%' OR users_spd_dalam_group.task_creator = '$sess_nik' OR users_spd_dalam_group.created_by = '$sess_id' 
+                               OR users_spd_dalam_group.user_app_lv1 = '$sess_nik'  OR users_spd_dalam_group.user_app_lv2 = '$sess_nik'  OR users_spd_dalam_group.user_app_lv3 = '$sess_nik' 
+                    )",null, false);
             }
             $this->db->order_by('users_spd_dalam_group.id', 'desc');
         }
@@ -467,100 +458,6 @@ class form_spd_dalam_group_model extends CI_Model
         return $this;
     }
 
-   
-    public function get_emp_detail()
-    {
-        $this->trigger_events('form_spd_dalam_group');
-
-        if (isset($this->_ion_select) && !empty($this->_ion_select))
-        {
-            foreach ($this->_ion_select as $select)
-            {
-                $this->db->select($select);
-            }
-
-            $this->_ion_select = array();
-        }
-        else
-        {
-            //default selects
-            $this->db->select(array(
-                //$this->tables['users'].'.*',
-                //$this->tables['users'].'.id as id',
-                $this->tables['users'].'.id as user_id',
-
-                $this->tables['users'].'.first_name as first_name',
-                $this->tables['users'].'.last_name as last_name',
-                $this->tables['users'].'.username as user_name',
-                $this->tables['users'].'.nik as nik',
-                $this->tables['users_employement'].'.position_id as position_id',
-                $this->tables['users_employement'].'.organization_id as organization_id',
-                $this->tables['users_employement'].'.seniority_date as seniority_date',
-                $this->tables['organization'].'.title as organization_title',
-                $this->tables['position'].'.title as position_title'
-                
-            ));
-
-            $this->db->join('users_employement', 'users.id = users_employement.user_id', 'left');
-            $this->db->join('organization', 'users_employement.organization_id = organization.id', 'left');
-            $this->db->join('position', 'users_employement.position_id = position.id', 'left');
-
-            //$this->db->where('users.is_deleted', 0);
-        }
-
-        $this->trigger_events('extra_where');
-
-        //run each where that was passed
-
-        if (isset($this->_ion_where) && !empty($this->_ion_where))
-        {
-            foreach ($this->_ion_where as $where)
-            {
-                $this->db->where($where);
-            }
-
-            $this->_ion_where = array();
-        }
-
-        if (isset($this->_ion_like) && !empty($this->_ion_like))
-        {
-            foreach ($this->_ion_like as $like)
-            {
-                $this->db->or_like($like);
-            }
-
-            $this->_ion_like = array();
-        }
-
-        if (isset($this->_ion_limit) && isset($this->_ion_offset))
-        {
-            $this->db->limit($this->_ion_limit, $this->_ion_offset);
-
-            $this->_ion_limit  = NULL;
-            $this->_ion_offset = NULL;
-        }
-        else if (isset($this->_ion_limit))
-        {
-            $this->db->limit($this->_ion_limit);
-
-            $this->_ion_limit  = NULL;
-        }
-
-        //set the order
-        if (isset($this->_ion_order_by) && isset($this->_ion_order))
-        {
-            $this->db->order_by($this->_ion_order_by, $this->_ion_order);
-
-            $this->_ion_order    = NULL;
-            $this->_ion_order_by = NULL;
-        }
-
-        $this->response = $this->db->get($this->tables['users']);
-
-        return $this;
-    }
-
-
     public function render_session()
     {
          $this->trigger_events('form_spd_dalam_group_input');
@@ -638,179 +535,6 @@ class form_spd_dalam_group_model extends CI_Model
         }
 
         $this->response = $this->db->get($this->tables['comp_session']);
-
-        return $this;
-    }
-
-    public function render_emp()
-    {
-         $this->trigger_events('form_spd_dalam_group_input');
-
-        if (isset($this->_ion_select) && !empty($this->_ion_select))
-        {
-            foreach ($this->_ion_select as $select)
-            {
-                $this->db->select($select);
-            }
-
-            $this->_ion_select = array();
-        }
-        else
-        {
-            //default selects
-            $this->db->select(array(
-                //$this->tables['users'].'.*',
-                $this->tables['users'].'.id as id',
-                $this->tables['users'].'.id as user_id',
-
-                $this->tables['users'].'.first_name as first_name',
-                $this->tables['users'].'.last_name as last_name',
-                $this->tables['users'].'.username as user_name',
-                $this->tables['users_employement'].'.position_id as position_id',
-                $this->tables['users_employement'].'.organization_id as organization_id',
-                $this->tables['users_employement'].'.seniority_date as seniority_date',
-                $this->tables['organization'].'.title as organization_title',
-                $this->tables['position'].'.title as position_title'
-            ));
-
-            $this->db->join('users_employement', 'users.id = users_employement.user_id', 'left');
-            $this->db->join('organization', 'users_employement.organization_id = organization.id', 'left');
-            $this->db->join('position', 'users_employement.position_id = position.id', 'left');
-
-
-            //$this->db->where('users.is_deleted', 0);
-        }
-
-        $this->trigger_events('extra_where');
-
-        //run each where that was passed
-
-        if (isset($this->_ion_where) && !empty($this->_ion_where))
-        {
-            foreach ($this->_ion_where as $where)
-            {
-                $this->db->where($where);
-            }
-
-            $this->_ion_where = array();
-        }
-
-        if (isset($this->_ion_like) && !empty($this->_ion_like))
-        {
-            foreach ($this->_ion_like as $like)
-            {
-                $this->db->or_like($like);
-            }
-
-            $this->_ion_like = array();
-        }
-
-        if (isset($this->_ion_limit) && isset($this->_ion_offset))
-        {
-            $this->db->limit($this->_ion_limit, $this->_ion_offset);
-
-            $this->_ion_limit  = NULL;
-            $this->_ion_offset = NULL;
-        }
-        else if (isset($this->_ion_limit))
-        {
-            $this->db->limit($this->_ion_limit);
-
-            $this->_ion_limit  = NULL;
-        }
-
-        //set the order
-        if (isset($this->_ion_order_by) && isset($this->_ion_order))
-        {
-            $this->db->order_by($this->_ion_order_by, $this->_ion_order);
-
-            $this->_ion_order    = NULL;
-            $this->_ion_order_by = NULL;
-        }
-
-        $this->response = $this->db->get($this->tables['users']);
-
-
-        return $this;
-    }
-
-    public function get_org_id()
-    {
-        $this->trigger_events('form_spd_dalam_group_input');
-
-        if (isset($this->_ion_select) && !empty($this->_ion_select))
-        {
-            foreach ($this->_ion_select as $select)
-            {
-                $this->db->select($select);
-            }
-
-            $this->_ion_select = array();
-        }
-        else
-        {
-            //default selects
-            $this->db->select(array(
-                $this->tables['users'].'.*',
-                $this->tables['users'].'.id as id',
-                $this->tables['users'].'.id as user_id',
-
-                $this->tables['users_employement'].'.organization_id as organization_id',
-                $this->tables['organization'].'.title as title',
-            ));
-
-            $this->db->join('users_employement', 'users.id = users_employement.user_id', 'left');
-            $this->db->join('organization', 'users_employement.organization_id = organization.id', 'left');
-        }
-
-        $this->trigger_events('extra_where');
-
-        //run each where that was passed
-
-        if (isset($this->_ion_where) && !empty($this->_ion_where))
-        {
-            foreach ($this->_ion_where as $where)
-            {
-                $this->db->where($where);
-            }
-
-            $this->_ion_where = array();
-        }
-
-        if (isset($this->_ion_like) && !empty($this->_ion_like))
-        {
-            foreach ($this->_ion_like as $like)
-            {
-                $this->db->or_like($like);
-            }
-
-            $this->_ion_like = array();
-        }
-
-        if (isset($this->_ion_limit) && isset($this->_ion_offset))
-        {
-            $this->db->limit($this->_ion_limit, $this->_ion_offset);
-
-            $this->_ion_limit  = NULL;
-            $this->_ion_offset = NULL;
-        }
-        else if (isset($this->_ion_limit))
-        {
-            $this->db->limit($this->_ion_limit);
-
-            $this->_ion_limit  = NULL;
-        }
-
-        //set the order
-        if (isset($this->_ion_order_by) && isset($this->_ion_order))
-        {
-            $this->db->order_by($this->_ion_order_by, $this->_ion_order);
-
-            $this->_ion_order    = NULL;
-            $this->_ion_order_by = NULL;
-        }
-
-        $this->response = $this->db->get($this->tables['users']);
 
         return $this;
     }

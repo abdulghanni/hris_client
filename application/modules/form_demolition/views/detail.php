@@ -191,7 +191,7 @@
                       <span class="semi-bold"></span><br/>
                       <span class="semi-bold"><?php echo get_name($row->created_by)?></span><br/>
                       <span class="small"><?php echo dateIndo($row->created_on)?></span><br/>
-                      <span class="semi-bold"><?php echo get_user_position(get_nik($row->user_id))?></span>
+                      <span class="semi-bold"><?php echo get_user_position(get_nik($row->created_by))?></span>
                     </p>
                   </div>
 

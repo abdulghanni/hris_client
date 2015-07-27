@@ -129,8 +129,12 @@ $rejected = assets_url('img/rejected_stamp.png');?>
     </tr>
     <tr>
       <td width="250" align="center"></td>
+      <?php if(!empty($row->user_app_lv1)){?>
       <td width="250" align="center"><?php echo ($row->app_status_id_lv1 == 1)?"<img class=approval-img-md src=$approved>":(($row->app_status_id_lv1 == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
+      <?php }?>
+      <?php if(!empty($row->user_app_lv2)){?>
       <td width="250" align="center"><?php echo ($row->app_status_id_lv2 == 1)?"<img class=approval-img-md src=$approved>":(($row->app_status_id_lv2 == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
+      <?php }?>
       <td width="250" align="center"><?php echo ($row->app_status_id_hrd == 1)?"<img class=approval-img-md src=$approved>":(($row->app_status_id_hrd == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
     </tr>
     <tr>

@@ -191,27 +191,15 @@ $rejected = assets_url('img/rejected_stamp.png');
       <td width="250" align="center"><?php echo ($user->approval_status_id_hrd == 1)?"<img class=approval-img-md src=$approved>":(($user->approval_status_id_hrd == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
     </tr>
     <tr>
-    <?php if(!empty($user->user_app_lv1)){?>
       <td height="80" align="center" class="style3"><?php echo get_name($user->user_app_lv1)?></td>
-    <?php }?>
-    <?php if(!empty($user->user_app_lv2)){?>
       <td align="center" class="style3"><?php echo get_name($user->user_app_lv2)?></td>
-    <?php }?>
-    <?php if(!empty($user->user_app_lv3)){?>
       <td align="center" class="style3"><?php echo get_name($user->user_app_lv3)?></td>
-    <?php }?>
       <td align="center" class="style3"><?php echo get_name($user->user_app_hrd)?></td>
     </tr>
     <tr >
-    <?php if(!empty($user->user_app_lv1)){?>
       <td align="center"><?php echo dateIndo($user->date_app_lv1)?><br/>(Supervisor)</td>
-    <?php }?>
-    <?php if(!empty($user->user_app_lv2)){?>
       <td align="center"><?php echo dateIndo($user->date_app_lv2)?><br/>(Ka. Bagian)</td>
-      <?php }?>
-    <?php if(!empty($user->user_app_lv3)){?>
-      <td align="center"><?php echo dateIndo($user->date_app_lv3)?><br/><?php echo '('.get_user_position($user->user_app_lv3).')'?></td>
-    <?php } ?>
+      <td align="center"><?php echo dateIndo($user->date_app_lv3)?><?php if(!empty($user->user_app_lv3)):?><br/><?php echo '('.get_user_position($user->user_app_lv3).')';endif;?></td>
       <td align="center"><?php echo dateIndo($user->date_app_hrd)?><br/>(HRD)</td>
     </tr>
   </tbody>

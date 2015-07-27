@@ -22,6 +22,12 @@
   font-size: 14px;
   font-weight: bold;
 }
+
+.approval-img-md{
+    height:12%;
+    width:15%;
+    z-index:-1;
+  }
 -->
 </style>
 </head>
@@ -31,7 +37,9 @@
   <!-- <p align="left"><img src="<?php echo assets_url('img/erlangga.jpg')?>" width="296" height="80" /></p>-->
   <p align="center" class="style6">Form Pengajuan Rekomendasi Karyawan Keluar</p>
 </div>
-<?php foreach($form_exit->result() as $row):?>
+<?php foreach($form_exit->result() as $row):
+$approved = assets_url('img/approved_stamp.png');
+$rejected = assets_url('img/rejected_stamp.png');?>
 <table width="988" height="135" border="0" align="center" style="padding-left:30px">
   <tr>
     <td width="220" height="30"><span class="style3">NIK</span></td>
@@ -90,11 +98,18 @@
 <table width="1000" align="center">
   <tbody>
     <tr>
-      <th width="200" height="250"></th>
+      <th width="200" height="50"></th>
       <th width="200">&nbsp;&nbsp;&nbsp;&nbsp;Mengetahui,</th>
       <th width="200"></th>
       <th width="200"></th>
       <th width="200"></th>
+    </tr>
+    <tr>
+      <td align="center"><?php echo ($row->app_status_id_mgr == 1)?"<img class=approval-img-md src=$approved>":(($row->app_status_id_mgr == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
+      <td align="center"><?php echo ($row->app_status_id_koperasi == 1)?"<img class=approval-img-md src=$approved>":(($row->app_status_id_koperasi == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
+      <td align="center"><?php echo ($row->app_status_id_perpus == 1)?"<img class=approval-img-md src=$approved>":(($row->app_status_id_perpus == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
+      <td align="center"><?php echo ($row->app_status_id_hrd == 1)?"<img class=approval-img-md src=$approved>":(($row->app_status_id_hrd == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
+      <td align="center"><?php echo ($row->app_status_id_it == 1)?"<img class=approval-img-md src=$approved>":(($row->app_status_id_it == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
     </tr>
     <tr>
       <td height="80" align="center"><?php echo get_name($row->user_app_mgr)?><br/><?php echo dateIndo($row->date_app_mgr)?></td>
@@ -113,8 +128,34 @@
   </tbody>
 </table>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<?php if(!empty($row->user_app_asset)):?>
+<table width="1000" align="center">
+  <tbody>
+    <tr>
+      <td></td>
+      <td></td>
+      <td align="center"><?php echo ($row->app_status_id_asset == 1)?"<img class=approval-img-md src=$approved>":(($row->app_status_id_asset == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td height="80" align="center"></td>
+      <td align="center"></td>
+      <td align="center"><?php echo get_name($row->user_app_asset)?><br/><?php echo dateIndo($row->date_app_asset)?></td>
+      <td align="center"></td>
+      <td align="center"></td>
+    </tr>
+    <tr >
+      <td align="center"></td>
+      <td align="center"></td>
+      <td align="center">Asset Management</td>
+      <td align="center"></td>
+      <td align="center"></td>
+    </tr>
+  </tbody>
+</table>
+<?php endif ?>
+<pagebreak>
 <p class="style7">Kami rekomendasikan kepada karyawan tersebut </p>
 <table width="1000" align="center">
   <tbody>
@@ -219,7 +260,12 @@
       <td width="333" align="center">Mengetahui/Menyetujui,</td>
     </tr>
     <tr>
-      <td height="117" align="center"><?php echo get_name($row->created_by)?><br/><?php echo dateIndo($row->created_on)?></td>
+      <td></td>
+      <td align="center"><?php echo ($row->app_status_id_lv1 == 1)?"<img class=approval-img-md src=$approved>":(($row->app_status_id_lv1 == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
+      <td align="center"><?php echo ($row->app_status_id_lv2 == 1)?"<img class=approval-img-md src=$approved>":(($row->app_status_id_lv2 == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
+    </tr>
+    <tr>
+      <td align="center"><?php echo get_name($row->created_by)?><br/><?php echo dateIndo($row->created_on)?></td>
       <td align="center"><?php echo get_name($row->user_app_lv1)?><br/><?php echo dateIndo($row->date_app_lv1)?></td>
       <td align="center"><?php echo get_name($row->user_app_lv2)?><br/><?php echo dateIndo($row->date_app_lv2)?></td>
     </tr>
@@ -241,7 +287,11 @@
       <td width="333" align="center"></td>
     </tr>
     <tr>
-      <td height="117" align="center"></td>
+      <td></td>
+      <td align="center"><?php echo ($row->app_status_id_lv3 == 1)?"<img class=approval-img-md src=$approved>":(($row->app_status_id_lv3 == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
+      <td></td>
+    <tr>
+      <td align="center"></td>
       <td align="center"><?php echo get_name($row->user_app_lv3)?><br/><?php echo dateIndo($row->date_app_lv3)?></td>
       <td align="center"></td>
     </tr>

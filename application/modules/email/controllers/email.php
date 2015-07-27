@@ -144,6 +144,20 @@ class Email extends MX_Controller {
         }
     }
 
+    function keywords()
+    {
+        if (!$this->ion_auth->logged_in())
+        {
+            redirect('auth/login', 'refresh');
+        }
+        else
+        {
+            $ftitle_post = (strlen($this->input->post('email_subject')) > 0) ? strtolower(url_title($this->input->post('email_subject'),'_')) : "" ;
+
+            redirect('email/index/fn:'.$ftitle_post, 'refresh');
+        }
+    }
+
     function detail($id)
     {
         if (!$this->ion_auth->logged_in())

@@ -82,6 +82,7 @@ $config['tables']['users_resignment']  = 'users_resignment';
 $config['tables']['alasan_resign']  = 'alasan_resign';
 $config['tables']['users_promosi']  = 'users_promosi';
 $config['tables']['users_demolition']  = 'users_demolition';
+$config['tables']['users_rolling']  = 'users_rolling';
 $config['tables']['users_exit']  = 'users_exit';
 
 /*

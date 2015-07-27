@@ -43,7 +43,7 @@
       </div>
 
       <div class="btn-group pull-right" style="margin-top:15px;">
-        <a class="btn btn-primary" href="#"><i class="icon-gear"></i> Profile</a>
+        <a class="btn btn-primary" href="#"><i class="icon-gear"></i></a>
         <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
           <span class="icon-caret-down"></span></a>
         <ul class="dropdown-menu">
@@ -51,7 +51,7 @@
           <li><a href="<?php echo site_url('email')?>"><i class="icon-fixed-width icon-envelope"></i> Mail  <span class="badge" id="msgs-badge"><?php echo $email_unread; ?></span></a></li>
           
           <li class="divider"></li>
-          <li><a href="<?php echo site_url('auth/logout')?>"><i class="icon-fixed-width icon-sign-out"></i> Sign Out</a></li>
+          <li><a href="<?php echo site_url('auth/logout')?>"><i class="icon-fixed-width icon-signout"></i> Sign Out</a></li>
         </ul>
       </div>
 

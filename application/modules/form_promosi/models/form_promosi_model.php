@@ -320,6 +320,7 @@ class Form_promosi_model extends CI_Model
                 'status_hrd.title as approval_status_hrd',
             ));
             $this->db->join('users', 'users.id = users_promosi.user_id', 'LEFT');
+            $this->db->join('users as creator', 'creator.id = users_promosi.created_by', 'LEFT');
             $this->db->join('approval_status as status_lv1', 'users_promosi.app_status_id_lv1 = status_lv1.id', 'left');
             $this->db->join('approval_status as status_lv2', 'users_promosi.app_status_id_lv2 = status_lv2.id', 'left');
             $this->db->join('approval_status as status_lv3', 'users_promosi.app_status_id_lv3 = status_lv3.id', 'left');
