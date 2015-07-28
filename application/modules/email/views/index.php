@@ -14,13 +14,12 @@
   <div class="content">    
     <div class="tabbable tabs-top">
       <ul class="nav nav-tabs" id="tab-1">
-        <li class="active"><a href="#">Inbox</a></li>
+        <li class="active"><a href="<?php echo site_url('email')?>">Inbox</a></li>
         <li><a href="<?php echo site_url('email/sent')?>">Sent</a></li>
       </ul>
       <div class="tab-content">
         <div class="tab-pane active" id="tabpersonnel">
-          <div id="email-list">    
-           <?php if($_num_rows > 0) { ?>   
+          <div id="email-list">
            <div class="row">
                 <div class="col-md-6">
                 <h4><?php echo lang('search_of_subheading')?>&nbsp;<span class="semi-bold"><?php echo 'Email';?></span></h4>
@@ -29,10 +28,9 @@
             <?php echo form_open(site_url('email/keywords'))?>
 
                 <div class="row">
-                    <div class="col-md-5">
+                    <div class="col-md-7">
                         <div class="row">
-                            <div class="col-md-3 search_label"><?php echo form_label('Email Subject','first_name')?></div>
-                            <div class="col-md-9"><input type="text" class="form-control" name="email_subject" /></div>
+                            <div class="col-md-12"><input type="text" class="form-control" placeholder="Cari nama pengirim atau subjek email" name="email_subject" /></div>
                         </div>
                     </div>
                     <div class="col-md-2">
@@ -63,7 +61,9 @@
               </tr>
               </thead>
               <tbody>
-              <?php foreach ($email as $row):?>
+              <?php 
+              if($_num_rows > 0) {
+              foreach ($email as $row):?>
               <tr id="<?php echo $row->id?>" <?php if($row->is_read == 0){?>style="background-color: #ffffcc;border: medium none;"<?php } ?>>
                <td valign="middle" class="small-cell">
                 <div class="checkbox check-success ">

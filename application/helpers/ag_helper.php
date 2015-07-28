@@ -128,6 +128,22 @@
 		}
 	}
 
+	if (!function_exists('send_email_activation'))
+	{	
+		function is_registered($nik)
+		{
+			$CI =& get_instance();
+
+			$num_rows = getAll('users', array('nik'=>'where/'.$nik))->num_rows();
+
+			if($num_rows>0){
+				return true;
+			}else{
+				return false;
+			}
+		}
+	}
+
 	//TO SEND EMAIL NOTIFICATION WHEN USER REGISTER
 	if (!function_exists('send_email_activation'))
 	{	

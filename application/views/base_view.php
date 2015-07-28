@@ -21,6 +21,7 @@
         <?php echo $css; ?>
         <link rel="stylesheet" href="<?php echo assets_url('css/style.css'); ?>">
         <link rel="stylesheet" href="<?php echo assets_url('css/responsive.css'); ?>">
+        <link rel="stylesheet" href="<?php echo assets_url('css/animate.min.css'); ?>">
         <link rel="stylesheet" href="<?php echo assets_url('css/custom-icon-set.css'); ?>" type="text/css"/>
         
         <!-- / -->

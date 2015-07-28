@@ -42,7 +42,7 @@ class Email extends MX_Controller {
         $this->data['ftitle_param'] = $ftitle; 
         $exp_ftitle = explode(":",$ftitle);
         $ftitle_re = str_replace("_", " ", $exp_ftitle[1]);
-        $ftitle_post = (strlen($ftitle_re) > 0) ? array('email.subject'=>$ftitle_re) : array() ;
+        $ftitle_post = (strlen($ftitle_re) > 0) ? array('email.subject'=>$ftitle_re, 'users.username'=>$ftitle_re) : array() ;
         
         //set default limit in var $config['list_limit'] at application/config/ion_auth.php 
         $this->data['limit'] = $limit = (strlen($this->input->post('limit')) > 0) ? $this->input->post('limit') : 10 ;
