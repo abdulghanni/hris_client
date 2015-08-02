@@ -218,9 +218,13 @@ class Form_recruitment extends MX_Controller {
                 {
                      $recruitment_id = $this->db->insert_id();
                      $user_app_lv1 = getValue('user_app_lv1', 'users_recruitment', array('id'=>'where/'.$recruitment_id));
+                     $isi_email = get_name($user_id).' mengajukan Permohonan recruitment, untuk melihat detail silakan <a href='.base_url().'form_recruitment/detail/'.$recruitment_id.'>Klik Disini</a><br />';
+
                      if(!empty($user_app_lv1)):
+                        if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), 'Pengajuan Permohonan Recruitment', $isi_email);
                         $this->approval->request('lv1', 'recruitment', $recruitment_id, $user_id, $this->detail_email($recruitment_id));
                      else:
+                        if(!empty(getEmail(1)))$this->send_email(getEmail(1), 'Pengajuan Permohonan Recruitment', $isi_email);
                         $this->approval->request('hrd', 'recruitment', $recruitment_id, $user_id, $this->detail_email($recruitment_id));
                      endif;
                      redirect('form_recruitment','refresh');
@@ -274,19 +278,27 @@ class Form_recruitment extends MX_Controller {
             );
             $approval_status = $this->input->post('app_status_'.$type);
             $this->recruitment_model->update($id,$data);
+            $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
             $user_recruitment_id = getValue('user_id', 'users_recruitment', array('id'=>'where/'.$id));
-            if($is_app==0){
+            $isi_email = 'Status pengajuan recruitment anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_recruitment/detail/'.$id.'>Klik Disini</a><br />';
+            $isi_email_request = get_name($user_recruitment_id).' mengajukan Permohonan recruitment, untuk melihat detail silakan <a href='.base_url().'form_recruitment/detail/'.$id.'>Klik Disini</a><br />';
+            
+           if($is_app==0){
                 $this->approval->approve('recruitment', $id, $approval_status, $this->detail_email($id));
+                if(!empty(getEmail($user_recruitment_id)))$this->send_email(getEmail($user_recruitment_id), 'Status Pengajuan Permohonan Recruitment dari Atasan', $isi_email);
             }else{
                 $this->approval->update_approve('recruitment', $id, $approval_status, $this->detail_email($id));
+                if(!empty(getEmail($user_recruitment_id)))$this->send_email(getEmail($user_recruitment_id), 'Perubahan Status Pengajuan Permohonan Recruitment dari Atasan', $isi_email);
             }
             if($type !== 'hrd'){
                 $lv = substr($type, -1)+1;
                 $lv_app = 'lv'.$lv;
                 $user_app = ($lv<4) ? getValue('user_app_'.$lv_app, 'users_recruitment', array('id'=>'where/'.$id)):0;
                 if(!empty($user_app)):
+                    if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), 'Pengajuan Permohonan Recruitment', $isi_email_request);
                     $this->approval->request($lv_app, 'recruitment', $id, $user_recruitment_id, $this->detail_email($id));
                 else:
+                    if(!empty(getEmail(1)))$this->send_email(getEmail(1), 'Pengajuan Permohonan Recruitment', $isi_email_request);
                     $this->approval->request('hrd', 'recruitment', $id, $user_recruitment_id, $this->detail_email($id));
                 endif;
             }
@@ -470,28 +482,37 @@ class Form_recruitment extends MX_Controller {
         }
     }
 
-    function _get_csrf_nonce()
+    function send_email($email, $subject, $isi_email)
     {
-        $this->load->helper('string');
-        $key   = random_string('alnum', 8);
-        $value = random_string('alnum', 20);
-        $this->session->set_flashdata('csrfkey', $key);
-        $this->session->set_flashdata('csrfvalue', $value);
 
-        return array($key => $value);
-    }
-
-    function _valid_csrf_nonce()
-    {
-        if ($this->input->post($this->session->flashdata('csrfkey')) !== FALSE &&
-            $this->input->post($this->session->flashdata('csrfkey')) == $this->session->flashdata('csrfvalue'))
-        {
-            return TRUE;
-        }
-        else
-        {
-            return FALSE;
-        }
+        $config = Array(
+                    'protocol' => 'smtp',
+                    'smtp_host' => 'mail.erlangga.co.id',
+                    'smtp_port' => 587,
+                    'smtp_user' => 'ax.hrd@erlangga.co.id', 
+                    'smtp_pass' => 'erlangga', 
+                    'mailtype' => 'html',
+                    'charset' => 'iso-8859-1',
+                    'wordwrap' => TRUE
+                    );
+ 
+       $this->load->library('email', $config);
+       $this->email->set_newline("\r\n");  
+       $this->email->from('ax.hrd@erlangga.co.id', 'HRIS-Erlangga');
+       $this->email->to($email);
+       $this->email->subject($subject);
+       $this->email->message($isi_email);
+     
+         if($this->email->send())
+         {
+           return true;
+           //return $this->email->print_debugger();
+         }
+         else
+         {
+          return false;
+          //return $this->email->print_debugger();
+         }
     }
 
     function _render_page($view, $data=null, $render=false)

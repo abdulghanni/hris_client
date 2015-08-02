@@ -95,17 +95,6 @@
                             <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Tujuan pelatihan" value="<?php echo $user->tujuan_training?>" disabled="disabled">
                           </div>
                         </div>
-                        <?php if(!empty($user->approval_status_id_lv1)){?>
-                        <div class="row form-row">
-                          <div class="col-md-3">
-                            <label class="form-label text-right">Approval Status(Supervisor)</label>
-                          </div>
-                          <div class="col-md-9">
-                            <input name="" id="alamat_training" type="text"  class="form-control" placeholder="Nama" value="<?php echo $user->approval_status_lv1; ?>" disabled="disabled">
-                          </div>
-                        </div>
-                        <?php } ?>
-
                         <?php if(!empty($user->note_app_lv1)){?>
                         <div class="row form-row">
                           <div class="col-md-3">
@@ -117,17 +106,6 @@
                         </div>
                         <?php } ?>
 
-                        <?php if(!empty($user->approval_status_id_lv2)){?>
-                        <div class="row form-row">
-                          <div class="col-md-3">
-                            <label class="form-label text-right">Approval Status(Ka. Bagian)</label>
-                          </div>
-                          <div class="col-md-9">
-                            <input name="" id="alamat_training" type="text"  class="form-control" placeholder="Nama" value="<?php echo $user->approval_status_lv2; ?>" disabled="disabled">
-                          </div>
-                        </div>
-                        <?php } ?>
-
                         <?php if(!empty($user->note_app_lv2)){?>
                         <div class="row form-row">
                           <div class="col-md-3">
@@ -135,17 +113,6 @@
                           </div>
                           <div class="col-md-9">
                             <textarea name="" class="custom-txtarea-form"  disabled="disabled"><?php echo $user->note_app_lv2?></textarea>
-                          </div>
-                        </div>
-                        <?php } ?>
-
-                        <?php if(!empty($user->approval_status_id_lv3)){?>
-                        <div class="row form-row">
-                          <div class="col-md-3">
-                            <label class="form-label text-right">Approval Status(Atasan Lainnya)</label>
-                          </div>
-                          <div class="col-md-9">
-                            <input name="" id="alamat_training" type="text"  class="form-control" placeholder="Nama" value="<?php echo $user->approval_status_lv3; ?>" disabled="disabled">
                           </div>
                         </div>
                         <?php } ?>
@@ -307,18 +274,7 @@
                           </div>
                         </div>
                       </div>
-
-                      <?php if(!empty($user->approval_status_id_hrd)){?>
-                      <div class="row form-row">
-                        <div class="col-md-2">
-                          <label class="form-label text-right">Approval Status(HRD)</label>
-                        </div>
-                        <div class="col-md-7">
-                          <input name="" id="alamat_training" type="text"  class="form-control" placeholder="Nama" value="<?php echo $user->approval_status_hrd; ?>" disabled="disabled">
-                        </div>
-                      </div>
-                      <?php } ?>
-
+                      
                       <?php if(!empty($user->note_app_hrd)){?>
                       <div class="row form-row">
                         <div class="col-md-2">

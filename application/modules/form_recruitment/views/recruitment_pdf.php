@@ -16,7 +16,10 @@
 </style>
 </head>
 <body>
-<h2 align="center">Formulir Permintaan SDM Baru</h2>
+<div align="center">
+  <p align="left"><img src="<?php echo assets_url('img/erlangga.jpg')?>"/></p>
+  <p align="center" class="style6">Formulir Permintaan SDM Baru</p>
+</div>
 <?php foreach($form_recruitment->result() as $row):
 $approved = assets_url('img/approved_stamp.png');
 $rejected = assets_url('img/rejected_stamp.png');

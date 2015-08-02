@@ -196,6 +196,23 @@
 		}
 	}
 
+	if (!function_exists('getEmail'))
+	{
+		function getEmail($id)
+		{
+			$by_nik = getValue('email', 'users', array('nik'=> 'where/'.$id));
+			$by_id = getValue('email', 'users', array('id'=> 'where/'.$id));
+
+			if(!empty($by_nik)){
+				return $by_nik;
+			}elseif(empty($by_nik)&&!empty($by_id)){
+				return $by_id;
+			}else{
+				return false;
+			}
+		}
+	}
+
 	if (!function_exists('get_id_by_email'))
 	{	
 		function get_id_by_email($email)

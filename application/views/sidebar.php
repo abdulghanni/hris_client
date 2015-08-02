@@ -66,14 +66,15 @@
           <li > <a href="datatables.html">Parameter pengaturan </a> </li>
         </ul>
       </li> -->
-      <?php if(is_admin_bagian()){?>
+      <?php if(is_admin_bagian()||is_admin()){?>
       <li class=""> <a href="javascript:;"> <i class="icon-group"></i> <span class="title">Manage Company</span> <span class="arrow "></span> </a>
         <ul class="sub-menu">
           <!--<li > <a href="<?php echo site_url('comp_session')?>">Company Session</a> </li>
           <li > <a href="<?php echo site_url('organization')?>">Organization</a> </li>
           <li > <a href="<?php echo site_url('position')?>">Position</a> </li>
           <!--<li > <a href="<?php echo site_url('library_table')?>">Library Reference Table</a> </li>-->
-          <li ><a href="<?php echo site_url('inventory')?>"><i class="icon-briefcase"></i> Inventaris</a> </li>
+          <?php if(is_admin_bagian()):?><li ><a href="<?php echo site_url('inventory')?>"><i class="icon-briefcase"></i> Inventaris</a> </li><?php endif?>
+          <?php if(is_admin()):?><li ><a href="<?php echo site_url('approval')?>"> Approval</a> </li><?php endif?>
         </ul>
       </li>  
       <?php } ?>    

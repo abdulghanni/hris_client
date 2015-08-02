@@ -13,8 +13,10 @@
 </head>
 
 <body>
-<h2 style="text-align:center">Form Permintaan Pelatihan</h2>
-<p>&nbsp;</p>
+<div align="center">
+  <p align="left"><img src="<?php echo assets_url('img/erlangga.jpg')?>"/></p>
+  <p align="center" class="style6">Form Permintaan Pelatihan</p>
+</div>
 <table width="1000" border="1" align="center">
 <?php
 foreach($form_training as $user):

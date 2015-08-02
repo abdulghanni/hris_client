@@ -159,9 +159,9 @@
                       <span class="small"></span><br/>
                       <span class="small"></span><br/>
                       <span class="semi-bold"></span><br/>
-                      <span class="semi-bold"><?php echo get_name($row->created_by)?></span><br/>
+                      <span class="semi-bold"><?php echo get_name($row->user_id)?></span><br/>
                       <span class="small"><?php echo dateIndo($row->created_on)?></span><br/>
-                      <span class="semi-bold"><?php echo get_user_position(get_nik($row->created_by))?></span>
+                      <span class="semi-bold"><?php echo get_user_position(get_nik($row->user_id))?></span>
                     </p>
                   </div>
 
@@ -467,6 +467,67 @@
         <form class="form-no-horizontal-spacing"  id="formAppHrd">
             <div class="row form-row">
               <div class="col-md-12">
+                <label class="form-label text-left">Alasan Berhenti Bekerja</label>
+              </div>
+            
+              <div class="col-md-12">
+                <div class="checkbox check-primary checkbox-circle" >
+                    <?php
+                      if($alasan_resign->num_rows()>0){
+                          foreach($alasan_resign->result() as $alasan):?>
+
+                    <input name="alasan_resign_id[]" id="alasan-<?php echo $alasan->id?>" class="checkbox1" type="checkbox" value="<?php echo $alasan->id?>">
+                    <label for="alasan-<?php echo $alasan->id?>"><?php echo $alasan->title?></label>
+                    <?php endforeach;}?>
+                  </div>
+                </div>
+
+            
+              <div class="col-md-12">
+                <label class="form-label text-left">Apa alasan utama berhenti bekerja dari perusahaan ini? Jelaskan</label>
+              </div>
+            
+              <div class="col-md-12">
+                <textarea id="text-editor" placeholder="Enter text ..." class="form-control" rows="3" name="desc_resign" required></textarea>
+              </div>
+
+            
+              <div class="col-md-12">
+                <label class="form-label text-left">Adakah prosedur perusahaan yang membuat anda tidak nyaman atau tidak bisa maksimum menjalankan tugasnya?</label>
+              </div>
+            
+              <div class="col-md-12">
+                <textarea id="text-editor" placeholder="Enter text ..." class="form-control" rows="3" name="procedure_resign" required></textarea>
+              </div>
+
+            
+              <div class="col-md-12">
+                <label class="form-label text-left">Adakah hal yang memuaskan dari pekerjaan anda sekarang?</label>
+              </div>
+            
+              <div class="col-md-12">
+                <textarea id="text-editor" placeholder="Enter text ..." class="form-control" rows="3" name="kepuasan_resign" required></textarea>
+              </div>
+
+            
+              <div class="col-md-12">
+                <label class="form-label text-left">Adakah saran untuk kami?</label>
+              </div>
+            
+              <div class="col-md-12">
+                <textarea id="text-editor" placeholder="Enter text ..." class="form-control" rows="3" name="saran_resign" required></textarea>
+              </div>
+
+            
+              <div class="col-md-12">
+                <label class="form-label text-left">Apakah anda mempertimbangkan di masa datang untuk kembali bekerja di perusahaan ini? ?</label>
+              </div>
+            
+              <div class="col-md-12">
+                <textarea id="text-editor" placeholder="Enter text ..." class="form-control" rows="3" name="rework_resign" required></textarea>
+              </div>
+            
+              <div class="col-md-12">
                 <label class="form-label text-left">Status Approval </label>
               </div>
               <div class="col-md-12">
@@ -484,15 +545,13 @@
                     <?php } ?>
                 </div>
               </div>
-            </div>
-            <div class="row form-row">
+            
               <div class="col-md-12">
                 <label class="form-label text-left">Note (HRD) : </label>
               </div>
               <div class="col-md-12">
                 <textarea name="note_hrd" class="custom-txtarea-form" placeholder="Note HRD isi disini"><?php echo $row->note_hrd?></textarea>
               </div>
-            </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="icon-remove"></i>&nbsp;<?php echo lang('close_button')?></button> 

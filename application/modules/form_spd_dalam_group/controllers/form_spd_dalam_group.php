@@ -170,16 +170,23 @@ class Form_spd_dalam_group extends MX_Controller {
         );
         
         $this->form_spd_dalam_group_model->update($id,$data);
+        $creator_id = getValue('task_creator', 'users_spd_dalam_group', array('id'=>'where/'.$id));
+        $isi_email = 'Status pengajuan perjalan dinas dalam kota anda disetujui oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_spd_dalam_group/submit/'.$id.'>Klik Disini</a><br />';
+        $isi_email_request = get_name(creator_id ).' mengajukan Permohonan perjalan dinas dalam kota, untuk melihat detail silakan <a href='.base_url().'form_spd_dalam_group/submit/'.$id.'>Klik Disini</a><br />';  
         $approval_status = 1;
         $this->approval->approve('spd_dalam_group', $id, $approval_status, $this->detail_email_submit($id));
+        if(!empty(getEmail(creator_id )))$this->send_email(getEmail(creator_id ), 'Status Pengajuan Permohonan Perjalan Dinas Dalam Kota (Group) dari Atasan', $isi_email);
+        
         if($type !== 'hrd'){
         $lv = substr($type, -1)+1;
         $lv = 'lv'.$lv;
         $user_app = getValue('user_app_'.$lv, 'users_spd_dalam_group', array('id'=>'where/'.$id));
         $user_spd_dalam_group_id = getValue('task_creator', 'users_spd_dalam_group', array('id'=>'where/'.$id));
         if(!empty($user_app)):
+            if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), 'Pengajuan Perjalanan Dinas Dalam Kota (Group)', $isi_email_request);
             $this->approval->request($lv, 'spd_dalam_group', $id, $user_spd_dalam_group_id, $this->detail_email_submit($id));
         else:
+            if(!empty(getEmail(1)))$this->send_email(getEmail(1), 'Pengajuan Perjalanan Dinas Dalam Kota (Group)', $isi_email_request);
             $this->approval->request('hrd', 'spd_dalam_group', $id, $user_spd_dalam_group_id, $this->detail_email_submit($id));
         endif;
         }
@@ -250,12 +257,16 @@ class Form_spd_dalam_group extends MX_Controller {
             {
                 $spd_id = $this->db->insert_id();
                 $user_app_lv1 = getValue('user_app_lv1', 'users_spd_dalam_group', array('id'=>'where/'.$spd_id));
+                $isi_email = get_name($task_creator).' mengajukan Perjalanan Dinas Dalam Kota (Group), untuk melihat detail silakan <a href='.base_url().'form_spd_dalam_group/submit/'.$spd_id.'>Klik Disini</a><br />';
+
                 if($task_creator!==$created_by):
                     $this->approval->by_admin('spd_dalam_group', $spd_id, $created_by, $task_creator, $this->detail_email_submit($spd_id));
                 endif;
                  if(!empty($user_app_lv1)):
+                    if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), 'Pengajuan Perjalanan Dinas Dalam Kota (Group)', $isi_email);
                     $this->approval->request('lv1', 'spd_dalam_group', $spd_id, $task_creator, $this->detail_email_submit($spd_id));
                  else:
+                    if(!empty(getEmail(1)))$this->send_email(getEmail(1), 'Pengajuan Perjalanan Dinas Dalam Kota (Group)', $isi_email);
                     $this->approval->request('hrd', 'spd_dalam_group', $spd_id, $task_creator, $this->detail_email_submit($spd_id));
                  endif;
                 $task_receiver_id = explode(',',$task_receiver);
@@ -696,6 +707,39 @@ function get_user_atasan()
         $mpdf->WriteHTML($html);
         $mpdf->Output($id.'-'.$title.'-'.$task_creator.'pdf', 'I');
         
+    }
+
+    function send_email($email, $subject, $isi_email)
+    {
+
+        $config = Array(
+                    'protocol' => 'smtp',
+                    'smtp_host' => 'mail.erlangga.co.id',
+                    'smtp_port' => 587,
+                    'smtp_user' => 'ax.hrd@erlangga.co.id', 
+                    'smtp_pass' => 'erlangga', 
+                    'mailtype' => 'html',
+                    'charset' => 'iso-8859-1',
+                    'wordwrap' => TRUE
+                    );
+ 
+       $this->load->library('email', $config);
+       $this->email->set_newline("\r\n");  
+       $this->email->from('ax.hrd@erlangga.co.id', 'HRIS-Erlangga');
+       $this->email->to($email);
+       $this->email->subject($subject);
+       $this->email->message($isi_email);
+     
+         if($this->email->send())
+         {
+           return true;
+           //return $this->email->print_debugger();
+         }
+         else
+         {
+          return false;
+          //return $this->email->print_debugger();
+         }
     }
 
     function _render_page($view, $data=null, $render=false)

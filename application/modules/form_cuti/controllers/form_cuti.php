@@ -26,8 +26,7 @@ class Form_cuti extends MX_Controller {
     }
 
     function index($ftitle = "fn:",$sort_by = "id", $sort_order = "asc", $offset = 0)
-    {   
-
+    {  
         $sess_id= $this->session->userdata('user_id');
         $sess_nik= get_nik($sess_id);
 
@@ -185,14 +184,17 @@ class Form_cuti extends MX_Controller {
                  $cuti_id = $this->db->insert_id();
                  $leave_request_id = $this->get_last_leave_request_id();
                  $user_app_lv1 = getValue('user_app_lv1', 'users_cuti', array('id'=>'where/'.$cuti_id));
+                 $isi_email = get_name($user_id).' mengajukan Permohonan Cuti, untuk melihat detail silakan <a href='.base_url().'form_cuti/detail/'.$cuti_id.'>Klik Disini</a><br />';
                  if($user_id!==$sess_id):
                     $this->approval->by_admin('cuti', $cuti_id, $sess_id, $user_id, $this->detail_email($cuti_id));
                  endif;
-                 if(!empty($user_app_lv1)):
+                 if(!empty($user_app_lv1)){
                     $this->approval->request('lv1', 'cuti', $cuti_id, $user_id, $this->detail_email($cuti_id));
-                 else:
+                    if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), 'Pengajuan Permohonan Cuti', $isi_email);
+                 }else{
                     $this->approval->request('hrd', 'cuti', $cuti_id, $user_id, $this->detail_email($cuti_id));
-                 endif;
+                    if(!empty(getEmail(1)))$this->send_email(getEmail(1), 'Pengajuan Permohonan Cuti', $isi_email);
+                 }
 
                  $this->insert_leave_request($user_id, $additional_data, $leave_request_id);
                  redirect('form_cuti', 'refresh');   
@@ -243,23 +245,29 @@ class Form_cuti extends MX_Controller {
             );
             $is_app = getValue('is_app_'.$type, 'users_cuti', array('id'=>'where/'.$id));
             $approval_status = $this->input->post('app_status_'.$type);
-            
+            $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
             $this->form_cuti_model->update($id,$data);
             $user_cuti_id = getValue('user_id', 'users_cuti', array('id'=>'where/'.$id));
+            $isi_email = 'Status pengajuan cuti anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_cuti/detail/'.$id.'>Klik Disini</a><br />';
+            $isi_email_request = get_name($user_cuti_id).' mengajukan Permohonan Cuti, untuk melihat detail silakan <a href='.base_url().'form_cuti/detail/'.$id.'>Klik Disini</a><br />';
             if($is_app==0){
                 $this->approval->approve('cuti', $id, $approval_status, $this->detail_email($id));
+                if(!empty(getEmail($user_cuti_id)))$this->send_email(getEmail($user_cuti_id), 'Status Pengajuan Permohonan Cuti dari Atasan', $isi_email);
             }else{
                 $this->approval->update_approve('cuti', $id, $approval_status, $this->detail_email($id));
+                if(!empty(getEmail($user_cuti_id)))$this->send_email(getEmail($user_cuti_id), 'Perubahan Status Pengajuan Permohonan Cuti dari Atasan', $isi_email);
             }
             if($type !== 'hrd'){
                 $lv = substr($type, -1)+1;
                 $lv_app = 'lv'.$lv;
                 $user_app = ($lv<4) ? getValue('user_app_'.$lv_app, 'users_cuti', array('id'=>'where/'.$id)):0;
-                if(!empty($user_app)):
+                if(!empty($user_app)){
                     $this->approval->request($lv_app, 'cuti', $id, $user_cuti_id, $this->detail_email($id));
-                else:
+                    if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), 'Pengajuan Permohonan Cuti', $isi_email_request);
+                }else{
                     $this->approval->request('hrd', 'cuti', $id, $user_cuti_id, $this->detail_email($id));
-                endif;
+                    if(!empty(getEmail(1)))$this->send_email(getEmail(1), 'Pengajuan Permohonan Cuti', $isi_email_request);
+                }
             }
             
             $this->cek_all_approval($id);
@@ -535,6 +543,39 @@ class Form_cuti extends MX_Controller {
         } else {
             return '';
         }
+    }
+
+    function send_email($email, $subject, $isi_email)
+    {
+
+        $config = Array(
+                    'protocol' => 'smtp',
+                    'smtp_host' => 'mail.erlangga.co.id',
+                    'smtp_port' => 587,
+                    'smtp_user' => 'ax.hrd@erlangga.co.id', 
+                    'smtp_pass' => 'erlangga', 
+                    'mailtype' => 'html',
+                    'charset' => 'iso-8859-1',
+                    'wordwrap' => TRUE
+                    );
+ 
+       $this->load->library('email', $config);
+       $this->email->set_newline("\r\n");  
+       $this->email->from('ax.hrd@erlangga.co.id', 'HRIS-Erlangga');
+       $this->email->to($email);
+       $this->email->subject($subject);
+       $this->email->message($isi_email);
+     
+         if($this->email->send())
+         {
+           return true;
+           //return $this->email->print_debugger();
+         }
+         else
+         {
+          return false;
+          //return $this->email->print_debugger();
+         }
     }
 
 

@@ -167,35 +167,13 @@
                           <input name="alamat_cuti" id="alamat_cuti" type="text"  class="form-control" placeholder="Nama" value="<?php echo $user->alamat_cuti; ?>" disabled="disabled">
                         </div>
                       </div>
-                      <?php if(!empty($user->approval_status_id_lv1)){?>
-                      <div class="row form-row">
-                        <div class="col-md-4">
-                          <label class="form-label text-right">Approval Status SPV</label>
-                        </div>
-                        <div class="col-md-8">
-                          <input name="alamat_cuti" id="alamat_cuti" type="text"  class="form-control" placeholder="Nama" value="<?php echo $user->approval_status_lv1; ?>" disabled="disabled">
-                        </div>
-                      </div>
-                      <?php } ?>
-
                       <?php if(!empty($user->note_app_lv1)){?>
                       <div class="row form-row">
                         <div class="col-md-4">
                           <label class="form-label text-right">Note (spv): </label>
                         </div>
                         <div class="col-md-8">
-                          <textarea name="note_lv1" class="custom-txtarea-form" placeholder="Note supervisor isi disini" disabled="disabled"><?php echo $user->note_app_lv1 ?></textarea>
-                        </div>
-                      </div>
-                      <?php } ?>
-
-                      <?php if(!empty($user->approval_status_id_lv2)){?>
-                      <div class="row form-row">
-                        <div class="col-md-4">
-                          <label class="form-label text-right">Approval Status Ka. Bag</label>
-                        </div>
-                        <div class="col-md-8">
-                          <input name="alamat_cuti" id="alamat_cuti" type="text"  class="form-control" placeholder="Nama" value="<?php echo $user->approval_status_lv2; ?>" disabled="disabled">
+                          <textarea name="note_lv1" class="form-control" placeholder="Note supervisor isi disini" disabled="disabled"><?php echo $user->note_app_lv1 ?></textarea>
                         </div>
                       </div>
                       <?php } ?>
@@ -206,23 +184,12 @@
                           <label class="form-label text-right">Note (ka. bag): </label>
                         </div>
                         <div class="col-md-8">
-                          <textarea name="notes_kbg" class="custom-txtarea-form" placeholder="Note ka. bagian isi disini" disabled="disabled"><?php echo $user->note_app_lv2 ?></textarea>
+                          <textarea name="notes_kbg" class="form-control" placeholder="Note ka. bagian isi disini" disabled="disabled"><?php echo $user->note_app_lv2 ?></textarea>
                         </div>
                       </div>
                       <?php } ?>
 
                       <input type="text" name="app_status" value="1" style="display:none" />
-
-                      <?php if(!empty($user->approval_status_id_lv3)){?>
-                      <div class="row form-row">
-                        <div class="col-md-4">
-                          <label class="form-label text-right">Approval Status Atasan Lainnya</label>
-                        </div>
-                        <div class="col-md-8">
-                          <input name="alamat_cuti" id="alamat_cuti" type="text"  class="form-control" placeholder="Nama" value="<?php echo $user->approval_status_lv3; ?>" disabled="disabled">
-                        </div>
-                      </div>
-                      <?php } ?>
 
                       <?php if(!empty($user->note_app_lv3)){?>
                       <div class="row form-row">
@@ -230,29 +197,18 @@
                           <label class="form-label text-right">Note (Atasan Lainnya): </label>
                         </div>
                         <div class="col-md-8">
-                          <textarea name="notes_hrd" placeholder="Note hrd isi disini" class="custom-txtarea-form" disabled="disabled"><?php echo $user->note_app_lv3 ?></textarea>
+                          <textarea name="notes_hrd" placeholder="Note hrd isi disini" class="form-control" disabled="disabled"><?php echo $user->note_app_lv3 ?></textarea>
                         </div>
                       </div>
                       <?php } ?>
-
-                      <?php if(!empty($user->approval_status_id_hrd)){?>
-                      <div class="row form-row">
-                        <div class="col-md-4">
-                          <label class="form-label text-right">Approval Status HRD</label>
-                        </div>
-                        <div class="col-md-8">
-                          <input name="alamat_cuti" id="alamat_cuti" type="text"  class="form-control" placeholder="Nama" value="<?php echo $user->approval_status_hrd; ?>" disabled="disabled">
-                        </div>
-                      </div>
-                      <?php } ?>
-
+                      
                       <?php if(!empty($user->note_app_hrd)){?>
                       <div class="row form-row">
                         <div class="col-md-4">
                           <label class="form-label text-right">Note (HRD): </label>
                         </div>
                         <div class="col-md-8">
-                          <textarea name="notes_hrd" placeholder="Note hrd isi disini" class="custom-txtarea-form" disabled="disabled"><?php echo $user->note_app_hrd ?></textarea>
+                          <textarea name="notes_hrd" placeholder="Note hrd isi disini" class="form-control" disabled="disabled"><?php echo $user->note_app_hrd ?></textarea>
                         </div>
                       </div>
                       <?php } ?>

@@ -180,14 +180,17 @@ class form_training_group extends MX_Controller {
                     {
                          $training_id = $this->db->insert_id();
                          $user_app_lv1 = getValue('user_app_lv1', 'users_training_group', array('id'=>'where/'.$training_id));
+                         $isi_email = get_name($user_id).' mengajukan Permohonan training (Group), untuk melihat detail silakan <a href='.base_url().'form_training_group/detail/'.$training_id.'>Klik Disini</a><br />';
                          if($user_id!==$sess_id):
                          $this->approval->by_admin('training_group', $training_id, $sess_id, $user_id, $this->detail_email($training_id));
                          endif;
-                         if(!empty($user_app_lv1)):
+                         if(!empty($user_app_lv1)){
                             $this->approval->request('lv1', 'training_group', $training_id, $user_id, $this->detail_email($training_id));
-                         else:
+                        if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), 'Pengajuan Permohonan Training (Group)', $isi_email);
+                         }else{
                             $this->approval->request('hrd', 'training_group', $training_id, $user_id, $this->detail_email($training_id));
-                         endif;   
+                        if(!empty(getEmail(1)))$this->send_email(getEmail(1), 'Pengajuan Permohonan Training (Group)', $isi_email);
+                         }   
                         $this->send_peserta_mail($training_id, $user_id, $peserta_id);
                         redirect('form_training_group', 'refresh');
                         //echo json_encode(array('st' =>1));     
@@ -220,10 +223,17 @@ class form_training_group extends MX_Controller {
 
            $this->form_training_group_model->update($id,$data);
 
+           $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
+            $user_training_id = getValue('user_pengaju_id', 'users_training_group', array('id'=>'where/'.$id));
+            $isi_email = 'Status pengajuan training anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_training_group/detail/'.$id.'>Klik Disini</a><br />';
+            $isi_email_request = get_name($user_training_id).' mengajukan Permohonan training, untuk melihat detail silakan <a href='.base_url().'form_training_group/detail/'.$id.'>Klik Disini</a><br />';
+            
             if($is_app==0){
                 $this->approval_mail($id, $approval_status);
+                if(!empty(getEmail($user_training_id)))$this->send_email(getEmail($user_training_id), 'Status Pengajuan Permohonan Training (Group) dari Atasan', $isi_email);
             }else{
                 $this->update_approval_mail($id, $approval_status);
+                if(!empty(getEmail($user_training_id)))$this->send_email(getEmail($user_training_id), 'Perubahan Status Pengajuan Permohonan Training (Group) dari Atasan', $isi_email);
             }
 
              if($type !== 'hrd')
@@ -232,11 +242,13 @@ class form_training_group extends MX_Controller {
                 $lv = substr($type, -1)+1;
                 $lv_app = 'lv'.$lv;
                 $user_app = ($lv<4) ? getValue('user_app_'.$lv_app, 'users_training_group', array('id'=>'where/'.$id)):0;
-                if(!empty($user_app)):
+                if(!empty($user_app)){
                     $this->approval->request($lv_app, 'training_group', $id, $pengaju_id, $this->detail_email($id));
-                else:
+                    if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), 'Pengajuan Permohonan Training (Group)', $isi_email_request);
+                }else{
                     $this->approval->request('hrd', 'training_group', $id, $pengaju_id, $this->detail_email($id));
-                endif;
+                    if(!empty(getEmail(1)))$this->send_email(getEmail(1), 'Pengajuan Permohonan Training (Group)', $isi_email_request);
+                }
             }
         }
     }
@@ -271,15 +283,18 @@ class form_training_group extends MX_Controller {
         $is_app = getValue('is_app_hrd', 'users_training_group', array('id'=>'where/'.$id));
         $approval_status = $this->input->post('app_status');
 
-        if ($this->form_training_group_model->update($id,$data)) {
-           return TRUE;
-        }
+        $this->form_training_group_model->update($id,$data);
+         $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
+        $user_training_id = getValue('user_pengaju_id', 'users_training_group', array('id'=>'where/'.$id));
+        $isi_email = 'Status pengajuan training (group) anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_training_group/detail/'.$id.'>Klik Disini</a><br />';
 
         if($is_app==0){
             $this->approval_mail($id, $approval_status);
         }else{
             $this->update_approval_mail($id, $approval_status);
         }
+
+        if(!empty(getEmail($user_training_id)))$this->send_email(getEmail($user_training_id), 'Status Pengajuan Permohonan training(Group) dari Atasan', $isi_email);
             
     }
 
@@ -411,6 +426,39 @@ class form_training_group extends MX_Controller {
         $mpdf->WriteHTML($html);
         $mpdf->Output($id.'-'.$title.'.pdf', 'I');
         }
+    }
+
+    function send_email($email, $subject, $isi_email)
+    {
+
+        $config = Array(
+                    'protocol' => 'smtp',
+                    'smtp_host' => 'mail.erlangga.co.id',
+                    'smtp_port' => 587,
+                    'smtp_user' => 'ax.hrd@erlangga.co.id', 
+                    'smtp_pass' => 'erlangga', 
+                    'mailtype' => 'html',
+                    'charset' => 'iso-8859-1',
+                    'wordwrap' => TRUE
+                    );
+ 
+       $this->load->library('email', $config);
+       $this->email->set_newline("\r\n");  
+       $this->email->from('ax.hrd@erlangga.co.id', 'HRIS-Erlangga');
+       $this->email->to($email);
+       $this->email->subject($subject);
+       $this->email->message($isi_email);
+     
+         if($this->email->send())
+         {
+           return true;
+           //return $this->email->print_debugger();
+         }
+         else
+         {
+          return false;
+          //return $this->email->print_debugger();
+         }
     }
 
     function _render_page($view, $data=null, $render=false)

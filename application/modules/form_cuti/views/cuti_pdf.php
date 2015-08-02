@@ -35,7 +35,7 @@
 
 <body>
 <div align="center">
-  <p align="left"><img src="<?php echo assets_url('img/erlangga.jpg')?>" width="296" height="80" /></p>
+  <p align="left"><img src="<?php echo assets_url('img/erlangga.jpg')?>"/></p>
   <p align="center" class="style6">Form Pengajuan Cuti</p>
 </div>
 <?php foreach($form_cuti as $user):
@@ -119,25 +119,11 @@ $rejected = assets_url('img/rejected_stamp.png');
     <td height="40"><div align="center">:</div></td>
     <td height="40"><span class="style3"><?php echo $user->alamat_cuti?></span></td>
   </tr>
-  <?php if(!empty($user->approval_status_id_lv1)){?>
-  <tr>
-    <td height="40"><span class="style3">Approval Status(SPV) </span></td>
-    <td height="40"><div align="center">:</div></td>
-    <td height="40"><span class="style3"><?php echo $user->approval_status_lv1?></span></td>
-  </tr>
-  <?php } ?>
   <?php if(!empty($user->note_app_lv1)){?>
   <tr>
     <td height="40"><span class="style3">Note Supervisor </span></td>
     <td height="40"><div align="center">:</div></td>
     <td height="40"><span class="style3"><?php echo $user->note_app_lv1?></span></td>
-  </tr>
-  <?php } ?>
-  <?php if(!empty($user->approval_status_id_lv2)){?>
-  <tr>
-    <td height="40"><span class="style3">Approval Status(Ka. Bag) </span></td>
-    <td height="40"><div align="center">:</div></td>
-    <td height="40"><span class="style3"><?php echo $user->approval_status_lv2?></span></td>
   </tr>
   <?php } ?>
   <?php if(!empty($user->note_app_lv2)){?>
@@ -147,25 +133,11 @@ $rejected = assets_url('img/rejected_stamp.png');
     <td height="40"><span class="style3"><?php echo $user->note_app_lv2?></span></td>
   </tr>
   <?php } ?>
-  <?php if(!empty($user->approval_status_id_lv3)){?>
-  <tr>
-    <td height="40"><span class="style3">Approval Status(Atasan Lain) </span></td>
-    <td height="40"><div align="center">:</div></td>
-    <td height="40"><span class="style3"><?php echo $user->approval_status_lv3?></span></td>
-  </tr>
-  <?php } ?>
   <?php if(!empty($user->note_app_lv3)){?>
   <tr>
     <td height="40"><span class="style3">Note Atasan Lain </span></td>
     <td height="40"><div align="center">:</div></td>
     <td height="40"><span class="style3"><?php echo $user->note_app_lv3?></span></td>
-  </tr>
-  <?php } ?>
-  <?php if(!empty($user->approval_status_id_hrd)){?>
-  <tr>
-    <td height="40"><span class="style3">Approval Status(HRD) </span></td>
-    <td height="40"><div align="center">:</div></td>
-    <td height="40"><span class="style3"><?php echo $user->approval_status_hrd?></span></td>
   </tr>
   <?php } ?>
   <?php if(!empty($user->note_app_hrd)){?>

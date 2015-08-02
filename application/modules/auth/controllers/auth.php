@@ -264,10 +264,10 @@ class Auth extends MX_Controller {
 
         $config = Array(
                     'protocol' => 'smtp',
-                    'smtp_host' => 'ssl://smtp.googlemail.com',
-                    'smtp_port' => 465,
-                    'smtp_user' => 'hris.erlangga@gmail.com', 
-                    'smtp_pass' => 'komgrafik123', 
+                    'smtp_host' => 'mail.erlangga.co.id',
+                    'smtp_port' => 587,
+                    'smtp_user' => 'ax.hrd@erlangga.co.id', 
+                    'smtp_pass' => 'erlangga', 
                     'mailtype' => 'html',
                     'charset' => 'iso-8859-1',
                     'wordwrap' => TRUE
@@ -275,7 +275,7 @@ class Auth extends MX_Controller {
  
        $this->load->library('email', $config);
        $this->email->set_newline("\r\n");  
-       $this->email->from('HRIS@erlangga.com', 'HRIS-Erlangga'); 
+       $this->email->from('ax.hrd@erlangga.co.id', 'HRIS-Erlangga'); 
        $message_body='Employee with NIK = '.$nik.' request account activation, please check your admin page to activate the user ';
        $this->email->to('abdul.ghanni2@gmail.com');
        $this->email->subject('HRIS - Account Activation Request');

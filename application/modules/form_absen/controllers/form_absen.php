@@ -201,13 +201,17 @@ class form_absen extends MX_Controller {
                 {
                  $absen_id = $this->db->insert_id();
                  $user_app_lv1 = getValue('user_app_lv1', 'users_absen', array('id'=>'where/'.$absen_id));
+                 $isi_email = get_name($user_id).' mengajukan keterangan tidak absen, untuk melihat detail silakan <a href='.base_url().'form_absen/detail/'.$absen_id.'>Klik Disini</a><br />';
+
                  if($user_id!==$sess_id):
                     $this->approval->by_admin('absen', $absen_id, $sess_id, $user_id, $this->detail_email($absen_id));
                  endif;
                  if(!empty($user_app_lv1)):
-                    $this->approval->request('lv1', 'absen', $absen_id, $user_id, $this->detail_email($absen_id));
+                     if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), 'Pengajuan Keterangan Tidak Absen', $isi_email);
+                     $this->approval->request('lv1', 'absen', $absen_id, $user_id, $this->detail_email($absen_id));
                  else:
-                    $this->approval->request('hrd', 'absen', $absen_id, $user_id, $this->detail_email($absen_id));
+                     if(!empty(getEmail(1)))$this->send_email(getEmail(1), 'Pengajuan Keterangan Tidak Absen', $isi_email);
+                     $this->approval->request('hrd', 'absen', $absen_id, $user_id, $this->detail_email($absen_id));
                  endif;
 
                   redirect('form_absen', 'refresh');
@@ -234,16 +238,22 @@ class form_absen extends MX_Controller {
         );
         
         $this->form_absen_model->update($id,$data);
+        $user_absen_id = getValue('user_id', 'users_absen', array('id'=>'where/'.$id));
         $approval_status = 1;
         $this->approval->approve('absen', $id, $approval_status, $this->detail_email($id));
+        $isi_email = 'Status pengajuan keterangan tidak absen anda disetujui oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_absen/detail/'.$id.'>Klik Disini</a><br />';
+        $isi_email_request = get_name($user_absen_id).' mengajukan keterangan tidak absen absen, untuk melihat detail silakan <a href='.base_url().'form_absen/detail/'.$id.'>Klik Disini</a><br />';
+        if(!empty(getEmail($user_absen_id)))$this->send_email(getEmail($user_absen_id), 'Status Pengajuan Keterangan Tidak Absen dari Atasan', $isi_email);
+                
         if($type !== 'hrd'){
         $lv = substr($type, -1)+1;
         $lv = 'lv'.$lv;
         $user_app = getValue('user_app_'.$lv, 'users_absen', array('id'=>'where/'.$id));
-        $user_absen_id = getValue('user_id', 'users_absen', array('id'=>'where/'.$id));
         if(!empty($user_app)):
+            if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), 'Pengajuan Keterangan Tidak Absen', $isi_email_request);
             $this->approval->request($lv, 'absen', $id, $user_absen_id, $this->detail_email($id));
         else:
+            if(!empty(getEmail(1)))$this->send_email(getEmail(1), 'Pengajuan Keterangan Tidak Absen', $isi_email_request);
             $this->approval->request('hrd', 'absen', $id, $user_absen_id, $this->detail_email($id));
         endif;
         }

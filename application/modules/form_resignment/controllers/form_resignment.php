@@ -174,6 +174,7 @@ class Form_resignment extends MX_Controller {
         $this->data['user_nik'] = get_nik($user_id);
         $form_resignment = $this->data['form_resignment'] = $this->form_resignment_model->form_resignment($id)->result();
         $this->data['_num_rows'] = $this->form_resignment_model->form_resignment($id)->num_rows();
+        $this->data['alasan_resign'] = getAll('alasan_resign', array('is_deleted'=>'where/0'));
         
         $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
         $this->_render_page('form_resignment/detail', $this->data);
@@ -263,22 +264,47 @@ class Form_resignment extends MX_Controller {
         }
         else
         {
+            $is_app = getValue('is_app_'.$type, 'users_resignment', array('id'=>'where/'.$id));
+            $num_rows = getAll('users_resignment_wawancara', array('user_resignment_id'=>'where/'.$id))->num_rows();
             $user_id = get_nik($this->session->userdata('user_id'));
             $date_now = date('Y-m-d');
+            if($type = 'hrd'):
+                $data1 = array(
+                'user_resignment_id' => $id,
+                'alasan_resign_id'   => implode(',',$this->input->post('alasan_resign_id')),
+                'desc_resign'        => $this->input->post('desc_resign'),
+                'procedure_resign'   => $this->input->post('procedure_resign'),
+                'kepuasan_resign'    => $this->input->post('kepuasan_resign'),
+                'saran_resign'       => $this->input->post('saran_resign'),
+                'rework_resign'      => $this->input->post('rework_resign'),
+                );
+                $data2 = array(
+                'is_app_'.$type => 1, 
+                'app_status_id_'.$type => $this->input->post('app_status_'.$type),
+                'user_app_'.$type => $user_id, 
+                'date_app_'.$type => $date_now,
+                'note_'.$type => $this->input->post('note_'.$type),
+                );
+                if($num_rows>0){
+                    $this->db->where('user_resignment_id', $id)->update('users_resignment_wawancara',$data1);
+                }else{
+                    $this->db->insert('users_resignment_wawancara', $data1);
+                }
+                $this->form_resignment_model->update($id,$data2);
+            else:
+                $data = array(
+                'is_app_'.$type => 1, 
+                'app_status_id_'.$type => $this->input->post('app_status_'.$type),
+                'user_app_'.$type => $user_id, 
+                'date_app_'.$type => $date_now,
+                'note_'.$type => $this->input->post('note_'.$type),
+                );
+                $this->form_resignment_model->update($id,$data);
+            endif;
 
-            $data = array(
-            'is_app_'.$type => 1, 
-            'app_status_id_'.$type => $this->input->post('app_status_'.$type),
-            'user_app_'.$type => $user_id, 
-            'date_app_'.$type => $date_now,
-            'note_'.$type => $this->input->post('note_'.$type)
-            );
+            $approval_status = $this->input->post('app_status_'.$type);
             $approval_status = $this->input->post('app_status_'.$type);
 
-            $is_app = getValue('is_app_'.$type, 'users_resignment', array('id'=>'where/'.$id));
-            $approval_status = $this->input->post('app_status_'.$type);
-
-           $this->form_resignment_model->update($id,$data);
            $user_resignment_id = getValue('user_id', 'users_resignment', array('id'=>'where/'.$id));
             if($is_app==0){
                 $this->approval->approve('resignment', $id, $approval_status, $this->detail_email($id));

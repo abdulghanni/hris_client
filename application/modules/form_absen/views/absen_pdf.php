@@ -35,7 +35,7 @@
 
 <body>
 <div align="center">
-  <p align="left"><img src="<?php echo assets_url('img/erlangga.jpg')?>" width="296" height="80" /></p>
+  <p align="left"><img src="<?php echo assets_url('img/erlangga.jpg')?>"/></p>
   <p align="center" class="style6">Form Keterangan Tidak Absen</p>
 </div>
 <?php foreach($form_absen as $row):
