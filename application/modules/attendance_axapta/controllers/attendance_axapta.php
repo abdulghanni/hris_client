@@ -12,7 +12,7 @@ class attendance_axapta extends MX_Controller {
 		$this->lang->load('auth');
 	}
 
-    function index($nik="nik", $bulan = "bln", $tahun = "thn",$sort_by = "id", $sort_order = "asc", $offset = 0)
+    function index($bulan = 'bln', $tahun = "thn",$sort_by = "id", $sort_order = "asc", $offset = 0)
     {
 
         if (!$this->ion_auth->logged_in())
@@ -28,20 +28,30 @@ class attendance_axapta extends MX_Controller {
 			$this->data['s_bulan'] = $s_bulan;
 			
 			$filter=array();
-			$s_nik = substr($nik,3);
-			if($s_nik) $filter['nik'] = "where/".$s_nik;
-			$this->data['s_nik'] = $s_nik;
+			
 			$s_tahun = substr($tahun,3);
 			if($s_tahun) $filter['tahun'] = "where/".$s_tahun;
 			$this->data['s_tahun'] = $s_tahun;
-            $url = get_api_key().'attendance/user/EMPLID/'.$sess_nik.'/format/json';
+
+			$month = ($bulan !== 'bln') ? '/MONTH/'.substr($bulan,3) : 'bln';
+			$year = ($tahun!== 'thn') ? '/YEAR/'.substr($tahun,3) : 'thn';
+
+			if($bulan === 'bln' && $tahun === 'thn'):
+            $url = get_api_key().'attendance/user/EMPLID/'.$sess_nik.'/format/json';//print_mz($url);
+        	elseif($tahun === 'thn'):
+            $url = get_api_key().'attendance/user/EMPLID/'.$sess_nik.$month.'/format/json';//print_mz($url);
+        	elseif($bulan === 'bln'):
+            $url = get_api_key().'attendance/user/EMPLID/'.$sess_nik.$year.'/format/json';//print_mz($url);
+        	else:
+        	$url = get_api_key().'attendance/user/EMPLID/'.$sess_nik.$month.$year.'/format/json';
+        	endif;
             $headers = get_headers($url);
             $response = substr($headers[0], 9, 3);
             if ($response != "404") {
             $get_user_attendance = file_get_contents($url);
             $this->data['user_att'] = $user_attendance = json_decode($get_user_attendance, true);
             }else{
-            $this->data['user_att'] = 'Tidak ada data kehadiran ditemukan';
+            $this->data['user_att'] = '';
             }
 
     		$this->_render_page('attendance_axapta/index', $this->data);
@@ -49,11 +59,13 @@ class attendance_axapta extends MX_Controller {
   }
 	
 	function search(){
-		$nik = $this->input->post('nik');
+		//$nik = $this->input->post('nik');
 		$bulan = $this->input->post('bulan');
 		$tahun = $this->input->post('tahun');
 		
-		redirect(site_url($this->filename.'/index/nik'.$nik.'/bln'.$bulan.'/thn'.$tahun));
+		//redirect(site_url($this->filename.'/index/nik'.$nik.'/bln'.$bulan.'/thn'.$tahun));
+		redirect(site_url('attendance_axapta/index/bln'.$bulan.'/thn'.$tahun));
+		//redirect(site_url(attendance_axapta.'/index/'.$bulan.'/'.$tahun));
 	}
 	
 	function _render_page($view, $data=null, $render=false)

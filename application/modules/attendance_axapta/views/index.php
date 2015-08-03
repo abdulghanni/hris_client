@@ -44,6 +44,13 @@
                                         <div class="col-md-9"><?php echo form_dropdown('tahun', GetOptYear(), $s_tahun, "class='col-md-8'")?></div>
                                     </div>
                                 </div>
+                                <div class="col-md-2">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <button type="submit" class="btn btn-info"><i class="icon-search"></i>&nbsp;<?php echo lang('search_button')?></button>
+                                        </div>
+                                    </div>
+                                </div>    
                         <?php echo form_close()?>
 								        
 								        <br/>
@@ -59,11 +66,14 @@
                                     <th>NAME</th>
                                     <th class="center">ATTENDANCE DATE</th>
                                     <th class="center">ATTENDANCE STATUS</th>
-								                    <?php if($this->ion_auth->is_admin()) {?> <th class="center">Action</th><?php }?>
+                                    <th class="center">ABSENSCE STATUS</th>
+                                    <th class="center">CLOCK IN</th>
+                                    <th class="center">CLOCK OUT</th>
                                 </tr>
                             </thead>
                             <tbody>
-                            <?php for($i=0;$i<sizeof($user_att);$i++):?>
+                            <?php if(!empty($user_att)){
+                            	for($i=0;$i<sizeof($user_att);$i++):?>
                             	<tr class="odd gradeX">
 						                    <td><?php echo $user_att[$i]['EMPLID'];?></td>
 						                    <td><?php echo get_name($user_att[$i]['EMPLID']);?></td>
@@ -71,6 +81,9 @@
 						                    <td>
 						                    	<?php echo ($user_att[$i]['ATTENDANCESTATUS'] === 1) ? 'PRESSENCE' : (($user_att[$i]['ATTENDANCESTATUS']===2) ? 'Absence' : '' )?>
 						                    </td>
+						                    <td><?php echo $user_att[$i]['ABSENCESTATUS']?></td>
+						                    <td><?php echo $user_att[$i]['CLOCKIN']?></td>
+						                    <td><?php echo $user_att[$i]['CLOCKOUT']?></td>
 						                    
 						                    <?php if($this->ion_auth->is_admin()) {?>
 						                    <td valign="middle" class="center">
@@ -80,12 +93,12 @@
                                 </td>
                               	<?php }?>
 						        </tr>
-						       <?php endfor;?>
+						       <?php endfor;}?>
                             </tbody>
                         </table>
                         <div class="row">
                             <div class="col-md-4 page_limit">
-                                <?php echo form_open(uri_string());?>
+                                <!--<?php echo form_open(uri_string());?>
                                 <?php 
                                     $selectComponentData = array(
                                         10  => '10',
@@ -101,7 +114,7 @@
                             </div>
                             <div class="col-md-10">
                                 <ul class="pagination">
-                                    <?php echo $halaman;?>
+                                    <?php echo $halaman;?>-->
                                 </ul>
                             </div>
                         </div>
