@@ -960,6 +960,7 @@ class Auth extends MX_Controller {
             {
                             $data = array(
                             'superior_id' => $this->input->post('superior_id'),
+                            'email' => $this->input->post('email'),
                             );
 
             }else{
@@ -967,6 +968,7 @@ class Auth extends MX_Controller {
             $data = array(
                             'photo'     =>$image_name,
 							'superior_id' => $this->input->post('superior_id'),
+                            'email' => $this->input->post('email'),
                          );
             }
             // Only allow updating groups if user is admin
@@ -1090,7 +1092,7 @@ class Auth extends MX_Controller {
             'name'  => 'email',
             'id'    => 'email',
             'type'  => 'text',
-            'disabled'  => 'disabled',
+            //'disabled'  => 'disabled',
             'value' => $this->form_validation->set_value('email', $user->email),
         );
 
