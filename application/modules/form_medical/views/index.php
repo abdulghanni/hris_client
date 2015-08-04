@@ -100,7 +100,7 @@
                                   }
 
                                   //Approval HRD
-                                    if(is_admin()&&$row->is_app_hrd == 0){
+                                    if($this->approval->approver('medical') == $sess_nik && $row->is_app_hrd == 0){
                                       $txt_app_hrd = "<a href='".site_url('form_medical/detail/'.$row->id)."''>
                                                       <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-edit'></i></button>
                                                       </a>";

@@ -73,7 +73,7 @@
 		                  </table>
                   <?php if($is_app_hrd!=0){?>
                   <hr/>
-                    <?php if(is_admin()){?>
+                    <?php if($this->approval->approver('medical') == $sess_nik){?>
                     <div class="row form-row">
                       <div class="col-md-12">
                           <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#submitMedicalModalHrd"><i class="icon-edit"></i>&nbsp;Update Data Rekapitulasi</button>
@@ -147,7 +147,7 @@
                             <span class="semi-bold"><?php echo get_name($row->user_app_hrd) ?></span><br/>
                             <span class="semi-bold"></span><br/>
                             <span class="small"><?php echo dateIndo($row->date_app_hrd) ?></span><br/>
-                            <?php }elseif(is_admin()&&$row->is_app_hrd==0){?>
+                            <?php }elseif($this->approval->approver('medical') == $sess_nik && $row->is_app_hrd==0){?>
                             <span class="semi-bold"></span><br/>
                             <span class="small"></span><br/>
                             <button type="button" id="" class="btn btn-success btn-cons" data-toggle="modal" data-target="#submitMedicalModalHrd"><i class="icon-ok"></i>Submit</button>

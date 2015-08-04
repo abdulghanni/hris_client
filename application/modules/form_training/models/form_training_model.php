@@ -297,6 +297,7 @@ class Form_training_model extends CI_Model
         {
             $sess_id = $this->session->userdata('user_id');
             $sess_nik = get_nik($sess_id);
+            $is_approver = $this->approval->approver('training');
             $is_admin = is_admin();
             if(!empty(is_have_subordinate(get_nik($sess_id)))){
             $sub_id = get_subordinate($sess_id);
@@ -336,7 +337,7 @@ class Form_training_model extends CI_Model
             $this->db->join('approval_status as status_lv3', 'users_training.approval_status_id_lv3 = status_lv3.id', 'left');
             $this->db->join('approval_status as status_hrd', 'users_training.approval_status_id_hrd = status_hrd.id', 'left');
 			if($id != null)$this->db->where('users_training.id', $id);
-            if($is_admin!=1){
+            if($is_approver !== $sess_nik && $is_admin!=1){
                 //$this->db->where("(users_training.user_id= $sess_id $sub_id $subsub_id )",null, false);
                 $this->db->where("(users_training.user_pengaju_id = $sess_id OR users_training.user_peserta_id = $sess_id OR  users_training.user_app_lv1 = '$sess_nik' OR users_training.user_app_lv2 = '$sess_nik' OR users_training.user_app_lv3 = '$sess_nik' OR users_training.created_by = '$sess_id')",null, false);
             }

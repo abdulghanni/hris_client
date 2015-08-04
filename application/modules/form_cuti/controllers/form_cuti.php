@@ -38,6 +38,9 @@ class Form_cuti extends MX_Controller {
         else
         {
 
+            $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
+            $sess_nik = $this->data['sess_nik'] = get_nik($sess_id);
+
             $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
 
             //set sort order
@@ -64,7 +67,7 @@ class Form_cuti extends MX_Controller {
 
             $form_cuti = $this->data['form_cuti'] = $this->form_cuti_model->like($ftitle_post)->where('is_deleted',0)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->form_cuti()->result();//lastq();
             $this->data['_num_rows'] = $this->form_cuti_model->like($ftitle_post)->where('is_deleted',0)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->form_cuti()->num_rows();
-            
+            //lastq();
 
              //config pagination
              $config['base_url'] = base_url().'form_cuti/index/fn:'.$exp_ftitle[1].'/'.$sort_by.'/'.$sort_order.'/';
@@ -193,7 +196,7 @@ class Form_cuti extends MX_Controller {
                     if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), 'Pengajuan Permohonan Cuti', $isi_email);
                  }else{
                     $this->approval->request('hrd', 'cuti', $cuti_id, $user_id, $this->detail_email($cuti_id));
-                    if(!empty(getEmail(1)))$this->send_email(getEmail(1), 'Pengajuan Permohonan Cuti', $isi_email);
+                    if(!empty(getEmail($this->approval->approver('cuti'))))$this->send_email(getEmail($this->approval->approver('cuti')), 'Pengajuan Permohonan Cuti', $isi_email);
                  }
 
                  $this->insert_leave_request($user_id, $additional_data, $leave_request_id);
@@ -212,6 +215,7 @@ class Form_cuti extends MX_Controller {
 
 
         $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
+        $sess_nik = $this->data['sess_nik'] = get_nik($sess_id);
         $user_id = getValue('user_id', 'users_cuti', array('id'=>'where/'.$id));
         $user_nik = get_nik($user_id);
         $cuti_details = $this->data['form_cuti'] = $this->form_cuti_model->form_cuti_supervisor($id)->result();
@@ -219,6 +223,7 @@ class Form_cuti extends MX_Controller {
 
         $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
         $this->data['sisa_cuti'] = (!empty($this->get_sisa_cuti($user_nik)[0]['ENTITLEMENT'])) ? $this->get_sisa_cuti($user_nik)[0]['ENTITLEMENT'] : '-';
+        
         $this->_render_page('form_cuti/detail', $this->data);
     }
 
@@ -266,7 +271,7 @@ class Form_cuti extends MX_Controller {
                     if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), 'Pengajuan Permohonan Cuti', $isi_email_request);
                 }else{
                     $this->approval->request('hrd', 'cuti', $id, $user_cuti_id, $this->detail_email($id));
-                    if(!empty(getEmail(1)))$this->send_email(getEmail(1), 'Pengajuan Permohonan Cuti', $isi_email_request);
+                    if(!empty(getEmail($this->approval->approver('cuti'))))$this->send_email(getEmail($this->approval->approver('cuti')), 'Pengajuan Permohonan Cuti', $isi_email_request);
                 }
             }
             

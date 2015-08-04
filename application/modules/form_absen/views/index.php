@@ -101,7 +101,7 @@
                             }
 
                           //Approval HRD
-                            if(is_admin()&&$absen->is_app_hrd == 0){
+                            if($this->approval->approver('absen') == $sess_nik && $absen->is_app_hrd == 0){
                               $txt_app_hrd = "<a href='".site_url('form_absen/detail/'.$absen->id)."''>
                                               <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-edit'></i></button>
                                               </a>";

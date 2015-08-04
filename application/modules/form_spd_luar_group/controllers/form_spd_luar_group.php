@@ -107,7 +107,7 @@ class Form_spd_luar_group extends MX_Controller {
         else
         {
             $sess_id= $this->data['sess_id'] = $this->session->userdata('user_id');
-            $sess_nik = get_nik($sess_id);
+            $this->data['sess_nik'] = $sess_nik = get_nik($sess_id);
             $data_result = $this->data['task_detail'] = $this->form_spd_luar_group_model->where('users_spd_luar_group.id',$id)->form_spd_luar_group($id)->result();
             $this->data['td_num_rows'] = $this->form_spd_luar_group_model->where('users_spd_luar_group.id',$id)->form_spd_luar_group($id)->num_rows();
         

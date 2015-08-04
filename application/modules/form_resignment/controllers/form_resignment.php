@@ -151,8 +151,10 @@ class Form_resignment extends MX_Controller {
                      $this->approval->by_admin('resignment', $resignment_id, $sess_id, $user_id, $this->detail_email($resignment_id));
                      endif;
                      if(!empty($user_app_lv1)):
+                        if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), 'Pengajuan Permohonan Resignment', $isi_email);
                         $this->approval->request('lv1', 'resignment', $resignment_id, $user_id, $this->detail_email($resignment_id));
                      else:
+                        if(!empty(getEmail($this->approval->approver('resignment'))))$this->send_email(getEmail($this->approval->approver('resignment')), 'Pengajuan Permohonan Resignment', $isi_email);
                         $this->approval->request('hrd', 'resignment', $resignment_id, $user_id, $this->detail_email($resignment_id));
                      endif;
                      redirect('form_resignment', 'refresh');
@@ -170,6 +172,7 @@ class Form_resignment extends MX_Controller {
         }
 
         $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
+        $sess_nik = $this->data['sess_nik'] = get_nik($sess_id);
         $user_id = getValue('user_id', 'users_resignment', array('id'=>'where/'.$id));
         $this->data['user_nik'] = get_nik($user_id);
         $form_resignment = $this->data['form_resignment'] = $this->form_resignment_model->form_resignment($id)->result();
@@ -266,6 +269,10 @@ class Form_resignment extends MX_Controller {
         {
             $is_app = getValue('is_app_'.$type, 'users_resignment', array('id'=>'where/'.$id));
             $num_rows = getAll('users_resignment_wawancara', array('user_resignment_id'=>'where/'.$id))->num_rows();
+            $user_resignment_id = getValue('user_id', 'users_resignment', array('id'=>'where/'.$id));
+            $date_resignment = getValue('date_resign', 'users_resignment', array('id'=>'where/'.$id));
+            $user_exit_id_num_rows = getAll('users_exit', array('user_id'=>'where/'.$user_resignment_id))->num_rows();
+            
             $user_id = get_nik($this->session->userdata('user_id'));
             $date_now = date('Y-m-d');
             if($type = 'hrd'):
@@ -289,6 +296,27 @@ class Form_resignment extends MX_Controller {
                     $this->db->where('user_resignment_id', $id)->update('users_resignment_wawancara',$data1);
                 }else{
                     $this->db->insert('users_resignment_wawancara', $data1);
+                    if($users_exit_id_num_rows>0):
+                        $data_exit = array(
+                            'date_exit' => $date_resignment,
+                            'exit_type_id' => 3,
+                            'is_resignment' => 1 
+                            );
+                        $this->db->where('user_id', $user_resignment_id)->update('users_exit', $data_exit);
+                    else:
+                        $date_exit = array(
+                            'id_comp_session' => 1,
+                            'user_id' => $user_resignment_id,
+                            'date_exit' => $date_resignment,
+                            'exit_type_id' => 3,
+                            'is_resignment' => 1,
+                            );
+                        $this->db->insert('users_exit', $data_exit);
+                        $exit_id = $this->db->insert_id();
+                        if(!empty(get_superior($user_resignment_id))){
+                            $this->approval->request_exit($user_resignment_id);
+                        }
+
                 }
                 $this->form_resignment_model->update($id,$data2);
             else:
@@ -305,7 +333,6 @@ class Form_resignment extends MX_Controller {
             $approval_status = $this->input->post('app_status_'.$type);
             $approval_status = $this->input->post('app_status_'.$type);
 
-           $user_resignment_id = getValue('user_id', 'users_resignment', array('id'=>'where/'.$id));
             if($is_app==0){
                 $this->approval->approve('resignment', $id, $approval_status, $this->detail_email($id));
             }else{
@@ -316,10 +343,12 @@ class Form_resignment extends MX_Controller {
                 $lv_app = 'lv'.$lv;
                 $user_app = ($lv<4) ? getValue('user_app_'.$lv_app, 'users_resignment', array('id'=>'where/'.$id)):0;
                 if(!empty($user_app)):
-                    $this->approval->request($lv_app, 'resignment', $id, $user_resignment_id, $this->detail_email($id));
-                else:
-                    $this->approval->request('hrd', 'resignment', $id, $user_resignment_id, $this->detail_email($id));
-                endif;
+                 if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), 'Pengajuan Permohonan Resignment', $isi_email);
+                    $this->approval->request('lv1', 'resignment', $resignment_id, $user_id, $this->detail_email($resignment_id));
+                 else:
+                    if(!empty(getEmail($this->approval->approver('resignment'))))$this->send_email(getEmail($this->approval->approver('resignment')), 'Pengajuan Permohonan Resignment', $isi_email);
+                    $this->approval->request('hrd', 'resignment', $resignment_id, $user_id, $this->detail_email($resignment_id));
+                 endif;
             }
             redirect('form_resignment/detail/'.$id, 'refresh');
         }

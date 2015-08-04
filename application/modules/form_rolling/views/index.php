@@ -106,7 +106,7 @@
                                     }
 
                                      //Approval HRD
-                                    if(is_admin()&&$user->is_app_hrd == 0){
+                                    if($this->approval->approver('rolling') == $sess_nik && $user->is_app_hrd == 0){
                                       $txt_app_hrd = "<a href='".site_url('form_rolling/detail/'.$user->id)."''>
                                                       <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-edit'></i></button>
                                                       </a>";

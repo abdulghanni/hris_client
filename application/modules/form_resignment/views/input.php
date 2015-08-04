@@ -101,6 +101,7 @@
                         </div>    
                       </div>
 
+                  <!--
                     <div class="row form-row">
                       <div class="col-md-12">
                         <label class="bold form-label text-left"><?php echo 'Approval' ?></label>
@@ -148,7 +149,7 @@
                       </div>
                     </div>
 
-                      
+                    --> 
                     </div>
                 </div>
                 <div class="form-actions">

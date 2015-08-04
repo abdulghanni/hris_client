@@ -298,6 +298,7 @@ class form_spd_dalam_group_model extends CI_Model
             $sess_id = $this->session->userdata('user_id');
             $sess_nik = get_nik($sess_id);
             $admin = is_admin();
+            $is_approver = $this->approval->approver('Perjalanan Dinas');
             //default selects
             $this->db->select(array(
                 $this->tables['users_spd_dalam_group'].'.*',
@@ -313,7 +314,7 @@ class form_spd_dalam_group_model extends CI_Model
             }
             
             $this->db->where('users_spd_dalam_group.is_deleted', 0);
-            if(!is_admin()){
+            if($is_approver !== $sess_nik && !is_admin()){
                 $this->db->where("(users_spd_dalam_group.task_receiver like '%$sess_nik%' OR users_spd_dalam_group.task_creator = '$sess_nik' OR users_spd_dalam_group.created_by = '$sess_id' 
                                OR users_spd_dalam_group.user_app_lv1 = '$sess_nik'  OR users_spd_dalam_group.user_app_lv2 = '$sess_nik'  OR users_spd_dalam_group.user_app_lv3 = '$sess_nik' 
                     )",null, false);

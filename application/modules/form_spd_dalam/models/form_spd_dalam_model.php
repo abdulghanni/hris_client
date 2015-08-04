@@ -298,6 +298,7 @@ class Form_spd_dalam_model extends CI_Model
             $sess_id = $this->session->userdata('user_id');
             $sess_nik = get_nik($sess_id);
             $is_admin = is_admin();
+            $is_approver = $this->approval->approver('Perjalanan Dinas');
             if(!empty(is_have_subordinate(get_nik($sess_id)))){
             $sub_id = get_subordinate($sess_id);
             }else{
@@ -330,7 +331,7 @@ class Form_spd_dalam_model extends CI_Model
             if($id != null){
                 $this->db->where('users_spd_dalam.id', $id);
             }
-            if($is_admin!=1){
+            if($is_approver !== $sess_nik && $is_admin!=1){
                 //$this->db->where("(users_spd_dalam.user_id= $sess_id $sub_id $subsub_id )",null, false);
                 $this->db->where("(users_spd_dalam.task_receiver = '$sess_nik' OR users_spd_dalam.task_creator = '$sess_nik' 
                                     OR users_spd_dalam.user_app_lv1 = '$sess_nik'  OR users_spd_dalam.user_app_lv2 = '$sess_nik'  OR users_spd_dalam.user_app_lv3 = '$sess_nik' 

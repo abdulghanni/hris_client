@@ -293,6 +293,30 @@ class Approval {
             );
         $CI->db->insert('email', $data);
     }
+
+    public function request_exit($id)
+    {
+        $CI =& get_instance();
+        $url = base_url().'form_exit/input/'.$id;
+        $atasan = get_superior($id);
+        $data = array(
+                'sender_id' => get_nik($id),
+                'receiver_id' => $atasan,
+                'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                'subject' => 'Permintaan Rekomendasi Karyawan Keluar (Resign)',
+                'email_body' => get_name($id)." mengajukan permintaan rekomendasi karyawan keluar (resign), silakan klik tautan berikut untuk menginput data <a href=$url>$url</a><br/>",
+                'is_read' => 0,
+            );
+        $CI->db->insert('email', $data);
+    }
+
+    public function approver($form)
+    {
+        $form_type_id = getValue('id', 'form_type', array('title'=>'like/'.$form));
+        $approver = getValue('user_nik', 'users_approval', array('form_type_id'=>'where/'.$form_type_id));
+
+        return $approver;
+    }
 }
 
 /* End of file Approval.php */

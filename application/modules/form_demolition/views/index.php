@@ -18,7 +18,7 @@
               <div class="grid simple ">
                 <div class="grid-title no-border">
                   <h4>Daftar Pengajuan <span class="semi-bold">demolition</span></h4>
-                  <?php if(is_have_subordinate($sess_id)||is_admin()){?>
+                  <?php if(is_have_subordinate($sess_id)||is_admin()||$this->approval->approver('demosi') == $sess_nik){?>
                   <div class="tools"> 
                     <a href="<?php echo site_url('form_demolition/input') ?>" class="config"></a>
                   </div>
@@ -106,7 +106,7 @@
                                     }
 
                                      //Approval HRD
-                                    if(is_admin()&&$user->is_app_hrd == 0){
+                                    if($this->approval->approver('demosi') == $sess_nik && $user->is_app_hrd == 0){
                                       $txt_app_hrd = "<a href='".site_url('form_demolition/detail/'.$user->id)."''>
                                                       <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-edit'></i></button>
                                                       </a>";

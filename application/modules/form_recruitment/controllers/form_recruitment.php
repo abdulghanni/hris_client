@@ -224,7 +224,7 @@ class Form_recruitment extends MX_Controller {
                         if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), 'Pengajuan Permohonan Recruitment', $isi_email);
                         $this->approval->request('lv1', 'recruitment', $recruitment_id, $user_id, $this->detail_email($recruitment_id));
                      else:
-                        if(!empty(getEmail(1)))$this->send_email(getEmail(1), 'Pengajuan Permohonan Recruitment', $isi_email);
+                        if(!empty(getEmail($this->approval->approver('recruitment'))))$this->send_email(getEmail($this->approval->approver('recruitment')), 'Pengajuan Permohonan Recruitment', $isi_email);
                         $this->approval->request('hrd', 'recruitment', $recruitment_id, $user_id, $this->detail_email($recruitment_id));
                      endif;
                      redirect('form_recruitment','refresh');
@@ -298,7 +298,7 @@ class Form_recruitment extends MX_Controller {
                     if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), 'Pengajuan Permohonan Recruitment', $isi_email_request);
                     $this->approval->request($lv_app, 'recruitment', $id, $user_recruitment_id, $this->detail_email($id));
                 else:
-                    if(!empty(getEmail(1)))$this->send_email(getEmail(1), 'Pengajuan Permohonan Recruitment', $isi_email_request);
+                    if(!empty(getEmail($this->approval->approver('recruitment'))))$this->send_email(getEmail($this->approval->approver('recruitment')), 'Pengajuan Permohonan Recruitment', $isi_email_request);
                     $this->approval->request('hrd', 'recruitment', $id, $user_recruitment_id, $this->detail_email($id));
                 endif;
             }

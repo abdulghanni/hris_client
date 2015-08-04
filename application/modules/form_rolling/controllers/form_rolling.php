@@ -122,7 +122,8 @@ class Form_rolling extends MX_Controller {
             redirect('auth/login', 'refresh');
         }else{
            
-            $this->data['sess_id'] = $this->session->userdata('user_id');
+            $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
+            $this->data['sess_nik'] = get_nik($sess_id);
             $user_id = getValue('user_id', 'users_rolling', array('id'=>'where/'.$id));
             $this->data['user_nik'] = get_nik($user_id);
             $form_rolling = $this->data['form_rolling'] = $this->form_rolling_model->form_rolling($id)->result();
@@ -229,7 +230,7 @@ class Form_rolling extends MX_Controller {
                     if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), 'Pengajuan Permohonan rolling', $isi_email_request);
                 }else{
                     $this->approval->request('hrd', 'rolling', $id, $user_rolling_id, $this->detail_email($id));
-                    if(!empty(getEmail(1)))$this->send_email(getEmail(1), 'Pengajuan Permohonan rolling', $isi_email_request);
+                    if(!empty(getEmail($this->approval->approver('rolling'))))$this->send_email(getEmail($this->approval->approver('rolling')), 'Pengajuan Permohonan rolling', $isi_email_request);
                 }
             }
             redirect('form_rolling/detail/'.$id, 'refresh');

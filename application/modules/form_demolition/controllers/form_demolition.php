@@ -122,7 +122,8 @@ class Form_demolition extends MX_Controller {
             redirect('auth/login', 'refresh');
         }else{
            
-            $this->data['sess_id'] = $this->session->userdata('user_id');
+            $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
+            $sess_nik = $this->data['sess_nik'] = get_nik($sess_id);
             $user_id = getValue('user_id', 'users_demolition', array('id'=>'where/'.$id));
             $this->data['user_nik'] = get_nik($user_id);
             $form_demolition = $this->data['form_demolition'] = $this->form_demolition_model->form_demolition($id)->result();
@@ -176,7 +177,7 @@ class Form_demolition extends MX_Controller {
                         if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), 'Pengajuan Permohonan Demosi', $isi_email);
                      }else{
                         $this->approval->request('hrd', 'demolition', $demolition_id, $user_id, $this->detail_email($demolition_id));
-                        if(!empty(getEmail(1)))$this->send_email(getEmail(1), 'Pengajuan Permohonan Demosi', $isi_email);
+                        if(!empty(getEmail($this->approval->approver('demosi'))))$this->send_email(getEmail($this->approval->approver('demosi')), 'Pengajuan Permohonan Demosi', $isi_email);
                      }
 
                      $this->send_user_notification($demolition_id, $user_id);
@@ -233,7 +234,7 @@ class Form_demolition extends MX_Controller {
                     if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), 'Pengajuan Permohonan Demosi', $isi_email_request);
                 }else{
                     $this->approval->request('hrd', 'demolition', $id, $user_demolition_id, $this->detail_email($id));
-                    if(!empty(getEmail(1)))$this->send_email(getEmail(1), 'Pengajuan Permohonan Demosi', $isi_email_request);
+                    if(!empty(getEmail($this->approval->approver('demosi'))))$this->send_email(getEmail($this->approval->approver('demosi')), 'Pengajuan Permohonan Demosi', $isi_email_request);
                 }
             }
             redirect('form_demolition/detail/'.$id, 'refresh');

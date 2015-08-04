@@ -100,7 +100,7 @@
                                 }
 
                               //Approval HRD
-                                if(is_admin()&&$spd->is_app_hrd == 0){
+                                if($this->approval->approver('Perjalanan Dinas') == $sess_nik && $spd->is_app_hrd == 0){
                                   $txt_app_hrd = "<a href='".site_url('form_spd_dalam_group/submit/'.$spd->id)."''>
                                                   <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-edit'></i></button>
                                                   </a>";

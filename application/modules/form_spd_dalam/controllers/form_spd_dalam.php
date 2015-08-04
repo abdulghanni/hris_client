@@ -106,6 +106,7 @@ class Form_spd_dalam extends MX_Controller {
         else
         {
             $sess_id= $this->data['sess_id'] = $this->session->userdata('user_id');
+            $this->data['sess_nik'] = get_nik($sess_id);
             $data_result = $this->data['task_detail'] = $this->form_spd_dalam_model->where('users_spd_dalam.id',$id)->form_spd_dalam($id)->result();
             $this->data['td_num_rows'] = $this->form_spd_dalam_model->where('users_spd_dalam.id',$id)->form_spd_dalam()->num_rows($id);
 
@@ -161,7 +162,7 @@ class Form_spd_dalam extends MX_Controller {
             if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), 'Pengajuan Perjalanan Dinas Dalam Kota', $isi_email_request);
             $this->approval->request($lv, 'spd_dalam', $id, $user_spd_dalam_id, $this->detail_email_submit($id));
         else:
-            if(!empty(getEmail(1)))$this->send_email(getEmail(1), 'Pengajuan Perjalanan Dinas Dalam Kota', $isi_email_request);
+            if(!empty(getEmail($this->approval->approver('Perjalanan Dinas'))))$this->send_email(getEmail($this->approval->approver('Perjalanan Dinas')), 'Pengajuan Perjalanan Dinas Dalam Kota', $isi_email_request);
             $this->approval->request('hrd', 'spd_dalam', $id, $user_spd_dalam_id, $this->detail_email_submit($id));
         endif;
         }
@@ -240,7 +241,7 @@ class Form_spd_dalam extends MX_Controller {
                     if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), 'Pengajuan Perjalanan Dinas Dalam Kota', $isi_email);
                     $this->approval->request('lv1', 'spd_dalam', $spd_id, $task_creator, $this->detail_email_submit($spd_id));
                 else:
-                    if(!empty(getEmail(1)))$this->send_email(getEmail(1), 'Pengajuan Perjalanan Dinas Dalam Kota', $isi_email);
+                    if(!empty(getEmail($this->approval->approver('Perjalanan Dinas'))))$this->send_email(getEmail($this->approval->approver('Perjalanan Dinas')), 'Pengajuan Perjalanan Dinas Dalam Kota', $isi_email);
                     $this->approval->request('hrd', 'spd_dalam', $spd_id, $task_creator, $this->detail_email_submit($spd_id));
                 endif;
                 $this->send_spd_mail($spd_id, $user_id, $task_creator);

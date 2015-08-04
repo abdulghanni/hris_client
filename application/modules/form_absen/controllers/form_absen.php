@@ -108,9 +108,11 @@ class form_absen extends MX_Controller {
         }
         else
         {
+
             $user_id= getValue('user_id', 'users_absen', array('id'=>'where/'.$id));
-            $this->data['user_nik'] = $sess_nik = get_nik($user_id);
-            $this->data['sess_id'] = $this->session->userdata('user_id');
+            $this->data['user_nik'] = get_nik($user_id);
+            $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
+            $sess_nik = $this->data['sess_nik'] = get_nik($sess_id);
             //$this->data['comp_session'] = $this->form_absen_model->render_session()->result();
             $form_absen = $this->data['form_absen'] = $this->form_absen_model->where('is_deleted',0)->form_absen_detail($id)->result();
             $this->data['_num_rows'] = $this->form_absen_model->where('is_deleted',0)->form_absen_detail($id)->num_rows();
@@ -210,7 +212,7 @@ class form_absen extends MX_Controller {
                      if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), 'Pengajuan Keterangan Tidak Absen', $isi_email);
                      $this->approval->request('lv1', 'absen', $absen_id, $user_id, $this->detail_email($absen_id));
                  else:
-                     if(!empty(getEmail(1)))$this->send_email(getEmail(1), 'Pengajuan Keterangan Tidak Absen', $isi_email);
+                     if(!empty(getEmail($this->approval->approver('absen'))))$this->send_email(getEmail($this->approval->approver('absen')), 'Pengajuan Keterangan Tidak Absen', $isi_email);
                      $this->approval->request('hrd', 'absen', $absen_id, $user_id, $this->detail_email($absen_id));
                  endif;
 
@@ -253,7 +255,7 @@ class form_absen extends MX_Controller {
             if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), 'Pengajuan Keterangan Tidak Absen', $isi_email_request);
             $this->approval->request($lv, 'absen', $id, $user_absen_id, $this->detail_email($id));
         else:
-            if(!empty(getEmail(1)))$this->send_email(getEmail(1), 'Pengajuan Keterangan Tidak Absen', $isi_email_request);
+            if(!empty(getEmail($this->approval->approver('absen'))))$this->send_email(getEmail($this->approval->approver('absen')), 'Pengajuan Keterangan Tidak Absen', $isi_email_request);
             $this->approval->request('hrd', 'absen', $id, $user_absen_id, $this->detail_email($id));
         endif;
         }

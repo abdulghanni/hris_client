@@ -297,6 +297,7 @@ class Form_cuti_model extends CI_Model
         {
             $sess_id = $this->session->userdata('user_id');
             $sess_nik = get_nik($sess_id);
+            $is_approver = $this->approval->approver('cuti');
             $is_admin = is_admin();
             if(!empty(is_have_subordinate(get_nik($sess_id)))){
             $sub_id = get_subordinate($sess_id);
@@ -335,7 +336,7 @@ class Form_cuti_model extends CI_Model
 
 
             //$this->db->where('users_cuti.is_deleted', 0);
-            if($is_admin!=1){
+            if($is_approver !== $sess_nik && $is_admin != 1){
                 //$this->db->where("(users_cuti.user_id= $sess_id $sub_id $subsub_id )",null, false);
                 $this->db->where("(users_cuti.user_id = '$sess_id' 
                                OR users_cuti.user_app_lv1 = '$sess_nik'  OR users_cuti.user_app_lv2 = '$sess_nik'  OR users_cuti.user_app_lv3 = '$sess_nik' 

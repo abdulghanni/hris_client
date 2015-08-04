@@ -292,7 +292,7 @@
                         <div class="col-md-3">
                           <p class="wf-approve-sp">
                             <?php
-                            if($td->is_app_hrd == 0 && is_admin()){?>
+                            if($td->is_app_hrd == 0 && $this->approval->approver('Perjalanan Dinas') == $sess_nik){?>
                               <button id="btn_app_hrd" class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok"></i>Submit</button>
                               <span class="small"></span>
                               <span class="semi-bold"></span><br/>

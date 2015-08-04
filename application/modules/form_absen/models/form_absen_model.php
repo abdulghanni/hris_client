@@ -297,6 +297,7 @@ class Form_absen_model extends CI_Model
         {
             $sess_id = $this->session->userdata('user_id');
             $sess_nik = get_nik($sess_id);
+            $is_approver = $this->approval->approver('absen');
             $is_admin = is_admin();
             if(!empty(is_have_subordinate(get_nik($sess_id)))){
             $sub_id = get_subordinate($sess_id);
@@ -322,7 +323,7 @@ class Form_absen_model extends CI_Model
             $this->db->join('comp_session', 'users_absen.id_comp_session = comp_session.id', 'left');
             $this->db->join('users', 'users_absen.user_id = users.id', 'left');
 			
-            if($is_admin!=1){
+            if($is_approver !== $sess_nik && $is_admin!=1 ){
                  $this->db->where("(users_absen.user_id = '$sess_id' 
                                OR users_absen.user_app_lv1 = '$sess_nik'  OR users_absen.user_app_lv2 = '$sess_nik'  OR users_absen.user_app_lv3 = '$sess_nik' 
                 )",null, false);

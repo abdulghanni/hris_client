@@ -323,7 +323,7 @@
                         <div class="col-md-3">
                           <p class="wf-approve-sp">
                             <?php
-                            if($user->is_app_hrd == 0 && is_admin()){?>
+                            if($user->is_app_hrd == 0 && $this->approval->approver('cuti') == $sess_nik){?>
                               <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitcutiModalHrd"><i class="icon-ok"></i>Submit</div>
                               <span class="small"></span>
                               <span class="semi-bold"></span><br/>

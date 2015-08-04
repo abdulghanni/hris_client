@@ -262,7 +262,7 @@
                   <div class="col-md-3">
                     <p class="wf-approve-sp">
                     <div class="col-md-12"><span class="semi-bold">Diterima HRD</span><br/><br/></div>
-                      <?php if($row->is_app_hrd == 0 && is_admin()){?>
+                      <?php if($row->is_app_hrd == 0 && $this->approval->approver('promosi') == $sess_nik){?>
                         <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitpromosiModalHrd"><i class="icon-ok"></i>Submit</div>
                         <span class="small"></span>
                         <span class="semi-bold"></span><br/>

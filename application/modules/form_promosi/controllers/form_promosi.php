@@ -121,7 +121,8 @@ class Form_promosi extends MX_Controller {
             redirect('auth/login', 'refresh');
         }else{
            
-            $this->data['sess_id'] = $this->session->userdata('user_id');
+            $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
+            $this->data['sess_nik'] = get_nik($sess_id);
             $form_promosi = $this->data['form_promosi'] = $this->form_promosi_model->form_promosi($id)->result();
             $this->data['_num_rows'] = $this->form_promosi_model->form_promosi($id)->num_rows();
 
@@ -175,7 +176,7 @@ class Form_promosi extends MX_Controller {
                         if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), 'Pengajuan Permohonan Promosi', $isi_email);
                      }else{
                         $this->approval->request('hrd', 'promosi', $promosi_id, $user_id, $this->detail_email($promosi_id));
-                        if(!empty(getEmail(1)))$this->send_email(getEmail(1), 'Pengajuan Permohonan Promosi', $isi_email);
+                        if(!empty(getEmail($this->approval->approver('promosi'))))$this->send_email(getEmail($this->approval->approver('promosi')), 'Pengajuan Permohonan Promosi', $isi_email);
                      }
                      $this->send_user_notification($promosi_id, $user_id);
                      redirect('form_promosi', 'refresh');
@@ -233,7 +234,7 @@ class Form_promosi extends MX_Controller {
                     if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), 'Pengajuan Permohonan Promosi', $isi_email_request);
                 }else{
                     $this->approval->request('hrd', 'promosi', $id, $user_promosi_id, $this->detail_email($id));
-                    if(!empty(getEmail(1)))$this->send_email(getEmail(1), 'Pengajuan Permohonan Promosi', $isi_email_request);
+                    if(!empty(getEmail($this->approval->approver('promosi'))))$this->send_email(getEmail($this->approval->approver('promosi')), 'Pengajuan Permohonan Promosi', $isi_email_request);
                 }
             }
             redirect('form_promosi/detail/'.$id, 'refresh');

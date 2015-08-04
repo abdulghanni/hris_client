@@ -106,7 +106,8 @@ class form_training_group extends MX_Controller {
         {
             $user_id= getValue('user_pengaju_id', 'users_training_group', array('id'=>'where/'.$id));
             $this->data['user_nik'] = $sess_nik = get_nik($user_id);
-            $this->data['sess_id'] = $this->session->userdata('user_id');
+            $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
+            $this->data['sess_nik'] = get_nik($sess_id);
 
             $form_training_group = $this->data['form_training_group'] = $this->form_training_group_model->form_training_group($id)->result();
             $this->data['_num_rows'] = $this->form_training_group_model->form_training_group($id)->num_rows();
@@ -189,7 +190,7 @@ class form_training_group extends MX_Controller {
                         if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), 'Pengajuan Permohonan Training (Group)', $isi_email);
                          }else{
                             $this->approval->request('hrd', 'training_group', $training_id, $user_id, $this->detail_email($training_id));
-                        if(!empty(getEmail(1)))$this->send_email(getEmail(1), 'Pengajuan Permohonan Training (Group)', $isi_email);
+                        if(!empty(getEmail($this->approval->approver('training'))))$this->send_email(getEmail($this->approval->approver('training')), 'Pengajuan Permohonan Training (Group)', $isi_email);
                          }   
                         $this->send_peserta_mail($training_id, $user_id, $peserta_id);
                         redirect('form_training_group', 'refresh');
@@ -247,7 +248,7 @@ class form_training_group extends MX_Controller {
                     if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), 'Pengajuan Permohonan Training (Group)', $isi_email_request);
                 }else{
                     $this->approval->request('hrd', 'training_group', $id, $pengaju_id, $this->detail_email($id));
-                    if(!empty(getEmail(1)))$this->send_email(getEmail(1), 'Pengajuan Permohonan Training (Group)', $isi_email_request);
+                    if(!empty(getEmail($this->approval->approver('training'))))$this->send_email(getEmail($this->approval->approver('training')), 'Pengajuan Permohonan Training (Group)', $isi_email_request);
                 }
             }
         }
