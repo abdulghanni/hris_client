@@ -78,47 +78,71 @@ $user_nik = get_nik($row->user_id);
     <td height="45"><span class="style3"><?php echo dateIndo($row->date_resign);?></span></td>
   </tr>
 </table>
-
+<br/>
 <table width="1000" align="center">
   <tbody>
     <tr>
-      <th width="250" height="75"></th>
-      <th width="250">Disetujui Oleh,</th>
-      <th width="250"></th>
-      <th width="250"></th>
+      <th width="250" height="50">Diajukan Oleh,</th>
+      <!--<th width="250"></th>-->
+      <th width="250">&nbsp;&nbsp;Mengetahui</th>
+      <!--<th width="250"></th>-->
     </tr>
     <tr>
+      <td width="250" align="center"></td>
+      <?php if(!empty($row->user_app_lv1)){?>
       <td width="250" align="center"><?php echo ($row->app_status_id_lv1 == 1)?"<img class=approval-img-md src=$approved>":(($row->app_status_id_lv1 == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
+      <?php }?>
+      <?php if(!empty($row->user_app_lv2)){?>
       <td width="250" align="center"><?php echo ($row->app_status_id_lv2 == 1)?"<img class=approval-img-md src=$approved>":(($row->app_status_id_lv2 == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
-      <td width="250" align="center"><?php echo ($row->app_status_id_lv3 == 1)?"<img class=approval-img-md src=$approved>":(($row->app_status_id_lv3 == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
+      <?php }?>
       <td width="250" align="center"><?php echo ($row->app_status_id_hrd == 1)?"<img class=approval-img-md src=$approved>":(($row->app_status_id_hrd == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
     </tr>
     <tr>
+      <td height="80" align="center" class="style3"><?php echo get_name($row->user_id)?></td>
     <?php if(!empty($row->user_app_lv1)){?>
       <td height="80" align="center" class="style3"><?php echo get_name($row->user_app_lv1)?></td>
     <?php }?>
     <?php if(!empty($row->user_app_lv2)){?>
       <td align="center" class="style3"><?php echo get_name($row->user_app_lv2)?></td>
     <?php }?>
-    <?php if(!empty($row->user_app_lv3)){?>
-      <td align="center" class="style3"><?php echo get_name($row->user_app_lv3)?></td>
-    <?php }?>
       <td align="center" class="style3"><?php echo get_name($row->user_app_hrd)?></td>
     </tr>
-    <tr >
+    <tr>
+      <td align="center"><?php $pengaju_nik = get_nik($row->user_id); echo dateIndo($row->created_on)?><br/><?php echo get_user_position($pengaju_nik)?></td>
     <?php if(!empty($row->user_app_lv1)){?>
       <td align="center"><?php echo dateIndo($row->date_app_lv1)?><br/>(Supervisor)</td>
     <?php }?>
     <?php if(!empty($row->user_app_lv2)){?>
       <td align="center"><?php echo dateIndo($row->date_app_lv2)?><br/>(Ka. Bagian)</td>
       <?php }?>
-    <?php if(!empty($row->user_app_lv3)){?>
-      <td align="center"><?php echo dateIndo($row->date_app_lv3)?><br/><?php echo '('.get_user_position($row->user_app_lv3).')'?></td>
-    <?php } ?>
       <td align="center"><?php echo dateIndo($row->date_app_hrd)?><br/>(HRD)</td>
     </tr>
   </tbody>
 </table>
+
+<?php if(!empty($row->user_app_lv3)){?>
+<table width="1000" align="center">
+  <tbody>
+    <tr>
+      <td width="333" align="center"></td>
+      <td width="333" align="center"><?php echo ($row->app_status_lv3 == 1)?"<img class=approval-img-md src=$approved>":(($row->app_status_id_lv3 == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
+      <td width="333" align="center"></td>
+    </tr>
+    <tr>
+      <td height="80" align="center" class="style3"></td>
+      <td align="center" class="style3"><?php echo get_name($row->user_app_lv3)?></td>
+      <td align="center" class="style3"></td>
+    </tr>
+    <tr>
+      <td align="center"><?php echo dateIndo($row->date_app_lv1)?><br/></td>
+    <?php if(!empty($row->user_app_lv3)){?>
+      <td align="center"><?php echo dateIndo($row->date_app_lv3)?><br/><?php echo '('.get_user_position($row->user_app_lv3).')'?></td>
+      <?php }?>
+      <td align="center"></td>
+    </tr>
+  </tbody>
+</table>
+<?php }?>
 
 <?php endforeach;?>
 </body>

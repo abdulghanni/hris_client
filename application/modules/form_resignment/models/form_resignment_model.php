@@ -320,6 +320,12 @@ class Form_resignment_model extends CI_Model
                 'status_lv2.title as approval_status_lv2',
                 'status_lv3.title as approval_status_lv3',
                 'status_hrd.title as approval_status_hrd',
+                'users_resignment_wawancara.alasan_resign_id',
+                'users_resignment_wawancara.desc_resign',
+                'users_resignment_wawancara.procedure_resign',
+                'users_resignment_wawancara.kepuasan_resign',
+                'users_resignment_wawancara.saran_resign',
+                'users_resignment_wawancara.rework_resign',
             ));
             $this->db->join('users', 'users.id = users_resignment.user_id', 'LEFT');
             //$this->db->join('alasan_resign', 'users_resignment.alasan_resign_id = alasan_resign.id', 'LEFT');
@@ -327,6 +333,7 @@ class Form_resignment_model extends CI_Model
             $this->db->join('approval_status as status_lv2', 'users_resignment.app_status_id_lv2 = status_lv2.id', 'left');
             $this->db->join('approval_status as status_lv3', 'users_resignment.app_status_id_lv3 = status_lv3.id', 'left');
             $this->db->join('approval_status as status_hrd', 'users_resignment.app_status_id_hrd = status_hrd.id', 'left');
+            $this->db->join('users_resignment_wawancara', 'users_resignment.id = users_resignment_wawancara.user_resignment_id', 'left');
 			if($id != null)$this->db->where('users_resignment.id', $id);
             if($is_approver !== $sess_nik && $is_admin!=1){
                 //$this->db->where("(users_resignment.user_id= $sess_id $sub_id $subsub_id )",null, false);

@@ -152,7 +152,7 @@
                                       <?php echo $txt_app_hrd; ?>
                                     </td>
                                     <td class="text-center">
-                                       <a href="<?php echo site_url('form_cuti/form_cuti_pdf/'.$user->id)?>"><i class="icon-print"></i></a>
+                                       <a href="<?php echo site_url('form_cuti/form_cuti_pdf/'.$user->id)?>"  target="_blank"><i class="icon-print"></i></a>
                                     </td>
                                   </tr>
                                   <tr id="cutidetail-<?php echo $id_cuti; ?>" style="display:none">

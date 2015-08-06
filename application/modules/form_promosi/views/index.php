@@ -135,7 +135,7 @@
                                       <?php echo $txt_app_hrd; ?>
                                     </td>
                                     <td class="text-center">
-                                       <a href="<?php echo site_url('form_promosi/form_promosi_pdf/'.$user->id)?>"><i class="icon-print"></i></a>
+                                       <a href="<?php echo site_url('form_promosi/form_promosi_pdf/'.$user->id)?>" target="_blank"><i class="icon-print"></i></a>
                                     </td>
                                   </tr> 
                                 <?php endforeach;}?>

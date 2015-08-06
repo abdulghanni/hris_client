@@ -27,6 +27,12 @@
                       <div class="col-md-2">
                         <label class="form-label text-right">Nama</label>
                       </div>
+                      <?php if(!empty($user_id) && $sess_nik == $superior):?>
+                      <div class="col-md-3">
+                        <input type="text"  class="form-control" value="<?php echo get_name($user_id)?>" disabled="disabled">
+                        <input name="emp" id="emp"  type="hidden" value="<?php echo $user_id?>">
+                      </div>
+                    <?php else: ?>
                       <div class="col-md-3">
                         <?php if(is_admin()){?>
                           <select id="empExit" class="select2" style="width:100%" name="emp">
@@ -49,6 +55,7 @@
                             </select>
                         <?php }}?>
                       </div>
+                    <?php endif; ?>
 
                       <div class="col-md-2">
                         <label class="form-label text-right">Wilayah</label>
@@ -83,17 +90,31 @@
                       <div class="col-md-2">
                         <label class="form-label text-right">Tanggal Keluar</label>
                       </div>
+                    <?php if(!empty($user_id) && $sess_nik == $superior):?>
+                      <div class="col-md-3">
+                        <input type="text" class="form-control" id="sandbox-advance" value="<?php echo dateIndo($date_exit)?>" readonly>
+                        <input type="hidden" name="date_exit" value="<?php echo $date_exit ?>">
+                      </div>
+                    <?php else: ?>
                       <div class="col-md-3">
                         <div class="input-append success date">
                           <input type="text" class="form-control" id="sandbox-advance" name="date_exit" required>
                           <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
                         </div>    
                       </div>
+                    <?php endif; ?>
                     </div>
                     <div class="row form-row">
                       <div class="col-md-2">
                         <label class="form-label text-right">Tipe Rekomendasi</label>
                       </div>
+
+                    <?php if(!empty($user_id) && $sess_nik == $superior):?>
+                    <div class="col-md-3">
+                      <input type="text" class="form-control" value="Resign" readonly>
+                      <input type="hidden" name="exit_type_id" value="3">
+                    </div>
+                    <?php else: ?>
                       <div class="col-md-3">
                         <select class="select2" style="width:100%" name="exit_type_id">
                         <?php
@@ -103,6 +124,7 @@
                         <?php endforeach;}?>
                         </select>
                       </div>
+                    <?php endif; ?>
                     </div>
                       
                     <div id="inventory">

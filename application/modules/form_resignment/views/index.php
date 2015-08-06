@@ -114,7 +114,7 @@
                                       <a href="<?php echo site_url('form_resignment/detail/'.$user->id)?>"><?php echo get_nik($user->user_id)?></a>
                                     </td>
                                     <td>
-                                      <?php echo get_name($user->user_id)?>
+                                      <a href="<?php echo site_url('form_resignment/detail/'.$user->id)?>"><?php echo get_name($user->user_id)?></a>
                                     </td>
                                     <td>
                                       <?php echo dateIndo($user->date_resign)?>
@@ -132,7 +132,7 @@
                                       <?php echo $txt_app_hrd; ?>
                                     </td>
                                     <td class="text-center">
-                                       <a href="<?php echo site_url('form_resignment/form_resignment_pdf/'.$user->id)?>"><i class="icon-print"></i></a>
+                                       <a href="<?php echo site_url('form_resignment/form_resignment_pdf/'.$user->id)?>" target="_blank"><i class="icon-print"></i></a>
                                     </td>
                                   </tr>
                                   <?php endforeach;}?>

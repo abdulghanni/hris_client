@@ -158,7 +158,7 @@
                                           <i class="icon-paste"></i>
                                           <?php echo $btn_rep; ?>
                                         </button>
-                                      <a href="<?php echo base_url() ?>form_spd_dalam/pdf/<?php echo $spd->id ?>">
+                                      <a href="<?php echo base_url() ?>form_spd_dalam/pdf/<?php echo $spd->id ?>" target="_blank">
                                         <button class="btn btn-info btn-cons" type="button">
                                           <i class="icon-print"></i>
                                           Print

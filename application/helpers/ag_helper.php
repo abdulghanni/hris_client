@@ -179,6 +179,16 @@
 		}
 	}
 
+	if (!function_exists('get_nik_from_name'))
+	{
+
+		function get_nik_from_name($name)
+		{
+		    $nik = getValue('nik','users', array('username'=>'like/'.$name));
+		    return $nik;
+		}
+	}
+
 	//TO GET ID FROM SPECIFIED NIK
 	if (!function_exists('get_id'))
 	{	

@@ -28,7 +28,7 @@
                               <div class="row">
                                   <div class="col-md-5">
                                       <div class="row">
-                                          <div class="col-md-4 search_label"><?php echo form_label('Nama Pengaju','first_name')?></div>
+                                          <div class="col-md-4 search_label"><?php echo form_label('Nama','first_name')?></div>
                                           <div class="col-md-8"><?php echo bs_form_input($ftitle_search)?></div>
                                       </div>
                                   </div>
@@ -159,7 +159,7 @@
                                           <i class="icon-paste"></i>
                                           <?php echo $btn_rep; ?>
                                         </button>
-                                      <a href="<?php echo base_url() ?>form_spd_dalam_group/pdf/<?php echo $spd->id ?>">
+                                      <a href="<?php echo base_url() ?>form_spd_dalam_group/pdf/<?php echo $spd->id ?>" target="_blank">
                                         <button class="btn btn-info btn-cons" type="button">
                                           <i class="icon-print"></i>
                                           Print

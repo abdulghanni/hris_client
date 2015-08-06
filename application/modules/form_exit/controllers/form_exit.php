@@ -9,6 +9,7 @@ class Form_exit extends MX_Controller {
         parent::__construct();
         $this->load->library('authentication', NULL, 'ion_auth');
         $this->load->library('form_validation');
+        $this->load->library('approval');
         $this->load->helper('url');
         $this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
 
@@ -95,15 +96,18 @@ class Form_exit extends MX_Controller {
         }
     }
 
-    function input()
+    function input($user_id = null)
     {
         if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page
             redirect('auth/login', 'refresh');
         }
-
+            $this->data['user_id'] = $user_id;
+            $this->data['superior'] = (!empty($user_id))?get_superior($user_id):'';
+            $this->data['date_exit'] = (!empty($user_id))?getValue('date_exit', 'users_exit', array('user_id'=>'where/'.$user_id)):'';
             $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
+            $sess_nik = $this->data['sess_nik'] = get_nik($sess_id);
             $this->data['all_users'] = getAll('users', array('active'=>'where/1', 'username'=>'order/asc'), array('!=id'=>'1'));
             $this->get_user_atasan();
             $this->data['subordinate'] = getAll('users', array('superior_id'=>'where/'.get_nik($sess_id)));
@@ -316,6 +320,8 @@ class Form_exit extends MX_Controller {
                 }else{
                 $this->db->insert('users_exit_rekomendasi', $data3);
                 }
+                $isi_email = get_name($user_id).' mengajukan Permohonan promosi, untuk melihat detail silakan <a href='.base_url().'form_promosi/detail/'.$promosi_id.'>Klik Disini</a><br />';
+
                 $this->send_approval_request($exit_id, $user_id, $creator_id);
                 redirect('form_exit','refresh');
                 //echo json_encode(array('st' =>1));
@@ -333,15 +339,18 @@ class Form_exit extends MX_Controller {
 
         $admin_bagian = $this->db->where('group_id',3)->or_where('group_id',4)->or_where('group_id',5)->or_where('group_id',6)->or_where('group_id',7)->get('users_groups')->result_array('user_id');
         for($i=0;$i<sizeof($admin_bagian);$i++):
-        $data = array(
-                'sender_id' => get_nik($creator_id),
-                'receiver_id' => get_nik($admin_bagian[$i]['user_id']),
-                'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                'subject' => 'Pengajuan Rekomendasi Karyawan Keluar',
-                'email_body' =>get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
-                'is_read' => 0,
-            );
-        $this->db->insert('email', $data);
+            $receiver = get_nik($admin_bagian[$i]['user_id']);
+            $data = array(
+                    'sender_id' => get_nik($creator_id),
+                    'receiver_id' => $receiver,
+                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                    'subject' => 'Pengajuan Rekomendasi Karyawan Keluar',
+                    'email_body' =>get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
+                    'is_read' => 0,
+                );
+            $this->db->insert('email', $data);
+            $isi_email = get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />';
+            if(!empty(getEmail($receiver)))$this->send_email(getEmail($receiver), 'Pengajuan Rekomendasi Karyawan Keluar', $isi_email);
         endfor;
 
         //approval to LV1
@@ -355,6 +364,8 @@ class Form_exit extends MX_Controller {
                 'is_read' => 0,
                 );
             $this->db->insert('email', $data1);
+            $isi_email = get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />';
+            if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), 'Pengajuan Rekomendasi Karyawan Keluar', $isi_email);
         }
 
         //approval to LV2
@@ -368,6 +379,8 @@ class Form_exit extends MX_Controller {
                 'is_read' => 0,
                 );
             $this->db->insert('email', $data2);
+            $isi_email = get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />';
+            if(!empty(getEmail($user_app_lv2)))$this->send_email(getEmail($user_app_lv2), 'Pengajuan Rekomendasi Karyawan Keluar', $isi_email);
         }
 
         //approval to LV3
@@ -381,6 +394,8 @@ class Form_exit extends MX_Controller {
                 'is_read' => 0,
                 );
             $this->db->insert('email', $data3);
+            $isi_email = get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />';
+            if(!empty(getEmail($user_app_lv3)))$this->send_email(getEmail($user_app_lv3), 'Pengajuan Rekomendasi Karyawan Keluar', $isi_email);
         }
 
         if(!empty($user_app_asset)){
@@ -393,6 +408,8 @@ class Form_exit extends MX_Controller {
                 'is_read' => 0,
                 );
             $this->db->insert('email', $data4);
+            $isi_email = get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />';
+            if(!empty(getEmail($user_app_asset)))$this->send_email(getEmail($user_app_asset), 'Pengajuan Rekomendasi Karyawan Keluar', $isi_email);
         }
 
     }
@@ -474,15 +491,19 @@ class Form_exit extends MX_Controller {
         $creator_id = getAll('users_exit', array('id' => 'where/'.$id))->row('created_by');
         $user_id = getAll('users_exit', array('id' => 'where/'.$id))->row('user_id');
         $approval_status = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
+        $receiver = get_nik($user_id);
         $data1 = array(
                 'sender_id' => get_nik($this->session->userdata('user_id')),
-                'receiver_id' => get_nik($user_id),
+                'receiver_id' =>  $receiver,
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Status Pengajuan Rekomendasi Keluar dari Atasan',
                 'email_body' => "Status pengajuan Rekomendasi karyawan Keluar untuk anda oleh ".get_name($creator_id)." $approval_status oleh $approver untuk detail silakan <a class='klikmail' href=$url>Klik disini</a><br/>".$this->detail_email($id),
                 'is_read' => 0,
             );
         $this->db->insert('email', $data1);
+        $isi_email = "Status pengajuan Rekomendasi karyawan Keluar untuk anda oleh ".get_name($creator_id)." $approval_status oleh $approver untuk detail silakan <a class='klikmail' href=$url>Klik disini</a><br/>";
+        if(!empty(getEmail($receiver)))$this->send_email(getEmail($receiver), 'Status Pengajuan Rekomendasi Keluar dari Atasan', $isi_email);
+
 
         $data2 = array(
                 'sender_id' => get_nik($this->session->userdata('user_id')),
@@ -493,6 +514,7 @@ class Form_exit extends MX_Controller {
                 'is_read' => 0,
             );
         $this->db->insert('email', $data2);
+        if(!empty(getEmail($creator_id)))$this->send_email(getEmail($creator_id), 'Status Pengajuan Rekomendasi Keluar dari Atasan', $isi_email);
     }
 
     function update_approval_mail($id, $type, $approval_status)
@@ -502,15 +524,19 @@ class Form_exit extends MX_Controller {
         $creator_id = getAll('users_exit', array('id' => 'where/'.$id))->row('created_by');
         $user_id = getAll('users_exit', array('id' => 'where/'.$id))->row('user_id');
         $approval_status = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
+        $receiver = get_nik($user_id);
         $data1 = array(
                 'sender_id' => get_nik($this->session->userdata('user_id')),
-                'receiver_id' => get_nik($user_id),
+                'receiver_id' =>  $receiver,
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Perubahan Status Pengajuan Rekomendasi Keluar dari Atasan',
                 'email_body' => $approver." melakukan perubahan status pengajuan rekomendasi karyawan Keluar untuk anda oleh ".get_name($creator_id)." status pengajuan anda saat ini $approval_status, untuk detail silakan <a href=$url>Klik disini</a><br/>".$this->detail_email($id),
                 'is_read' => 0,
             );
         $this->db->insert('email', $data1);
+        $isi_email = $approver." melakukan perubahan status pengajuan rekomendasi karyawan Keluar untuk anda oleh ".get_name($creator_id)." status pengajuan anda saat ini $approval_status, untuk detail silakan <a href=$url>Klik disini</a><br/>";
+        if(!empty(getEmail($receiver)))$this->send_email(getEmail($receiver), 'Perubahan Status Pengajuan Rekomendasi Keluar dari Atasan', $isi_email);
+
 
         $data2 = array(
                 'sender_id' => get_nik($this->session->userdata('user_id')),
@@ -521,13 +547,20 @@ class Form_exit extends MX_Controller {
                 'is_read' => 0,
             );
         $this->db->insert('email', $data2);
+        if(!empty(getEmail($creator_id)))$this->send_email(getEmail($creator_id), 'Perubahan Status Pengajuan Rekomendasi Keluar dari Atasan', $isi_email);
     }
 
     function detail_email($id)
     {
+        if(!$this->ion_auth->logged_in())
+        {
+            redirect('auth/login', 'refresh');
+        }
+        
         $user_id = getValue('user_id','users_exit', array('id'=>'where/'.$id));
         $form_exit = $this->data['form_exit'] = $this->form_exit_model->form_exit($id, $user_id);
         $user_id = getAll('users_exit', array('id'=>'where/'.$id, ))->row()->user_id;
+        $this->data['user_nik'] = get_nik($user_id);
         $this->data['mgr_ga_nas'] = $this->get_emp_by_pos('PST242');
         $this->data['koperasi'] = $this->get_emp_by_pos('PST263');
         $this->data['perpustakaan'] = $this->get_emp_by_pos('PST2');

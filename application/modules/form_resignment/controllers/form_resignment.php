@@ -143,9 +143,11 @@ class Form_resignment extends MX_Controller {
                     'created_by'            => $sess_id,
                     );
 
-                    if ($this->form_validation->run() == true && $this->form_resignment_model->create_($user_id, $data))
+                if ($this->form_validation->run() == true && $this->form_resignment_model->create_($user_id, $data))
                     {
                      $resignment_id = $this->db->insert_id();
+                     $isi_email = get_name($user_id).' mengajukan Permohonan Cuti, untuk melihat detail silakan <a href='.base_url().'form_cuti/detail/'.$resignment_id.'>Klik Disini</a><br />';
+                    
                      $user_app_lv1 = getValue('user_app_lv1', 'users_resignment', array('id'=>'where/'.$resignment_id));
                      if($user_id!==$sess_id):
                      $this->approval->by_admin('resignment', $resignment_id, $sess_id, $user_id, $this->detail_email($resignment_id));
@@ -178,6 +180,8 @@ class Form_resignment extends MX_Controller {
         $form_resignment = $this->data['form_resignment'] = $this->form_resignment_model->form_resignment($id)->result();
         $this->data['_num_rows'] = $this->form_resignment_model->form_resignment($id)->num_rows();
         $this->data['alasan_resign'] = getAll('alasan_resign', array('is_deleted'=>'where/0'));
+        $alasan = explode(',', getValue('alasan_resign_id', 'users_resignment_wawancara', array('user_resignment_id' => 'where/'.$id)));
+        $this->data['alasan'] = $this->form_resignment_model->get_alasan($alasan);
         
         $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
         $this->_render_page('form_resignment/detail', $this->data);
@@ -271,7 +275,7 @@ class Form_resignment extends MX_Controller {
             $num_rows = getAll('users_resignment_wawancara', array('user_resignment_id'=>'where/'.$id))->num_rows();
             $user_resignment_id = getValue('user_id', 'users_resignment', array('id'=>'where/'.$id));
             $date_resignment = getValue('date_resign', 'users_resignment', array('id'=>'where/'.$id));
-            $user_exit_id_num_rows = getAll('users_exit', array('user_id'=>'where/'.$user_resignment_id))->num_rows();
+            $user_exit_id_num_rows = getAll('users_exit', array('user_id'=>'where/'.$user_resignment_id))->num_rows();//print_mz($user_exit_id_num_rows);
             
             $user_id = get_nik($this->session->userdata('user_id'));
             $date_now = date('Y-m-d');
@@ -296,12 +300,15 @@ class Form_resignment extends MX_Controller {
                     $this->db->where('user_resignment_id', $id)->update('users_resignment_wawancara',$data1);
                 }else{
                     $this->db->insert('users_resignment_wawancara', $data1);
-                    if($users_exit_id_num_rows>0):
+                    if($user_exit_id_num_rows>0):
                         $data_exit = array(
                             'date_exit' => $date_resignment,
                             'exit_type_id' => 3,
                             'is_resignment' => 1 
                             );
+                        if(!empty(get_superior($user_resignment_id))){
+                            $this->approval->request_exit($user_resignment_id);
+                        }
                         $this->db->where('user_id', $user_resignment_id)->update('users_exit', $data_exit);
                     else:
                         $date_exit = array(
@@ -316,7 +323,7 @@ class Form_resignment extends MX_Controller {
                         if(!empty(get_superior($user_resignment_id))){
                             $this->approval->request_exit($user_resignment_id);
                         }
-
+                    endif;
                 }
                 $this->form_resignment_model->update($id,$data2);
             else:
@@ -330,7 +337,6 @@ class Form_resignment extends MX_Controller {
                 $this->form_resignment_model->update($id,$data);
             endif;
 
-            $approval_status = $this->input->post('app_status_'.$type);
             $approval_status = $this->input->post('app_status_'.$type);
 
             if($is_app==0){

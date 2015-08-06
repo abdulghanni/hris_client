@@ -79,6 +79,7 @@ th{
       <th width="25%">Nama</th>
       <th width="25%">Dept/Bagian</th>
       <th width="15%">Jabatan</th>
+      <th width="8%">Submit</th>
     </tr>
   </thead>
   <tbody>
@@ -92,6 +93,7 @@ th{
   <td><?php echo get_name($p[$i])?></td>
   <td><?php echo get_user_organization($p[$i])?></td>
   <td><?php echo get_user_position($p[$i])?></td>
+  <td align="center"><?php echo in_array($p[$i], $receiver_submit)?"Ya":"-"?></td>
   </tr>
 <?php endfor;?>
   </tbody>

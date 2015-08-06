@@ -256,8 +256,8 @@ $rejected = assets_url('img/rejected_stamp.png');?>
   <tbody>
     <tr>
       <td width="333" height="10" align="center">Hormat Kami,</td>
-      <td width="333" align="center">Mengetahui/Menyetujui,</td>
-      <td width="333" align="center">Mengetahui/Menyetujui,</td>
+      <td width="333" align="center"><?php  echo (!empty($row->user_app_lv1))?'Mengetahui/Menyetujui,':''?></td>
+      <td width="333" align="center"><?php  echo (!empty($row->user_app_lv2))?'Mengetahui/Menyetujui,':''?></td>
     </tr>
     <tr>
       <td></td>
@@ -271,8 +271,8 @@ $rejected = assets_url('img/rejected_stamp.png');?>
     </tr>
     <tr >
       <td align="center">Atasan Langsung</td>
-      <td align="center"><?php echo get_user_position($row->user_app_lv1);?></td>
-      <td align="center"><?php echo get_user_position($row->user_app_lv2);?></td>
+      <td align="center"><?php echo (!empty($row->user_app_lv1))?get_user_position($row->user_app_lv1):'';?></td>
+      <td align="center"><?php echo (!empty($row->user_app_lv2))?get_user_position($row->user_app_lv2):'';?></td>
     </tr>
   </tbody>
 </table>

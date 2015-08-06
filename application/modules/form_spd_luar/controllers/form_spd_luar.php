@@ -708,40 +708,7 @@ class Form_spd_luar extends MX_Controller {
             return $this->load->view('form_spd_luar/spd_luar_report_email', $this->data, true);
         }
     }
-
-    function send_email($email, $subject, $isi_email)
-    {
-
-        $config = Array(
-                    'protocol' => 'smtp',
-                    'smtp_host' => 'mail.erlangga.co.id',
-                    'smtp_port' => 587,
-                    'smtp_user' => 'ax.hrd@erlangga.co.id', 
-                    'smtp_pass' => 'erlangga', 
-                    'mailtype' => 'html',
-                    'charset' => 'iso-8859-1',
-                    'wordwrap' => TRUE
-                    );
- 
-       $this->load->library('email', $config);
-       $this->email->set_newline("\r\n");  
-       $this->email->from('ax.hrd@erlangga.co.id', 'HRIS-Erlangga');
-       $this->email->to($email);
-       $this->email->subject($subject);
-       $this->email->message($isi_email);
-     
-         if($this->email->send())
-         {
-           return true;
-           //return $this->email->print_debugger();
-         }
-         else
-         {
-          return false;
-          //return $this->email->print_debugger();
-         }
-    }
-
+    
     function _render_page($view, $data=null, $render=false)
     {
         $data = (empty($data)) ? $this->data : $data;

@@ -45,7 +45,7 @@ class Form_spd_luar_group extends MX_Controller {
             $this->data['ftitle_param'] = $ftitle; 
             $exp_ftitle = explode(":",$ftitle);
             $ftitle_re = str_replace("_", " ", $exp_ftitle[1]);
-            $ftitle_post = (strlen($ftitle_re) > 0) ? array('creator.username'=>$ftitle_re) : array() ;
+            $ftitle_post = (strlen($ftitle_re) > 0) ? array('creator.username'=>$ftitle_re, 'users_spd_luar_group.task_receiver'=>get_nik_from_name($ftitle_re)) : array() ;
             
             //set default limit in var $config['list_limit'] at application/config/ion_auth.php 
             $this->data['limit'] = $limit = (strlen($this->input->post('limit')) > 0) ? $this->input->post('limit') : 10 ;
@@ -820,39 +820,6 @@ class Form_spd_luar_group extends MX_Controller {
     $this->mpdf->WriteHTML($html);
     $this->mpdf->Output($id.'-'.$title.'-'.$creator.'pdf', 'I');
         
-    }
-
-    function send_email($email, $subject, $isi_email)
-    {
-
-        $config = Array(
-                    'protocol' => 'smtp',
-                    'smtp_host' => 'mail.erlangga.co.id',
-                    'smtp_port' => 587,
-                    'smtp_user' => 'ax.hrd@erlangga.co.id', 
-                    'smtp_pass' => 'erlangga', 
-                    'mailtype' => 'html',
-                    'charset' => 'iso-8859-1',
-                    'wordwrap' => TRUE
-                    );
- 
-       $this->load->library('email', $config);
-       $this->email->set_newline("\r\n");  
-       $this->email->from('ax.hrd@erlangga.co.id', 'HRIS-Erlangga');
-       $this->email->to($email);
-       $this->email->subject($subject);
-       $this->email->message($isi_email);
-     
-         if($this->email->send())
-         {
-           return true;
-           //return $this->email->print_debugger();
-         }
-         else
-         {
-          return false;
-          //return $this->email->print_debugger();
-         }
     }
 
     function _render_page($view, $data=null, $render=false)

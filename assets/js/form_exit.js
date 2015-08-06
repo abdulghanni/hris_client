@@ -44,7 +44,7 @@ $(document).ready(function() {
    {
       $.ajax({
           type: 'POST',
-          url: 'get_inventory_list',
+          url: baseurl+url.segment(2)+'/get_inventory_list',
           data: {id : empId},
           success: function(data) {
               $('#inventory').html(data);
@@ -68,7 +68,7 @@ $(document).ready(function() {
 	    {
 	        $.ajax({
 	                type: 'POST',
-	                url: 'get_emp_org',
+	                url: baseurl+url.segment(2)+'/get_emp_org',
 	                data: {id : empId},
 	                success: function(data) {
 	                    $('#organization').val(data);
@@ -80,7 +80,7 @@ $(document).ready(function() {
 	    {
 	        $.ajax({
 	                type: 'POST',
-	                url: 'get_emp_pos',
+	                url: baseurl+url.segment(2)+'/get_emp_pos',
 	                data: {id : empId},
 	                success: function(data) {
 	                    $('#position').val(data);
@@ -92,7 +92,7 @@ $(document).ready(function() {
 	    {
 	        $.ajax({
 	                type: 'POST',
-	                url: 'get_emp_nik',
+	                url: baseurl+url.segment(2)+'/get_emp_nik',
 	                data: {id : empId},
 	                success: function(data) {
 	                    $('#nik').val(data);
@@ -104,7 +104,7 @@ $(document).ready(function() {
 	    {
 	        $.ajax({
 	                type: 'POST',
-	                url: 'get_emp_bu',
+	                url: baseurl+url.segment(2)+'/get_emp_bu',
 	                data: {id : empId},
 	                success: function(data) {
 	                    $('#bu').val(data);
