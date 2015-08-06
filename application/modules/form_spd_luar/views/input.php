@@ -40,7 +40,7 @@
                         </select>
                       <?php }else{?>
                         <input type="text" class="form-control" value="<?php echo get_name($sess_nik)?>" disabled>
-                        <input type="hidden" name="emp_tc" value="<?php echo $sess_nik?>">
+                        <input type="hidden" id="emp"  name="emp_tc" value="<?php echo $sess_nik?>">
                       <?php } ?>
                       </div>
                     </div>

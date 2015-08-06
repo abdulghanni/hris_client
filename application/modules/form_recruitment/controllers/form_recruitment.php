@@ -321,28 +321,6 @@ class Form_recruitment extends MX_Controller {
         return $this->load->view('form_recruitment/recruitment_mail', $this->data, TRUE);
     }
 
-    function get_user_atasan()
-    {
-        $id = $this->session->userdata('user_id');
-        $url = get_api_key().'users/superior/EMPLID/'.get_nik($id).'/format/json';
-        $url_atasan_satu_bu = get_api_key().'users/atasan_satu_bu/EMPLID/'.get_nik($id).'/format/json';
-        $headers = get_headers($url);
-        $headers2 = get_headers($url_atasan_satu_bu);
-        $response = substr($headers[0], 9, 3);
-        $response2 = substr($headers2[0], 9, 3);
-        if ($response != "404") {
-            $get_atasan = file_get_contents($url);
-            $atasan = json_decode($get_atasan, true);
-            return $this->data['user_atasan'] = $atasan;
-        }elseif($response == "404" && $response2 != "404") {
-           $get_atasan = file_get_contents($url_atasan_satu_bu);
-           $atasan = json_decode($get_atasan, true);
-           return $this->data['user_atasan'] = $atasan;
-        }else{
-            return $this->data['user_atasan'] = '- Karyawan Tidak Memiliki Atasan -';
-        }
-    }
-
     function get_bu()
     {
             $url = get_api_key().'users/bu/format/json';
@@ -522,7 +500,7 @@ class Form_recruitment extends MX_Controller {
                     $this->template->add_js('jquery.bootstrap.wizard.min.js');
                     $this->template->add_js('jquery.validate.min.js');
                     $this->template->add_js('bootstrap-datepicker.js');
-                    $this->template->add_js('emp_dropdown.js');
+                    //$this->template->add_js('emp_dropdown.js');
                     $this->template->add_js('form_recruitment.js');
                     
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');

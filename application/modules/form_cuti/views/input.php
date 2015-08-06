@@ -43,7 +43,7 @@
                             echo form_dropdown('emp',$users,'',$style_up);
                         }else{?>
                         <input type="text" class="form-control" value="<?php echo get_name($sess_id)?>" readonly>
-                        <input type="hidden" name="emp" value="<?php echo $sess_id?>">
+                        <input type="hidden" name="emp" id="emp" value="<?php echo $sess_id?>">
                         <?php } ?>
                       </div>
                     </div>
@@ -99,17 +99,10 @@
                         <label class="form-label text-right"><?php echo 'Supervisor' ?></label>
                       </div>
                       <div class="col-md-9">
-                      <?php if(is_admin()){
-                        $style_up='class="select2" style="width:100%" id="atasan1"';
-                            echo form_dropdown('atasan1',array('0'=>'- Pilih Supervisor -'),'',$style_up);
-                        }else{?>
-                        <select name="atasan1" id="atasan1" class="select2" style="width:100%">
-                            <option value="0">- Pilih Supervisor -</option>
-                            <?php foreach ($user_atasan as $key => $up) : ?>
-                              <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
-                            <?php endforeach;?>
-                          </select>
-                            <?php }?>
+                        <?php
+                          $style_up='class="select2" style="width:100%" id="atasan1"';
+                              echo form_dropdown('atasan1',array('0'=>'- Pilih Supervisor -'),'',$style_up);
+                        ?>
                       </div>
                     </div>
 
@@ -219,7 +212,7 @@
                         <label class="form-label text-right"><?php echo 'Remarks' ?></label>
                       </div>
                       <div class="col-md-9">
-                        <input name="remarks" id="remarks" type="text"  class="form-control" placeholder="remarks" required>
+                        <input name="remarks" id="remarks" type="text"  class="form-control" placeholder="Remarks" required>
                       </div>
                     </div>
                     <div class="row form-row">
@@ -227,16 +220,10 @@
                         <label class="form-label text-right"><?php echo lang('replacement') ?></label>
                       </div>
                       <div class="col-md-9">
-                      <?php if(is_admin()){
-                        $style_up='class="select2" style="width:100%" id="user_pengganti"';
-                            echo form_dropdown('user_pengganti',array('0'=>'- Pilih User -'),'',$style_up);
-                        }else{?>
-                        <select name="user_pengganti" id="user_pengganti" class="select2" style="width:100%">
-                            <?php foreach ($user_pengganti as $key => $up) : ?>
-                              <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
-                            <?php endforeach;?>
-                          </select>
-                            <?php }?>
+                        <?php
+                          $style_up='class="select2" style="width:100%" id="user_pengganti"';
+                              echo form_dropdown('user_pengganti',array('0'=>'- Pilih User -'),'',$style_up);
+                        ?>
                       </div>
                     </div>
                     <div class="row form-row">

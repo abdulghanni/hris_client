@@ -59,36 +59,77 @@ class MX_Controller
 	}
 
 	public function send_email($email, $subject, $isi_email)
-    {
+  {
 
-        $config = Array(
-                    'protocol' => 'smtp',
-                    'smtp_host' => 'mail.erlangga.co.id',
-                    'smtp_port' => 587,
-                    'smtp_user' => 'ax.hrd@erlangga.co.id', 
-                    'smtp_pass' => 'erlangga', 
-                    'mailtype' => 'html',
-                    'charset' => 'iso-8859-1',
-                    'wordwrap' => TRUE
-                    );
- 
-       $this->load->library('email', $config);
-       $this->email->set_newline("\r\n");  
-       $this->email->from('ax.hrd@erlangga.co.id', 'HRIS-Erlangga');
-       $this->email->to($email);
-       $this->email->subject($subject);
-       $this->email->message($isi_email);
-     
-         if($this->email->send())
-         {
-           return true;
-           //return $this->email->print_debugger();
-         }
-         else
-         {
-          return false;
-          //return $this->email->print_debugger();
-         }
-     }
+    $config = Array(
+                  'protocol' => 'smtp',
+                  'smtp_host' => 'mail.erlangga.co.id',
+                  'smtp_port' => 587,
+                  'smtp_user' => 'ax.hrd@erlangga.co.id', 
+                  'smtp_pass' => 'erlangga', 
+                  'mailtype' => 'html',
+                  'charset' => 'iso-8859-1',
+                  'wordwrap' => TRUE
+                  );
 
+     $this->load->library('email', $config);
+     $this->email->set_newline("\r\n");  
+     $this->email->from('ax.hrd@erlangga.co.id', 'HRIS-Erlangga');
+     $this->email->to($email);
+     $this->email->subject($subject);
+     $this->email->message($isi_email);
+   
+       if($this->email->send())
+       {
+         return true;
+         //return $this->email->print_debugger();
+       }
+       else
+       {
+        return false;
+        //return $this->email->print_debugger();
+       }
+   }
+
+  function get_user_atasan()
+  {
+      $id = $this->session->userdata('user_id');
+
+      $pos_group = get_pos_group(get_nik($id));
+      $url = get_api_key().'users/superior/EMPLID/'.get_nik($id).'/format/json';
+      $url_atasan_satu_bu = get_api_key().'users/atasan_by_posgroup/EMPLID/'.get_nik($id).'/format/json';
+      $headers = get_headers($url);
+      $headers2 = get_headers($url_atasan_satu_bu);
+      $response = substr($headers[0], 9, 3);
+      $response2 = substr($headers2[0], 9, 3);
+      //$url_atasan_satu_bu = get_api_key().'users/atasan_satu_bu/EMPLID/'.get_nik($id).'/format/json';
+      if($pos_group == 'AMD' || $pos_group == 'DIR' || $pos_group == 'KACAB' || $pos_group == 'MGR' || $pos_group == 'ASM'):
+          if ($response != "404") {
+              $get_atasan = file_get_contents($url);
+              $atasan = json_decode($get_atasan, true);
+              $get_atasan2 = file_get_contents($url_atasan_satu_bu);
+              $atasan2 = json_decode($get_atasan2, true);
+              $atasan3 = array_merge($atasan, $atasan2);
+              return $this->data['user_atasan'] = $atasan3;
+          }elseif($response == "404" && $response2 != "404") {
+            $get_atasan = file_get_contents($url_atasan_satu_bu);
+            $atasan = json_decode($get_atasan, true);
+              return $this->data['user_atasan'] = $atasan;
+          }else{
+              return $this->data['user_atasan'] = '- Karyawan Tidak Memiliki Atasan -';
+          }
+      else:
+          if($response != "404") {
+            $get_atasan = file_get_contents($url);
+            $atasan = json_decode($get_atasan, true);
+             return $this->data['user_atasan'] = $atasan;
+        } elseif($response == "404" && $response2 != "404") {
+           $get_atasan = file_get_contents($url_atasan_satu_bu);
+            $atasan = json_decode($get_atasan, true);
+             return $this->data['user_atasan'] = $atasan;
+        }else{
+            return $this->data['user_atasan'] = '- Karyawan Tidak Memiliki Atasan -';
+        }
+      endif;
+  }
 }

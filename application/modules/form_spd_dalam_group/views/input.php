@@ -39,7 +39,7 @@
                       </select>
                       <?php }else{ ?>
                         <input type="text"  class="form-control" placeholder="Nama" value="<?php echo get_name($sess_id)?>" readonly>
-                        <input id="emp_tc" onload="getTr()" name="emp_tc" type="hidden"  class="form-control" placeholder="Nama" value="<?php echo get_nik($sess_id)?>">
+                        <input id="emp" onload="getTr()" name="emp_tc" type="hidden"  class="form-control" placeholder="Nama" value="<?php echo get_nik($sess_id)?>">
                       <?php } ?>
                       </div>
                     </div>

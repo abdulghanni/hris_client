@@ -106,5 +106,38 @@ $(document).ready(function() {
             }   
         }
     });
+   
+   $("#atasan1").change(function() {
+            var empId = $(this).val();
+            getAtasan2(empId);
+            getAtasan3(empId);
+        })
+        .change();
+
+
+    function getAtasan2(empId)
+    {
+     $.ajax({
+            type: 'POST',
+            url: baseurl+'dropdown/get_atasan2/'+empId,
+            data: {id : empId},
+            success: function(data) {
+                $('#atasan2').html(data);
+            }
+        });
+    }
+
+    function getAtasan3(empId)
+    {
+     $.ajax({
+            type: 'POST',
+            url: baseurl+'dropdown/get_atasan3/'+empId,
+            data: {id : empId},
+            success: function(data) {
+                $('#atasan3').html(data);
+            }
+        });
+    }
+
 });	
 	 

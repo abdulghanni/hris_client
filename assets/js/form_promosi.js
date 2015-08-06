@@ -122,6 +122,7 @@ $(document).ready(function() {
             get_employee_bu(empId);
             get_employee_buid(empId);
             get_employee_sendate(empId);
+            getAtasan3(empId);
             //getAtasan1(empId);
         })
         .change();
@@ -137,6 +138,7 @@ $(document).ready(function() {
             get_employee_buid(empId);
             get_employee_sendate(empId);
             getAtasan1(empId);
+            getAtasan3(empId);
         })
         .change();
 
@@ -247,5 +249,17 @@ $(document).ready(function() {
                 }
             });
         }
+
+        function getAtasan3(empId)
+        {
+         $.ajax({
+                type: 'POST',
+                url: baseurl+'dropdown/get_atasan3/'+empId,
+                data: {id : empId},
+                success: function(data) {
+                    $('#atasan3').html(data);
+                }
+            });
+        }       
 
 }); 

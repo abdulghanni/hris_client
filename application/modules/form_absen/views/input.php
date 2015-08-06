@@ -40,7 +40,7 @@
                         </select>
                       <?php }else{?>
                         <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama Karyawan" value="<?php echo get_name($sess_id)?>" disabled="disabled">
-                        <input name="emp" type="hidden" value="<?php echo $sess_id?>">
+                        <input name="emp" id="emp" type="hidden" value="<?php echo $sess_id?>">
                       <?php } ?>
                       </div>
                     </div>
@@ -126,17 +126,10 @@
                         <label class="form-label text-right"><?php echo 'Supervisor' ?></label>
                       </div>
                       <div class="col-md-9">
-                      <?php if(is_admin()){
-                        $style_up='class="select2" style="width:100%" id="atasan1"';
-                            echo form_dropdown('atasan1',array('0'=>'- Pilih Supervisor -'),'',$style_up);
-                        }else{?>
-                        <select name="atasan1" id="atasan1" class="select2" style="width:100%">
-                            <option value="0">- Pilih Supervisor -</option>
-                            <?php foreach ($user_atasan as $key => $up) : ?>
-                              <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
-                            <?php endforeach;?>
-                        </select>
-                        <?php }?>
+                        <?php
+                          $style_up='class="select2" style="width:100%" id="atasan1"';
+                              echo form_dropdown('atasan1',array('0'=>'- Pilih Supervisor -'),'',$style_up);
+                        ?>
                       </div>
                     </div>
 

@@ -375,28 +375,6 @@ class form_training_group extends MX_Controller {
         $this->load->view('radio_subordinate',$this->data);
     }
 
-    function get_user_atasan()
-    {
-        $id = $this->session->userdata('user_id');
-        $url = get_api_key().'users/superior/EMPLID/'.get_nik($id).'/format/json';
-        $url_atasan_satu_bu = get_api_key().'users/atasan_satu_bu/EMPLID/'.get_nik($id).'/format/json';
-        $headers = get_headers($url);
-        $headers2 = get_headers($url_atasan_satu_bu);
-        $response = substr($headers[0], 9, 3);
-        $response2 = substr($headers2[0], 9, 3);
-        if ($response != "404") {
-            $get_atasan = file_get_contents($url);
-            $atasan = json_decode($get_atasan, true);
-            return $this->data['user_atasan'] = $atasan;
-        }elseif($response == "404" && $response2 != "404") {
-           $get_atasan = file_get_contents($url_atasan_satu_bu);
-           $atasan = json_decode($get_atasan, true);
-           return $this->data['user_atasan'] = $atasan;
-        }else{
-            return $this->data['user_atasan'] = '- Karyawan Tidak Memiliki Atasan -';
-        }
-    }
-
     function form_training_group_pdf($id)
     {
         if (!$this->ion_auth->logged_in())

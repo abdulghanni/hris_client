@@ -137,7 +137,6 @@ class form_absen extends MX_Controller {
             $absen_id = $form_absen->last_row();
             $this->data['absen_id'] = ($form_absen->num_rows()>0)?$absen_id->id+1:1;
 
-            $this->get_user_atasan();
             $this->data['keterangan_absen'] = getAll('keterangan_absen', array('is_deleted'=>'where/0'));
             $this->data['all_users'] = getAll('users', array('active'=>'where/1', 'username'=>'order/asc'), array('!=id'=>'1'));
             
@@ -304,29 +303,7 @@ class form_absen extends MX_Controller {
         $mpdf->Output($id.'-'.$title.'.pdf', 'I');
     }
 
-    function get_user_atasan()
-    {
-        $id = $this->session->userdata('user_id');
-        $url = get_api_key().'users/superior/EMPLID/'.get_nik($id).'/format/json';
-        $url_atasan_satu_bu = get_api_key().'users/atasan_satu_bu/EMPLID/'.get_nik($id).'/format/json';
-        $headers = get_headers($url);
-        $headers2 = get_headers($url_atasan_satu_bu);
-        $response = substr($headers[0], 9, 3);
-        $response2 = substr($headers2[0], 9, 3);
-        if ($response != "404") {
-            $get_atasan = file_get_contents($url);
-            $atasan = json_decode($get_atasan, true);
-            return $this->data['user_atasan'] = $atasan;
-        }elseif($response == "404" && $response2 != "404") {
-           $get_atasan = file_get_contents($url_atasan_satu_bu);
-           $atasan = json_decode($get_atasan, true);
-           return $this->data['user_atasan'] = $atasan;
-        }else{
-            return $this->data['user_atasan'] = '- Karyawan Tidak Memiliki Atasan -';
-        }
-    }
-
-     function get_sisa_absen($user_id = null)
+    function get_sisa_absen($user_id = null)
     {
         //$id = $this->session->userdata('user_id');
         if($user_id !=null)

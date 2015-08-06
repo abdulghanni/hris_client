@@ -25,6 +25,7 @@ $(document).ready(function() {
 	        get_employee_bu(empId);
           getInvList(empId);
           getAsmen(empId);
+          getAtasan3(empId);
 	    })
 	    .change();
 
@@ -36,6 +37,7 @@ $(document).ready(function() {
           get_employee_bu(empId);
           getInvList(empId);
           getAtasan1(empId);
+          getAtasan3(empId);
           getAsmen(empId);
       })
       .change();
@@ -123,6 +125,18 @@ $(document).ready(function() {
                 }
             });
         }
+
+    function getAtasan3(empId)
+    {
+     $.ajax({
+            type: 'POST',
+            url: baseurl+'dropdown/get_atasan3/'+empId,
+            data: {id : empId},
+            success: function(data) {
+                $('#atasan3').html(data);
+            }
+        });
+    }
 
     $('#formaddexit').submit(function(response){
                   $.post($('#formaddexit').attr('action'), $('#formaddexit').serialize(),function(json){

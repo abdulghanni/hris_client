@@ -7,10 +7,12 @@ $("#emp").change(function() {
     {
         case 'form_absen':
             getAtasan1(empId);
+            getAtasan3(empId);
             getEmpOrg(empId);
             break;
         case 'form_cuti':
             getAtasan1(empId);
+            getAtasan3(empId);
             getEmpOrg(empId);
             getEmpNik(empId);
             getEmpPos(empId);
@@ -20,10 +22,12 @@ $("#emp").change(function() {
         break;
         case 'form_training':
             getAtasan1(empId);
+            getAtasan3(empId);
             getSubordinate(empId);
         break;
         case 'form_training_group':
             getAtasan1(empId);
+            getAtasan3(empId);
             getEmpOrg(empId);
             getEmpNik(empId);
             getEmpPos(empId);
@@ -31,10 +35,12 @@ $("#emp").change(function() {
         break;
         case 'form_medical':
             getAtasan1(empId);
+            getAtasan3(empId);
             getEmpOrgMedical(empId);
         break;
         case 'form_resignment':
             getAtasan1(empId);
+            getAtasan3(empId);
             getEmpBu(empId);
             getEmpOrg(empId);
             getEmpNik(empId);
@@ -43,23 +49,27 @@ $("#emp").change(function() {
         break;
         case 'form_spd_dalam':
             getAtasan1(empId);
+            getAtasan3(empId);
             getEmpOrg(empId);
             getEmpPos(empId);
             getPenerimaTugas(empId);
             break;
         case 'form_spd_luar':
             getAtasan1(empId);
+            getAtasan3(empId);
             getEmpOrg(empId);
             getEmpPos(empId);
             getPenerimaTugasLuar(empId);
             break;
         case 'form_spd_dalam_group':
             getAtasan1(empId);
+            getAtasan3(empId);
             getEmpOrg(empId);
             getEmpPos(empId);
             break;
         case 'form_spd_luar_group':
             getAtasan1(empId);
+            getAtasan3(empId);
             getEmpOrg(empId);
             getEmpPos(empId);
             //getPenerimaTugasLuarGroup(empId);
@@ -73,6 +83,7 @@ $("#peserta").change(function() {
     getEmpOrg(empId);
     getEmpNik(empId);
     getEmpPos(empId);
+    getAtasan3(empId);
 })
 .change();
 
@@ -106,13 +117,13 @@ $("#atasan1").change(function() {
             getAtasan2(empId);
         })
         .change();
-
+/*
 $("#atasan2").change(function() {
             var empId = $(this).val();
             getAtasan3(empId);
         })
         .change();
-
+*/
 function getEmpBu(empId)
 {
     $.ajax({
