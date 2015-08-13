@@ -206,7 +206,7 @@ class Approval {
 
         switch ($form) {
             case "edit_user":
-                $url = base_url().'edit_user_approval/'.$id;
+                $url = base_url().'auth/edit_user_approval/'.$id;
                 $receiver_id = getValue('user_id', 'users_edit_approval', array('id'=>'where/'.$id));
                 $form = 'Perubahan Data Karywan';
                 break;
