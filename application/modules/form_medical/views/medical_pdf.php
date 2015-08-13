@@ -128,7 +128,7 @@ th{
       <?php } ?>
     </tr>
     <tr>
-      <td height="100" align="center" class="style3"><?php echo get_name($row->user_app_lv2)?><br/><br/><?php echo dateIndo($$row->date_app_lv2) ?><br/><?php echo (!empty(get_user_position(get_nik($row->user_app_lv2)))) ? get_user_position(get_nik($$row->user_app_lv2)) : ''?></td>
+      <td height="100" align="center" class="style3"><?php echo get_name($row->user_app_lv2)?><br/><br/><?php echo dateIndo($row->date_app_lv2) ?><br/><?php echo (!empty(get_user_position($row->user_app_lv2))) ? get_user_position($row->user_app_lv2) : ''?></td>
       <?php if(!empty($row->user_app_lv3)){?>
       <td align="center" class="style3"><?php echo get_name($row->user_app_lv3)?><br/><br/><?php echo dateIndo($row->date_app_lv3) ?><br/><?php echo (!empty(get_user_position($row->user_app_lv3))) ? get_user_position($row->user_app_lv3) : ''?></td>
       <?php } ?>

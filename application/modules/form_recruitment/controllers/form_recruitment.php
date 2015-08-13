@@ -460,6 +460,14 @@ class Form_recruitment extends MX_Controller {
         $html = $this->load->view('recruitment_pdf', $this->data, true); 
         $mpdf = new mPDF();
         $mpdf = new mPDF('A4');
+        $mpdf->AddPage('p', // L - landscape, P - portrait
+            '', '', '', '',
+            30, // margin_left
+            30, // margin right
+            10, // margin top
+            10, // margin bottom
+            10, // margin header
+            10); // margin footer
         $mpdf->WriteHTML($html);
         $mpdf->Output($id.'-'.$title.'.pdf', 'I');
         }

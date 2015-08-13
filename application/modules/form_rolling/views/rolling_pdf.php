@@ -6,15 +6,15 @@
 <style type="text/css">
 <!--
 .style3 {
-  font-size: 20px;
+  font-size: 16px;
 }
 .style4 {
-  font-size: 16px;
+  font-size: 10px;
 }
 .style6 {
   color: #000000;
   font-weight: bold;
-  font-size: 24px;
+  font-size: 20px;
 }
 .style7 {
   padding-left: 20px;
@@ -74,7 +74,7 @@ $rejected = assets_url('img/rejected_stamp.png');?>
   </tr>
 </table>
 
-<p class="style7">rolling yang diajukan</p>
+<p class="style7">Rolling yang diajukan</p>
 <table width="1000" height="135" border="0" style="padding-left:30px;">
   <tr>
     <td width="275" height="45"><span class="style3">Unit Bisnis</span></td>

@@ -220,35 +220,35 @@ $rejected = assets_url('img/rejected_stamp.png');?>
 </table>
 <?php if(!empty($row->note_mgr)){?>
 <p class="style4">Catatan Manager GA Nasional</p>
-<textarea class="style4" rows="4" width="100%"><?php echo $row->note_mgr?></textarea>
+<textarea class="style4" rows="2" width="100%"><?php echo $row->note_mgr?></textarea>
 <?php } ?>
 <?php if(!empty($row->note_koperasi)){?>
 <p class="style4">Catatan Sie Koperasi</p>
-<textarea class="style4" rows="4" width="100%"><?php echo $row->note_koperasi?></textarea>
+<textarea class="style4" rows="2" width="100%"><?php echo $row->note_koperasi?></textarea>
 <?php } ?>
 <?php if(!empty($row->note_perpus)){?>
 <p class="style4">Catatan Perpustakaan</p>
-<textarea class="style4" rows="4" width="100%"><?php echo $row->note_perpus?></textarea>
+<textarea class="style4" rows="2" width="100%"><?php echo $row->note_perpus?></textarea>
 <?php } ?>
 <?php if(!empty($row->note_hrd)){?>
 <p class="style4">Catatan HRD</p>
-<textarea class="style4" rows="4" width="100%"><?php echo $row->note_hrd?></textarea>
+<textarea class="style4" rows="2" width="100%"><?php echo $row->note_hrd?></textarea>
 <?php } ?>
 <?php if(!empty($row->note_it)){?>
 <p class="style4">Catatan IT</p>
-<textarea class="style4" rows="4" width="100%"><?php echo $row->note_it?></textarea>
+<textarea class="style4" rows="2" width="100%"><?php echo $row->note_it?></textarea>
 <?php } ?>
 <?php if(!empty($row->note_lv1)){?>
 <p class="style4">Catatan Supervisor</p>
-<textarea class="style4" rows="4" width="100%"><?php echo $row->note_lv1?></textarea>
+<textarea class="style4" rows="2" width="100%"><?php echo $row->note_lv1?></textarea>
 <?php } ?>
 <?php if(!empty($row->note_lv2)){?>
 <p class="style4">Catatan Ka. Bagian</p>
-<textarea class="style4" rows="4" width="100%"><?php echo $row->note_lv2?></textarea>
+<textarea class="style4" rows="2" width="100%"><?php echo $row->note_lv2?></textarea>
 <?php } ?>
 <?php if(!empty($row->note_lv3)){?>
 <p class="style4">Catatan Atasan Lainnya</p>
-<textarea class="style4" rows="4" width="100%"><?php echo $row->note_lv3?></textarea>
+<textarea class="style4" rows="2" width="100%"><?php echo $row->note_lv3?></textarea>
 <?php } ?>
 <br />
 <p>&nbsp;</p>

@@ -6,15 +6,15 @@
 <style type="text/css">
 <!--
 .style3 {
-  font-size: 20px;
+  font-size: 16px;
 }
 .style4 {
-  font-size: 16px;
+  font-size: 10px;
 }
 .style6 {
   color: #000000;
   font-weight: bold;
-  font-size: 24px;
+  font-size: 20px;
 }
 .style7 {
   padding-left: 20px;
