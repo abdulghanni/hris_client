@@ -30,7 +30,8 @@
                 <div class="row">
                     <div class="col-md-7">
                         <div class="row">
-                            <div class="col-md-12"><input type="text" class="form-control" placeholder="Cari nama pengirim atau subjek email" name="email_subject" /></div>
+                            <div class="col-md-6"><input type="text" class="form-control" placeholder="Cari berdasarkan nama pengirim" name="name" /></div>
+                            <div class="col-md-6"><input type="text" class="form-control" placeholder="Cari berdasarkan subjek email" name="subject" /></div>
                         </div>
                     </div>
                     <div class="col-md-2">

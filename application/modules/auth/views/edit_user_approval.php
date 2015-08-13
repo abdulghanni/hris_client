@@ -177,7 +177,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Approval Form edit - Supervisor</h4>
+        <h4 class="modal-title" id="myModalLabel">Approval Form Edit Profile</h4>
       </div>
       <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
       <div class="modal-body">

@@ -17,7 +17,7 @@
         <div class="col-md-12">
           <div class="grid simple">
             <div class="grid-title no-border">
-              <h4>Form Perjalanan Dinas <span class="semi-bold"><a href="<?php echo site_url('form_spd_dalam')?>">Luar Kota</a></span></h4>
+              <h4>Form Perjalanan Dinas <span class="semi-bold"><a href="<?php echo site_url('form_spd_luar')?>">Luar Kota</a></span></h4>
             </div>
             <div class="grid-body no-border">
               <!--<form class="form-no-horizontal-spacing" id="add_spd_luar" action="<?php echo site_url() ?>form_spd_luar/add" method="post">-->

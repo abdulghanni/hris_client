@@ -861,7 +861,9 @@ class Auth extends MX_Controller {
                         'marital_id_new' => (!empty($marital_id_n))?$marital_id_n:$marital_id,
                         'phone_new' => (!empty($phone_n))?$phone_n:$phone,
                         'previous_email_new' => (!empty($previous_email_n))?$previous_email_n:$previous_email,
-                        'bb_pin_new' => (!empty($bb_pin_n))?$bb_pin_n:$bb_pin
+                        'bb_pin_new' => (!empty($bb_pin_n))?$bb_pin_n:$bb_pin,
+                        'is_app'=> 0,
+                        'note' =>'',
                     );
                 $num_rows = getAll('users_edit_approval', array('user_id'=>'where/'.$id))->num_rows();
                 if($num_rows > 0){
@@ -1301,25 +1303,35 @@ class Auth extends MX_Controller {
             $this->db->update('users_edit_approval',$data);
 
             $data_n = array(
-                'first_name_new' => $user->first_name_new,
-                'last_name_new' => $user->last_name_new,
-                'bod_new'   => $user->bod_new,
+                'first_name_new' => (!empty($user->first_name_new))?$user->first_name_new:'',
+                'last_name_new' => (!empty($user->last_name_new))?$user->last_name_new:'',
+                'bod_new'   => (!empty($user->bod_new))?$user->bod_new:'',
                 'marital_id_new' => $user->marital_id_new,
-                'phone_new' => (!empty($user->phone_new))?$user->phone_new:0,
-                'previous_email_new' => (!empty($user->previous_email_new))?$user->previous_email_new:0,
-                'bb_pin_new' => (!empty($user->bb_pin_new))?$user->bb_pin_new:0,
+                'phone_new' => (!empty($user->phone_new))?$user->phone_new:'',
+                'previous_email_new' => (!empty($user->previous_email_new))?$user->previous_email_new:'',
+                'bb_pin_new' => (!empty($user->bb_pin_new))?$user->bb_pin_new:'',
                 );
             $approval_status = $this->input->post('app_status');
             $this->approval->approve('edit_user', $id, $approval_status, '');
-            if($approval_status==1):print_mz($this->update_employeetable($user->user_id, $data_n));endif;
+            if($approval_status==1):$this->update_employeetable($user->user_id, $data_n);endif;
         }
     }
 
-    function update_employeetable($nik, $data = array())
+    function update_employeetable($id, $data = array())
     {
+        $data_new = array(
+                'first_name' => $data['first_name_new'],
+                'last_name' => $data['last_name_new'],
+                'bod' => $data['bod_new'],
+                'phone' => $data['phone_new'],
+                'marital_id' => $data['marital_id_new'],
+                'previous_email' => $data['previous_email_new'],
+                'bb_pin'    => $data['bb_pin_new']
+            );
+        $this->db->where('id', $id)->update('users', $data_new);lastq();
         $method = 'post';
         $params =  array();
-        $uri = get_api_key().'users/edit_employee/EMPLID/'.get_nik($nik).'/FIRSTNAME/'.$data['first_name_new'].'/LASTNAME/'.$data['last_name_new'].'/BIRTHDATE/'.$data['bod_new'].'/PHONE/'.$data['phone_new'].'/MARITALSTATUS/'.$data['marital_id_new'].'/SMS/'.$data['previous_email_new'].'/PINBLACKBERRY/'.$data['bb_pin_new'];
+        $uri = get_api_key().'users/edit_employee/EMPLID/'.get_nik($id).'/FIRSTNAME/'.$data['first_name_new'].'/LASTNAME/'.$data['last_name_new'].'/BIRTHDATE/'.$data['bod_new'].'/PHONE/'.$data['phone_new'].'/MARITALSTATUS/'.$data['marital_id_new'].'/SMS/'.$data['previous_email_new'].'/PINBLACKBERRY/'.$data['bb_pin_new'];
 
         $this->rest->format('application/json');
 

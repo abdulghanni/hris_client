@@ -20,7 +20,7 @@ class Email extends MX_Controller {
     }
 
     //redirect if needed, otherwise display the user list
-    function index($ftitle = "fn:",$sort_by = "id", $sort_order = "asc", $offset = 0)
+    function index($name = "fn:",$subject = "em:", $sort_by = "id", $sort_order = "asc", $offset = 0)
     {
         if (!$this->ion_auth->logged_in())
         {
@@ -39,10 +39,16 @@ class Email extends MX_Controller {
         $this->data['sort_by'] = $sort_by;
        
         //set filter by title
-        $this->data['ftitle_param'] = $ftitle; 
-        $exp_ftitle = explode(":",$ftitle);
-        $ftitle_re = str_replace("_", " ", $exp_ftitle[1]);
-        $ftitle_post = (strlen($ftitle_re) > 0) ? array('email.subject'=>$ftitle_re, 'users.username'=>$ftitle_re) : array() ;
+        $this->data['name_param'] = $name; 
+        $exp_name = explode(":",$name);
+        $name_re = str_replace("_", " ", $exp_name[1]);
+        $name_post = (strlen($name_re) > 0) ? array('users.username'=>$name_re) : array() ;
+
+        //set filter by title
+        $this->data['subject_param'] = $subject; 
+        $exp_subject = explode(":",$subject);
+        $subject_re = str_replace("_", " ", $exp_subject[1]);
+        $subject_post = (strlen($subject_re) > 0) ? array('email.subject'=>$subject_re) : array() ;
         
         //set default limit in var $config['list_limit'] at application/config/ion_auth.php 
         $this->data['limit'] = $limit = (strlen($this->input->post('limit')) > 0) ? $this->input->post('limit') : 10 ;
@@ -50,17 +56,17 @@ class Email extends MX_Controller {
         $this->data['offset'] = 6;
 
         //list of filterize all email  
-        $this->data['email_all'] = $this->email_model->like($ftitle_post)->where('is_deleted',0)->email()->result();
+        $this->data['email_all'] = $this->email_model->like($name_post)->like($subject_post)->where('is_deleted',0)->email()->result();
         
-        $this->data['num_rows_all'] = $this->email_model->like($ftitle_post)->where('is_deleted',0)->email()->num_rows();
+        $this->data['num_rows_all'] = $this->email_model->like($name_post)->like($subject_post)->where('is_deleted',0)->email()->num_rows();
         
-        $this->data['email'] = $this->email_model->like($ftitle_post)->where('is_deleted',0)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->email()->result();
-
+        $this->data['email'] = $this->email_model->like($name_post)->like($subject_post)->where('receiver_id', (!empty($nik)) ? $nik : $this->session->userdata('user_id'))->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->email()->result();
+        //print_mz($this->data['email']);
         //list of filterize limit email for pagination  d();
-        $this->data['_num_rows'] = $this->email_model->like($ftitle_post)->where('is_deleted',0)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->email()->num_rows();
+        $this->data['_num_rows'] = $this->email_model->like($name_post)->like($subject_post)->where('is_deleted',0)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->email()->num_rows();
 
          //config pagination
-         $config['base_url'] = base_url().'email/index/fn:'.$exp_ftitle[1].'/'.$sort_by.'/'.$sort_order.'/';
+         $config['base_url'] = base_url().'email/index/fn:'.$exp_name[1].'/em:'.$exp_subject[1].'/'.$sort_by.'/'.$sort_order.'/';
          $config['total_rows'] = $this->data['num_rows_all'];
          $config['per_page'] = $limit;
          $config['uri_segment'] = 6;
@@ -70,13 +76,6 @@ class Email extends MX_Controller {
 
         //create pagination
         $this->data['halaman'] = $this->pagination->create_links();
-
-        $this->data['ftitle_search'] = array(
-            'name'  => 'title',
-            'id'    => 'title',
-            'type'  => 'text',
-            'value' => $this->form_validation->set_value('title'),
-        );
 
         $this->_render_page('email/index', $this->data);
         }
@@ -152,9 +151,10 @@ class Email extends MX_Controller {
         }
         else
         {
-            $ftitle_post = (strlen($this->input->post('email_subject')) > 0) ? strtolower(url_title($this->input->post('email_subject'),'_')) : "" ;
+            $name_post = (strlen($this->input->post('name')) > 0) ? strtolower(url_title($this->input->post('name'),'_')) : "" ;
+            $subject_post = (strlen($this->input->post('subject')) > 0) ? strtolower(url_title($this->input->post('subject'),'_')) : "" ;
 
-            redirect('email/index/fn:'.$ftitle_post, 'refresh');
+            redirect('email/index/fn:'.$name_post.'/em:'.$subject_post, 'refresh');
         }
     }
 

@@ -226,7 +226,7 @@ $(document).ready(function() {
                   $('#formAppKoperasi').submit(function(ev){
                       $.ajax({
                           type: 'POST',
-                          url: baseurl+uriMgr,
+                          url: baseurl+uriKoperasi,
                           data: $('#formAppKoperasi').serialize(),
                           success: function() {
                               $("[data-dismiss=modal]").trigger({ type: "click" });

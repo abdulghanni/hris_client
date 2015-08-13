@@ -435,7 +435,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Edit Approval HRD - Form training</h4>
+        <h4 class="modal-title" id="myModalLabel">Edit Approval HRD - Form Training (Group)</h4>
       </div>
       <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
       <div class="modal-body">
@@ -677,7 +677,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Approval Form training - Supervisor</h4>
+        <h4 class="modal-title" id="myModalLabel">Approval Form Training (Group) - Supervisor</h4>
       </div>
       <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
       <div class="modal-body">
@@ -727,7 +727,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Approval Form training - Ka. Bagian</h4>
+        <h4 class="modal-title" id="myModalLabel">Approval Form Training (Group) - Ka. Bagian</h4>
       </div>
       <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
       <div class="modal-body">
@@ -777,7 +777,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Approval Form training - Atasan Lainnya</h4>
+        <h4 class="modal-title" id="myModalLabel">Approval Form Training (Group) - Atasan Lainnya</h4>
       </div>
       <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
       <div class="modal-body">
