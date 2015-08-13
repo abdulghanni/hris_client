@@ -216,7 +216,9 @@ class Form_spd_luar extends MX_Controller {
     }
 
     public function input()
-    {
+    {   
+        $sess_id = $this->session->userdata('user_id');
+        $nik = get_nik($sess_id);
         if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page
