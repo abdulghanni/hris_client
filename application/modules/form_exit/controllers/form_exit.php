@@ -320,7 +320,7 @@ class Form_exit extends MX_Controller {
                 }else{
                 $this->db->insert('users_exit_rekomendasi', $data3);
                 }
-                $isi_email = get_name($user_id).' mengajukan Permohonan promosi, untuk melihat detail silakan <a href='.base_url().'form_promosi/detail/'.$promosi_id.'>Klik Disini</a><br />';
+                $isi_email = get_name($user_id).' mengajukan rekomendasi karyawan keluar, untuk melihat detail silakan <a href='.base_url().'form_exit/detail/'.$exit_id.'>Klik Disini</a><br />';
 
                 $this->send_approval_request($exit_id, $user_id, $creator_id);
                 redirect('form_exit','refresh');
@@ -419,6 +419,7 @@ class Form_exit extends MX_Controller {
     {  
         if(!$this->ion_auth->logged_in())
         {
+            $this->session->set_userdata('last_link', $this->uri->uri_string());
             redirect('auth/login', 'refresh');
         }
         else

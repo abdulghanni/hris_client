@@ -142,6 +142,7 @@ class Inventory extends MX_Controller {
 
         if (!$this->ion_auth->logged_in())
         {
+            $this->session->set_userdata('last_link', $this->uri->uri_string());
             redirect('auth/login', 'refresh');
         
         }elseif($this->ion_auth->is_admin_bagian() || $sess_nik==$superior_hrd || $sess_nik==$superior_it || $sess_nik==$superior_logistik || $sess_nik==$superior_koperasi || $sess_nik==$superior_perpus){

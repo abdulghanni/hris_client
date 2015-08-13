@@ -214,8 +214,8 @@ class Form_recruitment extends MX_Controller {
                         'created_by'            => $this->session->userdata('user_id')
                     );
 
-                if ($this->form_validation->run() == true && $this->recruitment_model->create_($data1, $data2, $data3))
-                {
+                $this->recruitment_model->create_($data1, $data2, $data3);
+                
                      $recruitment_id = $this->db->insert_id();
                      $user_app_lv1 = getValue('user_app_lv1', 'users_recruitment', array('id'=>'where/'.$recruitment_id));
                      $isi_email = get_name($user_id).' mengajukan Permohonan recruitment, untuk melihat detail silakan <a href='.base_url().'form_recruitment/detail/'.$recruitment_id.'>Klik Disini</a><br />';
@@ -229,7 +229,7 @@ class Form_recruitment extends MX_Controller {
                      endif;
                      redirect('form_recruitment','refresh');
                     //echo json_encode(array('st' =>1, 'recruitment_url' => $recruitment_url));    
-                }
+                
             } 
     }
     
@@ -237,6 +237,7 @@ class Form_recruitment extends MX_Controller {
     { 
         if (!$this->ion_auth->logged_in())
         {
+            $this->session->set_userdata('last_link', $this->uri->uri_string());
             //redirect them to the login page
             redirect('auth/login', 'refresh');
         }
@@ -308,7 +309,10 @@ class Form_recruitment extends MX_Controller {
 
     function detail_email($id)
     {
+        $sess_id= $this->data['sess_id'] = $this->session->userdata('user_id');
+        $this->data['sess_nik'] = $sess_nik = get_nik($sess_id);
         $this->data['recruitment'] = $this->recruitment_model->recruitment($id)->result();
+        $this->data['_num_rows'] = $this->recruitment_model->recruitment($id)->num_rows();
         $this->data['status'] = getAll('recruitment_status', array('is_deleted' => 'where/0'));
         $this->data['urgensi'] = getAll('recruitment_urgensi', array('is_deleted' => 'where/0'));
         $jk = explode(',', getAll('users_recruitment_kualifikasi', array('id' => 'where/'.$id))->row('jenis_kelamin_id'));
@@ -318,6 +322,7 @@ class Form_recruitment extends MX_Controller {
         $this->data['pendidikan'] = $this->recruitment_model->get_pendidikan($pendidikan);
         $this->data['komputer'] = $this->recruitment_model->get_komputer($komputer);
         $this->data['position_pengaju'] = $this->get_user_position($this->recruitment_model->recruitment($id)->row_array()['user_id']);
+        $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
         return $this->load->view('form_recruitment/recruitment_mail', $this->data, TRUE);
     }
 

@@ -340,7 +340,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Approval Form demolition - Supervisor</h4>
+        <h4 class="modal-title" id="myModalLabel">Approval Form Demolition - Supervisor</h4>
       </div>
       <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
       <div class="modal-body">
@@ -390,7 +390,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Approval Form demolition - Ka. Bagian</h4>
+        <h4 class="modal-title" id="myModalLabel">Approval Form Demolition - Ka. Bagian</h4>
       </div>
       <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
       <div class="modal-body">
@@ -440,7 +440,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Approval Form demolition - Atasan Lainnya</h4>
+        <h4 class="modal-title" id="myModalLabel">Approval Form Demolition - Atasan Lainnya</h4>
       </div>
       <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
       <div class="modal-body">
@@ -490,7 +490,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Approval Form demolition - HRD</h4>
+        <h4 class="modal-title" id="myModalLabel">Approval Form Demolition - HRD</h4>
       </div>
       <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
       <div class="modal-body">

@@ -169,6 +169,7 @@ class Auth extends MX_Controller {
 
         if ($this->form_validation->run() == true)
         {
+            $last_link = $this->session->userdata('last_link');
             $nik = $this->input->post('identity');
             $email    = (!empty($data['EMAIL'])) ? $data['EMAIL'] : $this->input->post('identity');
             $user_id = (!empty(get_id($nik)))?get_id($nik):get_id_by_email($email);
@@ -176,9 +177,13 @@ class Auth extends MX_Controller {
             $first_login = (!empty($last_login)) ? '' : '1';
             if ($this->ion_auth->login($this->input->post('identity'), $this->input->post('password')))
             {
-                if(!is_admin())redirect('person/detail/'.$user_id.'/'.$first_login,'refresh');
-                $this->session->set_flashdata('message', $this->ion_auth->messages());
-                redirect('/', 'refresh');
+                if(!empty($last_link)):
+                    redirect($last_link);
+                else:
+                    if(!is_admin())redirect('person/detail/'.$user_id.'/'.$first_login,'refresh');
+                    $this->session->set_flashdata('message', $this->ion_auth->messages());
+                    redirect('/', 'refresh');
+                endif;
             }
             elseif ($this->cekNik($data, 'EMPLID', $this->input->post('identity')) == TRUE && $this->input->post('password') == 'password' && is_registered($this->input->post('identity')) == false)
             {
@@ -247,8 +252,6 @@ class Auth extends MX_Controller {
             );
 			
             $this->_render_page('auth/login', $this->data);
-
-           
         }
     }
 	

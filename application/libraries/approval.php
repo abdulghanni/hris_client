@@ -30,25 +30,25 @@ class Approval {
                 $isi_email = get_name($user_id).' mengajukan '.$form.', untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$detail;
                 break;
             case "spd_dalam":
-                $receiver = $CI->approval->approver('Perjalanan Dinas');
+                $receiver = $CI->approval->approver('dinas');
                 $url = base_url().'form_'.$form.'/submit/'.$id;
                 $form = 'Perjalanan Dinas Dalam Kota';
                 $isi_email = get_name($user_id).' membuat surat perintah perjalanan dinas dalam kota, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$detail;
                 break;
             case "spd_luar":
-                $receiver = $CI->approval->approver('Perjalanan Dinas');
+                $receiver = $CI->approval->approver('dinas');
                 $url = base_url().'form_'.$form.'/submit/'.$id;
                 $form = 'Perjalanan Dinas Luar Kota';
                 $isi_email = get_name($user_id).' membuat surat perintah perjalanan dinas luar kota, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$detail;
                 break;
             case "spd_dalam_group":
-                $receiver = $CI->approval->approver('Perjalanan Dinas');
+                $receiver = $CI->approval->approver('dinas');
                 $url = base_url().'form_'.$form.'/submit/'.$id;
                 $form = 'Perjalanan Dinas Dalam Kota(Group)';
                 $isi_email = get_name($user_id).' membuat surat perintah perjalanan dinas dalam kota(Group), untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$detail;
                 break;
             case "spd_luar_group":
-                $receiver = $CI->approval->approver('Perjalanan Dinas');
+                $receiver = $CI->approval->approver('dinas');
                 $url = base_url().'form_'.$form.'/submit/'.$id;
                 $form = 'Perjalanan Dinas Luar Kota(Group)';
                 $isi_email = get_name($user_id).' membuat surat perintah perjalanan dinas Luar kota(Group), untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$detail;
@@ -244,6 +244,7 @@ class Approval {
             $form = 'Perjalanan Dinas Luar Kota (Group)';
             break;
             case "absen":
+                $receiver_id = getValue('user_id', 'users_'.$form, array('id'=>'where/'.$id));
                 $form = 'Keterangan Tidak Absen';
                 break;
             default:

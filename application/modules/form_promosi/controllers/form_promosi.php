@@ -117,6 +117,7 @@ class Form_promosi extends MX_Controller {
     {
         if (!$this->ion_auth->logged_in())
         {
+            $this->session->set_userdata('last_link', $this->uri->uri_string());
             //redirect them to the login page
             redirect('auth/login', 'refresh');
         }else{

@@ -17,7 +17,7 @@
           <div class="col-md-12">
               <div class="grid simple ">
                 <div class="grid-title no-border">
-                  <h4>Daftar Pengajuan <span class="semi-bold">demolition</span></h4>
+                  <h4>Daftar Pengajuan <span class="semi-bold">Demolition</span></h4>
                   <?php if(is_have_subordinate($sess_id)||is_admin()||$this->approval->approver('demosi') == $sess_nik){?>
                   <div class="tools"> 
                     <a href="<?php echo site_url('form_demolition/input') ?>" class="config"></a>

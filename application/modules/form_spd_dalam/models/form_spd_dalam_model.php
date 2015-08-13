@@ -298,7 +298,7 @@ class Form_spd_dalam_model extends CI_Model
             $sess_id = $this->session->userdata('user_id');
             $sess_nik = get_nik($sess_id);
             $is_admin = is_admin();
-            $is_approver = $this->approval->approver('Perjalanan Dinas');
+            $is_approver = $this->approval->approver('dinas');
             if(!empty(is_have_subordinate(get_nik($sess_id)))){
             $sub_id = get_subordinate($sess_id);
             }else{

@@ -16,7 +16,7 @@
           <div class="col-md-12">
             <div class="grid simple">
               <div class="grid-title no-border">
-                <h4>Form Pengajuan <span class="semi-bold"><a href="<?php echo site_url('form_rolling')?>">rolling</a></span></h4>
+                <h4>Form Pengajuan <span class="semi-bold"><a href="<?php echo site_url('form_rolling')?>">Rolling</a></span></h4>
               </div>
               <div class="grid-body no-border">
                 <?php
@@ -148,7 +148,7 @@
                     </div>
 
                     <div class="col-md-7">
-                      <h4>rolling Yang Diajukan</h4>
+                      <h4>Rolling Yang Diajukan</h4>
                       <div class="row form-row">
                         <div class="col-md-4">
                           <label class="form-label text-left">Unit Bisnis Baru</label>
@@ -186,7 +186,7 @@
                       </div>
                       <div class="row form-row">
                         <div class="col-md-4">
-                          <label class="form-label text-left">Tgl. rolling</label>
+                          <label class="form-label text-left">Tgl. Rolling</label>
                         </div>
                         <div class="col-md-8">
                           <div class="input-append date success no-padding">
@@ -197,7 +197,7 @@
                       </div>
                       <div class="row form-row">
                         <div class="col-md-4">
-                          <label class="form-label text-left">Alasan rolling</label>
+                          <label class="form-label text-left">Alasan Rolling</label>
                         </div>
                         <div class="col-md-8">
                           <textarea name="alasan" id="alasan" class="form-control" placeholder="Alasan rolling" required></textarea>

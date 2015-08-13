@@ -17,7 +17,7 @@
           <div class="col-md-12">
               <div class="grid simple ">
                 <div class="grid-title no-border">
-                  <h4>Daftar Pengajuan <span class="semi-bold">rolling</span></h4>
+                  <h4>Daftar Pengajuan <span class="semi-bold">Rolling</span></h4>
                   <?php if(is_have_subordinate($sess_id)||is_admin()){?>
                   <div class="tools"> 
                     <a href="<?php echo site_url('form_rolling/input') ?>" class="config"></a>

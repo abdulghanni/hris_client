@@ -298,7 +298,7 @@ class form_spd_luar_group_model extends CI_Model
             $sess_id = $this->session->userdata('user_id');
             $sess_nik = get_nik($sess_id);
             $admin = is_admin();
-            $is_approver = $this->approval->approver('Perjalanan Dinas');
+            $is_approver = $this->approval->approver('dinas');
             //default selects
             $this->db->select(array(
                 $this->tables['users_spd_luar_group'].'.*',

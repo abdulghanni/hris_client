@@ -170,6 +170,7 @@ class Form_resignment extends MX_Controller {
     {
         if(!$this->ion_auth->logged_in())
         {
+            $this->session->set_userdata('last_link', $this->uri->uri_string());
             redirect('auth/login', 'refresh');
         }
 
@@ -298,7 +299,13 @@ class Form_resignment extends MX_Controller {
                 );
                 if($num_rows>0){
                     $this->db->where('user_resignment_id', $id)->update('users_resignment_wawancara',$data1);
+                    if(!empty(get_superior($user_resignment_id))):
+                            $this->approval->request_exit($user_resignment_id);
+                        endif;
                 }else{
+                    if(!empty(get_superior($user_resignment_id))):
+                            $this->approval->request_exit($user_resignment_id);
+                        endif;
                     $this->db->insert('users_resignment_wawancara', $data1);
                     if($user_exit_id_num_rows>0):
                         $data_exit = array(
@@ -311,7 +318,7 @@ class Form_resignment extends MX_Controller {
                         }
                         $this->db->where('user_id', $user_resignment_id)->update('users_exit', $data_exit);
                     else:
-                        $date_exit = array(
+                        $data_exit = array(
                             'id_comp_session' => 1,
                             'user_id' => $user_resignment_id,
                             'date_exit' => $date_resignment,
