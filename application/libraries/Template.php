@@ -173,6 +173,7 @@ class Template {
 	
 		
 		$id = ($this->_ci->session->userdata('user_id')>0)?$this->_ci->session->userdata('user_id'): 1;
+        $this->data['nik'] = get_nik($id);
 		$user = $this->_ci->person_model->getUsers($id)->row();
 		$this->data['id'] = $this->_ci->uri->segment(3, 0);
 		$this->data['s_photo'] = $user->photo;

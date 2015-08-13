@@ -207,9 +207,9 @@ class Form_spd_luar_group extends MX_Controller {
         {
             //redirect them to the login page
             redirect('auth/login', 'refresh');
-        }
-        else
-        {
+        }elseif(!is_spv($nik)&&!is_admin()&&!is_admin_bagian()){
+            return show_error('You must be an administrator to view this page.');
+        }else{
             $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
             $this->data['sess_nik'] = get_nik($sess_id);
             $this->data['all_users'] = $this->ion_auth->where('id != ', 1)->users();

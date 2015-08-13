@@ -95,12 +95,15 @@ class Form_recruitment extends MX_Controller {
 
     function input()
     {
+        $sess_id = $this->session->userdata('user_id');
+        $nik = get_nik($sess_id);
         if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page
             redirect('auth/login', 'refresh');
-        }
-
+        }elseif(!is_spv($nik)&&!is_admin()&&!is_admin_bagian()){
+            return show_error('You must be an administrator to view this page.');
+        }else{
         $this->data['jurusan'] = getAll('recruitment_jurusan', array('is_deleted' => 'where/0'));
         $this->data['ipk'] = getAll('ipk', array('is_deleted' => 'where/0'));
         $this->data['toefl'] = getAll('toefl', array('is_deleted' => 'where/0'));
@@ -116,6 +119,7 @@ class Form_recruitment extends MX_Controller {
         $this->get_user_atasan();
 
         $this->_render_page('form_recruitment/input', $this->data);
+        }
     }
 
     function add()

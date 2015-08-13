@@ -1015,6 +1015,7 @@ class Auth extends MX_Controller {
                 }
                 else
                 {
+                    $this->session->set_flashdata('message', "Perubahan Tersimpan");
                     redirect('person/detail/'.$id,'refresh');
                 }
             }
@@ -1097,7 +1098,7 @@ class Auth extends MX_Controller {
             'name'  => 'email',
             'id'    => 'email',
             'type'  => 'text',
-            //'disabled'  => 'disabled',
+            'disabled'  => 'disabled',
             'value' => $this->form_validation->set_value('email', $user->email),
         );
 

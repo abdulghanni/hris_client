@@ -128,6 +128,19 @@
 		}
 	}
 
+	if(!function_exists('is_spv'))
+	{
+		function is_spv($nik)
+		{
+			$grade = substr(get_grade($nik),-1);
+			if($grade>4){
+				return true;
+			}else{
+				return false;
+			}
+		}
+	}
+
 	if (!function_exists('send_email_activation'))
 	{	
 		function is_registered($nik)

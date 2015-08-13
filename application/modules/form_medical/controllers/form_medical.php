@@ -106,7 +106,9 @@ class Form_medical extends MX_Controller {
         {
             //redirect them to the login page
             redirect('auth/login', 'refresh');
-        }
+        }elseif(!is_admin() && !is_admin_bagian()){
+            return show_error('You must be an administrator to view this page.');
+        }else{
         $sess_id = $this->session->userdata('user_id');
         $this->data['bagian'] = get_user_organization(get_nik($sess_id));
         $this->data['hubungan'] = getAll('medical_hubungan', array('is_deleted' => 'where/0'))->result_array();
@@ -117,6 +119,7 @@ class Form_medical extends MX_Controller {
         $this->get_user_atasan();
         $this->get_user_same_org();
         $this->_render_page('form_medical/input', $this->data);
+        }
     }
 
     function add()
