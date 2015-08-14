@@ -965,7 +965,7 @@ class Auth extends MX_Controller {
             {
                             $data = array(
                             'superior_id' => $this->input->post('superior_id'),
-                            'email' => $this->input->post('email'),
+                            //'email' => $this->input->post('email'),
                             );
 
             }else{
@@ -973,7 +973,7 @@ class Auth extends MX_Controller {
             $data = array(
                             'photo'     =>$image_name,
 							'superior_id' => $this->input->post('superior_id'),
-                            'email' => $this->input->post('email'),
+                            //'email' => $this->input->post('email'),
                          );
             }
             // Only allow updating groups if user is admin
