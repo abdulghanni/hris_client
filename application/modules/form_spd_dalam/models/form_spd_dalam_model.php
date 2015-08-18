@@ -333,7 +333,7 @@ class Form_spd_dalam_model extends CI_Model
             }
             if($is_approver !== $sess_nik && $is_admin!=1){
                 //$this->db->where("(users_spd_dalam.user_id= $sess_id $sub_id $subsub_id )",null, false);
-                $this->db->where("(users_spd_dalam.task_receiver = '$sess_nik' OR users_spd_dalam.task_creator = '$sess_nik' 
+                $this->db->where("(users_spd_dalam.task_receiver = '$sess_nik' OR users_spd_dalam.task_creator = '$sess_nik' OR users_spd_dalam.created_by = '$sess_id'
                                     OR users_spd_dalam.user_app_lv1 = '$sess_nik'  OR users_spd_dalam.user_app_lv2 = '$sess_nik'  OR users_spd_dalam.user_app_lv3 = '$sess_nik' 
                     )",null, false);
             }
