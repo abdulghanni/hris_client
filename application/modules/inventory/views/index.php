@@ -51,10 +51,10 @@
                                             <label for="checkbox10"></label>
                                         </div>
                                     </th>
-                                    <th width="5%"><?php echo anchor('inventory/index/'.$fname_param.'/'.$email_param.'/nik/'.(($sort_order == 'asc' && $sort_by == 'nik') ? 'desc' : 'asc'), 'NIK');?></th>
-                                    <th width="15%"><?php echo anchor('inventory/index/'.$fname_param.'/'.$email_param.'/username/'.(($sort_order == 'asc' && $sort_by == 'username') ? 'desc' : 'asc'), 'Nama');?></th>
-                                    <th width="15%"><?php echo anchor('inventory/index/'.$fname_param.'/'.$email_param.'/email/'.(($sort_order == 'asc' && $sort_by == 'email') ? 'desc' : 'asc'), lang('index_email_th'));?></th>
+                                    <th width="5%"><?php echo anchor('inventory/index/'.$fname_param.'/nik/'.(($sort_order == 'asc' && $sort_by == 'nik') ? 'desc' : 'asc'), 'NIK');?></th>
+                                    <th width="15%"><?php echo anchor('inventory/index/'.$fname_param.'/username/'.(($sort_order == 'asc' && $sort_by == 'username') ? 'desc' : 'asc'), 'Nama');?></th>
                                     <th width="15%">Dept/Bagian</th>
+                                    <th width="15%">Position</th>
                                     <th width="5%">Inventaris</th>                                  
                                 </tr>
                             </thead>
@@ -69,8 +69,8 @@
                                     </td>
                                     <td valign="middle"><?php echo $user->nik;?></td>
                                     <td valign="middle"><?php echo $user->username;?></td>
-                                    <td valign="middle"><span class="muted"><?php echo $user->email;?></span></td>
                                     <td valign="middle"><?php echo get_user_organization($user->nik);?></td>
+                                    <td valign="middle"><?php echo get_user_position($user->nik);?></td>
                                     <td valign="middle" class="text-center">
                                       <a href="<?php echo site_url('inventory/detail/'.$user->id)?>">
                                           <button type="button" class="btn btn-info btn-small" title="Lihat Inventaris"><i class="icon-briefcase"></i></button>

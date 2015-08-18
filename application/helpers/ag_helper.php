@@ -157,25 +157,6 @@
 		}
 	}
 
-	//TO SEND EMAIL NOTIFICATION WHEN USER REGISTER
-	if (!function_exists('send_email_activation'))
-	{	
-		function send_email_activation($nik)
-		{
-			$CI =& get_instance();
-			$data = array(
-					'sender_id' => $nik,
-					'receiver_id' => 1,
-					'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-					'subject' => 'Account Activation Request',
-					'email_body' =>'Karyawan dengan Nik '.$nik.' meminta pengaktifan akun, silakan klik button "activate" untuk mengaktifkan akun',
-					'is_request_activation' => 1,
-					'is_read' => 0,
-				);
-			$CI->db->insert('email', $data);
-		}
-	}
-
 	//TO GET NIK FROM SPECIFIED ID
 	if (!function_exists('get_nik'))
 	{	

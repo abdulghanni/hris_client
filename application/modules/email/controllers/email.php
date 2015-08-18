@@ -162,6 +162,7 @@ class Email extends MX_Controller {
     {
         if (!$this->ion_auth->logged_in())
         {
+             $this->session->set_userdata('last_link', $this->uri->uri_string());
             //redirect them to the login page
             redirect('auth/login', 'refresh');
         }
@@ -191,11 +192,16 @@ class Email extends MX_Controller {
     {
         if ($code !== false)
         {
-            $activation = $this->ion_auth->activate($id, $code);
+            
+            $user_nik = getValue('sender_id','email', array('id'=>'where/'.$id));
+            $user_id = get_id($user_nik);
+            $activation = $this->ion_auth->activate($user_id, $code);
         }
         else if ($this->ion_auth->is_admin())
         {
-            $activation = $this->ion_auth->activate($id);
+            $user_nik = getValue('sender_id','email', array('id'=>'where/'.$id));
+            $user_id = get_id($user_nik);
+            $activation = $this->ion_auth->activate($user_id);
         }
 
         if ($activation)
@@ -212,16 +218,15 @@ class Email extends MX_Controller {
         {
             //redirect them to the forgot password page
             $this->session->set_flashdata('message', $this->ion_auth->errors());
-            redirect("auth/forgot_password", 'refresh');
+            redirect("email", 'refresh');
         }
     }
 
     function delete_activation_mail($id)
     {
         $id = get_nik($id);
-        $email_id = $this->db->where('sender_id', $id)->get('email')->row('id');
         $data = array('is_deleted' => 1);
-        $this->db->where('id', $email_id)->update('email', $data); 
+        $this->db->where('id', $id)->update('email', $data); 
     }
 
     public function delete(){

@@ -60,35 +60,39 @@ class MX_Controller
 
 	public function send_email($email, $subject, $isi_email)
   {
+    $connected = @fsockopen("erlangga.co.id", 80);
+    if($connected):
+      $config = Array(
+                    'protocol' => 'smtp',
+                    'smtp_host' => 'mail.erlangga.co.id',
+                    'smtp_port' => 587,
+                    'smtp_user' => 'ax.hrd@erlangga.co.id', 
+                    'smtp_pass' => 'erlangga', 
+                    'mailtype' => 'html',
+                    'charset' => 'iso-8859-1',
+                    'wordwrap' => TRUE
+                    );
 
-    $config = Array(
-                  'protocol' => 'smtp',
-                  'smtp_host' => 'mail.erlangga.co.id',
-                  'smtp_port' => 587,
-                  'smtp_user' => 'ax.hrd@erlangga.co.id', 
-                  'smtp_pass' => 'erlangga', 
-                  'mailtype' => 'html',
-                  'charset' => 'iso-8859-1',
-                  'wordwrap' => TRUE
-                  );
-
-     $this->load->library('email', $config);
-     $this->email->set_newline("\r\n");  
-     $this->email->from('ax.hrd@erlangga.co.id', 'HRIS-Erlangga');
-     $this->email->to($email);
-     $this->email->subject($subject);
-     $this->email->message($isi_email);
-   
-       if($this->email->send())
-       {
-         return true;
-         //return $this->email->print_debugger();
-       }
-       else
-       {
-        return false;
-        //return $this->email->print_debugger();
-       }
+       $this->load->library('email', $config);
+       $this->email->set_newline("\r\n");  
+       $this->email->from('ax.hrd@erlangga.co.id', 'HRIS-Erlangga');
+       $this->email->to($email);
+       $this->email->subject('HRIS Erlangga - '.$subject);
+       $this->email->message($isi_email);
+     
+         if($this->email->send())
+         {
+           //return true;
+           return $this->email->print_debugger();
+         }
+         else
+         {
+          //return false;
+          return '$this->email->print_debugger()';
+         }
+    else:
+      return false;
+    endif;
    }
 
   function get_user_atasan()

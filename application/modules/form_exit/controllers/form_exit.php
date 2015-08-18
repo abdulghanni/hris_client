@@ -323,7 +323,7 @@ class Form_exit extends MX_Controller {
                 $isi_email = get_name($user_id).' mengajukan rekomendasi karyawan keluar, untuk melihat detail silakan <a href='.base_url().'form_exit/detail/'.$exit_id.'>Klik Disini</a><br />';
 
                 $this->send_approval_request($exit_id, $user_id, $creator_id);
-                redirect('form_exit','refresh');
+                redirect('form_exit', 'refresh');
                 //echo json_encode(array('st' =>1));
             }
         }
@@ -350,7 +350,7 @@ class Form_exit extends MX_Controller {
                 );
             $this->db->insert('email', $data);
             $isi_email = get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />';
-            if(!empty(getEmail($receiver)))$this->send_email(getEmail($receiver), 'Pengajuan Rekomendasi Karyawan Keluar', $isi_email);
+            //if(!empty(getEmail($receiver)))$this->send_email(getEmail($receiver), 'Pengajuan Rekomendasi Karyawan Keluar', $isi_email);
         endfor;
 
         //approval to LV1

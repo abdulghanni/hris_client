@@ -206,20 +206,23 @@ class Auth extends MX_Controller {
 
                     if ($this->ion_auth->register($username, $password, $email, $additional_data))
                     {
-                        send_email_activation($data['EMPLID']);
+                        
                         $this->send_email_inventory($data['EMPLID']);
                         $mch = array(
                                         'mchID' => get_mchid($nik),
                                     );
                         $this->db->where('nik', $nik);
                         $this->db->update('users', $mch);
-							if( $this->send_email_notification($data['EMPLID'])){
+							/*if( $this->send_email_notification($data['EMPLID'])){
                                 $this->session->set_flashdata('message', 'Account is inactive');
                                 redirect("auth/login", 'refresh');
                             }else{
                                 $this->session->set_flashdata('message', 'Activation Is Inactive');
-                                redirect("auth/login", 'refresh');
-                            }
+                                
+                            }*/
+                            $this->send_email_activation($data['EMPLID']);
+                            $this->session->set_flashdata('message', 'Account is inactive');
+                            redirect("auth/login", 'refresh');
                     }else{
                         $this->session->set_flashdata('message', 'Wrong Password or Account is still inactive, Please Contact The Administrator');
                         redirect("auth/login", 'refresh');
@@ -262,39 +265,23 @@ class Auth extends MX_Controller {
     return false;
     }
 	
-	 function send_email_notification($nik)
+    function send_email_activation($nik)
     {
-
-        $config = Array(
-                    'protocol' => 'smtp',
-                    'smtp_host' => 'mail.erlangga.co.id',
-                    'smtp_port' => 587,
-                    'smtp_user' => 'ax.hrd@erlangga.co.id', 
-                    'smtp_pass' => 'erlangga', 
-                    'mailtype' => 'html',
-                    'charset' => 'iso-8859-1',
-                    'wordwrap' => TRUE
-                    );
- 
-       $this->load->library('email', $config);
-       $this->email->set_newline("\r\n");  
-       $this->email->from('ax.hrd@erlangga.co.id', 'HRIS-Erlangga'); 
-       $message_body='Employee with NIK = '.$nik.' request account activation, please check your admin page to activate the user ';
-       $this->email->to('abdul.ghanni2@gmail.com');
-       $this->email->subject('HRIS - Account Activation Request');
-       $this->email->message($message_body);
-     
-         if($this->email->send())
-         {
-           return true;
-         }
-         else
-         {
-
-          return false;
-          print_r($this->email->print_debugger());
-         }
-	}
+        $CI =& get_instance();
+        $data = array(
+                'sender_id' => $nik,
+                'receiver_id' => 1,
+                'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                'subject' => 'Permintaan Aktivasi Akun',
+                'email_body' =>'Karyawan dengan Nik '.$nik.' meminta pengaktifan akun, silakan klik button "activate" untuk mengaktifkan akun',
+                'is_request_activation' => 1,
+                'is_read' => 0,
+            );
+        $CI->db->insert('email', $data);
+        $email_id = $this->db->insert_id();
+        $isi_email = 'Karyawan atas nama '.get_name($nik).' dengan Nik '.$nik.' meminta pengaktifan akun di Web-HRIS Erlangga, silakan klik tautan berikut untuk melakukan aktivasi<br/>'.'<a href='.base_url().'email/detail/'.$email_id.'>'.base_url().'email/detail/'.$email_id.'</a>';
+        $this->send_email('abdul.ghanni@yahoo.co.id', 'Permintaan Aktivasi Akun', $isi_email);
+    }
 
     function send_email_inventory($nik)
     { 
@@ -812,16 +799,21 @@ class Auth extends MX_Controller {
     }
 
     //edit a user
-    function edit_user($id)
+    function edit_user($id = null)
     {
         $this->data['title'] = "Edit User";
 
-        if (!$this->ion_auth->logged_in() || (!$this->ion_auth->is_admin() && !($this->ion_auth->user()->row()->id == $id)))
+        if (!$this->ion_auth->logged_in())
         {
             redirect('auth', 'refresh');
         }
 
-        $user = $this->ion_auth->user($id)->row();
+        if(is_admin()):
+            $id = $id;
+        else:
+            $id = $this->session->userdata('user_id');
+        endif;
+        $user = getAll('users', array('id'=>'where/'.$id))->row();
         $groups=$this->ion_auth->groups()->result_array();
         $currentGroups = $this->ion_auth->get_users_groups($id)->result();
 
@@ -1119,7 +1111,8 @@ class Auth extends MX_Controller {
         $this->data['password'] = array(
             'name' => 'password',
             'id'   => 'password',
-            'type' => 'password'
+            'type' => 'text',
+            'onfocus' =>"this.select();this.setAttribute('type','password')",
         );
 
         $this->data['password_confirm'] = array(

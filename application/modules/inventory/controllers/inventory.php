@@ -19,7 +19,7 @@ class Inventory extends MX_Controller {
         
     }
 
-    function index($fname = "fn:",$email = "em:",$sort_by = "id", $sort_order = "asc", $offset = 0)
+    function index($fname = "fn:",$sort_by = "id", $sort_order = "asc", $offset = 0)
     {
 
         if (!$this->ion_auth->logged_in())
@@ -51,18 +51,6 @@ class Inventory extends MX_Controller {
             $fname_re = str_replace("_", " ", $exp_fname[1]);
             $fname_post = (strlen($fname_re) > 0) ? array('users.username'=>$fname_re) : array() ;
             
-            //set filter by email
-            $this->data['email_param'] = $email;
-            $exp_email = explode(":",$email);
-            if(strlen($exp_email[1]) > 0) 
-            {
-                $rep_email_char = array("%5Bat%5D","%5Bdot%5D");
-                $std_email_char = array("@",".");
-                
-                $email_post = array('users.email'=>str_replace($rep_email_char,$std_email_char,$exp_email[1]));
-            }else{
-                $email_post = array();
-            }
             
             //set default limit in var $config['list_limit'] at application/config/ion_auth.php 
             $this->data['limit'] = $limit = (strlen($this->input->post('limit')) > 0) ? $this->input->post('limit') : $this->config->item('list_limit', 'ion_auth') ;
@@ -70,18 +58,18 @@ class Inventory extends MX_Controller {
             $this->data['offset'] = $offset = $this->uri->segment($this->config->item('uri_segment_pager', 'ion_auth'));
 
             //list of filterize all users  
-            $this->data['users_all'] = $this->ion_auth->like($fname_post)->like($email_post)->users()->result();
+            $this->data['users_all'] = $this->ion_auth->like($fname_post)->users()->result();
             
             //num rows of filterize all users
-            $this->data['num_rows_all'] = $this->ion_auth->like($fname_post)->like($email_post)->users()->num_rows();
+            $this->data['num_rows_all'] = $this->ion_auth->like($fname_post)->users()->num_rows();
 
             //list of filterize limit users for pagination  
-            $this->data['users'] = $this->ion_auth->like($fname_post)->like($email_post)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->users()->result();
+            $this->data['users'] = $this->ion_auth->like($fname_post)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->users()->result();
 
-            $this->data['users_num_rows'] = $this->ion_auth->like($fname_post)->like($email_post)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->users()->num_rows();
+            $this->data['users_num_rows'] = $this->ion_auth->like($fname_post)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->users()->num_rows();
 
              //config pagination
-             $config['base_url'] = base_url().'inventory/index/fn:'.$exp_fname[1].'/em:'.$exp_email[1].'/'.$sort_by.'/'.$sort_order.'/';
+             $config['base_url'] = base_url().'inventory/index/fn:'.$exp_fname[1].'/'.$sort_by.'/'.$sort_order.'/';
              $config['total_rows'] = $this->data['num_rows_all'];
              $config['per_page'] = $limit;
              $config['uri_segment'] = $this->config->item('uri_segment_pager', 'ion_auth');
@@ -112,7 +100,7 @@ class Inventory extends MX_Controller {
         {
             $fname_post = (strlen($this->input->post('first_name')) > 0) ? strtolower(url_title($this->input->post('first_name'),'_')) : "" ;
 
-            redirect('inventory/index/fn:'.$fname_post.'/em:'.$email_post, 'refresh');
+            redirect('inventory/index/fn:'.$fname_post, 'refresh');
         }
     }
 

@@ -45,7 +45,7 @@ class attendance extends MX_Controller {
 		$data['sort_by'] = $sort_by;
 		$data['sort_order'] = $sort_order;
 		$data['limit'] = $limit = (strlen($this->input->post('limit')) > 0) ? $this->input->post('limit') : $limit;
-    $path_paging = base_url().$this->filename.'/index/nik'.$data['s_nik'].'/bln'.$data['s_bulan'].'/thn'.$data['s_tahun'].'/'.$sort_by.'/'.$sort_order.'/'.$limit.'/';
+    	$path_paging = base_url().$this->filename.'/index/nik'.$data['s_nik'].'/bln'.$data['s_bulan'].'/thn'.$data['s_tahun'].'/'.$sort_by.'/'.$sort_order.'/'.$limit.'/';
 		$uri_segment = 8;
 		$data['offset'] = $offset = $this->uri->segment($uri_segment);
     

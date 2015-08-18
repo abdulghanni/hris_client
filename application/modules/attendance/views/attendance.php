@@ -170,8 +170,8 @@
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th><?php echo anchor($filename.'/index/nik'.$s_nik.'/bln'.$s_bulan.'/thn'.$s_tahun.'/nik/'.(($sort_order == 'asc' && $sort_by == 'nik') ? 'desc' : 'asc').'/'.$limit, 'Karyawan');?></th>
-                                    <th><?php echo anchor($filename.'/index/nik'.$s_nik.'/bln'.$s_bulan.'/thn'.$s_tahun.'/date_full/'.(($sort_order == 'asc' && $sort_by == 'date_full') ? 'desc' : 'asc').'/'.$limit, 'Tanggal');?></th>
+                                    <th><?php echo (is_admin())?anchor($filename.'/index/nik'.$s_nik.'/bln'.$s_bulan.'/thn'.$s_tahun.'/nik/'.(($sort_order == 'asc' && $sort_by == 'nik') ? 'desc' : 'asc').'/'.$limit, 'Karyawan'):'Karyawan';?></th>
+                                    <th><?php echo (is_admin())?anchor($filename.'/index/nik'.$s_nik.'/bln'.$s_bulan.'/thn'.$s_tahun.'/date_full/'.(($sort_order == 'asc' && $sort_by == 'date_full') ? 'desc' : 'asc').'/'.$limit, 'Tanggal'):'Tanggal';?></th>
                                     <th class="center">Hadir</th>
 								                    <th class="center">OFF</th>
 								                    <th class="center">Cuti</th>

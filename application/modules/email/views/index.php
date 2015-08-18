@@ -73,7 +73,7 @@
                 </div>
                 </td>
                 <?php if(is_admin()){?>
-                <td valign="middle" halign="middle"><?php if($row->is_request_activation == 1){?><h2 class="label label-success"><a href="<?php echo site_url('email/activate/'.$row->userid)?>">inactive</h2><?php } ?></td>
+                <td valign="middle" halign="middle"><?php if($row->is_request_activation == 1){?><h2 class="label label-success"><a href="<?php echo site_url('email/activate/'.$row->id)?>">inactive</h2><?php } ?></td>
                 <?php } ?>
                 <td valign="large"><a href="<?php echo site_url('email/detail/'.$row->id)?>"><?php echo get_name($row->sender_id) ?></a></td>
                 <td valign="large" class="tablefull"><span class="muted"><a href="<?php echo site_url('email/detail/'.$row->id)?>"><?php echo word_limiter('<b>'.$row->subject.'</b>'.' - '.$row->email_body, 15)?></a></span></td>

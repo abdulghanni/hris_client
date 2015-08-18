@@ -43,7 +43,9 @@
 	                  </div>  
 	                  <br>
 	                  <div class="email-body">
-	                    <p><?php echo $row->email_body?>
+	                    <p><?php 
+	                    $button = ($row->is_request_activation == 1)?"<a href=".site_url('email/activate/'.$row->id)."><button type='button' class='btn btn-success'>Activate</button></a>":'';
+	                    echo $row->email_body.'<p>'.$button.'</p>'?>
 	                    </p>
 	                  </div>            
 	                </div>              
