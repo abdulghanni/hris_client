@@ -238,7 +238,7 @@
 
                   <div class="col-md-3">
                     <p class="wf-approve-sp">
-                    <div class="col-md-12"><span class="semi-bold">Mengetahui / Menyetujui,</span><br/><br/></div>
+                    <div class="col-md-12"><span class="semi-bold"><!--Mengetahui / Menyetujui,--></span><br/><br/></div>
                       <?php 
                       $approved = assets_url('img/approved_stamp.png');
                       $rejected = assets_url('img/rejected_stamp.png');
@@ -269,7 +269,7 @@
                     
                   <div class="col-md-3">
                     <p class="wf-approve-sp">
-                    <div class="col-md-12"><span class="semi-bold">Mengetahui / Menyetujui,</span><br/><br/></div>
+                    <div class="col-md-12"><span class="semi-bold"><!--Mengetahui / Menyetujui,--></span><br/><br/></div>
                     <?php
                      if(!empty($row->user_app_lv2) && $row->is_app_lv2 == 0 && get_nik($sess_id) == $row->user_app_lv2){?>
                         <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitresignmentModalLv2"><i class="icon-ok"></i>Submit</div>

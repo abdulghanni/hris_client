@@ -146,7 +146,7 @@ class Form_resignment extends MX_Controller {
                 if ($this->form_validation->run() == true && $this->form_resignment_model->create_($user_id, $data))
                     {
                      $resignment_id = $this->db->insert_id();
-                     $isi_email = get_name($user_id).' mengajukan Permohonan Cuti, untuk melihat detail silakan <a href='.base_url().'form_cuti/detail/'.$resignment_id.'>Klik Disini</a><br />';
+                     $isi_email = get_name($user_id).' mengajukan Permohonan Resign, untuk melihat detail silakan <a href='.base_url().'form_resignment/detail/'.$resignment_id.'>Klik Disini</a><br />';
                     
                      $user_app_lv1 = getValue('user_app_lv1', 'users_resignment', array('id'=>'where/'.$resignment_id));
                      if($user_id!==$sess_id):
