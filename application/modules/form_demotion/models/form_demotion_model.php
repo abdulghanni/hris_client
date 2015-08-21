@@ -1,6 +1,6 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Form_demolition_model extends CI_Model
+class Form_demotion_model extends CI_Model
 {
      /**
      * Holds an array of tables used
@@ -275,14 +275,14 @@ class Form_demolition_model extends CI_Model
     }
 
     /**
-     * form_demolition
+     * form_demotion
      *
-     * @return object form_demolition
+     * @return object form_demotion
      * @author Deni
      **/
-    public function form_demolition($id = null)
+    public function form_demotion($id = null)
     {
-        $this->trigger_events('form_demolition');
+        $this->trigger_events('form_demotion');
 
         if (isset($this->_ion_select) && !empty($this->_ion_select))
         {
@@ -313,27 +313,27 @@ class Form_demolition_model extends CI_Model
 
             //default selects
             $this->db->select(array(
-                $this->tables['users_demolition'].'.*',
-                $this->tables['users_demolition'].'.id as id',
+                $this->tables['users_demotion'].'.*',
+                $this->tables['users_demotion'].'.id as id',
                 'status_lv1.title as approval_status_lv1',
                 'status_lv2.title as approval_status_lv2',
                 'status_lv3.title as approval_status_lv3',
                 'status_hrd.title as approval_status_hrd',
             ));
-            $this->db->join('users', 'users.id = users_demolition.user_id', 'LEFT');
-            $this->db->join('users as creator', 'creator.id = users_demolition.created_by', 'LEFT');
-            $this->db->join('approval_status as status_lv1', 'users_demolition.app_status_id_lv1 = status_lv1.id', 'left');
-            $this->db->join('approval_status as status_lv2', 'users_demolition.app_status_id_lv2 = status_lv2.id', 'left');
-            $this->db->join('approval_status as status_lv3', 'users_demolition.app_status_id_lv3 = status_lv3.id', 'left');
-            $this->db->join('approval_status as status_hrd', 'users_demolition.app_status_id_hrd = status_hrd.id', 'left');
-            if($id != null)$this->db->where('users_demolition.id', $id);
+            $this->db->join('users', 'users.id = users_demotion.user_id', 'LEFT');
+            $this->db->join('users as creator', 'creator.id = users_demotion.created_by', 'LEFT');
+            $this->db->join('approval_status as status_lv1', 'users_demotion.app_status_id_lv1 = status_lv1.id', 'left');
+            $this->db->join('approval_status as status_lv2', 'users_demotion.app_status_id_lv2 = status_lv2.id', 'left');
+            $this->db->join('approval_status as status_lv3', 'users_demotion.app_status_id_lv3 = status_lv3.id', 'left');
+            $this->db->join('approval_status as status_hrd', 'users_demotion.app_status_id_hrd = status_hrd.id', 'left');
+            if($id != null)$this->db->where('users_demotion.id', $id);
             if($is_approver !== $sess_nik && $is_admin!=1){
-                //$this->db->where("(users_demolition.user_id= $sess_id $sub_id $subsub_id )",null, false);
-                $this->db->where("(users_demolition.user_id = $sess_id OR  users_demolition.user_app_lv1 = '$sess_nik' OR users_demolition.user_app_lv2 = '$sess_nik' OR users_demolition.user_app_lv3 = '$sess_nik' OR users_demolition.created_by = '$sess_id')",null, false);
+                //$this->db->where("(users_demotion.user_id= $sess_id $sub_id $subsub_id )",null, false);
+                $this->db->where("(users_demotion.user_id = $sess_id OR  users_demotion.user_app_lv1 = '$sess_nik' OR users_demotion.user_app_lv2 = '$sess_nik' OR users_demotion.user_app_lv3 = '$sess_nik' OR users_demotion.created_by = '$sess_id')",null, false);
             }
             
             
-            $this->db->order_by('users_demolition.id', 'desc');
+            $this->db->order_by('users_demotion.id', 'desc');
         }
 
         $this->trigger_events('extra_where');
@@ -373,14 +373,14 @@ class Form_demolition_model extends CI_Model
             $this->_ion_order_by = NULL;
         }
 
-        $this->response = $this->db->get($this->tables['users_demolition']);
+        $this->response = $this->db->get($this->tables['users_demotion']);
 
         return $this;
     }
     
     public function render_session()
     {
-         $this->trigger_events('form_demolition_input');
+         $this->trigger_events('form_demotion_input');
 
         if (isset($this->_ion_select) && !empty($this->_ion_select))
         {
@@ -461,7 +461,7 @@ class Form_demolition_model extends CI_Model
 
     public function get_comp_session_id()
     {
-        $this->trigger_events('form_demolition_input');
+        $this->trigger_events('form_demotion_input');
 
         if (isset($this->_ion_select) && !empty($this->_ion_select))
         {
@@ -537,12 +537,12 @@ class Form_demolition_model extends CI_Model
 
     public function delete($id)
     {
-        $this->trigger_events('pre_delete_frm_demolition');
+        $this->trigger_events('pre_delete_frm_demotion');
 
         $this->db->trans_begin();
 
-        // delete organization from users_demolition table
-        $this->db->delete($this->tables['users_demolition'], array('id' => $id));
+        // delete organization from users_demotion table
+        $this->db->delete($this->tables['users_demotion'], array('id' => $id));
 
         // if user does not exist in database then it returns FALSE else removes the user from groups
         if ($this->db->affected_rows() == 0)
@@ -553,14 +553,14 @@ class Form_demolition_model extends CI_Model
         if ($this->db->trans_status() === FALSE)
         {
             $this->db->trans_rollback();
-            $this->trigger_events(array('post_delete_frm_demolition', 'post_delete_frm_demolition_unsuccessful'));
+            $this->trigger_events(array('post_delete_frm_demotion', 'post_delete_frm_demotion_unsuccessful'));
             $this->set_error('delete_unsuccessful');
             return FALSE;
         }
 
         $this->db->trans_commit();
 
-        $this->trigger_events(array('post_delete_frm_demolition', 'post_delete_frm_demolition_successful'));
+        $this->trigger_events(array('post_delete_frm_demotion', 'post_delete_frm_demotion_successful'));
         $this->set_message('delete_successful');
         return TRUE;
     }
@@ -570,18 +570,18 @@ class Form_demolition_model extends CI_Model
 
         $data = array('user_id'=>$user_id);
 
-        //filter out any data passed that doesnt have a matching column in the form demolition table
+        //filter out any data passed that doesnt have a matching column in the form demotion table
         //and merge the set group data and the additional data
-        if (!empty($additional_data)) $data = array_merge($this->_filter_data($this->tables['users_demolition'], $additional_data), $data);
+        if (!empty($additional_data)) $data = array_merge($this->_filter_data($this->tables['users_demotion'], $additional_data), $data);
 
         $this->trigger_events('extra_group_set');
 
-        // insert the new form_demolition
-        $this->db->insert($this->tables['users_demolition'], $data);
+        // insert the new form_demotion
+        $this->db->insert($this->tables['users_demotion'], $data);
         $id = $this->db->insert_id();
 
         // report success
-        $this->set_message('frm_demolition_creation_successful');
+        $this->set_message('frm_demotion_creation_successful');
         // return the brand new id
         return $id;
     }
@@ -589,7 +589,7 @@ class Form_demolition_model extends CI_Model
     public function update($id, $data)
     {
         $this->db->where('id', $id);
-        $this->db->update('users_demolition', $data);
+        $this->db->update('users_demotion', $data);
     }
 
     public function trigger_events($events)
@@ -784,14 +784,14 @@ class Form_demolition_model extends CI_Model
         return $filtered_data;
     }
 
-    public function frm_demolition($id = NULL)
+    public function frm_demotion($id = NULL)
     {
-        $this->trigger_events('frm_demolition');
+        $this->trigger_events('frm_demotion');
 
         $this->limit(1);
-        $this->where($this->tables['users_demolition'].'.id', $id);
+        $this->where($this->tables['users_demotion'].'.id', $id);
 
-        $this->form_demolition();
+        $this->form_demotion();
 
         return $this;
     }

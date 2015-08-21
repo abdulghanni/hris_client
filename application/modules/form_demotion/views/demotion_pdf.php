@@ -34,9 +34,9 @@
 <body>
 <div align="center">
   <p align="left"><img src="<?php echo assets_url('img/erlangga.jpg')?>"/></p>
-  <p align="center" class="style6">Form Pengajuan Demolition</p>
+  <p align="center" class="style6">Form Pengajuan Demotion</p>
 </div>
-<?php foreach($form_demolition as $row):
+<?php foreach($form_demotion as $row):
 $user_nik = get_nik($row->user_id);
 $pengaju_nik = get_nik($row->created_by);
 $approved = assets_url('img/approved_stamp.png');
@@ -74,7 +74,7 @@ $rejected = assets_url('img/rejected_stamp.png');?>
   </tr>
 </table>
 
-<p class="style7">Demolition yang diajukan</p>
+<p class="style7">Demotion yang diajukan</p>
 <table width="1000" height="135" border="0" style="padding-left:30px;">
   <tr>
     <td width="275" height="45"><span class="style3">Unit Bisnis</span></td>
@@ -92,12 +92,12 @@ $rejected = assets_url('img/rejected_stamp.png');?>
     <td height="45"><span class="style3"><?php echo get_position_name($row->new_pos)?></span></td>
   </tr>
   <tr>
-    <td height="45"><span class="style3">Tanggal Demolition </span></td>
+    <td height="45"><span class="style3">Tanggal demotion </span></td>
     <td height="45"><div align="center">:</div></td>
-    <td height="45"><span class="style3"><?php echo dateIndo($row->date_demolition)?></span></td>
+    <td height="45"><span class="style3"><?php echo dateIndo($row->date_demotion)?></span></td>
   </tr>
   <tr>
-    <td height="45"><span class="style3">Alasan Demolition</span></td>
+    <td height="45"><span class="style3">Alasan demotion</span></td>
     <td height="45"><div align="center">:</div></td>
     <td height="45"><span class="style3"><?php echo $row->alasan?></span></td>
   </tr>

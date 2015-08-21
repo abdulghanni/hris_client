@@ -17,7 +17,7 @@
           <div class="col-md-12">
             <div class="grid simple">
               <div class="grid-title no-border">
-                <h4>Form <span class="semi-bold"><a href="<?php echo site_url('form_demolition')?>">Demolition</a></span></h4>
+                <h4>Form <span class="semi-bold"><a href="<?php echo site_url('form_demotion')?>">Demotion</a></span></h4>
               </div>
               <div class="grid-body no-border">
                 <form class="form-no-horizontal-spacing" id=""> 
@@ -25,7 +25,7 @@
                     <div class="col-md-5">
                       <h4>Informasi karyawan</h4>
                       <?php if($_num_rows>0){
-                        foreach($form_demolition as $row):?>
+                        foreach($form_demotion as $row):?>
                       <div class="row form-row">
                         <div class="col-md-3">
                           <label class="form-label text-right">NIK</label>
@@ -78,7 +78,7 @@
                       
                     </div>
                     <div class="col-md-7">
-                      <h4>Demolition Yang Diajukan</h4>
+                      <h4>Demotion Yang Diajukan</h4>
                      <div class="row form-row">
                         <div class="col-md-4">
                           <label class="form-label text-left">Unit Bisnis Baru</label>
@@ -107,18 +107,18 @@
                       </div>
                       <div class="row form-row">
                         <div class="col-md-4">
-                          <label class="form-label text-left">Tgl. Demolition</label>
+                          <label class="form-label text-left">Tgl. demotion</label>
                         </div>
                         <div class="col-md-8">
-                          <input type="text" class="form-control" name="date_demolition" value="<?php echo dateIndo($row->date_demolition)?>" disabled="disabled">
+                          <input type="text" class="form-control" name="date_demotion" value="<?php echo dateIndo($row->date_demotion)?>" disabled="disabled">
                         </div>
                       </div>
                       <div class="row form-row">
                         <div class="col-md-4">
-                          <label class="form-label text-left">Alasan Demolition</label>
+                          <label class="form-label text-left">Alasan demotion</label>
                         </div>
                         <div class="col-md-8">
-                          <textarea name="alasan" id="alasan" type="text"  class="form-control" placeholder="Alasan demolition" disabled="disabled"><?php echo $row->alasan?></textarea>
+                          <textarea name="alasan" id="alasan" type="text"  class="form-control" placeholder="Alasan demotion" disabled="disabled"><?php echo $row->alasan?></textarea>
                         </div>
                       </div>
                       <?php if(!empty($row->note_lv1)){?>
@@ -169,13 +169,13 @@
                   <div class="row form-row">
                     <div class="col-md-12 text-center">
                     <?php  if($row->is_app_lv1 == 1 && get_nik($sess_id) == $row->user_app_lv1){?>
-                        <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitdemolitionModalLv1"><i class='icon-edit'> Edit Approval</i></div>
+                        <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitdemotionModalLv1"><i class='icon-edit'> Edit Approval</i></div>
                       <?php }elseif($row->is_app_lv2 == 1 && get_nik($sess_id) == $row->user_app_lv2){?>
-                        <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitdemolitionModalLv2"><i class='icon-edit'> Edit Approval</i></div>
+                        <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitdemotionModalLv2"><i class='icon-edit'> Edit Approval</i></div>
                       <?php }elseif($row->is_app_lv3 == 1 && get_nik($sess_id) == $row->user_app_lv3){?>
-                        <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitdemolitionModalLv3"><i class='icon-edit'> Edit Approval</i></div>
+                        <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitdemotionModalLv3"><i class='icon-edit'> Edit Approval</i></div>
                       <?php }elseif($row->is_app_hrd == 1 && get_nik($sess_id) == $row->user_app_hrd){?>
-                        <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitdemolitionModalHrd"><i class='icon-edit'> Edit Approval</i></div>
+                        <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitdemotionModalHrd"><i class='icon-edit'> Edit Approval</i></div>
                       <?php } ?>
                     </div>
                 </div>
@@ -202,7 +202,7 @@
                       $approved = assets_url('img/approved_stamp.png');
                       $rejected = assets_url('img/rejected_stamp.png');
                       if(!empty($row->user_app_lv1) && $row->is_app_lv1 == 0 && get_nik($sess_id) == $row->user_app_lv1){?>
-                      <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitdemolitionModalLv1"><i class="icon-ok"></i>Submit</div>
+                      <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitdemotionModalLv1"><i class="icon-ok"></i>Submit</div>
                       <span class="small"></span>
                         <span class="semi-bold"></span><br/>
                         <span class="small"></span><br/>
@@ -231,7 +231,7 @@
                     <div class="col-md-12"><span class="semi-bold">Mengetahui / Menyetujui,</span><br/><br/></div>
                     <?php
                      if(!empty($row->user_app_lv2) && $row->is_app_lv2 == 0 && get_nik($sess_id) == $row->user_app_lv2){?>
-                        <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitdemolitionModalLv2"><i class="icon-ok"></i>Submit</div>
+                        <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitdemotionModalLv2"><i class="icon-ok"></i>Submit</div>
                         <span class="small"></span>
                         <span class="semi-bold"></span><br/>
                         <span class="small"></span><br/>
@@ -259,7 +259,7 @@
                     <p class="wf-approve-sp">
                     <div class="col-md-12"><span class="semi-bold">Diterima HRD</span><br/><br/></div>
                       <?php if($row->is_app_hrd == 0 && $this->approval->approver('demosi') == $sess_nik){?>
-                        <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitdemolitionModalHrd"><i class="icon-ok"></i>Submit</div>
+                        <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitdemotionModalHrd"><i class="icon-ok"></i>Submit</div>
                         <span class="small"></span>
                         <span class="semi-bold"></span><br/>
                         <span class="small"></span><br/>
@@ -295,7 +295,7 @@
                     $approved = assets_url('img/approved_stamp.png');
                     $rejected = assets_url('img/rejected_stamp.png');
                     if(!empty($row->user_app_lv3) && $row->is_app_lv3 == 0 && get_nik($sess_id) == $row->user_app_lv3){?>
-                      <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitdemolitionModalLv3"><i class="icon-ok"></i>Submit</div>
+                      <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitdemotionModalLv3"><i class="icon-ok"></i>Submit</div>
                       <span class="small"></span>
                       <span class="semi-bold"></span><br/>
                       <span class="small"></span><br/>
@@ -334,13 +334,13 @@
 </div>  
 <!-- END PAGE --> 
 
-<!--approval demolition Modal Lv1 -->
-<div class="modal fade" id="submitdemolitionModalLv1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<!--approval demotion Modal Lv1 -->
+<div class="modal fade" id="submitdemotionModalLv1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog" id="modaldialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Approval Form Demolition - Supervisor</h4>
+        <h4 class="modal-title" id="myModalLabel">Approval Form demotion - Supervisor</h4>
       </div>
       <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
       <div class="modal-body">
@@ -384,13 +384,13 @@
 </div>
 <!--end approve modal lv1--> 
 
-<!--approval demolition Modal Lv2 -->
-<div class="modal fade" id="submitdemolitionModalLv2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<!--approval demotion Modal Lv2 -->
+<div class="modal fade" id="submitdemotionModalLv2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog" id="modaldialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Approval Form Demolition - Ka. Bagian</h4>
+        <h4 class="modal-title" id="myModalLabel">Approval Form demotion - Ka. Bagian</h4>
       </div>
       <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
       <div class="modal-body">
@@ -434,13 +434,13 @@
 </div>
 <!--end approve modal Lv2--> 
 
-<!--approval demolition Modal Lv3 -->
-<div class="modal fade" id="submitdemolitionModalLv3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<!--approval demotion Modal Lv3 -->
+<div class="modal fade" id="submitdemotionModalLv3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog" id="modaldialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Approval Form Demolition - Atasan Lainnya</h4>
+        <h4 class="modal-title" id="myModalLabel">Approval Form demotion - Atasan Lainnya</h4>
       </div>
       <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
       <div class="modal-body">
@@ -484,13 +484,13 @@
 </div>
 <!--end approve modal Lv3--> 
 
-<!--approval demolition Modal HRD -->
-<div class="modal fade" id="submitdemolitionModalHrd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<!--approval demotion Modal HRD -->
+<div class="modal fade" id="submitdemotionModalHrd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog" id="modaldialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Approval Form Demolition - HRD</h4>
+        <h4 class="modal-title" id="myModalLabel">Approval Form demotion - HRD</h4>
       </div>
       <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
       <div class="modal-body">

@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Form_demolition extends MX_Controller {
+class Form_demotion extends MX_Controller {
 
 	public $data;
 
@@ -14,7 +14,7 @@ class Form_demolition extends MX_Controller {
         $this->load->helper('url');
         
         $this->load->database();
-        $this->load->model('form_demolition/form_demolition_model','form_demolition_model');
+        $this->load->model('form_demotion/form_demotion_model','form_demotion_model');
 
         $this->lang->load('auth');
         $this->load->helper('language');
@@ -52,17 +52,17 @@ class Form_demolition extends MX_Controller {
 
             $this->data['offset'] = 6;
 
-            //list of filterize all form_demolition  
-            $this->data['form_demolition_all'] = $this->form_demolition_model->like($ftitle_post)->where('is_deleted',0)->form_demolition()->result();
+            //list of filterize all form_demotion  
+            $this->data['form_demotion_all'] = $this->form_demotion_model->like($ftitle_post)->where('is_deleted',0)->form_demotion()->result();
             
-            $this->data['num_rows_all'] = $this->form_demolition_model->like($ftitle_post)->where('is_deleted',0)->form_demolition()->num_rows();
+            $this->data['num_rows_all'] = $this->form_demotion_model->like($ftitle_post)->where('is_deleted',0)->form_demotion()->num_rows();
 
-            $form_demolition = $this->data['form_demolition'] = $this->form_demolition_model->like($ftitle_post)->where('is_deleted',0)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->form_demolition()->result();//lastq();
-            $this->data['_num_rows'] = $this->form_demolition_model->like($ftitle_post)->where('is_deleted',0)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->form_demolition()->num_rows();
+            $form_demotion = $this->data['form_demotion'] = $this->form_demotion_model->like($ftitle_post)->where('is_deleted',0)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->form_demotion()->result();//lastq();
+            $this->data['_num_rows'] = $this->form_demotion_model->like($ftitle_post)->where('is_deleted',0)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->form_demotion()->num_rows();
             
 
              //config pagination
-             $config['base_url'] = base_url().'form_demolition/index/fn:'.$exp_ftitle[1].'/'.$sort_by.'/'.$sort_order.'/';
+             $config['base_url'] = base_url().'form_demotion/index/fn:'.$exp_ftitle[1].'/'.$sort_by.'/'.$sort_order.'/';
              $config['total_rows'] = $this->data['num_rows_all'];
              $config['per_page'] = $limit;
              $config['uri_segment'] = 6;
@@ -80,7 +80,7 @@ class Form_demolition extends MX_Controller {
                 'value' => $this->form_validation->set_value('title'),
             );
 
-            $this->_render_page('form_demolition/index', $this->data);
+            $this->_render_page('form_demotion/index', $this->data);
         }
     }
 
@@ -93,7 +93,7 @@ class Form_demolition extends MX_Controller {
         {
             $ftitle_post = (strlen($this->input->post('title')) > 0) ? strtolower(url_title($this->input->post('title'),'_')) : "" ;
 
-            redirect('form_demolition/index/fn:'.$ftitle_post, 'refresh');
+            redirect('form_demotion/index/fn:'.$ftitle_post, 'refresh');
         }
     }
 
@@ -110,7 +110,7 @@ class Form_demolition extends MX_Controller {
             $this->get_user_atasan();
 
             $this->data['subordinate'] = getAll('users', array('superior_id'=>'where/'.get_nik($sess_id)));
-            $this->_render_page('form_demolition/input', $this->data);
+            $this->_render_page('form_demotion/input', $this->data);
         }
     }
 
@@ -125,13 +125,13 @@ class Form_demolition extends MX_Controller {
            
             $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
             $sess_nik = $this->data['sess_nik'] = get_nik($sess_id);
-            $user_id = getValue('user_id', 'users_demolition', array('id'=>'where/'.$id));
+            $user_id = getValue('user_id', 'users_demotion', array('id'=>'where/'.$id));
             $this->data['user_nik'] = get_nik($user_id);
-            $form_demolition = $this->data['form_demolition'] = $this->form_demolition_model->form_demolition($id)->result();
-            $this->data['_num_rows'] = $this->form_demolition_model->form_demolition($id)->num_rows();
+            $form_demotion = $this->data['form_demotion'] = $this->form_demotion_model->form_demotion($id)->result();
+            $this->data['_num_rows'] = $this->form_demotion_model->form_demotion($id)->num_rows();
 
             $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
-            $this->_render_page('form_demolition/detail', $this->data);
+            $this->_render_page('form_demotion/detail', $this->data);
         }
     }
 
@@ -158,7 +158,7 @@ class Form_demolition extends MX_Controller {
                     'new_bu'        => $this->input->post('bu'),
                     'new_org'        => $this->input->post('org'),
                     'new_pos'           => $this->input->post('pos'),
-                    'date_demolition'           => date('Y-m-d',strtotime($this->input->post('date_demolition'))),
+                    'date_demotion'           => date('Y-m-d',strtotime($this->input->post('date_demotion'))),
                     'alasan'           => $this->input->post('alasan'),
                     'user_app_lv1'          => $this->input->post('atasan1'),
                     'user_app_lv2'          => $this->input->post('atasan2'),
@@ -167,23 +167,23 @@ class Form_demolition extends MX_Controller {
                     'created_by'            => $this->session->userdata('user_id')
                 );
 
-                if ($this->form_validation->run() == true && $this->form_demolition_model->create_($user_id, $additional_data))
+                if ($this->form_validation->run() == true && $this->form_demotion_model->create_($user_id, $additional_data))
                 {
-                     $demolition_id = $this->db->insert_id();
-                     $user_app_lv1 = getValue('user_app_lv1', 'users_demolition', array('id'=>'where/'.$demolition_id));
-                     $isi_email = get_name($user_id).' mengajukan Permohonan demolition, untuk melihat detail silakan <a href='.base_url().'form_demolition/detail/'.$demolition_id.'>Klik Disini</a><br />';
+                     $demotion_id = $this->db->insert_id();
+                     $user_app_lv1 = getValue('user_app_lv1', 'users_demotion', array('id'=>'where/'.$demotion_id));
+                     $isi_email = get_name($user_id).' mengajukan Permohonan demotion, untuk melihat detail silakan <a href='.base_url().'form_demotion/detail/'.$demotion_id.'>Klik Disini</a><br />';
 
                      if(!empty($user_app_lv1)){
-                        $this->approval->request('lv1', 'demolition', $demolition_id, $user_id, $this->detail_email($demolition_id));
+                        $this->approval->request('lv1', 'demotion', $demotion_id, $user_id, $this->detail_email($demotion_id));
                         if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), 'Pengajuan Permohonan Demosi', $isi_email);
                      }else{
-                        $this->approval->request('hrd', 'demolition', $demolition_id, $user_id, $this->detail_email($demolition_id));
+                        $this->approval->request('hrd', 'demotion', $demotion_id, $user_id, $this->detail_email($demotion_id));
                         if(!empty(getEmail($this->approval->approver('demosi'))))$this->send_email(getEmail($this->approval->approver('demosi')), 'Pengajuan Permohonan Demosi', $isi_email);
                      }
 
-                     $this->send_user_notification($demolition_id, $user_id);
-                     redirect('form_demolition', 'refresh');
-                    //echo json_encode(array('st' =>1, 'demolition_url' => $demolition_url));    
+                     $this->send_user_notification($demotion_id, $user_id);
+                     redirect('form_demotion', 'refresh');
+                    //echo json_encode(array('st' =>1, 'demotion_url' => $demotion_url));    
                 }
             }
         }
@@ -209,43 +209,43 @@ class Form_demolition extends MX_Controller {
             );
             $approval_status = $this->input->post('app_status_'.$type);
 
-            $is_app = getValue('is_app_'.$type, 'users_demolition', array('id'=>'where/'.$id));
+            $is_app = getValue('is_app_'.$type, 'users_demotion', array('id'=>'where/'.$id));
             $approval_status = $this->input->post('app_status_'.$type);
 
-            $this->form_demolition_model->update($id,$data);
+            $this->form_demotion_model->update($id,$data);
 
             $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
-            $user_demolition_id = getValue('user_id', 'users_demolition', array('id'=>'where/'.$id));
-            $isi_email = 'Status pengajuan demolition anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_demolition/detail/'.$id.'>Klik Disini</a><br />';
-            $isi_email_request = get_name($user_demolition_id).' mengajukan Permohonan demolition, untuk melihat detail silakan <a href='.base_url().'form_demolition/detail/'.$id.'>Klik Disini</a><br />';
+            $user_demotion_id = getValue('user_id', 'users_demotion', array('id'=>'where/'.$id));
+            $isi_email = 'Status pengajuan demotion anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_demotion/detail/'.$id.'>Klik Disini</a><br />';
+            $isi_email_request = get_name($user_demotion_id).' mengajukan Permohonan demotion, untuk melihat detail silakan <a href='.base_url().'form_demotion/detail/'.$id.'>Klik Disini</a><br />';
             
             if($is_app==0){
-                $this->approval->approve('demolition', $id, $approval_status, $this->detail_email($id));
-                if(!empty(getEmail($user_demolition_id)))$this->send_email(getEmail($user_demolition_id), 'Status Pengajuan Permohonan Demosi dari Atasan', $isi_email);
+                $this->approval->approve('demotion', $id, $approval_status, $this->detail_email($id));
+                if(!empty(getEmail($user_demotion_id)))$this->send_email(getEmail($user_demotion_id), 'Status Pengajuan Permohonan Demosi dari Atasan', $isi_email);
             }else{
-                $this->approval->update_approve('demolition', $id, $approval_status, $this->detail_email($id));
-                if(!empty(getEmail($user_demolition_id)))$this->send_email(getEmail($user_demolition_id), 'Perubahan Status Pengajuan Permohonan Demosi dari Atasan', $isi_email);
+                $this->approval->update_approve('demotion', $id, $approval_status, $this->detail_email($id));
+                if(!empty(getEmail($user_demotion_id)))$this->send_email(getEmail($user_demotion_id), 'Perubahan Status Pengajuan Permohonan Demosi dari Atasan', $isi_email);
             }
             if($type !== 'hrd'){
                 $lv = substr($type, -1)+1;
                 $lv_app = 'lv'.$lv;
-                $user_app = ($lv<4) ? getValue('user_app_'.$lv_app, 'users_demolition', array('id'=>'where/'.$id)):0;
+                $user_app = ($lv<4) ? getValue('user_app_'.$lv_app, 'users_demotion', array('id'=>'where/'.$id)):0;
                 if(!empty($user_app)){
-                    $this->approval->request($lv_app, 'demolition', $id, $user_demolition_id, $this->detail_email($id));
+                    $this->approval->request($lv_app, 'demotion', $id, $user_demotion_id, $this->detail_email($id));
                     if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), 'Pengajuan Permohonan Demosi', $isi_email_request);
                 }else{
-                    $this->approval->request('hrd', 'demolition', $id, $user_demolition_id, $this->detail_email($id));
+                    $this->approval->request('hrd', 'demotion', $id, $user_demotion_id, $this->detail_email($id));
                     if(!empty(getEmail($this->approval->approver('demosi'))))$this->send_email(getEmail($this->approval->approver('demosi')), 'Pengajuan Permohonan Demosi', $isi_email_request);
                 }
             }
-            redirect('form_demolition/detail/'.$id, 'refresh');
+            redirect('form_demotion/detail/'.$id, 'refresh');
         }
     }
 
 
     function send_user_notification($id, $user_id)
     {
-        $url = base_url().'form_demolition/detail/'.$id;
+        $url = base_url().'form_demotion/detail/'.$id;
         $pengaju_id = $this->session->userdata('user_id');
 
         //Notif to karyawan
@@ -253,8 +253,8 @@ class Form_demolition extends MX_Controller {
                     'sender_id' => get_nik($pengaju_id),
                     'receiver_id' => get_nik($user_id),
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                    'subject' => 'Pengajuan demolition Karyawan',
-                    'email_body' => get_name($pengaju_id).' mengajukan demolition untuk Anda, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
+                    'subject' => 'Pengajuan demotion Karyawan',
+                    'email_body' => get_name($pengaju_id).' mengajukan demotion untuk Anda, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data4);
@@ -263,14 +263,14 @@ class Form_demolition extends MX_Controller {
     function detail_email($id)
     {
         $this->data['sess_id'] = $this->session->userdata('user_id');
-        $user_id = getValue('user_id', 'users_demolition', array('id'=>'where/'.$id));
+        $user_id = getValue('user_id', 'users_demotion', array('id'=>'where/'.$id));
         $this->data['user_nik'] = get_nik($user_id);
-        $form_demolition = $this->data['form_demolition'] = $this->form_demolition_model->form_demolition($id)->result();
-        $this->data['_num_rows'] = $this->form_demolition_model->form_demolition($id)->num_rows();
+        $form_demotion = $this->data['form_demotion'] = $this->form_demotion_model->form_demotion($id)->result();
+        $this->data['_num_rows'] = $this->form_demotion_model->form_demotion($id)->num_rows();
 
         $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
 
-        return $this->load->view('form_demolition/demolition_mail', $this->data, TRUE);
+        return $this->load->view('form_demotion/demotion_mail', $this->data, TRUE);
     }
 
     function get_bu()
@@ -513,7 +513,7 @@ class Form_demolition extends MX_Controller {
 
         echo $sen_date;
     }
-    function form_demolition_pdf($id)
+    function form_demotion_pdf($id)
     {
         if (!$this->ion_auth->logged_in())
         {
@@ -522,17 +522,17 @@ class Form_demolition extends MX_Controller {
         }else{
            
         $this->data['sess_id'] = $this->session->userdata('user_id');
-        $user_id = getValue('user_id', 'users_demolition', array('id'=>'where/'.$id));
+        $user_id = getValue('user_id', 'users_demotion', array('id'=>'where/'.$id));
         $this->data['user_nik'] = get_nik($user_id);
-        $form_demolition = $this->data['form_demolition'] = $this->form_demolition_model->form_demolition($id)->result();
-        $this->data['_num_rows'] = $this->form_demolition_model->form_demolition($id)->num_rows();
+        $form_demotion = $this->data['form_demotion'] = $this->form_demotion_model->form_demotion($id)->result();
+        $this->data['_num_rows'] = $this->form_demotion_model->form_demotion($id)->num_rows();
 
         $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
 
             $this->data['id'] = $id;
-            $title = $this->data['title'] = 'Form Pengajuan Demolition-'.get_name($user_id);
+            $title = $this->data['title'] = 'Form Pengajuan demotion-'.get_name($user_id);
             $this->load->library('mpdf60/mpdf');
-            $html = $this->load->view('demolition_pdf', $this->data, true); 
+            $html = $this->load->view('demotion_pdf', $this->data, true); 
             $mpdf = new mPDF();
             $mpdf = new mPDF('A4');
             $mpdf->WriteHTML($html);
@@ -547,7 +547,7 @@ class Form_demolition extends MX_Controller {
         {
             $this->load->library('template');
 
-                if(in_array($view, array('form_demolition/index')))
+                if(in_array($view, array('form_demotion/index')))
                 {
                     $this->template->set_layout('default');
 
@@ -562,8 +562,8 @@ class Form_demolition extends MX_Controller {
                     $this->template->add_css('plugins/select2/select2.css');
                     
                 }
-                elseif(in_array($view, array('form_demolition/input',
-                                             'form_demolition/detail',)))
+                elseif(in_array($view, array('form_demotion/input',
+                                             'form_demotion/detail',)))
                 {
 
                     $this->template->set_layout('default');
@@ -581,7 +581,7 @@ class Form_demolition extends MX_Controller {
                     $this->template->add_js('jquery.validate.min.js');
                     $this->template->add_js('bootstrap-datepicker.js');
                     $this->template->add_js('emp_dropdown.js');
-                    $this->template->add_js('form_demolition.js');
+                    $this->template->add_js('form_demotion.js');
                     
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                     $this->template->add_css('plugins/select2/select2.css');

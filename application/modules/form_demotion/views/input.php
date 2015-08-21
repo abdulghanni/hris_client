@@ -16,12 +16,12 @@
           <div class="col-md-12">
             <div class="grid simple">
               <div class="grid-title no-border">
-                <h4>Form Pengajuan <span class="semi-bold"><a href="<?php echo site_url('form_demolition')?>">Demolition</a></span></h4>
+                <h4>Form Pengajuan <span class="semi-bold"><a href="<?php echo site_url('form_demotion')?>">Demotion</a></span></h4>
               </div>
               <div class="grid-body no-border">
                 <?php
-                $att = array('class' => 'form-no-horizontal-spacing', /*'id' => 'formadddemolition'*/);
-                echo form_open('form_demolition/add', $att);
+                $att = array('class' => 'form-no-horizontal-spacing', /*'id' => 'formadddemotion'*/);
+                echo form_open('form_demotion/add', $att);
                 ?>
                   <div class="row column-seperation">
                     <div class="col-md-5">
@@ -33,7 +33,7 @@
                         </div>
                         <div class="col-md-9">
                           <?php if(is_admin()){?>
-                            <select id="empDemolition" class="select2" style="width:100%" name="emp">
+                            <select id="empdemotion" class="select2" style="width:100%" name="emp">
                               <?php
                               foreach ($all_users->result() as $u) :
                                 $selected = $u->id == $sess_id ? 'selected = selected' : '';?>
@@ -148,7 +148,7 @@
                     </div>
 
                     <div class="col-md-7">
-                      <h4>Demolition Yang Diajukan</h4>
+                      <h4>Demotion Yang Diajukan</h4>
                       <div class="row form-row">
                         <div class="col-md-4">
                           <label class="form-label text-left">Unit Bisnis Baru</label>
@@ -186,21 +186,21 @@
                       </div>
                       <div class="row form-row">
                         <div class="col-md-4">
-                          <label class="form-label text-left">Tgl. Demolition</label>
+                          <label class="form-label text-left">Tgl. demotion</label>
                         </div>
                         <div class="col-md-8">
                           <div class="input-append date success no-padding">
-                          <input type="text" class="form-control" name="date_demolition" required>
+                          <input type="text" class="form-control" name="date_demotion" required>
                           <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span> 
                         </div>
                         </div>
                       </div>
                       <div class="row form-row">
                         <div class="col-md-4">
-                          <label class="form-label text-left">Alasan Demolition</label>
+                          <label class="form-label text-left">Alasan demotion</label>
                         </div>
                         <div class="col-md-8">
-                          <textarea name="alasan" id="alasan" class="form-control" placeholder="Alasan Demolition" required></textarea>
+                          <textarea name="alasan" id="alasan" class="form-control" placeholder="Alasan demotion" required></textarea>
                         </div>
                       </div>
                     </div>
@@ -208,7 +208,7 @@
                 <div class="form-actions">
                   <div class="pull-right">
                     <button class="btn btn-danger btn-cons" type="submit"><i class="icon-ok"></i> Save</button>
-                    <a href="<?php echo site_url('form_demolition')?>"><button class="btn btn-white btn-cons" type="button">Cancel</button></a>
+                    <a href="<?php echo site_url('form_demotion')?>"><button class="btn btn-white btn-cons" type="button">Cancel</button></a>
                   </div>
                 </div>
               </form>
@@ -228,7 +228,7 @@
  {
      buid = document.getElementById("bu").value;
      $.ajax({
-         url:"<?php echo base_url();?>form_demolition/get_org/"+buid+"",
+         url:"<?php echo base_url();?>form_demotion/get_org/"+buid+"",
          success: function(response){
          $("#org").html(response);
          },
@@ -241,7 +241,7 @@
  {
      orgid = document.getElementById("org").value;
      $.ajax({
-         url:"<?php echo base_url();?>form_demolition/get_pos/"+orgid+"",
+         url:"<?php echo base_url();?>form_demotion/get_pos/"+orgid+"",
          success: function(response){
          $("#pos").html(response);
          },

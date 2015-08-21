@@ -101,7 +101,6 @@
                         </div>    
                       </div>
 
-                  <!--
                     <div class="row form-row">
                       <div class="col-md-12">
                         <label class="bold form-label text-left"><?php echo 'Approval' ?></label>
@@ -126,7 +125,8 @@
                             <?php }?>
                       </div>
                     </div>
-
+                    
+                  <!--
                     <div class="row form-row">
                       <div class="col-md-4">
                         <label class="form-label text-left"><?php echo 'Ka. Bagian' ?></label>

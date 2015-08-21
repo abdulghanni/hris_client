@@ -60,11 +60,11 @@ class Approval {
                 $isi_email = get_name($pengaju_id).' mengajukan Promosi untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail;
             	$user_id = $pengaju_id;
                 break;
-            case "demolition":
+            case "demotion":
                 $receiver = $CI->approval->approver('demosi');
                 $pengaju_id = getValue('created_by', 'users_'.$form, array('id'=>'where/'.$id));
-                $form = 'Demolition Karyawan';
-                $isi_email = get_name($pengaju_id).' mengajukan Demolition karyawan untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail;
+                $form = 'Demotion Karyawan';
+                $isi_email = get_name($pengaju_id).' mengajukan Demotion karyawan untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail;
                 $user_id = $pengaju_id;
                 break;
             case "rolling":
@@ -213,7 +213,7 @@ class Approval {
             case "promosi":
                 $receiver_id = getValue('created_by', 'users_'.$form, array('id'=>'where/'.$id));
                 break;
-            case "demolition":
+            case "demotion":
                 $receiver_id = getValue('created_by', 'users_'.$form, array('id'=>'where/'.$id));
                 break;
             case "rolling":
@@ -274,7 +274,7 @@ class Approval {
             case "promosi":
                 $receiver_id = getValue('created_by', 'users_'.$form, array('id'=>'where/'.$id));
                 break;
-            case "demolition":
+            case "demotion":
                 $receiver_id = getValue('created_by', 'users_'.$form, array('id'=>'where/'.$id));
                 break;
             case "rolling":

@@ -23,6 +23,10 @@
 		width: 900px;
 	}
 
+    #submitMedicalModal .modal-dialog{
+        width: 900px;
+    }
+
     #submitresignmentModalHrd .modal-dialog{
         width: 900px;
     }
@@ -31,6 +35,10 @@
 #submitMedicalModalHrd .modal-dialog{
 		width: 75%;
 	}
+
+#submitMedicalModal .modal-dialog{
+        width: 75%;
+    }
 
 #submitresignmentModalHrd .modal-dialog{
     width: 75%;

@@ -47,8 +47,8 @@
                                   <th width="10%">NIK</th>
                                   <th width="25%">Nama</th>
                                   <th width="15%">Tanggal Keluar</th>
-                                  <!--
                                   <th width="10%" class="text-center">appr. spv</th>
+                                  <!--
                                   <th width="10%" class="text-center">appr. ka. bag</th>
                                   <th width="10%" class="text-center">appr. Atasan Lainnya</th>
                                   -->

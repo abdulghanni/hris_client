@@ -263,7 +263,8 @@ class Form_cuti extends MX_Controller {
                 if(!empty(getEmail($user_cuti_id)))$this->send_email(getEmail($user_cuti_id), 'Perubahan Status Pengajuan Permohonan Cuti dari Atasan', $isi_email);
             }
             if($type !== 'hrd'){
-                $lv = substr($type, -1)+1;
+                $lv = ($approval_status == 2 || $approval_status == 3)?substr($type, -1)-1:substr($type, -1)+1;
+                //print_mz($lv);
                 $lv_app = 'lv'.$lv;
                 $user_app = ($lv<4) ? getValue('user_app_'.$lv_app, 'users_cuti', array('id'=>'where/'.$id)):0;
                 if(!empty($user_app)){

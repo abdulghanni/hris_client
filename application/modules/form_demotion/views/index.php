@@ -17,17 +17,17 @@
           <div class="col-md-12">
               <div class="grid simple ">
                 <div class="grid-title no-border">
-                  <h4>Daftar Pengajuan <span class="semi-bold">Demolition</span></h4>
+                  <h4>Daftar Pengajuan <span class="semi-bold">Demotion</span></h4>
                   <?php if(is_have_subordinate($sess_id)||is_admin()||$this->approval->approver('demosi') == $sess_nik){?>
                   <div class="tools"> 
-                    <a href="<?php echo site_url('form_demolition/input') ?>" class="config"></a>
+                    <a href="<?php echo site_url('form_demotion/input') ?>" class="config"></a>
                   </div>
                   <?php } ?>
                 </div>
                   <div class="grid-body no-border">
                   <?php if($_num_rows>0){?>
                           <br/>   
-                          <?php echo form_open(site_url('form_demolition/keywords'))?>
+                          <?php echo form_open(site_url('form_demotion/keywords'))?>
                             <div class="row">
                                 <div class="col-md-5">
                                     <div class="row">
@@ -51,7 +51,7 @@
                                   <th width="15%">Nama Karyawan</th>
                                   <th width="15%">Jabatan Lama</th>
                                   <th width="15%">Jabatan Baru</th>
-                                  <th width="15%">Tanggal Demolition</th>
+                                  <th width="15%">Tanggal demotion</th>
                                   <th width="5%" class="text-center">appr. spv</th>
                                   <th width="5%" class="text-center">appr. ka. bag</th>
                                   <th width="5%" class="text-center">appr. Atasan Lainnya</th>
@@ -61,7 +61,7 @@
                               </thead>
                               <tbody>
                               <?php
-                                  foreach($form_demolition as $user):
+                                  foreach($form_demotion as $user):
                                   $txt_app_lv1 = $txt_app_lv2 = $txt_app_lv3 = $txt_app_hrd = "<i class='icon-minus' title = 'Pending'></i>";
                                     $approval_status_lv1 = ($user->app_status_id_lv1 == 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($user->app_status_id_lv1 == 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
                                     $approval_status_lv2 = ($user->app_status_id_lv2 == 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($user->app_status_id_lv2 == 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
@@ -71,11 +71,11 @@
                     
                                     //Approval Level 1
                                     if(!empty($user->user_app_lv1) && $user->is_app_lv1 == 0 && $sess_nik == $user->user_app_lv1){
-                                        $txt_app_lv1 = "<a href='".site_url('form_demolition/detail/'.$user->id)."''>
+                                        $txt_app_lv1 = "<a href='".site_url('form_demotion/detail/'.$user->id)."''>
                                                         <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-edit'></i></button>
                                                         </a>";
                                       }elseif(!empty($user->user_app_lv1)){
-                                        $txt_app_lv1 = "<a href='".site_url('form_demolition/detail/'.$user->id)."''>$approval_status_lv1</a>";
+                                        $txt_app_lv1 = "<a href='".site_url('form_demotion/detail/'.$user->id)."''>$approval_status_lv1</a>";
                                       }else{
                                       $txt_app_lv1 = "<i class='icon-circle' title = 'Tidak Butuh Approval'></i>";
                                     }
@@ -84,11 +84,11 @@
                                     //ApprovalLevel 2
                                     
                                     if(!empty($user->user_app_lv2) && $user->is_app_lv2 == 0 && $sess_nik == $user->user_app_lv2){
-                                        $txt_app_lv2 = "<a href='".site_url('form_demolition/detail/'.$user->id)."''>
+                                        $txt_app_lv2 = "<a href='".site_url('form_demotion/detail/'.$user->id)."''>
                                                         <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-edit'></i></button>
                                                         </a>";
                                       }elseif(!empty($user->user_app_lv2)){
-                                        $txt_app_lv2 = "<a href='".site_url('form_demolition/detail/'.$user->id)."''>$approval_status_lv2</a>";
+                                        $txt_app_lv2 = "<a href='".site_url('form_demotion/detail/'.$user->id)."''>$approval_status_lv2</a>";
                                       }else{
                                       $txt_app_lv2 = "<i class='icon-circle' title = 'Tidak Butuh Approval'></i>";
                                     }
@@ -96,30 +96,30 @@
                                     //Approval Level 3
 
                                     if(!empty($user->user_app_lv3) && $user->is_app_lv3 == 0 && $sess_nik == $user->user_app_lv3){
-                                        $txt_app_lv3 = "<a href='".site_url('form_demolition/detail/'.$user->id)."''>
+                                        $txt_app_lv3 = "<a href='".site_url('form_demotion/detail/'.$user->id)."''>
                                                         <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-edit'></i></button>
                                                         </a>";
                                       }elseif(!empty($user->user_app_lv3)){
-                                        $txt_app_lv3 = "<a href='".site_url('form_demolition/detail/'.$user->id)."''>$approval_status_lv3</a>";
+                                        $txt_app_lv3 = "<a href='".site_url('form_demotion/detail/'.$user->id)."''>$approval_status_lv3</a>";
                                       }else{
                                       $txt_app_lv3 = "<i class='icon-circle' title = 'Tidak Butuh Approval'></i>";
                                     }
 
                                      //Approval HRD
                                     if($this->approval->approver('demosi') == $sess_nik && $user->is_app_hrd == 0){
-                                      $txt_app_hrd = "<a href='".site_url('form_demolition/detail/'.$user->id)."''>
+                                      $txt_app_hrd = "<a href='".site_url('form_demotion/detail/'.$user->id)."''>
                                                       <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-edit'></i></button>
                                                       </a>";
                                     }elseif($user->is_app_hrd == 1){
-                                      $txt_app_hrd =  "<a href='".site_url('form_demolition/detail/'.$user->id)."''>$approval_status_hrd</a>";
+                                      $txt_app_hrd =  "<a href='".site_url('form_demotion/detail/'.$user->id)."''>$approval_status_hrd</a>";
                                     }
                                   ?>
                                   <tr>
-                                    <td><a href="<?php echo site_url('form_demolition/detail/'.$user->id)?>"><?php echo get_name($user->created_by)?></a></td>
+                                    <td><a href="<?php echo site_url('form_demotion/detail/'.$user->id)?>"><?php echo get_name($user->created_by)?></a></td>
                                     <td><?php echo get_name($user->user_id)?></td>
                                     <td><?php echo get_position_name($user->old_pos)?></td>
                                     <td><?php echo get_position_name($user->new_pos)?></td>
-                                    <td><?php echo dateIndo($user->date_demolition)?></td>
+                                    <td><?php echo dateIndo($user->date_demotion)?></td>
                                     <td class="text-center">
                                       <?php echo $txt_app_lv1;?>
                                     </td>
@@ -133,7 +133,7 @@
                                       <?php echo $txt_app_hrd; ?>
                                     </td>
                                     <td class="text-center">
-                                       <a href="<?php echo site_url('form_demolition/form_demolition_pdf/'.$user->id)?>" target="_blank"><i class="icon-print"></i></a>
+                                       <a href="<?php echo site_url('form_demotion/form_demotion_pdf/'.$user->id)?>" target="_blank"><i class="icon-print"></i></a>
                                     </td>
                                   </tr> 
                                 <?php endforeach;}?>

@@ -103,7 +103,7 @@ $(document).ready(function() {
                 data: $('#formAppLv2').serialize(),
                 success: function() {
                      $("[data-dismiss=modal]").trigger({ type: "click" });
-                     location.reload(),
+                     //location.reload(),
                      $btn.button('reset')
                 }
             });

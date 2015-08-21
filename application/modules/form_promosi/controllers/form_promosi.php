@@ -179,7 +179,6 @@ class Form_promosi extends MX_Controller {
                         $this->approval->request('hrd', 'promosi', $promosi_id, $user_id, $this->detail_email($promosi_id));
                         if(!empty(getEmail($this->approval->approver('promosi'))))$this->send_email(getEmail($this->approval->approver('promosi')), 'Pengajuan Permohonan Promosi', $isi_email);
                      }
-                     $this->send_user_notification($promosi_id, $user_id);
                      redirect('form_promosi', 'refresh');
                     //echo json_encode(array('st' =>1, 'promosi_url' => $promosi_url));
                 }
@@ -237,6 +236,8 @@ class Form_promosi extends MX_Controller {
                     $this->approval->request('hrd', 'promosi', $id, $user_promosi_id, $this->detail_email($id));
                     if(!empty(getEmail($this->approval->approver('promosi'))))$this->send_email(getEmail($this->approval->approver('promosi')), 'Pengajuan Permohonan Promosi', $isi_email_request);
                 }
+            }else{
+                $this->send_user_notification($id, $user_promosi_id);
             }
             redirect('form_promosi/detail/'.$id, 'refresh');
         }

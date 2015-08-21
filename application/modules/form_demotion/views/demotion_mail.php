@@ -2,7 +2,7 @@
           <div class="col-md-12">
             <div class="grid simple">
               <div class="grid-title no-border">
-                <h4>Form <span class="semi-bold"><a href="<?php echo site_url('form_demolition')?>">Demolition</a></span></h4>
+                <h4>Form <span class="semi-bold"><a href="<?php echo site_url('form_demotion')?>">Demotion</a></span></h4>
               </div>
               <div class="grid-body no-border">
                 <form class="form-no-horizontal-spacing" id=""> 
@@ -10,7 +10,7 @@
                     <div class="col-md-5">
                       <h4>Informasi karyawan</h4>
                       <?php if($_num_rows>0){
-                        foreach($form_demolition as $row):?>
+                        foreach($form_demotion as $row):?>
                       <div class="row form-row">
                         <div class="col-md-3">
                           <label class="form-label text-right">NIK</label>
@@ -63,7 +63,7 @@
                       
                     </div>
                     <div class="col-md-7">
-                      <h4>Demolition Yang Diajukan</h4>
+                      <h4>Demotion Yang Diajukan</h4>
                      <div class="row form-row">
                         <div class="col-md-4">
                           <label class="form-label text-left">Unit Bisnis Baru</label>
@@ -92,18 +92,18 @@
                       </div>
                       <div class="row form-row">
                         <div class="col-md-4">
-                          <label class="form-label text-left">Tgl. Demolition</label>
+                          <label class="form-label text-left">Tgl. demotion</label>
                         </div>
                         <div class="col-md-8">
-                          <input type="text" class="form-control" name="date_demolition" value="<?php echo dateIndo($row->date_demolition)?>" disabled="disabled">
+                          <input type="text" class="form-control" name="date_demotion" value="<?php echo dateIndo($row->date_demotion)?>" disabled="disabled">
                         </div>
                       </div>
                       <div class="row form-row">
                         <div class="col-md-4">
-                          <label class="form-label text-left">Alasan Demolition</label>
+                          <label class="form-label text-left">Alasan Demotion</label>
                         </div>
                         <div class="col-md-8">
-                          <textarea name="alasan" id="alasan" type="text"  class="form-control" placeholder="Alasan demolition" disabled="disabled"><?php echo $row->alasan?></textarea>
+                          <textarea name="alasan" id="alasan" type="text"  class="form-control" placeholder="Alasan demotion" disabled="disabled"><?php echo $row->alasan?></textarea>
                         </div>
                       </div>
                       <?php if(!empty($row->note_lv1)){?>

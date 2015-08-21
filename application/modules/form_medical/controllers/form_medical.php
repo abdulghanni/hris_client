@@ -212,19 +212,53 @@ class Form_medical extends MX_Controller {
             //redirect them to the login page
             redirect('auth/login', 'refresh');
         }
-        $user_id = getValue('user_id', 'users_medical', array('id'=>'where/'.$id));
-        $sess_id= $this->session->userdata('user_id');
+        $this->data['user_id'] =$user_id = getValue('user_id', 'users_medical', array('id'=>'where/'.$id));
+        $this->data['sess_id'] = $sess_id= $this->session->userdata('user_id');
         $this->data['sess_nik'] = get_nik($sess_id);
         $this->data['is_app_hrd'] = getValue('is_app_hrd', 'users_medical', array('id'=>'where/'.$id));
+        $this->data['note_hrd'] = getValue('note_hrd', 'users_medical', array('id'=>'where/'.$id));
+        $this->data['app_status_id_lv1'] = getValue('app_status_id_lv1', 'users_medical', array('id'=>'where/'.$id));
+        $this->data['note_lv1'] = getValue('note_lv1', 'users_medical', array('id'=>'where/'.$id));
+        $this->data['creator_id'] = getValue('created_by', 'users_medical', array('id'=>'where/'.$id));
         $this->data['bagian'] = get_user_organization(get_nik($user_id));
         $this->data['detail'] = $this->form_medical_model->form_medical_detail($id)->result_array();
         $this->data['detail_hrd'] = $this->form_medical_model->form_medical_hrd($id)->result_array();
         $this->data['total_medical_hrd'] = $this->form_medical_model->get_total_medical_hrd($id);
         $form_medical = $this->data['form_medical'] = $this->form_medical_model->form_medical($id)->result();
+        $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
         $this->data['_num_rows'] = $this->form_medical_model->form_medical($id)->num_rows();
             
         $this->_render_page('form_medical/detail', $this->data);
 
+    }
+
+    function edit($id)
+    {   
+        if(!$this->ion_auth->logged_in())
+        {
+            redirect('auth/login', 'refresh');
+        }
+
+        $user_id = get_nik($this->session->userdata('user_id'));
+        $date_now = date('Y-m-d');
+        $is_app_hrd = getValue('is_app_hrd', 'users_medical', array('id'=>'where/'.$id));
+        $medical_detail_id = $this->input->post('detail_id');
+        $rupiah = $this->input->post('rupiah_update');
+        $approve = $this->input->post('checkbox1');
+        $user_medical_id = getValue('user_id', 'users_medical', array('id'=>'where/'.$id));
+        
+
+        for($i=0;$i<sizeof($medical_detail_id);$i++):
+            $data = array(
+                    'rupiah' => $rupiah[$i],
+                    'edited_by' => $user_id,
+                    'edited_on' => $date_now,
+                ); 
+            $this->db->where('id', $medical_detail_id[$i]);
+            $this->db->update('users_medical_detail', $data);
+        endfor;
+
+        redirect('form_medical/detail/'.$id, 'refresh');
     }
 
     function do_approve($id, $type)
@@ -242,6 +276,8 @@ class Form_medical extends MX_Controller {
         'is_app_'.$type => 1,
         'user_app_'.$type => $user_id, 
         'date_app_'.$type => $date_now,
+        'app_status_id_'.$type => $this->input->post('app_status_id_'.$type),
+        'note_'.$type => $this->input->post('note_'.$type),
         );
         
        $this->form_medical_model->update($id,$data);
@@ -309,6 +345,7 @@ class Form_medical extends MX_Controller {
         'is_app_hrd' => 1,
         'user_app_hrd' => $user_id, 
         'date_app_hrd' => $date_now,
+        'note_hrd' => $this->input->post('note_hrd'),
         );
         
         $this->form_medical_model->update($id,$data2);

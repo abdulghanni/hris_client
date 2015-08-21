@@ -35,15 +35,18 @@ $(document).ready(function() {
     var uri2 = url.segment(2)+'/do_approve/'+url.segment(4)+'/lv2';
     var uri3 = url.segment(2)+'/do_approve/'+url.segment(4)+'/lv3';
     var uri4 = url.segment(2)+'/do_approve_hrd/'+url.segment(4);
+    var uri5 = url.segment(2)+'/edit/'+url.segment(4);
 
     $('#btn_app_lv1').click(function(){
-        $('#formMedical').submit(function(ev){
+        $('#formAppLv1').submit(function(ev){
             $.ajax({
                 type: 'POST',
                 url: baseurl+uri1,
-                data: $('#formMedical').serialize(),
+                data: $('#formAppLv1').serialize(),
                 success: function() {
-                     location.reload()
+                     $("[data-dismiss=modal]").trigger({ type: "click" });
+                     location.reload(),
+                     $btn.button('reset')
                 }
             });
             ev.preventDefault(); 
@@ -85,6 +88,23 @@ $(document).ready(function() {
                 type: 'POST',
                 url: baseurl+uri4,
                 data: $('#formAppHrd').serialize(),
+                success: function() {
+                    $("[data-dismiss=modal]").trigger({ type: "click" });
+                    location.reload(),
+                    $btn.button('reset')
+                }
+            });
+            ev.preventDefault(); 
+        });  
+    });
+
+    $('#btn_edit').click(function(){
+        var $btn = $(this).button('loading');
+        $('#formEdit').submit(function(ev){
+            $.ajax({
+                type: 'POST',
+                url: baseurl+uri5,
+                data: $('#formEdit').serialize(),
                 success: function() {
                     $("[data-dismiss=modal]").trigger({ type: "click" });
                     location.reload(),
