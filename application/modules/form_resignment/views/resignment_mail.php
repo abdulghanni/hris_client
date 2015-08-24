@@ -79,6 +79,36 @@
                         </div>
                     </div>
 
+                    <?php if($row->is_invited == 1):?>
+                      <div class="row form-row">
+                        <div class="col-md-4">
+                          <label class="form-label text-left">Tanggal Wawancara</label>
+                        </div>
+                        <div class="col-md-5">
+                            <input type="text" class="form-control" id="sandbox-advance" name="date_resign" value="<?php echo dateIndo($row->date_invitation)?>" disabled>
+                        </div>
+                      </div>
+
+                      <div class="row form-row">
+                        <div class="col-md-4">
+                          <label class="form-label text-left">Waktu Wawancara</label>
+                        </div>
+                        <div class="col-md-5">
+                            <input type="text" class="form-control" id="sandbox-advance" name="date_resign" value="<?php echo $row->time_invitation?>" disabled>
+                        </div>
+                      </div>
+                      <?php if(!empty($row->note_invitation)){?>
+                      <div class="row form-row">
+                        <div class="col-md-4">
+                          <label class="form-label text-left">Catatan undangan wawancara: </label>
+                        </div>
+                        <div class="col-md-8">
+                          <textarea name="notes_spv" class="form-control" disabled="disabled"><?php echo $row->note_invitation ?></textarea>
+                        </div>
+                      </div>
+
+                    <?php }endif; ?>
+
                       <?php if(!empty($row->note_lv1)){?>
                       <div class="row form-row">
                         <div class="col-md-4">

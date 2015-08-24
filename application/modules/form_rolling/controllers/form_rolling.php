@@ -176,7 +176,6 @@ class Form_rolling extends MX_Controller {
                      else:
                         $this->approval->request('hrd', 'rolling', $rolling_id, $user_id, $this->detail_email($rolling_id));
                      endif;
-                     $this->send_user_notification($rolling_id, $user_id);
                      redirect('form_rolling', 'refresh');
                     //echo json_encode(array('st' =>1, 'rolling_url' => $rolling_url));    
                 }
@@ -222,7 +221,7 @@ class Form_rolling extends MX_Controller {
                 if(!empty(getEmail($user_rolling_id)))$this->send_email(getEmail($user_rolling_id), 'Perubahan Status Pengajuan Permohonan Rolling dari Atasan', $isi_email);
             }
 
-            if($type !== 'hrd'){
+            if($type !== 'hrd' && $approval_status == 1){
                 $lv = substr($type, -1)+1;
                 $lv_app = 'lv'.$lv;
                 $user_app = ($lv<4) ? getValue('user_app_'.$lv_app, 'users_rolling', array('id'=>'where/'.$id)):0;
@@ -232,6 +231,29 @@ class Form_rolling extends MX_Controller {
                 }else{
                     $this->approval->request('hrd', 'rolling', $id, $user_rolling_id, $this->detail_email($id));
                     if(!empty(getEmail($this->approval->approver('rolling'))))$this->send_email(getEmail($this->approval->approver('rolling')), 'Pengajuan Permohonan rolling', $isi_email_request);
+                }
+            }elseif($type == 'hrd' && $approval_status == 1){
+                $this->send_user_notification($id, $user_rolling_id);
+            }else{
+                switch($type){
+                    case 'lv1':
+                        //$this->approval->not_approve('rolling', $id, )
+                    break;
+
+                    case 'lv2':
+                        $receiver_id = getValue('user_app_lv1', 'users_rolling', array('id'=>'where/'.$id));
+                        $this->approval->not_approve('rolling', $id, $receiver_id, $approval_status ,$this->detail_email($id));
+                    break;
+
+                    case 'lv3':
+                        $receiver_id = getValue('user_app_lv2', 'users_rolling', array('id'=>'where/'.$id));
+                        $this->approval->not_approve('rolling', $id, $receiver_id, $approval_status ,$this->detail_email($id));
+                    break;
+
+                    case 'hrd':
+                        $receiver_id = getValue('user_app_lv3', 'users_rolling', array('id'=>'where/'.$id));
+                        $this->approval->not_approve('rolling', $id, $receiver_id, $approval_status ,$this->detail_email($id));
+                    break;
                 }
             }
             redirect('form_rolling/detail/'.$id, 'refresh');

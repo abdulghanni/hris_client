@@ -121,10 +121,11 @@
                                     <td>
                                       <?php echo dateIndo($user->date_resign)?>
                                     </td>
-                                    <!--
+                                    
                                     <td class="text-center">
                                       <?php echo $txt_app_lv1;?>
                                     </td>
+                                    <!--
                                     <td class="text-center">
                                       <?php echo $txt_app_lv2; ?>
                                     </td>

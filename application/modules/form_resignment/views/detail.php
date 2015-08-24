@@ -91,6 +91,36 @@
                         </div>
                       </div>
 
+                    <?php if($row->is_invited == 1):?>
+                      <div class="row form-row">
+                        <div class="col-md-4">
+                          <label class="form-label text-left">Tanggal Wawancara</label>
+                        </div>
+                        <div class="col-md-5">
+                            <input type="text" class="form-control" id="sandbox-advance" name="date_resign" value="<?php echo dateIndo($row->date_invitation)?>" disabled>
+                        </div>
+                      </div>
+
+                      <div class="row form-row">
+                        <div class="col-md-4">
+                          <label class="form-label text-left">Waktu Wawancara</label>
+                        </div>
+                        <div class="col-md-5">
+                            <input type="text" class="form-control" id="sandbox-advance" name="date_resign" value="<?php echo $row->time_invitation?>" disabled>
+                        </div>
+                      </div>
+                      <?php if(!empty($row->note_invitation)){?>
+                      <div class="row form-row">
+                        <div class="col-md-4">
+                          <label class="form-label text-left">Catatan undangan wawancara: </label>
+                        </div>
+                        <div class="col-md-8">
+                          <textarea name="notes_spv" class="form-control" disabled="disabled"><?php echo $row->note_invitation ?></textarea>
+                        </div>
+                      </div>
+
+                    <?php }endif; ?>
+
                       <?php if(!empty($row->note_lv1)){?>
                       <div class="row form-row">
                         <div class="col-md-4">
@@ -215,8 +245,10 @@
                         <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitresignmentModalLv2"><i class='icon-edit'> Edit Approval</i></div>
                       <?php }elseif($row->is_app_lv3 == 1 && get_nik($sess_id) == $row->user_app_lv3){?>
                         <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitresignmentModalLv3"><i class='icon-edit'> Edit Approval</i></div>
-                      <?php }elseif($row->is_app_hrd == 1 && get_nik($sess_id) == $row->user_app_hrd){?>
+                      <?php }elseif($row->is_app_hrd == 1 && get_nik($sess_id) == $this->approval->approver('resignment')){?>
                         <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitresignmentModalHrd"><i class='icon-edit'> Edit Approval</i></div>
+                      <?php }elseif($row->is_app_hrd == 0 && $row->is_invited == 1 && get_nik($sess_id) == $this->approval->approver('resignment')){?>
+                        <div class='btn btn-info btn-small text-center' title='Edit undangan' data-toggle="modal" data-target="#undanganModal"><i class='icon-edit'> Ubah Tanggal Wawancara</i></div>
                       <?php } ?>
                     </div>
                 </div>
@@ -299,8 +331,10 @@
                   <div class="col-md-3">
                     <p class="wf-approve-sp">
                     <div class="col-md-12"><span class="semi-bold">Diterima HRD</span><br/><br/></div>
-                      <?php if($row->is_app_hrd == 0 && $this->approval->approver('resignment') == $sess_nik){?>
-                        <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitresignmentModalHrd"><i class="icon-ok"></i>Submit</div>
+                      <?php 
+                      $submitbutton = ($row->is_invited == 0) ? '#undanganModal' : '#submitresignmentModalHrd';
+                      if($row->is_app_hrd == 0 && $this->approval->approver('resignment') == $sess_nik){?>
+                        <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="<?php echo $submitbutton ?>"><i class="icon-ok"></i>Submit</div>
                         <span class="small"></span>
                         <span class="semi-bold"></span><br/>
                         <span class="small"></span><br/>
@@ -323,7 +357,6 @@
                       <?php } ?>
                     </p>
                   </div>
-                  <!--PST242, PST263, PST2, PST129-->
                 </div>
               </div> 
 
@@ -525,13 +558,70 @@
 </div>
 <!--end approve modal Lv3--> 
 
+
+<!--Undangan wawancara modal -->
+<div class="modal fade" id="undanganModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" id="modaldialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Form  Resignment - Undangan Wawancara</h4>
+      </div>
+      <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
+      <div class="modal-body">
+        <form class="form-no-horizontal-spacing"  id="formUndangan">
+            <div class="row form-row">
+              <div class="col-md-4">
+                <label class="form-label text-left">Tanggal Wawancara </label>
+              </div>
+              <div class="col-md-6">
+                  <div class="input-append success date">
+                    <input type="text" class="form-control" id="sandbox-advance" name="date_invited" required>
+                    <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
+                  </div>
+              </div>
+            </div>
+
+            <div class="row form-row">
+              <div class="col-md-4">
+                <label class="form-label text-left">Waktu Wawancara</label>
+              </div>
+              <div class="col-md-6">
+                <div class="input-append bootstrap-timepicker">
+                  <input name="time_invited" id="timepicker2" type="text" class="timepicker-24" value="" required>
+                  <span class="add-on">
+                      <i class="icon-time"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="row form-row">
+              <div class="col-md-12">
+                <label class="form-label text-left">Catatan : </label>
+              </div>
+              <div class="col-md-12">
+                <textarea name="note_invited" class="custom-txtarea-form" placeholder="Note atasan isi disini"><?php echo $row->note_lv3?></textarea>
+              </div>
+            </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="icon-remove"></i>&nbsp;<?php echo lang('close_button')?></button> 
+        <button type="submit" id="btn_undangan"  class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
+      </div>
+        <?php echo form_close()?>
+    </div>
+  </div>
+</div>
+<!--end approve modal Lv3--> 
+
+
 <!--approval resignment Modal HRD -->
 <div class="modal fade" id="submitresignmentModalHrd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog" id="modaldialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Approval Form resignment - HRD</h4>
+        <h4 class="modal-title" id="myModalLabel">Form Resignment - Wawancara HRD</h4>
       </div>
       <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
       <div class="modal-body">

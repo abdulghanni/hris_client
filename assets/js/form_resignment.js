@@ -6,6 +6,12 @@ $(document).ready(function() {
                 format: "dd-mm-yyyy",
                 todayHighlight: true
        });
+
+    $('.timepicker-24').timepicker({
+                minuteStep: 1,
+                //showSeconds: true,
+                showMeridian: false
+     });
     
     var url = $.url();
     var baseurl = url.attr('protocol')+'://'+url.attr('host')+'/'+url.segment(1)+'/';
@@ -13,6 +19,7 @@ $(document).ready(function() {
     var uri2 = url.segment(2)+'/do_approve/'+url.segment(4)+'/lv2';
     var uri3 = url.segment(2)+'/do_approve/'+url.segment(4)+'/lv3';
     var uri4 = url.segment(2)+'/do_approve/'+url.segment(4)+'/hrd';
+    var uri5 = url.segment(2)+'/kirim_undangan/'+url.segment(4);
 
     $('#formaddresign').submit(function(response){
         $.post($('#formaddresign').attr('action'), $('#formaddresign').serialize(),function(json){
@@ -26,10 +33,6 @@ $(document).ready(function() {
     });
             
     //approval script
-
-    $('button[data-loading-text]').click(function () {
-    $(this).button('loading');
-    });
 
     $('#btn_app_lv1').click(function(){
         var $btn = $(this).button('loading');
@@ -83,12 +86,29 @@ $(document).ready(function() {
     });
 
     $('#btn_app_hrd').click(function(){
-        var $btn = $(this).button('loading');
         $('#formAppHrd').submit(function(ev){
+            var $btn = $('#btn_app_hrd').button('loading');
             $.ajax({
                 type: 'POST',
                 url: baseurl+uri4,
                 data: $('#formAppHrd').serialize(),
+                success: function() {
+                    $("[data-dismiss=modal]").trigger({ type: "click" });
+                    location.reload(),
+                    $btn.button('reset')
+                }
+            });
+            ev.preventDefault(); 
+        });  
+    });
+
+    $('#btn_undangan').click(function(){
+        $('#formUndangan').submit(function(ev){
+            var $btn = $('#btn_undangan').button('loading');
+            $.ajax({
+                type: 'POST',
+                url: baseurl+uri5,
+                data: $('#formUndangan').serialize(),
                 success: function() {
                     $("[data-dismiss=modal]").trigger({ type: "click" });
                     location.reload(),

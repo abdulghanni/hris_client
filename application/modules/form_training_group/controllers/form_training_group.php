@@ -238,7 +238,7 @@ class form_training_group extends MX_Controller {
                 if(!empty(getEmail($user_training_id)))$this->send_email(getEmail($user_training_id), 'Perubahan Status Pengajuan Permohonan Training (Group) dari Atasan', $isi_email);
             }
 
-             if($type !== 'hrd')
+            if($type !== 'hrd' && $approval_status == 1)
             {
                 $pengaju_id = getValue('user_pengaju_id', 'users_training_group', array('id'=>'where/'.$id));
                 $lv = substr($type, -1)+1;
@@ -250,6 +250,27 @@ class form_training_group extends MX_Controller {
                 }else{
                     $this->approval->request('hrd', 'training_group', $id, $pengaju_id, $this->detail_email($id));
                     if(!empty(getEmail($this->approval->approver('training'))))$this->send_email(getEmail($this->approval->approver('training')), 'Pengajuan Permohonan Training (Group)', $isi_email_request);
+                }
+            }else{
+                switch($type){
+                    case 'lv1':
+                        //$this->approval->not_approve('training_group', $id, )
+                    break;
+
+                    case 'lv2':
+                        $receiver_id = getValue('user_app_lv1', 'users_training_group', array('id'=>'where/'.$id));
+                        $this->approval->not_approve('training_group', $id, $receiver_id, $approval_status ,$this->detail_email($id));
+                    break;
+
+                    case 'lv3':
+                        $receiver_id = getValue('user_app_lv2', 'users_training_group', array('id'=>'where/'.$id));
+                        $this->approval->not_approve('training_group', $id, $receiver_id, $approval_status ,$this->detail_email($id));
+                    break;
+
+                    case 'hrd':
+                        $receiver_id = getValue('user_app_lv3', 'users_training_group', array('id'=>'where/'.$id));
+                        $this->approval->not_approve('training_group', $id, $receiver_id, $approval_status ,$this->detail_email($id));
+                    break;
                 }
             }
         }

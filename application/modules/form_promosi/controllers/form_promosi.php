@@ -225,7 +225,7 @@ class Form_promosi extends MX_Controller {
                 if(!empty(getEmail($user_promosi_id)))$this->send_email(getEmail($user_promosi_id), 'Perubahan Status Pengajuan Permohonan Promosi dari Atasan', $isi_email);
             }
 
-            if($type !== 'hrd'){
+            if($type !== 'hrd' && $approval_status == 1){
                 $lv = substr($type, -1)+1;
                 $lv_app = 'lv'.$lv;
                 $user_app = ($lv<4) ? getValue('user_app_'.$lv_app, 'users_promosi', array('id'=>'where/'.$id)):0;
@@ -236,9 +236,31 @@ class Form_promosi extends MX_Controller {
                     $this->approval->request('hrd', 'promosi', $id, $user_promosi_id, $this->detail_email($id));
                     if(!empty(getEmail($this->approval->approver('promosi'))))$this->send_email(getEmail($this->approval->approver('promosi')), 'Pengajuan Permohonan Promosi', $isi_email_request);
                 }
-            }else{
+            }elseif($type == 'hrd' && $approval_status == 1){
                 $this->send_user_notification($id, $user_promosi_id);
+            }else{
+                switch($type){
+                    case 'lv1':
+                        //$this->approval->not_approve('promosi', $id, )
+                    break;
+
+                    case 'lv2':
+                        $receiver_id = getValue('user_app_lv1', 'users_promosi', array('id'=>'where/'.$id));
+                        $this->approval->not_approve('promosi', $id, $receiver_id, $approval_status ,$this->detail_email($id));
+                    break;
+
+                    case 'lv3':
+                        $receiver_id = getValue('user_app_lv2', 'users_promosi', array('id'=>'where/'.$id));
+                        $this->approval->not_approve('promosi', $id, $receiver_id, $approval_status ,$this->detail_email($id));
+                    break;
+
+                    case 'hrd':
+                        $receiver_id = getValue('user_app_lv3', 'users_promosi', array('id'=>'where/'.$id));
+                        $this->approval->not_approve('promosi', $id, $receiver_id, $approval_status ,$this->detail_email($id));
+                    break;
+                }
             }
+
             redirect('form_promosi/detail/'.$id, 'refresh');
         }
     }

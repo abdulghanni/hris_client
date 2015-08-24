@@ -262,9 +262,9 @@ class Form_cuti extends MX_Controller {
                 $this->approval->update_approve('cuti', $id, $approval_status, $this->detail_email($id));
                 if(!empty(getEmail($user_cuti_id)))$this->send_email(getEmail($user_cuti_id), 'Perubahan Status Pengajuan Permohonan Cuti dari Atasan', $isi_email);
             }
-            if($type !== 'hrd'){
-                $lv = ($approval_status == 2 || $approval_status == 3)?substr($type, -1)-1:substr($type, -1)+1;
-                //print_mz($lv);
+
+            if($type !== 'hrd' && $approval_status == 1){
+                $lv = substr($type, -1)+1;
                 $lv_app = 'lv'.$lv;
                 $user_app = ($lv<4) ? getValue('user_app_'.$lv_app, 'users_cuti', array('id'=>'where/'.$id)):0;
                 if(!empty($user_app)){
@@ -273,6 +273,27 @@ class Form_cuti extends MX_Controller {
                 }else{
                     $this->approval->request('hrd', 'cuti', $id, $user_cuti_id, $this->detail_email($id));
                     if(!empty(getEmail($this->approval->approver('cuti'))))$this->send_email(getEmail($this->approval->approver('cuti')), 'Pengajuan Permohonan Cuti', $isi_email_request);
+                }
+            }else{
+                switch($type){
+                    case 'lv1':
+                        //$this->approval->not_approve('cuti', $id, )
+                    break;
+
+                    case 'lv2':
+                        $receiver_id = getValue('user_app_lv1', 'users_cuti', array('id'=>'where/'.$id));
+                        $this->approval->not_approve('cuti', $id, $receiver_id, $approval_status ,$this->detail_email($id));
+                    break;
+
+                    case 'lv3':
+                        $receiver_id = getValue('user_app_lv2', 'users_cuti', array('id'=>'where/'.$id));
+                        $this->approval->not_approve('cuti', $id, $receiver_id, $approval_status ,$this->detail_email($id));
+                    break;
+
+                    case 'hrd':
+                        $receiver_id = getValue('user_app_lv3', 'users_cuti', array('id'=>'where/'.$id));
+                        $this->approval->not_approve('cuti', $id, $receiver_id, $approval_status ,$this->detail_email($id));
+                    break;
                 }
             }
             

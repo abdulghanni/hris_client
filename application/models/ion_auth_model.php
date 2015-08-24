@@ -1261,7 +1261,7 @@ class Ion_auth_model extends CI_Model
         $is_inventory = $this->uri->segment(1);
         $this->trigger_events('users');
         $is_admin_bagian = $this->ion_auth->is_admin_bagian();
-        $user = get_user_same_org(get_nik($sess_id));
+        $user = ($is_inventory == 'inventory') ? get_user_same_bu(get_nik($sess_id)) : get_user_same_org(get_nik($sess_id));
         if (isset($this->_ion_select) && !empty($this->_ion_select))
         {
             foreach ($this->_ion_select as $select)
@@ -1279,8 +1279,8 @@ class Ion_auth_model extends CI_Model
                 $this->tables['users'].'.id as id',
                 $this->tables['users'].'.id as user_id'
             ));
-            if($is_admin_bagian==1)$this->db->where('id != ', 1);
-            if($is_admin_bagian==1 && $is_inventory !== 'inventory'){
+            if($is_admin_bagian==1){
+                $this->db->where('id != ', 1);
                 for($i=0;$i<sizeof($user)-1;$i++):
                 $this->db->or_like('nik', $user[$i]);
                 endfor;

@@ -116,7 +116,6 @@ class Approval {
                     'is_read' => 0,
                 );
             $CI->db->insert('email', $data);
-            $detail = '';
            //if(!empty(getEmail($receiver)))$CI->send_email(getEmail(receiver), 'Pengajuan '.ucfirst($form), $isi_email);
         }else{
 	        if(!empty($user_app)):
@@ -290,6 +289,39 @@ class Approval {
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Perubahan Status Pengajuan Permohonan '.ucfirst($form).' dari Atasan',
                 'email_body' => "$approver melakukan perubahan status pengajuan $form anda menjadi $approval_status, untuk detail silakan <a href=$url>Klik disini</a><br/>".$detail,
+                'is_read' => 0,
+            );
+        $CI->db->insert('email', $data);
+    }
+
+    public function not_approve($form, $id, $receiver_id, $approval_status, $detail)
+    {
+        $CI =& get_instance();
+        $sess_id = $CI->session->userdata('user_id');
+        $url = base_url().'form_'.$form.'/detail/'.$id;
+        $approver = get_name(get_nik($sess_id));
+        $approval_status = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
+
+        switch ($form) {
+            case "promosi":
+                $user_id = getValue('created_by', 'users_'.$form, array('id'=>'where/'.$id));
+                break;
+            case "demotion":
+                $user_id = getValue('created_by', 'users_'.$form, array('id'=>'where/'.$id));
+                break;
+            case "rolling":
+                $user_id = getValue('created_by', 'users_'.$form, array('id'=>'where/'.$id));
+                break;
+            default:
+            $user_id = getValue('user_id', 'users_'.$form, array('id'=>'where/'.$id));
+        }
+
+        $data = array(
+                'sender_id' => get_nik($sess_id),
+                'receiver_id' => $receiver_id,
+                'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                'subject' => 'Status Pengajuan Permohonan '.ucfirst($form).' dari Atasan',
+                'email_body' => "Status pengajuan $form yang diajukan oleh ".get_name($user_id).' '.$approval_status. ' oleh '.get_name($sess_id).' untuk detail silakan <a href='.base_url().'form_cuti/detail/'.$id.'>Klik Disini</a><br />'.$detail,
                 'is_read' => 0,
             );
         $CI->db->insert('email', $data);

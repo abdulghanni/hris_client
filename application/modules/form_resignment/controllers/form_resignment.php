@@ -244,26 +244,6 @@ class Form_resignment extends MX_Controller {
         }
     }
 
-    function detail_wawancara($id)
-    {
-        if(!$this->ion_auth->logged_in())
-        {
-            redirect('auth/login', 'refresh');
-        }
-
-        $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
-        $user_id = getValue('user_id', 'users_resignment', array('id'=>'where/'.$id));
-        $this->data['user_nik'] = get_nik($user_id);
-        $form_resignment = $this->data['form_resignment'] = $this->form_resignment_model->form_resignment($id)->result();
-        $this->data['_num_rows'] = $this->form_resignment_model->form_resignment($id)->num_rows();
-        
-        $this->data['alasan_resign'] = getAll('alasan_resign', array('is_deleted' => 'where/0'));
-        $alasan = explode(',', getAll('users_resignment', array('id' => 'where/'.$id))->row('alasan_resign_id'));
-        $this->data['alasan'] = $this->form_resignment_model->get_alasan($alasan);
-        $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
-        $this->_render_page('form_resignment/detail', $this->data);
-    }
-
     function do_approve($id, $type)
     {
         if(!$this->ion_auth->logged_in())
@@ -367,6 +347,40 @@ class Form_resignment extends MX_Controller {
         }
     }
 
+    function kirim_undangan($id)
+    {
+        if(!$this->ion_auth->logged_in())
+        {
+            redirect('auth/login', 'refresh');
+        }
+        $is_update = getValue('is_invited', 'users_resignment', array('id'=>'where/'.$id));
+        $undangan = array('is_invited' => 1,
+                          'date_invitation' => date('Y-m-d', strtotime($this->input->post('date_invited'))),
+                          'time_invitation' => $this->input->post('time_invited'),
+                          'note_invitation' => $this->input->post('note_invited'),
+         );
+
+        $this->db->where('id', $id)->update('users_resignment', $undangan);
+
+        $sess_id = $this->session->userdata('user_id');
+        $user_id = getValue('user_id', 'users_resignment', array('id'=>'where/'.$id));
+        $url = base_url().'form_resignment/detail/'.$id;
+        $isi_email = ($is_update == 0) ? get_name($sess_id)." mengundang anda untuk melakukan wawancara pengajuan resign yang telah anda ajukan, untuk melihat detail silakan <a class='klikmail' href=$url>Klik Disini</a><br />"
+                                       : get_name($sess_id)." melakukan perubahan jadwal wawancara pengajuan resign yang telah anda ajukan, untuk melihat detail silakan <a class='klikmail' href=$url>Klik Disini</a><br />";
+        $subject = ($is_update == 0) ? '' : 'Perubahan Jadwal ';
+        $data = array(
+                    'sender_id' => get_nik($sess_id),
+                    'receiver_id' => get_nik($user_id),
+                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                    'subject' => $subject.'Undangan Wawancara Resignment',
+                    'email_body' => $isi_email.$this->detail_email($id),
+                    'is_read' => 0,
+                );
+        $this->db->insert('email', $data);
+       if(!empty(getEmail(get_nik($user_id))))$this->send_email(getEmail($user_id), 'Undangan Wawancara Resignment', $isi_email);
+        
+    }
+
     function detail_email($id)
     {
         if(!$this->ion_auth->logged_in())
@@ -390,27 +404,6 @@ class Form_resignment extends MX_Controller {
         return $this->load->view('form_resignment/resignment_mail', $this->data, TRUE);
     }
 
-    function detail_email_wawancara($id)
-    {
-        if(!$this->ion_auth->logged_in())
-        {
-            redirect('auth/login', 'refresh');
-        }
-
-        $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
-        $user_id = getValue('user_id', 'users_resignment', array('id'=>'where/'.$id));
-        $this->data['user_nik'] = get_nik($user_id);
-        $form_resignment = $this->data['form_resignment'] = $this->form_resignment_model->form_resignment($id)->result();
-        $this->data['_num_rows'] = $this->form_resignment_model->form_resignment($id)->num_rows();
-        
-        $this->data['alasan_resign'] = getAll('alasan_resign', array('is_deleted' => 'where/0'));
-        $alasan = explode(',', getAll('users_resignment', array('id' => 'where/'.$id))->row('alasan_resign_id'));
-        $this->data['alasan'] = $this->form_resignment_model->get_alasan($alasan);
-        $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
-
-        return $this->load->view('form_resignment/resignment_mail', $this->data, TRUE);
-    }
-
     function form_resignment_pdf($id)
     {
         if(!$this->ion_auth->logged_in())
@@ -424,34 +417,6 @@ class Form_resignment extends MX_Controller {
         $form_resignment = $this->data['form_resignment'] = $this->form_resignment_model->form_resignment($id)->result();
         $this->data['_num_rows'] = $this->form_resignment_model->form_resignment($id)->num_rows();
 
-        $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
-
-        $this->data['id'] = $id;
-        $title = $this->data['title'] = 'Form Karyawan Keluar-'.get_name($user_id);
-        $this->load->library('mpdf60/mpdf');
-        $html = $this->load->view('resignment_pdf', $this->data, true); 
-        $mpdf = new mPDF();
-        $mpdf = new mPDF('A4');
-        $mpdf->WriteHTML($html);
-        $mpdf->Output($id.'-'.$title.'.pdf', 'I');
-    }
-
-    function form_resignment_wawancara_pdf($id)
-    {
-        if(!$this->ion_auth->logged_in())
-        {
-            redirect('auth/login', 'refresh');
-        }
-        
-        $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
-        $user_id = getValue('user_id', 'users_resignment', array('id'=>'where/'.$id));
-        $this->data['user_nik'] = get_nik($user_id);
-        $form_resignment = $this->data['form_resignment'] = $this->form_resignment_model->form_resignment($id)->result();
-        $this->data['_num_rows'] = $this->form_resignment_model->form_resignment($id)->num_rows();
-        
-        $this->data['alasan_resign'] = getAll('alasan_resign', array('is_deleted' => 'where/0'));
-        $alasan = explode(',', getAll('users_resignment', array('id' => 'where/'.$id))->row('alasan_resign_id'));
-        $this->data['alasan'] = $this->form_resignment_model->get_alasan($alasan);
         $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
 
         $this->data['id'] = $id;
@@ -504,12 +469,14 @@ class Form_resignment extends MX_Controller {
                     $this->template->add_js('jquery.bootstrap.wizard.min.js');
                     $this->template->add_js('jquery.validate.min.js');
                     $this->template->add_js('bootstrap-datepicker.js');
+                    $this->template->add_js('bootstrap-timepicker.js');
                     $this->template->add_js('emp_dropdown.js');
                     $this->template->add_js('form_resignment.js');
                     
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                     $this->template->add_css('plugins/select2/select2.css');
                     $this->template->add_css('datepicker.css');
+                    $this->template->add_css('bootstrap-timepicker.css');
                     $this->template->add_css('approval_img.css');  
                 }
 

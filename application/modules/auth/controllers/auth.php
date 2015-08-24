@@ -3265,7 +3265,7 @@ class Auth extends MX_Controller {
         }
 
         //validate form input
-        $this->form_validation->set_rules('group_name', $this->lang->line('create_group_validation_name_label'), 'required|alpha_dash|xss_clean');
+        $this->form_validation->set_rules('group_name', $this->lang->line('create_group_validation_name_label'), 'required|xss_clean');
         $this->form_validation->set_rules('description', $this->lang->line('create_group_validation_desc_label'), 'xss_clean');
 
         if ($this->form_validation->run() == TRUE)

@@ -230,7 +230,7 @@ class form_training extends MX_Controller {
                 $this->update_approval_mail($id, $approval_status);
                 if(!empty(getEmail($user_training_id)))$this->send_email(getEmail($user_training_id), 'Perubahan Status Pengajuan Permohonan training dari Atasan', $isi_email);
             }
-            if($type !== 'hrd')
+            if($type !== 'hrd' && $approval_status == 1)
             {
                 $pengaju_id = getValue('user_pengaju_id', 'users_training', array('id'=>'where/'.$id));
                 $lv = substr($type, -1)+1;
@@ -243,7 +243,29 @@ class form_training extends MX_Controller {
                     $this->approval->request('hrd', 'training', $id, $pengaju_id, $this->detail_email($id));
                     if(!empty(getEmail($this->approval->approver('training'))))$this->send_email(getEmail($this->approval->approver('training')), 'Pengajuan Permohonan Training', $isi_email_request);
                 }
+            }else{
+                switch($type){
+                    case 'lv1':
+                        //$this->approval->not_approve('promosi', $id,)
+                    break;
+
+                    case 'lv2':
+                        $receiver_id = getValue('user_app_lv1', 'users_promosi', array('id'=>'where/'.$id));
+                        $this->approval->not_approve('promosi', $id, $receiver_id, $approval_status ,$this->detail_email($id));
+                    break;
+
+                    case 'lv3':
+                        $receiver_id = getValue('user_app_lv2', 'users_promosi', array('id'=>'where/'.$id));
+                        $this->approval->not_approve('promosi', $id, $receiver_id, $approval_status ,$this->detail_email($id));
+                    break;
+
+                    case 'hrd':
+                        $receiver_id = getValue('user_app_lv3', 'users_promosi', array('id'=>'where/'.$id));
+                        $this->approval->not_approve('promosi', $id, $receiver_id, $approval_status ,$this->detail_email($id));
+                    break;
+                }
             }
+
         }
     }
 

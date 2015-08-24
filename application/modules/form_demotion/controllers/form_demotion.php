@@ -181,7 +181,6 @@ class Form_demotion extends MX_Controller {
                         if(!empty(getEmail($this->approval->approver('demosi'))))$this->send_email(getEmail($this->approval->approver('demosi')), 'Pengajuan Permohonan Demosi', $isi_email);
                      }
 
-                     $this->send_user_notification($demotion_id, $user_id);
                      redirect('form_demotion', 'refresh');
                     //echo json_encode(array('st' =>1, 'demotion_url' => $demotion_url));    
                 }
@@ -226,7 +225,8 @@ class Form_demotion extends MX_Controller {
                 $this->approval->update_approve('demotion', $id, $approval_status, $this->detail_email($id));
                 if(!empty(getEmail($user_demotion_id)))$this->send_email(getEmail($user_demotion_id), 'Perubahan Status Pengajuan Permohonan Demosi dari Atasan', $isi_email);
             }
-            if($type !== 'hrd'){
+            if($type !== 'hrd' && $approval_status == 1)
+            {
                 $lv = substr($type, -1)+1;
                 $lv_app = 'lv'.$lv;
                 $user_app = ($lv<4) ? getValue('user_app_'.$lv_app, 'users_demotion', array('id'=>'where/'.$id)):0;
@@ -236,6 +236,29 @@ class Form_demotion extends MX_Controller {
                 }else{
                     $this->approval->request('hrd', 'demotion', $id, $user_demotion_id, $this->detail_email($id));
                     if(!empty(getEmail($this->approval->approver('demosi'))))$this->send_email(getEmail($this->approval->approver('demosi')), 'Pengajuan Permohonan Demosi', $isi_email_request);
+                }
+            }elseif($type == 'hrd' && $approval_status == 1){
+                $this->send_user_notification($id, $user_demotion_id);
+            }else{
+                switch($type){
+                    case 'lv1':
+                        //$this->approval->not_approve('demotion', $id, )
+                    break;
+
+                    case 'lv2':
+                        $receiver_id = getValue('user_app_lv1', 'users_demotion', array('id'=>'where/'.$id));
+                        $this->approval->not_approve('demotion', $id, $receiver_id, $approval_status ,$this->detail_email($id));
+                    break;
+
+                    case 'lv3':
+                        $receiver_id = getValue('user_app_lv2', 'users_demotion', array('id'=>'where/'.$id));
+                        $this->approval->not_approve('demotion', $id, $receiver_id, $approval_status ,$this->detail_email($id));
+                    break;
+
+                    case 'hrd':
+                        $receiver_id = getValue('user_app_lv3', 'users_demotion', array('id'=>'where/'.$id));
+                        $this->approval->not_approve('demotion', $id, $receiver_id, $approval_status ,$this->detail_email($id));
+                    break;
                 }
             }
             redirect('form_demotion/detail/'.$id, 'refresh');
