@@ -509,6 +509,15 @@ class Ion_auth
         return $this->in_group($admin_group, $id);
     }
 
+    public function is_admin_keuangan($id=false)
+    {
+        $this->ion_auth_model->trigger_events('is_admin_keuangan');
+
+        $admin_group = $this->config->item('admin_keuangan', 'ion_auth');
+
+        return $this->in_group($admin_group, $id);
+    }
+
 
     /**
      * in_group
