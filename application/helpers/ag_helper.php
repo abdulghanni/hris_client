@@ -63,6 +63,21 @@
 		}
 	}
 
+	if (!function_exists('is_admin_keuangan'))
+	{	
+		function is_admin_keuangan()
+		{
+			$CI =& get_instance();
+			
+			if($CI->ion_auth->is_admin_keuangan())
+			{
+				return TRUE;
+			}else{
+				return FALSE;
+			}
+		}
+	}
+
 	//TO CHECK IS USER ADMIN IN ION AUTH LIBRARY
 	if (!function_exists('is_admin_logistik'))
 	{	
