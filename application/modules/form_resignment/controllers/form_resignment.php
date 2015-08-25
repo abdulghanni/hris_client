@@ -159,11 +159,32 @@ class Form_resignment extends MX_Controller {
                         if(!empty(getEmail($this->approval->approver('resignment'))))$this->send_email(getEmail($this->approval->approver('resignment')), 'Pengajuan Permohonan Resignment', $isi_email);
                         $this->approval->request('hrd', 'resignment', $resignment_id, $user_id, $this->detail_email($resignment_id));
                      endif;
+
+                     $this->notif_payroll($resignment_id);
                      redirect('form_resignment', 'refresh');
                      //echo json_encode(array('st' =>1));     
                     }
             }
         }
+    }
+
+    function notif_payroll($id)
+    {
+        $sess_id = $this->session->userdata('user_id');
+        $admin_payroll = $this->db->where('group_id',10)->get('users_groups')->result_array('user_id');
+        $msg = 'Dear Admin payroll,<br/><p>'.get_name($sess_id).' mengajukan Permohonan Resign, untuk melihat detail silakan <a href='.base_url().'form_resignment/detail/'.$id.'>Klik Disini</a></p>';
+        for($i=0;$i<sizeof($admin_payroll);$i++):
+        $data = array(
+                'sender_id' => get_nik($sess_id),
+                'receiver_id' => get_nik($admin_payroll[$i]['user_id']),
+                'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                'subject' => 'Pengajuan Resign Karyawan',
+                'email_body' =>$msg.$this->detail_email($id),
+                'is_read' => 0,
+            );
+        $this->db->insert('email', $data);
+        if(!empty(getEmail(get_nik($admin_payroll[$i]['user_id']))))$this->send_email(getEmail(get_nik($admin_payroll[$i]['user_id'])), 'Status Pengajuan Training Karyawan oleh HRD', $msg);
+        endfor;
     }
 
     function detail($id)

@@ -125,6 +125,36 @@
 			}
 		}
 	}
+	
+	if (!function_exists('is_admin_legal'))
+	{	
+		function is_admin_legal()
+		{
+			$CI =& get_instance();
+			
+			if($CI->ion_auth->is_admin_legal())
+			{
+				return TRUE;
+			}else{
+				return FALSE;
+			}
+		}
+	}
+
+	if (!function_exists('is_admin_payroll'))
+	{	
+		function is_admin_payroll()
+		{
+			$CI =& get_instance();
+			
+			if($CI->ion_auth->is_admin_payroll())
+			{
+				return TRUE;
+			}else{
+				return FALSE;
+			}
+		}
+	}
 
 	//TO CHECK IS USER HAVE AUTHORIZATION TO SEE FORM CUTI LIST
 	if (!function_exists('is_authorized'))

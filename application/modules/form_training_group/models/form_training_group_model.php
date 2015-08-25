@@ -299,6 +299,7 @@ class Form_training_group_model extends CI_Model
             $sess_nik = get_nik($sess_id);
             $is_approver = $this->approval->approver('training');
             $is_admin = is_admin();
+            $is_admin_legal = is_admin_legal();
             if(!empty(is_have_subordinate(get_nik($sess_id)))){
             $sub_id = get_subordinate($sess_id);
             }else{
@@ -337,7 +338,7 @@ class Form_training_group_model extends CI_Model
             $this->db->join('approval_status as status_lv3', 'users_training_group.approval_status_id_lv3 = status_lv3.id', 'left');
             $this->db->join('approval_status as status_hrd', 'users_training_group.approval_status_id_hrd = status_hrd.id', 'left');
             if($id != null)$this->db->where('users_training_group.id', $id);
-            if($is_approver !== $sess_nik && $is_admin!=1){
+            if($is_approver !== $sess_nik && $is_admin!=1 && $is_admin_legal !=1){
                 //$this->db->where("(users_training_group.user_id= $sess_id $sub_id $subsub_id )",null, false);
                 $this->db->where("(users_training_group.user_pengaju_id = $sess_id OR users_training_group.user_peserta_id like '%$sess_nik%' OR  users_training_group.user_app_lv1 = '$sess_nik' OR users_training_group.user_app_lv2 = '$sess_nik' OR users_training_group.user_app_lv3 = '$sess_nik' OR users_training_group.created_by = '$sess_id')",null, false);
             }

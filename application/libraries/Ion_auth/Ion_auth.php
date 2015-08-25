@@ -518,6 +518,24 @@ class Ion_auth
         return $this->in_group($admin_group, $id);
     }
 
+    public function is_admin_payroll($id=false)
+    {
+        $this->ion_auth_model->trigger_events('is_admin_payroll');
+
+        $admin_group = $this->config->item('admin_payroll', 'ion_auth');
+
+        return $this->in_group($admin_group, $id);
+    }
+
+    public function is_admin_legal($id=false)
+    {
+        $this->ion_auth_model->trigger_events('is_admin_legal');
+
+        $admin_group = $this->config->item('admin_legal', 'ion_auth');
+
+        return $this->in_group($admin_group, $id);
+    }
+
 
     /**
      * in_group

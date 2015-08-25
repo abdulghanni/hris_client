@@ -154,7 +154,10 @@ $config['admin_IT']                   = 'Admin IT';
 $config['admin_logistik']             = 'Admin Logistik';
 $config['admin_koperasi']             = 'Admin Koperasi';
 $config['admin_perpustakaan']         = 'Admin Perpustakaan';
-$config['admin_keuangan']         	  = 'Admin Keuangan';
+$config['admin_keuangan']            = 'Admin Keuangan';
+$config['admin_legal']               = 'Admin Legal';
+$config['admin_payroll']         	  = 'Admin Payroll';
+
 
 $config['identity']                   = 'email';             // A database column which is used to login with
 $config['min_password_length']        = 8;                   // Minimum Required Length of Password

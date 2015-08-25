@@ -327,7 +327,7 @@ class form_training_group extends MX_Controller {
         $approval_status = $this->input->post('app_status');
 
         $this->form_training_group_model->update($id,$data);
-         $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
+        $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
         $user_training_id = getValue('user_pengaju_id', 'users_training_group', array('id'=>'where/'.$id));
         $isi_email = 'Status pengajuan training (group) anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_training_group/detail/'.$id.'>Klik Disini</a><br />';
 
@@ -338,7 +338,47 @@ class form_training_group extends MX_Controller {
         }
 
         if(!empty(getEmail($user_training_id)))$this->send_email(getEmail($user_training_id), 'Status Pengajuan Permohonan training(Group) dari Atasan', $isi_email);
-            
+        
+        if($approval_status == 1){
+            $this->notif_legal($id);
+        }else{
+            $email_body = "Status pengajuan permohonan training yang diajukan oleh ".get_name($user_training_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_training_group/detail/'.$id.'>Klik Disini</a><br />';
+            $receiver_lv3 = getValue('user_app_lv3', 'users_training_group', array('id'=>'where/'.$id));
+            if(!empty($receiver_lv3)):
+                $this->approval->not_approve('training_group', $id, $receiver_lv3, $approval_status ,$this->detail_email($id));
+                if(!empty(getEmail($receiver_lv3)))$this->send_email(getEmail($receiver_lv3), 'Status Pengajuan Permohonan Training (Group) Dari Atasan', $email_body);
+            endif;
+            $receiver_lv2 = getValue('user_app_lv2', 'users_training_group', array('id'=>'where/'.$id));
+            if(!empty($receiver_lv2)):
+                $this->approval->not_approve('training_group', $id, $receiver_lv2, $approval_status ,$this->detail_email($id));
+                if(!empty(getEmail($receiver_lv2)))$this->send_email(getEmail($receiver_lv2), 'Status Pengajuan Permohonan Training (Group) Dari Atasan', $email_body);
+            endif;
+            $receiver_lv1 = getValue('user_app_lv1', 'users_training_group', array('id'=>'where/'.$id));
+            if(!empty($receiver_lv1)):
+                $this->approval->not_approve('training_group', $id, $receiver_lv1, $approval_status ,$this->detail_email($id));
+            if(!empty(getEmail($receiver_lv1)))$this->send_email(getEmail($receiver_lv1), 'Status Pengajuan Permohonan Training (Group) Dari Atasan', $email_body);
+            endif;
+        }
+    }
+
+    function notif_legal($id)
+    {
+        $admin_legal = $this->db->where('group_id',9)->get('users_groups')->result_array('user_id');
+        $user_id = getValue('user_pengaju_id', 'users_training_group', array('id'=>'where/'.$id));
+        $user_hrd = getValue('user_app_hrd', 'users_training_group', array('id'=>'where/'.$id));
+        $msg = 'Dear Admin Legal,<br/><p>'.get_name($user_hrd).' telah menyetujui permintaan pelatihan (group) yang diajukan oleh '.get_name($user_id).' ,untuk melihat detail silakan <a class="klikemail" href="'.base_url("form_training_group/detail/$id").'">Klik Disini</a></p>';
+        for($i=0;$i<sizeof($admin_legal);$i++):
+        $data = array(
+                'sender_id' => get_nik($user_hrd),
+                'receiver_id' => get_nik($admin_legal[$i]['user_id']),
+                'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                'subject' => 'Status Pengajuan Training (Group) Karyawan oleh HRD',
+                'email_body' =>$msg.$this->detail_email($id),
+                'is_read' => 0,
+            );
+        $this->db->insert('email', $data);
+        if(!empty(getEmail(get_nik($admin_legal[$i]['user_id']))))$this->send_email(getEmail(get_nik($admin_legal[$i]['user_id'])), 'Status Pengajuan Training Karyawan oleh HRD', $msg);
+        endfor;
     }
 
     function send_peserta_mail($id, $sender_id, $peserta_id = array())
