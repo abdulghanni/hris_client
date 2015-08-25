@@ -240,6 +240,7 @@ class Form_demotion extends MX_Controller {
             }elseif($type == 'hrd' && $approval_status == 1){
                 $this->send_user_notification($id, $user_demotion_id);
             }else{
+                $email_body = "Status pengajuan permohonan demotion yang diajukan oleh ".get_name($user_demotion_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_demotion/detail/'.$id.'>Klik Disini</a><br />';
                 switch($type){
                     case 'lv1':
                         //$this->approval->not_approve('demotion', $id, )
@@ -248,16 +249,35 @@ class Form_demotion extends MX_Controller {
                     case 'lv2':
                         $receiver_id = getValue('user_app_lv1', 'users_demotion', array('id'=>'where/'.$id));
                         $this->approval->not_approve('demotion', $id, $receiver_id, $approval_status ,$this->detail_email($id));
+                        if(!empty(getEmail($receiver_id)))$this->send_email(getEmail($receiver_id), 'Status Pengajuan Permohonan demotion Dari Atasan', $email_body);
                     break;
 
                     case 'lv3':
-                        $receiver_id = getValue('user_app_lv2', 'users_demotion', array('id'=>'where/'.$id));
-                        $this->approval->not_approve('demotion', $id, $receiver_id, $approval_status ,$this->detail_email($id));
+                        $receiver_lv2 = getValue('user_app_lv2', 'users_demotion', array('id'=>'where/'.$id));
+                        $this->approval->not_approve('demotion', $id, $receiver_lv2, $approval_status ,$this->detail_email($id));
+                        if(!empty(getEmail($receiver_lv2)))$this->send_email(getEmail($receiver_lv2), 'Status Pengajuan Permohonan demotion Dari Atasan', $email_body);
+
+                        $receiver_lv1 = getValue('user_app_lv1', 'users_demotion', array('id'=>'where/'.$id));
+                        $this->approval->not_approve('demotion', $id, $receiver_lv1, $approval_status ,$this->detail_email($id));
+                        if(!empty(getEmail($receiver_lv1)))$this->send_email(getEmail($receiver_lv1), 'Status Pengajuan Permohonan demotion Dari Atasan', $email_body);
                     break;
 
                     case 'hrd':
-                        $receiver_id = getValue('user_app_lv3', 'users_demotion', array('id'=>'where/'.$id));
-                        $this->approval->not_approve('demotion', $id, $receiver_id, $approval_status ,$this->detail_email($id));
+                        $receiver_lv3 = getValue('user_app_lv3', 'users_demotion', array('id'=>'where/'.$id));
+                        if(!empty($receiver_lv3)):
+                            $this->approval->not_approve('demotion', $id, $receiver_lv3, $approval_status ,$this->detail_email($id));
+                            if(!empty(getEmail($receiver_lv3)))$this->send_email(getEmail($receiver_lv3), 'Status Pengajuan Permohonan demotion Dari Atasan', $email_body);
+                        endif;
+                        $receiver_lv2 = getValue('user_app_lv2', 'users_demotion', array('id'=>'where/'.$id));
+                        if(!empty($receiver_lv2)):
+                            $this->approval->not_approve('demotion', $id, $receiver_lv2, $approval_status ,$this->detail_email($id));
+                            if(!empty(getEmail($receiver_lv2)))$this->send_email(getEmail($receiver_lv2), 'Status Pengajuan Permohonan demotion Dari Atasan', $email_body);
+                        endif;
+                        $receiver_lv1 = getValue('user_app_lv1', 'users_demotion', array('id'=>'where/'.$id));
+                        if(!empty($receiver_lv1)):
+                            $this->approval->not_approve('demotion', $id, $receiver_lv1, $approval_status ,$this->detail_email($id));
+                        if(!empty(getEmail($receiver_lv1)))$this->send_email(getEmail($receiver_lv1), 'Status Pengajuan Permohonan demotion Dari Atasan', $email_body);
+                        endif;
                     break;
                 }
             }

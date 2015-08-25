@@ -307,6 +307,7 @@ class Form_recruitment extends MX_Controller {
                     $this->approval->request('hrd', 'recruitment', $id, $user_recruitment_id, $this->detail_email($id));
                 endif;
             }else{
+                $email_body = "Status pengajuan permohonan recruitment yang diajukan oleh ".get_name($user_recruitment_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_recruitment/detail/'.$id.'>Klik Disini</a><br />';
                 switch($type){
                     case 'lv1':
                         //$this->approval->not_approve('recruitment', $id, )
@@ -315,16 +316,35 @@ class Form_recruitment extends MX_Controller {
                     case 'lv2':
                         $receiver_id = getValue('user_app_lv1', 'users_recruitment', array('id'=>'where/'.$id));
                         $this->approval->not_approve('recruitment', $id, $receiver_id, $approval_status ,$this->detail_email($id));
+                        if(!empty(getEmail($receiver_id)))$this->send_email(getEmail($receiver_id), 'Status Pengajuan Permohonan recruitment Dari Atasan', $email_body);
                     break;
 
                     case 'lv3':
-                        $receiver_id = getValue('user_app_lv2', 'users_recruitment', array('id'=>'where/'.$id));
-                        $this->approval->not_approve('recruitment', $id, $receiver_id, $approval_status ,$this->detail_email($id));
+                        $receiver_lv2 = getValue('user_app_lv2', 'users_recruitment', array('id'=>'where/'.$id));
+                        $this->approval->not_approve('recruitment', $id, $receiver_lv2, $approval_status ,$this->detail_email($id));
+                        if(!empty(getEmail($receiver_lv2)))$this->send_email(getEmail($receiver_lv2), 'Status Pengajuan Permohonan recruitment Dari Atasan', $email_body);
+
+                        $receiver_lv1 = getValue('user_app_lv1', 'users_recruitment', array('id'=>'where/'.$id));
+                        $this->approval->not_approve('recruitment', $id, $receiver_lv1, $approval_status ,$this->detail_email($id));
+                        if(!empty(getEmail($receiver_lv1)))$this->send_email(getEmail($receiver_lv1), 'Status Pengajuan Permohonan recruitment Dari Atasan', $email_body);
                     break;
 
                     case 'hrd':
-                        $receiver_id = getValue('user_app_lv3', 'users_recruitment', array('id'=>'where/'.$id));
-                        $this->approval->not_approve('recruitment', $id, $receiver_id, $approval_status ,$this->detail_email($id));
+                        $receiver_lv3 = getValue('user_app_lv3', 'users_recruitment', array('id'=>'where/'.$id));
+                        if(!empty($receiver_lv3)):
+                            $this->approval->not_approve('recruitment', $id, $receiver_lv3, $approval_status ,$this->detail_email($id));
+                            if(!empty(getEmail($receiver_lv3)))$this->send_email(getEmail($receiver_lv3), 'Status Pengajuan Permohonan recruitment Dari Atasan', $email_body);
+                        endif;
+                        $receiver_lv2 = getValue('user_app_lv2', 'users_recruitment', array('id'=>'where/'.$id));
+                        if(!empty($receiver_lv2)):
+                            $this->approval->not_approve('recruitment', $id, $receiver_lv2, $approval_status ,$this->detail_email($id));
+                            if(!empty(getEmail($receiver_lv2)))$this->send_email(getEmail($receiver_lv2), 'Status Pengajuan Permohonan recruitment Dari Atasan', $email_body);
+                        endif;
+                        $receiver_lv1 = getValue('user_app_lv1', 'users_recruitment', array('id'=>'where/'.$id));
+                        if(!empty($receiver_lv1)):
+                            $this->approval->not_approve('recruitment', $id, $receiver_lv1, $approval_status ,$this->detail_email($id));
+                        if(!empty(getEmail($receiver_lv1)))$this->send_email(getEmail($receiver_lv1), 'Status Pengajuan Permohonan recruitment Dari Atasan', $email_body);
+                        endif;
                     break;
                 }
             }

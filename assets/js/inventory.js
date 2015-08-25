@@ -8,11 +8,13 @@ $(document).ready(function() {
     var uri3 = url.segment(2)+'/update/'+url.segment(4)+'/logistik';
     var uri4 = url.segment(2)+'/update/'+url.segment(4)+'/koperasi';
     var uri5 = url.segment(2)+'/update/'+url.segment(4)+'/perpus';
+    var uri6 = url.segment(2)+'/update/'+url.segment(4)+'/keuangan';
     var urilogistik = url.segment(2)+'/do_approve/'+url.segment(4)+'/logistik';
     var urikoperasi = url.segment(2)+'/do_approve/'+url.segment(4)+'/koperasi';
     var uriperpus = url.segment(2)+'/do_approve/'+url.segment(4)+'/perpus';
     var urihrd = url.segment(2)+'/do_approve/'+url.segment(4)+'/hrd';
     var uriit = url.segment(2)+'/do_approve/'+url.segment(4)+'/it';
+    var urikeuangan = url.segment(2)+'/do_approve/'+url.segment(4)+'/keuangan';
 
     $('#btnUpdateInvhrd').click(function(){
         var $btn = $(this).button('loading');
@@ -99,6 +101,23 @@ $(document).ready(function() {
         });  
     });
 
+    $('#btnUpdateInvkeuangan').click(function(){
+        var $btn = $(this).button('loading');
+        $('#formUpdateInvkeuangan').submit(function(ev){
+            $.ajax({
+                type: 'POST',
+                url: baseurl+uri6,
+                data: $('#formUpdateInvkeuangan').serialize(),
+                success: function() {
+                     $("[data-dismiss=modal]").trigger({ type: "click" });
+                     location.reload(),
+                     $btn.button('reset')
+                }
+            });
+            ev.preventDefault(); 
+        });  
+    });
+
 	$('#btnAppLv1hrd').click(function(){
         var $btn = $(this).button('loading');
             $.ajax({
@@ -164,6 +183,21 @@ $(document).ready(function() {
             $.ajax({
                 type: 'POST',
                 url: baseurl+uriperpus,
+                data: {'submit':true},
+                success: function(result) {
+                     location.reload(),
+                     setTimeout(function(){
+                     $btn.button('reset')},
+                     5000)
+                }
+            });
+        });
+
+    $('#btnAppLv1keuangan').click(function(){
+        var $btn = $(this).button('loading');
+            $.ajax({
+                type: 'POST',
+                url: baseurl+urikeuangan,
                 data: {'submit':true},
                 success: function(result) {
                      location.reload(),

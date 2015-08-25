@@ -126,7 +126,9 @@
                               <?php }elseif($row->is_app_hrd == 1 && is_admin_hrd()){?>
                                 <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitexitModalHrd"><i class='icon-edit'> Edit Approval</i></div>
                               <?php }elseif($row->is_app_it == 1 && is_admin_it()){?>
-                                <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitexitModalHrd"><i class='icon-edit'> Edit Approval</i></div>
+                                <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitexitModalit"><i class='icon-edit'> Edit Approval</i></div>
+                              <?php }elseif($row->is_app_keuangan == 1 && is_admin_keuangan()){?>
+                                <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitexitModalkeuangan"><i class='icon-edit'> Edit Approval</i></div>
                               <?php } ?>
                             </div>
                         </div>
@@ -134,7 +136,7 @@
                         <div class="row text-center">
                           <div class="row text-center"><span class="semi-bold">Mengetahui,</span></div>
                           <div class="row wf-cuti">
-                            <div class="col-md-2 col-md-offset-1">
+                            <div class="col-md-2">
                               <p class="wf-approve-sp">
                                 <?php 
                                 $approved = assets_url('img/approved_stamp.png');
@@ -244,6 +246,27 @@
                               <?php } ?>
                               <span class="semi-bold"></span><br/>
                               <span class="semi-bold">IT</span>
+                            </p>
+                          </div>
+                          <div class="col-md-2">
+                            <p class="wf-approve-sp">
+                              <?php if($row->is_app_keuangan == 1){
+                              echo ($row->app_status_id_keuangan == 1)? "<img class=approval_img_md src=$approved>":(($row->app_status_id_keuangan == 2) ? "<img class=approval_img_md src=$rejected>":'');?><br/>
+                              <span class="semi-bold"><?php echo get_name($row->user_app_keuangan)?></span><br/>
+                              <span class="small"><?php echo dateIndo($row->date_app_keuangan)?></span><br/>
+                              <?php }elseif($row->is_app_keuangan == 0 && is_admin_keuangan()){?>
+                              <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitexitModalkeuangan"><i class="icon-ok"></i>Submit</div>
+                              <span class="semi-bold"></span><br/>
+                              <span class="semi-bold"></span><br/>
+                              <span class="small"></span>
+                              <?php }else{?>
+                              <span class="semi-bold"></span><br/>
+                              <span class="semi-bold"></span><br/>
+                              <span class="semi-bold"></span><br/>
+                              <span class="small"></span><br/>
+                              <?php } ?>
+                              <span class="semi-bold"></span><br/>
+                              <span class="semi-bold">Keuangan</span>
                             </p>
                           </div>
                         </div>
@@ -827,6 +850,55 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="icon-remove"></i>&nbsp;<?php echo lang('close_button')?></button> 
         <button id="btnAppIt" class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
+      </div>
+        <?php echo form_close()?>
+    </div>
+  </div>
+</div>
+
+<!-- do approval exit Modal keuangan -->
+<div class="modal fade" id="submitexitModalkeuangan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" id="modaldialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Approval Form Exit Clearence</h4>
+      </div>
+      <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
+      <div class="modal-body">
+        <form class="form-no-horizontal-spacing" id="formAppkeuangan">
+            <div class="row form-row">
+              <div class="col-md-12">
+                <label class="form-label text-left">Status Approval</label>
+              </div>
+              <div class="col-md-12">
+                <div class="radio">
+                  <?php 
+                  if($approval_status->num_rows() > 0){
+                    foreach($approval_status->result() as $app){
+                      $checked = ($app->id <> 0 && $app->id == $row->app_status_id_it) ? 'checked = "checked"' : '';
+                      ?>
+                  <input id="app_status_keuangan<?php echo $app->id?>" type="radio" name="app_status_keuangan" value="<?php echo $app->id?>" <?php echo $checked?>>
+                  <label for="app_status_keuangan<?php echo $app->id?>"><?php echo $app->title?></label>
+                  <?php }}else{?>
+                  <input id="app_status_keuangan" type="radio" name="app_status_keuangan" value="0">
+                  <label for="app_status_keuangan">No Data</label>
+                    <?php } ?>
+                </div>
+              </div>
+            </div>
+            <div class="row form-row">
+              <div class="col-md-12">
+                <label class="form-label text-left">Note (keuangan) : </label>
+              </div>
+              <div class="col-md-12">
+                <textarea name="note_keuangan" class="custom-txtarea-form" placeholder="Note keuangan isi disini"><?php echo $row->note_keuangan?></textarea>
+              </div>
+            </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="icon-remove"></i>&nbsp;<?php echo lang('close_button')?></button> 
+        <button id="btnAppkeuangan" class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
       </div>
         <?php echo form_close()?>
     </div>

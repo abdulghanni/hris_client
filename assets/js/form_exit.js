@@ -14,6 +14,7 @@ $(document).ready(function() {
     var uriPerpus = url.segment(2)+'/do_approve/'+url.segment(4)+'/perpus';
     var uriHrd = url.segment(2)+'/do_approve/'+url.segment(4)+'/hrd';
     var uriIt = url.segment(2)+'/do_approve/'+url.segment(4)+'/it';
+    var urikeuangan = url.segment(2)+'/do_approve/'+url.segment(4)+'/keuangan';
     var uriAsset = url.segment(2)+'/do_approve/'+url.segment(4)+'/asset';
     var uridropdown = baseurl+'dropdown/get_atasan/';
     var exit_url = baseurl+url.segment(2);    
@@ -279,6 +280,22 @@ $(document).ready(function() {
                           type: 'POST',
                           url: baseurl+uriIt,
                           data: $('#formAppIt').serialize(),
+                          success: function() {
+                              $("[data-dismiss=modal]").trigger({ type: "click" });
+                              location.reload(),
+                              $btn.button('reset')
+                          }
+                      });
+                      ev.preventDefault(); 
+                  });  
+              });
+       $('#btnAppkeuangan').click(function(){
+        var $btn = $(this).button('loading');
+                  $('#formAppkeuangan').submit(function(ev){
+                      $.ajax({
+                          type: 'POST',
+                          url: baseurl+urikeuangan,
+                          data: $('#formAppkeuangan').serialize(),
                           success: function() {
                               $("[data-dismiss=modal]").trigger({ type: "click" });
                               location.reload(),

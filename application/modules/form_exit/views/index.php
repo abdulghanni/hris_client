@@ -54,6 +54,7 @@
                                   <th width="2%" class="text-center">Approval Perpustakaan</th>
                                   <th width="2%" class="text-center">Approval HRD</th>
                                   <th width="2%" class="text-center">Approval IT</th>
+                                  <th width="2%" class="text-center">Approval Keuangan</th>
                                   <th width="2%" class="text-center">Approval Asset Mgr</th>
                                   <th width="2%" class="text-center">appr. spv</th>
                                   <th width="2%" class="text-center">appr. ka.bag</th>
@@ -71,6 +72,7 @@
                                       $approval_status_perpus = ($row->app_status_id_perpus== 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($row->app_status_id_perpus== 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
                                       $approval_status_hrd = ($row->app_status_id_hrd== 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($row->app_status_id_hrd== 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
                                       $approval_status_it = ($row->app_status_id_it== 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($row->app_status_id_it== 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
+                                      $approval_status_keuangan = ($row->app_status_id_keuangan== 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($row->app_status_id_keuangan== 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
                                       
                                       $approval_status_lv1 = ($row->app_status_id_lv1 == 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($row->app_status_id_lv1 == 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
                                       $approval_status_lv2 = ($row->app_status_id_lv2 == 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($row->app_status_id_lv2 == 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
@@ -167,6 +169,15 @@
                                     }elseif($row->is_app_perpus == 1){
                                       $txt_app_perpus =  "<a href='".site_url('form_exit/detail/'.$row->id)."''>$approval_status_perpus</a>";
                                     }
+
+                                    //Approval keuangan
+                                    if(is_admin_keuangan()&&$row->is_app_keuangan == 0){
+                                      $txt_app_keuangan = "<a href='".site_url('form_exit/detail/'.$row->id)."''>
+                                                      <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-edit'></i></button>
+                                                      </a>";
+                                    }elseif($row->is_app_keuangan == 1){
+                                      $txt_app_keuangan =  "<a href='".site_url('form_exit/detail/'.$row->id)."''>$approval_status_keuangan</a>";
+                                    }
                                   ?>
 
                                   <tr>
@@ -193,6 +204,9 @@
                                     </td>
                                     <td class="text-center">
                                       <?php echo $txt_app_it; ?>
+                                    </td>
+                                    <td class="text-center">
+                                      <?php echo $txt_app_keuangan; ?>
                                     </td>
                                     <td class="text-center">
                                       <?php echo $txt_app_asset; ?>

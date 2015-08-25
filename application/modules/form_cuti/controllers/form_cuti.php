@@ -275,6 +275,7 @@ class Form_cuti extends MX_Controller {
                     if(!empty(getEmail($this->approval->approver('cuti'))))$this->send_email(getEmail($this->approval->approver('cuti')), 'Pengajuan Permohonan Cuti', $isi_email_request);
                 }
             }else{
+                $email_body = "Status pengajuan permohonan cuti yang diajukan oleh ".get_name($user_cuti_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_cuti/detail/'.$id.'>Klik Disini</a><br />';
                 switch($type){
                     case 'lv1':
                         //$this->approval->not_approve('cuti', $id, )
@@ -283,16 +284,35 @@ class Form_cuti extends MX_Controller {
                     case 'lv2':
                         $receiver_id = getValue('user_app_lv1', 'users_cuti', array('id'=>'where/'.$id));
                         $this->approval->not_approve('cuti', $id, $receiver_id, $approval_status ,$this->detail_email($id));
+                        if(!empty(getEmail($receiver_id)))$this->send_email(getEmail($receiver_id), 'Status Pengajuan Permohonan Cuti Dari Atasan', $email_body);
                     break;
 
                     case 'lv3':
-                        $receiver_id = getValue('user_app_lv2', 'users_cuti', array('id'=>'where/'.$id));
-                        $this->approval->not_approve('cuti', $id, $receiver_id, $approval_status ,$this->detail_email($id));
+                        $receiver_lv2 = getValue('user_app_lv2', 'users_cuti', array('id'=>'where/'.$id));
+                        $this->approval->not_approve('cuti', $id, $receiver_lv2, $approval_status ,$this->detail_email($id));
+                        if(!empty(getEmail($receiver_lv2)))$this->send_email(getEmail($receiver_lv2), 'Status Pengajuan Permohonan Cuti Dari Atasan', $email_body);
+
+                        $receiver_lv1 = getValue('user_app_lv1', 'users_cuti', array('id'=>'where/'.$id));
+                        $this->approval->not_approve('cuti', $id, $receiver_lv1, $approval_status ,$this->detail_email($id));
+                        if(!empty(getEmail($receiver_lv1)))$this->send_email(getEmail($receiver_lv1), 'Status Pengajuan Permohonan Cuti Dari Atasan', $email_body);
                     break;
 
                     case 'hrd':
-                        $receiver_id = getValue('user_app_lv3', 'users_cuti', array('id'=>'where/'.$id));
-                        $this->approval->not_approve('cuti', $id, $receiver_id, $approval_status ,$this->detail_email($id));
+                        $receiver_lv3 = getValue('user_app_lv3', 'users_cuti', array('id'=>'where/'.$id));
+                        if(!empty($receiver_lv3)):
+                            $this->approval->not_approve('cuti', $id, $receiver_lv3, $approval_status ,$this->detail_email($id));
+                            if(!empty(getEmail($receiver_lv3)))$this->send_email(getEmail($receiver_lv3), 'Status Pengajuan Permohonan Cuti Dari Atasan', $email_body);
+                        endif;
+                        $receiver_lv2 = getValue('user_app_lv2', 'users_cuti', array('id'=>'where/'.$id));
+                        if(!empty($receiver_lv2)):
+                            $this->approval->not_approve('cuti', $id, $receiver_lv2, $approval_status ,$this->detail_email($id));
+                            if(!empty(getEmail($receiver_lv2)))$this->send_email(getEmail($receiver_lv2), 'Status Pengajuan Permohonan Cuti Dari Atasan', $email_body);
+                        endif;
+                        $receiver_lv1 = getValue('user_app_lv1', 'users_cuti', array('id'=>'where/'.$id));
+                        if(!empty($receiver_lv1)):
+                            $this->approval->not_approve('cuti', $id, $receiver_lv1, $approval_status ,$this->detail_email($id));
+                        if(!empty(getEmail($receiver_lv1)))$this->send_email(getEmail($receiver_lv1), 'Status Pengajuan Permohonan Cuti Dari Atasan', $email_body);
+                        endif;
                     break;
                 }
             }

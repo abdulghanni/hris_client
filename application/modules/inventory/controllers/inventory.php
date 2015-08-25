@@ -373,6 +373,7 @@ class Inventory extends MX_Controller {
         $superior_logistik = getValue('user_app_lv1_logistik', 'users_exit', array('user_id'=>'where/'.$user_id));
         $superior_koperasi = getValue('user_app_lv1_koperasi', 'users_exit', array('user_id'=>'where/'.$user_id));
         $superior_perpus = getValue('user_app_lv1_perpus', 'users_exit', array('user_id'=>'where/'.$user_id));
+        $superior_perpus = getValue('user_app_lv1_keuangan', 'users_exit', array('user_id'=>'where/'.$user_id));
 
         if (!$this->ion_auth->logged_in())
         {
@@ -395,6 +396,9 @@ class Inventory extends MX_Controller {
             }elseif($this->ion_auth->is_admin_koperasi() || $sess_nik==$superior_koperasi){
                 $group_id = 5;
                 $type = 'koperasi';
+            }elseif($this->ion_auth->is_admin_keuangan() || $sess_nik==$superior_keuangan){
+                $group_id = 6;
+                $type = 'keuangan';
             }else{
                 $group_id = 0;
             }
