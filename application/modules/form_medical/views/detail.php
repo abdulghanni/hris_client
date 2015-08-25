@@ -148,7 +148,16 @@
                         </div>
                       </div>
                     <?php endif; ?>
-
+                      <div class="col-md-12">
+                        <label class="form-label text-left">Attachment : </label>
+                      </div>
+                      <?php for($i=0;$i<sizeof($attachment);$i++):
+                            if(file_exists('./uploads/'.$user_folder.$attachment[$i])){
+                      ?>
+                      <div class="col-md-12">
+                        <label class="form-label text-left"><a href="<?php echo site_url('uploads/'.$user_folder.$attachment[$i])?>"><?php echo '* '.$attachment[$i]?></a></label>
+                      </div>
+                    <?php }endfor; ?>
                     </div>
                   </div>
                 </div>

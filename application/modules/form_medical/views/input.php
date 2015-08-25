@@ -18,136 +18,149 @@
 		                <div class="grid-title no-border">
 		                  <h4>Input Rekapitulasi <span class="semi-bold"><a href="<?php echo site_url('form_medical')?>">Rawat Jalan & Inap</a></span></h4>
 		                </div>
-                  		<div class="grid-body no-border">
-
-                  		<h6 class="bold">BAGIAN : <span class="semi-bold" id="organization"><?php echo $bagian?></span></h6>
-					 		<div class="col-md-4">
-                                <div class="row">
-                                    <button type="button" id="btnAdd" class="btn btn-primary btn-lg" onclick="addRow('dataTable')"><i class="icon-plus"></i>&nbsp;<?php echo lang('add_button');?></button>
-                                    <button type="button" id="btnRemove" class="btn btn-danger" onclick="deleteRow('dataTable')" style="display: none;"><i class="icon-remove"></i>&nbsp;<?php echo 'Remove'?></button>
-                                </div>
-                            </div> 
-
+                  	<div class="grid-body no-border">
+                  	<h6 class="bold">BAGIAN : <span class="semi-bold" id="organization"><?php echo $bagian?></span></h6>
+					 		      <div class="col-md-4">
+                        <div class="row">
+                            <button type="button" id="btnAdd" class="btn btn-primary btn-lg" onclick="addRow('dataTable')"><i class="icon-plus"></i>&nbsp;<?php echo lang('add_button');?></button>
+                            <button type="button" id="btnRemove" class="btn btn-danger" onclick="deleteRow('dataTable')" style="display: none;"><i class="icon-remove"></i>&nbsp;<?php echo 'Remove'?></button>
+                        </div>
+                    </div> 
+                    <br/><br/>
                             <div class="row">
                               <div class="col-md-12">
-							 	<?php echo form_open("form_medical/add",array("id"=>"formaddmedical"));?>
-							    <table id="dataTable" class="table table-bordered">
-							    	<thead>
-			                            <tr>
-			                              <th width="5%"></th>
-			                              <th width="5%">No</th>
-			                              <th width="25%">Nama</th>
-			                              <th width="25%">Nama Pasien</th>
-			                              <th width="15%">Hubungan</th>
-			                              <th width="15%">Jenis Pemeriksaan</th>
-			                              <th width="10%">Rupiah</th>
-			                            </tr>
-		                            </thead>
-							        <tbody>
-							        </tbody>
-						    	</table>
+              							 	<?php //echo form_open("form_medical/add",array("id"=>"formaddmedical"));?>
+                              <form action="form_medical/add" id="formaddmedical" method="post" enctype="multipart/form-data">
+              							    <table id="dataTable" class="table table-bordered">
+              							    	<thead>
+  			                            <tr>
+  			                              <th width="5%"></th>
+  			                              <th width="5%">No</th>
+  			                              <th width="25%">Nama</th>
+  			                              <th width="25%">Nama Pasien</th>
+  			                              <th width="15%">Hubungan</th>
+  			                              <th width="15%">Jenis Pemeriksaan</th>
+  			                              <th width="10%">Rupiah</th>
+  			                            </tr>
+  		                            </thead>
+            							        <tbody>
+            							        </tbody>
+              						    	</table>
 
+                                <br/>
+                                <div class="row form-row">
+                                  <div class="col-md-12">
+                                    <label class="bold form-label text-left">Attachment : </label>
+                                  </div>
+                                  <div class="col-md-12">
+                                    <table id="attachment">
+                                      <tr>
+                                        <td><input type='file' class="file" id="file" name='userfile[]' size='20'/></td>
+                                      </tr>
+                                    </table>
+                                    <button type="button" id="btnAddAttachment" class="btn-primary btn-xs" onclick="addAttachment()"><i class="icon-plus"></i>&nbsp;<?php echo lang('add_button').' Attachment';?></button><br/><br/>
+                                  </div>
+                                <?php if(is_admin()){?>
+            					          <div class="row form-row">
+                                  <div class="col-md-2">
+                                    <label class="form-label text-left"><?php echo 'Pembuat Rekapitulasi' ?></label>
+                                  </div>
+                                  <div class="col-md-5">
+                                    <select id="emp" class="select2" style="width:100%" name="pengaju">
+                                      <?php
+                                      foreach ($all_users->result() as $u) :
+                                        $selected = $u->id == $sess_id ? 'selected = selected' : '';?>
+                                        <option value="<?php echo $u->id?>" <?php echo $selected?>><?php echo $u->username.' - '.get_nik($u->id); ?></option>
+                                      <?php endforeach; ?>
+                                    </select>
+                                  </div>
+                                </div>
+                                <?php }else{?>
+                                <input type="hidden" name="pengaju" value="<?php echo $sess_id?>" />
+                                <?php } ?>
+                                <br/>
+                                <div class="col-md-12">
+            					          <div class="row form-row">
+                                  <div class="col-md-12">
+                                    <label class="bold form-label text-left"><?php echo 'Approval' ?></label>
+                                  </div>
+                                </div>
+                                <div class="row form-row">
+                                  <div class="col-md-2">
+                                    <label class="form-label text-left"><?php echo 'Supervisor' ?></label>
+                                  </div>
+                                  <div class="col-md-5">
+                                    <?php if(is_admin()){?>
+                                    <select id="atasan1" class="select2" style="width:100%" name="atasan1" >
+                                    <option value="0">- Pilih Supervisor -</option>
+                                      <?php
+                                      foreach ($all_users->result() as $u) :
+                                        $selected = $u->id == $sess_id ? 'selected = selected' : '';?>
+                                        <option value="<?php echo $u->nik?>" <?php echo $selected?>><?php echo $u->username?></option>
+                                      <?php endforeach; ?>
+                                    </select>
+                                    <?php }else{ ?>
+                                    <select name="atasan1" id="atasan1" class="select2" style="width:100%">
+                                        <option value="0">- Pilih Supervisor -</option>
+                                        <?php foreach ($user_atasan as $key => $up) : ?>
+                                          <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
+                                        <?php endforeach;?>
+                                    </select>
+                                        <?php }?>
+                                  </div>
+                                </div>
 
-                    <?php if(is_admin()){?>
-					          <div class="row form-row">
-                      <div class="col-md-2">
-                        <label class="form-label text-left"><?php echo 'Pembuat Rekapitulasi' ?></label>
-                      </div>
-                      <div class="col-md-5">
-                        <select id="emp" class="select2" style="width:100%" name="pengaju">
-                          <?php
-                          foreach ($all_users->result() as $u) :
-                            $selected = $u->id == $sess_id ? 'selected = selected' : '';?>
-                            <option value="<?php echo $u->id?>" <?php echo $selected?>><?php echo $u->username.' - '.get_nik($u->id); ?></option>
-                          <?php endforeach; ?>
-                        </select>
-                      </div>
-                    </div>
-                    <?php }else{?>
-                    <input type="hidden" name="pengaju" value="<?php echo $sess_id?>" />
-                    <?php } ?>
+                                <div class="row form-row">
+                                  <div class="col-md-2">
+                                    <label class="form-label text-left"><?php echo 'Ka. Bagian' ?></label>
+                                  </div>
+                                  <div class="col-md-5">
+                                  <?php if(is_admin()){?>
+                                    <select id="atasan2" class="select2" style="width:100%" name="atasan2">
+                                      <?php
+                                      foreach ($all_users->result() as $u) :
+                                        $selected = $u->id == $sess_id ? 'selected = selected' : '';?>
+                                        <option value="<?php echo $u->nik?>" <?php echo $selected?>><?php echo $u->username?></option>
+                                      <?php endforeach; ?>
+                                    </select>
+                                    <?php }else{ ?>
+                                    <select name="atasan2" id="atasan2" class="select2" style="width:100%">
+                                        <option value="0">- Pilih Ka. Bagian -</option>
+                                        <?php foreach ($user_atasan as $key => $up) : ?>
+                                        <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
+                                        <?php endforeach;?>
+                                    </select>
+                                  <?php }?>
+                                  </div>
+                                </div>
 
-					          <div class="row form-row">
-                      <div class="col-md-12">
-                        <label class="bold form-label text-left"><?php echo 'Approval' ?></label>
-                      </div>
-                    </div>
-
-                    <div class="row form-row">
-                      <div class="col-md-2">
-                        <label class="form-label text-left"><?php echo 'Supervisor' ?></label>
-                      </div>
-                      <div class="col-md-5">
-                        <?php if(is_admin()){?>
-                        <select id="atasan1" class="select2" style="width:100%" name="atasan1" >
-                        <option value="0">- Pilih Supervisor -</option>
-                          <?php
-                          foreach ($all_users->result() as $u) :
-                            $selected = $u->id == $sess_id ? 'selected = selected' : '';?>
-                            <option value="<?php echo $u->nik?>" <?php echo $selected?>><?php echo $u->username?></option>
-                          <?php endforeach; ?>
-                        </select>
-                        <?php }else{ ?>
-                        <select name="atasan1" id="atasan1" class="select2" style="width:100%">
-                            <option value="0">- Pilih Supervisor -</option>
-                            <?php foreach ($user_atasan as $key => $up) : ?>
-                              <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
-                            <?php endforeach;?>
-                        </select>
-                            <?php }?>
-                      </div>
-                    </div>
-
-                    <div class="row form-row">
-                      <div class="col-md-2">
-                        <label class="form-label text-left"><?php echo 'Ka. Bagian' ?></label>
-                      </div>
-                      <div class="col-md-5">
-                      <?php if(is_admin()){?>
-                        <select id="atasan2" class="select2" style="width:100%" name="atasan2">
-                        <option value="0">- Pilih Ka. Bagian -</option>
-                          <?php
-                          foreach ($all_users->result() as $u) :
-                            $selected = $u->id == $sess_id ? 'selected = selected' : '';?>
-                            <option value="<?php echo $u->nik?>" <?php echo $selected?>><?php echo $u->username?></option>
-                          <?php endforeach; ?>
-                        </select>
-                        <?php }else{ ?>
-                        <select name="atasan2" id="atasan2" class="select2" style="width:100%">
-                            <option value="0">- Pilih Ka. Bagian -</option>
-                            <?php foreach ($user_atasan as $key => $up) : ?>
-                            <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
-                            <?php endforeach;?>
-                        </select>
-                      <?php }?>
-                      </div>
-                    </div>
-
-                    <div class="row form-row">
-                      <div class="col-md-2">
-                        <label class="form-label text-left"><?php echo 'Atasan Lainnya' ?></label>
-                      </div>
-                      <div class="col-md-5">
-                      <?php if(is_admin()){
-                        ?>
-                        <select id="atasan3" class="select2" style="width:100%" name="atasan3">
-                        <option value="0">- Pilih Atasan Lainnya -</option>
-                          <?php
-                          foreach ($all_users->result() as $u) :
-                            $selected = $u->id == $sess_id ? 'selected = selected' : '';?>
-                            <option value="<?php echo $u->nik?>" <?php echo $selected?>><?php echo $u->username?></option>
-                          <?php endforeach; ?>
-                        </select>
-                        <?php }else{ ?>
-                        <select name="atasan3" id="atasan3" class="select2" style="width:100%">
-                            <option value="0">- Pilih Atasan Lainnya -</option>
-                            <?php foreach ($user_atasan as $key => $up) : ?>
-                            <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
-                            <?php endforeach;?>
-                        </select>
-                            <?php }?>
-                      </div>
-                    </div>
+                                <div class="row form-row">
+                                  <div class="col-md-2">
+                                    <label class="form-label text-left"><?php echo 'Atasan Lainnya' ?></label>
+                                  </div>
+                                  <div class="col-md-5">
+                                  <?php if(is_admin()){
+                                    ?>
+                                    <select id="atasan3" class="select2" style="width:100%" name="atasan3">
+                                    <option value="0">- Pilih Atasan Lainnya -</option>
+                                      <?php
+                                      foreach ($all_users->result() as $u) :
+                                        $selected = $u->id == $sess_id ? 'selected = selected' : '';?>
+                                        <option value="<?php echo $u->nik?>" <?php echo $selected?>><?php echo $u->username?></option>
+                                      <?php endforeach; ?>
+                                    </select>
+                                    <?php }else{ ?>
+                                    <select name="atasan3" id="atasan3" class="select2" style="width:100%">
+                                        <option value="0">- Pilih Atasan Lainnya -</option>
+                                        <?php foreach ($user_atasan as $key => $up) : ?>
+                                        <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
+                                        <?php endforeach;?>
+                                    </select>
+                                        <?php }?>
+                                  </div>
+                                </div>
+                                </div>
+                                </div>
 
 
 				                 <div class="form-actions">
@@ -206,4 +219,17 @@
 
 
 	function deleteRow(tableID){try{var table=document.getElementById(tableID);var rowCount=table.rows.length;for(var i=0;i<rowCount;i++){var row=table.rows[i];var chkbox=row.cells[0].childNodes[0];if(null!=chkbox&&true==chkbox.checked){table.deleteRow(i);rowCount--;i--;}}}catch(e){alert(e);}}
+
+  function addAttachment(){
+    var table=document.getElementById('attachment');
+    var rowCount=table.rows.length;
+    var row=table.insertRow(rowCount);
+
+    var cell1=row.insertCell(0);
+    var element1=document.createElement("input");
+    element1.type="file";
+    element1.name="userfile[]";
+    element1.class="file";
+    cell1.appendChild(element1);
+  }
 </script>

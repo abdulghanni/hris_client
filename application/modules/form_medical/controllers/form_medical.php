@@ -129,7 +129,7 @@ class Form_medical extends MX_Controller {
             //redirect them to the login page
             redirect('auth/login', 'refresh');
         }
-
+        
         $sess_id = $this->session->userdata('user_id');
         $num_rows_medical = getAll('users_medical')->num_rows();
 
@@ -202,6 +202,39 @@ class Form_medical extends MX_Controller {
                      if(!empty(getEmail($this->approval->approver('medical'))))$this->send_email(getEmail($this->approval->approver('medical')), 'Pengajuan Rekapitulasi Rawat Jalan/Inap', $isi_email);
                      $this->approval->request('hrd', 'medical', $last_medical_id, $user_id, $this->detail_email($last_medical_id));
                 endif;
+                
+                $user_id = getValue('user_id', 'users_medical', array('id' => 'where/'.$last_medical_id));
+                $user = getAll('users', array('id'=>'where/'.$user_id))->row();
+                $user_folder = $user->id.$user->first_name;
+                if(!is_dir('./'.'uploads')){
+                mkdir('./'.'uploads', 0777);
+                }
+                if(!is_dir('./uploads/'.$user_folder)){
+                mkdir('./uploads/'.$user_folder, 0777);
+                }
+                if(!is_dir("./uploads/$user_folder/medical/")){
+                mkdir("./uploads/$user_folder/medical/", 0777);
+                }
+
+
+                $path = "./uploads/$user_folder/medical/";
+                $this->load->library('upload');
+                $this->upload->initialize(array(
+                    "upload_path"=>$path,
+                    "allowed_types"=>"*"
+                ));
+                if($this->upload->do_multi_upload("userfile")){
+                    $up = $this->upload->get_multi_upload_data();
+                    $attachment = '';
+                    for($i=0;$i<sizeof($up);$i++):
+                        $koma = ($i<sizeof($up)-1)?',':'';
+                        $attachment .= $up[$i]['file_name'].$koma;
+                    endfor;
+                    $data = array(
+                            'attachment' => $attachment,
+                        );
+                    $this->db->where('id', $last_medical_id)->update('users_medical', $data);
+                }
                 redirect('form_medical', 'refresh');
     }
 
@@ -227,6 +260,10 @@ class Form_medical extends MX_Controller {
         $form_medical = $this->data['form_medical'] = $this->form_medical_model->form_medical($id)->result();
         $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
         $this->data['_num_rows'] = $this->form_medical_model->form_medical($id)->num_rows();
+        $first_name = getValue('first_name', 'users', array('id'=>'where/'.$user_id));
+        $this->data['user_folder'] = $user_id.$first_name.'/medical/';
+        $attachment = getValue('attachment', 'users_medical', array('id' => 'where/'.$id));
+        $this->data['attachment'] = explode(",",$attachment);
             
         $this->_render_page('form_medical/detail', $this->data);
 
