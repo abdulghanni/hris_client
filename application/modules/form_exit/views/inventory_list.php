@@ -12,13 +12,30 @@
           <th>Ketersediaan</th>
           <th>Keterangan</th>
         </tr>
-        <?php 
+        <?php
+        if($laporan_num_rows<1){?>
+        <tr>
+          <td><?php echo '1'?></td>
+          <td><?php echo 'Laporan Serah Terima'?></td>
+          <td>
+            <input type="hidden" name="laporan_id" value="<?php echo '10'?>">
+            <label class="radio-inline">
+              <input type="radio" name="is_available_laporan" id="is_available_laporan-1" value="1">Ada
+            </label>
+            <label class="radio-inline">
+              <input type="radio" name="is_available_laporan" id="is_available_laporan-1" value="0">Tidak
+            </label>
+          </td>
+          <td><input name="note_laporan" id="note_laporan" type="text"  class="form-control" placeholder="" value=""></td>
+        </tr>
+        <?php } ?>
+        <?php
           $i=0;
           if($users_inventory->num_rows()>0){
             foreach ($users_inventory->result() as $inv) :
               ?>
         <tr>
-          <td><?php echo 1+$i++?></td>
+          <td><?php echo ($laporan_num_rows>0)?1+$i++:2+$i++;?></td>
           <td><?php echo $inv->title?></td>
           <td>
             <input type="hidden" name="inventory_id[]" value="<?php echo $inv->id?>">

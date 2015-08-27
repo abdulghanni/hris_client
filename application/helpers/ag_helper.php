@@ -535,19 +535,20 @@
 		function get_bu_name($bu_id)
 		{
 			$CI =&get_instance();
-			$url = get_api_key().'users/bu_name/BUID/'.$bu_id.'/format/json';
-            $headers = get_headers($url);
-            $response = substr($headers[0], 9, 3);
-            if ($response != "404") {
-                $getbu = file_get_contents($url);
-                $bu = json_decode($getbu, true);
-                return $bu[0]['DESCRIPTION'];
-            } elseif($bu_id == 0) {
-            	return '-';
-            }else{
-                return '-';
-            }
-
+			if($bu_id == '0'){
+            echo '-';
+        	}else{
+				$url = get_api_key().'users/bu_name/BUID/'.$bu_id.'/format/json';
+	            $headers = get_headers($url);
+	            $response = substr($headers[0], 9, 3);
+	            if ($response != "404") {
+	                $getbu = file_get_contents($url);
+	                $bu = json_decode($getbu, true);
+	                return $bu[0]['DESCRIPTION'];
+	            }else{
+	                return '-';
+	            }
+	        }
 		}
 	}
 

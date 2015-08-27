@@ -65,7 +65,7 @@
                               <tbody>
                                   <?php if($_num_rows>0){
                                       foreach($form_exit as $row):
-                                      $txt_app_lv1 = $txt_app_lv2 = $txt_app_lv3 = $txt_app_asset =  $txt_app_hrd = $txt_app_mgr = $txt_app_koperasi = $txt_app_perpus = $txt_app_it = "<i class='icon-minus' title = 'Pending'></i>";
+                                      $txt_app_lv1 = $txt_app_lv2 = $txt_app_lv3 = $txt_app_asset =  $txt_app_hrd = $txt_app_mgr = $txt_app_koperasi = $txt_app_perpus = $txt_app_it = $txt_app_keuangan = "<i class='icon-minus' title = 'Pending'></i>";
                                       $approval_status = ($row->app_status_id== 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($row->app_status_id== 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
                                       $approval_status_mgr = ($row->app_status_id_mgr== 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($row->app_status_id_mgr== 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
                                       $approval_status_koperasi = ($row->app_status_id_koperasi== 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($row->app_status_id_koperasi== 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");

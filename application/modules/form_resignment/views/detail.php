@@ -333,8 +333,9 @@
                     <div class="col-md-12"><span class="semi-bold">Diterima HRD</span><br/><br/></div>
                       <?php 
                       $submitbutton = ($row->is_invited == 0) ? '#undanganModal' : '#submitresignmentModalHrd';
+                      $submitlabel =  ($row->is_invited == 0) ? 'Undang Wawancara' : 'Wawancara';
                       if($row->is_app_hrd == 0 && $this->approval->approver('resignment') == $sess_nik){?>
-                        <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="<?php echo $submitbutton ?>"><i class="icon-ok"></i>Submit</div>
+                        <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="<?php echo $submitbutton ?>"><i class="icon-ok"></i> <?php echo $submitlabel?></div>
                         <span class="small"></span>
                         <span class="semi-bold"></span><br/>
                         <span class="small"></span><br/>
@@ -716,7 +717,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="icon-remove"></i>&nbsp;<?php echo lang('close_button')?></button> 
-        <button id="btn_app_hrd"  class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
+        <button id="btn_app_hrd"  class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok-sign"></i>&nbsp;<?php echo 'Submit'?></button>
       </div>
         <?php echo form_close()?>
     </div>

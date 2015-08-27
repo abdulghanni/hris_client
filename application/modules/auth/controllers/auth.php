@@ -16,6 +16,7 @@ class Auth extends MX_Controller {
         $this->load->database();
         $this->load->model('person/person_model','person_model');
         $this->load->model('auth/auth_model','auth_model');
+        $this->load->model('auth/groups_model','groups_model');
         $this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
 
         $this->lang->load('auth');
@@ -3252,7 +3253,95 @@ class Auth extends MX_Controller {
         echo json_encode(array('st'=>1));
     }
 
+    function list_group($fname = "fn:",$sort_by = "id", $sort_order = "asc", $offset = 0)
+    { 
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+        elseif (!$this->ion_auth->is_admin()) //remove this elseif if you want to enable this for non-admins
+        {
+            $id = $this->session->userdata('user_id');
+            //redirect them to the home page because they must be an administrator to view this
+            //return show_error('You must be an administrator to view this page.');
+            redirect('person/detail/'.$id);
+        }
+        else
+        {
+            //set the flash data error message if there is one
+            $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
 
+            //set sort order
+            //set sort order
+            $this->data['sort_order'] = $sort_order;
+            
+            //set sort by
+            $this->data['sort_by'] = $sort_by;
+           
+            //set filter by title
+            $this->data['fname_param'] = $fname; 
+            $exp_fname = explode(":",$fname);
+            $fname_re = str_replace("_", " ", $exp_fname[1]);
+            $fname_post = (strlen($fname_re) > 0) ? array('groups.name'=>$fname_re) : array() ;
+            
+            //set default limit in var $config['list_limit'] at application/config/ion_auth.php 
+            $this->data['limit'] = $limit = (strlen($this->input->post('limit')) > 0) ? $this->input->post('limit') : 10 ;
+
+            $this->data['offset'] = 6;
+
+            //list of filterize all groups  
+            $this->data['groups_all'] = $this->groups_model->like($fname_post)->where('is_deleted',0)->groups()->result();
+            
+            $this->data['num_rows_all'] = $this->groups_model->like($fname_post)->where('is_deleted',0)->groups()->num_rows();
+
+            $groups = $this->data['groups'] = $this->groups_model->like($fname_post)->where('is_deleted',0)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->groups()->result();//lastq();
+            $this->data['_num_rows'] = $this->groups_model->like($fname_post)->where('is_deleted',0)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->groups()->num_rows();
+            //lastq();
+
+             //config pagination
+             $config['base_url'] = base_url().'auth/list_group/fn:'.$exp_fname[1].'/'.$sort_by.'/'.$sort_order.'/';
+             $config['total_rows'] = $this->data['num_rows_all'];
+             $config['per_page'] = $limit;
+             $config['uri_segment'] = 6;
+
+            //inisialisasi config
+             $this->pagination->initialize($config);
+
+            //create pagination
+            $this->data['halaman'] = $this->pagination->create_links();
+
+            $this->data['fname_search'] = array(
+                'name'  => 'group_name',
+                'id'    => 'group_name',
+                'type'  => 'text',
+                'value' => $this->form_validation->set_value('group_name'),
+            );
+
+
+            $this->_render_page('auth/list_group', $this->data);
+        }
+    }
+
+    function search_group(){
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+        elseif (!$this->ion_auth->is_admin()) //remove this elseif if you want to enable this for non-admins
+        {
+            //redirect them to the home page because they must be an administrator to view this
+            //return show_error('You must be an administrator to view this page.');
+            return show_error('You must be an administrator to view this page.');
+        }
+        else
+        {
+            $fname_post = (strlen($this->input->post('group_name')) > 0) ? strtolower(url_title($this->input->post('group_name'),'_')) : "" ;
+            
+            redirect('auth/list_group/fn:'.$fname_post, 'refresh');
+        }
+    }
 
     // create a new group
     function create_group()
@@ -3267,16 +3356,22 @@ class Auth extends MX_Controller {
         //validate form input
         $this->form_validation->set_rules('group_name', $this->lang->line('create_group_validation_name_label'), 'required|xss_clean');
         $this->form_validation->set_rules('description', $this->lang->line('create_group_validation_desc_label'), 'xss_clean');
+        $this->form_validation->set_rules('bu', 'Bussiness Unit', 'xss_clean');
 
         if ($this->form_validation->run() == TRUE)
         {
-            $new_group_id = $this->ion_auth->create_group($this->input->post('group_name'), $this->input->post('description'));
+            $additional_data = array(
+                'bu' => $this->input->post('bu'),
+                'admin_type_id' => $this->input->post('admin_type_id'),
+            );
+            $new_group_id = $this->ion_auth->create_group($this->input->post('group_name'), $this->input->post('description'), $additional_data);
+
             if($new_group_id)
             {
                 // check to see if we are creating the group
                 // redirect them back to the admin page
                 $this->session->set_flashdata('message', $this->ion_auth->messages());
-                redirect("auth", 'refresh');
+                redirect("auth/list_group", 'refresh');
             }
         }
         else
@@ -3290,16 +3385,43 @@ class Auth extends MX_Controller {
                 'id'    => 'group_name',
                 'type'  => 'text',
                 'value' => $this->form_validation->set_value('group_name'),
+                'required' => 'required',
             );
+            
             $this->data['description'] = array(
                 'name'  => 'description',
                 'id'    => 'description',
                 'type'  => 'text',
                 'value' => $this->form_validation->set_value('description'),
+                'required' => 'required',
             );
+
+            $this->get_bu();
+            $this->data['admin_type'] = getAll('admin_type', array('is_deleted'=>'where/0'));
 
             $this->_render_page('auth/create_group', $this->data);
         }
+    }
+
+    function get_bu()
+    {
+            $url = get_api_key().'users/bu/format/json';
+            $headers = get_headers($url);
+            $response = substr($headers[0], 9, 3);
+            if ($response != "404") {
+                $getbu = file_get_contents($url);
+                $bu = json_decode($getbu, true);
+                foreach ($bu as $row)
+            {
+                $result['']= '- Pilih BU -';
+                if($row['NUM'] != null){
+                $result[$row['NUM']]= ucwords(strtolower($row['DESCRIPTION']));
+                }
+            }
+                return $this->data['bu'] = $result;
+            } else {
+                return $this->data['bu'] = '';
+            }
     }
 
     //edit a group
@@ -3321,14 +3443,19 @@ class Auth extends MX_Controller {
         $group = $this->ion_auth->group($id)->row();
 
         //validate form input
-        $this->form_validation->set_rules('group_name', $this->lang->line('edit_group_validation_name_label'), 'required|alpha_dash|xss_clean');
+        $this->form_validation->set_rules('group_name', $this->lang->line('edit_group_validation_name_label'), 'required|xss_clean');
         $this->form_validation->set_rules('group_description', $this->lang->line('edit_group_validation_desc_label'), 'xss_clean');
 
         if (isset($_POST) && !empty($_POST))
         {
             if ($this->form_validation->run() === TRUE)
             {
-                $group_update = $this->ion_auth->update_group($id, $_POST['group_name'], $_POST['group_description']);
+
+                $additional_data = array(
+                    'bu' => $this->input->post('bu'),
+                    'admin_type_id' => $this->input->post('admin_type_id'),
+                );
+                $group_update = $this->ion_auth->update_group($id, $_POST['group_name'], $_POST['group_description'], $additional_data);
 
                 if($group_update)
                 {
@@ -3338,7 +3465,7 @@ class Auth extends MX_Controller {
                 {
                     $this->session->set_flashdata('message', $this->ion_auth->errors());
                 }
-                redirect("auth", 'refresh');
+                redirect("auth/list_group", 'refresh');
             }
         }
 
@@ -3361,9 +3488,17 @@ class Auth extends MX_Controller {
             'value' => $this->form_validation->set_value('group_description', $group->description),
         );
 
+        $this->get_bu();
+        $this->data['admin_type'] = getAll('admin_type', array('is_deleted'=>'where/0'));
+
         $this->_render_page('auth/edit_group', $this->data);
     }
 
+    function delete_group()
+    {
+        $id = $this->input->post('id');
+        $this->groups_model->delete($id);
+    }
 
 
 
@@ -3426,19 +3561,40 @@ class Auth extends MX_Controller {
 
                     $this->template->add_css('main.css');
                 }
-                elseif(in_array($view, array('auth/register_user')))
+                elseif(in_array($view, array(
+                                             'auth/create_group',
+                                             'auth/edit_group')))
                 {
-                    $this->template->set_layout('single');
+                    $this->template->set_layout('default');
 
-                    $this->template->add_js('bootstrap-datepicker.js');
-                    $this->template->add_js('jquery.validate.min.js');
+                     $this->template->set_layout('default');
+                    $this->template->add_js('jquery.sidr.min.js');
+                    $this->template->add_js('breakpoints.js');
                     $this->template->add_js('select2.min.js');
-                    $this->template->add_js('register.js');
-                    
-                    $this->template->add_css('datepicker.css');
+                    $this->template->add_js('jquery.validate.min.js');
+                    //$this->template->add_js('list_user.js');
+                    $this->template->add_js('core.js');
+                    $this->template->add_js('group.js');
+                    $this->template->add_js('respond.min.js');
+
+                    $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                     $this->template->add_css('plugins/select2/select2.css');
+                }elseif(in_array($view, array('auth/list_group')))
+                {
+                    $this->template->set_layout('default');
+
+                    $this->template->add_js('jquery.sidr.min.js');
+                    $this->template->add_js('breakpoints.js');
+                    $this->template->add_js('core.js');
+                    $this->template->add_js('select2.min.js');
+
+                    $this->template->add_js('form_index.js');
+
+                    $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
+                    $this->template->add_css('plugins/select2/select2.css');
+                    
                 }
-                elseif(in_array($view, array('auth/edit_user'
+                elseif(in_array($view, array('auth/edit_user',
                     )))
                 {
 

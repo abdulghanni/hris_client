@@ -102,7 +102,7 @@ class Form_exit extends MX_Controller {
         {
             //redirect them to the login page
             redirect('auth/login', 'refresh');
-        }
+        } 
             $this->data['user_id'] = $user_id;
             $this->data['superior'] = (!empty($user_id))?get_superior($user_id):'';
             $this->data['date_exit'] = (!empty($user_id))?getValue('date_exit', 'users_exit', array('user_id'=>'where/'.$user_id)):'';
@@ -320,6 +320,20 @@ class Form_exit extends MX_Controller {
                 }else{
                 $this->db->insert('users_exit_rekomendasi', $data3);
                 }
+
+                $laporan_num_rows = getAll('users_inventory', array('user_id'=>'where/'.$user_id, 'inventory_id'=>'where/10'))->num_rows();
+                if($laporan_num_rows<1){
+                    $laporan = array(
+                        'inventory_id' => '10',
+                        'user_id' => $user_id,
+                        'user_exit_id' =>$exit_id,
+                        'is_available'=>$this->input->post('is_available_laporan'),
+                        'note'=>$this->input->post('note_laporan'),
+                    );
+
+                    $this->db->insert('users_inventory', $laporan);
+                }
+                
                 $isi_email = get_name($user_id).' mengajukan rekomendasi karyawan keluar, untuk melihat detail silakan <a href='.base_url().'form_exit/detail/'.$exit_id.'>Klik Disini</a><br />';
 
                 $this->send_approval_request($exit_id, $user_id, $creator_id);
@@ -443,7 +457,7 @@ class Form_exit extends MX_Controller {
     public function get_inventory_list()
     {
         $user_id = $this->input->post('id');
-
+        $this->data['laporan_num_rows'] = getAll('users_inventory', array('user_id'=>'where/'.$user_id, 'inventory_id'=>'where/10'))->num_rows();
         $i =$this->db->select('users_inventory.id as id, users_inventory.is_available, users_inventory.note, inventory.title as title')->from('users_inventory')->join('inventory', 'users_inventory.inventory_id = inventory.id', 'left')->where('users_inventory.user_id', $user_id)->get();
            //print_mz($i->result());
         $this->data['users_inventory'] = $i;

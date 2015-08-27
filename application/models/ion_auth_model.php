@@ -1832,6 +1832,7 @@ class Ion_auth_model extends CI_Model
     public function create_group($group_name = FALSE, $group_description = '', $additional_data = array())
     {
         // bail if the group name was not passed
+        /*
         if(!$group_name)
         {
             $this->set_error('group_name_required');
@@ -1845,6 +1846,7 @@ class Ion_auth_model extends CI_Model
             $this->set_error('group_already_exists');
             return FALSE;
         }
+        */
 
         $data = array('name'=>$group_name,'description'=>$group_description);
 
@@ -1870,13 +1872,13 @@ class Ion_auth_model extends CI_Model
      * @return bool
      * @author aditya menon
      **/
-    public function update_group($group_id = FALSE, $group_name = FALSE, $additional_data = array())
+    public function update_group($group_id = FALSE, $group_name = FALSE, $group_description ='', $additional_data = array())
     {
         if (empty($group_id)) return FALSE;
 
         $data = array();
 
-        if (!empty($group_name))
+        /*if (!empty($group_name))
         {
             // we are changing the name, so do some checks
 
@@ -1889,13 +1891,12 @@ class Ion_auth_model extends CI_Model
             }
 
             $data['name'] = $group_name;
-        }
+        }*/
 
 
         // IMPORTANT!! Third parameter was string type $description; this following code is to maintain backward compatibility
         // New projects should work with 3rd param as array
-        if (is_string($additional_data)) $additional_data = array('description' => $additional_data);
-
+        $data = array('name'=>$group_name,'description'=>$group_description);
 
         //filter out any data passed that doesnt have a matching column in the groups table
         //and merge the set group data and the additional data

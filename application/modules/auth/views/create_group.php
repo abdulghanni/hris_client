@@ -55,12 +55,30 @@
     <p>
         <?php echo lang('create_group_name_label', 'group_name');?> <br />
         <?php echo bs_form_input($group_name);?>
-    </p>
+    </p><br />
 
     <p>
         <?php echo lang('create_group_desc_label', 'description');?> <br />
         <?php echo bs_form_input($description);?>
-    </p>
+    </p><br />
+
+    <p>
+        <label>Tipe Administrator :</label><br />
+        <select class="select2" name="admin_type_id" style="width:50%">
+        <?php if($admin_type->num_rows()>0):
+            foreach ($admin_type->result() as $type) {?>
+        <option value="<?php echo $type->id?>"><?php echo $type->title?></option>
+        <?php }endif; ?>
+        </select>
+    </p><br />
+
+    <p>
+        <label>Bussiness Unit :</label><br />
+        <?php
+            $style_bu='class="form-control select2" style="width:50%" id="bu"';
+            echo form_dropdown('bu',$bu,'',$style_bu);
+          ?>
+      </p><br />
 
     <p><?php echo bs_form_submit('submit', lang('create_group_submit_btn'));?></p>
 

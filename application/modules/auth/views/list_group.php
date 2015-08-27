@@ -69,7 +69,7 @@
                                 <h4><?php echo lang('search_of_subheading')?>&nbsp;<span class="semi-bold"><?php echo lang('user_subheading');?></span></h4>
                             </div>
                         </div>
-                        <?php echo form_open(site_url('auth/keywords'))?>
+                        <?php echo form_open(site_url('auth/search_group'))?>
 
                             <div class="row">
                                 <div class="col-md-5">
@@ -78,21 +78,17 @@
                                         <div class="col-md-9"><?php echo bs_form_input($fname_search)?></div>
                                     </div>
                                 </div>
-                                <div class="col-md-5">
-                                    <div class="row">
-                                        <div class="col-md-3 search_label"><?php echo form_label(lang('index_email_th'),'email')?></div>
-                                        <div class="col-md-9"><?php echo bs_form_input($email_search)?></div>
-                                    </div>
-                                </div>
                                 <div class="col-md-2">
                                     <div class="row">
                                         <div class="col-md-12">
                                             <button type="submit" class="btn btn-info"><i class="icon-search"></i>&nbsp;<?php echo lang('search_button')?></button>
+                                            
                                         </div>
                                     </div>
                                 </div>    
                             </div>
                         <?php echo form_close()?>
+                        <a href="<?php echo site_url('auth/create_group')?>"><button type="button" class="btn btn-primary btn-lg"><i class="icon-plus"></i>&nbsp;<?php echo lang('add_button');?></button></a>
                         <br/>
                         <div <?php ( ! empty($message)) && print('class="alert alert-info text-center"'); ?> id="infoMessage"><?php echo $message;?></div>
                         <table class="table table-bordered">
@@ -104,17 +100,15 @@
                                             <label for="checkbox10"></label>
                                         </div>
                                     </th>
-                                    <th width="10%"><?php echo 'NIK';?></th>
-                                    <th width="10%"><?php echo anchor('auth/index/'.$fname_param.'/'.$email_param.'/username/'.(($sort_order == 'asc' && $sort_by == 'username') ? 'desc' : 'asc'), lang('index_fullname_th'));?></th>
-                                    <!-- <th width="10%"><?php echo anchor('auth/index/'.$fname_param.'/'.$email_param.'/last_name/'.(($sort_order == 'asc' && $sort_by == 'last_name') ? 'desc' : 'asc'), lang('index_lname_th'));?></th> -->
-                                    <th width="10%"><?php echo anchor('auth/index/'.$fname_param.'/'.$email_param.'/email/'.(($sort_order == 'asc' && $sort_by == 'email') ? 'desc' : 'asc'), lang('index_email_th'));?></th>
-                                    <th width="10%"><?php echo lang('index_groups_th');?></th>
-                                    <th width="10%"><?php echo anchor('auth/index/'.$fname_param.'/'.$email_param.'/active/'.(($sort_order == 'asc' && $sort_by == 'active') ? 'desc' : 'asc'), lang('index_status_th'));?></th>
-                                    <th width="10%"><?php echo lang('index_action_th');?></th>                                  
+                                    <th width="15%"><?php echo 'Group Name';?></th>
+                                    <th width="15%"><?php echo 'Description'?></th>
+                                    <th width="10%">Bussiness Unit</th>
+                                    <th width="10%">Type</th>
+                                    <th width="5%"><?php echo lang('index_action_th');?></th>                                  
                                 </tr>
                             </thead>
                             <tbody>
-                            <?php foreach ($users as $user):?>
+                            <?php foreach ($groups as $user):?>
                                 <tr>
                                     <td valign="middle">
                                          <div class="checkbox check-default">
@@ -122,31 +116,14 @@
                                             <label for="checkbox11"></label>
                                         </div>
                                     </td>
-                                    <td valign="middle"><?php echo $user->nik;?></td>
-                                    <td valign="middle"><?php echo $user->username;?></td>
+                                    <td valign="middle"><?php echo $user->name;?></td>
+                                    <td valign="middle"><?php echo $user->description;?></td>
                                     <!-- <td valign="middle"><span class="muted"><?php echo $user->last_name;?></span></td> -->
-                                    <td valign="middle"><span class="muted"><?php echo $user->email;?></span></td>
-                                    <td valign="middle"><span class="muted">
-                                        <?php foreach ($user->groups as $group):?>
-                                            <?php echo anchor("auth/edit_group/".$group->id, $group->name) ;?><br />
-                                        <?php endforeach?>
-                                    </span></td>
+                                    <td valign="middle"><span class="muted"><?php echo get_bu_name($user->bu);?></span></td>
+                                    <td valign="middle"><span class="muted"><?php echo $user->admin_type;?></span></td>
                                     <td valign="middle">
-                                        <span class="muted">
-                                            <?php echo ($user->active) ? anchor("auth/deactivate/".$user->id, lang('index_active_link')) : anchor("auth/activate/". $user->id, lang('index_inactive_link'));?>
-                                        </span>
-                                    </td>
-                                    <td valign="middle">
-                                        <?php //echo anchor("auth/edit_user/".$user->id, 'Edit') ;?>
-                                        <a href="<?php echo site_url('auth/edit_user/'.$user->id)?>">
-                                            <button type="button" class="btn btn-info btn-small" title="<?php echo lang('edit_button')?>"><i class="icon-paste"></i></button>
-                                        </a>
-                                        <a href="<?php echo site_url('auth/detail/'.$user->id)?>">
-                                            <button class='btn btn-primary btn-small' type="button" title="<?php echo lang('personal_label')?>"><i class="icon-male"></i></button>
-                                        </a>
-                                        <!-- <span class="muted"><?php echo anchor("auth/edit_user/".$user->id, 'Edit') ;?></span>
-                                        &nbsp;|&nbsp; 
-                                        <span class="muted"><?php echo anchor("auth/detail/".$user->id, 'Personal') ;?></span> -->
+                                        <a href="<?php echo site_url('auth/edit_group/'.$user->id)?>"><button type="button" class="btn btn-info btn-small"   title="<?php echo lang('edit_button')?>"><i class="icon-edit"></i></button></a>
+                                        <button class='btn btn-danger btn-small' type="button" value="Delete" data-toggle="modal" data-target="#deleteGroupModal<?php echo $user->id?>" title="<?php echo lang('delete_button')?>"><i class="icon-warning-sign"></i></button>
                                     </td>
                                 </tr>
                             <?php endforeach;?>
@@ -174,6 +151,31 @@
                                 </ul>
                             </div>
                         </div>
+
+<?php foreach ($groups as $user):?>
+<!--Delete Modal-->
+<div class="modal fade" id="deleteGroupModal<?php echo $user->id?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel"><?php echo lang('delete_confirmation').' for '.$user->name; ?></h4>
+        </div>
+      <form id="formDel<?php echo $user->id?>">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="display:none"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <input type="hidden" name="id" value="<?php echo $user->id?>" />
+        <p><?php echo lang('delete_this_data').$user->name.' ?'; ?></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="icon-ban-circle"></i>&nbsp;<?php echo lang('cancel_button')?></button> 
+        <button id="btnDel<?php echo $user->id?>" class="btn btn-danger" style="margin-top: 3px;"><i class="icon-warning-sign"></i>&nbsp;<?php echo lang('delete_button')?></button>
+      </div>
+        <?php echo form_close()?>
+    </div>
+  </div>
+</div>
+<?php endforeach; ?>
                     </div>
                 </div>
             </div>
@@ -181,3 +183,24 @@
     </div>
     <!-- END PAGE -->
 </div>
+<script src="<?php echo assets_url('js/jquery-1.8.3.min.js'); ?>"></script>
+<script type="text/javascript">
+<?php foreach ($groups as $user):?>
+    $("#btnDel<?php echo $user->id?>").click(function(){
+        var $btn = $(this).button('loading');
+        $("#formDel<?php echo $user->id?>").submit(function(ev){
+            $.ajax({
+                type: 'POST',
+                url: 'http://localhost/hris_client/auth/delete_group',
+                data: $("#formDel<?php echo $user->id?>").serialize(),
+                success: function() {
+                     $("[data-dismiss=modal]").trigger({ type: "click" });
+                     location.reload(),
+                     $btn.button('reset')
+                }
+            });
+            ev.preventDefault(); 
+        });  
+    });
+<?php endforeach; ?>
+</script>
