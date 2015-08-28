@@ -21,12 +21,29 @@
 		function is_admin_bagian()
 		{
 			$CI =& get_instance();
-			
-			if($CI->ion_auth->is_admin_bagian())
-			{
+
+			$sess_id = $CI->session->userdata('user_id');
+			$r = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 2)->get()->result_array('user_id');
+			for ($i = 0;$i<sizeof($r);$i++) {
+			if($sess_id == $r[$i]['user_id']):
 				return TRUE;
-			}else{
-				return FALSE;
+			endif;
+			}
+		}
+	}
+
+	if (!function_exists('is_admin_inventaris'))
+	{	
+		function is_admin_inventaris()
+		{
+			$CI =& get_instance();
+
+			$sess_id = $CI->session->userdata('user_id');
+			$r = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 3)->get()->result_array('user_id');
+			for ($i = 0;$i<sizeof($r);$i++) {
+			if($sess_id == $r[$i]['user_id']):
+				return TRUE;
+			endif;
 			}
 		}
 	}
@@ -38,11 +55,12 @@
 		{
 			$CI =& get_instance();
 			
-			if($CI->ion_auth->is_admin_hrd())
-			{
+			$sess_id = $CI->session->userdata('user_id');
+			$r = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 3)->like('name', 'hrd')->get()->result_array('user_id');
+			for ($i = 0;$i<sizeof($r);$i++) {
+			if($sess_id == $r[$i]['user_id']):
 				return TRUE;
-			}else{
-				return FALSE;
+			endif;
 			}
 		}
 	}
@@ -54,11 +72,12 @@
 		{
 			$CI =& get_instance();
 			
-			if($CI->ion_auth->is_admin_it())
-			{
+			$sess_id = $CI->session->userdata('user_id');
+			$r = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 3)->like('name', 'it')->get()->result_array('user_id');
+			for ($i = 0;$i<sizeof($r);$i++) {
+			if($sess_id == $r[$i]['user_id']):
 				return TRUE;
-			}else{
-				return FALSE;
+			endif;
 			}
 		}
 	}
@@ -69,11 +88,12 @@
 		{
 			$CI =& get_instance();
 			
-			if($CI->ion_auth->is_admin_keuangan())
-			{
+			$sess_id = $CI->session->userdata('user_id');
+			$r = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 3)->like('name', 'keuangan')->get()->result_array('user_id');
+			for ($i = 0;$i<sizeof($r);$i++) {
+			if($sess_id == $r[$i]['user_id']):
 				return TRUE;
-			}else{
-				return FALSE;
+			endif;
 			}
 		}
 	}
@@ -85,11 +105,12 @@
 		{
 			$CI =& get_instance();
 			
-			if($CI->ion_auth->is_admin_logistik())
-			{
+			$sess_id = $CI->session->userdata('user_id');
+			$r = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 3)->like('name', 'logistik')->get()->result_array('user_id');
+			for ($i = 0;$i<sizeof($r);$i++) {
+			if($sess_id == $r[$i]['user_id']):
 				return TRUE;
-			}else{
-				return FALSE;
+			endif;
 			}
 		}
 	}
@@ -101,11 +122,12 @@
 		{
 			$CI =& get_instance();
 			
-			if($CI->ion_auth->is_admin_koperasi())
-			{
+			$sess_id = $CI->session->userdata('user_id');
+			$r = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 3)->like('name', 'koperasi')->get()->result_array('user_id');
+			for ($i = 0;$i<sizeof($r);$i++) {
+			if($sess_id == $r[$i]['user_id']):
 				return TRUE;
-			}else{
-				return FALSE;
+			endif;
 			}
 		}
 	}
@@ -117,11 +139,12 @@
 		{
 			$CI =& get_instance();
 			
-			if($CI->ion_auth->is_admin_perpustakaan())
-			{
+			$sess_id = $CI->session->userdata('user_id');
+			$r = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 3)->like('name', 'perpus')->get()->result_array('user_id');
+			for ($i = 0;$i<sizeof($r);$i++) {
+			if($sess_id == $r[$i]['user_id']):
 				return TRUE;
-			}else{
-				return FALSE;
+			endif;
 			}
 		}
 	}
@@ -132,11 +155,12 @@
 		{
 			$CI =& get_instance();
 			
-			if($CI->ion_auth->is_admin_legal())
-			{
+			$sess_id = $CI->session->userdata('user_id');
+			$r = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 4)->like('name', 'legal')->get()->result_array('user_id');
+			for ($i = 0;$i<sizeof($r);$i++) {
+			if($sess_id == $r[$i]['user_id']):
 				return TRUE;
-			}else{
-				return FALSE;
+			endif;
 			}
 		}
 	}
@@ -147,11 +171,12 @@
 		{
 			$CI =& get_instance();
 			
-			if($CI->ion_auth->is_admin_payroll())
-			{
+			$sess_id = $CI->session->userdata('user_id');
+			$r = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 4)->like('name', 'payroll')->get()->result_array('user_id');
+			for ($i = 0;$i<sizeof($r);$i++) {
+			if($sess_id == $r[$i]['user_id']):
 				return TRUE;
-			}else{
-				return FALSE;
+			endif;
 			}
 		}
 	}

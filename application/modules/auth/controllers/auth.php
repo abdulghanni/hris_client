@@ -286,20 +286,22 @@ class Auth extends MX_Controller {
 
     function send_email_inventory($nik)
     { 
-        $admin_bagian = $this->db->where('group_id',3)->or_where('group_id',4)->or_where('group_id',5)->or_where('group_id',6)->or_where('group_id',7)->get('users_groups')->result_array('user_id');
+        $user_bu = get_user_buid($nik);
+        $admin_inventaris = $this->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 3)->where('bu', $user_bu)->get()->result_array();
         $user_id = get_id($nik);
-        $msg = 'Dear admin [IT/GA/Koperasi/Perpustakaan/HRD],<br/><p>'.get_name($nik).' telah berhasil melakukan registrasi di Web-HRIS. silakan melakukan input item inventaris karyawan yang bersangkutan.<br/>'
+        $msg = 'Dear admin [IT/GA/Koperasi/Perpustakaan/HRD/Keuangan],<br/><p>'.get_name($nik).' telah berhasil melakukan registrasi di Web-HRIS. silakan melakukan input item inventaris karyawan yang bersangkutan.<br/>'
                .'Silakan klik tautan berikut untuk mengarahkan ke halaman input inventaris <a class="klikemail" href="'.base_url("form_exit/input_inventory/$user_id").'">'.base_url("form_exit/input_inventory/$user_id").'</a></p>';
-        for($i=0;$i<sizeof($admin_bagian);$i++):
+        for($i=0;$i<sizeof($admin_inventaris);$i++):
         $data = array(
                 'sender_id' => $nik,
-                'receiver_id' => get_nik($admin_bagian[$i]['user_id']),
+                'receiver_id' => get_nik($admin_inventaris[$i]['user_id']),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Permintaan Input Data Inventaris Karyawan',
                 'email_body' =>$msg,
                 'is_read' => 0,
             );
         $this->db->insert('email', $data);
+        if(!empty(getEmail($admin_inventaris[$i]['user_id'])))$this->send_email(getEmail($admin_inventaris[$i]['user_id']), 'Permintaan Input Data Inventaris Karyawan', $msg);
         endfor;
     }
 

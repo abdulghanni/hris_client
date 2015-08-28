@@ -117,17 +117,17 @@
                       <div class="form-actions">
                         <div class="row form-row">
                             <div class="col-md-12 text-center">
-                            <?php if($row->is_app_mgr == 1 && is_admin_logistik()){?>
+                            <?php if($row->is_app_mgr == 1 && $is_admin_logistik == 1){?>
                                 <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitexitModalMgr"><i class='icon-edit'> Edit Approval</i></div>
-                              <?php }elseif($row->is_app_koperasi == 1 && is_admin_koperasi()){?>
+                              <?php }elseif($row->is_app_koperasi == 1 && $is_admin_koperasi ==1){?>
                                 <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitexitModalKoperasi"><i class='icon-edit'> Edit Approval</i></div>
-                              <?php }elseif($row->is_app_perpus == 1 && is_admin_perpus()){?>
+                              <?php }elseif($row->is_app_perpus == 1 && $is_admin_perpus==1){?>
                                 <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitexitModalPerpus"><i class='icon-edit'> Edit Approval</i></div>
-                              <?php }elseif($row->is_app_hrd == 1 && is_admin_hrd()){?>
+                              <?php }elseif($row->is_app_hrd == 1 && $is_admin_hrd==1){?>
                                 <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitexitModalHrd"><i class='icon-edit'> Edit Approval</i></div>
-                              <?php }elseif($row->is_app_it == 1 && is_admin_it()){?>
+                              <?php }elseif($row->is_app_it == 1 && $is_admin_it == 1){?>
                                 <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitexitModalit"><i class='icon-edit'> Edit Approval</i></div>
-                              <?php }elseif($row->is_app_keuangan == 1 && is_admin_keuangan()){?>
+                              <?php }elseif($row->is_app_keuangan == 1 && $is_admin_keuangan == 1){?>
                                 <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitexitModalkeuangan"><i class='icon-edit'> Edit Approval</i></div>
                               <?php } ?>
                             </div>
@@ -145,7 +145,7 @@
                                 echo ($row->app_status_id_mgr == 1)? "<img class=approval_img_md src=$approved>":(($row->app_status_id_mgr == 2) ? "<img class=approval_img_md src=$rejected>":'');?><br/>
                                 <span class="semi-bold"><?php echo get_name($row->user_app_mgr)?></span><br/>
                                 <span class="small"><?php echo dateIndo($row->date_app_mgr)?></span><br/>
-                                <?php }elseif($row->is_app_mgr == 0 && is_admin_logistik()){?>
+                                <?php }elseif($row->is_app_mgr == 0 && $is_admin_logistik == 1){?>
                                 <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitexitModalMgr"><i class="icon-ok"></i>Submit</div>
                                 <span class="semi-bold"></span><br/>
                                 <span class="semi-bold"></span><br/>
@@ -167,7 +167,7 @@
                               echo ($row->app_status_id_koperasi == 1)? "<img class=approval_img_md src=$approved>":(($row->app_status_id_koperasi == 2) ? "<img class=approval_img_md src=$rejected>":'');?><br/>
                               <span class="semi-bold"><?php echo get_name($row->user_app_koperasi)?></span><br/>
                               <span class="small"><?php echo dateIndo($row->date_app_koperasi)?></span><br/>
-                              <?php }elseif($row->is_app_koperasi == 0 && is_admin_koperasi()){?>
+                              <?php }elseif($row->is_app_koperasi == 0 && $is_admin_koperasi == 1){?>
                               <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitexitModalKoperasi"><i class="icon-ok"></i>Submit</div>
                               <span class="semi-bold"></span><br/>
                               <span class="semi-bold"></span><br/>
@@ -189,7 +189,7 @@
                                 echo ($row->app_status_id_perpus == 1)? "<img class=approval_img_md src=$approved>":(($row->app_status_id_perpus == 2) ? "<img class=approval_img_md src=$rejected>":'');?><br/>
                               <span class="semi-bold"><?php echo get_name($row->user_app_perpus)?></span><br/>
                               <span class="small"><?php echo dateIndo($row->date_app_perpus)?></span><br/>
-                              <?php }elseif($row->is_app_perpus == 0 && is_admin_perpus()){?>
+                              <?php }elseif($row->is_app_perpus == 0 && $is_admin_perpus == 1){?>
                               <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitexitModalPerpus"><i class="icon-ok"></i>Submit</div>
                               <span class="semi-bold"></span><br/>
                               <span class="semi-bold"></span><br/>
@@ -211,7 +211,7 @@
                               echo ($row->app_status_id_hrd == 1)? "<img class=approval_img_md src=$approved>":(($row->app_status_id_hrd == 2) ? "<img class=approval_img_md src=$rejected>":'');?><br/>
                               <span class="semi-bold"><?php echo get_name($row->user_app_hrd)?></span><br/>
                               <span class="small"><?php echo dateIndo($row->date_app_hrd)?></span><br/>
-                              <?php }elseif($row->is_app_hrd == 0 && is_admin_hrd()){?>
+                              <?php }elseif($row->is_app_hrd == 0 && $is_admin_hrd == 1){?>
                               <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitexitModalHrd"><i class="icon-ok"></i>Submit</div>
                               <span class="semi-bold"></span><br/>
                               <span class="semi-bold"></span><br/>
@@ -233,7 +233,7 @@
                               echo ($row->app_status_id_it == 1)? "<img class=approval_img_md src=$approved>":(($row->app_status_id_it == 2) ? "<img class=approval_img_md src=$rejected>":'');?><br/>
                               <span class="semi-bold"><?php echo get_name($row->user_app_it)?></span><br/>
                               <span class="small"><?php echo dateIndo($row->date_app_it)?></span><br/>
-                              <?php }elseif($row->is_app_it == 0 && is_admin_it()){?>
+                              <?php }elseif($row->is_app_it == 0 && $is_admin_it == 1){?>
                               <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitexitModalit"><i class="icon-ok"></i>Submit</div>
                               <span class="semi-bold"></span><br/>
                               <span class="semi-bold"></span><br/>
@@ -254,7 +254,7 @@
                               echo ($row->app_status_id_keuangan == 1)? "<img class=approval_img_md src=$approved>":(($row->app_status_id_keuangan == 2) ? "<img class=approval_img_md src=$rejected>":'');?><br/>
                               <span class="semi-bold"><?php echo get_name($row->user_app_keuangan)?></span><br/>
                               <span class="small"><?php echo dateIndo($row->date_app_keuangan)?></span><br/>
-                              <?php }elseif($row->is_app_keuangan == 0 && is_admin_keuangan()){?>
+                              <?php }elseif($row->is_app_keuangan == 0 && $is_admin_keuangan == 1){?>
                               <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitexitModalkeuangan"><i class="icon-ok"></i>Submit</div>
                               <span class="semi-bold"></span><br/>
                               <span class="semi-bold"></span><br/>
