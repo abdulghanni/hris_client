@@ -140,6 +140,7 @@ $config['admin_email']                = "andi@komunigrafik.com"; // Admin Email,
 $config['default_group']              = 'members';           // Default group, use name
 $config['admin_group']                = array(
                                         'admin' => 'admin',
+                                        'Super administrator' => 'Super administrator',
                                         );             // Default administrators group, use name
 $config['admin_bagian']               = array(
                                         'Admin HRD' => 'Admin HRD',
