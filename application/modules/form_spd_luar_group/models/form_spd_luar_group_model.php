@@ -320,7 +320,7 @@ class form_spd_luar_group_model extends CI_Model
             }
             
             $this->db->where('users_spd_luar_group.is_deleted', 0);
-            if($is_approver !== $sess_nik && !is_admin()){
+            if($is_approver !== $sess_nik && $admin != 1){
                 //$this->db->where("(users_spd_luar_group.task_receiver like '%$sess_nik%' OR users_spd_luar_group.task_creator = '$sess_nik' )",null, false);
                 $this->db->where("(users_spd_luar_group.task_receiver like '%$sess_nik%' OR users_spd_luar_group.task_creator = '$sess_nik' OR users_spd_luar_group.created_by = '$sess_id' 
                                OR users_spd_luar_group.user_app_lv1 = '$sess_nik'  OR users_spd_luar_group.user_app_lv2 = '$sess_nik'  OR users_spd_luar_group.user_app_lv3 = '$sess_nik' 

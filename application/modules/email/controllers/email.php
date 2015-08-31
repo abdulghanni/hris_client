@@ -316,4 +316,26 @@ class Email extends MX_Controller {
             return $this->load->view($view, $data, TRUE);
         }
     }
+
+    function email_cron()
+    {
+        $form = array('cuti','absen','demotion', 'exit', 'medical', 'promosi', 'recruitment', 'resignment', 'rolling', 'spd_dalam', 'spd_dalam_group', 'spd_luar', 'spd_luar_group', 'training', 'training_group');
+       
+        for($i=0;$i<sizeof($form);$i++):
+            for($l=1;$l<4;$l++):
+            $lv= $this->db->select("id, user_app_lv$l, created_on, is_app_lv$l")->from('users_'.$form[$i])->where("user_app_lv$l !=", '0')->where("is_app_lv$l !=", 1)->get()->result_array();
+            for($j=0;$j<sizeof($lv);$j++){
+                echo '<pre>';
+                print_r($form[$i].' '.'lv'.$l.' '.$lv[$j]['id']);
+                print_r(' '.$lv[$j]['user_app_lv'.$l]);
+                print_r(' '.$lv[$j]['created_on']);
+                print_r(' '.$lv[$j]['is_app_lv'.$l]);
+                if(date('Y-m-d',strtotime('now')) == date('Y-m-d', strtotime($lv[$j]['created_on'] . ' +1 day'))):
+                    echo 'kirim';
+                endif;
+                echo '</pre>';
+
+            }endfor;
+        endfor;
+    }
 }

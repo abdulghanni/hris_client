@@ -352,7 +352,7 @@ class Form_resignment extends MX_Controller {
             }else{
                 $this->approval->update_approve('resignment', $id, $approval_status, $this->detail_email($id));
             }
-            if($type !== 'hrd'){
+            if($type !== 'hrd'  && $approval_status == 1){
                 $lv = substr($type, -1)+1;
                 $lv_app = 'lv'.$lv;
                 $user_app = ($lv<4) ? getValue('user_app_'.$lv_app, 'users_resignment', array('id'=>'where/'.$id)):0;

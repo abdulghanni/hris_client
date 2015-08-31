@@ -44,10 +44,7 @@
           <li > <a href="<?php echo site_url('form_training_group')?>">Training (Group)</a> </li>
           <li > <a href="<?php echo site_url('form_resignment')?>">Resignment</a> </li>
           <li > <a href="<?php echo site_url('form_exit')?>">Exit clearance</a> </li>             
-          <?php if(is_admin_bagian()||is_admin()):?><li > <a href="<?php echo site_url('form_medical')?>">Medical</a> </li><?php endif; ?>
-               
-          <!--<li > <a href="form_status.html">Status karyawan</a> </li> -->          
-          <!--<li > <a href="<?php echo site_url('form_recruitment')?>">Retirement</a> </li> -->       
+          <?php if(is_spv($nik)||is_admin()||is_admin_bagian()):?><li > <a href="<?php echo site_url('form_medical')?>">Medical</a> </li><?php endif; ?>    
           </ul>
       </li>
       <!--<li class=""> <a href="javascript:;"> <i class="icon-custom-form"></i> <span class="title">Analisis & Laporan</span> <span class="arrow "></span> </a>
