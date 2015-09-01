@@ -104,12 +104,12 @@
                                             <label for="checkbox10"></label>
                                         </div>
                                     </th>
-                                    <th width="10%"><?php echo 'NIK';?></th>
-                                    <th width="10%"><?php echo anchor('auth/index/'.$fname_param.'/'.$email_param.'/username/'.(($sort_order == 'asc' && $sort_by == 'username') ? 'desc' : 'asc'), lang('index_fullname_th'));?></th>
+                                    <th width="5%"><?php echo 'NIK';?></th>
+                                    <th width="15%"><?php echo anchor('auth/index/'.$fname_param.'/'.$email_param.'/username/'.(($sort_order == 'asc' && $sort_by == 'username') ? 'desc' : 'asc'), lang('index_fullname_th'));?></th>
                                     <!-- <th width="10%"><?php echo anchor('auth/index/'.$fname_param.'/'.$email_param.'/last_name/'.(($sort_order == 'asc' && $sort_by == 'last_name') ? 'desc' : 'asc'), lang('index_lname_th'));?></th> -->
-                                    <th width="10%"><?php echo anchor('auth/index/'.$fname_param.'/'.$email_param.'/email/'.(($sort_order == 'asc' && $sort_by == 'email') ? 'desc' : 'asc'), lang('index_email_th'));?></th>
-                                    <th width="10%"><?php echo lang('index_groups_th');?></th>
-                                    <th width="10%"><?php echo anchor('auth/index/'.$fname_param.'/'.$email_param.'/active/'.(($sort_order == 'asc' && $sort_by == 'active') ? 'desc' : 'asc'), lang('index_status_th'));?></th>
+                                    <th width="15%"><?php echo anchor('auth/index/'.$fname_param.'/'.$email_param.'/email/'.(($sort_order == 'asc' && $sort_by == 'email') ? 'desc' : 'asc'), lang('index_email_th'));?></th>
+                                    <th width="15%"><?php echo lang('index_groups_th');?></th>
+                                    <th width="5%"><?php echo anchor('auth/index/'.$fname_param.'/'.$email_param.'/active/'.(($sort_order == 'asc' && $sort_by == 'active') ? 'desc' : 'asc'), lang('index_status_th'));?></th>
                                     <th width="10%"><?php echo lang('index_action_th');?></th>                                  
                                 </tr>
                             </thead>
@@ -127,8 +127,10 @@
                                     <!-- <td valign="middle"><span class="muted"><?php echo $user->last_name;?></span></td> -->
                                     <td valign="middle"><span class="muted"><?php echo $user->email;?></span></td>
                                     <td valign="middle"><span class="muted">
-                                        <?php foreach ($user->groups as $group):?>
-                                            <?php echo anchor("auth/edit_group/".$group->id, $group->name) ;?><br />
+                                        <?php foreach ($user->groups as $group):
+                                                $bu = (!empty($group->bu))?' - ['.get_bu_name($group->bu).']':'';
+                                        ?>
+                                            <?php echo anchor("auth/edit_group/".$group->id, $group->name.$bu) ;?><br />
                                         <?php endforeach?>
                                     </span></td>
                                     <td valign="middle">

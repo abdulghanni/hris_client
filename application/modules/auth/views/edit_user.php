@@ -231,7 +231,10 @@
                                                         ?>
                                                         <input type="checkbox" id="checkbox<?php echo $group['id'];?>" name="groups[]" value="<?php echo $group['id'];?>"<?php echo $checked;?>>
                                                         <label for="checkbox<?php echo $group['id'];?>">
-                                                            <?php echo $group['name'];?>
+                                                            <?php 
+                                                                $bu = (!empty($group['bu']))?' - ['.get_bu_name($group['bu']).']':'';
+                                                                echo $group['name'].$bu;
+                                                            ?>
                                                         </label>
                                                     </div>
                                                 <?php endforeach?>

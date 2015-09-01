@@ -103,7 +103,7 @@
                                         100 => '100',);
                                     $selectComponentJs = 'class="select2" onChange="this.form.submit()" id="limit"';
                                     echo "Per page: ".form_dropdown('limit', $selectComponentData, $limit, $selectComponentJs);
-                                    echo '&nbsp;'.lang('found_subheading').'&nbsp;'.$num_rows_all.'&nbsp;'.lang('users_subheading');
+                                    echo '&nbsp;'.lang('found_subheading').'&nbsp;'.$num_rows_all.'&nbsp;'.'Groups';
                                 ?>
                                 <?php echo form_close();?>
                             </div>

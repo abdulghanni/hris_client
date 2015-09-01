@@ -818,8 +818,14 @@ class Auth extends MX_Controller {
         else:
             $id = $this->session->userdata('user_id');
         endif;
+        $nik = get_nik($id);
+        $user_bu = get_user_buid($nik);
         $user = getAll('users', array('id'=>'where/'.$id))->row();
-        $groups=$this->ion_auth->groups()->result_array();
+        if($this->ion_auth->is_admin_by_id($id)){
+            $groups=$this->ion_auth->groups()->result_array();
+        }else{
+            $groups=$this->ion_auth->where("(`bu` = '$user_bu' or `admin_type_id` = '1')",null, false)->groups()->result_array();
+        }
         $currentGroups = $this->ion_auth->get_users_groups($id)->result();
 
         //validate form input

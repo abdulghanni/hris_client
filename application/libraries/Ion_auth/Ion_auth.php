@@ -464,6 +464,26 @@ class Ion_auth
         }
     }
 
+    public function is_admin_by_id($id = null)
+    {
+        /*$this->ion_auth_model->trigger_events('is_admin');
+
+        $admin_group = $this->config->item('admin_group', 'ion_auth');
+
+        return $this->in_group($admin_group, $id);*/
+
+        $CI =& get_instance();
+        if($id == null){
+            $id = $CI->session->userdata('user_id');
+        }
+        $r = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 1)->get()->result_array('user_id');
+        for ($i = 0;$i<sizeof($r);$i++) {
+        if($id == $r[$i]['user_id']):
+            return TRUE;
+        endif;
+        }
+    }
+
     public function is_admin_bagian($id=false)
     {
         $this->ion_auth_model->trigger_events('is_admin_bagian');
