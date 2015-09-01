@@ -17,6 +17,12 @@
     z-index:-1;
 }
 
+.approval-img-al{
+    height:10%;
+    width:10%;
+    z-index:-1;
+}
+
 
 @media screen and (min-width: 768px){
 	#submitMedicalModalHrd .modal-dialog{

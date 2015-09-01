@@ -20,12 +20,12 @@ $(document).ready(function() {
         //minimumInputLength: 3,
     });
                 
-    $('#formadddemolition').submit(function(response){
-        $.post($('#formadddemolition').attr('action'), $('#formadddemolition').serialize(),function(json){
+    $('#formadddemotion').submit(function(response){
+        $.post($('#formadddemotion').attr('action'), $('#formadddemotion').serialize(),function(json){
             if(json.st == 0){
                 $('#MsgBad').html(json.errors).fadeIn();
             }else{
-                window.location.href = json.demolition_url;
+                window.location.href = json.demotion_url;
             }
         }, 'json');
         return false;
@@ -126,7 +126,7 @@ $(document).ready(function() {
         })
         .change();
 
-    $("#empDemolition").change(function() {
+    $("#empdemotion").change(function() {
             var empId = $(this).val();
             get_employee_org(empId);
             get_employee_pos(empId);

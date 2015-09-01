@@ -49,6 +49,7 @@
                                   <th width="1%">NIK</th>
                                   <th width="10%">Nama</th>
                                   <th width="10%">Tanggal Keluar</th>
+                                  <!--
                                   <th width="2%" class="text-center">Approval Mgr GA Nasional</th>
                                   <th width="2%" class="text-center">Approval Koperasi</th>
                                   <th width="2%" class="text-center">Approval Perpustakaan</th>
@@ -56,6 +57,7 @@
                                   <th width="2%" class="text-center">Approval IT</th>
                                   <th width="2%" class="text-center">Approval Keuangan</th>
                                   <th width="2%" class="text-center">Approval Asset Mgr</th>
+                                  -->
                                   <th width="2%" class="text-center">appr. spv</th>
                                   <th width="2%" class="text-center">appr. ka.bag</th>
                                   <th width="2%" class="text-center">appr. Atasan Lainnya</th>
@@ -190,6 +192,7 @@
                                     <td>
                                       <?php echo dateIndo($row->date_exit)?>
                                     </td>
+                                    <!--
                                     <td class="text-center">
                                       <?php echo $txt_app_mgr; ?>
                                     </td>
@@ -211,6 +214,7 @@
                                     <td class="text-center">
                                       <?php echo $txt_app_asset; ?>
                                     </td>
+                                    -->
                                     <td class="text-center">
                                       <?php echo $txt_app_lv1;?>
                                     </td>

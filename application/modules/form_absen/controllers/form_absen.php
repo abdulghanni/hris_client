@@ -178,7 +178,7 @@ class form_absen extends MX_Controller {
                     'created_by'            => $sess_id
                     );
 
-                if($this->input->post('potong_absen') == 1){
+                if($this->input->post('potong_cuti') == 1){
                     $user_nik = get_nik($user_id);
                     $date = $this->input->post('date_tidak_hadir');
                     $recid = $this->get_sisa_absen($user_id)[0]['RECID'];
@@ -189,7 +189,7 @@ class form_absen extends MX_Controller {
                     $data2 = array(
                                 'nik'       => get_mchid($user_nik),
                                 'jhk'       => 1,
-                                'absen'      => 1,
+                                'cuti'      => 1,
                                 'tanggal'   => date("d", strtotime($date)),
                                 'bulan'     => date("m", strtotime($date)),
                                 'tahun'     => date("Y", strtotime($date)),

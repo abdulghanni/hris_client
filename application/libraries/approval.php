@@ -321,7 +321,7 @@ class Approval {
                 'receiver_id' => $receiver_id,
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Status Pengajuan Permohonan '.ucfirst($form).' dari Atasan',
-                'email_body' => "Status pengajuan $form yang diajukan oleh ".get_name($user_id).' '.$approval_status. ' oleh '.get_name($sess_id).' untuk detail silakan <a href="$url">Klik Disini</a><br />'.$detail,
+                'email_body' => "Status pengajuan $form yang diajukan oleh ".get_name($user_id).' '.$approval_status. ' oleh '.get_name($sess_id)." untuk detail silakan <a href=$url>Klik Disini</a><br />".$detail,
                 'is_read' => 0,
             );
         $CI->db->insert('email', $data);

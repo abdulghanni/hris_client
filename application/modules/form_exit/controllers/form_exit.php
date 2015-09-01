@@ -282,10 +282,19 @@ class Form_exit extends MX_Controller {
                     $this->db->update('users_inventory', $data);
                 }
 
+                $creator_id = $this->session->userdata('user_id');
                 $num_rows = getAll('users_exit')->num_rows();
                 $user_id= $this->input->post('emp');
                 $exit_id = getValue('id','users_exit', array('user_id'=>'where/'.$user_id));
-                $creator_id = $this->session->userdata('user_id');
+                if($exit_id == 0):
+                    $exit = array(
+                            'user_id' => $user_id,
+                            'created_by' => $creator_id,
+                            'created_on' => date('Y-m-d',strtotime('now')),
+                        );
+                    $this->db->insert('users_exit', $exit);
+                    $exit_id = $this->db->insert_id();
+                endif;
                 $data1 = array(
                     'id_comp_session' => 1,
                     'date_exit' => date('Y-m-d',strtotime($this->input->post('date_exit'))),
@@ -295,7 +304,7 @@ class Form_exit extends MX_Controller {
                     'user_app_lv1'          => $this->input->post('atasan1'),
                     'user_app_lv2'          => $this->input->post('atasan2'),
                     'user_app_lv3'          => $this->input->post('atasan3'),
-                    'user_app_asset'          => $this->input->post('asset_mng'),
+                    'user_app_asset'        => $this->input->post('asset_mng'),
                     'created_on'            => date('Y-m-d',strtotime('now')),
                     'created_by'            => $creator_id,
                     );

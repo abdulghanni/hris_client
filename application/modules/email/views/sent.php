@@ -59,9 +59,9 @@
 
                               if (date('Y-m-d', strtotime($row->sent_on)) == $now)
                               {
-                               echo 'Today';
+                               echo 'Hari Ini';
                               }elseif(date('Y-m-d', strtotime($row->sent_on)) == date("Y-m-d", strtotime( date( "Y-m-d", strtotime( date("Y-m-d") ) ) . "-1 day" ) )){
-                               echo "Yesterday";
+                               echo "Kemarin";
                               }else{
                                echo date('d M', strtotime($row->sent_on));
                               }

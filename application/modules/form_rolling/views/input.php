@@ -228,7 +228,7 @@
  {
      buid = document.getElementById("bu").value;
      $.ajax({
-         url:"<?php echo base_url();?>form_demolition/get_org/"+buid+"",
+         url:"<?php echo base_url();?>form_demotion/get_org/"+buid+"",
          success: function(response){
          $("#org").html(response);
          },
@@ -241,7 +241,7 @@
  {
      orgid = document.getElementById("org").value;
      $.ajax({
-         url:"<?php echo base_url();?>form_demolition/get_pos/"+orgid+"",
+         url:"<?php echo base_url();?>form_demotion/get_pos/"+orgid+"",
          success: function(response){
          $("#pos").html(response);
          },
