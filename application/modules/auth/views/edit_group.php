@@ -66,8 +66,10 @@
                                         <label>Tipe Administrator :</label><br />
                                         <select class="select2" name="admin_type_id" style="width:50%">
                                         <?php if($admin_type->num_rows()>0):
-                                            foreach ($admin_type->result() as $type) {?>
-                                        <option value="<?php echo $type->id?>"><?php echo $type->title?></option>
+                                            foreach ($admin_type->result() as $type) {
+                                                $selected = ($admin_type_id<>0 && $admin_type_id == $type->id) ? "selected='selected'" : '';
+                                                ?>
+                                        <option value="<?php echo $type->id?>" <?php echo $selected ?>><?php echo $type->title?></option>
                                         <?php }endif; ?>
                                         </select>
                                     </p><br />

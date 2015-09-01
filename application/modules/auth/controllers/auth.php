@@ -3423,7 +3423,7 @@ class Auth extends MX_Controller {
                 $bu = json_decode($getbu, true);
                 foreach ($bu as $row)
             {
-                $result['']= '- Pilih BU -';
+                $result['0']= '- Pilih BU -';
                 if($row['NUM'] != null){
                 $result[$row['NUM']]= ucwords(strtolower($row['DESCRIPTION']));
                 }
@@ -3500,6 +3500,7 @@ class Auth extends MX_Controller {
 
         $this->get_bu();
         $this->data['admin_type'] = getAll('admin_type', array('is_deleted'=>'where/0'));
+        $this->data['admin_type_id'] = $group->admin_type_id;
 
         $this->_render_page('auth/edit_group', $this->data);
     }
