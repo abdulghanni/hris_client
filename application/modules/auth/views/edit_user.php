@@ -238,6 +238,7 @@
                                                         </label>
                                                     </div>
                                                 <?php endforeach?>
+                                                <input type="checkbox" id="checkboxuser" name="groups[]" value="2" checked="checked" style="display:none">
                                             </div>
                                         </div>
                                     <?php endif ?>
