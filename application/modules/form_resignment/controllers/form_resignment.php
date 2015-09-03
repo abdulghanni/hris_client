@@ -281,7 +281,7 @@ class Form_resignment extends MX_Controller {
             
             $user_id = get_nik($this->session->userdata('user_id'));
             $date_now = date('Y-m-d');
-            if($type = 'hrd'):
+            if($type == 'hrd'):
                 $data1 = array(
                 'user_resignment_id' => $id,
                 'alasan_resign_id'   => implode(',',$this->input->post('alasan_resign_id')),

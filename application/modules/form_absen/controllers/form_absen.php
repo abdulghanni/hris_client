@@ -249,11 +249,11 @@ class form_absen extends MX_Controller {
                 
         if($type !== 'hrd'){
         $lv = substr($type, -1)+1;
-        $lv = 'lv'.$lv;
-        $user_app = getValue('user_app_'.$lv, 'users_absen', array('id'=>'where/'.$id));
+        $lv_app= 'lv'.$lv;
+        $user_app = ($lv<4) ? getValue('user_app_'.$lv_app, 'users_absen', array('id'=>'where/'.$id)) : 0;
         if(!empty($user_app)):
             if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), 'Pengajuan Keterangan Tidak Absen', $isi_email_request);
-            $this->approval->request($lv, 'absen', $id, $user_absen_id, $this->detail_email($id));
+            $this->approval->request($lv_app, 'absen', $id, $user_absen_id, $this->detail_email($id));
         else:
             if(!empty(getEmail($this->approval->approver('absen'))))$this->send_email(getEmail($this->approval->approver('absen')), 'Pengajuan Keterangan Tidak Absen', $isi_email_request);
             $this->approval->request('hrd', 'absen', $id, $user_absen_id, $this->detail_email($id));
