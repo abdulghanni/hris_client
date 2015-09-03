@@ -312,6 +312,12 @@ class Approval {
             case "rolling":
                 $user_id = getValue('created_by', 'users_'.$form, array('id'=>'where/'.$id));
                 break;
+            case "training":
+                $user_id = getValue('user_pengaju_id', 'users_'.$form, array('id'=>'where/'.$id));
+                break;
+            case "training_group":
+                $user_id = getValue('user_pengaju_id', 'users_'.$form, array('id'=>'where/'.$id));
+                break;
             default:
             $user_id = getValue('user_id', 'users_'.$form, array('id'=>'where/'.$id));
         }
