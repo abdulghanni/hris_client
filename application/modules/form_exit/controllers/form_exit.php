@@ -125,20 +125,23 @@ class Form_exit extends MX_Controller {
             echo 'Anda Tidak Punya Hak Akses Ke Halaman Ini';
         }else{
 
-            if($this->ion_auth->is_admin_it()){
+            if(is_admin_it()){
                 $group_id = 2;
                 $type = 'it';
-            }elseif($this->ion_auth->is_admin_hrd()){
+            }elseif(is_admin_hrd()){
                 $group_id = 1;
                 $type = 'hrd';
-            }elseif($this->ion_auth->is_admin_logistik()){
+            }elseif(is_admin_logistik()){
                 $group_id = 3;
                 $type = 'logistik';
-            }elseif($this->ion_auth->is_admin_perpustakaan()){
+            }elseif(is_admin_perpustakaan()){
                 $group_id = 4;
                 $type = 'perpus';
-            }elseif($this->ion_auth->is_admin_koperasi()){
+            }elseif(is_admin_koperasi()){
                 $group_id = 5;
+                $type = 'koperasi';
+            }elseif(is_admin_keuangan()){
+                $group_id = 6;
                 $type = 'koperasi';
             }else{
                 $group_id = 0;

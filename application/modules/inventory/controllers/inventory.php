@@ -134,7 +134,7 @@ class Inventory extends MX_Controller {
             $this->session->set_userdata('last_link', $this->uri->uri_string());
             redirect('auth/login', 'refresh');
         
-        }elseif($this->ion_auth->is_admin_inventaris() || $sess_nik==$superior_hrd || $sess_nik==$superior_it || $sess_nik==$superior_logistik || $sess_nik==$superior_koperasi || $sess_nik==$superior_perpus){
+        }elseif(is_admin_inventaris() || $sess_nik==$superior_hrd || $sess_nik==$superior_it || $sess_nik==$superior_logistik || $sess_nik==$superior_koperasi || $sess_nik==$superior_perpus){
           //  die($sess_nik.'=='.$superior_it);
             if($this->ion_auth->is_admin_it() || $sess_nik===$superior_it){
                 $group_id = 2;
@@ -379,7 +379,7 @@ class Inventory extends MX_Controller {
         {
             redirect('auth/login', 'refresh');
         
-        }elseif($this->ion_auth->is_admin_inventaris() || $sess_nik==$superior_hrd || $sess_nik==$superior_it || $sess_nik==$superior_logistik || $sess_nik==$superior_koperasi || $sess_nik==$superior_perpus){
+        }elseif(is_admin_inventaris() || $sess_nik==$superior_hrd || $sess_nik==$superior_it || $sess_nik==$superior_logistik || $sess_nik==$superior_koperasi || $sess_nik==$superior_perpus){
 
             if($this->ion_auth->is_admin_it() || $sess_nik==$superior_it){
                 $group_id = 2;
