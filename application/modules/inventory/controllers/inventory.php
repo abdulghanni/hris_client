@@ -27,7 +27,7 @@ class Inventory extends MX_Controller {
             //redirect them to the login page
             redirect('auth/login', 'refresh');
         }
-        elseif (!$this->ion_auth->is_admin_inventaris()) //remove this elseif if you want to enable this for non-admins
+        elseif (!is_admin_inventaris()) //remove this elseif if you want to enable this for non-admins
         {
             $id = $this->session->userdata('user_id');
             //redirect them to the home page because they must be an administrator to view this

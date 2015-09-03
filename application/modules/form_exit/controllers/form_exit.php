@@ -120,7 +120,7 @@ class Form_exit extends MX_Controller {
         if (!$this->ion_auth->logged_in())
         {
             redirect('auth/login', 'refresh');
-        }elseif (!$this->ion_auth->is_admin_inventaris())
+        }elseif (!is_admin_inventaris())
         {
             echo 'Anda Tidak Punya Hak Akses Ke Halaman Ini';
         }else{
