@@ -136,7 +136,7 @@
                   </div>
 
                   &nbsp;<hr/>
-
+<!--
                   <h5 class="text-center"><span class="semi-bold">Ketentuan Biaya Perjalan Dinas Luar Kota (Group)</span></h5>
 
                     <table class="table table-bordered">
@@ -177,6 +177,7 @@
                       <?php endforeach ?>
                       </tbody>
                     </table>
+                    -->
                 </div>
                         </div>
                       </div>

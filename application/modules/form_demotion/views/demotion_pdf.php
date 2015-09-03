@@ -102,6 +102,7 @@ $rejected = assets_url('img/rejected_stamp.png');?>
     <td height="45"><span class="style3"><?php echo $row->alasan?></span></td>
   </tr>
 </table>
+<!--
 <?php if(!empty($row->note_lv1)){?>
 <p class="style4">Catatan Supervisor</p>
 <textarea class="style4" rows="2" width="100%"><?php echo $row->note_lv1?></textarea>
@@ -114,6 +115,7 @@ $rejected = assets_url('img/rejected_stamp.png');?>
 <p class="style4">Catatan Atasan Lainnya</p>
 <textarea class="style4" rows="2" width="100%"><?php echo $row->note_lv3?></textarea>
 <?php } ?>
+-->
 <?php if(!empty($row->note_hrd)){?>
 <p class="style4">Catatan HRD</p>
 <textarea class="style4" rows="2" width="100%"><?php echo $row->note_hrd?></textarea>
@@ -159,13 +161,13 @@ $rejected = assets_url('img/rejected_stamp.png');?>
     </tr>
   </tbody>
 </table>
-
+<br />
 <?php if(!empty($row->user_app_lv3)){?>
 <table width="1000" align="center">
   <tbody>
     <tr>
       <td width="333" align="center"></td>
-      <td width="333" align="center"><?php echo ($row->app_status_lv3 == 1)?"<img class=approval-img-md src=$approved>":(($row->app_status_id_lv3 == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
+      <td width="333" align="center"><?php echo ($row->app_status_id_lv3 == 1)?"<img class=approval-img-md src=$approved>":(($row->app_status_id_lv3 == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
       <td width="333" align="center"></td>
     </tr>
     <tr>
@@ -174,8 +176,8 @@ $rejected = assets_url('img/rejected_stamp.png');?>
       <td align="center" class="style3"></td>
     </tr>
     <tr>
-      <td align="center"><?php echo dateIndo($row->date_app_lv1)?><br/></td>
     <?php if(!empty($row->user_app_lv3)){?>
+      <td></td>
       <td align="center"><?php echo dateIndo($row->date_app_lv3)?><br/><?php echo '('.get_user_position($row->user_app_lv3).')'?></td>
       <?php }?>
       <td align="center"></td>

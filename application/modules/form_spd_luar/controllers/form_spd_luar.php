@@ -164,20 +164,20 @@ class Form_spd_luar extends MX_Controller {
         $this->form_spd_luar_model->update($id,$data);
         $creator_id = getValue('task_creator', 'users_spd_luar', array('id'=>'where/'.$id));
         $isi_email = 'Status pengajuan perjalan Dinas Luar Kota anda disetujui oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_spd_luar/submit/'.$id.'>Klik Disini</a><br />';
-        $isi_email_request = get_name(creator_id ).' mengajukan Permohonan perjalan Dinas Luar Kota, untuk melihat detail silakan <a href='.base_url().'form_spd_luar/submit/'.$id.'>Klik Disini</a><br />';  
+        $isi_email_request = get_name($creator_id ).' mengajukan Permohonan perjalan Dinas Luar Kota, untuk melihat detail silakan <a href='.base_url().'form_spd_luar/submit/'.$id.'>Klik Disini</a><br />';  
         
         $approval_status = 1;
         $this->approval->approve('spd_luar', $id, $approval_status, $this->detail_email_submit($id));
-        if(!empty(getEmail(creator_id )))$this->send_email(getEmail(creator_id ), 'Status Pengajuan Permohonan Perjalan Dinas Luar Kota dari Atasan', $isi_email);
+        if(!empty(getEmail($creator_id )))$this->send_email(getEmail($creator_id ), 'Status Pengajuan Permohonan Perjalan Dinas Luar Kota dari Atasan', $isi_email);
         
         if($type !== 'hrd'){
         $lv = substr($type, -1)+1;
-        $lv = 'lv'.$lv;
-        $user_app = getValue('user_app_'.$lv, 'users_spd_luar', array('id'=>'where/'.$id));
+        $lv_app = 'lv'.$lv;
+        $user_app = ($lv<4) ? getValue('user_app_'.$lv_app, 'users_spd_luar', array('id'=>'where/'.$id)) : 0;
         $user_spd_luar_id = getValue('task_creator', 'users_spd_luar', array('id'=>'where/'.$id));
         if(!empty($user_app)):
             if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), 'Pengajuan Perjalanan Dinas Luar Kota', $isi_email_request);
-            $this->approval->request($lv, 'spd_luar', $id, $user_spd_luar_id, $this->detail_email_submit($id));
+            $this->approval->request($lv_app, 'spd_luar', $id, $user_spd_luar_id, $this->detail_email_submit($id));
         else:
             if(!empty(getEmail($this->approval->approver('dinas'))))$this->send_email(getEmail($this->approval->approver('dinas')), 'Pengajuan Perjalanan Dinas Luar Kota', $isi_email_request);
             $this->approval->request('hrd', 'spd_luar', $id, $user_spd_luar_id, $this->detail_email_submit($id));
