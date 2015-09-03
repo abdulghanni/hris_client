@@ -27,7 +27,7 @@ class Inventory extends MX_Controller {
             //redirect them to the login page
             redirect('auth/login', 'refresh');
         }
-        elseif (!$this->ion_auth->is_admin_bagian()) //remove this elseif if you want to enable this for non-admins
+        elseif (!$this->ion_auth->is_admin_inventaris()) //remove this elseif if you want to enable this for non-admins
         {
             $id = $this->session->userdata('user_id');
             //redirect them to the home page because they must be an administrator to view this
@@ -134,7 +134,7 @@ class Inventory extends MX_Controller {
             $this->session->set_userdata('last_link', $this->uri->uri_string());
             redirect('auth/login', 'refresh');
         
-        }elseif($this->ion_auth->is_admin_bagian() || $sess_nik==$superior_hrd || $sess_nik==$superior_it || $sess_nik==$superior_logistik || $sess_nik==$superior_koperasi || $sess_nik==$superior_perpus){
+        }elseif($this->ion_auth->is_admin_inventaris() || $sess_nik==$superior_hrd || $sess_nik==$superior_it || $sess_nik==$superior_logistik || $sess_nik==$superior_koperasi || $sess_nik==$superior_perpus){
           //  die($sess_nik.'=='.$superior_it);
             if($this->ion_auth->is_admin_it() || $sess_nik===$superior_it){
                 $group_id = 2;
@@ -379,7 +379,7 @@ class Inventory extends MX_Controller {
         {
             redirect('auth/login', 'refresh');
         
-        }elseif($this->ion_auth->is_admin_bagian() || $sess_nik==$superior_hrd || $sess_nik==$superior_it || $sess_nik==$superior_logistik || $sess_nik==$superior_koperasi || $sess_nik==$superior_perpus){
+        }elseif($this->ion_auth->is_admin_inventaris() || $sess_nik==$superior_hrd || $sess_nik==$superior_it || $sess_nik==$superior_logistik || $sess_nik==$superior_koperasi || $sess_nik==$superior_perpus){
 
             if($this->ion_auth->is_admin_it() || $sess_nik==$superior_it){
                 $group_id = 2;
