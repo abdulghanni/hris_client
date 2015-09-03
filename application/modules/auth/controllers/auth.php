@@ -1296,7 +1296,7 @@ class Auth extends MX_Controller {
             $user = getJoin('users', 'users_edit_approval', 'users.id = users_edit_approval.user_id', 'left', 'users.*,users_edit_approval.*', array('users_edit_approval.id'=>'where/'.$id))->row();
             $user_id = get_nik($this->session->userdata('user_id'));
             $date_now = date('Y-m-d');
-
+            
             $data = array(
             'is_app' => 1,
             'app_status_id' => $this->input->post('app_status'), 
@@ -1306,6 +1306,7 @@ class Auth extends MX_Controller {
             );
             $this->db->where('id', $id);
             $this->db->update('users_edit_approval',$data);
+
 
             $data_n = array(
                 'first_name_new' => (!empty($user->first_name_new))?$user->first_name_new:'',
@@ -1318,7 +1319,7 @@ class Auth extends MX_Controller {
                 );
             $approval_status = $this->input->post('app_status');
             $this->approval->approve('edit_user', $id, $approval_status, '');
-            if($approval_status==1):$this->update_employeetable($user->user_id, $data_n);endif;
+            if($approval_status==1):print_mz($this->update_employeetable($user->user_id, $data_n));endif;
         }
     }
 
@@ -1333,10 +1334,18 @@ class Auth extends MX_Controller {
                 'previous_email' => $data['previous_email_new'],
                 'bb_pin'    => $data['bb_pin_new']
             );
-        $this->db->where('id', $id)->update('users', $data_new);lastq();
+        $this->db->where('id', $id)->update('users', $data_new);
+
+
+        $email_new = $data['previous_email_new'];
+        $rep_email_char = array("%5Bat%5D","%5Bdot%5D");
+        $std_email_char = array("@",".");
+        
+        $email_post = str_replace($std_email_char,$rep_email_char,$email_new);
+
         $method = 'post';
         $params =  array();
-        $uri = get_api_key().'users/edit_employee/EMPLID/'.get_nik($id).'/FIRSTNAME/'.$data['first_name_new'].'/LASTNAME/'.$data['last_name_new'].'/BIRTHDATE/'.$data['bod_new'].'/PHONE/'.$data['phone_new'].'/MARITALSTATUS/'.$data['marital_id_new'].'/SMS/'.$data['previous_email_new'].'/PINBLACKBERRY/'.$data['bb_pin_new'];
+        $uri = get_api_key().'users/edit_employee/EMPLID/'.get_nik($id).'/FIRSTNAME/'.$data['first_name_new'].'/LASTNAME/'.$data['last_name_new'].'/BIRTHDATE/'.$data['bod_new'].'/PHONE/'.$data['phone_new'].'/MARITALSTATUS/'.$data['marital_id_new'].'/SMS/'.$email_post.'/PINBLACKBERRY/'.$data['bb_pin_new'];
 
         $this->rest->format('application/json');
 
