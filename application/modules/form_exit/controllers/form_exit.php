@@ -134,7 +134,7 @@ class Form_exit extends MX_Controller {
             }elseif(is_admin_logistik()){
                 $group_id = 3;
                 $type = 'logistik';
-            }elseif(is_admin_perpustakaan()){
+            }elseif(is_admin_perpus()){
                 $group_id = 4;
                 $type = 'perpus';
             }elseif(is_admin_koperasi()){

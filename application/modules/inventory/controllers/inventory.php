@@ -136,22 +136,22 @@ class Inventory extends MX_Controller {
         
         }elseif(is_admin_inventaris() || $sess_nik==$superior_hrd || $sess_nik==$superior_it || $sess_nik==$superior_logistik || $sess_nik==$superior_koperasi || $sess_nik==$superior_perpus){
           //  die($sess_nik.'=='.$superior_it);
-            if($this->ion_auth->is_admin_it() || $sess_nik===$superior_it){
+            if(is_admin_it() || $sess_nik===$superior_it){
                 $group_id = 2;
                 $type = 'it';
-            }elseif($this->ion_auth->is_admin_hrd() ||$sess_nik===$superior_hrd){
+            }elseif(is_admin_hrd() ||$sess_nik===$superior_hrd){
                 $group_id = 1;
                 $type = 'hrd';
-            }elseif($this->ion_auth->is_admin_logistik() || $sess_nik===$superior_logistik){
+            }elseif(is_admin_logistik() || $sess_nik===$superior_logistik){
                 $group_id = 3;
                 $type = 'logistik';
-            }elseif($this->ion_auth->is_admin_perpustakaan() || $sess_nik===$superior_perpus){
+            }elseif(is_admin_perpus() || $sess_nik===$superior_perpus){
                 $group_id = 5;
                 $type = 'perpus';
-            }elseif($this->ion_auth->is_admin_koperasi() || $sess_nik===$superior_koperasi){
+            }elseif(is_admin_koperasi() || $sess_nik===$superior_koperasi){
                 $group_id = 4;
                 $type = 'koperasi';
-            }elseif($this->ion_auth->is_admin_keuangan() || $sess_nik===$superior_keuangan){
+            }elseif(is_admin_keuangan() || $sess_nik===$superior_keuangan){
                 $group_id = 6;
                 $type = 'keuangan';
             }else{
@@ -381,22 +381,22 @@ class Inventory extends MX_Controller {
         
         }elseif(is_admin_inventaris() || $sess_nik==$superior_hrd || $sess_nik==$superior_it || $sess_nik==$superior_logistik || $sess_nik==$superior_koperasi || $sess_nik==$superior_perpus){
 
-            if($this->ion_auth->is_admin_it() || $sess_nik==$superior_it){
+            if(is_admin_it() || $sess_nik==$superior_it){
                 $group_id = 2;
                 $type = 'it';
-            }elseif($this->ion_auth->is_admin_hrd() ||$sess_nik==$superior_hrd){
+            }elseif(is_admin_hrd() ||$sess_nik==$superior_hrd){
                 $group_id = 1;
                 $type = 'hrd';
-            }elseif($this->ion_auth->is_admin_logistik() || $sess_nik==$superior_logistik){
+            }elseif(is_admin_logistik() || $sess_nik==$superior_logistik){
                 $group_id = 3;
                 $type = 'logistik';
-            }elseif($this->ion_auth->is_admin_perpustakaan() || $sess_nik==$superior_perpus){
+            }elseif(is_admin_perpus() || $sess_nik==$superior_perpus){
                 $group_id = 4;
                 $type = 'perpus';
-            }elseif($this->ion_auth->is_admin_koperasi() || $sess_nik==$superior_koperasi){
+            }elseif(is_admin_koperasi() || $sess_nik==$superior_koperasi){
                 $group_id = 5;
                 $type = 'koperasi';
-            }elseif($this->ion_auth->is_admin_keuangan() || $sess_nik==$superior_keuangan){
+            }elseif(is_admin_keuangan() || $sess_nik==$superior_keuangan){
                 $group_id = 6;
                 $type = 'keuangan';
             }else{
