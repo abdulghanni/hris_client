@@ -67,7 +67,7 @@
                           <h4>Inventaris yang Dimiliki</h4>
                         </div>
                       </div>
-                      <?php if($is_submit == 1 && is_admin_bagian()){ ?>
+                      <?php if($is_submit == 1 && is_admin_inventaris()){ ?>
                       <div class="row form-row">
                         <div class="col-md-12">
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#updateInventarisModal"><i class="icon-edit"></i>&nbsp;Update Inventaris</button>
