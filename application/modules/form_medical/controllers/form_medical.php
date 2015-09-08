@@ -242,6 +242,7 @@ class Form_medical extends MX_Controller {
     {
         if (!$this->ion_auth->logged_in())
         {
+            $this->session->set_userdata('last_link', $this->uri->uri_string());
             //redirect them to the login page
             redirect('auth/login', 'refresh');
         }
@@ -264,7 +265,11 @@ class Form_medical extends MX_Controller {
         $this->data['user_folder'] = $user_id.$first_name.'/medical/';
         $attachment = getValue('attachment', 'users_medical', array('id' => 'where/'.$id));
         $this->data['attachment'] = explode(",",$attachment);
-            
+        $this->get_user_same_org($user_id);
+        $this->data['all_users'] = getAll('users', array('active'=>'where/1', 'username'=>'order/asc'), array('!=id'=>'1'))->result_array();
+        $this->data['hubungan'] = getAll('medical_hubungan', array('is_deleted' => 'where/0'))->result_array();
+        $this->data['jenis'] = getAll('medical_jenis_pemeriksaan', array('is_deleted' => 'where/0'))->result_array();
+
         $this->_render_page('form_medical/detail', $this->data);
 
     }
@@ -280,14 +285,25 @@ class Form_medical extends MX_Controller {
         $date_now = date('Y-m-d');
         $is_app_hrd = getValue('is_app_hrd', 'users_medical', array('id'=>'where/'.$id));
         $medical_detail_id = $this->input->post('detail_id');
-        $rupiah = $this->input->post('rupiah_update');
         $approve = $this->input->post('checkbox1');
         $user_medical_id = getValue('user_id', 'users_medical', array('id'=>'where/'.$id));
         
+        $medical_detail = array(
+            'karyawan_id' => $this->input->post('emp'),
+            'pasien' => $this->input->post('pasien'),
+            'hubungan_id' => $this->input->post('hubungan'),
+            'jenis_pemeriksaan_id' => $this->input->post('jenis'),
+            'rupiah' => $this->input->post('rupiah_update')
+            );
+
 
         for($i=0;$i<sizeof($medical_detail_id);$i++):
             $data = array(
-                    'rupiah' => $rupiah[$i],
+                    'karyawan_id'=>$medical_detail['karyawan_id'][$i],
+                    'pasien'=>$medical_detail['pasien'][$i],
+                    'hubungan_id'=>$medical_detail['hubungan_id'][$i],
+                    'jenis_pemeriksaan_id'=>$medical_detail['jenis_pemeriksaan_id'][$i],
+                    'rupiah'=>$medical_detail['rupiah'][$i],
                     'edited_by' => $user_id,
                     'edited_on' => $date_now,
                 ); 
@@ -295,6 +311,46 @@ class Form_medical extends MX_Controller {
             $this->db->update('users_medical_detail', $data);
         endfor;
 
+         $user_id = getValue('user_id', 'users_medical', array('id' => 'where/'.$id));
+                $user = getAll('users', array('id'=>'where/'.$user_id))->row();
+                $user_folder = $user->id.$user->first_name;
+                if(!is_dir('./'.'uploads')){
+                mkdir('./'.'uploads', 0777);
+                }
+                if(!is_dir('./uploads/'.$user_folder)){
+                mkdir('./uploads/'.$user_folder, 0777);
+                }
+                if(!is_dir("./uploads/$user_folder/medical/")){
+                mkdir("./uploads/$user_folder/medical/", 0777);
+                }
+
+
+                $path = "./uploads/$user_folder/medical/";
+                $this->load->library('upload');
+                $this->upload->initialize(array(
+                    "upload_path"=>$path,
+                    "allowed_types"=>"*"
+                ));
+
+        if($this->upload->do_multi_upload("userfile")){
+                    $up = $this->upload->get_multi_upload_data();
+                    $attachment = '';
+                    for($i=0;$i<sizeof($up);$i++):
+                        $koma = ($i<sizeof($up)-1)?',':'';
+                        $attachment .= $up[$i]['file_name'].$koma;
+                    endfor;
+                    $file_old = $this->input->post('userfileold');
+                    $attachment_old = '';
+                    for($i=0;$i<sizeof($file_old);$i++):
+                        $attachment_old .= $file_old[$i].',';
+                    endfor;
+                    $data = array(
+                            'attachment' => $attachment_old.$attachment,
+                            'edited_by' => $user_id,
+                            'edited_on' => $date_now,
+                        );
+                    $this->db->where('id', $id)->update('users_medical', $data);
+                }
         redirect('form_medical/detail/'.$id, 'refresh');
     }
 
@@ -526,9 +582,10 @@ class Form_medical extends MX_Controller {
         $mpdf->Output($id.'-'.$title.'.pdf', 'I');
     }
 
-    function get_user_same_org()
+    function get_user_same_org($user_id = null)
     {
-        $user_id = $this->session->userdata('user_id');
+
+        $user_id = ($user_id != null) ? $user_id : $this->session->userdata('user_id');
         $url_org = get_api_key().'users/org/EMPLID/'.get_nik($user_id).'/format/json';
         $headers_org = get_headers($url_org);
         $response = substr($headers_org[0], 9, 3);

@@ -19,7 +19,7 @@
                 <div class="grid-title no-border">
                   <h4>Daftar Keterangan Tidak <span class="semi-bold">Absen</span></h4>
                   <div class="tools"> 
-                    <a href="<?php echo site_url('form_absen/input')?>" class="config"></a>
+                    <a href="<?php echo site_url('form_absen/input')?>" class="config"><button type="button" class="btn btn-primary btn-sm"><i class="icon-plus"></i>&nbsp;<?php echo lang('add_button');?></button></a>
                   </div>
                 </div>
                   <div class="grid-body no-border">
@@ -44,9 +44,9 @@
                     <table class="table table-striped table-flip-scroll cf">
                         <thead>
                           <tr>
-                            <th width="10%">Tanggal</th>
+                            <th width="15%">Tanggal</th>
                             <th width="20%">Nama</th>
-                            <th width="20%">Keterangan</th>
+                            <th width="15%">Keterangan</th>
                             <th width="10%" class="text-center">appr. spv</th>
                             <th width="10%" class="text-center">appr. ka. bag</th>
                             <th width="10%" class="text-center">appr. Atasan Lainnya</th>

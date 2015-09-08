@@ -8,7 +8,7 @@
     <?php endif ?>
     <input type="hidden" name="biaya_fix_id[]" value="<?php echo $row->id?>">
     <td><?php echo $i++?></td>
-    <td><?php echo $row->title?></td>
-    <td><?php echo ($row->jumlah_biaya == 0) ? '<input type="text" name="jumlah_biaya_fix[]" value="0" class="form-control rupiah">' : $row->jumlah_biaya;?> </td>
+    <td><?php echo $row->title,'/hari'?></td>
+    <td align="right"><?php echo ($row->jumlah_biaya == 0) ? '<input type="text" name="jumlah_biaya_fix[]" value="0" class="form-control rupiah">' : '<span style="text-align:right">'.number_format($row->jumlah_biaya, 0).'</span>';?> </td>
   </tr>
 <?php  endforeach;}?>

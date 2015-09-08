@@ -144,36 +144,38 @@
                     </div>
 
                   <hr/>
-                  <h5 class="text-center"><span class="semi-bold">Ketentuan Biaya Perjalanan Dinas</span></h5>
-                  <p>&nbsp;</p>
-                      <p class="bold">Grade Penerima Tugas : <span id="grade" class="semi-bold"><?php echo get_grade($tc_id)?></span></p>
-                        <div class="row form-row">
-                          <div class="col-md-12">
-                          <table class="table table-bordered">
-                            <thead>
-                              <tr>
-                                <th width="2%">No</th>
-                                <th width="40%">Jenis Biaya</th>
-                                <th width="40%">Jumlah Biaya</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                            <?php $i=1;foreach($biaya_pjd->result() as $row):
-                              $jumlah_biaya = (!empty($row->type)) ? $row->jumlah_biaya*$jml_pjd : $row->jumlah_biaya;
-                            ?>
-                              <tr>
-                                <td><?php echo $i++?></td>
-                                <td><?php echo $row->jenis_biaya?></td>
-                                <td>Rp. <?php echo number_format($jumlah_biaya, 0)?></td>
-                              </tr>
-                            <?php endforeach ?>
-                            </tbody>
-                          </table>
+                  <div class="row">
+                    <div class="col-md-7 col-md-offset-2">
+                      <h5 class="text-center"><span class="semi-bold">Ketentuan Biaya Perjalanan Dinas</span></h5>
+                      <p>&nbsp;</p>
+                          <p class="bold">Grade Penerima Tugas : <span id="grade" class="semi-bold"><?php echo get_grade($tc_id)?></span></p>
+                            <div class="row form-row">
+                              <div class="col-md-12">
+                              <table class="table table-bordered">
+                                <thead>
+                                  <tr>
+                                    <th width="2%">No</th>
+                                    <th width="40%">Jenis Biaya</th>
+                                    <th width="40%">Jumlah Biaya(Rp)</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                <?php $i=1;foreach($biaya_pjd->result() as $row):
+                                  $jumlah_biaya = (!empty($row->type)) ? $row->jumlah_biaya*$jml_pjd : $row->jumlah_biaya;
+                                ?>
+                                  <tr>
+                                    <td><?php echo $i++?></td>
+                                    <td><?php echo $row->jenis_biaya?></td>
+                                    <td align="right"><?php echo number_format($jumlah_biaya, 0)?></td>
+                                  </tr>
+                                <?php endforeach ?>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </div>
                 <div class="form-actions text-center">
                     <!-- <div class="col-md-12 text-center"> -->
                       <div class="row wf-spd">

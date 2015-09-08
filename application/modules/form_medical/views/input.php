@@ -30,7 +30,7 @@
                             <div class="row">
                               <div class="col-md-12">
               							 	<?php //echo form_open("form_medical/add",array("id"=>"formaddmedical"));?>
-                              <form action="form_medical/add" id="formaddmedical" method="post" enctype="multipart/form-data">
+                              <form action="<?php echo base_url()?>form_medical/add" id="formaddmedical" method="post" enctype="multipart/form-data">
               							    <table id="dataTable" class="table table-bordered">
               							    	<thead>
   			                            <tr>
@@ -214,7 +214,7 @@
 	cell6.innerHTML = "<select name='jenis[]' class='select2' style='width:100%'><?php for($i=0;$i<sizeof($jenis);$i++):?><option value='<?php echo $jenis[$i]['id']?>'><?php echo $jenis[$i]['title']?></option><?php endfor;?></select>";  
 
 	var cell7=row.insertCell(6);
-	cell7.innerHTML = '<input name="rupiah[]" id="rupiah" type="text" class="rupiah" required="required">';
+	cell7.innerHTML = '<input name="rupiah[]" id="rupiah" type="text" class="rupiah text-right" required="required">';
 	}
 
 

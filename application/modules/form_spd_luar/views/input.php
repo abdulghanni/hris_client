@@ -248,7 +248,7 @@
                                       <th width="2%"></th>
                                       <th width="2%">No</th>
                                       <th width="40%">Jenis Biaya</th>
-                                      <th width="40%">Jumlah Biaya</th>
+                                      <th width="30%">Jumlah Biaya(Rp)</th>
                                     </tr>
                                   </thead>
                                   <tbody id="biaya_fix">

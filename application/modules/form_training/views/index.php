@@ -20,7 +20,7 @@
                   <h4>Daftar Permintaan <span class="semi-bold">Pelatihan</span></h4>
                   <?php if(is_have_subordinate($sess_id)||is_admin()||is_admin_bagian()){?>
                   <div class="tools"> 
-                    <a href="<?php echo site_url('form_training/input')?>" class="config"></a>
+                    <a href="<?php echo site_url('form_training/input')?>" class="config"><button type="button" class="btn btn-primary btn-sm"><i class="icon-plus"></i>&nbsp;<?php echo lang('add_button');?></button></a>
                   </div>
                   <?php } ?>
                 </div>

@@ -19,7 +19,7 @@
               <div class="grid-title no-border">
                 <h4>Form <a href="<?php echo site_url('form_spd_dalam_group')?>">Perjalanan Dinas <span class="semi-bold">Dalam Kota (Group)</span></a></h4>
                 <div class="tools"> 
-                  <a href="<?php echo site_url() ?>form_spd_dalam_group/input" class="config"></a>
+                  <a href="<?php echo site_url() ?>form_spd_dalam_group/input" class="config"><button type="button" class="btn btn-primary btn-sm"><i class="icon-plus"></i>&nbsp;<?php echo lang('add_button');?></button></a>
                 </div>
               </div>
                 <div class="grid-body no-border"> 

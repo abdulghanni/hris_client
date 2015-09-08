@@ -3305,7 +3305,7 @@ class Auth extends MX_Controller {
             $fname_post = (strlen($fname_re) > 0) ? array('groups.name'=>$fname_re) : array() ;
             
             //set default limit in var $config['list_limit'] at application/config/ion_auth.php 
-            $this->data['limit'] = $limit = (strlen($this->input->post('limit')) > 0) ? $this->input->post('limit') : 10 ;
+            $this->data['limit'] = $limit = (strlen($this->input->post('limit')) > 0) ? $this->input->post('limit') : 25 ;
 
             $this->data['offset'] = 6;
 

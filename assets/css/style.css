@@ -2695,7 +2695,7 @@ form legend,
  {
   display: inline-block;
   padding: 0;
-  margin: 0;
+  margin: 0px 50px 0px;
   margin-top: 6px;
   float: right;
 }
@@ -2879,7 +2879,7 @@ form legend,
 }
  .grid.simple .grid-title .tools a,.grid.solid .grid-title .tools a{
   	position:relative;
-	background: url('../img/icon/portlet-tray.png') no-repeat;
+	/*background: url('../img/icon/portlet-tray.png') no-repeat;*/
 	transition: all 0.1s linear 0s;
 }
 .grid.simple .grid-title .tools > a.remove, 

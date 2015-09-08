@@ -19,7 +19,7 @@
                 <div class="grid-title no-border">
                   <h4>Daftar Pengajuan <span class="semi-bold">Karyawan Keluar</span></h4>
                   <div class="tools"> 
-                    <a href="<?php echo site_url('form_resignment/input')?>" class="config"></a>
+                    <a href="<?php echo site_url('form_resignment/input')?>" class="config"><button type="button" class="btn btn-primary btn-sm"><i class="icon-plus"></i>&nbsp;<?php echo lang('add_button');?></button></a>
                   </div>
                 </div>
                   <div class="grid-body no-border">

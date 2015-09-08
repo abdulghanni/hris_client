@@ -55,7 +55,7 @@ class Inventory extends MX_Controller {
             //set default limit in var $config['list_limit'] at application/config/ion_auth.php 
             $this->data['limit'] = $limit = (strlen($this->input->post('limit')) > 0) ? $this->input->post('limit') : $this->config->item('list_limit', 'ion_auth') ;
 
-            $this->data['offset'] = $offset = $this->uri->segment($this->config->item('uri_segment_pager', 'ion_auth'));
+            $this->data['offset'] = 6;
 
             //list of filterize all users  
             $this->data['users_all'] = $this->ion_auth->like($fname_post)->users()->result();
@@ -72,7 +72,7 @@ class Inventory extends MX_Controller {
              $config['base_url'] = base_url().'inventory/index/fn:'.$exp_fname[1].'/'.$sort_by.'/'.$sort_order.'/';
              $config['total_rows'] = $this->data['num_rows_all'];
              $config['per_page'] = $limit;
-             $config['uri_segment'] = $this->config->item('uri_segment_pager', 'ion_auth');
+             $config['uri_segment'] = 6;
 
             //inisialisasi config
              $this->pagination->initialize($config);

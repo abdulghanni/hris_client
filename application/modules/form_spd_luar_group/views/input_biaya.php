@@ -53,7 +53,7 @@
                           <td>
                           <input type="hidden" class="form-control" name="emp[]" value="<?php echo $key->user_id?>" />
                             <input type="hidden" class="form-control" name="biaya_fix_id[]" value="<?php echo $k->id?>" />
-                            <input type="text" class="form-control"  name="biaya_fix[]" value="<?php echo $k->jumlah_biaya;?>" />
+                            <input type="text" class="form-control text-right"  name="biaya_fix[]" value="<?php echo $k->jumlah_biaya;?>" />
                           </td>
                             <?php endforeach;
                               $b = $ci->db->select('id, jumlah_biaya')->where('user_id', $key->user_id)->where('user_spd_luar_group_id', $id)->get('users_spd_luar_group_biaya');
@@ -61,7 +61,7 @@
                             ?>
                           <td>
                             <input type="hidden" class="form-control" name="biaya_tambahan_id[]" value="<?php echo $b->id?>"/>
-                            <input type="text" class="form-control" name="biaya_tambahan[]" value="<?php echo $b->jumlah_biaya?>"/>
+                            <input type="text" class="form-control text-right" name="biaya_tambahan[]" value="<?php echo $b->jumlah_biaya?>"/>
                           </td>
                             <?php } ?>
                         </tr>

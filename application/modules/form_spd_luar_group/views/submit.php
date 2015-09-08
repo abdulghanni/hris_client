@@ -183,14 +183,14 @@ th{border:2;}
                           </td>
                           <?php $c = $ci->db->select('users_spd_luar_group_biaya.jumlah_biaya')->from('users_spd_luar_group_biaya')->join('pjd_biaya','pjd_biaya.id = users_spd_luar_group_biaya.pjd_biaya_id', 'left')->where('user_spd_luar_group_id', $id)->where('user_id', $key->user_id)->where('pjd_biaya.type_grade != ', 0)->get();
                               foreach ($c->result() as $c) { ?>
-                          <td><?php echo number_format($c->jumlah_biaya*$jml_pjd, 0)?>
+                          <td align="right"><?php echo number_format($c->jumlah_biaya*$jml_pjd, 0)?>
                           </td>
                           <?php } ?>
                           <?php
                             $b = $ci->db->select('users_spd_luar_group_biaya.jumlah_biaya')->from('users_spd_luar_group_biaya')->join('pjd_biaya','pjd_biaya.id = users_spd_luar_group_biaya.pjd_biaya_id', 'left')->where('user_spd_luar_group_id', $id)->where('user_id', $key->user_id)->where('pjd_biaya.type_grade', 0)->get();
                               foreach ($b->result() as $b) {
                           ?>
-                          <td><?php echo number_format($b->jumlah_biaya, 0)?></td>
+                          <td align="right"><?php echo number_format($b->jumlah_biaya, 0)?></td>
                             <?php } ?>
                         </tr>
                       <?php endforeach ?>

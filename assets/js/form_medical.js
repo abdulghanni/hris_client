@@ -38,6 +38,7 @@ $(document).ready(function() {
     var uri5 = url.segment(2)+'/edit/'+url.segment(4);
 
     $('#btn_app_lv1').click(function(){
+        var $btn = $(this).button('loading');
         $('#formAppLv1').submit(function(ev){
             $.ajax({
                 type: 'POST',
@@ -45,8 +46,8 @@ $(document).ready(function() {
                 data: $('#formAppLv1').serialize(),
                 success: function() {
                      $("[data-dismiss=modal]").trigger({ type: "click" });
-                     location.reload(),
-                     $btn.button('reset')
+                     $btn.button('reset'),
+                     location.reload()
                 }
             });
             ev.preventDefault(); 
@@ -107,7 +108,7 @@ $(document).ready(function() {
                 data: $('#formEdit').serialize(),
                 success: function() {
                     $("[data-dismiss=modal]").trigger({ type: "click" });
-                    location.reload(),
+                    //location.reload(),
                     $btn.button('reset')
                 }
             });

@@ -17,7 +17,7 @@
                 <div class="grid-title no-border">
                   <h4><?php echo lang('list_of_submission'); ?> <a href="<?php echo site_url('form_cuti')?>"><span class="semi-bold"><?php echo lang('form_cuti_subheading'); ?></span></a></h4>
                   <div class="tools"> 
-                    <a href="<?php echo site_url('form_cuti/input'); ?>" class="config"></a>
+                    <a href="<?php echo site_url('form_cuti/input'); ?>" class="config"><button type="button" class="btn btn-primary btn-sm"><i class="icon-plus"></i>&nbsp;<?php echo lang('add_button');?></button></a>
                   </div>  
                   <div class="grid-body no-border">
                             <br/>   

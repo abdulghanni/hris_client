@@ -56,7 +56,7 @@
       						        	<td><?php echo $detail[$i]['pasien']?></td>
       						        	<td><?php echo $detail[$i]['hubungan']?></td>
       						        	<td><?php echo $detail[$i]['jenis']?></td>
-      						        	<td><?php echo  'Rp. '.number_format($detail[$i]['rupiah'], 0)?></td>
+      						        	<td align="right"><?php echo  'Rp. '.number_format($detail[$i]['rupiah'], 0)?></td>
       						        </tr>
                             <?php /*
                               if(sizeof($detail)>1){?>
@@ -75,10 +75,21 @@
                             endfor;}
                             ?>
                             <tr>
-                            <td align="right" colspan="5">Total : </td><td><?php echo 'Rp. '.number_format($total, 0)?></td>
+                            <td align="right" colspan="5">Total : </td><td align="right"><?php echo 'Rp. '.number_format($total, 0)?></td>
                             </tr>
       					        </tbody>
 		                  </table>
+
+                      <div class="col-md-12">
+                        <label class="form-label text-left">Attachment : </label>
+                      </div>
+                      <?php for($i=0;$i<sizeof($attachment);$i++):
+                            if(file_exists('./uploads/'.$user_folder.$attachment[$i])){
+                      ?>
+                      <div class="col-md-12">
+                        <label class="form-label text-left"><a href="<?php echo site_url('uploads/'.$user_folder.$attachment[$i])?>"><?php echo '* '.$attachment[$i]?></a></label>
+                      </div>
+                    <?php }endfor; ?>
 
                       <?php if(!empty($note_lv1)):?>
                       <div class="row form-row">
@@ -148,16 +159,6 @@
                         </div>
                       </div>
                     <?php endif; ?>
-                      <div class="col-md-12">
-                        <label class="form-label text-left">Attachment : </label>
-                      </div>
-                      <?php for($i=0;$i<sizeof($attachment);$i++):
-                            if(file_exists('./uploads/'.$user_folder.$attachment[$i])){
-                      ?>
-                      <div class="col-md-12">
-                        <label class="form-label text-left"><a href="<?php echo site_url('uploads/'.$user_folder.$attachment[$i])?>"><?php echo '* '.$attachment[$i]?></a></label>
-                      </div>
-                    <?php }endfor; ?>
                     </div>
                   </div>
                 </div>
@@ -242,7 +243,7 @@
                           <p>Mengetahui,</p>
                           <p class="wf-approve-sp">
                           <?php if($row->is_app_lv2==1) {
-                            echo "<img class=approval-img-sm src=$approved>"?>
+                            echo "<img class=approval-img-al src=$approved>"?>
                             <span class="semi-bold"></span><br/>
                             <span class="small"></span><br/>
                             <span class="semi-bold"><?php echo get_name($row->user_app_lv2) ?></span><br/>
@@ -268,7 +269,7 @@
                           <p>Mengetahui,</p>
                           <p class="wf-approve-sp">
                           <?php if($row->is_app_lv3==1) {
-                            echo "<img class=approval-img-sm src=$approved>"?>
+                            echo "<img class=approval_img_md src=$approved>"?>
                             <span class="semi-bold"></span><br/>
                             <span class="small"></span><br/>
                             <span class="semi-bold"><?php echo get_name($row->user_app_lv3) ?></span><br/>
@@ -365,13 +366,12 @@
         <h4 class="modal-title" id="myModalLabel">Form Rekapitulasi Medical</h4>
       </div>
       <div class="modal-body">
-        <form class="form-no-horizontal-spacing" id="formEdit">
+        <form action="<?= base_url()?>form_medical/edit/<?= $this->uri->segment(3, 0)?>" id="formEdit" method="post" enctype="multipart/form-data">
          <div class="row">
          <div class="col-md-12">
             <table id="dataTable" class="table table-bordered">
               <thead>
                 <tr>
-                  <th width="4%">NIK</th>
                   <th width="20%">Nama</th>
                   <th width="20%">Nama Pasien</th>
                   <th width="15%">Hubungan</th>
@@ -383,18 +383,24 @@
               <tbody>
                 <?php 
                   if(!empty($detail)){
-                     $total = $detail[0]['rupiah'];
-                     $approved = assets_url('img/approved_stamp.png');
-                     $rejected = assets_url('img/rejected_stamp.png');
                       for($i=0;$i<sizeof($detail);$i++):
                       ?>
                   <tr>
                     <input type="hidden" name="detail_id[]" value="<?php echo $detail[$i]['id']?>">
-                    <td><?php echo get_nik($detail[$i]['karyawan_id'])?></td>
-                    <td><?php echo get_name($detail[$i]['karyawan_id'])?></td>
-                    <td><?php echo $detail[$i]['pasien']?></td>
-                    <td><?php echo $detail[$i]['hubungan']?></td>
-                    <td><?php echo $detail[$i]['jenis']?></td>
+                    <td><select name='emp[]' class='form-control select2' style='width:100%'>
+                    <?php 
+                      foreach ($user_same_org as $key => $up) :
+                      $u_selected = ($up['ID'] == get_nik($detail[$i]['karyawan_id'])) ? 'selected = "selected"' : '';
+                    ?><option value='<?php echo $up['ID'] ?>' <?php echo $u_selected ?>><?php echo $up['NAME'].' - '.$up['ID'] ?></option><?php endforeach;?></select></td>
+                    <td><input type"text" name="pasien[]" class="form-control" value="<?php echo $detail[$i]['pasien']?>" /></td>
+                    <td><select name='hubungan[]' class='select2' style='width:100%'>
+                    <?php for($h=0;$h<sizeof($hubungan);$h++):
+                      $h_selected = ($hubungan[$h]['id'] == $detail[$i]['hubungan_id']) ? 'selected = "selected"' : '';
+                    ?><option value='<?php echo $hubungan[$h]['id']?>' <?php echo $h_selected ?>><?php echo $hubungan[$h]['title']?></option><?php endfor;?></select></td>
+                    <td><select name='jenis[]' class='select2' style='width:100%'>
+                    <?php for($j=0;$j<sizeof($jenis);$j++):
+                      $j_selected = ($jenis[$j]['id'] == $detail[$i]['jenis_id']) ? 'selected = "selected"' : '';
+                    ?><option value='<?php echo $jenis[$j]['id']?>' <?php echo $j_selected ?>><?php echo $jenis[$j]['title']?></option><?php endfor;?></select></td>
                     <td>
                       <div id="rupiah<?php echo $i?>"><?php echo  'Rp. '.number_format($detail[$i]['rupiah'], 0).' '?>
                         <button type="button" id="edit<?php echo $i?>" class='btn btn-info btn-small text-right' title='Edit' onclick="edit<?php echo get_nik($detail[$i]['karyawan_id']).$i?>()"><i class='icon-edit'></i></button>
@@ -402,33 +408,40 @@
                       <input name="rupiah_update[]" type="text" id="rupiah_update<?php echo $i?>" value="<?php echo $detail[$i]['rupiah']?>" style="display:none"> 
                     </td>
                   </tr>
-                    <?php /*
-                      if(sizeof($detail)>1){?>
-                        <?php if($detail[$i]['karyawan_id'] != $detail[$i+1]['karyawan_id']){
-                            $sub_total = $detail[$i]['rupiah'] + $detail[$i+1]['rupiah']
-                          ?>
-                          <tr>
-                            <td align="right" colspan="5">Total <?php echo $detail[$i]['karyawan_id']?>: </td><td><?php echo $sub_total?></td>
-                          </tr>
-                          <?php } ?>
-                    <?php };*/?>
                     <?php
-                    if(sizeof($detail)>1 && isset($detail[$i+1])){
-                    $total = $total + $detail[$i+1]['rupiah'];
-                    }
-                    endfor;}
+                      endfor;}
                     ?>
-                    <tr>
-                    <td align="right" colspan="5">Total : </td><td><?php echo 'Rp. '.number_format($total, 0)?></td>
-                    </tr>
                 </tbody>
               </table>
+
+              <div class="col-md-12">
+                <label class="form-label text-left">Attachment : </label>
               </div>
-          </div>   
+              <?php for($i=0;$i<sizeof($attachment);$i++):
+                    if(file_exists('./uploads/'.$user_folder.$attachment[$i])){
+              ?>
+              <div class="col-md-12">
+                <div id="file<?php echo $i ?>"><a href="<?php echo site_url('uploads/'.$user_folder.$attachment[$i])?>"><?php echo '* '.$attachment[$i]?></a>  <button type="button" onclick="removeFile<?php echo $i ?>()" class='btn-danger btn-xs' title='Remove File'><i class='icon-remove'></i></button></div>
+                <input type="text" id="userfile<?php echo $i ?>" name="userfileold[]" value="<?php echo $attachment[$i]?>" style="display:none" />
+              </div>
+              <script type="text/javascript">
+                function removeFile<?php echo $i ?>(){
+                  $("#file<?php echo $i ?>").hide();
+                  $("#userfile<?php echo $i ?>").attr('disabled','disabled');
+                }
+              </script>
+              <?php }endfor; ?>
+              <div class="col-md-12">
+                <button type="button" id="btnAddAttachment" class="btn-primary btn-xs" onclick="addAttachment()"><i class="icon-plus"></i>&nbsp;<?php echo lang('add_button').' Attachment';?></button><br/><br/>  
+                <table id="attachment">
+                </table>
+              </div>
+
+        </div>   
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="icon-remove"></i>&nbsp;<?php echo lang('close_button')?></button> 
-        <button id="btn_edit" class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
+        <button type="submit" class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
       </div>
         <?php echo form_close()?>
     </div>
@@ -543,4 +556,17 @@
       $('#rupiah_hrd_update<?php echo $i?>').show();
     }
   <?php endfor; ?>
+
+  function addAttachment(){
+    var table=document.getElementById('attachment');
+    var rowCount=table.rows.length;
+    var row=table.insertRow(rowCount);
+
+    var cell1=row.insertCell(0);
+    var element1=document.createElement("input");
+    element1.type="file";
+    element1.name="userfile[]";
+    element1.class="file";
+    cell1.appendChild(element1);
+  }
 </script>

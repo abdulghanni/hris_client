@@ -20,7 +20,7 @@
                   <h4>Daftar Pengajuan <span class="semi-bold">Rolling</span></h4>
                   <?php if(is_have_subordinate($sess_id)||is_admin()){?>
                   <div class="tools"> 
-                    <a href="<?php echo site_url('form_rolling/input') ?>" class="config"></a>
+                    <a href="<?php echo site_url('form_rolling/input') ?>" class="config"><button type="button" class="btn btn-primary btn-sm"><i class="icon-plus"></i>&nbsp;<?php echo lang('add_button');?></button></a>
                   </div>
                   <?php } ?>
                 </div>
