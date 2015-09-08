@@ -7,10 +7,17 @@ $(document).ready(function() {
                 todayHighlight: true
        });
 
+      $('.rupiah').maskMoney({precision: 0});
+
     $('#btnAdd').on('click', function () {
     $(document).find("select.select2").select2();
-    $('.rupiah').maskMoney({precision: 0});
     $('#btnRemove').show();
+    });
+
+    $('#btnAddBiaya').on('click', function () {
+    $(document).find("select.select2").select2();
+    $('.rupiah').maskMoney({precision: 0});
+    $('#btnRemoveBiaya').show();
     });
 
     $('button[data-loading-text]').click(function () {

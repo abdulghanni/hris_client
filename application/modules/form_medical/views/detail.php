@@ -401,8 +401,8 @@
                     <?php for($j=0;$j<sizeof($jenis);$j++):
                       $j_selected = ($jenis[$j]['id'] == $detail[$i]['jenis_id']) ? 'selected = "selected"' : '';
                     ?><option value='<?php echo $jenis[$j]['id']?>' <?php echo $j_selected ?>><?php echo $jenis[$j]['title']?></option><?php endfor;?></select></td>
-                    <td>
-                      <div id="rupiah<?php echo $i?>"><?php echo  'Rp. '.number_format($detail[$i]['rupiah'], 0).' '?>
+                    <td align="right">
+                      <div id="rupiah<?php echo $i?>"><?php echo  number_format($detail[$i]['rupiah'], 0).' '?>
                         <button type="button" id="edit<?php echo $i?>" class='btn btn-info btn-small text-right' title='Edit' onclick="edit<?php echo get_nik($detail[$i]['karyawan_id']).$i?>()"><i class='icon-edit'></i></button>
                       </div>
                       <input name="rupiah_update[]" type="text" id="rupiah_update<?php echo $i?>" value="<?php echo $detail[$i]['rupiah']?>" style="display:none"> 

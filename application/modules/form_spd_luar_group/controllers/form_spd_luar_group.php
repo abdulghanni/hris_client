@@ -623,7 +623,7 @@ class Form_spd_luar_group extends MX_Controller {
         $b = $this->data['biaya_pjd'] = $this->db->distinct()->select('users_spd_luar_group_biaya.pjd_biaya_id as biaya_id, pjd_biaya.title as jenis_biaya')->from('users_spd_luar_group_biaya')->join('pjd_biaya','pjd_biaya.id = users_spd_luar_group_biaya.pjd_biaya_id', 'left')->where('user_spd_luar_group_id', $id)->where('pjd_biaya.type_grade', 0)->get();                  
         $this->data['detail'] = $this->db->distinct()->select('user_id')->where('user_spd_luar_group_id', $id)->get('users_spd_luar_group_biaya');
         $this->data['ci'] = $this;
-        $this->_render_page('input_biaya', $this->data);
+        $this->_render_page('form_spd_luar_group/input_biaya', $this->data);
     }
 
     function update_biaya($id)
@@ -824,6 +824,7 @@ class Form_spd_luar_group extends MX_Controller {
                     
                 }
                 elseif(in_array($view, array('form_spd_luar_group/input',
+                                             'form_spd_luar_group/input_biaya',
                                              'form_spd_luar_group/submit',
                                              'form_spd_luar_group/report',
                                              'form_spd_luar_group/report_detail'
