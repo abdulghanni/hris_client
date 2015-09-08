@@ -402,13 +402,13 @@ class Form_recruitment extends MX_Controller {
                 $getuser_info = file_get_contents($url);
                 $user_info = json_decode($getuser_info, true);
                  foreach ($user_info as $row)
-        {
-            $result[$row['ID']]= ucwords(strtolower($row['DESCRIPTION']));
-        }
-        } else {
-           $result['']= '- Belum Ada Departement -';
-        }
-        $data['result']=$result;
+                {
+                    $result[$row['ID']]= ucwords(strtolower($row['DESCRIPTION']));
+                }
+            } else {
+               $result['']= '- Belum Ada Departement -';
+            }
+        $data['result']=$user_info;
         $this->load->view('dropdown_parent_org',$data);
     }
 

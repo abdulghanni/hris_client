@@ -1319,7 +1319,7 @@ class Auth extends MX_Controller {
                 );
             $approval_status = $this->input->post('app_status');
             $this->approval->approve('edit_user', $id, $approval_status, '');
-            if($approval_status==1):print_mz($this->update_employeetable($user->user_id, $data_n));endif;
+            if($approval_status==1):$this->update_employeetable($user->user_id, $data_n);endif;
         }
     }
 
