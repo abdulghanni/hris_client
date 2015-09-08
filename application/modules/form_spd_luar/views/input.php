@@ -303,7 +303,7 @@
   var cell3=row.insertCell(2);
   cell3.innerHTML = "<select name='biaya_tambahan_id[]' class='select2' style='width:100%'><?php foreach($biaya_tambahan->result() as $row):?><option value='<?php echo $row->id?>'><?php echo $row->title?></option><?php endforeach;?></select>";  
   var cell4=row.insertCell(3);
-  cell4.innerHTML = "<input type='text' name='jumlah_biaya_tambahan[]' class='form-control rupiah'>";
+  cell4.innerHTML = "<input type='text' name='jumlah_biaya_tambahan[]' class='form-control rupiah text-right'>";
 }
   function deleteRow(tableID){try{var table=document.getElementById(tableID);var rowCount=table.rows.length;for(var i=0;i<rowCount;i++){var row=table.rows[i];var chkbox=row.cells[0].childNodes[0];if(null!=chkbox&&true==chkbox.checked){table.deleteRow(i);rowCount--;i--;}}}catch(e){alert(e);}}
 </script>
