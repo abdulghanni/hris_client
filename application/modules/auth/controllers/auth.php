@@ -1152,6 +1152,12 @@ class Auth extends MX_Controller {
 
     function edit_user_approval($id)
     {
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+        
         $user = getJoin('users', 'users_edit_approval', 'users.id = users_edit_approval.user_id', 'left', 'users.*,users_edit_approval.*', array('users_edit_approval.id'=>'where/'.$id))->row();//print_mz($user);
         $this->data['user'] = $user;
         $user_id = getValue('user_id','users_edit_approval', array('id'=>'where/'.$id));
