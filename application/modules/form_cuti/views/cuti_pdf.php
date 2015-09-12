@@ -92,7 +92,7 @@ $rejected = assets_url('img/rejected_stamp.png');
   <tr>
     <td height="40"><span class="style3">Sisa Cuti </span></td>
     <td height="40"><div align="center">:</div></td>
-    <td height="40"><span class="style3"><?php echo $sisa_cuti?> Hari </span></td>
+    <td height="40"><span class="style3"><?php echo $user->sisa_cuti?> Hari </span></td>
   </tr>
   <tr>
     <td height="40"><span class="style3">Alasan</span></td>

@@ -160,14 +160,6 @@ class Auth extends MX_Controller {
         $this->form_validation->set_rules('identity', 'Identity', 'required');
         $this->form_validation->set_rules('password', 'Password', 'required');
 
-
-        
-        //check to see if the user is logging in
-        $jsondata = file_get_contents(get_api_key().'users/lists/format/json');
-        //convert json object to php associative array
-        $data = json_decode($jsondata, true);
-        //print_mz($data);
-
         if ($this->form_validation->run() == true)
         {
             $last_link = $this->session->userdata('last_link');
@@ -181,12 +173,16 @@ class Auth extends MX_Controller {
                 if(!empty($last_link)):
                     redirect($last_link);
                 else:
-                    if(!is_admin())redirect('person/detail/'.$user_id.'/'.$first_login,'refresh');
+                    if(!is_admin()&&$first_login == 1)redirect('auth/edit_user/'.$user_id.'/'.$first_login,'refresh');
                     $this->session->set_flashdata('message', $this->ion_auth->messages());
                     redirect('/', 'refresh');
                 endif;
             }
-            elseif ($this->cekNik($data, 'EMPLID', $this->input->post('identity')) == TRUE && $this->input->post('password') == 'password' && is_registered($this->input->post('identity')) == false)
+
+            $jsondata = file_get_contents(get_api_key().'users/lists/format/json');
+             //convert json object to php associative array
+             $data = json_decode($jsondata, true);
+            if ($this->cekNik($data, 'EMPLID', $this->input->post('identity')) == TRUE && $this->input->post('password') == 'password' && is_registered($this->input->post('identity')) == false)
             {
               $getdata = file_get_contents(get_api_key().'users/list/EMPLID/'.$this->input->post('identity').'/format/json');
               $data = json_decode($getdata, true);
@@ -198,7 +194,7 @@ class Auth extends MX_Controller {
                     'last_name'             => $data['LASTNAME'],
                     'nik'                   => $this->input->post('identity'),
                     'bod'                   => date('Y-m-d',strtotime($data['BIRTHDATE'])),
-                    'phone'                 => $data['PHONE'],
+                    'phone'                 => $data['CELLULARPHONE'],
                     'marital_id'            => $data['MARITALSTATUS'],
                     'previous_email'        => $data['SMS'],
                     'bb_pin'                => $data['PINBLACKBERRY'],
@@ -804,7 +800,7 @@ class Auth extends MX_Controller {
     }
 
     //edit a user
-    function edit_user($id = null)
+    function edit_user($id = null, $first_login = false)
     {
         $this->data['title'] = "Edit User";
 
@@ -820,7 +816,8 @@ class Auth extends MX_Controller {
         endif;
         $nik = get_nik($id);
         $user_bu = get_user_buid($nik);
-        $user = getAll('users', array('id'=>'where/'.$id))->row();
+        $user = getAll('users', array('id'=>'where/'.$id))->row();       
+        $this->data['first_login'] = $first_login;
         if($this->ion_auth->is_admin_by_id($id)){
             $groups=$this->ion_auth->groups()->result_array();
         }else{
@@ -1119,17 +1116,20 @@ class Auth extends MX_Controller {
             'value' => $this->form_validation->set_value('bb_pin', $user->bb_pin),
         );
 
+        $required = ($first_login == 1) ? 'required' : '';
         $this->data['password'] = array(
             'name' => 'password',
             'id'   => 'password',
             'type' => 'text',
             'onfocus' =>"this.select();this.setAttribute('type','password')",
+            $required => $required
         );
 
         $this->data['password_confirm'] = array(
             'name' => 'password_confirm',
             'id'   => 'password_confirm',
-            'type' => 'password'
+            'type' => 'password',
+            $required => $required
         );
 
         $this->get_superior($id);

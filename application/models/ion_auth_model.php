@@ -970,7 +970,7 @@ class Ion_auth_model extends CI_Model
 			->where('nik', $this->db->escape_str($identity))
 			//->limit(1)
 			->get($this->tables['users']);
-}
+        }
 
         if($this->is_time_locked_out($identity))
         {
@@ -1003,12 +1003,14 @@ class Ion_auth_model extends CI_Model
 
                 $this->update_last_login($user->id);
 
-                $this->clear_login_attempts($identity);
+                //$this->clear_login_attempts($identity);
 
+                /*
                 if ($remember && $this->config->item('remember_users', 'ion_auth'))
                 {
                     $this->remember_user($user->id);
                 }
+                */
 
                 $this->trigger_events(array('post_login', 'post_login_successful'));
                 $this->set_message('login_successful');
@@ -1020,7 +1022,7 @@ class Ion_auth_model extends CI_Model
         //Hash something anyway, just to take up time
         $this->hash_password($password);
 
-        $this->increase_login_attempts($identity);
+        //$this->increase_login_attempts($identity);
 
         $this->trigger_events('post_login_unsuccessful');
         $this->set_error('login_unsuccessful');

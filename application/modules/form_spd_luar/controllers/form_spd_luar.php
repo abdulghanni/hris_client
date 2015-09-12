@@ -574,7 +574,7 @@ class Form_spd_luar extends MX_Controller {
     function get_penerima_tugas()
     {
             $user_id = $this->session->userdata('user_id');
-            $url_org = get_api_key().'users/bawahan_satu_bu/EMPLID/'.get_nik($user_id).'/format/json';
+            $url_org = get_api_key().'users/org/EMPLID/'.get_nik($user_id).'/format/json';
             $headers_org = get_headers($url_org);
             $response = substr($headers_org[0], 9, 3);
             if ($response != "404") {

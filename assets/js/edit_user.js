@@ -10,18 +10,17 @@ $(document).ready(function() {
 	  $( "#formedituser" ).validate({
 	  rules: {
 	    password: {
-	      required : false,
 	      minlength: 8,
+	      notEqual : "password",
 	    },
 
 	    password_confirm: {
-	      required : false,
 	      minlength: 8,
 	      equalTo : password,
 	    }
 	  },
 	    messages: {
-	        password: "Password harus berisi delapan karakter atau lebih",
+	        //password: "Password harus berisi delapan karakter atau lebih",
 	        password_confirm: "Password Konfirmasi harus sama dengan password baru",
 	    }
 	});
@@ -35,7 +34,7 @@ $(document).ready(function() {
 	    }
 	  },
 	    messages: {
-	        kk: "Tipe file harus berformat image & Kurang dari 2MB",
+	        kk: "Tipe file harus berformat jpg/jpeg/png & Kurang dari 2MB",
 	    }
 	});
 
@@ -43,12 +42,12 @@ $(document).ready(function() {
 	  rules: {
 	    akta: {
 	      required : true,
-	      extension: "jpg|jpeg|png|gif",
+	      extension: "Tipe file harus berformat jpg/jpeg/png & Kurang dari 2MB",
 	      filesize: 2048000,
 	    }
 	  },
 	    messages: {
-	        akta: "Tipe file harus berformat image & Kurang dari 2MB",
+	        //akta: "",
 	    }
 	});
 
@@ -57,7 +56,11 @@ $(document).ready(function() {
     // element = element to validate (<input>)
     // value = value of the element (file name)
     return this.optional(element) || (element.files[0].size <= param) 
-	});
+	}, "Ukuran file harus kurang dari 2 MegaBytes");
+
+	$.validator.addMethod('notEqual',function(value, element, param){
+		return this.optional(element)||value != param;
+	}, "Password yang anda masukan tidak diizinkan, coba password lainnya" );
 
 	$("a[rel^='prettyPhoto']").prettyPhoto({social_tools:false});
 

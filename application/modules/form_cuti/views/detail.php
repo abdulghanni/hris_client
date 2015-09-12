@@ -80,7 +80,7 @@
                         <label class="form-label text-right"><?php echo lang('cuti_remain') ?></label>
                       </div>
                       <div class="col-md-8">
-                        <input name="sisa_cuti" id="sisa_cuti" type="text"  class="form-control" placeholder="Sisa Cuti" value="<?php echo $sisa_cuti; ?>" disabled="disabled">
+                        <input name="sisa_cuti" id="sisa_cuti" type="text"  class="form-control" placeholder="Sisa Cuti" value="<?php echo $user->sisa_cuti; ?>" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">

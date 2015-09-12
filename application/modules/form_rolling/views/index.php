@@ -62,11 +62,11 @@
                               <tbody>
                                 <?php
                                   foreach($form_rolling as $user):
-                                  $txt_app_lv1 = $txt_app_lv2 = $txt_app_lv3 = $txt_app_hrd = "<i class='icon-minus' title = 'Pending'></i>";
-                                    $approval_status_lv1 = ($user->app_status_id_lv1 == 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($user->app_status_id_lv1 == 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
-                                    $approval_status_lv2 = ($user->app_status_id_lv2 == 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($user->app_status_id_lv2 == 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
-                                    $approval_status_lv3 = ($user->app_status_id_lv3 == 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($user->app_status_id_lv3 == 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
-                                    $approval_status_hrd = ($user->app_status_id_hrd == 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($user->app_status_id_hrd == 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
+                                  $txt_app_lv1 = $txt_app_lv2 = $txt_app_lv3 = $txt_app_hrd = "<i class='icon-question' title = 'Pending'></i>";
+                                    $approval_status_lv1 = ($user->app_status_id_lv1 == 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($user->app_status_id_lv1 == 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-question' title = 'Pending'></i>");
+                                    $approval_status_lv2 = ($user->app_status_id_lv2 == 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($user->app_status_id_lv2 == 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-question' title = 'Pending'></i>");
+                                    $approval_status_lv3 = ($user->app_status_id_lv3 == 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($user->app_status_id_lv3 == 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-question' title = 'Pending'></i>");
+                                    $approval_status_hrd = ($user->app_status_id_hrd == 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($user->app_status_id_hrd == 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-question' title = 'Pending'></i>");
                                     
                     
                                     //Approval Level 1
@@ -77,7 +77,7 @@
                                       }elseif(!empty($user->user_app_lv1)){
                                         $txt_app_lv1 = "<a href='".site_url('form_rolling/detail/'.$user->id)."''>$approval_status_lv1</a>";
                                       }else{
-                                      $txt_app_lv1 = "<i class='icon-circle' title = 'Tidak Butuh Approval'></i>";
+                                      $txt_app_lv1 = "<i class='icon-minus' title = 'Tidak Butuh Approval'></i>";
                                     }
                                     
 
@@ -90,7 +90,7 @@
                                       }elseif(!empty($user->user_app_lv2)){
                                         $txt_app_lv2 = "<a href='".site_url('form_rolling/detail/'.$user->id)."''>$approval_status_lv2</a>";
                                       }else{
-                                      $txt_app_lv2 = "<i class='icon-circle' title = 'Tidak Butuh Approval'></i>";
+                                      $txt_app_lv2 = "<i class='icon-minus' title = 'Tidak Butuh Approval'></i>";
                                     }
 
                                     //Approval Level 3
@@ -102,7 +102,7 @@
                                       }elseif(!empty($user->user_app_lv3)){
                                         $txt_app_lv3 = "<a href='".site_url('form_rolling/detail/'.$user->id)."''>$approval_status_lv3</a>";
                                       }else{
-                                      $txt_app_lv3 = "<i class='icon-circle' title = 'Tidak Butuh Approval'></i>";
+                                      $txt_app_lv3 = "<i class='icon-minus' title = 'Tidak Butuh Approval'></i>";
                                     }
 
                                      //Approval HRD

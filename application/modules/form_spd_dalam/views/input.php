@@ -69,15 +69,15 @@
 
                     <div class="row form-row">
                       <div class="col-md-3">
-                        <label class="form-label text-right"><?php echo 'Supervisor' ?></label>
+                        <label class="form-label text-right"><?php echo 'Atasan Langsung' ?></label>
                       </div>
                       <div class="col-md-9">
                       <?php if(is_admin()){
                         $style_up='class="select2" style="width:100%" id="atasan1"';
-                            echo form_dropdown('atasan1',array('0'=>'- Pilih Supervisor -'),'',$style_up);
+                            echo form_dropdown('atasan1',array('0'=>'- Pilih Atasan Langsung -'),'',$style_up);
                         }else{?>
                         <select name="atasan1" id="atasan1" class="select2" style="width:100%">
-                            <option value="0">- Pilih Supervisor -</option>
+                            <option value="0">- Pilih Atasan Langsung -</option>
                             <?php foreach ($user_atasan as $key => $up) : ?>
                               <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
                             <?php endforeach;?>
@@ -88,11 +88,11 @@
 
                    <div class="row form-row">
                       <div class="col-md-3">
-                        <label class="form-label text-right"><?php echo 'Ka. Bagian' ?></label>
+                        <label class="form-label text-right"><?php echo 'Atasan Tidak Langsung' ?></label>
                       </div>
                       <div class="col-md-9">
                         <select name="atasan2" id="atasan2" class="select2" style="width:100%">
-                            <option value="0">- Pilih Ka. Bagian -</option>
+                            <option value="0">- Pilih Atasan Tidak Langsung -</option>
                         </select>
                       </div>
                     </div>

@@ -478,7 +478,6 @@ class Form_exit extends MX_Controller {
         $user_id = $this->input->post('id');
         $this->data['laporan_num_rows'] = getAll('users_inventory', array('user_id'=>'where/'.$user_id, 'inventory_id'=>'where/10'))->num_rows();
         $i =$this->db->select('users_inventory.id as id, users_inventory.is_available, users_inventory.note, inventory.title as title')->from('users_inventory')->join('inventory', 'users_inventory.inventory_id = inventory.id', 'left')->where('users_inventory.user_id', $user_id)->get();
-           //print_mz($i->result());
         $this->data['users_inventory'] = $i;
         $this->load->view('inventory_list',$this->data);
     }

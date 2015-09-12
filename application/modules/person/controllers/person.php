@@ -55,7 +55,7 @@ class Person extends MX_Controller {
         redirect(base_url()."person/detail/".$id);
     }
 
-    function detail($id, $first_login = FALSE)
+    function detail($id)
     {
         if (!$this->ion_auth->logged_in())
         {
@@ -70,227 +70,156 @@ class Person extends MX_Controller {
         }
         else
         {
-        $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
-        $this->data['csrf'] = $this->_get_csrf_nonce();
-        $user = $this->person_model->getUsers($id)->row();
-        $user_emp = $this->person_model->getUserEmp($id)->row();
-        $user_course = $this->person_model->getUserCourse($id);
-        $user_certificate= $this->person_model->getUserCertificate($id);
-        $user_education=$this->person_model->getUserEducation($id);
-        $user_exp=$this->person_model->getUserexperience($id);
-        $user_sk=$this->person_model->getUserSk($id);
-        $user_sti=$this->person_model->getUserSti($id);
-        $user_jabatan = $this->person_model->getUserJabatan($id);
-        $user_award = $this->person_model->getUserAward($id);
-        $user_ikatan = $this->person_model->getUserIkatanDinas($id);
-	
-		$jsondata = file_get_contents(get_api_key().'users/lists/format/json');
-		$data = json_decode($jsondata, true);
-		
+		$this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
+		$user = $this->person_model->getUsers($id)->row();
 
-		if ($this->cekNik($data, 'EMPLID', $user->nik) == TRUE){
-		$getdata = file_get_contents(get_api_key().'users/list/EMPLID/'.$user->nik.'/format/json');
-		$data = json_decode($getdata, true);
-
-		 $url = get_api_key().'users/employement/EMPLID/'.$user->nik.'/format/json';
-            $headers = get_headers($url);
-            $response = substr($headers[0], 9, 3);
-            if ($response != "404") {
-                $getuser_info = file_get_contents($url);
-                $user_info = json_decode($getuser_info, true);
-                        $this->data['user_info'] = $user_info;
-            } else {
-                //$this->data['user_info'] = $this->form_cuti_model->where('users.id',$user_id)->form_cuti_input()->result();
-            }
+	 	$url = get_api_key().'users/employement/EMPLID/'.$user->nik.'/format/json';
+        $headers = get_headers($url);
+        $response = substr($headers[0], 9, 3);
+        if ($response != "404") {
+            $getuser_info = file_get_contents($url);
+            $user_info = json_decode($getuser_info, true);
+            $this->data['user_info'] = $user_info;
+        }
 
         //employee identity
 		$this->data['id'] = $user->id;
         $this->data['nik'] = (!empty($user->nik)) ? $user->nik : '-';
         $this->data['bod'] = (!empty($user->bod)) ? $user->bod : '-';
         $this->data['is_birthday_reminder'] = $user->is_birthday_reminder;
-        $this->data['first_login'] = $first_login;
         $this->data['first_name'] = (!empty($user->first_name)) ? $user->first_name : '';
         $this->data['last_name'] = (!empty($user->last_name)) ? $user->last_name : '';
         $this->data['business_unit'] = (!empty($user->organization_title)) ? $user->organization_title : '';
         $this->data['marital'] = (!empty($user->marital_title)) ? $user->marital_title : '';
         $this->data['phone'] = (!empty($user->phone)) ? $user->phone : '';
         $this->data['email'] = (!empty($user->email)) ? $user->email : '';
-        $this->data['previous_email'] = (!empty($user_info['PREVIOUSEMAIL'])) ? $user_info['PREVIOUSEMAIL'] : '-';
-        $this->data['bb_pin'] = (!empty($user_info['PINBB'])) ? $user_info['PINBB'] : '-'; 
+        $this->data['previous_email'] = (!empty($user->previous_email)) ? $user->previous_email : '';
+        $this->data['bb_pin'] = (!empty($user->bb_pin)) ? $user->bb_pin : ''; 
         $this->data['photo'] = (!empty($user->photo)) ? $user->photo : '';
         $this->data['s_kk'] = $this->form_validation->set_value('kk', $user->scan_kk);
         $this->data['s_akta'] = $this->form_validation->set_value('akta', $user->scan_akta); 
         $user_folder = $user->id.$user->first_name;
         $this->data['u_folder'] = $user_folder;
-		
-			
-			$url = get_api_key().'users/course/EMPLID/'.$user->nik.'/format/json';
-			$headers = get_headers($url);
-			$response = substr($headers[0], 9, 3);
-			if ($response != "404") {
-				$getcourse = file_get_contents($url);
-				$course = json_decode($getcourse, true);
-						$this->data['course'] = $course;
-			} else {
-				$this->data['course'] = $user_course->result_array();
-			}
+
+		$url = get_api_key().'users/course/EMPLID/'.$user->nik.'/format/json';
+		$headers = get_headers($url);
+		$response = substr($headers[0], 9, 3);
+		if ($response != "404") {
+			$getcourse = file_get_contents($url);
+			$course = json_decode($getcourse, true);
+			$this->data['course'] = $course;
+		} 
+
 		$url = get_api_key().'users/certificate/EMPLID/'.$user->nik.'/format/json';
 		$headers = get_headers($url);
 		$response = substr($headers[0], 9, 3);
 		if ($response != "404") {
 			$getcertificate = file_get_contents(get_api_key().'users/certificate/EMPLID/'.$user->nik.'/format/json');
-					$certificate = json_decode($getcertificate, true);
-					$this->data['certificate'] = $certificate;
-		} else {
-			$this->data['certificate'] = $user_certificate->result_array();
+			$certificate = json_decode($getcertificate, true);
+			$this->data['certificate'] = $certificate;
 		}
-			$url = get_api_key().'users/award/EMPLID/'.$user->nik.'/format/json';
-			$headers = get_headers($url);
-			$response = substr($headers[0], 9, 3);
-			if ($response != "404") {
-				$getaward = file_get_contents(get_api_key().'users/award/EMPLID/'.$user->nik.'/format/json');
-						$award = json_decode($getaward, true);
-						$this->data['award'] = $award;
-			} else {
-				$this->data['award'] = $user_award->result_array();
-			}
+
+		$url = get_api_key().'users/award/EMPLID/'.$user->nik.'/format/json';
+		$headers = get_headers($url);
+		$response = substr($headers[0], 9, 3);
+		if ($response != "404") {
+			$getaward = file_get_contents(get_api_key().'users/award/EMPLID/'.$user->nik.'/format/json');
+			$award = json_decode($getaward, true);
+			$this->data['award'] = $award;
+		}
 			
 		//Education Tab API
 		
 		$url = get_api_key().'users/education/EMPLID/'.$user->nik.'/format/json';
-			$headers = get_headers($url);
-			$response = substr($headers[0], 9, 3);
-			if ($response != "404") {
-				$geteducation = file_get_contents(get_api_key().'users/education/EMPLID/'.$user->nik.'/format/json');
-						$education = json_decode($geteducation, true);
-						$this->data['education'] = $education;
-			} else {
-				$this->data['education'] = $user_education->result_array();
-			}
+		$headers = get_headers($url);
+		$response = substr($headers[0], 9, 3);
+		if ($response != "404") {
+			$geteducation = file_get_contents(get_api_key().'users/education/EMPLID/'.$user->nik.'/format/json');
+			$education = json_decode($geteducation, true);
+			$this->data['education'] = $education;
+		}
 			
 		//Experience Tab API
 		
 		$url = get_api_key().'users/experience/EMPLID/'.$user->nik.'/format/json';
-			$headers = get_headers($url);
-			$response = substr($headers[0], 9, 3);
-			if ($response != "404") {
-				$getexperience = file_get_contents(get_api_key().'users/experience/EMPLID/'.$user->nik.'/format/json');
-						$experience = json_decode($getexperience, true);
-						$this->data['experience'] = $experience;
-			} else {
-				$this->data['experience'] = $user_exp->result_array();
-			}
+		$headers = get_headers($url);
+		$response = substr($headers[0], 9, 3);
+		if ($response != "404") {
+			$getexperience = file_get_contents(get_api_key().'users/experience/EMPLID/'.$user->nik.'/format/json');
+			$experience = json_decode($getexperience, true);
+			$this->data['experience'] = $experience;
+		}
 			
 		//SK Tab API
-			$url = get_api_key().'users/sk/EMPLID/'.$user->nik.'/format/json';
-			$headers = get_headers($url);
-			$response = substr($headers[0], 9, 3);
-			if ($response != "404") {
-				$getsk = file_get_contents(get_api_key().'users/sk/EMPLID/'.$user->nik.'/format/json');
-						$sk = json_decode($getsk, true);
-						$this->data['sk'] = $sk;
-			} else {
-				$this->data['sk'] = $user_sk->result_array();
-			}
+		$url = get_api_key().'users/sk/EMPLID/'.$user->nik.'/format/json';
+		$headers = get_headers($url);
+		$response = substr($headers[0], 9, 3);
+		if ($response != "404") {
+			$getsk = file_get_contents(get_api_key().'users/sk/EMPLID/'.$user->nik.'/format/json');
+			$sk = json_decode($getsk, true);
+			$this->data['sk'] = $sk;
+		}
 		
 		//STI Tab API
-			$url = get_api_key().'users/sti/EMPLID/'.$user->nik.'/format/json';
-			$headers = get_headers($url);
-			$response = substr($headers[0], 9, 3);
-			if ($response != "404") {
-				$getsti = file_get_contents(get_api_key().'users/sti/EMPLID/'.$user->nik.'/format/json');
-						$sti = json_decode($getsti, true);
-						$this->data['sti'] = $sti;
-			} else {
-				$this->data['sti'] = $user_sti->result_array();
-			}
+		$url = get_api_key().'users/sti/EMPLID/'.$user->nik.'/format/json';
+		$headers = get_headers($url);
+		$response = substr($headers[0], 9, 3);
+		if ($response != "404") {
+			$getsti = file_get_contents(get_api_key().'users/sti/EMPLID/'.$user->nik.'/format/json');
+			$sti = json_decode($getsti, true);
+			$this->data['sti'] = $sti;
+		}
 			
 		//Riwayat_jabatan Tab API
 
-			$url = get_api_key().'users/jabatan/EMPLID/'.$user->nik.'/format/json';
-			$headers = get_headers($url);
-			$response = substr($headers[0], 9, 3);
-			if ($response != "404") {
-				$getjabatan = file_get_contents(get_api_key().'users/jabatan/EMPLID/'.$user->nik.'/format/json');
-						$jabatan = json_decode($getjabatan, true);
-						$this->data['jabatan'] = $jabatan;
-			} else {
-				$this->data['jabatan'] = $user_exp->result_array();
-			}
+		$url = get_api_key().'users/jabatan/EMPLID/'.$user->nik.'/format/json';
+		$headers = get_headers($url);
+		$response = substr($headers[0], 9, 3);
+		if ($response != "404") {
+			$getjabatan = file_get_contents(get_api_key().'users/jabatan/EMPLID/'.$user->nik.'/format/json');
+			$jabatan = json_decode($getjabatan, true);
+			$this->data['jabatan'] = $jabatan;
+		}
 			
 		//Ikatan_Dinas Tab API
-			$url = get_api_key().'users/ikatan_dinas/EMPLID/'.$user->nik.'/format/json';
-			$headers = get_headers($url);
-			$response = substr($headers[0], 9, 3);
-			if ($response != "404") {
-				$getikatan_dinas = file_get_contents(get_api_key().'users/ikatan_dinas/EMPLID/'.$user->nik.'/format/json');
-						$ikatan_dinas = json_decode($getikatan_dinas, true);
-						$this->data['ikatan_dinas'] = $ikatan_dinas;
-			} else {
-				$this->data['ikatan_dinas'] = $user_exp->result_array();
-			}
+		$url = get_api_key().'users/ikatan_dinas/EMPLID/'.$user->nik.'/format/json';
+		$headers = get_headers($url);
+		$response = substr($headers[0], 9, 3);
+		if ($response != "404") {
+			$getikatan_dinas = file_get_contents(get_api_key().'users/ikatan_dinas/EMPLID/'.$user->nik.'/format/json');
+			$ikatan_dinas = json_decode($getikatan_dinas, true);
+			$this->data['ikatan_dinas'] = $ikatan_dinas;
+		}
 
-		$this->data['aviva'] = (!empty($user_emp->aviva)) ? $user_emp->aviva : (!empty($user_info['AVIVA'])) ? $user_info['AVIVA'] : '-';
-        $this->data['bpjs_kerja'] = (!empty($user_emp->aviva)) ? $user_emp->aviva : (!empty($user_info['JAMSOSTEK'])) ? $user_info['JAMSOSTEK'] : '-';
-        $this->data['ktp'] = (!empty($user_emp->aviva)) ? $user_emp->aviva : (!empty($user_info['KTP'])) ? $user_info['KTP'] : '-';
-        $this->data['ktp_valid_date'] = (!empty($user_emp->aviva)) ? $user_emp->aviva : (!empty($user_info['KTPVALIDDATE'])) ? $user_info['KTPVALIDDATE'] : '-';
-        $this->data['npwp'] = (!empty($user_emp->aviva)) ? $user_emp->aviva : (!empty($user_info['NPWP'])) ? $user_info['NPWP'] : '-';
-        $this->data['tax'] = (!empty($user_emp->aviva)) ? $user_emp->aviva : (!empty($user_info['TAX'])) ? $user_info['TAX'] : '-';
+        //Tab Inventaris
+
+        $i =$this->db->select('users_inventory.id as id, users_inventory.is_available, users_inventory.note, inventory.title as title')->from('users_inventory')->join('inventory', 'users_inventory.inventory_id = inventory.id', 'left')->where('users_inventory.user_id', $id)->get();
+        $this->data['users_inventory'] = $i;
+
+		$this->data['aviva'] = (!empty($user_info['AVIVA'])) ? $user_info['AVIVA'] : '-';
+        $this->data['bpjs_kerja'] = (!empty($user_info['JAMSOSTEK'])) ? $user_info['JAMSOSTEK'] : '-';
+        $this->data['ktp'] = (!empty($user_info['KTP'])) ? $user_info['KTP'] : '-';
+        $this->data['ktp_valid_date'] = (!empty($user_info['KTPVALIDDATE'])) ? $user_info['KTPVALIDDATE'] : '-';
+        $this->data['npwp'] = (!empty($user_info['NPWP'])) ? $user_info['NPWP'] : '-';
+        $this->data['tax'] = (!empty($user_info['TAX'])) ? $user_info['TAX'] : '-';
         $this->data['bpjs_kesehatan'] = (!empty($user_info['BPJS'])) ? $user_info['BPJS'] : '-';
         $this->data['bpjs_date'] = (!empty($user_info['BPJS'])) ? $user_info['BPJSDATE'] : '-';
         $this->data['bumida'] = (!empty($user_info['BUMIDA'])) ? $user_info['BUMIDA'] : '-';
         $this->data['bumida_date'] = (!empty($user_info['BPJS'])) ? $user_info['BUMIDADATE'] : '-';
-		$this->data['seniority_date'] = (!empty($user_emp->seniority_date)) ? $user_emp->seniority_date : (!empty($user_info['SENIORITYDATE'])) ? $user_info['SENIORITYDATE'] : '-';
-        $this->data['position'] = (!empty($user_emp->position)) ? $user_emp->position : (!empty($user_info['POSITION'])) ? $user_info['POSITION'] : '-';
+		$this->data['seniority_date'] = (!empty($user_info['SENIORITYDATE'])) ? $user_info['SENIORITYDATE'] : '-';
+        $this->data['position'] = (!empty($user_info['POSITION'])) ? $user_info['POSITION'] : '-';
         $this->data['organization'] = (!empty($user_info['ORGANIZATION'])) ? $user_info['ORGANIZATION'] : '-';
         $this->data['bu'] = (!empty($user_info['BU'])) ? $user_info['BU'] : '-';
-        $this->data['empl_status'] = (!empty($user_emp->empl_status)) ? $user_emp->empl_status : (!empty($user_info['EMPLOYEESTATUS'])) ? $user_info['EMPLOYEESTATUS'] : '-';
-        $this->data['employee_status'] = (!empty($user_emp->employee_status)) ? $user_emp->employee_status : (!empty($user_info['STATUS'])) ? $user_info['STATUS'] : '-';
-        $this->data['cost_center'] = (!empty($user_emp->cost_center)) ? $user_emp->cost_center : (!empty($user_info['COSTCENTER'])) ? $user_info['COSTCENTER'] : '-';
-        $this->data['position_group'] = (!empty($user_emp->position_group)) ? $user_emp->position_group : (!empty($user_info['POSITIONGROUP'])) ? $user_info['POSITIONGROUP'] : '-';
-        $this->data['grade'] = (!empty($user_emp->grade)) ? $user_emp->grade :(!empty($user_info['GRADE'])) ? $user_info['GRADE'] : '-';
-        $this->data['resign_reason'] = (!empty($user_emp->resign_reason)) ? $user_emp->resign_reason : (!empty($user_info['RESIGNREASONCODEID'])) ? $user_info['RESIGNREASONCODEID'] : '-';
-        $this->data['active_inactive'] = (!empty($user_emp->active_inactive)) ? $user_emp->active_inactive : (!empty($user_info['ACTIVEINACTIVE'])) ? $user_info['ACTIVEINACTIVE'] : '-';
-		}else{
-
-        //employement
-        $this->data['seniority_date'] = (!empty($user_emp->seniority_date)) ? $user_emp->seniority_date : '-';
-        $this->data['position'] = (!empty($user_emp->position)) ? $user_emp->position : '-';
-        $this->data['empl_status'] = (!empty($user_emp->empl_status)) ? $user_emp->empl_status : '-';
-        $this->data['employee_status'] = (!empty($user_emp->employee_status)) ? $user_emp->employee_status : '-';
-        $this->data['cost_center'] = (!empty($user_emp->cost_center)) ? $user_emp->cost_center : '-';
-        $this->data['position_group'] = (!empty($user_emp->position_group)) ? $user_emp->position_group : '-';
-        $this->data['grade'] = (!empty($user_emp->grade)) ? $user_emp->grade : '-';
-        $this->data['resign_reason'] = (!empty($user_emp->resign_reason)) ? $user_emp->resign_reason : '-';
-        $this->data['active_inactive'] = (!empty($user_emp->active_inactive)) ? $user_emp->active_inactive : '-';
-		}
-		
+        $this->data['empl_status'] = (!empty($user_info['EMPLOYEESTATUS'])) ? $user_info['EMPLOYEESTATUS'] : '-';
+        $this->data['employee_status'] = (!empty($user_info['STATUS'])) ? $user_info['STATUS'] : '-';
+        $this->data['cost_center'] = (!empty($user_info['COSTCENTER'])) ? $user_info['COSTCENTER'] : '-';
+        $this->data['position_group'] = (!empty($user_info['POSITIONGROUP'])) ? $user_info['POSITIONGROUP'] : '-';
+        $this->data['grade'] = (!empty($user_info['GRADE'])) ? $user_info['GRADE'] : '-';
+        $this->data['resign_reason'] = (!empty($user_info['RESIGNREASONCODEID'])) ? $user_info['RESIGNREASONCODEID'] : '-';
+        $this->data['active_inactive'] = (!empty($user_info['ACTIVEINACTIVE'])) ? $user_info['ACTIVEINACTIVE'] : '-';
 		$this->data['s_photo'] = $this->form_validation->set_value('photo', $user->photo);
         $user_folder = $user->id.$user->first_name;
         $this->data['u_folder'] = $user_folder;
-		
-        //Company Sponsor Course Tab
-         $this->data['user_course'] = $user_course;
-
-        //Certificate Tab
-        $this->data['user_certificate'] = $user_certificate;
-
-        //Education Tab
-        $this->data['user_education'] = $user_education;
-
-        //Experience Tab
-        $this->data['user_exp'] = $user_exp;
-
-        //SuraKeputusan Tab
-        $this->data['user_sk'] = $user_sk;
-
-        $this->data['user_sti'] = $user_sti;
-
-        $this->data['user_jabatan'] = $user_jabatan;
-
-        $this->data['user_award'] = $user_award;
-
-        $this->data['user_ikatan'] = $user_ikatan;
 		
 		//Mazhters
 		$dt_temp = date("d");
@@ -328,6 +257,7 @@ class Person extends MX_Controller {
         $data = array('is_birthday_reminder' => 1, );
         $this->db->where('id', $id)->update('users', $data);
     }
+
 	function cekNik($array, $key, $val) {
     foreach ($array as $item)
         if (isset($item[$key]) && $item[$key] == $val)

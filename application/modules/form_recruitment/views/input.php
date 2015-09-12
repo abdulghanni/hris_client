@@ -295,12 +295,12 @@
 
                     <div class="row form-row">
                       <div class="col-md-2">
-                        <label class="form-label text-left"><?php echo 'Supervisor' ?></label>
+                        <label class="form-label text-left"><?php echo 'Atasan Langsung' ?></label>
                       </div>
                       <div class="col-md-5">
                         <?php if(is_admin()){?>
                         <select id="atasan1" class="select2" style="width:100%" name="atasan1" >
-                        <option value="0">- Pilih Supervisor -</option>
+                        <option value="0">- Pilih Atasan Langsung -</option>
                           <?php
                           foreach ($all_users->result() as $u) :
                             $selected = $u->id == $sess_id ? 'selected = selected' : '';?>
@@ -309,7 +309,7 @@
                         </select>
                         <?php }else{ ?>
                         <select name="atasan1" id="atasan1" class="select2" style="width:100%">
-                            <option value="0">- Pilih Supervisor -</option>
+                            <option value="0">- Pilih Atasan Langsung -</option>
                             <?php foreach ($user_atasan as $key => $up) : ?>
                               <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
                             <?php endforeach;?>
@@ -320,11 +320,11 @@
 
                     <div class="row form-row">
                       <div class="col-md-2">
-                        <label class="form-label text-left"><?php echo 'Ka. Bagian' ?></label>
+                        <label class="form-label text-left"><?php echo 'Atasan Tidak Langsung' ?></label>
                       </div>
                       <div class="col-md-5">
                         <select name="atasan2" id="atasan2" class="select2" style="width:100%">
-                            <option value="0">- Pilih Ka. Bagian -</option>
+                            <option value="0">- Pilih Atasan Tidak Langsung -</option>
                         </select>
                       </div>
                     </div>

@@ -67,19 +67,19 @@
                               <tbody>
                                   <?php if($_num_rows>0){
                                       foreach($form_exit as $row):
-                                      $txt_app_lv1 = $txt_app_lv2 = $txt_app_lv3 = $txt_app_asset =  $txt_app_hrd = $txt_app_mgr = $txt_app_koperasi = $txt_app_perpus = $txt_app_it = $txt_app_keuangan = "<i class='icon-minus' title = 'Pending'></i>";
-                                      $approval_status = ($row->app_status_id== 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($row->app_status_id== 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
-                                      $approval_status_mgr = ($row->app_status_id_mgr== 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($row->app_status_id_mgr== 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
-                                      $approval_status_koperasi = ($row->app_status_id_koperasi== 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($row->app_status_id_koperasi== 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
-                                      $approval_status_perpus = ($row->app_status_id_perpus== 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($row->app_status_id_perpus== 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
-                                      $approval_status_hrd = ($row->app_status_id_hrd== 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($row->app_status_id_hrd== 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
-                                      $approval_status_it = ($row->app_status_id_it== 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($row->app_status_id_it== 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
-                                      $approval_status_keuangan = ($row->app_status_id_keuangan== 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($row->app_status_id_keuangan== 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
+                                      $txt_app_lv1 = $txt_app_lv2 = $txt_app_lv3 = $txt_app_asset =  $txt_app_hrd = $txt_app_mgr = $txt_app_koperasi = $txt_app_perpus = $txt_app_it = $txt_app_keuangan = "<i class='icon-question' title = 'Pending'></i>";
+                                      $approval_status = ($row->app_status_id== 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($row->app_status_id== 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-question' title = 'Pending'></i>");
+                                      $approval_status_mgr = ($row->app_status_id_mgr== 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($row->app_status_id_mgr== 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-question' title = 'Pending'></i>");
+                                      $approval_status_koperasi = ($row->app_status_id_koperasi== 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($row->app_status_id_koperasi== 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-question' title = 'Pending'></i>");
+                                      $approval_status_perpus = ($row->app_status_id_perpus== 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($row->app_status_id_perpus== 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-question' title = 'Pending'></i>");
+                                      $approval_status_hrd = ($row->app_status_id_hrd== 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($row->app_status_id_hrd== 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-question' title = 'Pending'></i>");
+                                      $approval_status_it = ($row->app_status_id_it== 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($row->app_status_id_it== 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-question' title = 'Pending'></i>");
+                                      $approval_status_keuangan = ($row->app_status_id_keuangan== 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($row->app_status_id_keuangan== 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-question' title = 'Pending'></i>");
                                       
-                                      $approval_status_lv1 = ($row->app_status_id_lv1 == 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($row->app_status_id_lv1 == 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
-                                      $approval_status_lv2 = ($row->app_status_id_lv2 == 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($row->app_status_id_lv2 == 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
-                                      $approval_status_lv3 = ($row->app_status_id_lv3 == 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($row->app_status_id_lv3 == 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
-                                      $approval_status_asset = ($row->app_status_id_asset == 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($row->app_status_id_asset == 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
+                                      $approval_status_lv1 = ($row->app_status_id_lv1 == 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($row->app_status_id_lv1 == 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-question' title = 'Pending'></i>");
+                                      $approval_status_lv2 = ($row->app_status_id_lv2 == 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($row->app_status_id_lv2 == 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-question' title = 'Pending'></i>");
+                                      $approval_status_lv3 = ($row->app_status_id_lv3 == 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($row->app_status_id_lv3 == 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-question' title = 'Pending'></i>");
+                                      $approval_status_asset = ($row->app_status_id_asset == 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($row->app_status_id_asset == 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-question' title = 'Pending'></i>");
                                   
                                    //Approval Level 1
                                     if(!empty($row->user_app_lv1) && $row->is_app_lv1 == 0 && $sess_nik == $row->user_app_lv1){
@@ -89,7 +89,7 @@
                                       }elseif(!empty($row->user_app_lv1)){
                                         $txt_app_lv1 = "<a href='".site_url('form_exit/detail/'.$row->id)."''>$approval_status_lv1</a>";
                                       }else{
-                                      $txt_app_lv1 = "<i class='icon-circle' title = 'Tidak Butuh Approval'></i>";
+                                      $txt_app_lv1 = "<i class='icon-minus' title = 'Tidak Butuh Approval'></i>";
                                     }
                                     
 
@@ -102,7 +102,7 @@
                                       }elseif(!empty($row->user_app_lv2)){
                                         $txt_app_lv2 = "<a href='".site_url('form_exit/detail/'.$row->id)."''>$approval_status_lv2</a>";
                                       }else{
-                                      $txt_app_lv2 = "<i class='icon-circle' title = 'Tidak Butuh Approval'></i>";
+                                      $txt_app_lv2 = "<i class='icon-minus' title = 'Tidak Butuh Approval'></i>";
                                     }
 
                                     //Approval Level 3
@@ -114,7 +114,7 @@
                                       }elseif(!empty($row->user_app_lv3)){
                                         $txt_app_lv3 = "<a href='".site_url('form_exit/detail/'.$row->id)."''>$approval_status_lv3</a>";
                                       }else{
-                                      $txt_app_lv3 = "<i class='icon-circle' title = 'Tidak Butuh Approval'></i>";
+                                      $txt_app_lv3 = "<i class='icon-minus' title = 'Tidak Butuh Approval'></i>";
                                     }
 
                                     if(!empty($row->user_app_asset) && $row->is_app_asset == 0 && $sess_nik == $row->user_app_asset){
@@ -124,7 +124,7 @@
                                       }elseif(!empty($row->user_app_asset)){
                                         $txt_app_asset = "<a href='".site_url('form_exit/detail/'.$row->id)."''>$approval_status_asset</a>";
                                       }else{
-                                      $txt_app_asset = "<i class='icon-circle' title = 'Tidak Butuh Approval'></i>";
+                                      $txt_app_asset = "<i class='icon-minus' title = 'Tidak Butuh Approval'></i>";
                                     }
 
                                      //Approval HRD

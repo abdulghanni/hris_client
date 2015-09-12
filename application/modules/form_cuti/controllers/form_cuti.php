@@ -169,6 +169,7 @@ class Form_cuti extends MX_Controller {
                 'date_mulai_cuti'       => date('Y-m-d', strtotime($this->input->post('start_cuti'))),
                 'date_selesai_cuti'     => date('Y-m-d', strtotime($this->input->post('end_cuti'))),
                 'jumlah_hari'           => $this->input->post('jml_cuti'),
+                'sisa_cuti'             => $this->input->post('sisa_cuti'),
                 'alasan_cuti_id'        => $this->input->post('alasan_cuti'),
                 'remarks'               => $this->input->post('remarks'),
                 'user_pengganti'        => $this->input->post('user_pengganti'),

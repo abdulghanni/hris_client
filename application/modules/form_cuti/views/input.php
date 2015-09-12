@@ -16,7 +16,7 @@
         <div class="col-md-12">
           <div class="grid simple">
             <div class="grid-title no-border">
-              <h4><?php echo lang('form'); ?> <span class="semi-bold"><a href="<?php echo site_url('form_cuti')?>"><?php echo lang('form_cuti_subheading'); ?></a></span></h4>
+              <h4><?php echo lang('form'); ?> <span class="semi-bold"><a href="<?php echo site_url('form_cuti')?>"> Input <?php echo lang('form_cuti_subheading'); ?></a></span></h4>
             </div>
             <div class="grid-body no-border">
               <?php
@@ -52,7 +52,7 @@
                         <label class="form-label text-right">NIK</label>
                       </div>
                       <div class="col-md-9">
-                        <input name="no" id="nik" type="text"  class="form-control" placeholder="NIK" value="<?php echo $sess_nik ?>" disabled="disabled">
+                        <input name="no" id="nik" type="text"  class="form-control" placeholder="-" value="<?php echo $sess_nik ?>" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
@@ -60,7 +60,7 @@
                         <label class="form-label text-right"><?php echo lang('start_working') ?></label>
                       </div>
                       <div class="col-md-9">
-                        <input name="seniority_date" id="seniority_date" type="text"  class="form-control" placeholder="Lama Bekerja" value="<?php echo dateIndo(get_user_sen_date($sess_nik)) ?>" disabled="disabled">
+                        <input name="seniority_date" id="seniority_date" type="text"  class="form-control" placeholder="-" value="<?php echo dateIndo(get_user_sen_date($sess_nik)) ?>" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
@@ -68,7 +68,7 @@
                         <label class="form-label text-right"><?php echo lang('dept_div') ?></label>
                       </div>
                       <div class="col-md-9">
-                        <input name="organization" id="organization" type="text"  class="form-control" placeholder="Organization" value="<?php echo get_user_organization($sess_nik) ?>" disabled="disabled">
+                        <input name="organization" id="organization" type="text"  class="form-control" placeholder="-" value="<?php echo get_user_organization($sess_nik) ?>" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
@@ -76,7 +76,7 @@
                         <label class="form-label text-right"><?php echo lang('position') ?></label>
                       </div>
                       <div class="col-md-9">
-                        <input name="position" id="position" type="text"  class="form-control" placeholder="Jabatan" value="<?php echo get_user_position($sess_nik) ?>" disabled="disabled">
+                        <input name="position" id="position" type="text"  class="form-control" placeholder="-" value="<?php echo get_user_position($sess_nik) ?>" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
@@ -84,7 +84,7 @@
                         <label class="form-label text-right"><?php echo lang('cuti_remain') ?></label>
                       </div>
                       <div class="col-md-9">
-                        <input name="sisa_cuti" id="sisa_cuti" type="text"  class="form-control" placeholder="Sisa Cuti" value="<?php echo $sisa_cuti ?>" disabled="disabled">
+                        <input name="sisa_cuti" id="sisa_cuti" type="text"  class="form-control" placeholder="-" value="<?php echo $sisa_cuti ?>" readonly>
                       </div>
                     </div>
                     <p>&nbsp;</p>
@@ -96,27 +96,27 @@
 
                     <div class="row form-row">
                       <div class="col-md-3">
-                        <label class="form-label text-right"><?php echo 'Supervisor' ?></label>
+                        <label class="form-label text-right"><?php echo 'Atasan Langsung' ?></label>
                       </div>
                       <div class="col-md-9">
                         <?php
                           $style_up='class="select2" style="width:100%" id="atasan1"';
-                              echo form_dropdown('atasan1',array('0'=>'- Pilih Supervisor -'),'',$style_up);
+                              echo form_dropdown('atasan1',array('0'=>'- Pilih Atasan Langsung -'),'',$style_up);
                         ?>
                       </div>
                     </div>
 
                     <div class="row form-row">
                       <div class="col-md-3">
-                        <label class="form-label text-right"><?php echo 'Ka. Bagian' ?></label>
+                        <label class="form-label text-right"><?php echo 'Atasan Tidak Langsung' ?></label>
                       </div>
                       <div class="col-md-9">
                       <?php if(is_admin()){
                         $style_up='class="select2" style="width:100%" id="atasan2"';
-                            echo form_dropdown('atasan2',array('0'=>'- Pilih Ka. Bagian -'),'',$style_up);
+                            echo form_dropdown('atasan2',array('0'=>'- Pilih Atasan Tidak Langsung -'),'',$style_up);
                         }else{?>
                         <select name="atasan2" id="atasan2" class="select2" style="width:100%">
-                              <option value="0">- Pilih Ka. Bagian -</option> 
+                              <option value="0">- Pilih Atasan Tidak Langsung -</option> 
                         </select>
                         <?php }?>
                       </div>
@@ -156,9 +156,8 @@
                         </select>
                       </div>
                     </div>
-                    <div class="row form-row">
-                      <div class="col-md-8 pull-right label label-danger" style="margin: 10px 30px 10px 0px;">
-                        <p>Pengajuan permohonan cuti dilakukan 2(dua) minggu sebelumnya</p>
+                    <div class="row form-row"><div class="col-md-9 pull-right" style="margin: 10px 0px 20px 0px;" ><i class="icon-warning-sign" style="color:red ;text-shadow: 1px 1px 1px #ccc;font-size: 1em;"> Pengajuan permohonan cuti dilakukan 2(dua) minggu sebelumnya</i>
+                        
                       </div>
                     </div>
                     <div class="row form-row">
@@ -186,7 +185,7 @@
                         <label class="form-label text-right"><?php echo lang('count_day') ?></label>
                       </div>
                       <div class="col-md-2">
-                        <input id="jml_hari" type="text"  class="form-control" placeholder="Jml. Hari"disabled="disabled">
+                        <input id="jml_hari" type="text"  class="form-control" placeholder="-"disabled="disabled">
                         <input type="hidden" name="jml_cuti" id="jml_cuti" value="">
                       </div>
                     </div>
@@ -196,6 +195,7 @@
                       </div>
                       <div class="col-md-9">
                         <select name="alasan_cuti" id="alasan_cuti" class="select2" style="width:100%">
+                                <option value="0">- Pilih Alasan Cuti -</option>
                           <?php if (!empty($alasan_cuti)) { ?>
                               <?php for ($i=0;$i<sizeof($alasan_cuti);$i++) : ?>
                                 <option value="<?php echo $alasan_cuti[$i]['HRSLEAVETYPEID']; ?>"><?php echo $alasan_cuti[$i]['DESCRIPTION']; ?></option>
@@ -212,7 +212,7 @@
                         <label class="form-label text-right"><?php echo 'Remarks' ?></label>
                       </div>
                       <div class="col-md-9">
-                        <input name="remarks" id="remarks" type="text"  class="form-control" placeholder="Remarks" required>
+                        <input name="remarks" id="remarks" type="text"  class="form-control" placeholder="-" required>
                       </div>
                     </div>
                     <div class="row form-row">
@@ -231,7 +231,7 @@
                         <label class="form-label text-right"><?php echo 'No. HP' ?></label>
                       </div>
                       <div class="col-md-9">
-                        <input name="contact" id="contact" type="text"  class="form-control" placeholder="contact" required>
+                        <input name="contact" id="contact" type="text"  class="form-control" placeholder="-" required>
                       </div>
                     </div>
                     <div class="row form-row">
@@ -239,7 +239,7 @@
                         <label class="form-label text-right"><?php echo lang('addr_cuti') ?></label>
                       </div>
                       <div class="col-md-9">
-                        <input name="alamat" id="alamat" type="text"  class="form-control" placeholder="Alamat" required>
+                        <input name="alamat" id="alamat" type="text"  class="form-control" placeholder="-" required>
                       </div>
                     </div>
                   </div>

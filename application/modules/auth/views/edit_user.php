@@ -19,7 +19,7 @@
         </ul> -->
         <div class="page-title">
             <a href="<?php echo site_url('auth')?>"><i class="icon-custom-left"></i></a>
-            <h3><?php echo lang('edit_user_heading');?></h3> 
+            <h3>Edit Profile</h3> 
         </div>
         <!-- <div class="row">
             <div class="col-md-12">
@@ -39,7 +39,7 @@
             <div class="col-md-12">
                 <div class="grid simple ">
                     <div class="grid-title no-border">
-                      <h4><?php echo lang('edit_user_subheading');?></h4>
+                      <h4>Edit Profile</h4>
                     </div>                          
                     <div class="grid-body no-border">
                         
@@ -337,4 +337,31 @@
   </div>
 </div>
 <!--end  modal-->
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Info</h4>
+      </div>
+      <div class="modal-body">
+        <p>Ini adalah pertama kali anda login di Web HRIS-Erlangga, silakan ubah password dan pilih atasan anda di halaman ini</p> <br/>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="<?php echo assets_url('js/jquery-1.8.3.min.js'); ?>"></script>
+<script type="text/javascript">
+    <?php if($first_login == 1){?>
+        $(document).ready(function(){
+        $("#btn").trigger({ type: "click" });
+    });
+    <?php } ?>
+</script>
+
+<button type="button" id="btn" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal" style="display:none">
+  Launch demo modal
+</button>   
 

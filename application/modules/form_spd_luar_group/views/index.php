@@ -57,7 +57,7 @@
                               <?php foreach ($form_spd_luar_group as $spd) : ?>
                               <?php
 
-                                $txt_app_lv1 = $txt_app_lv2 = $txt_app_lv3 = $txt_app_hrd = "<i class='icon-minus' title = 'Pending'></i>";
+                                $txt_app_lv1 = $txt_app_lv2 = $txt_app_lv3 = $txt_app_hrd = "<i class='icon-question' title = 'Pending'></i>";
                               $approval_status_lv1 = "<i class='icon-ok-sign' title = 'Approved'></i>";
                               $approval_status_lv2 = "<i class='icon-ok-sign' title = 'Approved'></i>";
                               $approval_status_lv3 = "<i class='icon-ok-sign' title = 'Approved'></i>";
@@ -65,7 +65,7 @@
 
                             //Approval Level 1
                               if(empty($spd->user_app_lv1)){
-                                 $txt_app_lv1 = "<i class='icon-circle' title = 'Tidak Butuh Approval'></i>";
+                                 $txt_app_lv1 = "<i class='icon-minus' title = 'Tidak Butuh Approval'></i>";
                                 }elseif(!empty($spd->user_app_lv1 && $spd->is_app_lv1 == 1)){
                                   $txt_app_lv1 = "<a href='".site_url('form_spd_luar_group/submit/'.$spd->id)."''>$approval_status_lv2</a>";
                                 }elseif(!empty($spd->user_app_lv1) && $spd->is_app_lv1 == 0 && $sess_nik == $spd->user_app_lv1){
@@ -78,7 +78,7 @@
                               //ApprovalLevel 2
                               
                               if(empty($spd->user_app_lv2)){
-                                 $txt_app_lv2 = "<i class='icon-circle' title = 'Tidak Butuh Approval'></i>";
+                                 $txt_app_lv2 = "<i class='icon-minus' title = 'Tidak Butuh Approval'></i>";
                                 }elseif(!empty($spd->user_app_lv2 && $spd->is_app_lv2 == 1)){
                                   $txt_app_lv2 = "<a href='".site_url('form_spd_luar_group/submit/'.$spd->id)."''>$approval_status_lv2</a>";
                                 }elseif(!empty($spd->user_app_lv2) && $spd->is_app_lv2 == 0 && $sess_nik == $spd->user_app_lv2){
@@ -90,7 +90,7 @@
                               //Approval Level 3
 
                               if(empty($spd->user_app_lv3)){
-                                 $txt_app_lv3 = "<i class='icon-circle' title = 'Tidak Butuh Approval'></i>";
+                                 $txt_app_lv3 = "<i class='icon-minus' title = 'Tidak Butuh Approval'></i>";
                                 }elseif(!empty($spd->user_app_lv3 && $spd->is_app_lv3 == 1)){
                                   $txt_app_lv3 = "<a href='".site_url('form_spd_luar_group/submit/'.$spd->id)."''>$approval_status_lv3</a>";
                                 }elseif(!empty($spd->user_app_lv3) && $spd->is_app_lv3 == 0 && $sess_nik == $spd->user_app_lv3){

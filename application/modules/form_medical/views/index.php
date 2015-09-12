@@ -57,8 +57,8 @@
                               <tbody>
                               <?php if($_num_rows>0){
                                 foreach($form_medical as $row):
-                                  $txt_app_lv1 = $txt_app_lv2 = $txt_app_lv3 = $txt_app_hrd = "<i class='icon-minus' title = 'Pending'></i>";
-                                  $approval_status_lv1 = ($row->app_status_id_lv1 == 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($row->app_status_id_lv1 == 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-minus' title = 'Pending'></i>");
+                                  $txt_app_lv1 = $txt_app_lv2 = $txt_app_lv3 = $txt_app_hrd = "<i class='icon-question' title = 'Pending'></i>";
+                                  $approval_status_lv1 = ($row->app_status_id_lv1 == 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($row->app_status_id_lv1 == 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-question' title = 'Pending'></i>");
                                   $approval_status_lv2 = "<i class='icon-ok-sign' title = 'Approved'></i>";
                                   $approval_status_lv3 = "<i class='icon-ok-sign' title = 'Approved'></i>";
                                   $approval_status_hrd = "<i class='icon-ok-sign' title = 'Approved'></i>";

@@ -116,6 +116,7 @@
 		              <li><a href="#tabjabatan">Riwayat Jabatan</a></li>
 		              <li><a href="#tabaward">Award & Warning</a></li>
 		              <li><a href="#tabikatandinas">Ikatan Dinas</a></li>
+		              <li><a href="#tabinventory">Inventaris</a></li>
 		            </ul>
 		            <div class="tab-content">
 
@@ -1620,6 +1621,42 @@
 		                </form> 
 		              </div>
 
+		              <!-- tabinventory -->
+		              <div class="tab-pane" id="tabinventory">
+<div class="row form-row">
+  <div class="col-md-12">
+    <h4>Inventaris yang dimiliki</h4>
+  </div>
+  </div>
+  <div class="row form-row">
+    <div class="col-md-12">
+      <table class="table no-more-tables">
+        <tr>
+          <th>No</th>
+          <th>Item</th>
+          <th>Ketersediaan</th>
+          <th>Keterangan</th>
+        </tr>
+        <?php
+          $i=0;
+          if($users_inventory->num_rows()>0){
+            foreach ($users_inventory->result() as $inv) :
+              ?>
+        <tr>
+        	<td><?php echo 1+$i++ ?></td>
+          <td><?php echo $inv->title?></td>
+          <td>
+            <?php $is_available = ($inv->is_available==1) ? 'Ada' : 'Tidak';?>
+            <?php echo $is_available ?>
+          </td>
+          <td><?php echo $inv->note?></td>
+        </tr>
+            <?php endforeach;}?>
+      </table>
+    </div>
+  </div>
+		              </div>
+
 		            </div>
 		          </div>
 		        </div>
@@ -1643,33 +1680,4 @@
 		</div>
 	<?php } ?>
 
-	<!--Modal password change reminder if first login-->
-
-
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Info</h4>
-      </div>
-      <div class="modal-body">
-        <p>Ini adalah pertama kali anda login di Web HRIS-Erlangga, silakan ubah password dan pilih atasan anda di menu edit user malalui tautan berikut :</p> <br/>
-        <b><a href="<?php echo site_url('auth/edit_user/'.$id)?>"><?php echo site_url('auth/edit_user/')?></a><b>
-      </div>
-    </div>
-  </div>
-</div>
-<script src="<?php echo assets_url('js/jquery-1.8.3.min.js'); ?>"></script>
-<script type="text/javascript">
-	<?php if($first_login == 1){?>
-		$(document).ready(function(){
-		$("#btn").trigger({ type: "click" });
-	});
-	<?php } ?>
-</script>
-
-<button type="button" id="btn" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal" style="display:none">
-  Launch demo modal
-</button>	
+	<!--end modal-->

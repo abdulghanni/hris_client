@@ -53,7 +53,7 @@ class Inventory extends MX_Controller {
             
             
             //set default limit in var $config['list_limit'] at application/config/ion_auth.php 
-            $this->data['limit'] = $limit = (strlen($this->input->post('limit')) > 0) ? $this->input->post('limit') : $this->config->item('list_limit', 'ion_auth') ;
+            $this->data['limit'] = $limit = 10;//(strlen($this->input->post('limit')) > 0) ? $this->input->post('limit') : $this->config->item('list_limit', 'ion_auth') ;
 
             $this->data['offset'] = 6;
 
@@ -76,6 +76,24 @@ class Inventory extends MX_Controller {
 
             //inisialisasi config
              $this->pagination->initialize($config);
+             
+             if(is_admin_it()){
+                $this->data['type'] = $type = 'it';
+            }elseif(is_admin_hrd()){
+                $this->data['type'] = $type = 'hrd';
+            }elseif(is_admin_logistik()){
+                $this->data['type'] = $type = 'logistik';
+            }elseif(is_admin_perpus()){
+                $this->data['type'] = $type = 'perpus';
+            }elseif(is_admin_koperasi()){
+                $this->data['type'] = $type = 'koperasi';
+            }elseif(is_admin_keuangan()){
+                $this->data['type'] = $type = 'keuangan';
+            }else{
+                $this->data['type'] = $type = '';
+            }
+
+             //$this->data['is_submit'] = getValue('is_submit_'.$type,'users_exit');
 
             //create pagination
             $this->data['halaman'] = $this->pagination->create_links();
