@@ -58,15 +58,15 @@ class Inventory extends MX_Controller {
             $this->data['offset'] = 6;
 
             //list of filterize all users  
-            $this->data['users_all'] = $this->ion_auth->like($fname_post)->users()->result();
+            $this->data['users_all'] = $this->ion_auth->like($fname_post)->where('id !=', 1)->users()->result();
             
             //num rows of filterize all users
-            $this->data['num_rows_all'] = $this->ion_auth->like($fname_post)->users()->num_rows();
+            $this->data['num_rows_all'] = $this->ion_auth->like($fname_post)->where('id !=', 1)->users()->num_rows();
 
             //list of filterize limit users for pagination  
-            $this->data['users'] = $this->ion_auth->like($fname_post)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->users()->result();
+            $this->data['users'] = $this->ion_auth->like($fname_post)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->where('id !=', 1)->users()->result();
 
-            $this->data['users_num_rows'] = $this->ion_auth->like($fname_post)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->users()->num_rows();
+            $this->data['users_num_rows'] = $this->ion_auth->like($fname_post)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->where('id !=', 1)->users()->num_rows();
 
              //config pagination
              $config['base_url'] = base_url().'inventory/index/fn:'.$exp_fname[1].'/'.$sort_by.'/'.$sort_order.'/';

@@ -294,15 +294,18 @@ class Dropdown extends MX_Controller {
         $id = get_nik($this->input->post('id'));
 
         $url = get_api_key().'users/sisa_cuti/EMPLID/'.$id.'/format/json';
-            $headers = get_headers($url);
-            $response = substr($headers[0], 9, 3);
-            if ($response != "404") {
-                $getuser_info = file_get_contents($url);
-                $user_info = json_decode($getuser_info, true);
-                $sisa_cuti = $user_info[0]['ENTITLEMENT'];
-            } else {
-                $sisa_cuti = '';
-            }
+        $seniority_date = get_seniority_date($id);
+        $headers = get_headers($url);
+        $response = substr($headers[0], 9, 3);
+        if ($response != "404") {
+            $getsisa_cuti = file_get_contents($url);
+            $sisa_cuti = json_decode($getsisa_cuti, true);
+            $sisa_cuti =  $sisa_cuti[0]['ENTITLEMENT'];
+        } elseif($response == "404" && strtotime($seniority_date) < strtotime('-1 year')) {
+            $sisa_cuti =  '10';
+        }else{
+            $sisa_cuti =  '0';
+        }
 
         echo $sisa_cuti;
     }

@@ -118,7 +118,7 @@ class Form_cuti extends MX_Controller {
             $user_id = $this->session->userdata('user_id');
             $user_nik = get_nik($user_id);
             //$this->get_user_pengganti();
-            $this->data['sisa_cuti'] = (!empty($this->get_sisa_cuti($user_nik)[0]['ENTITLEMENT'])) ? $this->get_sisa_cuti($user_nik)[0]['ENTITLEMENT'] : '-';
+            $this->data['sisa_cuti'] = $this->get_sisa_cuti($user_nik);
 
             $u = $this->data['all_users'] = getAll('users', array('active'=>'where/1', 'username'=>'order/asc'), array('!=id'=>'1'));
             foreach ($u->result_array() as $row)
@@ -223,7 +223,6 @@ class Form_cuti extends MX_Controller {
 		$this->data['_num_rows'] = $this->form_cuti_model->form_cuti_supervisor($id)->num_rows();
 
         $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
-        $this->data['sisa_cuti'] = (!empty($this->get_sisa_cuti($user_nik)[0]['ENTITLEMENT'])) ? $this->get_sisa_cuti($user_nik)[0]['ENTITLEMENT'] : '-';
         
         $this->_render_page('form_cuti/detail', $this->data);
     }
@@ -337,8 +336,7 @@ class Form_cuti extends MX_Controller {
         $this->data['_num_rows'] = $this->form_cuti_model->form_cuti_supervisor($id)->num_rows();
 
         $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
-        $this->data['sisa_cuti'] = (!empty($this->get_sisa_cuti($user_nik)[0]['ENTITLEMENT'])) ? $this->get_sisa_cuti($user_nik)[0]['ENTITLEMENT'] : '-';
-
+       
         return $this->load->view('form_cuti/cuti_email', $this->data, true);
     }
 
@@ -424,7 +422,6 @@ class Form_cuti extends MX_Controller {
         $this->data['_num_rows'] = $this->form_cuti_model->form_cuti_supervisor($id)->num_rows();
 
         $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
-        $this->data['sisa_cuti'] = (!empty($this->get_sisa_cuti($user_nik )[0]['ENTITLEMENT'])) ? $this->get_sisa_cuti($user_nik)[0]['ENTITLEMENT'] : '-';
         $this->data['id'] = $id;
         $title = $this->data['title'] = 'Form Cuti-'.get_name($user_id);
 
@@ -515,14 +512,17 @@ class Form_cuti extends MX_Controller {
     function get_sisa_cuti($user_nik)
     {   
         $url = get_api_key().'users/sisa_cuti/EMPLID/'.$user_nik.'/format/json';
+        $seniority_date = get_seniority_date($user_nik);
         $headers = get_headers($url);
         $response = substr($headers[0], 9, 3);
         if ($response != "404") {
             $getsisa_cuti = file_get_contents($url);
             $sisa_cuti = json_decode($getsisa_cuti, true);
-            return $sisa_cuti;
-        } else {
-            return '-';
+            return $sisa_cuti[0]['ENTITLEMENT'];
+        } elseif($response == "404" && strtotime($seniority_date) < strtotime('-1 year')) {
+            return '10';
+        }else{
+            return '0';
         }
     }
 

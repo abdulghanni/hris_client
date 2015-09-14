@@ -8,6 +8,11 @@ $(document).ready(function() {
         .datepicker({todayHighlight: true})
         .on('changeDate', function(ev){
             days();
+            var x = parseInt($("#jml_cuti").val());
+            var y = parseInt($("#sisa_cuti").val());
+            if( x > y ){
+              alert('Jumlah cuti melebihi sisa cuti yang diizinkan');
+            }
             $(this).datepicker('hide').blur();
     });
 
@@ -44,9 +49,9 @@ $(document).ready(function() {
      
 
       $("#jml_hari").val(iDateDiff + 1);// add 1 because dates are inclusive
-      $("#jml_cuti").val(iDateDiff + 1);                         
-         
+      $("#jml_cuti").val(iDateDiff + 1);                  
     }
+
 
     function formatDate(_d){
          var d = new Date(_d);

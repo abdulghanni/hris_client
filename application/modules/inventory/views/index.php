@@ -53,7 +53,7 @@
                                     </th>
                                     <th width="5%"><?php echo anchor('inventory/index/'.$fname_param.'/nik/'.(($sort_order == 'asc' && $sort_by == 'nik') ? 'desc' : 'asc'), 'NIK');?></th>
                                     <th width="15%"><?php echo anchor('inventory/index/'.$fname_param.'/username/'.(($sort_order == 'asc' && $sort_by == 'username') ? 'desc' : 'asc'), 'Nama');?></th>
-                                    <th width="15%">Dept/Bagian</th>
+                                    <!--<th width="15%">Dept/Bagian</th>-->
                                     <th width="15%">Position</th>
                                     <th width="5%">Inventaris</th>
                                     <th width="5%">Submit</th>                                  
@@ -70,15 +70,15 @@
                                     </td>
                                     <td valign="middle"><?php echo $user->nik;?></td>
                                     <td valign="middle"><?php echo $user->username;?></td>
-                                    <td valign="middle"><?php //echo get_user_organization($user->nik);?></td>
-                                    <td valign="middle"><?php //echo get_user_position($user->nik);?></td>
+                                    <!--<td valign="middle"><?php //echo get_user_organization($user->nik);?></td>-->
+                                    <td valign="middle"><?php echo get_user_position($user->nik);?></td>
                                     <td valign="middle" class="text-center">
                                       <a href="<?php echo site_url('inventory/detail/'.$user->id)?>">
                                           <button type="button" class="btn btn-info btn-small" title="Lihat Inventaris"><i class="icon-briefcase"></i></button>
                                       </a>
                                     </td>
                                     <?php 
-                                        $is_submit = getValue('is_submit_'.$type,'users_exit', array('user_id'=>'where/'.$user->id));print_r($is_submit);
+                                        $is_submit = getValue('is_submit_'.$type,'users_exit', array('user_id'=>'where/'.$user->id));
                                         $submit = ($is_submit == 1) ? '<i class="icon-ok-sign"></i>' : "<i class='icon-remove-sign'></i>";
                                     ?>
                                     <td class="text-center"><?php echo $submit ?></td>
