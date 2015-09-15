@@ -84,9 +84,10 @@
                         <label class="form-label text-right"><?php echo lang('cuti_remain') ?></label>
                       </div>
                       <div class="col-md-9">
-                        <input name="sisa_cuti" id="sisa_cuti" type="text"  class="form-control" placeholder="-" value="<?php echo $sisa_cuti ?>" readonly>
+                        <input name="sisa_cuti" id="sisa_cuti" type="text"  class="form-control" placeholder="-" value="<?php echo $sisa_cuti ['sisa_cuti']?>" readonly>
                       </div>
                     </div>
+                    <input type="hidden" name="insert" value="<?php echo $sisa_cuti['insert']?>">
                     <p>&nbsp;</p>
                     <div class="row form-row">
                       <div class="col-md-3">

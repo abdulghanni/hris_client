@@ -118,8 +118,7 @@ class Form_cuti extends MX_Controller {
             $user_id = $this->session->userdata('user_id');
             $user_nik = get_nik($user_id);
             //$this->get_user_pengganti();
-            $this->data['sisa_cuti'] = $this->get_sisa_cuti($user_nik);
-
+            $this->data['sisa_cuti'] = $this->get_sisa_cuti($user_nik)['sisa_cuti'];
             $u = $this->data['all_users'] = getAll('users', array('active'=>'where/1', 'username'=>'order/asc'), array('!=id'=>'1'));
             foreach ($u->result_array() as $row)
             {
@@ -139,6 +138,11 @@ class Form_cuti extends MX_Controller {
 
     public function add()
     {
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
 
         $this->form_validation->set_rules('start_cuti', 'Tanggal Mulai Cuti', 'trim|required');
         $this->form_validation->set_rules('end_cuti', 'Tanggal Terakhir Cuti', 'trim|required');
@@ -154,6 +158,7 @@ class Form_cuti extends MX_Controller {
         else
         {
             $user_id = $this->input->post('emp');
+            $user_nik = get_nik($user_id);
             $sess_id = $this->session->userdata('user_id');
             $start_cuti = $this->input->post('start_cuti');
             $end_cuti = $this->input->post('end_cuti');
@@ -197,6 +202,11 @@ class Form_cuti extends MX_Controller {
                  }else{
                     $this->approval->request('hrd', 'cuti', $cuti_id, $user_id, $this->detail_email($cuti_id));
                     if(!empty(getEmail($this->approval->approver('cuti'))))$this->send_email(getEmail($this->approval->approver('cuti')), 'Pengajuan Permohonan Cuti', $isi_email);
+                 }
+
+                 if($this->input->post('insert') == 1)
+                 {
+                    $this->insert_sisa_cuti($user_nik, $this->input->post('alasan_cuti'));
                  }
 
                  $this->insert_leave_request($user_id, $additional_data, $leave_request_id);
@@ -375,7 +385,8 @@ class Form_cuti extends MX_Controller {
     }
 
     function update_attendance($id)
-    {
+    {   
+        
         $user_nik = get_nik(getValue('user_id','users_cuti', array('id' => 'where/'.$id)));
         // Start date
          $date = getValue('date_mulai_cuti','users_cuti', array('id' => 'where/'.$id));
@@ -399,10 +410,10 @@ class Form_cuti extends MX_Controller {
          }
 
         $jml_hari_cuti = getValue('jumlah_hari','users_cuti', array('id' => 'where/'.$id));
-        $recid = $this->get_sisa_cuti($user_nik)[0]['RECID'];
-        $sisa_cuti = $this->get_sisa_cuti($user_nik)[0]['ENTITLEMENT'] - $jml_hari_cuti;
+        $recid = $this->get_sisa_cuti($user_nik)['recid'];
+        $sisa_cuti = $this->get_sisa_cuti($user_nik)['sisa_cuti'] - $jml_hari_cuti;
 
-        $this->update_sisa_cuti($recid, $sisa_cuti);
+        print_mz($this->update_sisa_cuti($recid, $sisa_cuti));
     }
 
     function form_cuti_pdf($id)
@@ -435,6 +446,11 @@ class Form_cuti extends MX_Controller {
 
     function update_sisa_cuti($recid, $sisa_cuti)
     { 
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
      
         $method = 'post';
         $params =  array();
@@ -457,6 +473,12 @@ class Form_cuti extends MX_Controller {
 
     function insert_leave_request($user_id, $data = array(), $leave_request_id)
     {
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+
         $user_id = get_nik($user_id);
         $leaveid = substr($leave_request_id[0]['IDLEAVEREQUEST'],2)+1;
         $leaveid = sprintf('%06d', $leaveid);
@@ -509,8 +531,92 @@ class Form_cuti extends MX_Controller {
         }
     }
 
+    function insert_sisa_cuti($user_nik, $alasan_cuti)
+    {   
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+
+        $leave_entitlement_id = $this->get_last_leave_entitlement_id();
+        $leaveid = substr($leave_entitlement_id[0]['IDLEAVEENTITLEMENT'],5)+1;
+        $leaveid = sprintf('%06d', $leaveid);
+        $IDLEAVEENTITLEMENT = 'LVEN_'.$leaveid;
+        $RECVERSION = $leave_entitlement_id[0]['RECVERSION']+1;
+        $RECID = $leave_entitlement_id[0]['RECID']+1;
+        $seniority_date = get_seniority_date($user_nik);
+        $y = date('Y');
+        $STARTACTIVEDATE = $y.'-'.date('m-d', strtotime($seniority_date));
+        $ENDACTIVEDATE = date('Y-m-d', strtotime('+1 Year', strtotime($STARTACTIVEDATE)));
+        $ENDACTIVEDATE = date('Y-m-d', strtotime('-1 Day', strtotime($ENDACTIVEDATE)));
+        $HRSLEAVETYPEID = $alasan_cuti;
+        $sess_nik = get_nik($this->session->userdata('user_id'));
+        $method = 'post';
+        $params =  array();
+        $uri = get_api_key().'users/insert_sisa_cuti/'.
+               'CURRCF/'.'0'.
+               '/ENDPERIODCF/'.'0'.
+               '/MAXENTITLEMENT/'.'15'.
+               '/MAXCF/'.'0'.
+               '/MAXADVANCE/'.'3'.
+               '/ENTITLEMENT/'.'10'.
+               '/STARTACTIVEDATE/'.$STARTACTIVEDATE.
+               '/ENDACTIVEDATE/'.$ENDACTIVEDATE.
+               '/IDLEAVEENTITLEMENT/'.$IDLEAVEENTITLEMENT.
+               '/HRSLEAVETYPEID/'.$HRSLEAVETYPEID.
+               '/CASHABLEFLAG/'.'0'.
+               '/EMPLID/'.$user_nik.
+               '/ENTADJUSMENT/'.'0'.
+               '/CFADJUSMENT/'.'0'.
+               '/ISCASHABLERESIGN/'.'0'.
+               '/PAYROLLRESIGNFLAG/'.'0'.
+               '/FIRSTCALCULATIONDATE/'.''.
+               '/MATANG/'.'0'.
+               '/PAYMENTLEAVEFLAG/'.'0'.
+               '/PAYMENTLEAVEAMOUNT/'.'.000000000000'.
+               '/SPMID/'.''.
+               '/LASTGENERATEDATE/'.''.
+               '/ISSPM/'.'0'.
+               '/BASEDONMARITALSTATUS/'.'0'.
+               '/BASEDONSALARY/'.'0'.
+               '/CASHABLEREQUESTFLAG/'.'0'.
+               '/PAYROLPAYMENTLEAVEFLAG/'.'0'.
+               '/TGLMATANG/'.''.
+               '/MODIFIEDBY/'.$sess_nik.
+               '/CREATEDBY/'.$sess_nik.
+               '/DATAAREAID/'.get_user_dataareaid($user_nik).
+               '/RECVERSION/'.$RECVERSION.
+               '/RECID/'.$RECID.
+               '/HRSEMPLGROUPID/'.get_user_emplgroupid($user_nik).
+               '/BRANCHID/'.get_user_branchid($user_nik).
+               '/ERL_LEAVECF/'.'0';
+
+               $this->rest->format('application/json');
+
+        $result = $this->rest->{$method}($uri, $params);
+
+        if(isset($result->status) && $result->status == 'success')  
+        {  
+            //print_mz($this->rest->debug());
+            return true;
+        }     
+        else  
+        {  
+            //print_mz($this->rest->debug());
+            return false;
+        }
+
+    }
+
     function get_sisa_cuti($user_nik)
     {   
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+
         $url = get_api_key().'users/sisa_cuti/EMPLID/'.$user_nik.'/format/json';
         $seniority_date = get_seniority_date($user_nik);
         $headers = get_headers($url);
@@ -518,16 +624,36 @@ class Form_cuti extends MX_Controller {
         if ($response != "404") {
             $getsisa_cuti = file_get_contents($url);
             $sisa_cuti = json_decode($getsisa_cuti, true);
-            return $sisa_cuti[0]['ENTITLEMENT'];
+            $sisa_cuti = array(
+                    'sisa_cuti' => $sisa_cuti[0]['ENTITLEMENT'],
+                    'recid' => $sisa_cuti[0]['RECID'],
+                    'insert' => false
+                );
+            return $sisa_cuti;
         } elseif($response == "404" && strtotime($seniority_date) < strtotime('-1 year')) {
-            return '10';
+            $sisa_cuti = array(
+                    'sisa_cuti' => 10,
+                    'insert' => true
+                );
+
+            return $sisa_cuti;
         }else{
-            return '0';
+            $sisa_cuti = array(
+                    'sisa_cuti' => 0,
+                    'insert' => false
+                );
+            return $sisa_cuti;
         }
     }
 
     function get_last_leave_request_id()
     {
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+
         $url = get_api_key().'users/last_leave_request_id/format/json';
         $headers = get_headers($url);
         $response = substr($headers[0], 9, 3);
@@ -540,8 +666,34 @@ class Form_cuti extends MX_Controller {
         }
     }
 
+    function get_last_leave_entitlement_id()
+    {
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+
+        $url = get_api_key().'users/last_leave_entitlement_id/format/json';
+        $headers = get_headers($url);
+        $response = substr($headers[0], 9, 3);
+        if ($response != "404") {
+            $getleave_entitlement_id = file_get_contents($url);
+            $leave_entitlement_id = json_decode($getleave_entitlement_id, true);
+            return $leave_entitlement_id;
+        } else {
+            return '';
+        }
+    }
+
     function get_type_cuti()
     {
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+
         $url = get_api_key().'users/type_cuti/format/json';
         $headers = get_headers($url);
         $response = substr($headers[0], 9, 3);
