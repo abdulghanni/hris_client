@@ -118,7 +118,7 @@ class Form_cuti extends MX_Controller {
             $user_id = $this->session->userdata('user_id');
             $user_nik = get_nik($user_id);
             //$this->get_user_pengganti();
-            $this->data['sisa_cuti'] = $this->get_sisa_cuti($user_nik)['sisa_cuti'];
+            $this->data['sisa_cuti'] = $this->get_sisa_cuti($user_nik);
             $u = $this->data['all_users'] = getAll('users', array('active'=>'where/1', 'username'=>'order/asc'), array('!=id'=>'1'));
             foreach ($u->result_array() as $row)
             {
@@ -413,7 +413,7 @@ class Form_cuti extends MX_Controller {
         $recid = $this->get_sisa_cuti($user_nik)['recid'];
         $sisa_cuti = $this->get_sisa_cuti($user_nik)['sisa_cuti'] - $jml_hari_cuti;
 
-        print_mz($this->update_sisa_cuti($recid, $sisa_cuti));
+        $this->update_sisa_cuti($recid, $sisa_cuti);
     }
 
     function form_cuti_pdf($id)
@@ -633,7 +633,7 @@ class Form_cuti extends MX_Controller {
         } elseif($response == "404" && strtotime($seniority_date) < strtotime('-1 year')) {
             $sisa_cuti = array(
                     'sisa_cuti' => 10,
-                    'insert' => true
+                    'insert' => 1
                 );
 
             return $sisa_cuti;
