@@ -42,13 +42,15 @@ $(document).ready(function() {
 	  rules: {
 	    akta: {
 	      required : true,
-	      extension: "Tipe file harus berformat jpg/jpeg/png & Kurang dari 2MB",
+	      extension: "jpg|jpeg|png|gif",
 	      filesize: 2048000,
 	    }
 	  },
-	    messages: {
-	        //akta: "",
+
+	  messages: {
+	        akta: "Tipe file harus berformat jpg/jpeg/png & Kurang dari 2MB",
 	    }
+
 	});
 
 	$.validator.addMethod('filesize', function(value, element, param) {

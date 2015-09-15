@@ -1052,6 +1052,7 @@ class Auth extends MX_Controller {
             'id'    => 'akta',
             'class'    => 'input-file-control',
             'value' => $this->form_validation->set_value('akta', $user->scan_akta),
+            'required' => 'required'
         );
 
         $this->data['nik'] = array(
@@ -3598,6 +3599,7 @@ class Auth extends MX_Controller {
                     $this->template->add_js('breakpoints.js');
                     $this->template->add_js('select2.min.js');
                     $this->template->add_js('jquery.validate.min.js');
+
                     //$this->template->add_js('list_user.js');
                     $this->template->add_js('core.js');
                     $this->template->add_js('group.js');
@@ -3625,7 +3627,6 @@ class Auth extends MX_Controller {
                 {
 
                     $this->template->set_layout('default');
-                    $this->template->add_js('jquery-ui-1.10.1.custom.min.js');
                     $this->template->add_js('jqueryblockui.js');
                     $this->template->add_js('jquery.sidr.min.js');
                     $this->template->add_js('breakpoints.js');
@@ -3633,6 +3634,8 @@ class Auth extends MX_Controller {
                     $this->template->add_js('bootstrap-datepicker.js');
                     $this->template->add_js('jquery.validate.min.js');
                     $this->template->add_js('additional-methods.min.js');
+
+                    $this->template->add_js('jquery-validate.bootstrap-tooltip.min.js');
                     $this->template->add_js('edit_user.js');
                     $this->template->add_js('core.js');
                     $this->template->add_js('jquery.prettyPhoto.js');
