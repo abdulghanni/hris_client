@@ -164,7 +164,6 @@ class Auth extends MX_Controller {
         {
             $last_link = $this->session->userdata('last_link');
             $nik = $this->input->post('identity');
-            $email    = (!empty($data['EMAIL'])) ? $data['EMAIL'] : $this->input->post('identity');
             $user_id = (!empty(get_id($nik)))?get_id($nik):get_id_by_email($email);
             $last_login = $this->db->select('last_login')->where('nik', $nik)->or_where('email', $email)->get('users')->row('last_login');
             $first_login = (!empty($last_login)) ? '' : '1';
@@ -182,6 +181,7 @@ class Auth extends MX_Controller {
             $jsondata = file_get_contents(get_api_key().'users/lists/format/json');
              //convert json object to php associative array
              $data = json_decode($jsondata, true);
+             
             if ($this->cekNik($data, 'EMPLID', $this->input->post('identity')) == TRUE && $this->input->post('password') == 'password' && is_registered($this->input->post('identity')) == false)
             {
               $getdata = file_get_contents(get_api_key().'users/list/EMPLID/'.$this->input->post('identity').'/format/json');
@@ -200,7 +200,7 @@ class Auth extends MX_Controller {
                     'bb_pin'                => $data['PINBLACKBERRY'],
                     );
                 
-
+                    $email    = (!empty($data['EMAIL'])) ? $data['EMAIL'] : $this->input->post('identity');
                     if ($this->ion_auth->register($username, $password, $email, $additional_data))
                     {
                         

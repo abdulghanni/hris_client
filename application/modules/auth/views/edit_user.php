@@ -247,11 +247,13 @@
                                     <?php echo form_hidden($csrf); ?>
                                 </div>
                                 <div class="form-actions-register">  
-                                    <div class="pull-right">
+                                    <div class="pull-right" style="margin-right:15px">
                                       <button type="submit" class="btn btn-success"><i class="icon-ok"></i>&nbsp;<?php echo lang('save_button');?></button>
+                                      <?php if($first_login != 1){?>
                                       <a href="<?php echo site_url('auth/index')?>">
                                         <button class="btn btn-white" type="button"><?php echo lang('cancel_button')?></button>
                                       </a>
+                                      <?php } ?>
                                     </div>
                                 </div>
                             <?php echo form_close();?>
