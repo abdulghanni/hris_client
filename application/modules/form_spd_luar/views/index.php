@@ -18,9 +18,11 @@
             <div class="grid simple ">
               <div class="grid-title no-border">
                 <h4>Daftar Perjalanan Dinas <span class="semi-bold">Luar Kota</span></h4>
+                <?php if(is_spv($nik)||is_admin()||is_admin_bagian()):?>
                 <div class="tools"> 
                   <a href="<?php echo site_url() ?>form_spd_luar/input" class="config"><button type="button" class="btn btn-primary btn-sm"><i class="icon-plus"></i>&nbsp;<?php echo lang('add_button');?></button></a>
                 </div>
+              <?php endif ?>
               </div>
                 <div class="grid-body no-border"> 
                         <?php if($_num_rows>0){?>

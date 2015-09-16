@@ -19,7 +19,9 @@
             </div>
             <div class="grid-body no-border">
               <!--<form class="form-no-horizontal-spacing" id="formaddabsen" action="<?php echo site_url('form_absen/add')?>">--> 
-              <?php echo form_open('form_absen/add')?>;
+              <?php 
+                $att = array('class' => 'form-no-horizontal-spacing', 'id' => 'formaddabsen');
+                echo form_open('form_absen/add', $att)?>;
                 <div class="row column-seperation">
                   <div class="col-md-12">    
                     <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
@@ -82,7 +84,7 @@
                           <?php 
                           if($keterangan_absen->num_rows()>0){
                             foreach($keterangan_absen->result() as $row):?>
-                            <input id="tidak_absen_in_<?php echo $row->id?>" type="radio" name="keterangan" value="<?php echo $row->id?>">
+                            <input id="tidak_absen_in_<?php echo $row->id?>" type="radio" name="keterangan" value="<?php echo $row->id?>" required>
                             <label for="tidak_absen_in_<?php echo $row->id?>"><?php echo $row->title?></label>
                           <?php endforeach;}else{?>
                             <input id="tidak_absen_in" type="radio" name="keterangan" value="0">

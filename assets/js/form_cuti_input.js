@@ -75,10 +75,33 @@ $(document).ready(function() {
             $("#datepicker_end").val(formatDate(newStart));
         }else{
             $("#datepicker_end").val($("#datepicker_start").val());
-        }
-        
+        }        
     });
 });
+
+
+  $( "#formaddcuti" ).validate({
+    rules: {
+      sisa_cuti: {
+        required: true,
+        notEqual : 0,
+      },
+
+      alasan_cuti: {
+        required : true,
+        notEqual : 0,
+      }
+    },
+
+    messages: {
+          alasan_cuti: "This field is required.",
+      }
+  });
+
+  $.validator.addMethod('notEqual',function(value, element, param){
+    return this.optional(element)||value != param;
+  }, "Sisa Cuti Anda 0" );
+
 
     /*   
     $(document).ready(function(){

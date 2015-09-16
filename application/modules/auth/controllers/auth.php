@@ -164,8 +164,8 @@ class Auth extends MX_Controller {
         {
             $last_link = $this->session->userdata('last_link');
             $nik = $this->input->post('identity');
-            $user_id = (!empty(get_id($nik)))?get_id($nik):get_id_by_email($email);
-            $last_login = $this->db->select('last_login')->where('nik', $nik)->or_where('email', $email)->get('users')->row('last_login');
+            $user_id = get_id($nik);
+            $last_login = $this->db->select('last_login')->where('nik', $nik)->get('users')->row('last_login');
             $first_login = (!empty($last_login)) ? '' : '1';
             if ($this->ion_auth->login($this->input->post('identity'), $this->input->post('password')))
             {
@@ -3686,8 +3686,6 @@ class Auth extends MX_Controller {
                 {
                     $this->template->set_layout('default');
 
-                    $this->template->add_js('jquery.min.js');
-                    $this->template->add_js('bootstrap.min.js');
 					$this->template->add_js('select2.min.js');
                     //$this->template->add_js('main.js');
                     $this->template->add_js('jquery-ui-1.10.1.custom.min.js');

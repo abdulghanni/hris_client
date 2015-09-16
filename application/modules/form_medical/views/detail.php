@@ -392,7 +392,7 @@
                       foreach ($user_same_org as $key => $up) :
                       $u_selected = ($up['ID'] == get_nik($detail[$i]['karyawan_id'])) ? 'selected = "selected"' : '';
                     ?><option value='<?php echo $up['ID'] ?>' <?php echo $u_selected ?>><?php echo $up['NAME'].' - '.$up['ID'] ?></option><?php endforeach;?></select></td>
-                    <td><input type"text" name="pasien[]" class="form-control" value="<?php echo $detail[$i]['pasien']?>" /></td>
+                    <td><input type"text" name="pasien[]" class="form-control" value="<?php echo $detail[$i]['pasien']?>" required /></td>
                     <td><select name='hubungan[]' class='select2' style='width:100%'>
                     <?php for($h=0;$h<sizeof($hubungan);$h++):
                       $h_selected = ($hubungan[$h]['id'] == $detail[$i]['hubungan_id']) ? 'selected = "selected"' : '';
@@ -441,7 +441,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="icon-remove"></i>&nbsp;<?php echo lang('close_button')?></button> 
-        <button type="submit" class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
+        <button type="submit" class="btn btn-success btn-cons"><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
       </div>
         <?php echo form_close()?>
     </div>

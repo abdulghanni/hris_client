@@ -637,6 +637,7 @@ class Form_medical extends MX_Controller {
 
                     $this->template->add_js('jquery.bootstrap.wizard.min.js');
                     $this->template->add_js('jquery.validate.min.js');
+                    $this->template->add_js('jquery-validate.bootstrap-tooltip.min.js');
                     $this->template->add_js('emp_dropdown.js');
                     $this->template->add_js('form_medical.js');
                     

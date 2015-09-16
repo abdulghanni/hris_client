@@ -20,7 +20,7 @@
             </div>
             <div class="grid-body no-border">
               <?php
-                $att = array('class' => 'form-no-horizontal-spacing', 'id' => '');
+                $att = array('class' => 'form-no-horizontal-spacing', 'id' => 'formaddcuti');
                 echo form_open('form_cuti/add', $att);
                ?>
                 <div class="row column-seperation">
@@ -84,7 +84,7 @@
                         <label class="form-label text-right"><?php echo lang('cuti_remain') ?></label>
                       </div>
                       <div class="col-md-9">
-                        <input name="sisa_cuti" id="sisa_cuti" type="text"  class="form-control" placeholder="-" value="<?php echo $sisa_cuti ['sisa_cuti']?>" readonly>
+                        <input name="sisa_cuti" id="sisa_cuti" type="text"  class="form-control" placeholder="-" value="<?php echo $sisa_cuti ['sisa_cuti']?>" readonly required>
                       </div>
                     </div>
                     <input type="hidden" name="insert" value="<?php echo $sisa_cuti['insert']?>">
