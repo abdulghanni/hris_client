@@ -45,8 +45,8 @@
                                   <th width="15%"><?php echo lang('date_mulai_cuti') ?></th>
                                   <th width="15%"><?php echo lang('reason') ?></th>
                                   <th width="10%"><?php echo lang('count_day') ?></th>
-                                  <th width="10%" style="text-align:center;">appr. spv</th>
-                                  <th width="10%" style="text-align:center;">appr. ka. bag</th>
+                                  <th width="10%" style="text-align:center;">appr. atasan langsung</th>
+                                  <th width="10%" style="text-align:center;">appr. atasan tidak langsung</th>
                                   <th width="10%" style="text-align:center;">appr. Atasan Lainnya</th>
                                   <th width="10%" style="text-align:center;">appr. HRD</th>
                                   <th width="10%" style="align:center;">cetak</th>

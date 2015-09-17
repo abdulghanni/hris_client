@@ -47,8 +47,8 @@
                                   <th width="15%">Nama Pengaju</th>
                                   <th width="15%">Unit Bisnis</th>
                                   <th width="20%">Job Desc</th>
-                                  <th width="10%" class="text-center">appr. spv</th>
-                                  <th width="10%" class="text-center">appr. ka. bag</th>
+                                  <th width="10%" class="text-center">appr. atasan langsung</th>
+                                  <th width="10%" class="text-center">appr. atasan tidak langsung</th>
                                   <th width="10%" class="text-center">appr. Atasan Lainnya</th>
                                   <th width="10%" class="text-center">appr. HRD</th>
                                   <th width="10%" class="text-center">Cetak</th>

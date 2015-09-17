@@ -79,7 +79,7 @@
 						                    <td><?php echo get_name($user_att[$i]['EMPLID']);?></td>
 						                    <td><?php echo dateIndo($user_att[$i]['ATTENDANCEDATE'])?></td>
 						                    <td>
-						                    	<?php echo ($user_att[$i]['ATTENDANCESTATUS'] === 1) ? 'PRESSENCE' : (($user_att[$i]['ATTENDANCESTATUS']===2) ? 'Absence' : '' )?>
+						                    	<?php echo ($user_att[$i]['ATTENDANCESTATUS'] === 1) ? 'PRESENCE' : (($user_att[$i]['ATTENDANCESTATUS']===2) ? 'Absence' : '' )?>
 						                    </td>
 						                    <td><?php echo $user_att[$i]['ABSENCESTATUS']?></td>
 						                    <td><?php echo ($user_att[$i]['CLOCKIN'] != 0)?date('H:i:s', $user_att[$i]['CLOCKIN']) : '-';?></td>

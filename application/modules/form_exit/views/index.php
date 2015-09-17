@@ -58,8 +58,8 @@
                                   <th width="2%" class="text-center">Approval Keuangan</th>
                                   <th width="2%" class="text-center">Approval Asset Mgr</th>
                                   -->
-                                  <th width="2%" class="text-center">appr. spv</th>
-                                  <th width="2%" class="text-center">appr. ka.bag</th>
+                                  <th width="2%" class="text-center">appr. atasan langsung</th>
+                                  <th width="2%" class="text-center">appr. atasan tidak langsung</th>
                                   <th width="2%" class="text-center">appr. Atasan Lainnya</th>
                                   <th width="2%" class="text-center">Cetak</th>
                                 </tr>

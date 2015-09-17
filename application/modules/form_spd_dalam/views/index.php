@@ -48,8 +48,8 @@
                             <thead>
                               <tr>
                                 <th width="50%">Kegiatan</th>
-                                <th width="10%" class="text-center">appr. spv</th>
-                                <th width="10%" class="text-center">appr. ka. bag</th>
+                                <th width="10%" class="text-center">appr. atasan langsung</th>
+                                <th width="10%" class="text-center">appr. atasan tidak langsung</th>
                                 <th width="10%" class="text-center">appr. Atasan Lainnya</th>
                                 <th width="10%" class="text-center">appr. HRD</th>
                                 <th width="10%" colspan="2" class="text-center">Action</th>

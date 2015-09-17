@@ -48,7 +48,7 @@
                             <th width="20%">Nama</th>
                             <th width="15%">Keterangan</th>
                             <th width="10%" class="text-center">appr. spv</th>
-                            <th width="10%" class="text-center">appr. ka. bag</th>
+                            <th width="10%" class="text-center">appr. atasan tidak langsung</th>
                             <th width="10%" class="text-center">appr. Atasan Lainnya</th>
                             <th width="10%" class="text-center">appr. HRD</th>
                             <th width="10%" class="text-center">cetak</th>

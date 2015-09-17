@@ -50,8 +50,8 @@
                                   <th width="15%">Nama Karyawan</th>
                                   <th width="10%">Nama pelatihan</th>
                                   <th width="10%">Tujuan</th>
-                                  <th width="10%" style="text-align:center;">appr. spv</th>
-                                  <th width="10%" style="text-align:center;">appr. ka. bag</th>
+                                  <th width="10%" style="text-align:center;">appr. atasan langsung</th>
+                                  <th width="10%" style="text-align:center;">appr. atasan tidak langsung</th>
                                   <th width="10%" style="text-align:center;">appr. Atasan Lainnya</th>
                                   <th width="10%" style="text-align:center;">appr. HRD</th>
                                   <th width="10%" class="text-center">Cetak</th>

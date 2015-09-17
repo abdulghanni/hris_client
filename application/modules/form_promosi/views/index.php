@@ -53,8 +53,8 @@
                                   <th width="5%">Tanggal Pengangkatan</th>
                                   <th width="20%">Jabatan Baru</th>
                                   <th width="5%">Tanggal Pengangkatan</th>
-                                  <th width="5%" class="text-center">appr. spv</th>
-                                  <th width="5%" class="text-center">appr. ka. bag</th>
+                                  <th width="5%" class="text-center">appr. atasan langsung</th>
+                                  <th width="5%" class="text-center">appr. atasan tidak langsung</th>
                                   <th width="5%" class="text-center">appr. Atasan Lainnya</th>
                                   <th width="5%" class="text-center">appr. HRD</th>
                                   <th width="5%" class="text-center">Cetak</th>
