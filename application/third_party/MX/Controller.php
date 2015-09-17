@@ -82,13 +82,13 @@ class MX_Controller
      
          if($this->email->send())
          {
-           //return true;
+           return true;
            return $this->email->print_debugger();
          }
          else
          {
-          //return false;
-          return '$this->email->print_debugger()';
+          return false;
+          //return '$this->email->print_debugger()';
          }
     else:
       return false;
