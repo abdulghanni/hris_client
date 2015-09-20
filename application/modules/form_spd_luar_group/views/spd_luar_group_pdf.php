@@ -185,7 +185,7 @@ if ($td_num_rows > 0) {
             foreach ($b->result() as $b) {
             $total_lain += $b->jumlah_biaya;
         ?>
-        <td align="right">Rp. <?php echo number_format($b->jumlah_biaya*$jml_pjd, 0)?> </td>
+        <td align="right">Rp. <?php echo number_format($b->jumlah_biaya, 0)?> </td>
           <?php } ?>
       </tr>
     <?php endforeach ?>
