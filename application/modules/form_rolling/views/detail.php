@@ -166,18 +166,18 @@
                 </div>
                 <div class="form-actions">
 
-                  <div class="row form-row">
-                    <div class="col-md-12 text-center">
+                <div class="row form-row">
+                  <div class="col-md-12 text-center">
                     <?php  if($row->is_app_lv1 == 1 && get_nik($sess_id) == $row->user_app_lv1){?>
-                        <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitrollingModalLv1"><i class='icon-edit'> Edit Approval</i></div>
-                      <?php }elseif($row->is_app_lv2 == 1 && get_nik($sess_id) == $row->user_app_lv2){?>
-                        <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitrollingModalLv2"><i class='icon-edit'> Edit Approval</i></div>
-                      <?php }elseif($row->is_app_lv3 == 1 && get_nik($sess_id) == $row->user_app_lv3){?>
-                        <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitrollingModalLv3"><i class='icon-edit'> Edit Approval</i></div>
-                      <?php }elseif($row->is_app_hrd == 1 && get_nik($sess_id) == $row->user_app_hrd){?>
-                        <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitrollingModalHrd"><i class='icon-edit'> Edit Approval</i></div>
-                      <?php } ?>
-                    </div>
+                      <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitrollingModalLv1"><i class='icon-edit'> Edit Approval</i></div>
+                    <?php }elseif($row->is_app_lv2 == 1 && get_nik($sess_id) == $row->user_app_lv2){?>
+                      <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitrollingModalLv2"><i class='icon-edit'> Edit Approval</i></div>
+                    <?php }elseif($row->is_app_lv3 == 1 && get_nik($sess_id) == $row->user_app_lv3){?>
+                      <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitrollingModalLv3"><i class='icon-edit'> Edit Approval</i></div>
+                    <?php }elseif($row->is_app_hrd == 1 && get_nik($sess_id) == $row->user_app_hrd){?>
+                      <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitrollingModalHrd"><i class='icon-edit'> Edit Approval</i></div>
+                    <?php } ?>
+                  </div>
                 </div>
 
                 <div class="row wf-cuti">

@@ -13,7 +13,6 @@ class Form_spd_dalam_group extends MX_Controller {
         $this->load->helper('url');
         
         $this->load->database();
-        $this->load->model('person/person_model','person_model');
         $this->load->model('form_spd_dalam_group/form_spd_dalam_group_model','form_spd_dalam_group_model');
         
         $this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
@@ -24,6 +23,7 @@ class Form_spd_dalam_group extends MX_Controller {
 
     function index($ftitle = "fn:",$sort_by = "id", $sort_order = "asc", $offset = 0)
     { 
+        $this->data['title'] = "Daftar SPD - Dalam Kota (Group)";
         if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page
@@ -97,15 +97,9 @@ class Form_spd_dalam_group extends MX_Controller {
         }
     }
 
-    function submit($id=0)
+    function submit($id)
     {
-        $user_id = $this->session->userdata('user_id');
-        if ($id == 0) {
-            $task_id = $this->uri->segment(3);
-        }else{
-            $task_id = $id;
-        }
-
+        $this->data['title'] = "Detail SPD - Dalam Kota (Group)";
         if (!$this->ion_auth->logged_in())
         {
             $this->session->set_userdata('last_link', $this->uri->uri_string());
@@ -115,8 +109,8 @@ class Form_spd_dalam_group extends MX_Controller {
         else
         {
            
-            $data_result = $this->data['task_detail'] = $this->form_spd_dalam_group_model->where('users_spd_dalam_group.id',$task_id)->form_spd_dalam_group($id)->result();
-            $this->data['td_num_rows'] = $this->form_spd_dalam_group_model->where('users_spd_dalam_group.id',$task_id)->form_spd_dalam_group()->num_rows($id);
+            $data_result = $this->data['task_detail'] = $this->form_spd_dalam_group_model->where('users_spd_dalam_group.id',$id)->form_spd_dalam_group($id)->result();
+            $this->data['td_num_rows'] = $this->form_spd_dalam_group_model->where('users_spd_dalam_group.id',$id)->form_spd_dalam_group()->num_rows($id);
             $sess_id= $this->data['sess_id'] = $this->session->userdata('user_id');
             $this->data['sess_nik'] = get_nik($sess_id);
             $receiver = getAll('users_spd_dalam_group', array('id'=>'where/'.$id))->row('task_receiver');
@@ -125,9 +119,7 @@ class Form_spd_dalam_group extends MX_Controller {
             $this->data['receiver'] = $p = explode(",", $receiver);
             $this->data['receiver_submit'] = explode(",", $user_submit);
 
-            //get data from API
-            $this->get_user_info($creator);
-
+            $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
 
             $this->_render_page('form_spd_dalam_group/submit', $this->data);
         }
@@ -162,40 +154,84 @@ class Form_spd_dalam_group extends MX_Controller {
             redirect('auth/login', 'refresh');
         }
 
+        $form = 'spd_dalam_group';
         $user_id = get_nik($this->session->userdata('user_id'));
         $date_now = date('Y-m-d');
-
+        $approval_status = $this->input->post('app_status_'.$type);
         $data = array(
         'is_app_'.$type => 1,
         'user_app_'.$type => $user_id, 
         'date_app_'.$type => $date_now,
+        'app_status_id_'.$type => $approval_status,
+        'note_'.$type => $this->input->post('note_'.$type)
         );
-        
+
+        $is_app = getValue('is_app_'.$type, 'users_spd_dalam_group', array('id'=>'where/'.$id));
         $this->form_spd_dalam_group_model->update($id,$data);
-        $creator_id = getValue('task_creator', 'users_spd_dalam_group', array('id'=>'where/'.$id));
-        $isi_email = 'Status pengajuan perjalan dinas dalam kota anda disetujui oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_spd_dalam_group/submit/'.$id.'>Klik Disini</a><br />';
-        $isi_email_request = get_name($creator_id ).' mengajukan Permohonan perjalan dinas dalam kota, untuk melihat detail silakan <a href='.base_url().'form_spd_dalam_group/submit/'.$id.'>Klik Disini</a><br />';  
-        $approval_status = 1;
-        $this->approval->approve('spd_dalam_group', $id, $approval_status, $this->detail_email_submit($id));
-        if(!empty(getEmail($creator_id )))$this->send_email(getEmail($creator_id ), 'Status Pengajuan Permohonan Perjalan Dinas Dalam Kota (Group) dari Atasan', $isi_email);
-        
-        if($type !== 'hrd'){
-        $lv = substr($type, -1)+1;
-        $lv_app = 'lv'.$lv;
-        $user_app = ($lv<4) ? getValue('user_app_'.$lv_app, 'users_spd_dalam_group', array('id'=>'where/'.$id)) : 0;
-        $user_spd_dalam_group_id = getValue('task_creator', 'users_spd_dalam_group', array('id'=>'where/'.$id));
-        if(!empty($user_app)):
-            if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), 'Pengajuan Perjalanan Dinas Dalam Kota (Group)', $isi_email_request);
-            $this->approval->request($lv_app, 'spd_dalam_group', $id, $user_spd_dalam_group_id, $this->detail_email_submit($id));
-        else:
-            if(!empty(getEmail($this->approval->approver('dinas'))))$this->send_email(getEmail($this->approval->approver('dinas')), 'Pengajuan Perjalanan Dinas Dalam Kota (Group)', $isi_email_request);
-            $this->approval->request('hrd', 'spd_dalam_group', $id, $user_spd_dalam_group_id, $this->detail_email_submit($id));
-        endif;
+
+        if($is_app==0){
+            $this->approval->approve($form, $id, $approval_status, $this->detail_email($id));
+        }else{
+            $this->approval->update_approve($form, $id, $approval_status, $this->detail_email($id));
+        }
+
+        if($type !== 'hrd'  && $approval_status == 1){
+            $lv = substr($type, -1)+1;
+            $lv_app = 'lv'.$lv;
+            $user_app = ($lv<4) ? getValue('user_app_'.$lv_app, 'users_spd_dalam_group', array('id'=>'where/'.$id)) : 0;
+            $user_spd_dalam_group_id = getValue('task_creator', 'users_spd_dalam_group', array('id'=>'where/'.$id));
+
+            $isi_email = 'Status pengajuan perjalan dinas dalam kota anda disetujui oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_spd_dalam_group/submit/'.$id.'>Klik Disini</a><br />';
+            $isi_email_request = get_name($user_spd_dalam_group_id ).' mengajukan Permohonan perjalan dinas dalam kota, untuk melihat detail silakan <a href='.base_url().'form_spd_dalam_group/submit/'.$id.'>Klik Disini</a><br />';
+            
+            if(!empty($user_app)):
+                if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), 'Pengajuan Perjalanan Dinas Dalam Kota', $isi_email_request);
+                $this->approval->request($lv_app, $form, $id, $user_spd_dalam_group_id, $this->detail_email($id));
+            else:
+                if(!empty(getEmail($this->approval->approver('dinas'))))$this->send_email(getEmail($this->approval->approver('dinas')), 'Pengajuan Perjalanan Dinas Dalam Kota', $isi_email_request);
+                $this->approval->request('hrd', $form, $id, $user_spd_dalam_group_id, $this->detail_email($id));
+            endif;
+        }elseif($type == 'hrd' && $approval_status == 1){
+            $this->approval->task_receiver($form, $id, $this->detail_email($id));
+        }else{
+            //$email_body = "Status pengajuan permohonan spd_dalam_group yang diajukan oleh ".get_name($user_spd_dalam_group_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_spd_dalam_group/detail/'.$id.'>Klik Disini</a><br />';
+            switch($type){
+                case 'lv1':
+                    //$this->approval->not_approve('spd_dalam_group', $id, )
+                break;
+
+                case 'lv2':
+                    $receiver_id = getValue('user_app_lv1', 'users_spd_dalam_group', array('id'=>'where/'.$id));
+                    $this->approval->not_approve($form, $id, $receiver_id, $approval_status ,$this->detail_email($id));
+                    //if(!empty(getEmail($receiver_id)))$this->send_email(getEmail($receiver_id), 'Status Pengajuan Permohonan Perjalanan Dinas Dari Atasan', $email_body);
+                break;
+
+                case 'lv3':
+                    for($i=1;$i<3;$i++):
+                        $receiver = getValue('user_app_lv'.$i, 'users_spd_dalam_group', array('id'=>'where/'.$id));
+                        if(!empty($receiver)):
+                            $this->approval->not_approve($form, $id, $receiver, $approval_status ,$this->detail_email($id));
+                            //if(!empty(getEmail($receiver)))$this->send_email(getEmail($receiver), 'Status Pengajuan Permohonan PJD Dalam Kota Dari Atasan', $email_body);
+                        endif;
+                    endfor;
+                break;
+
+                case 'hrd':
+                    for($i=1;$i<4;$i++):
+                        $receiver = getValue('user_app_lv'.$i, 'users_spd_dalam_group', array('id'=>'where/'.$id));
+                        if(!empty($receiver)):
+                            $this->approval->not_approve($form, $id, $receiver, $approval_status ,$this->detail_email($id));
+                            //if(!empty(getEmail($receiver)))$this->send_email(getEmail($receiver), 'Status Pengajuan Permohonan PJD Dalam Kota Dari Atasan', $email_body);
+                        endif;
+                    endfor;
+                break;
+            }
         }
     }
 
     public function input()
     {
+        $this->data['title'] = "Input SPD - Dalam Kota";
         $user_id = $this->data['sess_id'] = $this->session->userdata('user_id');
         $sess_id = $this->session->userdata('user_id');
         $nik = get_nik($sess_id);
@@ -210,7 +246,6 @@ class Form_spd_dalam_group extends MX_Controller {
             $this->data['sess_nik'] = get_nik($sess_id);
 
             $this->data['all_users'] = $this->ion_auth->where('id != ', 1)->users();
-            $this->get_user_atasan();
             $this->get_penerima_tugas();
             $this->get_penerima_tugas_satu_bu();
             $this->_render_page('form_spd_dalam_group/input', $this->data);
@@ -263,14 +298,14 @@ class Form_spd_dalam_group extends MX_Controller {
                 $isi_email = get_name($task_creator).' mengajukan Perjalanan Dinas Dalam Kota (Group), untuk melihat detail silakan <a href='.base_url().'form_spd_dalam_group/submit/'.$spd_id.'>Klik Disini</a><br />';
 
                 if($task_creator!==$created_by):
-                    $this->approval->by_admin('spd_dalam_group', $spd_id, $created_by, $task_creator, $this->detail_email_submit($spd_id));
+                    $this->approval->by_admin('spd_dalam_group', $spd_id, $created_by, $task_creator, $this->detail_email($spd_id));
                 endif;
                  if(!empty($user_app_lv1)):
                     if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), 'Pengajuan Perjalanan Dinas Dalam Kota (Group)', $isi_email);
-                    $this->approval->request('lv1', 'spd_dalam_group', $spd_id, $task_creator, $this->detail_email_submit($spd_id));
+                    $this->approval->request('lv1', 'spd_dalam_group', $spd_id, $task_creator, $this->detail_email($spd_id));
                  else:
                     if(!empty(getEmail($this->approval->approver('dinas'))))$this->send_email(getEmail($this->approval->approver('dinas')), 'Pengajuan Perjalanan Dinas Dalam Kota (Group)', $isi_email);
-                    $this->approval->request('hrd', 'spd_dalam_group', $spd_id, $task_creator, $this->detail_email_submit($spd_id));
+                    $this->approval->request('hrd', 'spd_dalam_group', $spd_id, $task_creator, $this->detail_email($spd_id));
                  endif;
                 $task_receiver_id = explode(',',$task_receiver);
                 $this->send_spd_mail($spd_id, $task_creator, $task_receiver_id);
@@ -282,6 +317,7 @@ class Form_spd_dalam_group extends MX_Controller {
 
     public function report($id)
     {
+        $this->data['title'] = "Report SPD - Dalam Kota (Group)";
         $user_id = $this->data['sess_id'] = $this->session->userdata('user_id');
         $report_id = $this->db->where('users_spd_dalam_report_group.user_spd_dalam_group_id', $id)->get('users_spd_dalam_report_group')->row('id');
 
@@ -305,15 +341,13 @@ class Form_spd_dalam_group extends MX_Controller {
             $user_submit = getAll('users_spd_dalam_group', array('id'=>'where/'.$id))->row('user_submit');
             $this->data['receiver'] = $p = explode(",", $receiver);
             $this->data['receiver_submit'] = explode(",", $user_submit);
-
-            //get data from API
-            $this->get_user_info($creator);
             $this->_render_page('form_spd_dalam_group/report', $this->data);
         }
     }
 
     public function report_detail($id, $user_id)
     {
+        $this->data['title'] = "Report Detail SPD - Dalam Kota (Group)";
         $report_id = getValue('id','users_spd_dalam_report_group', array('user_spd_dalam_group_id'=>'where/'.$id, 'created_by'=>'where/'.$user_id));
         if (!$this->ion_auth->logged_in())
         {
@@ -498,7 +532,7 @@ class Form_spd_dalam_group extends MX_Controller {
                     'receiver_id' => $task_receiver_id[$i],
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Pemberian Tugas Perjalanan Dinas Dalam Kota (group)',
-                    'email_body' => get_name($sender_id).' memberikan tugas perjalan dinas Dalam Kota (group), untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$this->detail_email_submit($spd_id),
+                    'email_body' => get_name($sender_id).' memberikan tugas perjalan dinas Dalam Kota (group), untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$this->detail_email($spd_id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data);
@@ -514,7 +548,7 @@ class Form_spd_dalam_group extends MX_Controller {
                     'receiver_id' => $receiver_id,
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Persetujuan Tugas Perjalanan Dinas Dalam Kota (group)',
-                    'email_body' => get_name($sender).' telah menyetujui tugas perjalan dinas Dalam Kota (group) yang anda berikan, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$this->detail_email_submit($spd_id),
+                    'email_body' => get_name($sender).' telah menyetujui tugas perjalan dinas Dalam Kota (group) yang anda berikan, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$this->detail_email($spd_id),
                     'is_read' => 0,
                 );
         $this->db->insert('email', $data);
@@ -536,7 +570,7 @@ class Form_spd_dalam_group extends MX_Controller {
             $this->db->insert('email', $data);
     }
 
-    function detail_email_submit($id)
+    function detail_email($id)
     {
         if (!$this->ion_auth->logged_in())
         {
@@ -554,9 +588,6 @@ class Form_spd_dalam_group extends MX_Controller {
             $user_submit = getAll('users_spd_dalam_group', array('id'=>'where/'.$id))->row('user_submit');
             $this->data['receiver'] = $p = explode(",", $receiver);
             $this->data['receiver_submit'] = explode(",", $user_submit);
-
-            //get data from API
-            $this->get_user_info($creator);
 
             return $this->load->view('form_spd_dalam_group/spd_dalam_mail', $this->data, TRUE);
         }
@@ -618,7 +649,7 @@ class Form_spd_dalam_group extends MX_Controller {
             $penerima_tugas = json_decode($get_penerima_tugas, true);
             return $this->data['penerima_tugas'] = $penerima_tugas;
             }else{
-             return $this->data['penerima_tugas'] = 'Tidak ada karyawan dengan departement yang sama';
+             return $this->data['penerima_tugas'] = 'Tidak ada karyawan dengan BU yang sama';
             }
     }
 
@@ -636,36 +667,7 @@ class Form_spd_dalam_group extends MX_Controller {
              return $this->data['penerima_tugas_satu_bu'] = 'Tidak ada karyawan dengan Bussiness Unit yang sama';
             }
     }
-    
-    function get_user_info($user_id)
-    {
-        $url = get_Api_key().'users/employement/EMPLID/'.$user_id.'/format/json';
-        $headers = get_headers($url);
-        $response = substr($headers[0], 9, 3);
-        if ($response != "404") {
-            $getuser_info = file_get_contents($url);
-            $user_info = json_decode($getuser_info, true);
-            return $this->data['user_info'] = $user_info;
-        } else {
-            return $this->data['user_info'] = '';
-        }
-    }
 
-    public function get_tr($id)
-    {
-        $url = get_api_key().'users/org/EMPLID/'.$id.'/format/json';
-        $headers = get_headers($url);
-        $response = substr($headers[0], 9, 3);
-        if ($response != "404") {
-            $get_task_receiver = file_get_contents($url);
-            $data['subordinate'] = $task_receiver = json_decode($get_task_receiver, true);
-        } else {
-           $data['subordinate'] =  '';
-        }
-
-        $this->load->view('dropdown_tc',$data);
-    }
-    
     function pdf($id)
     {
         if (!$this->ion_auth->logged_in())
@@ -714,11 +716,7 @@ class Form_spd_dalam_group extends MX_Controller {
                     $this->template->add_css('plugins/select2/select2.css');
                     
                 }
-                elseif(in_array($view, array('form_spd_dalam_group/input',
-                                             'form_spd_dalam_group/submit',
-                                             'form_spd_dalam_group/report',
-                                             'form_spd_dalam_group/report_detail'
-                                             )))
+                elseif(in_array($view, array('form_spd_dalam_group/input')))
                 {
 
                     $this->template->set_layout('default');
@@ -732,20 +730,54 @@ class Form_spd_dalam_group extends MX_Controller {
 
                     $this->template->add_js('respond.min.js');
 
-                    $this->template->add_js('jquery.bootstrap.wizard.min.js');
                     $this->template->add_js('jquery.validate.min.js');
+                    $this->template->add_js('jquery-validate.bootstrap-tooltip.min.js');
                     $this->template->add_js('bootstrap-datepicker.js');
                     $this->template->add_js('bootstrap-timepicker.js');
                     $this->template->add_js('emp_dropdown.js');
-                    $this->template->add_js('form_spd_dalam_group.js');
+                    $this->template->add_js('form_spd_dalam_input.js');
                     
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                     $this->template->add_css('plugins/select2/select2.css');
                     $this->template->add_css('datepicker.css');
                     $this->template->add_css('bootstrap-timepicker.css');
+                     
+                }elseif(in_array($view, array('form_spd_dalam_group/submit')))
+                {
+
+                    $this->template->set_layout('default');
+
+                     $this->template->add_js('jquery.sidr.min.js');
+                    $this->template->add_js('breakpoints.js');
+
+                    $this->template->add_js('core.js');
+                    $this->template->add_js('purl.js');
+
+                    $this->template->add_js('respond.min.js');
+                    $this->template->add_js('form_spd_dalam.js');
+                    
+                    $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                     $this->template->add_css('approval_img.css');
                      
+                }elseif(in_array($view, array('form_spd_dalam_group/report',
+                                              'form_spd_dalam_group/report_detail')))
+                {
+
+                    $this->template->set_layout('default');
+
+                    $this->template->add_js('jquery.sidr.min.js');
+                    $this->template->add_js('breakpoints.js');
+                    $this->template->add_js('core.js');
+                    $this->template->add_js('respond.min.js');
+                    $this->template->add_js('jquery.validate.min.js');
+                    $this->template->add_js('jquery-validate.bootstrap-tooltip.min.js');
+
+                    $this->template->add_js('form_spd_dalam_report.js');
+                    
+                    $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
+                     
                 }
+
 
 
             if ( ! empty($data['title']))

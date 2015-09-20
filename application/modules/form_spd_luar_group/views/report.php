@@ -167,7 +167,9 @@
       </div>
       <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
       <div class="modal-body">
-        <?php echo form_open_multipart('form_spd_luar_group/add_report/'.$id_spd_group)?>
+        <?php 
+            $att = array('class' => 'form-no-horizontal-spacing', 'id' => 'formaddreport');
+            echo form_open_multipart('form_spd_luar_group/add_report/'.$id_spd_group, $att)?>
             <h4>Laporan Kegiatan PJD</h4>
             <div class="row form-row">
               <div class="col-md-4">

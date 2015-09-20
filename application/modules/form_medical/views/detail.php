@@ -58,16 +58,6 @@
       						        	<td><?php echo $detail[$i]['jenis']?></td>
       						        	<td align="right"><?php echo  'Rp. '.number_format($detail[$i]['rupiah'], 0)?></td>
       						        </tr>
-                            <?php /*
-                              if(sizeof($detail)>1){?>
-                                <?php if($detail[$i]['karyawan_id'] != $detail[$i+1]['karyawan_id']){
-                                    $sub_total = $detail[$i]['rupiah'] + $detail[$i+1]['rupiah']
-                                  ?>
-                                  <tr>
-                                    <td align="right" colspan="5">Total <?php echo $detail[$i]['karyawan_id']?>: </td><td><?php echo $sub_total?></td>
-                                  </tr>
-                                  <?php } ?>
-                            <?php };*/?>
         						        <?php
                             if(sizeof($detail)>1 && isset($detail[$i+1])){
                             $total = $total + $detail[$i+1]['rupiah'];
@@ -87,7 +77,7 @@
                             if(file_exists('./uploads/'.$user_folder.$attachment[$i])){
                       ?>
                       <div class="col-md-12">
-                        <label class="form-label text-left"><a href="<?php echo site_url('uploads/'.$user_folder.$attachment[$i])?>"><?php echo '* '.$attachment[$i]?></a></label>
+                        <label class="form-label text-left"><a href="<?php echo site_url('uploads/'.$user_folder.$attachment[$i])?>" target="_blank"><?php echo '* '.$attachment[$i]?></a></label>
                       </div>
                     <?php }endfor; ?>
 
@@ -516,7 +506,7 @@
                     if(file_exists('./uploads/'.$user_folder.$attachment[$i])){
               ?>
               <div class="col-md-12">
-                <div id="file<?php echo $i ?>"><a href="<?php echo site_url('uploads/'.$user_folder.$attachment[$i])?>"><?php echo '* '.$attachment[$i]?></a>  <button type="button" onclick="removeFile<?php echo $i ?>()" class='btn-danger btn-xs' title='Remove File'><i class='icon-remove'></i></button></div>
+                <div id="file<?php echo $i ?>"><a href="<?php echo site_url('uploads/'.$user_folder.$attachment[$i])?>" target="_blank"><?php echo '* '.$attachment[$i]?></a>  <button type="button" onclick="removeFile<?php echo $i ?>()" class='btn-danger btn-xs' title='Remove File'><i class='icon-remove'></i></button></div>
                 <input type="text" id="userfile<?php echo $i ?>" name="userfileold[]" value="<?php echo $attachment[$i]?>" style="display:none" />
               </div>
               <script type="text/javascript">

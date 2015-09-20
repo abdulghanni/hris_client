@@ -11,6 +11,13 @@ $(document).ready(function() {
     $("#tanggal_mulai").datepicker({format: "yyyy-mm-dd", todayHighlight: true});
     $("#tanggal_akhir").datepicker({format: "yyyy-mm-dd", todayHighlight: true});
 
+    $('#btnAdd').on('click', function () {
+      $(document).find("select.select2").select2();
+      $('#btnRemove').show();
+      $('#btnSave').show();
+      $('#btnCancel').show();
+    });
+    
   //Date Pickers
     $('.input-append.date')
         .datepicker({format: "yyyy-mm-dd", todayHighlight: true})

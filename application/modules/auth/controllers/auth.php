@@ -3590,7 +3590,9 @@ class Auth extends MX_Controller {
                 }
                 elseif(in_array($view, array(
                                              'auth/create_group',
-                                             'auth/edit_group')))
+                                             'auth/edit_group',
+                                             'forgot_password'
+                                             )))
                 {
                     $this->template->set_layout('default');
 

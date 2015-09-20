@@ -21,10 +21,12 @@
             </div>
             <div class="grid-body no-border">
               <!--<form class="form-no-horizontal-spacing" id="add_spd_luar" action="<?php echo site_url() ?>form_spd_luar/add" method="post">-->
-              <?php echo form_open('form_spd_luar_group/add'); ?>
+              <?php 
+                $att = array('class' => 'form-no-horizontal-spacing', 'id' => 'formadd');
+                echo form_open('form_spd_luar_group/add', $att); ?>
                 <div class="row column-seperation">
                   <div class="col-md-5">
-                    <h4>Yang Memberi Tugas</h4> 
+                    <h4>Admin Pembuat Tugas</h4> 
                     <div class="row form-row">
                       <div class="col-md-3">
                         <label class="form-label text-right">Nama</label>
@@ -71,17 +73,10 @@
                         <label class="form-label text-right"><?php echo 'Atasan Langsung' ?></label>
                       </div>
                       <div class="col-md-9">
-                      <?php if(is_admin()){
+                      <?php
                         $style_up='class="select2" style="width:100%" id="atasan1"';
                             echo form_dropdown('atasan1',array('0'=>'- Pilih Atasan Langsung -'),'',$style_up);
-                        }else{?>
-                        <select name="atasan1" id="atasan1" class="select2" style="width:100%">
-                            <option value="0">- Pilih Atasan Langsung -</option>
-                            <?php foreach ($user_atasan as $key => $up) : ?>
-                              <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
-                            <?php endforeach;?>
-                        </select>
-                        <?php }?>
+                      ?>
                       </div>
                     </div>
 
@@ -109,7 +104,7 @@
                     
                   </div>
                   <div class="col-md-7">
-                    <h4>Memberi tugas / Ijin Kepada</h4>
+                    <h4>Memberi Tugas Kepada</h4>
                     <div class="row form-row">
                       <div class="col-md-12">
                         <button type="button" id="btnAdd" class="btn btn-primary btn-xs" onclick="addEmp('dataTableEmp')"><i class="icon-plus"></i>&nbsp;<?php echo lang('add_button');?></button>
@@ -199,7 +194,7 @@
                           </div>
                           <div class="col-md-8">
                             <div class="input-append date success no-padding">
-                              <input type="text" class="form-control" name="date_spd_start" value="">
+                              <input type="text" class="form-control" name="date_spd_start" value="" required>
                               <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span> 
                             </div>
                           </div>
@@ -210,7 +205,7 @@
                           </div>
                           <div class="col-md-8">
                             <div class="input-append date success no-padding">
-                              <input type="text" class="form-control" name="date_spd_end" value="">
+                              <input type="text" class="form-control" name="date_spd_end" value="" required>
                               <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span> 
                             </div>
                           </div>
@@ -249,8 +244,8 @@
                 </div>
                 <div class="form-actions">
                   <div class="pull-right">
-                    <button class="btn btn-danger btn-cons" type="submit"><i class="icon-ok"></i> Save</button>
-                    <a href="<?php echo site_url() ?>form_spd_luar_group"><button class="btn btn-white btn-cons" type="button">Cancel</button></a>
+                    <button  id="btnSave" class="btn btn-danger btn-cons" type="submit" style="display: none;"><i class="icon-ok"></i> Save</button>
+                    <a href="<?php echo site_url() ?>form_spd_luar_group"><button id="btnCancel" class="btn btn-white btn-cons" type="button" style="display: none;">Cancel</button></a>
                   </div>
                 </div>
               </form>

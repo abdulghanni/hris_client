@@ -64,7 +64,7 @@ $rejected = assets_url('img/rejected_stamp.png');?>
   <tbody>
     <tr>
       <th width="333" height="44" scope="col">Diusulkan Oleh</th>
-      <th width="333" scope="col">Persetujuan Atasan</th>
+      <th width="333" scope="col">Persetujuan Atasan Langsung</th>
       <th width="333" scope="col">Mengetahui HRD</th>
     </tr>
     <tr>
@@ -72,6 +72,16 @@ $rejected = assets_url('img/rejected_stamp.png');?>
       <td align="center"><?php echo ($user->approval_status_id_lv1 == 1)?"<img class=approval-img-md src=$approved>":(($user->approval_status_id_lv1 == 2) ? "<img class=approval-img-md src=$rejected>":'<br/><br/><br/><br/><br/>');?><br/><br/><?php echo get_name($user->user_app_lv1)?><br/><?php echo dateIndo($user->date_app_lv1)?></td>
       <td align="center"><?php echo ($user->approval_status_id_hrd == 1)?"<img class=approval-img-md src=$approved>":(($user->approval_status_id_hrd == 2) ? "<img class=approval-img-md src=$rejected>":'<br/><br/><br/><br/><br/>');?><br/><br/><?php echo get_name($user->user_app_hrd)?><br/><?php echo dateIndo($user->date_app_hrd)?></td>
     </tr>
+    <?php if(!empty($user->user_app_lv2)):?>
+      <tr>
+        <th width="333"height="44" scope="col">Persetujuan Atasan Tidak Langsung</th>
+        <?php if(!empty($user->user_app_lv3)):?><th scope="col">Persetujuan Atasan Lainnya</th><?php endif ?>
+      </tr>
+      <tr>
+        <td align="center"><?php echo ($user->approval_status_id_lv2 == 1)?"<img class=approval-img-md src=$approved>":(($user->approval_status_id_lv2 == 2) ? "<img class=approval-img-md src=$rejected>":'<br/><br/><br/><br/><br/>');?><br/><br/><?php echo get_name($user->user_app_lv2)?><br/><?php echo dateIndo($user->date_app_lv2)?></td>
+        <?php if(!empty($user->user_app_lv3)):?><td align="center"><?php echo ($user->approval_status_id_lv3 == 1)?"<img class=approval-img-md src=$approved>":(($user->approval_status_id_lv3 == 2) ? "<img class=approval-img-md src=$rejected>":'<br/><br/><br/><br/><br/>');?><br/><br/><?php echo get_name($user->user_app_lv3)?><br/><?php echo dateIndo($user->date_app_lv3)?></td><?php endif ?>
+      </tr>
+    <?php endif ?>
   </tbody>
 </table>
 <table width="1001" height="43" border="" align="center">

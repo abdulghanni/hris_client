@@ -6,22 +6,26 @@
 <style type="text/css">
 <!--
 .style3 {
-  font-size: 20px;
+  font-size: 16px;
 }
 .style4 {
-  font-size: 22px;
-  font-weight: bold;
-  text-align: center;
+  font-size: 12px;
 }
 .style6 {
   color: #000000;
   font-weight: bold;
-  font-size: 26px;
+  font-size: 20px;
 }
 .style7 {
   padding-left: 20px;
   font-size: 16px;
   font-weight: bold;
+}
+
+.approval-img-md{
+    height:12%;
+    width:15%;
+    z-index:-1;
 }
 
 -->
@@ -31,10 +35,14 @@
 <body>
 <div align="center">
   <p align="left"><img src="<?php echo assets_url('img/erlangga.jpg')?>"/></p>
-  <p align="center" class="style6">Form Surat Tugas / Ijin </p>
+  <p align="center" class="style6">Form Surat Perjalan Dinas Dalam Kota </p>
 </div>
 <?php
 if ($td_num_rows > 0) {
+  $approved = assets_url('img/approved_stamp.png');
+  $rejected = assets_url('img/rejected_stamp.png');
+  $total_fix = 0;
+  $total_lain = 0;
   foreach ($task_detail as $td) : 
 
     $a = strtotime($td->date_spd_end);
@@ -76,7 +84,6 @@ if ($td_num_rows > 0) {
       <th width="2%">No</th>
       <th width="5%">NIK</th>
       <th width="20%">Nama</th>
-      <th width="5%">Golongan</th>
       <th width="20%">Dept/Bagian</th>
       <th width="20%">Jabatan</th>
       <th width="8%">Submit</th>
@@ -89,7 +96,6 @@ if ($td_num_rows > 0) {
     <td height="50" align="center"><?php echo $i+1?></td>
     <td  align="center"><?php echo $receiver[$i]?></td>
     <td>&nbsp;<?php echo get_name($receiver[$i])?></td>
-      <td  align="center"><?php echo get_grade($receiver[$i])?></td>
       <td>&nbsp;<?php echo get_user_organization($receiver[$i])?></td>
       <td>&nbsp;<?php echo get_user_position($receiver[$i])?></td>
       <td align="center"><?php echo in_array($receiver[$i], $receiver_submit)?"Ya":"-"?></td>
@@ -169,50 +175,84 @@ if ($td_num_rows > 0) {
           <?php echo get_grade($key->user_id)?>
         </td>
         <?php $c = $ci->db->select('users_spd_luar_group_biaya.jumlah_biaya')->from('users_spd_luar_group_biaya')->join('pjd_biaya','pjd_biaya.id = users_spd_luar_group_biaya.pjd_biaya_id', 'left')->where('user_spd_luar_group_id', $id)->where('user_id', $key->user_id)->where('pjd_biaya.type_grade != ', 0)->get();
-            foreach ($c->result() as $c) { ?>
-        <td><?php echo number_format($c->jumlah_biaya*$jml_pjd, 0)?>
-        </td>
+            foreach ($c->result() as $c) {
+            $total_fix += $c->jumlah_biaya*$jml_pjd;
+        ?>
+        <td align="right">Rp. <?php echo number_format($c->jumlah_biaya*$jml_pjd, 0)?> </td>
         <?php } ?>
         <?php
           $b = $ci->db->select('users_spd_luar_group_biaya.jumlah_biaya')->from('users_spd_luar_group_biaya')->join('pjd_biaya','pjd_biaya.id = users_spd_luar_group_biaya.pjd_biaya_id', 'left')->where('user_spd_luar_group_id', $id)->where('user_id', $key->user_id)->where('pjd_biaya.type_grade', 0)->get();
             foreach ($b->result() as $b) {
+            $total_lain += $b->jumlah_biaya;
         ?>
-        <td><?php echo number_format($b->jumlah_biaya*$jml_pjd, 0)?></td>
+        <td align="right">Rp. <?php echo number_format($b->jumlah_biaya*$jml_pjd, 0)?> </td>
           <?php } ?>
       </tr>
     <?php endforeach ?>
+    <tr>
+      <td align="center"><b>Total : Rp. <?php echo number_format($total_fix+$total_lain,0)?></b></td>
+    </tr>
     </tbody>
 </table>
-
-<p>&nbsp;</p>
+<br/>
 <?php if ($td_num_rows > 0) {
   foreach ($task_detail as $td):
 ?>
-<div style="float: left; text-align: center; width: 45%;" class="style5">
-<?php if($td->task_creator !== get_nik($td->created_by)):?>
-<p>Yang bersangkutan</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p class="wf-submit">
-<span class="semi-bold">
-<?php
-    echo get_name($td->created_by);
-?>
-</span><br/>
-<span class="small"><?php echo dateIndo($td->created_on) ?></span><br/>
-<span class="small"><?php echo get_user_position(get_nik($td->created_by)) ?></span><br/>
-</p>
-<?php endif; ?>
 
-</div>
-
-<div style="float: right;text-align: center; width: 45%;" class="style5">
+<div style="float: right;text-align: center; width: 50%;" class="style4">
 <p>Yang memberi tugas / ijin</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
 <span class="semi-bold"><?php echo get_name($td->task_creator) ?></span><br/>
 <span class="small"><?php echo dateIndo($td->created_on) ?></span><br/>
 </div> 
-<?php endforeach;} ?>
+<div style="clear: both; margin: 0pt; padding: 0pt; "></div>
+<br/>
+<table width="1200" align="center">
+  <tbody>
+    <tr>
+      <th width="375" height="100"></th>
+      <th width="375">Mengetahui/Menyetujui</th>
+      <th width="375"></th>
+      <th width="375"></th>
+    </tr>
+    <tr>
+      <?php if(!empty($td->user_app_lv1)){?>
+      <td width="375" align="center"><?php echo ($td->app_status_id_lv1 == 1)?"<img class=approval-img-md src=$approved>":(($td->app_status_id_lv1 == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
+      <?php }?>
+      <?php if(!empty($td->user_app_lv2)){?>
+      <td width="375" align="center"><?php echo ($td->app_status_id_lv2 == 1)?"<img class=approval-img-md src=$approved>":(($td->app_status_id_lv2 == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
+      <?php }?>
+      <?php if(!empty($td->user_app_lv3)){?>
+      <td width="375" align="center"><?php echo ($td->app_status_id_lv3 == 1)?"<img class=approval-img-md src=$approved>":(($td->app_status_id_lv3 == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
+      <?php }?>
+      <td width="375" align="center"><?php echo ($td->app_status_id_hrd == 1)?"<img class=approval-img-md src=$approved>":(($td->app_status_id_hrd == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
+    </tr>
+    <tr>
+    <?php if(!empty($td->user_app_lv1)){?>
+      <td align="center" class="style3"><?php echo get_name($td->user_app_lv1)?></td>
+    <?php }?>
+    <?php if(!empty($td->user_app_lv2)){?>
+      <td align="center" class="style3"><?php echo get_name($td->user_app_lv2)?></td>
+    <?php }?>
+    <?php if(!empty($td->user_app_lv3)){?>
+      <td align="center" class="style3"><?php echo get_name($td->user_app_lv3)?></td>
+    <?php }?>
+      <td align="center" class="style3"><?php echo get_name($td->user_app_hrd)?></td>
+    </tr>
+    <tr>
+    <?php if(!empty($td->user_app_lv1)){?>
+      <td align="center"><?php echo dateIndo($td->date_app_lv1)?><br/><?php echo get_user_position($td->user_app_lv1)?></td>
+    <?php }?>
+    <?php if(!empty($td->user_app_lv2)){?>
+      <td align="center"><?php echo dateIndo($td->date_app_lv2)?><br/><?php echo get_user_position($td->user_app_lv2)?></td>
+    <?php }?>
+    <?php if(!empty($td->user_app_lv2)){?>
+      <td align="center"><?php echo dateIndo($td->date_app_lv3)?><br/><?php echo get_user_position($td->user_app_lv3)?></td>
+    <?php }?>
+      <td align="center"><?php echo dateIndo($td->date_app_hrd)?><br/>(HRD)</td>
+    </tr>
+  </tbody>
+</table>
+<br />
+<?php endforeach;}?>
 </body>
 </html>

@@ -1,6 +1,9 @@
-<div class="grid simple">
+      <div id="container">
+        <div class="row">
+        <div class="col-md-12">
+          <div class="grid simple">
             <div class="grid-title no-border">
-              <h4>View Permintaan <span class="semi-bold"><a href="<?php echo site_url('form_training_group')?>">Pelatihan</a></span></h4>
+              <h4>View Permintaan <span class="semi-bold"><a href="<?php echo site_url('form_training_group')?>">Pelatihan (Group)</a></span></h4>
             </div>
             <div class="grid-body no-border">
             <?php
@@ -44,22 +47,31 @@
                       </div>
 
                     <div class="col-md-8">
-                        <h4>Memberi Pengajuan Pelatihan Kepada</h4>
+                        <h4>Peserta Pelatihan</h4>
                         <div class="row form-row">
-                      <div class="col-md-3">
-                        <label class="form-label text-right">Nama Peserta Training</label>
-                      </div>
-                      <div class="col-md-9">
-                      <?php for($i=0;$i<sizeof($p);$i++):?>
-                      <div class="col-md-3">
-                        <div class="checkbox check-primary checkbox-circle" >
-                          <input name="peserta[]" class="checkbox1" type="checkbox" id="peserta<?php echo $p[$i] ?>" checked>
-                            <label for="peserta<?php echo $p[$i] ?>"><?php echo get_name($p[$i])?></label>
+                          <div class="col-md-12" >
+                            <table class="table table-bordered">
+                              <thead>
+                                <tr>
+                                  <th width="10%">NIK</th>
+                                  <th width="30%">Nama</th>
+                                  <th width="30%">Dept/Bagian</th>
+                                  <th width="30%">Jabatan</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <?php for($i=0;$i<sizeof($p);$i++):?>
+                                <tr>
+                                  <td><?php echo $p[$i]?></td>
+                                  <td><?php echo get_name($p[$i])?></td>
+                                  <td><?php echo get_user_organization($p[$i])?></td>
+                                  <td><?php echo get_user_position($p[$i])?></td> 
+                                </tr>
+                              <?php endfor?>
+                              </tbody>
+                            </table>
                           </div>
-                      </div>
-                      <?php endfor; ?>
-                      </div>
-                    </div>
+                        </div>
                         <div class="row form-row">
                           <div class="col-md-3">
                             <label class="form-label text-right">Nama Program Pelatihan</label>
@@ -77,35 +89,13 @@
                           </div>
                         </div>
 
-                        <?php if(!empty($user->approval_status_id_lv1)){?>
-                        <div class="row form-row">
-                          <div class="col-md-3">
-                            <label class="form-label text-right">Approval Status(Supervisor)</label>
-                          </div>
-                          <div class="col-md-9">
-                            <input name="" id="alamat_training" type="text"  class="form-control" placeholder="Nama" value="<?php echo $user->approval_status_lv1; ?>" disabled="disabled">
-                          </div>
-                        </div>
-                        <?php } ?>
-
                         <?php if(!empty($user->note_app_lv1)){?>
                         <div class="row form-row">
                           <div class="col-md-3">
-                            <label class="form-label text-right">Note (Supervisor) : </label>
+                            <label class="form-label text-right">Note Atasan Langsung : </label>
                           </div>
                           <div class="col-md-9">
-                            <textarea name="" class="custom-txtarea-form"  disabled="disabled"><?php echo $user->note_app_lv1?></textarea>
-                          </div>
-                        </div>
-                        <?php } ?>
-
-                        <?php if(!empty($user->approval_status_id_lv2)){?>
-                        <div class="row form-row">
-                          <div class="col-md-3">
-                            <label class="form-label text-right">Approval Status(Ka. Bagian)</label>
-                          </div>
-                          <div class="col-md-9">
-                            <input name="" id="alamat_training" type="text"  class="form-control" placeholder="Nama" value="<?php echo $user->approval_status_lv2; ?>" disabled="disabled">
+                            <textarea name="" class="form-control" disabled="disabled"><?php echo $user->note_app_lv1?></textarea>
                           </div>
                         </div>
                         <?php } ?>
@@ -113,21 +103,10 @@
                         <?php if(!empty($user->note_app_lv2)){?>
                         <div class="row form-row">
                           <div class="col-md-3">
-                            <label class="form-label text-right">Note (Ka. Bagian) : </label>
+                            <label class="form-label text-right">Note Atasan Tidak Langsung : </label>
                           </div>
                           <div class="col-md-9">
-                            <textarea name="" class="custom-txtarea-form"  disabled="disabled"><?php echo $user->note_app_lv2?></textarea>
-                          </div>
-                        </div>
-                        <?php } ?>
-
-                        <?php if(!empty($user->approval_status_id_lv3)){?>
-                        <div class="row form-row">
-                          <div class="col-md-3">
-                            <label class="form-label text-right">Approval Status(Atasan Lainnya)</label>
-                          </div>
-                          <div class="col-md-9">
-                            <input name="" id="alamat_training" type="text"  class="form-control" placeholder="Nama" value="<?php echo $user->approval_status_lv3; ?>" disabled="disabled">
+                            <textarea name="" class="form-control" disabled="disabled"><?php echo $user->note_app_lv2?></textarea>
                           </div>
                         </div>
                         <?php } ?>
@@ -135,10 +114,10 @@
                         <?php if(!empty($user->note_app_lv3)){?>
                         <div class="row form-row">
                           <div class="col-md-3">
-                            <label class="form-label text-right">Note (Atasan Lainnya) : </label>
+                            <label class="form-label text-right">Note Atasan Lainnya : </label>
                           </div>
                           <div class="col-md-9">
-                            <textarea name="" class="custom-txtarea-form"  disabled="disabled"><?php echo $user->note_app_lv3?></textarea>
+                            <textarea name="" class="form-control" disabled="disabled"><?php echo $user->note_app_lv3?></textarea>
                           </div>
                         </div>
                         <?php } ?>
@@ -288,18 +267,7 @@
                           </div>
                         </div>
                       </div>
-
-                      <?php if(!empty($user->approval_status_id_hrd)){?>
-                      <div class="row form-row">
-                        <div class="col-md-2">
-                          <label class="form-label text-right">Approval Status(HRD)</label>
-                        </div>
-                        <div class="col-md-7">
-                          <input name="" id="alamat_training" type="text"  class="form-control" placeholder="Nama" value="<?php echo $user->approval_status_hrd; ?>" disabled="disabled">
-                        </div>
-                      </div>
-                      <?php } ?>
-
+                      
                       <?php if(!empty($user->note_app_hrd)){?>
                       <div class="row form-row">
                         <div class="col-md-2">
@@ -316,4 +284,7 @@
                   </form>
                 </div>
                </div>
-               <?php endforeach;}?>
+            </div>
+          </div>
+
+          <?php endforeach; } ?>

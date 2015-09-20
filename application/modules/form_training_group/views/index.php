@@ -18,7 +18,7 @@
               <div class="grid simple ">
                 <div class="grid-title no-border">
                   <h4>Daftar Permintaan <span class="semi-bold">Pelatihan Group</span></h4>
-                  <?php if(is_have_subordinate($sess_id)||is_admin()||is_admin_bagian()){?>
+                  <?php if(is_spv($nik)||is_admin()||is_admin_bagian()){?>
                   <div class="tools"> 
                     <a href="<?php echo site_url('form_training_group/input')?>" class="config"><button type="button" class="btn btn-primary btn-sm"><i class="icon-plus"></i>&nbsp;<?php echo lang('add_button');?></button></a>
                   </div>
@@ -47,9 +47,9 @@
                               <thead>
                                 <tr>
                                   <th width="20%">Nama Pengaju</th>
-                                  <th width="20%">Nama Peserta</th>
+                                  <th width="25%">Nama Peserta</th>
                                   <th width="20%">Nama pelatihan</th>
-                                  <th width="40%">Tujuan</th>
+                                  <th width="20%">Tujuan</th>
                                   <th width="10%" style="text-align:center;">appr. atasan langsung</th>
                                   <th width="10%" style="text-align:center;">appr. atasan tidak langsung</th>
                                   <th width="10%" style="text-align:center;">appr. Atasan Lainnya</th>

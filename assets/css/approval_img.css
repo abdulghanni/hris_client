@@ -7,6 +7,7 @@
 .approval_img_md{
     height:40%;
     width:40%;
+    margin-bottom: 5px;
     z-index:-1;
 }
 

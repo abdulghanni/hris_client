@@ -5,10 +5,9 @@
               <h4>Form <a href="<?php echo site_url('form_spd_dalam')?>">Perjalanan Dinas <span class="semi-bold">Dalam Kota</span></a></h4>
             </div>
             <div class="grid-body no-border">
-              <form class="form-no-horizontal-spacing" id="form_spd_dalam" action="<?php echo site_url().'form_spd_dalam/do_submit/'.$id = $this->uri->segment(3, 0);?>" method="post"> 
                 <div class="row column-seperation">
                   <div class="col-md-5">
-                    <h4>Yang Memberi Tugas</h4>   
+                    <h4>Admin Pembuat Tugas</h4>   
                     <?php
                     if ($td_num_rows > 0) {
                     foreach ($task_detail as $td) : ?>  
@@ -61,7 +60,7 @@
                         <label class="form-label text-right">Jabatan</label>
                       </div>
                       <div class="col-md-9">
-                        <input name="dept" id="dept" type="text"  class="form-control" placeholder="Jabatan" value="<?php echo get_user_organization($td->task_receiver)?>" disabled="disabled">
+                        <input name="dept" id="dept" type="text"  class="form-control" placeholder="Jabatan" value="<?php echo get_user_position($td->task_receiver)?>" disabled="disabled">
                       </div>
                     </div>
 
@@ -109,7 +108,6 @@
                     </div>
                   </div>
                 </div>
-              </form>
             </div>
           </div>
         </div>

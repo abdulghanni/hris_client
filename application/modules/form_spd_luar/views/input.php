@@ -21,10 +21,12 @@
             </div>
             <div class="grid-body no-border">
               <!--<form class="form-no-horizontal-spacing" id="add_spd_luar" action="<?php echo site_url() ?>form_spd_luar/add" method="post">-->
-              <?php echo form_open('form_spd_luar/add'); ?>
+              <?php 
+                 $att = array('class' => 'form-no-horizontal-spacing', 'id' => 'formadd');
+                echo form_open('form_spd_luar/add', $att); ?>
                 <div class="row column-seperation">
                   <div class="col-md-5">
-                    <h4>Yang Memberi Tugas</h4> 
+                    <h4>Admin Pembuat Tugas</h4> 
                     <div class="row form-row">
                       <div class="col-md-3">
                         <label class="form-label text-right">Nama</label>
@@ -109,22 +111,17 @@
                     
                   </div>
                   <div class="col-md-7">
-                    <h4>Memberi tugas / Ijin Kepada</h4>
+                    <h4>Memberi Tugas Kepada</h4>
                     <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
                     <div class="row form-row">
                       <div class="col-md-3">
                         <label class="form-label text-right">Nama</label>
                       </div>
                       <div class="col-md-9">
-                        <?php if(is_admin()){
+                        <?php
                         $style_tr='class="select2" style="width:100%" id="penerima_tugas_luar"';
-                            echo form_dropdown('employee',array('Pilih User'=>'- Pilih User -'),'',$style_tr);
-                        }else{?>
-                        <select id="penerima_tugas_luar" class="select2" style="width:100%" name="employee" >
-                          <?php foreach ($penerima_tugas as $key => $up) : ?>
-                            <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME'].' - '.$up['ID']; ?></option>
-                          <?php endforeach;}?>
-                        </select>
+                            echo form_dropdown('employee',array('0'=>'- Pilih Karyawan -'),'',$style_tr);
+                        ?>
                       </div>
                     </div>
                     <div class="row form-row">
@@ -210,7 +207,7 @@
                           </div>
                           <div class="col-md-8">
                             <div class="input-append date success no-padding">
-                              <input type="text" class="form-control" name="date_spd_start" value="">
+                              <input type="text" class="form-control" name="date_spd_start" value="" required>
                               <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span> 
                             </div>
                           </div>
@@ -221,7 +218,7 @@
                           </div>
                           <div class="col-md-8">
                             <div class="input-append date success no-padding">
-                              <input type="text" class="form-control" name="date_spd_end" value="">
+                              <input type="text" class="form-control" name="date_spd_end" value="" required>
                               <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span> 
                             </div>
                           </div>
@@ -234,7 +231,7 @@
                            <h5 class="text-center"><span class="semi-bold">Ketentuan Biaya Perjalanan Dinas</span></h5>
                             <div class="row form-row">
                               <div class="col-md-6 text-left">
-                                <button type="button" id="btnAdd" class="btn btn-primary btn-xs" onclick="addRow('dataTable')"><i class="icon-plus"></i>&nbsp;<?php echo 'Tambah Biaya';?></button>
+                                <button type="button" id="btnAddBiaya" class="btn btn-primary btn-xs" onclick="addRow('dataTable')"><i class="icon-plus"></i>&nbsp;<?php echo 'Tambah Biaya';?></button>
                                 <button type="button" id="btnRemove" class="btn btn-danger btn-xs" onclick="deleteRow('dataTable')" style="display: none;"><i class="icon-remove"></i>&nbsp;<?php echo 'Remove'?></button>
                               </div> 
                             </div>

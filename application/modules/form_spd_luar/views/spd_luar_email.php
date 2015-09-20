@@ -7,7 +7,7 @@
               <form class="form-no-horizontal-spacing" id="formSpdLuar"> 
                 <div class="row column-seperation">
                   <div class="col-md-5">
-                    <h4>Yang Memberi Tugas</h4>   
+                    <h4>Admin Pembuat Tugas</h4>   
                     <?php if ($td_num_rows > 0) {
                       foreach ($task_detail as $td) :
                         $a = strtotime($td->date_spd_end);
@@ -65,7 +65,7 @@
                         <label class="form-label text-right">Jabatan</label>
                       </div>
                       <div class="col-md-9">
-                        <input name="dept" id="dept" type="text"  class="form-control" placeholder="Jabatan" value="<?php echo get_user_organization($td->task_receiver)?>" disabled="disabled">
+                        <input name="dept" id="dept" type="text"  class="form-control" placeholder="Jabatan" value="<?php echo get_user_position($td->task_receiver)?>" disabled="disabled">
                       </div>
                     </div>
                         

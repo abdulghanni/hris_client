@@ -258,11 +258,11 @@ class Dropdown extends MX_Controller {
                 $task_receiver = json_decode($get_task_receiver, true);
                  foreach ($task_receiver as $row)
                     {
-                        $result['0']= '-- Pilih User --';
+                        $result['0']= '-- Pilih Karyawan --';
                         $result[$row['ID']]= ucwords(strtolower($row['NAME']));
                     }
             } else {
-               $result['-']= '- Tidak ada user dengan departemen yang sama -';
+               $result['-']= '- Not Availbale -';
             }
         $data['result']=$result;
         $this->load->view('form_cuti/dropdown_up',$data);
@@ -270,7 +270,7 @@ class Dropdown extends MX_Controller {
 
     public function get_penerima_tugas($id)
     {
-        $url = get_api_key().'users/bawahan_satu_bu/EMPLID/'.get_nik($id).'/format/json';
+        $url = get_api_key().'users/org/EMPLID/'.get_nik($id).'/format/json';
       
             $headers = get_headers($url);
             $response = substr($headers[0], 9, 3);
@@ -279,7 +279,7 @@ class Dropdown extends MX_Controller {
                 $task_receiver = json_decode($get_task_receiver, true);
                  foreach ($task_receiver as $row)
                     {
-                        $result['0']= '-- Pilih User --';
+                        $result['0']= '-- Pilih Karyawan --';
                         $result[$row['ID']]= ucwords(strtolower($row['NAME']).' - '.$row['ID']);
                     }
             } else {
@@ -317,7 +317,7 @@ class Dropdown extends MX_Controller {
         $subordinate =  getAll('users', array('superior_id'=>'where/'.$id));
         foreach ($subordinate->result_array()  as $row)
         {
-            $result['0']= '-- Pilih User --';
+            $result['0']= '-- Pilih Karyawan --';
             $result[$row['id']]= ucwords(strtolower($row['username']));
         }
 

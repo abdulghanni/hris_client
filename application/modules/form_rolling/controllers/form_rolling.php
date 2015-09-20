@@ -204,7 +204,6 @@ class Form_rolling extends MX_Controller {
             $approval_status = $this->input->post('app_status_'.$type);
 
             $is_app = getValue('is_app_'.$type, 'users_rolling', array('id'=>'where/'.$id));
-            $approval_status = $this->input->post('app_status_'.$type);
 
             $this->form_rolling_model->update($id,$data);
             $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
@@ -213,6 +212,7 @@ class Form_rolling extends MX_Controller {
             $isi_email_request = get_name($user_rolling_id).' mengajukan Permohonan rolling, untuk melihat detail silakan <a href='.base_url().'form_rolling/detail/'.$id.'>Klik Disini</a><br />';
             
             $user_rolling_id = getValue('user_id', 'users_rolling', array('id'=>'where/'.$id));
+            
             if($is_app==0){
                 $this->approval->approve('rolling', $id, $approval_status, $this->detail_email($id));
                 if(!empty(getEmail($user_rolling_id)))$this->send_email(getEmail($user_rolling_id), 'Status Pengajuan Permohonan Rolling dari Atasan', $isi_email);

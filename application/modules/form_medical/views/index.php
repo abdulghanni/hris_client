@@ -67,7 +67,7 @@
 
                                 //Approval Level 1
                                   if(empty($row->user_app_lv1)){
-                                     $txt_app_lv1 = "<i class='icon-circle' title = 'Tidak Butuh Approval'></i>";
+                                     $txt_app_lv1 = "<i class='icon-minus' title = 'Tidak Butuh Approval'></i>";
                                     }elseif(!empty($row->user_app_lv1 && $row->is_app_lv1 == 1)){
                                       $txt_app_lv1 = "<a href='".site_url('form_medical/detail/'.$row->id)."''>$approval_status_lv1</a>";
                                     }elseif(!empty($row->user_app_lv1) && $row->is_app_lv1 == 0 && $sess_nik == $row->user_app_lv1){
@@ -80,7 +80,7 @@
                                   //ApprovalLevel 2
                                   
                                   if(empty($row->user_app_lv2)){
-                                     $txt_app_lv2 = "<i class='icon-circle' title = 'Tidak Butuh Approval'></i>";
+                                     $txt_app_lv2 = "<i class='icon-minus' title = 'Tidak Butuh Approval'></i>";
                                     }elseif(!empty($row->user_app_lv2 && $row->is_app_lv2 == 1)){
                                       $txt_app_lv2 = "<a href='".site_url('form_medical/detail/'.$row->id)."''>$approval_status_lv2</a>";
                                     }elseif(!empty($row->user_app_lv2) && $row->is_app_lv2 == 0 && $sess_nik == $row->user_app_lv2){
@@ -92,7 +92,7 @@
                                   //Approval Level 3
 
                                   if(empty($row->user_app_lv3)){
-                                     $txt_app_lv3 = "<i class='icon-circle' title = 'Tidak Butuh Approval'></i>";
+                                     $txt_app_lv3 = "<i class='icon-minus' title = 'Tidak Butuh Approval'></i>";
                                     }elseif(!empty($row->user_app_lv3 && $row->is_app_lv3 == 1)){
                                       $txt_app_lv3 = "<a href='".site_url('form_medical/detail/'.$row->id)."''>$approval_status_lv3</a>";
                                     }elseif(!empty($row->user_app_lv3) && $row->is_app_lv3 == 0 && $sess_nik == $row->user_app_lv3){

@@ -39,13 +39,13 @@
           <li > <a href="<?php echo site_url('form_spd_dalam_group') ?>">PJD - dalam kota (Group)</a> </li>         
           <li > <a href="<?php echo site_url('form_spd_luar') ?>">Perjalanan dinas - luar kota</a> </li>     
           <li > <a href="<?php echo site_url('form_spd_luar_group') ?>">PJD - luar kota (Group)</a> </li>     
-          <li > <a href="<?php echo site_url('form_absen')?>">Keterangan tidak absen</a> </li>          
+          <li > <a href="<?php echo site_url('form_absen')?>">Keterangan tidak absen</a> </li>
+          <?php if(is_spv($nik)||is_admin()||is_admin_bagian()):?><li > <a href="<?php echo site_url('form_medical')?>">Medical</a> </li><?php endif; ?>          
           <li > <a href="<?php echo site_url('form_training')?>">Training</a> </li>          
           <li > <a href="<?php echo site_url('form_training_group')?>">Training (Group)</a> </li>
           <li > <a href="<?php echo site_url('form_resignment')?>">Resignment</a> </li>
           <li > <a href="<?php echo site_url('form_exit')?>">Exit clearance</a> </li>             
-          <?php if(is_spv($nik)||is_admin()||is_admin_bagian()):?><li > <a href="<?php echo site_url('form_medical')?>">Medical</a> </li><?php endif; ?>    
-          </ul>
+           </ul>
       </li>
       <!--<li class=""> <a href="javascript:;"> <i class="icon-custom-form"></i> <span class="title">Analisis & Laporan</span> <span class="arrow "></span> </a>
         <ul class="sub-menu">

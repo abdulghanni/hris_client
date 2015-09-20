@@ -111,7 +111,7 @@
                       </div>
                       <div class="col-md-12">
                       <?php if(file_exists('./uploads/pdf/'.$user_folder.'/'.$attachment)) {?>
-                                                <a href="<?php echo base_url().'uploads/pdf/'.$user_folder.'/'.$attachment?>"><?php echo $attachment.' - Open File'?></a>
+                                                <a href="<?php echo base_url().'uploads/pdf/'.$user_folder.'/'.$attachment?>" target="_blank"><?php echo $attachment.' - Open File'?></a>
                                                 <?php }elseif($attachment==2){
                                                 echo 'No Attachment';}else{ ?>
                                                 <input type='file' name='userfile' id="file" size='20' id='file'/>
@@ -178,7 +178,9 @@
       </div>
       <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
       <div class="modal-body">
-        <?php echo form_open_multipart('form_spd_dalam_group/update_report/'.$id_report.'/'.get_id($report_creator))?>
+        <?php 
+            $att = array('class' => 'form-no-horizontal-spacing', 'id' => 'formupdatereport');
+            echo form_open_multipart('form_spd_dalam_group/update_report/'.$id_report.'/'.get_id($report_creator), $att)?>
             <h4>Laporan Kegiatan PJD</h4>
             <div class="row form-row">
               <div class="col-md-4">

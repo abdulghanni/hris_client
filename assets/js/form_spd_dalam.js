@@ -1,21 +1,4 @@
-$(document).ready(function() {
-
-    $('.timepicker-24').timepicker({
-                minuteStep: 1,
-                showSeconds: true,
-                showMeridian: false
-     });
-                    
-    $(".select2").select2();
-
-
-  //Date Pickers
-  $('.input-append.date').datepicker({
-            autoclose: true,
-            todayHighlight: true
-   });
-
-   $('button[data-loading-text]').click(function () {
+$('button[data-loading-text]').click(function () {
     $(this).button('loading');
     });
 
@@ -42,13 +25,16 @@ $(document).ready(function() {
     });
 
     $('#btn_app_lv1').click(function(){
-        $('#formSpdDalam').submit(function(ev){
+        var $btn = $(this).button('loading');
+        $('#formAppLv1').submit(function(ev){
             $.ajax({
                 type: 'POST',
                 url: baseurl+uri1,
-                data: $('#formSpdDalam').serialize(),
+                data: $('#formAppLv1').serialize(),
                 success: function() {
-                     location.reload()
+                     $("[data-dismiss=modal]").trigger({ type: "click" });
+                    location.reload(),
+                    $btn.button('reset')
                 }
             });
             ev.preventDefault(); 
@@ -56,13 +42,16 @@ $(document).ready(function() {
     });
 
     $('#btn_app_lv2').click(function(){
-        $('#formSpdDalam').submit(function(ev){
+        var $btn = $(this).button('loading');
+        $('#formAppLv2').submit(function(ev){
             $.ajax({
                 type: 'POST',
                 url: baseurl+uri2,
-                data: $('#formSpdDalam').serialize(),
+                data: $('#formAppLv2').serialize(),
                 success: function() {
-                     location.reload()
+                    $("[data-dismiss=modal]").trigger({ type: "click" });
+                    location.reload(),
+                    $btn.button('reset')
                 }
             });
             ev.preventDefault(); 
@@ -70,13 +59,16 @@ $(document).ready(function() {
     });
 
     $('#btn_app_lv3').click(function(){
-        $('#formSpdDalam').submit(function(ev){
+        var $btn = $(this).button('loading');
+        $('#formAppLv3').submit(function(ev){
             $.ajax({
                 type: 'POST',
                 url: baseurl+uri3,
-                data: $('#formSpdDalam').serialize(),
+                data: $('#formAppLv3').serialize(),
                 success: function() {
-                     location.reload()
+                    $("[data-dismiss=modal]").trigger({ type: "click" });
+                    location.reload(),
+                    $btn.button('reset')
                 }
             });
             ev.preventDefault(); 
@@ -84,47 +76,18 @@ $(document).ready(function() {
     });
 
     $('#btn_app_hrd').click(function(){
-        $('#formSpdDalam').submit(function(ev){
+        var $btn = $(this).button('loading');
+        $('#formAppHrd').submit(function(ev){
             $.ajax({
                 type: 'POST',
                 url: baseurl+uri4,
-                data: $('#formSpdDalam').serialize(),
+                data: $('#formAppHrd').serialize(),
                 success: function() {
-                     location.reload()
+                    $("[data-dismiss=modal]").trigger({ type: "click" });
+                    location.reload(),
+                    $btn.button('reset')
                 }
             });
             ev.preventDefault(); 
         });  
     });
-
-    //add spd_dalam
-    var url = $.url();
-    var baseurl = url.attr('protocol')+'://'+url.attr('host')+'/'+url.segment(1)+'/';
-    var spd_dalam_url = baseurl+'form_spd_dalam';
-                $('#add_spd_dalam').submit(function(response){
-                    $.post($('#add_spd_dalam').attr('action'), $('#add_spd_dalam').serialize(),function(json){
-                        if(json.st == 0){
-                            $('#MsgBad').html(json.errors).fadeIn();
-                        }else{
-                            window.location.href = spd_dalam_url;
-                        }
-                    }, 'json');
-                    return false;
-                });
-
-    //add spd_dalam_report
-    var url = $.url();
-    var baseurl = url.attr('protocol')+'://'+url.attr('host')+'/hris_client/';
-    var spd_dalam_url = baseurl+'form_spd_dalam';
-                $('#add_spd_dalam_report').submit(function(response){
-                    $.post($('#add_spd_dalam_report').attr('action'), $('#add_spd_dalam_report').serialize(),function(json){
-                        if(json.st == 0){
-                            $('#MsgBad').html(json.errors).fadeIn();
-                        }else{
-                            window.location.href = spd_dalam_url;
-                        }
-                    }, 'json');
-                    return false;
-                });
-}); 
-     

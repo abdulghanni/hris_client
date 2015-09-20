@@ -31,7 +31,7 @@ $("#emp").change(function() {
             getEmpOrg(empId);
             getEmpNik(empId);
             getEmpPos(empId);
-            getSubordinateGroup(empId);
+            //getSubordinateGroup(empId);
         break;
         case 'form_medical':
             getAtasan1(empId);
@@ -335,6 +335,18 @@ function getPenerimaTugas(empId)
  $.ajax({
         type: 'POST',
         url: baseurl+'dropdown/get_penerima_tugas/'+empId,
+        data: {id : empId},
+        success: function(data) {
+            $('#penerima_tugas').html(data);
+        }
+    });
+}
+
+function getPenerimaTugasGroup(empId)
+{
+ $.ajax({
+        type: 'POST',
+        url: baseurl+'dropdown/get_penerima_tugas_group/'+empId,
         data: {id : empId},
         success: function(data) {
             $('#penerima_tugas').html(data);

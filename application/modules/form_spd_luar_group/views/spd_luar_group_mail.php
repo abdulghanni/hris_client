@@ -7,7 +7,7 @@
               <!--<form class="form-no-horizontal-spacing" id="form_spd_dalam" action="<?php echo site_url().'form_spd_luar_group/do_submit/'.$id = $this->uri->segment(3, 0);?>" method="post">-->
               <form class="form-no-horizontal-spacing" id="formSpdLuar"> <div class="row column-seperation">
                   <div class="col-md-12">
-                    <h4>Yang Memberi Tugas</h4>
+                    <h4>Admin Pembuat Tugas</h4>
                     <?php if ($td_num_rows > 0) {
                       foreach ($task_detail as $td) :
                         $a = strtotime($td->date_spd_end);

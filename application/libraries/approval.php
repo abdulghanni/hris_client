@@ -22,87 +22,87 @@ class Approval {
             case "cuti":
                 $receiver = $CI->approval->approver($form);
                 $form = 'Permohonan Cuti';
-                $isi_email = get_name($user_id).' mengajukan '.$form.', untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$detail;
+                $isi_email = get_name($user_id).' mengajukan '.$form.', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>';
                 break;
             case "absen":
                 $receiver = $CI->approval->approver($form);
                 $form = 'Keterangan Tidak Absen';
-                $isi_email = get_name($user_id).' mengajukan '.$form.', untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$detail;
+                $isi_email = get_name($user_id).' mengajukan '.$form.', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>';
                 break;
             case "spd_dalam":
                 $receiver = $CI->approval->approver('dinas');
                 $url = base_url().'form_'.$form.'/submit/'.$id;
                 $form = 'Perjalanan Dinas Dalam Kota';
-                $isi_email = get_name($user_id).' membuat surat perintah perjalanan dinas dalam kota, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$detail;
+                $isi_email = get_name($user_id).' membuat surat perintah perjalanan dinas dalam kota, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>';
                 break;
             case "spd_luar":
                 $receiver = $CI->approval->approver('dinas');
                 $url = base_url().'form_'.$form.'/submit/'.$id;
                 $form = 'Perjalanan Dinas Luar Kota';
-                $isi_email = get_name($user_id).' membuat surat perintah perjalanan dinas luar kota, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$detail;
+                $isi_email = get_name($user_id).' membuat surat perintah perjalanan dinas luar kota, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>';
                 break;
             case "spd_dalam_group":
                 $receiver = $CI->approval->approver('dinas');
                 $url = base_url().'form_'.$form.'/submit/'.$id;
                 $form = 'Perjalanan Dinas Dalam Kota(Group)';
-                $isi_email = get_name($user_id).' membuat surat perintah perjalanan dinas dalam kota(Group), untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$detail;
+                $isi_email = get_name($user_id).' membuat surat perintah perjalanan dinas dalam kota(Group), untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>';
                 break;
             case "spd_luar_group":
                 $receiver = $CI->approval->approver('dinas');
                 $url = base_url().'form_'.$form.'/submit/'.$id;
                 $form = 'Perjalanan Dinas Luar Kota(Group)';
-                $isi_email = get_name($user_id).' membuat surat perintah perjalanan dinas Luar kota(Group), untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$detail;
+                $isi_email = get_name($user_id).' membuat surat perintah perjalanan dinas Luar kota(Group), untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>';
                 break;
             case "promosi":
                 $receiver = $CI->approval->approver($form);
                 $pengaju_id = getValue('created_by', 'users_'.$form, array('id'=>'where/'.$id));
             	$form = 'Promosi Karyawan';
-                $isi_email = get_name($pengaju_id).' mengajukan Promosi untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail;
+                $isi_email = get_name($pengaju_id).' mengajukan Promosi untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>';
             	$user_id = $pengaju_id;
                 break;
             case "demotion":
                 $receiver = $CI->approval->approver('demosi');
                 $pengaju_id = getValue('created_by', 'users_'.$form, array('id'=>'where/'.$id));
                 $form = 'Demotion Karyawan';
-                $isi_email = get_name($pengaju_id).' mengajukan Demotion karyawan untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail;
+                $isi_email = get_name($pengaju_id).' mengajukan Demotion karyawan untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>';
                 $user_id = $pengaju_id;
                 break;
             case "rolling":
                 $receiver = $CI->approval->approver($form);
                 $pengaju_id = getValue('created_by', 'users_'.$form, array('id'=>'where/'.$id));
                 $form = 'Rolling Karyawan';
-                $isi_email = get_name($pengaju_id).' mengajukan rolling karyawan untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail;
+                $isi_email = get_name($pengaju_id).' mengajukan rolling karyawan untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>';
                 $user_id = $pengaju_id;
                 break;
             case "recruitment":
                 $receiver = $CI->approval->approver($form);
                 $form = 'Recruitment Karyawan';
-                $isi_email = get_name($user_id).' mengajukan '.$form.', untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$detail;
+                $isi_email = get_name($user_id).' mengajukan '.$form.', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>';
                 break;
             case "resignment":
                 $receiver = $CI->approval->approver($form);
                 $form = 'Resign Karyawan';
-                $isi_email = get_name($user_id).' mengajukan '.$form.', untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$detail;
+                $isi_email = get_name($user_id).' mengajukan '.$form.', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>';
                 break;
             case "training":
                 $receiver = $CI->approval->approver($form);
                 $form = 'Training Karyawan';
-                $isi_email = get_name($user_id).' mengajukan '.$form.', untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$detail;
+                $isi_email = get_name($user_id).' mengajukan '.$form.', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>';
                 break;
             case "training_group":
                 $receiver = $CI->approval->approver('training');
                 $form = 'Training Karyawan (Group)';
-                $isi_email = get_name($user_id).' mengajukan '.$form.', untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$detail;
+                $isi_email = get_name($user_id).' mengajukan '.$form.', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>';
                 break;
             case "medical":
                 $receiver = $CI->approval->approver($form);
                 $form = 'Rekapitulasi Rawat Inap';
-                $isi_email = get_name($user_id).' membuat rekapitulasi rawat jalan dan inap, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$detail;
+                $isi_email = get_name($user_id).' membuat rekapitulasi rawat jalan dan inap, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>';
                 break;
             case "exit":
                 $receiver = $CI->approval->approver($form);
                 $form = 'Rekomendasi Karyawan Keluar';
-                $isi_email = get_name($user_id).' mengajukan '.$form.', untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$detail;
+                $isi_email = get_name($user_id).' mengajukan '.$form.', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>';
                 break;
         }
 
@@ -189,7 +189,7 @@ class Approval {
                 'receiver_id' => $created_for,
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Pengajuan '.ucfirst($form),
-                'email_body' => get_name($created_by).' membuat pengajuan '.$form.' atas nama anda, untuk melihat detail silakan <a href='.$url.'>Klik Disini</a><br />'.$detail,
+                'email_body' => get_name($created_by).' membuat pengajuan '.$form.' atas nama anda, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>',
                 'is_read' => 0,
             );
         $CI->db->insert('email', $data);
@@ -208,39 +208,39 @@ class Approval {
                 $url = base_url().'auth/edit_user_approval/'.$id;
                 $receiver_id = getValue('user_id', 'users_edit_approval', array('id'=>'where/'.$id));
                 $form = 'Perubahan Data Karywan';
-                break;
+            break;
             case "promosi":
                 $receiver_id = getValue('created_by', 'users_'.$form, array('id'=>'where/'.$id));
-                break;
+            break;
             case "demotion":
                 $receiver_id = getValue('created_by', 'users_'.$form, array('id'=>'where/'.$id));
-                break;
+            break;
             case "rolling":
                 $receiver_id = getValue('created_by', 'users_'.$form, array('id'=>'where/'.$id));
                 break;
             case "spd_dalam":
-            $receiver_id = getValue('task_creator', 'users_'.$form, array('id'=>'where/'.$id));
-            $receiver_id = get_id($receiver_id);
-            $url = base_url().'form_'.$form.'/submit/'.$id;
-            $form = 'Perjalanan Dinas Dalam Kota';
+                $receiver_id = getValue('task_creator', 'users_'.$form, array('id'=>'where/'.$id));
+                $receiver_id = get_id($receiver_id);
+                $url = base_url().'form_'.$form.'/submit/'.$id;
+                $form = 'Perjalanan Dinas Dalam Kota';
             break;
             case "spd_dalam_group":
-            $receiver_id = getValue('task_creator', 'users_'.$form, array('id'=>'where/'.$id));
-            $receiver_id = get_id($receiver_id);
-            $url = base_url().'form_'.$form.'/submit/'.$id;
-            $form = 'Perjalanan Dinas Dalam Kota (Group)';
+                $receiver_id = getValue('task_creator', 'users_'.$form, array('id'=>'where/'.$id));
+                $receiver_id = get_id($receiver_id);
+                $url = base_url().'form_'.$form.'/submit/'.$id;
+                $form = 'Perjalanan Dinas Dalam Kota (Group)';
             break;
             case "spd_luar":
-            $receiver_id = getValue('task_creator', 'users_'.$form, array('id'=>'where/'.$id));
-            $receiver_id = get_id($receiver_id);
-            $url = base_url().'form_'.$form.'/submit/'.$id;
-            $form = 'Perjalanan Dinas Luar Kota';
+                $receiver_id = getValue('task_creator', 'users_'.$form, array('id'=>'where/'.$id));
+                $receiver_id = get_id($receiver_id);
+                $url = base_url().'form_'.$form.'/submit/'.$id;
+                $form = 'Perjalanan Dinas Luar Kota';
             break;
             case "spd_luar_group":
-            $receiver_id = getValue('task_creator', 'users_'.$form, array('id'=>'where/'.$id));
-            $receiver_id = get_id($receiver_id);
-            $url = base_url().'form_'.$form.'/submit/'.$id;
-            $form = 'Perjalanan Dinas Luar Kota (Group)';
+                $receiver_id = getValue('task_creator', 'users_'.$form, array('id'=>'where/'.$id));
+                $receiver_id = get_id($receiver_id);
+                $url = base_url().'form_'.$form.'/submit/'.$id;
+                $form = 'Perjalanan Dinas Luar Kota (Group)';
             break;
             case "absen":
                 $receiver_id = getValue('user_id', 'users_'.$form, array('id'=>'where/'.$id));
@@ -255,7 +255,7 @@ class Approval {
                 'receiver_id' => get_nik($receiver_id),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Status Pengajuan Permohonan '.ucfirst($form).' dari Atasan',
-                'email_body' => "Status pengajuan $form anda $approval_status oleh $approver untuk detail silakan <a href=$url>Klik disini</a><br/>".$detail,
+                'email_body' => "Status pengajuan $form anda $approval_status oleh $approver untuk detail silakan <a href=$url>Klik disini</a><br/>".$detail.'<br />untuk melihat detail silakan <a href='.$url.'>Klik Disini</a>',
                 'is_read' => 0,
             );
         $CI->db->insert('email', $data);
@@ -279,6 +279,30 @@ class Approval {
             case "rolling":
                 $receiver_id = getValue('created_by', 'users_'.$form, array('id'=>'where/'.$id));
                 break;
+            case "spd_dalam":
+                $receiver_id = getValue('task_creator', 'users_'.$form, array('id'=>'where/'.$id));
+                $receiver_id = get_id($receiver_id);
+                $url = base_url().'form_'.$form.'/submit/'.$id;
+                $form = 'Perjalanan Dinas Dalam Kota';
+            break;
+            case "spd_dalam_group":
+                $receiver_id = getValue('task_creator', 'users_'.$form, array('id'=>'where/'.$id));
+                $receiver_id = get_id($receiver_id);
+                $url = base_url().'form_'.$form.'/submit/'.$id;
+                $form = 'Perjalanan Dinas Dalam Kota (Group)';
+            break;
+            case "spd_luar":
+                $receiver_id = getValue('task_creator', 'users_'.$form, array('id'=>'where/'.$id));
+                $receiver_id = get_id($receiver_id);
+                $url = base_url().'form_'.$form.'/submit/'.$id;
+                $form = 'Perjalanan Dinas Luar Kota';
+            break;
+            case "spd_luar_group":
+                $receiver_id = getValue('task_creator', 'users_'.$form, array('id'=>'where/'.$id));
+                $receiver_id = get_id($receiver_id);
+                $url = base_url().'form_'.$form.'/submit/'.$id;
+                $form = 'Perjalanan Dinas Luar Kota (Group)';
+            break;
             default:
             $receiver_id = getValue('user_id', 'users_'.$form, array('id'=>'where/'.$id));
         }
@@ -288,7 +312,7 @@ class Approval {
                 'receiver_id' => get_nik($receiver_id),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Perubahan Status Pengajuan Permohonan '.ucfirst($form).' dari Atasan',
-                'email_body' => "$approver melakukan perubahan status pengajuan $form anda menjadi $approval_status, untuk detail silakan <a href=$url>Klik disini</a><br/>".$detail,
+                'email_body' => "$approver melakukan perubahan status pengajuan $form anda menjadi $approval_status, untuk detail silakan <a class='klikmail' href=$url>Klik disini</a><br/>".$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>',
                 'is_read' => 0,
             );
         $CI->db->insert('email', $data);
@@ -312,6 +336,26 @@ class Approval {
             case "rolling":
                 $user_id = getValue('created_by', 'users_'.$form, array('id'=>'where/'.$id));
                 break;
+            case "spd_dalam":
+                $user_id = getValue('task_creator', 'users_'.$form, array('id'=>'where/'.$id));
+                $url = base_url().'form_'.$form.'/submit/'.$id;
+                $form = 'Perjalanan Dinas Dalam Kota';
+            break;
+            case "spd_dalam_group":
+                $user_id = getValue('task_creator', 'users_'.$form, array('id'=>'where/'.$id));
+                $url = base_url().'form_'.$form.'/submit/'.$id;
+                $form = 'Perjalanan Dinas Dalam Kota (Group)';
+            break;
+            case "spd_luar":
+                $user_id = getValue('task_creator', 'users_'.$form, array('id'=>'where/'.$id));
+                $url = base_url().'form_'.$form.'/submit/'.$id;
+                $form = 'Perjalanan Dinas Luar Kota';
+            break;
+            case "spd_luar_group":
+                $user_id = getValue('task_creator', 'users_'.$form, array('id'=>'where/'.$id));
+                $url = base_url().'form_'.$form.'/submit/'.$id;
+                $form = 'Perjalanan Dinas Luar Kota (Group)';
+            break;
             case "training":
                 $user_id = getValue('user_pengaju_id', 'users_'.$form, array('id'=>'where/'.$id));
                 break;
@@ -327,7 +371,7 @@ class Approval {
                 'receiver_id' => $receiver_id,
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Status Pengajuan Permohonan '.ucfirst($form).' dari Atasan',
-                'email_body' => "Status pengajuan $form yang diajukan oleh ".get_name($user_id).' '.$approval_status. ' oleh '.get_name($sess_id)." untuk detail silakan <a href=$url>Klik Disini</a><br />".$detail,
+                'email_body' => "Status pengajuan $form yang diajukan oleh ".get_name($user_id).' '.$approval_status. ' oleh '.get_name($sess_id)." untuk detail silakan <a class='klikmail' href=$url>Klik Disini</a><br />".$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>',
                 'is_read' => 0,
             );
         $CI->db->insert('email', $data);
@@ -364,6 +408,53 @@ class Approval {
                 'is_read' => 0,
             );
         $CI->db->insert('email', $data);
+    }
+
+    public function task_receiver($form, $id, $detail)
+    {
+        $CI =& get_instance();
+        $sess_id = $CI->session->userdata('user_id');
+        $url = base_url().'form_'.$form.'/submit/'.$id;
+
+        switch ($form) {
+            case "spd_dalam":
+            case "spd_luar":
+                $user_id = getValue('task_creator', 'users_'.$form, array('id'=>'where/'.$id));
+                $receiver_id = getValue('task_receiver', 'users_'.$form, array('id'=>'where/'.$id));
+                $form = ($form == 'spd_dalam') ? 'Dalam Kota' : 'Luar Kota';
+                $form = 'Perjalanan Dinas'.' '.ucfirst($form);
+
+                $data = array(
+                    'sender_id' => get_nik($sess_id),
+                    'receiver_id' => $receiver_id,
+                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                    'subject' => 'Status Pengajuan Permohonan '.ucfirst($form).' dari HRD',
+                    'email_body' => "Status pengajuan $form yang diajukan oleh ".get_name($user_id).' untuk anda, disetujui oleh '.get_name($sess_id)." untuk detail silakan <a class='klikmail' href=$url>Klik Disini</a><br />".$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>',
+                    'is_read' => 0,
+                );
+                if($CI->db->insert('email', $data)) return TRUE;
+            break;
+            case "spd_dalam_group":
+            case "spd_luar_group":
+                $user_id = getValue('task_creator', 'users_'.$form, array('id'=>'where/'.$id));
+                $receivers_id = getValue('task_receiver', 'users_'.$form, array('id'=>'where/'.$id));
+                $receiver_id = explode(',',$receivers_id);
+                $form = ($form == 'spd_dalam_group') ? 'Dalam Kota (Group)' : 'Luar Kota (Group)';
+                $form = 'Perjalanan Dinas'.' '.ucfirst($form);
+
+                for($i=0;$i<sizeof($receiver_id);$i++):
+                    $data = array(
+                        'sender_id' => get_nik($sess_id),
+                        'receiver_id' => $receiver_id[$i],
+                        'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                        'subject' => 'Status Pengajuan Permohonan '.ucfirst($form).' dari HRD',
+                        'email_body' => "Status pengajuan $form yang diajukan oleh ".get_name($user_id).' untuk anda, disetujui oleh '.get_name($sess_id)." untuk detail silakan <a class='klikmail' href=$url>Klik Disini</a><br />".$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>',
+                        'is_read' => 0,
+                    );
+                    if($CI->db->insert('email', $data)) return TRUE;
+                endfor;
+            break;
+        }
     }
 
     public function approver($form)

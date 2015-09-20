@@ -22,6 +22,7 @@ class Email extends MX_Controller {
     //redirect if needed, otherwise display the user list
     function index($name = "fn:",$subject = "em:", $sort_by = "id", $sort_order = "asc", $offset = 0)
     {
+        $this->data['title'] = "Email Masuk";
         if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page
@@ -83,6 +84,7 @@ class Email extends MX_Controller {
 
     function sent($ftitle = "fn:",$sort_by = "id", $sort_order = "asc", $offset = 0)
     {
+        $this->data['title'] = "Email Terkirim";
         if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page
@@ -160,6 +162,7 @@ class Email extends MX_Controller {
 
     function detail($id)
     {
+        $this->data['title'] = "Email Detail";
         if (!$this->ion_auth->logged_in())
         {
              $this->session->set_userdata('last_link', $this->uri->uri_string());

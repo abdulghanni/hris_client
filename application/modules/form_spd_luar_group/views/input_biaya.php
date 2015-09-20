@@ -32,7 +32,7 @@
                           <th width="10%">Uang Saku</th>
                           <th width="10%">Hotel</th>
                           <?php foreach($biaya_pjd->result() as $b):?>
-                          <th width="10%"><?php echo $b->jenis_biaya?></th>
+                          <th width="10%"><?php echo $b->jenis_biaya?> *</th>
                         <?php endforeach; ?> 
                         </tr>
                       </thead>
@@ -68,7 +68,7 @@
                       <?php endforeach ?>
                       </tbody>
                     </table>
-
+                    * Biaya Disesuaikan
                     <div class="form-actions">
                       <div class="pull-right">
                         <button id="" class="btn btn-success btn-cons" type="submit" ><i class="icon-ok"></i> <?php echo lang('save_button') ?></button>

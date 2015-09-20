@@ -65,8 +65,5 @@ $(document).ready(function() {
 	}, "Password yang anda masukan tidak diizinkan, coba password lainnya" );
 
 	$("a[rel^='prettyPhoto']").prettyPhoto({social_tools:false});
-
-      
-
 });
 

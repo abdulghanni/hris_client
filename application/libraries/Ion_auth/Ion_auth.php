@@ -165,7 +165,7 @@ class Ion_auth
 
                     if ($this->email->send())
                     {
-                        $this->set_message('forgot_password_successful');
+                        $this->set_message('forgot_password_successfull');
                         return TRUE;
                     }
                     else

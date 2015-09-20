@@ -23,6 +23,7 @@ class form_training_group extends MX_Controller {
 
     function index($ftitle = "fn:",$sort_by = "id", $sort_order = "asc", $offset = 0)
     {
+        $this->data['title'] = 'Daftar Training (Group)';
         if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page
@@ -97,6 +98,7 @@ class form_training_group extends MX_Controller {
 
     function detail($id)
     {
+        $this->data['title'] = 'Detail Training (Group)';
         if (!$this->ion_auth->logged_in())
         {
             $this->session->set_userdata('last_link', $this->uri->uri_string());
@@ -126,6 +128,7 @@ class form_training_group extends MX_Controller {
 
     function input()
     {
+        $this->data['title'] = 'Input Training (Group)';
         if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page
@@ -137,7 +140,8 @@ class form_training_group extends MX_Controller {
         $form_training_group = $this->data['training'] = $this->form_training_group_model->form_training_group($sess_id);
 
         $this->data['all_users'] = $this->ion_auth->where('id != ', 1)->users();
-        $this->data['subordinate'] = getAll('users', array('superior_id'=>'where/'.get_nik($sess_id)));
+        $this->get_penerima_tugas();
+        $this->get_penerima_tugas_satu_bu();
         $this->get_user_atasan();
 
         $this->_render_page('form_training_group/input', $this->data);
@@ -194,8 +198,7 @@ class form_training_group extends MX_Controller {
                         if(!empty(getEmail($this->approval->approver('training'))))$this->send_email(getEmail($this->approval->approver('training')), 'Pengajuan Permohonan Training (Group)', $isi_email);
                          }   
                         $this->send_peserta_mail($training_id, $user_id, $peserta_id);
-                        redirect('form_training_group', 'refresh');
-                        //echo json_encode(array('st' =>1));     
+                        redirect('form_training_group', 'refresh'); 
                     }
             }
 
@@ -450,11 +453,34 @@ class form_training_group extends MX_Controller {
         return $this->load->view('form_training_group/training_mail', $this->data, TRUE);
     }
 
-    function get_subordinate()
+function get_penerima_tugas()
     {
-        $id = $this->input->post('id');
-        $this->data['subordinate'] = getAll('users', array('superior_id'=>'where/'.get_nik($id)));
-        $this->load->view('radio_subordinate',$this->data);
+            $user_id = $this->session->userdata('user_id');
+            $url_org = get_api_key().'users/bawahan_satu_bu/EMPLID/'.get_nik($user_id).'/format/json';
+            $headers_org = get_headers($url_org);
+            $response = substr($headers_org[0], 9, 3);
+            if ($response != "404") {
+            $get_penerima_tugas = file_get_contents($url_org);
+            $penerima_tugas = json_decode($get_penerima_tugas, true);
+            return $this->data['penerima_tugas'] = $penerima_tugas;
+            }else{
+             return $this->data['penerima_tugas'] = 'Tidak ada karyawan dengan BU yang sama';
+            }
+    }
+
+    function get_penerima_tugas_satu_bu()
+    {
+            $user_id = $this->session->userdata('user_id');
+            $url_org = get_api_key().'users/emp_satu_bu/EMPLID/'.get_nik($user_id).'/format/json';
+            $headers_org = get_headers($url_org);
+            $response = substr($headers_org[0], 9, 3);
+            if ($response != "404") {
+            $get_penerima_tugas = file_get_contents($url_org);
+            $penerima_tugas = json_decode($get_penerima_tugas, true);
+            return $this->data['penerima_tugas_satu_bu'] = $penerima_tugas;
+            }else{
+             return $this->data['penerima_tugas_satu_bu'] = 'Tidak ada karyawan dengan Bussiness Unit yang sama';
+            }
     }
 
     function form_training_group_pdf($id)
