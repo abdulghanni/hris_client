@@ -91,16 +91,46 @@
                     <div class="col-md-7">
                       <h4>Resignment Yang Diajukan</h4>
                       <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
-                      <div class="col-md-4">
-                        <label class="form-label text-left">Tanggal Akhir Kerja</label>
-                      </div>
-                      <div class="col-md-8">
-                        <div class="input-append success date">
-                          <input type="text" class="form-control" id="sandbox-advance" name="date_resign" required>
-                          <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
-                        </div>    
+                      <div class="row form-row">
+                        <div class="col-md-4">
+                          <label class="form-label text-left">Tanggal Pengajuan</label>
+                        </div>
+                        <div class="col-md-4">
+                          <input name="old_org2" id="old_org2" class="form-control " placeholder="" value="<?php echo dateIndo(date('Y-m-d',strtotime('now')))?>"  disabled="disabled">
+                        </div>
                       </div>
 
+                      <div class="row form-row">
+                        <div class="col-md-4">
+                          <label class="form-label text-left">Tanggal Terakhir Bekerja</label>
+                        </div>
+                        <div class="col-md-8">
+                          <div class="input-append success date">
+                            <input type="text" class="form-control" id="sandbox-advance" name="date_resign" required>
+                            <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
+                          </div>    
+                        </div>
+                      </div>
+
+                      <div class="row form-row">
+                        <div class="col-md-4">
+                          <label class="form-label text-left">Alasan Resign</label>
+                        </div>
+                        <div class="col-md-8">
+                           <textarea name="alasan" class="form-control"></textarea>
+                        </div>
+                      </div>
+
+                      <div class="row form-row">
+                        <div class="col-md-4">
+                          <label class="form-label text-left">No. Telp</label>
+                        </div>
+                        <div class="col-md-4">
+                          <input name="phone" id="phone" class="form-control " placeholder="" value="<?php echo $phone ?>">
+                        </div>
+                      </div>
+
+                     
                     <div class="row form-row">
                       <div class="col-md-12">
                         <label class="bold form-label text-left"><?php echo 'Approval' ?></label>

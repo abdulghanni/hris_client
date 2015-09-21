@@ -1102,12 +1102,13 @@ class Auth extends MX_Controller {
             'disabled'  => 'disabled',
             'value' => $this->form_validation->set_value('email', $user->email),
         );
-
+        $required = ($first_login == 1) ? 'required' : '';
         $this->data['previous_email'] = array(
             'name'  => 'previous_email',
             'id'    => 'previous_email',
             'type'  => 'text',
             'value' => $this->form_validation->set_value('previous_email', $user->previous_email),
+            $required => $required
         );
 
         $this->data['bb_pin'] = array(
@@ -1117,7 +1118,7 @@ class Auth extends MX_Controller {
             'value' => $this->form_validation->set_value('bb_pin', $user->bb_pin),
         );
 
-        $required = ($first_login == 1) ? 'required' : '';
+        
         $this->data['password'] = array(
             'name' => 'password',
             'id'   => 'password',

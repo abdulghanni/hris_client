@@ -98,21 +98,21 @@
                               <span class="semi-bold"></span><br/>
                               <span class="small"></span><br/>
                               <span class="semi-bold"></span><br/>
-                              <span class="semi-bold">(Supervisor)</span>
+                              <span class="semi-bold">(Atasan Langsung)</span>
                             <?php }elseif(!empty($absen->user_app_lv1) && $absen->is_app_lv1 == 1){
                               echo "<img class=approval_img_md src=$approved>"?>
                               <span class="small"></span><br/>
                               <span class="semi-bold"><?php echo get_name($absen->user_app_lv1)?></span><br/>
                               <span class="small"><?php echo dateIndo($absen->date_app_lv1)?></span><br/>
                               <span class="semi-bold"></span>
-                              <span class="semi-bold">(Supervisor)</span>
+                              <span class="semi-bold">(Atasan Langsung)</span>
                             <?php }else{?>
                               <span class="small"></span><br/>
                               <span class="small"></span><br/>
                               <span class="semi-bold"></span><br/>
                               <span class="small"></span><br/>
                               <span class="semi-bold"></span><br/>
-                              <span class="semi-bold"><?php echo (!empty($absen->user_app_lv1))?'(Supervisor)':'';?></span>
+                              <span class="semi-bold"><?php echo (!empty($absen->user_app_lv1))?'(Atasan Langsung)':'';?></span>
                             <?php } ?>
                           </p>
                         </div>
@@ -126,21 +126,21 @@
                               <span class="semi-bold"></span><br/>
                               <span class="small"></span><br/>
                               <span class="semi-bold"></span><br/>
-                              <span class="semi-bold">(Ka. Bagian)</span>
+                              <span class="semi-bold">(Atasan Tidak Langsung)</span>
                             <?php }elseif(!empty($absen->user_app_lv2) && $absen->is_app_lv2 == 1){
                               echo "<img class=approval_img_md src=$approved>"?>
                               <span class="small"></span><br/>
                               <span class="semi-bold"><?php echo get_name($absen->user_app_lv2)?></span><br/>
                               <span class="small"><?php echo dateIndo($absen->date_app_lv2)?></span><br/>
                               <span class="semi-bold"></span>
-                              <span class="semi-bold">(Ka. Bagian)</span>
+                              <span class="semi-bold">(Atasan Tidak Langsung)</span>
                             <?php }else{?>
                               <span class="small"></span><br/>
                               <span class="small"></span><br/>
                               <span class="semi-bold"></span><br/>
                               <span class="small"></span><br/>
                               <span class="semi-bold"></span><br/>
-                              <span class="semi-bold"><?php echo (!empty($absen->user_app_lv2))?'(Ka. Bagian)':'';?></span>
+                              <span class="semi-bold"><?php echo (!empty($absen->user_app_lv2))?'(Atasan Tidak Langsung)':'';?></span>
                             <?php } ?>
                           </p>
                         </div>

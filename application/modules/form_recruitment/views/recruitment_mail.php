@@ -99,13 +99,13 @@
                         <input name="jurusan" id="form3LastName" type="text"  class="form-control" placeholder="Jurusan" value="<?php echo $row->jurusan?>" disabled="disabled">
                       </div>
                       <div class="col-md-2">
-                        <label class="form-label text-right">IPK</label>
+                        <label class="form-label text-right">IPK(Min)</label>
                       </div>
                       <div class="col-md-2">
                         <input name="ipk" id="form3LastName" type="text"  class="form-control" placeholder="IPK" value="<?php echo $row->ipk?>" disabled="disabled">
                       </div>
                       <div class="col-md-2">
-                        <label class="form-label text-right">Toefl</label>
+                        <label class="form-label text-right">Toefl(Min)</label>
                       </div>
                       <div class="col-md-2">
                         <input name="toefl" id="form3LastName" type="text"  class="form-control" placeholder="Toefl" value="<?php echo $row->toefl?>" disabled="disabled">

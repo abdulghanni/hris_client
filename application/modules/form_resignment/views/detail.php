@@ -84,10 +84,37 @@
                       <h4>Resign Yang Diajukan</h4>
                       <div class="row form-row">
                         <div class="col-md-4">
-                          <label class="form-label text-left">Tanggal Akhir Kerja</label>
+                          <label class="form-label text-left">Tanggal Pengajuan</label>
                         </div>
-                        <div class="col-md-5">
+                        <div class="col-md-4">
+                          <input name="old_org2" id="old_org2" class="form-control " placeholder="" value="<?php echo dateIndo($row->created_on)?>"  disabled="disabled">
+                        </div>
+                      </div>
+
+                      <div class="row form-row">
+                        <div class="col-md-4">
+                          <label class="form-label text-left">Tanggal Terakhir Bekerja</label>
+                        </div>
+                        <div class="col-md-4">
                             <input type="text" class="form-control" id="sandbox-advance" name="date_resign" value="<?php echo dateIndo($row->date_resign)?>" disabled>
+                        </div>
+                      </div>
+
+                      <div class="row form-row">
+                      <div class="col-md-4">
+                        <label class="form-label text-left">Alasan Resign</label>
+                      </div>
+                      <div class="col-md-8">
+                         <textarea name="alasan" class="form-control" disabled><?php echo $row->alasan?></textarea>
+                      </div>
+                    </div>
+
+                    <div class="row form-row">
+                        <div class="col-md-4">
+                          <label class="form-label text-left">No. Telp Pengaju</label>
+                        </div>
+                        <div class="col-md-4">
+                          <input name="phone" id="phone" class="form-control " placeholder="" value="<?php echo $row->phone ?>">
                         </div>
                       </div>
 
@@ -109,6 +136,24 @@
                             <input type="text" class="form-control" id="sandbox-advance" name="date_resign" value="<?php echo $row->time_invitation?>" disabled>
                         </div>
                       </div>
+
+                      <div class="row form-row">
+                        <div class="col-md-4">
+                          <label class="form-label text-left">Nama Pewawancara</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" id="sandbox-advance" name="date_resign" value="<?php echo $row->nama_pewawancara?>" disabled>
+                        </div>
+                      </div>
+
+                      <div class="row form-row">
+                        <div class="col-md-4">
+                          <label class="form-label text-left">No. Telp Pewawancara</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" id="sandbox-advance" name="date_resign" value="<?php echo $row->telp_pewawancara?>" disabled>
+                        </div>
+                      </div>
                       <?php if(!empty($row->note_invitation)){?>
                       <div class="row form-row">
                         <div class="col-md-4">
@@ -124,7 +169,7 @@
                       <?php if(!empty($row->note_lv1)){?>
                       <div class="row form-row">
                         <div class="col-md-4">
-                          <label class="form-label text-left">Note (Supervisor): </label>
+                          <label class="form-label text-left">Note (Atasan Langsung): </label>
                         </div>
                         <div class="col-md-8">
                           <textarea name="notes_spv" class="custom-txtarea-form" disabled="disabled"><?php echo $row->note_lv1 ?></textarea>
@@ -134,7 +179,7 @@
                       <?php if(!empty($row->note_lv2)){?>
                       <div class="row form-row">
                         <div class="col-md-4">
-                          <label class="form-label text-left">Note (Ka. Bagian): </label>
+                          <label class="form-label text-left">Note (Atasan Tidak Langsung): </label>
                         </div>
                         <div class="col-md-8">
                           <textarea name="notes_spv" class="custom-txtarea-form" disabled="disabled"><?php echo $row->note_lv2 ?></textarea>
@@ -248,7 +293,7 @@
                       <?php }elseif($row->is_app_hrd == 1 && get_nik($sess_id) == $this->approval->approver('resignment')){?>
                         <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitresignmentModalHrd"><i class='icon-edit'> Edit Approval</i></div>
                       <?php }elseif($row->is_app_hrd == 0 && $row->is_invited == 1 && get_nik($sess_id) == $this->approval->approver('resignment')){?>
-                        <div class='btn btn-info btn-small text-center' title='Edit undangan' data-toggle="modal" data-target="#undanganModal"><i class='icon-edit'> Ubah Tanggal Wawancara</i></div>
+                        <div class='btn btn-info btn-small text-center' title='Edit undangan' data-toggle="modal" data-target="#undanganModal"><i class='icon-edit'> Ubah Undangan Wawancara</i></div>
                       <?php } ?>
                     </div>
                 </div>
@@ -280,21 +325,21 @@
                         <span class="semi-bold"></span><br/>
                         <span class="small"></span><br/>
                         <span class="semi-bold"></span>
-                        <span class="semi-bold">(Supervisor)</span>
+                        <span class="semi-bold">(Atasan Langsung)</span>
                       <?php }elseif(!empty($row->user_app_lv1) && $row->is_app_lv1 == 1){
                         echo ($row->app_status_id_lv1 == 1)?"<img class=approval_img_md src=$approved>":(($row->app_status_id_lv1 == 2) ? "<img class=approval_img_md src=$rejected>":'<span class="small"></span><br/>');?>
                         <span class="small"></span><br/>
                         <span class="semi-bold"><?php echo get_name($row->user_app_lv1)?></span><br/>
                         <span class="small"><?php echo dateIndo($row->date_app_lv1)?></span><br/>
                         <span class="semi-bold"></span><br/>
-                        <span class="semi-bold">(Supervisor)</span>
+                        <span class="semi-bold">(Atasan Langsung)</span>
                       <?php }else{?>
                         <span class="small"></span><br/>
                         <span class="small"></span><br/>
                         <span class="semi-bold"></span><br/>
                         <span class="small"></span><br/>
                         <span class="semi-bold"></span><br/>
-                        <span class="semi-bold"><?php echo (!empty($row->user_app_lv1))?'(Supervisor)':'';?></span>
+                        <span class="semi-bold"><?php echo (!empty($row->user_app_lv1))?'(Atasan Langsung)':'';?></span>
                       <?php } ?>
                     </p>
                   </div>
@@ -309,21 +354,21 @@
                         <span class="semi-bold"></span><br/>
                         <span class="small"></span><br/>
                         <span class="semi-bold"></span><br/>
-                        <span class="semi-bold">(Ka. Bagian)</span>
+                        <span class="semi-bold">(Atasan Tidak Langsung)</span>
                       <?php }elseif(!empty($row->user_app_lv2) && $row->is_app_lv2 == 1){
                         echo ($row->app_status_id_lv2 == 1)?"<img class=approval_img_md src=$approved>":(($row->app_status_id_lv2 == 2) ? "<img class=approval_img_md src=$rejected>":'<span class="small"></span><br/>');?>
                         <span class="small"></span><br/>
                         <span class="semi-bold"><?php echo get_name($row->user_app_lv2)?></span><br/>
                         <span class="small"><?php echo dateIndo($row->date_app_lv2)?></span><br/>
                         <span class="semi-bold"></span><br/>
-                        <span class="semi-bold">(Ka. Bagian)</span>
+                        <span class="semi-bold">(Atasan Tidak Langsung)</span>
                       <?php }else{?>
                         <span class="small"></span><br/>
                         <span class="small"></span><br/>
                         <span class="semi-bold"></span><br/>
                         <span class="small"></span><br/>
                         <span class="semi-bold"></span><br/>
-                        <span class="semi-bold"><?php echo (!empty($row->user_app_lv2))?'(Ka. Bagian)':'';?></span>
+                        <span class="semi-bold"><?php echo (!empty($row->user_app_lv2))?'(Atasan Tidak Langsung)':'';?></span>
                       <?php } ?>
                     </p>
                   </div>
@@ -415,7 +460,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Approval Form resignment - Supervisor</h4>
+        <h4 class="modal-title" id="myModalLabel">Approval Form resignment - Atasan Langsung</h4>
       </div>
       <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
       <div class="modal-body">
@@ -442,10 +487,10 @@
             </div>
             <div class="row form-row">
               <div class="col-md-12">
-                <label class="form-label text-left">Note (Supervisor) : </label>
+                <label class="form-label text-left">Note (Atasan Langsung) : </label>
               </div>
               <div class="col-md-12">
-                <textarea name="note_lv1" class="custom-txtarea-form" placeholder="Note Supervisor isi disini"><?php echo $row->note_lv1?></textarea>
+                <textarea name="note_lv1" class="custom-txtarea-form" placeholder="Note Atasan Langsung isi disini"><?php echo $row->note_lv1?></textarea>
               </div>
             </div>
       </div>
@@ -465,7 +510,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Approval Form resignment - Ka. Bagian</h4>
+        <h4 class="modal-title" id="myModalLabel">Approval Form resignment - Atasan Tidak Langsung</h4>
       </div>
       <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
       <div class="modal-body">
@@ -492,10 +537,10 @@
             </div>
             <div class="row form-row">
               <div class="col-md-12">
-                <label class="form-label text-left">Note (Ka. Bagian) : </label>
+                <label class="form-label text-left">Note (Atasan Tidak Langsung) : </label>
               </div>
               <div class="col-md-12">
-                <textarea name="note_lv2" class="custom-txtarea-form" placeholder="Note Ka. Bagian isi disini"><?php echo $row->note_lv2?></textarea>
+                <textarea name="note_lv2" class="custom-txtarea-form" placeholder="Note Atasan Tidak Langsung isi disini"><?php echo $row->note_lv2?></textarea>
               </div>
             </div>
       </div>
@@ -596,6 +641,25 @@
                 </div>
               </div>
             </div>
+
+            <div class="row form-row">
+              <div class="col-md-4">
+                <label class="form-label text-left">Nama Pewawancara</label>
+              </div>
+              <div class="col-md-8">
+                <input type="text" class="form-control" id="sandbox-advance" name="nama_pewawancara" value="<?php echo $row->nama_pewawancara?>">
+              </div>
+            </div>
+
+            <div class="row form-row">
+              <div class="col-md-4">
+                <label class="form-label text-left">No. Telp Pewawancara</label>
+              </div>
+              <div class="col-md-8">
+                <input type="text" class="form-control" id="sandbox-advance" name="telp_pewawancara" value="<?php echo $row->telp_pewawancara?>">
+              </div>
+            </div>
+
             <div class="row form-row">
               <div class="col-md-12">
                 <label class="form-label text-left">Catatan : </label>

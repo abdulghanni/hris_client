@@ -240,7 +240,7 @@
                   <?php if(!empty($row->note_lv1)){?>
                   <div class="row form-row">
                     <div class="col-md-12">
-                      <label class="form-label text-left">Catatan Supervisor</label>
+                      <label class="form-label text-left">Catatan Atasan Langsung</label>
                     </div>
                     <div class="col-md-12">
                       <textarea  id="text-editor" placeholder="Enter text ..." class="form-control" rows="2" disabled><?php echo $row->note_lv1?></textarea>
@@ -251,7 +251,7 @@
                   <?php if(!empty($row->note_lv2)){?>
                   <div class="row form-row">
                     <div class="col-md-12">
-                      <label class="form-label text-left">Catatan Ka. Bagian</label>
+                      <label class="form-label text-left">Catatan Atasan Tidak Langsung</label>
                     </div>
                     <div class="col-md-12">
                       <textarea  id="text-editor" placeholder="Enter text ..." class="form-control" rows="2" disabled><?php echo $row->note_lv2?></textarea>
@@ -269,6 +269,7 @@
                     </div>
                   </div>
                   <?php }?>
+                  <h4>Hubungi sekretariat HRD (021-xxxxxx)</h4>
                </form>
              <?php endforeach;?>
               </div>

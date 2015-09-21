@@ -170,7 +170,7 @@ $rejected = assets_url('img/rejected_stamp.png');?>
     <tr>
       <td height="35" align="center">1</td>
       <td>&nbsp;Diberikan Uang Pesangon</td>
-      <td align="center">&nbsp;<?php echo ($row->is_uang_pesangon == 1) ? 'Ya' : 'Tidak';?></td>
+      <td align="center">&nbsp;<?php echo ($rekomendasi->is_uang_pesangon == 1) ? 'Ya' : 'Tidak';?></td>
     	<td></td>
     	<td></td>
     	<td></td>
@@ -178,7 +178,7 @@ $rejected = assets_url('img/rejected_stamp.png');?>
     <tr>
       <td height="35" align="center">2</td>
       <td>&nbsp;Diberikan Uang Pengganti Hak</td>
-      <td align="center">&nbsp;<?php echo ($row->is_uang_ganti == 1) ? 'Ya' : 'Tidak';?></td>
+      <td align="center">&nbsp;<?php echo ($rekomendasi->is_uang_ganti == 1) ? 'Ya' : 'Tidak';?></td>
       <td></td>
       <td></td>
       <td></td>
@@ -186,7 +186,7 @@ $rejected = assets_url('img/rejected_stamp.png');?>
     <tr>
       <td height="35" align="center">3</td>
       <td>&nbsp;Diberikan Uang Jasa</td>
-      <td align="center">&nbsp;<?php echo ($row->is_uang_jasa == 1) ? 'Ya' : 'Tidak';?></td>
+      <td align="center">&nbsp;<?php echo ($rekomendasi->is_uang_jasa == 1) ? 'Ya' : 'Tidak';?></td>
       <td></td>
       <td></td>
       <td></td>
@@ -194,7 +194,7 @@ $rejected = assets_url('img/rejected_stamp.png');?>
     <tr>
       <td height="35" align="center">3</td>
       <td>&nbsp;Diberikan Uang pisah</td>
-      <td align="center">&nbsp;<?php echo ($row->is_uang_pisah == 1) ? 'Ya' : 'Tidak';?></td>
+      <td align="center">&nbsp;<?php echo ($rekomendasi->is_uang_pisah == 1) ? 'Ya' : 'Tidak';?></td>
       <td></td>
       <td></td>
       <td></td>
@@ -202,7 +202,7 @@ $rejected = assets_url('img/rejected_stamp.png');?>
     <tr>
       <td height="35" align="center">4</td>
       <td>&nbsp;Diberikan Surat Keterangan Kerja</td>
-      <td align="center">&nbsp;<?php echo ($row->is_sk_kerja == 1) ? 'Ya' : 'Tidak';?></td>
+      <td align="center">&nbsp;<?php echo ($rekomendasi->is_sk_kerja == 1) ? 'Ya' : 'Tidak';?></td>
       <td></td>
       <td></td>
       <td></td>
@@ -210,7 +210,7 @@ $rejected = assets_url('img/rejected_stamp.png');?>
     <tr>
       <td height="35" align="center">5</td>
       <td>&nbsp;Diberikan Ijazah Asli Ybs.</td>
-      <td align="center">&nbsp;<?php echo ($row->is_ijazah == 1) ? 'Ya' : 'Tidak';?></td>
+      <td align="center">&nbsp;<?php echo ($rekomendasi->is_ijazah == 1) ? 'Ya' : 'Tidak';?></td>
       <td></td>
       <td></td>
       <td></td>
@@ -239,11 +239,11 @@ $rejected = assets_url('img/rejected_stamp.png');?>
 <textarea class="style4" rows="2" width="100%"><?php echo $row->note_it?></textarea>
 <?php } ?>
 <?php if(!empty($row->note_lv1)){?>
-<p class="style4">Catatan Supervisor</p>
+<p class="style4">Catatan Atasan Langsung</p>
 <textarea class="style4" rows="2" width="100%"><?php echo $row->note_lv1?></textarea>
 <?php } ?>
 <?php if(!empty($row->note_lv2)){?>
-<p class="style4">Catatan Ka. Bagian</p>
+<p class="style4">Catatan Atasan TIdak Langsung</p>
 <textarea class="style4" rows="2" width="100%"><?php echo $row->note_lv2?></textarea>
 <?php } ?>
 <?php if(!empty($row->note_lv3)){?>
@@ -251,6 +251,7 @@ $rejected = assets_url('img/rejected_stamp.png');?>
 <textarea class="style4" rows="2" width="100%"><?php echo $row->note_lv3?></textarea>
 <?php } ?>
 <br />
+ <p class="style4">Hubungi sekretariat HRD (021-xxxxxx)</p>
 <p>&nbsp;</p>
 <table width="1000" align="center">
   <tbody>

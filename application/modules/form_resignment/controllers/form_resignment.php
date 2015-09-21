@@ -112,6 +112,8 @@ class Form_resignment extends MX_Controller {
         $this->get_user_atasan();
         $this->data['alasan_resign'] = getAll('alasan_resign', array('is_deleted'=>'where/0'));
 
+        $this->data['phone'] = getValue('phone', 'users', array('id'=>'where/'.$sess_id));
+
         $this->_render_page('form_resignment/input', $this->data);
     }
 
@@ -136,6 +138,8 @@ class Form_resignment extends MX_Controller {
                 $data = array(
                     'id_comp_session' => 1,
                     'date_resign' => date('Y-m-d',strtotime($this->input->post('date_resign'))),
+                    'alasan'        => $this->input->post('alasan'),
+                    'phone'       => $this->input->post('phone'),
                     'user_app_lv1'          => $this->input->post('atasan1'),
                     'user_app_lv2'          => $this->input->post('atasan2'),
                     'user_app_lv3'          => $this->input->post('atasan3'),
@@ -358,10 +362,10 @@ class Form_resignment extends MX_Controller {
                 $user_app = ($lv<4) ? getValue('user_app_'.$lv_app, 'users_resignment', array('id'=>'where/'.$id)):0;
                 if(!empty($user_app)):
                  if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), 'Pengajuan Permohonan Resignment', $isi_email);
-                    $this->approval->request('lv1', 'resignment', $resignment_id, $user_id, $this->detail_email($resignment_id));
+                    $this->approval->request('lv1', 'resignment', $id, $user_resignment_id, $this->detail_email($id));
                  else:
                     if(!empty(getEmail($this->approval->approver('resignment'))))$this->send_email(getEmail($this->approval->approver('resignment')), 'Pengajuan Permohonan Resignment', $isi_email);
-                    $this->approval->request('hrd', 'resignment', $resignment_id, $user_id, $this->detail_email($resignment_id));
+                    $this->approval->request('hrd', 'resignment', $id, $user_resignment_id, $this->detail_email($id));
                  endif;
             }
             redirect('form_resignment/detail/'.$id, 'refresh');
@@ -378,6 +382,8 @@ class Form_resignment extends MX_Controller {
         $undangan = array('is_invited' => 1,
                           'date_invitation' => date('Y-m-d', strtotime($this->input->post('date_invited'))),
                           'time_invitation' => $this->input->post('time_invited'),
+                          'nama_pewawancara' => $this->input->post('nama_pewawancara'),
+                          'telp_pewawancara' => $this->input->post('telp_pewawancara'),
                           'note_invitation' => $this->input->post('note_invited'),
          );
 
@@ -404,11 +410,6 @@ class Form_resignment extends MX_Controller {
 
     function detail_email($id)
     {
-        if(!$this->ion_auth->logged_in())
-        {
-            redirect('auth/login', 'refresh');
-        }
-
         if(!$this->ion_auth->logged_in())
         {
             redirect('auth/login', 'refresh');

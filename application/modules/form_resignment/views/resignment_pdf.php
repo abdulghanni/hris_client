@@ -73,9 +73,15 @@ $user_nik = get_nik($row->user_id);
     <td height="45"><span class="style3"><?php echo dateIndo(get_user_sen_date($user_nik));?></span></td>
   </tr>
    <tr>
-    <td height="45"><span class="style3">Tanggal Keluar Kerja</span></td>
+    <td height="45"><span class="style3">Tanggal Terakhir Bekerja</span></td>
     <td height="45"><div align="center">:</div></td>
     <td height="45"><span class="style3"><?php echo dateIndo($row->date_resign);?></span></td>
+  </tr>
+
+  <tr>
+    <td height="45"><span class="style3">Alasan Resign</span></td>
+    <td height="45"><div align="center">:</div></td>
+    <td height="45"><span class="style3"><?php echo dateIndo($row->alasan);?></span></td>
   </tr>
 </table>
 <br/>

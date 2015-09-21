@@ -30,21 +30,21 @@
       </li>
       <li class=""> <a href="javascript:;"> <i class="icon-plus-sign"></i> <span class="title">Form pengajuan</span> <span class="arrow "></span> </a>
         <ul class="sub-menu">
-          <?php if(is_spv($nik)||is_admin()||is_admin_bagian()):?><li > <a href="<?php echo site_url('form_recruitment')?>">Recruitment</a></li><?php endif; ?>
+          <?php if(is_spv($nik)||is_admin()||is_admin_bagian()):?><li > <a href="<?php echo site_url('form_recruitment')?>">Permintaan SDM</a></li><?php endif; ?>
           <li > <a href="<?php echo site_url('form_promosi')?>">Promosi</a> </li>          
-          <li > <a href="<?php echo site_url('form_demotion')?>">Demotion</a> </li>          
-          <li > <a href="<?php echo site_url('form_rolling')?>">Rolling</a> </li>    
+          <li > <a href="<?php echo site_url('form_demotion')?>">Demosi</a> </li>          
+          <li > <a href="<?php echo site_url('form_rolling')?>">Mutasi</a> </li>    
           <li > <a href="<?php echo site_url('form_cuti')?>">Cuti</a> </li>
           <li > <a href="<?php echo site_url('form_spd_dalam') ?>">Perjalanan dinas - dalam kota</a> </li>         
           <li > <a href="<?php echo site_url('form_spd_dalam_group') ?>">PJD - dalam kota (Group)</a> </li>         
           <li > <a href="<?php echo site_url('form_spd_luar') ?>">Perjalanan dinas - luar kota</a> </li>     
           <li > <a href="<?php echo site_url('form_spd_luar_group') ?>">PJD - luar kota (Group)</a> </li>     
           <li > <a href="<?php echo site_url('form_absen')?>">Keterangan tidak absen</a> </li>
-          <?php if(is_spv($nik)||is_admin()||is_admin_bagian()):?><li > <a href="<?php echo site_url('form_medical')?>">Medical</a> </li><?php endif; ?>          
-          <li > <a href="<?php echo site_url('form_training')?>">Training</a> </li>          
-          <li > <a href="<?php echo site_url('form_training_group')?>">Training (Group)</a> </li>
-          <li > <a href="<?php echo site_url('form_resignment')?>">Resignment</a> </li>
-          <li > <a href="<?php echo site_url('form_exit')?>">Exit clearance</a> </li>             
+          <?php if(is_spv($nik)||is_admin()||is_admin_bagian()):?><li > <a href="<?php echo site_url('form_medical')?>">Kesehatan</a> </li><?php endif; ?>          
+          <li > <a href="<?php echo site_url('form_training')?>">Pelatihan</a> </li>          
+          <li > <a href="<?php echo site_url('form_training_group')?>">Pelatihan (Group)</a> </li>
+          <li > <a href="<?php echo site_url('form_resignment')?>">Pengunduran Diri</a> </li>
+          <?php if(is_spv($nik)||is_admin()||is_admin_bagian()):?><<li > <a href="<?php echo site_url('form_exit')?>">Rekomendasi Karyawan Keluar</a> </li>  <?php endif?>           
            </ul>
       </li>
       <!--<li class=""> <a href="javascript:;"> <i class="icon-custom-form"></i> <span class="title">Analisis & Laporan</span> <span class="arrow "></span> </a>
@@ -61,7 +61,7 @@
         </ul>
       </li> -->
       <?php if(is_admin_inventaris()||is_admin()){?>
-      <li class=""> <a href="javascript:;"> <i class="icon-group"></i> <span class="title">Manage Company</span> <span class="arrow "></span> </a>
+      <li class=""> <a href="javascript:;"> <i class="icon-group"></i> <span class="title">Pengaturan Perusahaan</span> <span class="arrow "></span> </a>
         <ul class="sub-menu">
           <!--<li > <a href="<?php echo site_url('comp_session')?>">Company Session</a> </li>
           <li > <a href="<?php echo site_url('organization')?>">Organization</a> </li>

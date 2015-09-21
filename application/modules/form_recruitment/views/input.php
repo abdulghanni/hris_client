@@ -146,7 +146,7 @@
                         </select>
                       </div>
                       <div class="col-md-1">
-                        <label class="form-label text-right">IPK</label>
+                        <label class="form-label text-right">IPK(Min)</label>
                       </div>
                       <div class="col-md-2">
                         <select name="ipk" id="ipk" class="form-custom select2" style="width:100%" required>
@@ -157,7 +157,7 @@
                         </select>
                       </div>
                       <div class="col-md-1">
-                        <label class="form-label text-right">Toefl</label>
+                        <label class="form-label text-right">Toefl(Min)</label>
                       </div>
                       <div class="col-md-2">
                         <select name="toefl" id="toefl" class="form-custom select2" style="width:100%" required>

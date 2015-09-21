@@ -173,7 +173,7 @@
                           <label class="form-label text-right">Note (spv): </label>
                         </div>
                         <div class="col-md-8">
-                          <textarea name="note_lv1" class="form-control" placeholder="Note supervisor isi disini" disabled="disabled"><?php echo $user->note_app_lv1 ?></textarea>
+                          <textarea name="note_lv1" class="form-control" placeholder="Note Atasan Langsung isi disini" disabled="disabled"><?php echo $user->note_app_lv1 ?></textarea>
                         </div>
                       </div>
                       <?php } ?>
@@ -184,7 +184,7 @@
                           <label class="form-label text-right">Note (ka. bag): </label>
                         </div>
                         <div class="col-md-8">
-                          <textarea name="notes_kbg" class="form-control" placeholder="Note ka. bagian isi disini" disabled="disabled"><?php echo $user->note_app_lv2 ?></textarea>
+                          <textarea name="notes_kbg" class="form-control" placeholder="Note Atasan Tidak Langsung isi disini" disabled="disabled"><?php echo $user->note_app_lv2 ?></textarea>
                         </div>
                       </div>
                       <?php } ?>
@@ -245,21 +245,21 @@
                               <span class="semi-bold"></span><br/>
                               <span class="small"></span><br/>
                               <span class="semi-bold"></span><br/>
-                              <span class="semi-bold">(Supervisor)</span>
+                              <span class="semi-bold">(Atasan Langsung)</span>
                             <?php }elseif(!empty($user->user_app_lv1) && $user->is_app_lv1 == 1){
                               echo ($user->approval_status_id_lv1 == 1)?"<img class=approval_img_md src=$approved>":(($user->approval_status_id_lv1 == 2) ? "<img class=approval_img_md src=$rejected>":'<span class="small"></span><br/>');?>
                               <span class="small"></span><br/>
                               <span class="semi-bold"><?php echo get_name($user->user_app_lv1)?></span><br/>
                               <span class="small"><?php echo dateIndo($user->date_app_lv1)?></span><br/>
                               <span class="semi-bold"></span><br/>
-                              <span class="semi-bold">(Supervisor)</span>
+                              <span class="semi-bold">(Atasan Langsung)</span>
                             <?php }else{?>
                               <span class="small"></span><br/>
                               <span class="small"></span><br/>
                               <span class="semi-bold"></span><br/>
                               <span class="small"></span><br/>
                               <span class="semi-bold"></span><br/>
-                              <span class="semi-bold"><?php echo (!empty($user->user_app_lv1))?'(Supervisor)':'';?></span>
+                              <span class="semi-bold"><?php echo (!empty($user->user_app_lv1))?'(Atasan Langsung)':'';?></span>
                             <?php } ?>
                           </p>
                         </div>
@@ -273,21 +273,21 @@
                               <span class="semi-bold"></span><br/>
                               <span class="small"></span><br/>
                               <span class="semi-bold"></span><br/>
-                              <span class="semi-bold">(Ka. Bagian)</span>
+                              <span class="semi-bold">(Atasan Tidak Langsung)</span>
                             <?php }elseif(!empty($user->user_app_lv2) && $user->is_app_lv2 == 1){
                               echo ($user->approval_status_id_lv2 == 1)?"<img class=approval_img_md src=$approved>":(($user->approval_status_id_lv2 == 2) ? "<img class=approval_img_md src=$rejected>":'<span class="small"></span><br/>');?>
                               <span class="small"></span><br/>
                               <span class="semi-bold"><?php echo get_name($user->user_app_lv2)?></span><br/>
                               <span class="small"><?php echo dateIndo($user->date_app_lv2)?></span><br/>
                               <span class="semi-bold"></span><br/>
-                              <span class="semi-bold">(Ka. Bagian)</span>
+                              <span class="semi-bold">(Atasan Tidak Langsung)</span>
                             <?php }else{?>
                               <span class="small"></span><br/>
                               <span class="small"></span><br/>
                               <span class="semi-bold"></span><br/>
                               <span class="small"></span><br/>
                               <span class="semi-bold"></span><br/>
-                              <span class="semi-bold"><?php echo (!empty($user->user_app_lv2))?'(Ka. Bagian)':'';?></span>
+                              <span class="semi-bold"><?php echo (!empty($user->user_app_lv2))?'(Atasan Tidak Langsung)':'';?></span>
                             <?php } ?>
                           </p>
                         </div>
@@ -368,7 +368,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Approval Form Cuti - Supervisor</h4>
+        <h4 class="modal-title" id="myModalLabel">Approval Form Cuti - Atasan Langsung</h4>
       </div>
       <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
       <div class="modal-body">
@@ -424,10 +424,10 @@
             </div>
             <div class="row form-row">
               <div class="col-md-12">
-                <label class="form-label text-left">Note (Supervisor) : </label>
+                <label class="form-label text-left">Note (Atasan Langsung) : </label>
               </div>
               <div class="col-md-12">
-                <textarea name="note_lv1" class="custom-txtarea-form" placeholder="Note Supervisor isi disini"><?php echo $user->note_app_lv1?></textarea>
+                <textarea name="note_lv1" class="custom-txtarea-form" placeholder="Note Atasan Langsung isi disini"><?php echo $user->note_app_lv1?></textarea>
               </div>
             </div>
       </div>
@@ -447,7 +447,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Approval Form Cuti - Ka. Bagian</h4>
+        <h4 class="modal-title" id="myModalLabel">Approval Form Cuti - Atasan Tidak Langsung</h4>
       </div>
       <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
       <div class="modal-body">
@@ -503,10 +503,10 @@
             </div>
             <div class="row form-row">
               <div class="col-md-12">
-                <label class="form-label text-left">Note (Ka. Bagian) : </label>
+                <label class="form-label text-left">Note (Atasan Tidak Langsung) : </label>
               </div>
               <div class="col-md-12">
-                <textarea name="note_lv2" class="custom-txtarea-form" placeholder="Note Ka. Bagian isi disini"><?php echo $user->note_app_lv2?></textarea>
+                <textarea name="note_lv2" class="custom-txtarea-form" placeholder="Note Atasan Tidak Langsung isi disini"><?php echo $user->note_app_lv2?></textarea>
               </div>
             </div>
       </div>

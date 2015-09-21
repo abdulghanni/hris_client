@@ -109,7 +109,7 @@
                       <?php if(!empty($row->note_lv1)){?>
                       <div class="row form-row">
                         <div class="col-md-4">
-                          <label class="form-label text-left">Note (Supervisor): </label>
+                          <label class="form-label text-left">Note (Atasan Langsung): </label>
                         </div>
                         <div class="col-md-8">
                           <textarea name="notes_spv" class="custom-txtarea-form" disabled="disabled"><?php echo $row->note_lv1 ?></textarea>
@@ -119,7 +119,7 @@
                       <?php if(!empty($row->note_lv2)){?>
                       <div class="row form-row">
                         <div class="col-md-4">
-                          <label class="form-label text-left">Note (Ka. Bagian): </label>
+                          <label class="form-label text-left">Note (Atasan Tidak Langsung): </label>
                         </div>
                         <div class="col-md-8">
                           <textarea name="notes_spv" class="custom-txtarea-form" disabled="disabled"><?php echo $row->note_lv2 ?></textarea>

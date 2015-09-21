@@ -162,7 +162,7 @@
                           <label class="form-label text-right">Note (spv): </label>
                         </div>
                         <div class="col-md-8">
-                          <textarea name="notes_spv" class="custom-txtarea-form" placeholder="Note supervisor isi disini" disabled="disabled"><?php echo $user->note_app_lv1 ?></textarea>
+                          <textarea name="notes_spv" class="custom-txtarea-form" placeholder="Note Atasan Langsung isi disini" disabled="disabled"><?php echo $user->note_app_lv1 ?></textarea>
                         </div>
                       </div>
                       <?php } ?>
@@ -184,7 +184,7 @@
                           <label class="form-label text-right">Note (ka. bag): </label>
                         </div>
                         <div class="col-md-8">
-                          <textarea name="notes_kbg" class="custom-txtarea-form" placeholder="Note ka. bagian isi disini" disabled="disabled"><?php echo $user->note_app_lv2 ?></textarea>
+                          <textarea name="notes_kbg" class="custom-txtarea-form" placeholder="Note Atasan Tidak Langsung isi disini" disabled="disabled"><?php echo $user->note_app_lv2 ?></textarea>
                         </div>
                       </div>
                       <?php } ?>
