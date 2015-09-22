@@ -648,15 +648,15 @@ class Form_spd_luar extends MX_Controller {
         else
         {
             $sess_id= $this->data['sess_id'] = $this->session->userdata('user_id');
-            $sess_nik = get_nik($sess_id);
+            $this->data['sess_nik'] = $sess_nik = get_nik($sess_id);
             $data_result = $this->data['task_detail'] = $this->form_spd_luar_model->where('users_spd_luar.id',$id)->form_spd_luar($id)->result();
             $this->data['td_num_rows'] = $this->form_spd_luar_model->where('users_spd_luar.id',$id)->form_spd_luar($id)->num_rows();
         
             
             $this->data['tc_id'] = $task_receiver_id = getValue('task_receiver', 'users_spd_luar', array('id' => 'where/'.$id));
-            $this->data['biaya_pjd'] = getJoin('users_spd_luar_biaya','pjd_biaya','users_spd_luar_biaya.pjd_biaya_id = pjd_biaya.id','left', 'users_spd_luar_biaya.*, pjd_biaya.title as jenis_biaya', array('user_spd_luar_id'=>'where/'.$id));
+            $this->data['biaya_pjd'] = getJoin('users_spd_luar_biaya','pjd_biaya','users_spd_luar_biaya.pjd_biaya_id = pjd_biaya.id','left', 'users_spd_luar_biaya.*, pjd_biaya.title as jenis_biaya, pjd_biaya.type_grade as type', array('user_spd_luar_id'=>'where/'.$id));
             
-            return $this->load->view('form_spd_luar/spd_luar_email', $this->data, TRUE);
+            return $this->load->view('form_spd_luar/spd_luar_email', $this->data, true);
         }
     }
 

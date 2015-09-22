@@ -387,12 +387,15 @@ class Auth extends MX_Controller {
     //forgot password
     function forgot_password()
     {
-        $this->form_validation->set_rules('email', $this->lang->line('forgot_password_validation_email_label'), 'required|valid_email');
+        //$this->form_validation->set_rules('email', $this->lang->line('forgot_password_validation_email_label'), 'required|valid_email');
+        $this->form_validation->set_rules('email', 'Kolom NIK wajib diisi', 'required');
         if ($this->form_validation->run() == false)
         {
             //setup the input
             $this->data['email'] = array('name' => 'email',
                 'id' => 'email',
+                'placeholder' => 'Masukan NIK anda disini....',
+                'required' => 'required'
             );
 
             if ( $this->config->item('identity', 'ion_auth') == 'username' ){
@@ -410,8 +413,8 @@ class Auth extends MX_Controller {
         else
         {
             // get identity from username or email
-            if ( $this->config->item('identity', 'ion_auth') == 'username' ){
-                $identity = $this->ion_auth->where('username', strtolower($this->input->post('email')))->users()->row();
+            if ( $this->config->item('identity', 'ion_auth') == 'nik' ){
+                $identity = $this->ion_auth->where('nik', strtoupper($this->input->post('email')))->users()->row();
             }
             else
             {
@@ -419,22 +422,23 @@ class Auth extends MX_Controller {
             }
             if(empty($identity)) {
                 $this->ion_auth->set_message('forgot_password_email_not_found');
-                $this->session->set_flashdata('message', $this->ion_auth->messages());
+                $this->session->set_flashdata('message', 'Nik anda tidak terdaftar');
                 redirect("auth/forgot_password", 'refresh');
             }
 
             //run the forgotten password method to email an activation code to the user
             $forgotten = $this->ion_auth->forgotten_password($identity->{$this->config->item('identity', 'ion_auth')});
-
+            
             if ($forgotten)
-            {
+            {//print_mz($forgotten);
                 //if there were no errors
-                $this->session->set_flashdata('message', $this->ion_auth->messages());
+                //$this->session->set_flashdata('message', $this->ion_auth->messages());
+                $this->session->set_flashdata('message', $forgotten);
                 redirect("auth/login", 'refresh'); //we should display a confirmation page here instead of the login page
             }
             else
             {
-                $this->session->set_flashdata('message', $this->ion_auth->errors());
+                $this->session->set_flashdata('message', $this->ion_auth->message());
                 redirect("auth/forgot_password", 'refresh');
             }
         }
@@ -3580,7 +3584,9 @@ class Auth extends MX_Controller {
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                     $this->template->add_css('plugins/select2/select2.css');
                 }
-                elseif(in_array($view, array('auth/login')))
+                elseif(in_array($view, array('auth/login',
+                                         'auth/forgot_password','auth/register_user',
+                                         'auth/reset_password')))
                 {
                     $this->template->set_layout('single');
 
@@ -3591,13 +3597,10 @@ class Auth extends MX_Controller {
                 }
                 elseif(in_array($view, array(
                                              'auth/create_group',
-                                             'auth/edit_group',
-                                             'forgot_password'
-                                             )))
+                                             'auth/edit_group')))
                 {
                     $this->template->set_layout('default');
 
-                     $this->template->set_layout('default');
                     $this->template->add_js('jquery.sidr.min.js');
                     $this->template->add_js('breakpoints.js');
                     $this->template->add_js('select2.min.js');

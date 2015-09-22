@@ -63,9 +63,9 @@ $lang['email_activate_link']       = 'Activate Your Account';
 
 // Forgot Password Email
 $lang['email_forgotten_password_subject']    = 'Forgotten Password Verification';
-$lang['email_forgot_password_heading']    = 'Reset Password for %s';
-$lang['email_forgot_password_subheading'] = 'Please click this link to %s.';
-$lang['email_forgot_password_link']       = 'Reset Your Password';
+$lang['email_forgot_password_heading']    = 'Reset Password Untuk Karyawan Dengan NIK %s';
+$lang['email_forgot_password_subheading'] = 'Silakan Klik Link Berikut %s.';
+$lang['email_forgot_password_link']       = 'Reset Password Anda';
 
 // New Password Email
 $lang['email_new_password_subject']          = 'New Password';

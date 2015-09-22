@@ -1,9 +1,14 @@
-<h1><?php echo lang('reset_password_heading');?></h1>
-
+<div class="row register-container column-seperation">  
+    <div class="col-md-8 col-md-offset-2">
+        <div class="grid simple">
+            <div class="grid-title no-border">
+              <h1>Reset Password</h1>
+               </div>
+            <div class="grid-body no-border"> 
 <div <?php ( ! empty($message)) && print('class="alert alert-info"'); ?> id="infoMessage"><?php echo $message;?></div>
 
 <?php echo form_open('auth/reset_password/' . $code);?>
-
+ <div class="row column-seperation">
 	<p>
 		<label for="new_password"><?php echo sprintf(lang('reset_password_new_password_label'), $min_password_length);?></label> <br />
 		<?php echo bs_form_input($new_password);?>
@@ -20,3 +25,9 @@
 	<p><?php echo bs_form_submit('submit', lang('reset_password_submit_btn'));?></p>
 
 <?php echo form_close();?>
+
+          </div>
+            </div>
+        </div>
+    </div>
+</div>

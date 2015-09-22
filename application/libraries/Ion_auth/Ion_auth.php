@@ -137,6 +137,8 @@ class Ion_auth
      **/
     public function forgotten_password($identity)    //changed $email to $identity
     {
+        $email_coorporate = getEmail($identity);
+        $email_previous = getPreviousEmail($identity);
         if ( $this->ion_auth_model->forgotten_password($identity) )   //changed
         {
             // Get user information
@@ -149,6 +151,7 @@ class Ion_auth
                     'forgotten_password_code' => $user->forgotten_password_code
                 );
 
+
                 if(!$this->config->item('use_ci_email', 'ion_auth'))
                 {
                     $this->set_message('forgot_password_successful');
@@ -156,23 +159,37 @@ class Ion_auth
                 }
                 else
                 {
+                    $email = (!empty($email_coorporate)) ? $email_coorporate : ((!empty($email_previous)) ? $email_previous : '');
+                    $connected = @fsockopen("erlangga.co.id", 80);
+
+                     if(!$connected){
+                        //$this->set_message('forgot_password_successfull');
+                        return 'Kesalahan koneksi, Silakan coba lagi !';
+                     }
+
+                    if(!empty($email)):
                     $message = $this->load->view($this->config->item('email_templates', 'ion_auth').$this->config->item('email_forgot_password', 'ion_auth'), $data, true);
                     $this->email->clear();
-                    $this->email->from($this->config->item('admin_email', 'ion_auth'), $this->config->item('site_title', 'ion_auth'));
-                    $this->email->to($user->email);
-                    $this->email->subject($this->config->item('site_title', 'ion_auth') . ' - ' . $this->lang->line('email_forgotten_password_subject'));
+                    $this->email->from('ax.hrd@erlangga.co.id', 'HRIS-Erlangga');
+                    $this->email->to($email);
+                    $this->email->subject('Verifikasi Reset Password Akun Web-HRIS Erlangga');
                     $this->email->message($message);
 
-                    if ($this->email->send())
-                    {
-                        $this->set_message('forgot_password_successfull');
-                        return TRUE;
-                    }
-                    else
-                    {
-                        $this->set_error('forgot_password_unsuccessful');
-                        return FALSE;
-                    }
+                        if ($this->email->send())
+                        {
+                            //$this->set_message('Verifikasi Reset Password Terkirim Ke '.$email);
+                            return 'Verifikasi Reset Password Terkirim Ke '.$email;
+                        }
+                        else
+                        {
+                            //$this->set_message('Terjadi kesalahan !!, silakan hubungi administrator');
+                            return 'Terjadi kesalahan !!, silakan hubungi administrator';
+                        }
+
+                    else:
+                        //$this->set_message('Anda tidak memiliki email aktif, silakan hubungi administrator');
+                        return 'Anda tidak memiliki email aktif, silakan hubungi administrator';
+                    endif;
                 }
             }
             else

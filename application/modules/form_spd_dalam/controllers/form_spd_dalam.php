@@ -326,16 +326,28 @@ class Form_spd_dalam extends MX_Controller {
         
             if($n_report==0){
                 $this->data['is_done'] = '';
-                $this->data['tujuan'] = '';
-                $this->data['hasil'] = '';
+                //$this->data['tujuan'] = '';
+                //$this->data['hasil'] = '';
+                $this->data['what'] = '';
+                $this->data['why'] = '';
+                $this->data['where'] = '';
+                $this->data['when'] = '';
+                $this->data['who'] = '';
+                $this->data['how'] = '';
                 $this->data['attachment'] = '-';
                 $this->data['disabled'] = '';
             }else{
                 foreach ($report as $key) {
                 $this->data['id_report'] = $key->id;
                 $this->data['is_done'] = $key->is_done;    
-                $this->data['tujuan'] = $key->description;
-                $this->data['hasil'] = $key->result;
+                //$this->data['tujuan'] = '';
+                //$this->data['hasil'] = '';
+                $this->data['what'] = $key->what;
+                $this->data['why'] = $key->why;
+                $this->data['where'] = $key->where;
+                $this->data['when'] = $key->when;
+                $this->data['who'] = $key->who;
+                $this->data['how'] = $key->how;
                 $this->data['attachment'] = (!empty($key->attachment)) ? $key->attachment : 2 ;
                 $this->data['created_on'] = $key->created_on;
                 $this->data['disabled'] = 'disabled='.'"disabled"';
@@ -347,8 +359,8 @@ class Form_spd_dalam extends MX_Controller {
 
     public function add_report($spd_id)
     {
-        $this->form_validation->set_rules('maksud', 'Maksud dan Tujuan', 'trim|required');
-        $this->form_validation->set_rules('hasil', 'Hasil Kegiatan', 'trim|required');
+        $this->form_validation->set_rules('who', 'Maksud dan Tujuan', 'trim|required');
+        $this->form_validation->set_rules('why', 'Hasil Kegiatan', 'trim|required');
         
         if($this->form_validation->run() == FALSE)
         {
@@ -375,8 +387,14 @@ class Form_spd_dalam extends MX_Controller {
                 {
                     $additional_data = array(
                         'is_done'       => $this->input->post('is_done'),
-                        'description'   => $this->input->post('maksud'),
-                        'result'        => $this->input->post('hasil'),
+                        //'description'   => $this->input->post('maksud'),
+                        //'result'        => $this->input->post('hasil'),
+                        'what' => $this->input->post('what'),
+                        'why' => $this->input->post('why'),
+                        'where' => $this->input->post('where'),
+                        'when' => $this->input->post('when'),
+                        'who' => $this->input->post('who'),
+                        'how' => $this->input->post('how'),
                         'date_submit'   => date('Y-m-d',strtotime('now')),
                         'created_on'    => date('Y-m-d',strtotime('now')),
                         'created_by'    => $this->session->userdata('user_id')
@@ -389,8 +407,14 @@ class Form_spd_dalam extends MX_Controller {
                 
                     $additional_data = array(
                         'is_done'       => $this->input->post('is_done'),
-                        'description'   => $this->input->post('maksud'),
-                        'result'        => $this->input->post('hasil'),
+                        //'description'   => $this->input->post('maksud'),
+                        //'result'        => $this->input->post('hasil'),
+                        'what' => $this->input->post('what'),
+                        'why' => $this->input->post('why'),
+                        'where' => $this->input->post('where'),
+                        'when' => $this->input->post('when'),
+                        'who' => $this->input->post('who'),
+                        'how' => $this->input->post('how'),
                         'attachment'    => $file_name,
                         'date_submit'   => date('Y-m-d',strtotime('now')),
                         'created_on'    => date('Y-m-d',strtotime('now')),
@@ -411,8 +435,8 @@ class Form_spd_dalam extends MX_Controller {
      public function update_report($report_id)
     {
         $spd_id = $this->db->where('id', $report_id)->get('users_spd_dalam_report')->row('user_spd_dalam_id');
-        $this->form_validation->set_rules('maksud', 'Maksud dan Tujuan', 'trim|required');
-        $this->form_validation->set_rules('hasil', 'Hasil Kegiatan', 'trim|required');
+        $this->form_validation->set_rules('who', 'Maksud dan Tujuan', 'trim|required');
+        $this->form_validation->set_rules('why', 'Hasil Kegiatan', 'trim|required');
         
         if($this->form_validation->run() == FALSE)
         {
@@ -440,8 +464,14 @@ class Form_spd_dalam extends MX_Controller {
                 {
                     $additional_data = array(
                         'is_done'       => $this->input->post('is_done'),
-                        'description'   => $this->input->post('maksud'),
-                        'result'        => $this->input->post('hasil'),
+                        //'description'   => $this->input->post('maksud'),
+                        //'result'        => $this->input->post('hasil'),
+                        'what' => $this->input->post('what'),
+                        'why' => $this->input->post('why'),
+                        'where' => $this->input->post('where'),
+                        'when' => $this->input->post('when'),
+                        'who' => $this->input->post('who'),
+                        'how' => $this->input->post('how'),
                         'attachment'    => '',
                         'date_submit'   => date('Y-m-d',strtotime('now')),
                         'edited_on'    => date('Y-m-d',strtotime('now')),
@@ -455,8 +485,14 @@ class Form_spd_dalam extends MX_Controller {
                 
                     $additional_data = array(
                         'is_done'       => $this->input->post('is_done'),
-                        'description'   => $this->input->post('maksud'),
-                        'result'        => $this->input->post('hasil'),
+                        //'description'   => $this->input->post('maksud'),
+                        //'result'        => $this->input->post('hasil'),
+                        'what' => $this->input->post('what'),
+                        'why' => $this->input->post('why'),
+                        'where' => $this->input->post('where'),
+                        'when' => $this->input->post('when'),
+                        'who' => $this->input->post('who'),
+                        'how' => $this->input->post('how'),
                         'attachment'    => $file_name,
                         'date_submit'   => date('Y-m-d',strtotime('now')),
                         'edited_on'    => date('Y-m-d',strtotime('now')),
@@ -575,8 +611,12 @@ class Form_spd_dalam extends MX_Controller {
                 foreach ($report as $key) {
                 $this->data['id_report'] = $key->id;
                 $this->data['is_done'] = $key->is_done;    
-                $this->data['tujuan'] = $key->description;
-                $this->data['hasil'] = $key->result;
+                $this->data['what'] = $key->what;
+                $this->data['why'] = $key->why;
+                $this->data['where'] = $key->where;
+                $this->data['when'] = $key->when;
+                $this->data['who'] = $key->who;
+                $this->data['how'] = $key->how;
                 $this->data['attachment'] = (!empty($key->attachment)) ? $key->attachment : 2 ;
                 $this->data['created_on'] = $key->created_on;
                 $this->data['disabled'] = 'disabled='.'"disabled"';

@@ -1,4 +1,6 @@
-<div class="grid simple">
+<div class="row">
+        <div class="col-md-12">
+          <div class="grid simple">
             <div class="grid-title no-border">
               <h4>Form Perjalanan Dinas <a href="<?php echo site_url('form_spd_luar')?>"><span class="semi-bold">Luar Kota</span></a></h4>
             </div>
@@ -42,7 +44,7 @@
                     </div>
                   </div>
                   <div class="col-md-7">
-                    <h4>Memberi tugas / Ijin Kepada</h4>
+                    <h4>Memberi Tugas Kepada</h4>
                     
                     <div class="row form-row">
                       <div class="col-md-3">
@@ -129,36 +131,96 @@
                     </div>
 
                   <hr/>
-                  <h5 class="text-center"><span class="semi-bold">Ketentuan Biaya Perjalanan Dinas</span></h5>
-                  <p>&nbsp;</p>
-                      <p class="bold">Grade Penerima Tugas : <span id="grade" class="semi-bold"><?php echo get_grade($tc_id)?></span></p>
-                        <div class="row form-row">
-                          <div class="col-md-12">
-                          <table class="table table-bordered">
-                            <thead>
-                              <tr>
-                                <th width="2%">No</th>
-                                <th width="40%">Jenis Biaya</th>
-                                <th width="40%">Jumlah Biaya</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                            <?php $i=1;foreach($biaya_pjd->result() as $row):?>
-                              <tr>
-                                <td><?php echo $i++?></td>
-                                <td><?php echo $row->jenis_biaya?></td>
-                                <td>Rp. <?php echo number_format($row->jumlah_biaya*$jml_pjd, 2)?></td>
-                              </tr>
-                            <?php endforeach ?>
-                            </tbody>
-                          </table>
+                  <div class="row">
+                    <div class="col-md-7 col-md-offset-2">
+                      <h5 class="text-center"><span class="semi-bold">Ketentuan Biaya Perjalanan Dinas</span></h5>
+                      <p>&nbsp;</p>
+                          <p class="bold">Grade Penerima Tugas : <span id="grade" class="semi-bold"><?php echo get_grade($tc_id)?></span></p>
+                            <div class="row form-row">
+                              <div class="col-md-12">
+                              <table class="table table-bordered">
+                                <thead>
+                                  <tr>
+                                    <th width="2%">No</th>
+                                    <th width="40%">Jenis Biaya</th>
+                                    <th width="40%">Jumlah Biaya(Rp)</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                <?php $total = 0;
+                                  $i=1;foreach($biaya_pjd->result() as $row):
+                                  $jumlah_biaya = (!empty($row->type)) ? $row->jumlah_biaya*$jml_pjd : $row->jumlah_biaya;
+                                  $jumlah_hari = (!empty($row->type)) ? '/'.$jml_pjd.' hari' : '';
+                                  $total += $jumlah_biaya;
+                                ?>
+                                  <tr>
+                                    <td><?php echo $i++?></td>
+                                    <td><?php echo $row->jenis_biaya.$jumlah_hari?></td>
+                                    <td align="right"><?php echo number_format($jumlah_biaya, 0)?></td>
+                                  </tr>
+                                <?php endforeach; ?>
+                                  <tr>
+                                    <td>&nbsp;</td>
+                                    <td align="right">Total :</td>
+                                    <td align="right"><?php echo number_format($total, 0) ?></td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                      <hr/>
+                      <?php if(!empty($td->note_lv1)){?>
+                      <div class="row form-row">
+                        <div class="col-md-3">
+                          <label class="form-label text-left">Note (Atasan Langsung): </label>
+                        </div>
+                        <div class="col-md-5">
+                          <textarea name="notes_spv" class="form-control" disabled="disabled"><?php echo $td->note_lv1 ?></textarea>
                         </div>
                       </div>
+                      <?php } ?>
+                      <?php if(!empty($td->note_lv2)){?>
+                      <div class="row form-row">
+                        <div class="col-md-3">
+                          <label class="form-label text-left">Note (Atasan Tidak Langsung): </label>
+                        </div>
+                        <div class="col-md-5">
+                          <textarea name="notes_spv" class="form-control" disabled="disabled"><?php echo $td->note_lv2 ?></textarea>
+                        </div>
+                      </div>
+                      <?php } ?>
+                      <?php if(!empty($td->note_lv3)){?>
+                      <div class="row form-row">
+                        <div class="col-md-3">
+                          <label class="form-label text-left">Note (Atasan Lainnya): </label>
+                        </div>
+                        <div class="col-md-5">
+                          <textarea name="notes_spv" class="form-control" disabled="disabled"><?php echo $td->note_lv3 ?></textarea>
+                        </div>
+                      </div>
+                      <?php } ?>
+                      <?php if(!empty($td->note_hrd)){?>
+                      <div class="row form-row">
+                        <div class="col-md-3">
+                          <label class="form-label text-left">Note (hrd): </label>
+                        </div>
+                        <div class="col-md-5">
+                          <textarea name="notes_spv" class="form-control" disabled="disabled"><?php echo $td->note_hrd ?></textarea>
+                        </div>
+                      </div>
+                      <?php } ?>
                     </div>
-                  </div>
-                </div>
 
+                    </div>
+                      </div>
+                    </div> 
+                  </div>
               </form>
                   </div>  
             </div>
-            <?php endforeach;}?>
+
+            
+<?php endforeach;} ?>

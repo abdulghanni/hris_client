@@ -207,7 +207,7 @@
                           </div>
                           <div class="col-md-8">
                             <div class="input-append date success no-padding">
-                              <input type="text" class="form-control" name="date_spd_start" value="" required>
+                              <input type="text" class="form-control from_date" name="date_spd_start" value="" required>
                               <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span> 
                             </div>
                           </div>
@@ -218,7 +218,7 @@
                           </div>
                           <div class="col-md-8">
                             <div class="input-append date success no-padding">
-                              <input type="text" class="form-control" name="date_spd_end" value="" required>
+                              <input type="text" class="form-control to_date" name="date_spd_end" value="" required>
                               <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span> 
                             </div>
                           </div>

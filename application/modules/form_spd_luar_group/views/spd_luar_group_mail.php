@@ -1,4 +1,5 @@
-<div class="col-md-12">
+<div class="row">
+        <div class="col-md-12">
           <div class="grid simple">
             <div class="grid-title no-border">
               <h4>Form <a href="<?php echo site_url('form_spd_luar_group')?>">Perjalanan Dinas <span class="semi-bold">Luar Kota (Group)</span></a></h4>
@@ -44,7 +45,7 @@
                   <p>&nbsp;</p>
                   <hr/>
                   <div class="col-md-12">
-                    <h4>Memberi tugas / Ijin Kepada</h4>
+                    <h4>Memberi Tugas Kepada</h4>
                     <p></p>
                     <div class="row form-row">
                       <div class="col-md-12">
@@ -121,7 +122,7 @@
                         <div class="col-md-2">
                           <label class="form-label text-left">Tgl. Berangkat</label>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-5">
                           <input name="title" id="title" type="text"  class="form-control" placeholder="Tanggal Berangkat" value="<?php echo dateIndo($td->date_spd_start); ?>" disabled>
                         </div>
                       </div>
@@ -129,14 +130,14 @@
                         <div class="col-md-2">
                           <label class="form-label text-left">Tgl. Pulang</label>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-5">
                           <input name="title" id="title" type="text"  class="form-control" placeholder="Tanggal Pulang" value="<?php echo dateIndo($td->date_spd_end); ?>" disabled>
                         </div>
                       </div>
                   </div>
 
                   &nbsp;<hr/>
-<!--
+
                   <h5 class="text-center"><span class="semi-bold">Ketentuan Biaya Perjalan Dinas Luar Kota (Group)</span></h5>
 
                     <table class="table table-bordered">
@@ -144,11 +145,15 @@
                         <tr>
                           <th width="15%">Nama</th>
                           <th width="1%">Gol</th>
-                          <th width="10%">Uang Makan</th>
-                          <th width="10%">Uang Saku</th>
-                          <th width="10%">Hotel</th>
-                          <?php foreach($biaya_pjd->result() as $b):?>
-                          <th width="10%"><?php echo $b->jenis_biaya?></th>
+                          <th width="10%" class="text-center">Uang Makan/<?php echo $jml_pjd.' Hari'?></th>
+                          <th width="10%" class="text-center">Uang Saku/<?php echo $jml_pjd.' Hari'?></th>
+                          <th width="10%" class="text-center">Hotel/<?php echo $jml_pjd.' Hari'?></th>
+                          <?php 
+                            $total_fix = 0;
+                            $total_lain = 0;
+                            foreach($biaya_pjd->result() as $b):
+                          ?>
+                          <th width="10%" class="text-center"><?php echo $b->jenis_biaya?></th>
                         <?php endforeach; ?> 
                         </tr>
                       </thead>
@@ -163,28 +168,78 @@
                             <?php echo get_grade($key->user_id)?>
                           </td>
                           <?php $c = $ci->db->select('users_spd_luar_group_biaya.jumlah_biaya')->from('users_spd_luar_group_biaya')->join('pjd_biaya','pjd_biaya.id = users_spd_luar_group_biaya.pjd_biaya_id', 'left')->where('user_spd_luar_group_id', $id)->where('user_id', $key->user_id)->where('pjd_biaya.type_grade != ', 0)->get();
-                              foreach ($c->result() as $c) { ?>
-                          <td><?php echo number_format($c->jumlah_biaya*$jml_pjd, 0)?>
+                              foreach ($c->result() as $c) {
+                              $total_fix += $c->jumlah_biaya*$jml_pjd;
+                          ?>
+                          <td align="right">
+                            <?php echo number_format($c->jumlah_biaya*$jml_pjd, 0)?>
                           </td>
-                          <?php } ?>
+                              
+                          <?php }?>
                           <?php
                             $b = $ci->db->select('users_spd_luar_group_biaya.jumlah_biaya')->from('users_spd_luar_group_biaya')->join('pjd_biaya','pjd_biaya.id = users_spd_luar_group_biaya.pjd_biaya_id', 'left')->where('user_spd_luar_group_id', $id)->where('user_id', $key->user_id)->where('pjd_biaya.type_grade', 0)->get();
                               foreach ($b->result() as $b) {
+                                $total_lain += $b->jumlah_biaya;
                           ?>
-                          <td><?php echo number_format($b->jumlah_biaya*$jml_pjd, 0)?></td>
+                          <td align="right"><?php echo number_format($b->jumlah_biaya, 0)?></td>
                             <?php } ?>
                         </tr>
-                      <?php endforeach ?>
+                      <?php 
+                      endforeach ?>
+                      <tr>
+                        <td align="center"><b>Total : Rp. <?php echo number_format($total_fix+$total_lain,0)?></b></td>
+                      </tr>
                       </tbody>
                     </table>
-                    -->
-                </div>
+
+                    <?php if(!empty($td->note_lv1)){?>
+                      <div class="row form-row">
+                        <div class="col-md-3">
+                          <label class="form-label text-left">Note (Atasan Langsung): </label>
+                        </div>
+                        <div class="col-md-5">
+                          <textarea name="notes_spv" class="form-control" disabled="disabled"><?php echo $td->note_lv1 ?></textarea>
                         </div>
                       </div>
-                    <!-- /div> -->
+                      <?php } ?>
+                      <?php if(!empty($td->note_lv2)){?>
+                      <div class="row form-row">
+                        <div class="col-md-3">
+                          <label class="form-label text-left">Note (Atasan Tidak Langsung): </label>
+                        </div>
+                        <div class="col-md-5">
+                          <textarea name="notes_spv" class="form-control" disabled="disabled"><?php echo $td->note_lv2 ?></textarea>
+                        </div>
+                      </div>
+                      <?php } ?>
+                      <?php if(!empty($td->note_lv3)){?>
+                      <div class="row form-row">
+                        <div class="col-md-3">
+                          <label class="form-label text-left">Note (Atasan Lainnya): </label>
+                        </div>
+                        <div class="col-md-5">
+                          <textarea name="notes_spv" class="form-control" disabled="disabled"><?php echo $td->note_lv3 ?></textarea>
+                        </div>
+                      </div>
+                      <?php } ?>
+                      <?php if(!empty($td->note_hrd)){?>
+                      <div class="row form-row">
+                        <div class="col-md-3">
+                          <label class="form-label text-left">Note (hrd): </label>
+                        </div>
+                        <div class="col-md-5">
+                          <textarea name="notes_spv" class="form-control" disabled="disabled"><?php echo $td->note_hrd ?></textarea>
+                        </div>
+                      </div>
+                      <?php } ?>
+                      
+                </div>
+
+                </div>
+                      </div>
+                    </div> 
                   </div>
               </form>
             </div>
           </div>
-        </div>
-        <?php endforeach;}?>
+      <?php endforeach;} ?>
