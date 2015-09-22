@@ -17,11 +17,14 @@ $(document).ready(function() {
 	    password_confirm: {
 	      minlength: 8,
 	      equalTo : password,
-	    }
+	    },
+
+	    superior_id: {notEqual:0}
 	  },
 	    messages: {
 	        //password: "Password harus berisi delapan karakter atau lebih",
 	        password_confirm: "Password Konfirmasi harus sama dengan password baru",
+	         superior_id : "Silakan Pilih Atasan"
 	    }
 	});
 

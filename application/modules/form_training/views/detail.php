@@ -298,7 +298,7 @@
                               <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submittrainingModalLv2"><i class='icon-edit'> Edit Approval</i></div>
                             <?php }elseif($user->is_app_lv3 == 1 && get_nik($sess_id) == $user->user_app_lv3){?>
                               <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submittrainingModalLv3"><i class='icon-edit'> Edit Approval</i></div>
-                            <?php }elseif($user->is_app_hrd == 1 && get_nik($sess_id) == $user->user_app_hrd){?>
+                            <?php }elseif($user->is_app_hrd == 1 && get_nik($sess_id) == $this->approval->approver('training')){?>
                               <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submittrainingModalHrd"><i class='icon-edit'> Edit Approval</i></div>
                             <?php } ?>
                           </div>
@@ -504,19 +504,13 @@
                       <label class="form-label text-right">Tipe Ikatan Dinas</label>
                     </div>
                     <div class="col-md-9">
-                      <select name="ikatan" class="select2" id="ikatan" style="width:100%" >
-                          <?php if($ikatan->num_rows()>0){
-                              foreach ($ikatan->result_array() as $key => $value) {
-                              $selected = ($user->ikatan_dinas_id <> 0 && $user->ikatan_dinas_id == $value['id']) ? 'selected = selected' : '';
-                              echo '<option value="'.$value['id'].'" '.$selected.'>'.$value['title'].'</option>';
-                              }}else{
-                              echo '<option value="0">'.'No Data'.'</option>';
-                              }
-                              ?>
-
-                      </select>
+                      <?php
+                        $style_up='class="form-control input-sm select2" style="width:100%" id="ikatan"';
+                        echo form_dropdown('ikatan',$result,'',$style_up);
+                      ?>
                     </div>
                   </div>
+                  <br/>
                   <div class="row form-row">
                     <div class="col-md-3">
                       <label class="form-label text-right">Waktu</label>
@@ -564,7 +558,10 @@
                       <label class="form-label text-right">Nama Vendor</label>
                     </div>
                     <div class="col-md-9">
-                      <input name="vendor" id="vendor" type="text"  class="form-control" placeholder="Nama Vendor" value="<?php echo $user->vendor?>" required>
+                      <?php
+                        $style_up='class="form-control input-sm select2" style="width:100%" id="vendor"';
+                        echo form_dropdown('vendor',$vendor,'',$style_up);
+                      ?>
                     </div>
                   </div>
                   <div class="row form-row">

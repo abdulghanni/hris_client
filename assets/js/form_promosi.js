@@ -19,17 +19,17 @@ $(document).ready(function() {
         placeholder: "Search for a position",
         //minimumInputLength: 3,
     });
-                
-    $('#formaddpromosi').submit(function(response){
-        $.post($('#formaddpromosi').attr('action'), $('#formaddpromosi').serialize(),function(json){
-            if(json.st == 0){
-                $('#MsgBad').html(json.errors).fadeIn();
-            }else{
-                window.location.href = json.promosi_url;
-            }
-        }, 'json');
-        return false;
-    });
+    
+
+    $( "#formadd" ).validate({
+    rules: {
+      atasan1: {notEqual:0}
+    },
+
+    messages: {
+          atasan1 : "Silakan Pilih Atasan"
+      }
+  });
 
     //approval script
 

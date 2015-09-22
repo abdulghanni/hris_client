@@ -118,7 +118,9 @@ class form_training extends MX_Controller {
             $this->data['ikatan'] = GetAll('training_ikatan_dinas', array('is_deleted' => 'where/0'));
             $this->data['waktu'] = GetAll('training_waktu', array('is_deleted' => 'where/0'));
             $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
-            
+
+            $this->get_tipe_ikatan_dinas();
+            $this->get_vendor();
             $this->_render_page('form_training/detail', $this->data);
     }
 
@@ -468,6 +470,46 @@ class form_training extends MX_Controller {
         $mpdf->Output($id.'-'.$title.'.pdf', 'I');
     }
 
+    function get_tipe_ikatan_dinas()
+    {
+        $url = get_api_key().'training/tipe_ikatan_dinas/format/json';
+      
+        $headers = get_headers($url);
+        $response = substr($headers[0], 9, 3);
+        if ($response != "404") {
+            $get_task_receiver = file_get_contents($url);
+            $task_receiver = json_decode($get_task_receiver, true);
+             foreach ($task_receiver as $row)
+                {
+                    $result['0']= '-- Pilih Tipe Ikatan Dinas --';
+                    $result[$row['DESCRIPTION']]= ucwords(strtolower($row['DESCRIPTION']));
+                }
+        } else {
+           $result['-']= '- Not Availbale -';
+            }
+        $this->data['result']=$result;
+    }
+
+    function get_vendor()
+    {
+        $url = get_api_key().'training/tipe_ikatan_dinas/format/json';
+      
+        $headers = get_headers($url);
+        $response = substr($headers[0], 9, 3);
+        if ($response != "404") {
+            $get_task_receiver = file_get_contents($url);
+            $task_receiver = json_decode($get_task_receiver, true);
+             foreach ($task_receiver as $row)
+                {
+                    $result['0']= '-- Pilih Vendor --';
+                    $result[$row['NAME']]= ucwords(strtolower($row['NAME']));
+                }
+        } else {
+           $result['-']= '- Not Availbale -';
+            }
+        $this->data['vendor']=$result;
+    }
+
     function _render_page($view, $data=null, $render=false)
     {
         $data = (empty($data)) ? $this->data : $data;
@@ -510,6 +552,7 @@ class form_training extends MX_Controller {
 
                     $this->template->add_js('jquery.bootstrap.wizard.min.js');
                     $this->template->add_js('jquery.validate.min.js');
+                    $this->template->add_js('jquery-validate.bootstrap-tooltip.min.js');
                     $this->template->add_js('bootstrap-datepicker.js');
                     $this->template->add_js('bootstrap-timepicker.js');
                     $this->template->add_js('emp_dropdown.js');

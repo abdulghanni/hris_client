@@ -21,16 +21,15 @@ $(document).ready(function() {
     var uri4 = url.segment(2)+'/do_approve/'+url.segment(4)+'/hrd';
     var uri5 = url.segment(2)+'/kirim_undangan/'+url.segment(4);
 
-    $('#formaddresign').submit(function(response){
-        $.post($('#formaddresign').attr('action'), $('#formaddresign').serialize(),function(json){
-            if(json.st == 0){
-                $('#MsgBad').html(json.errors).fadeIn();
-            }else{
-                window.location.href = baseurl+url.segment(2);
-            }
-        }, 'json');
-        return false;
-    });
+    $( "#formadd" ).validate({
+    rules: {
+      atasan1: {notEqual:0}
+    },
+
+    messages: {
+          atasan1 : "Silakan Pilih Atasan"
+      }
+  });
             
     //approval script
 

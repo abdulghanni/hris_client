@@ -76,6 +76,16 @@ $('button[data-loading-text]').click(function () {
         });  
     });
 
+    $( "#formadd" ).validate({
+    rules: {
+      atasan1: {notEqual:0}
+    },
+
+    messages: {
+          atasan1 : "Silakan Pilih Atasan"
+      }
+  });
+
 //input absen
     /*$('#formaddabsen').submit(function(response){
         $.post($('#formaddabsen').attr('action'), $('#formaddabsen').serialize(),function(json){

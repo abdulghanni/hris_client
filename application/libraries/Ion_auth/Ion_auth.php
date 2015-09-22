@@ -183,7 +183,7 @@ class Ion_auth
                         else
                         {
                             //$this->set_message('Terjadi kesalahan !!, silakan hubungi administrator');
-                            return 'Terjadi kesalahan !!, silakan hubungi administrator';
+                            return 'Anda tidak memiliki email aktif, silakan hubungi administrator';
                         }
 
                     else:

@@ -20,7 +20,7 @@
               </div>
               <div class="grid-body no-border">
                 <?php
-                $att = array('class' => 'form-no-horizontal-spacing', /*'id' => 'formadddemotion'*/);
+                $att = array('class' => 'form-no-horizontal-spacing', 'id' => 'formadd');
                 echo form_open('form_demotion/add', $att);
                 ?>
                   <div class="row column-seperation">

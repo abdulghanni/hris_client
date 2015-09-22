@@ -179,19 +179,24 @@ class Form_spd_dalam extends MX_Controller {
         }elseif($type == 'hrd' && $approval_status == 1){
             $this->approval->task_receiver($form, $id, $this->detail_email($id));
         }else{
+            $task_receiver = getValue('task_receiver', 'users_spd_dalam', array('id'=>'where/'.$id));
             //$email_body = "Status pengajuan permohonan spd_dalam yang diajukan oleh ".get_name($user_spd_dalam_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_spd_dalam/detail/'.$id.'>Klik Disini</a><br />';
             switch($type){
                 case 'lv1':
+                    $this->approval->not_approve($form, $id, $task_receiver, $approval_status ,$this->detail_email($id));
                     //$this->approval->not_approve('spd_dalam', $id, )
                 break;
 
                 case 'lv2':
                     $receiver_id = getValue('user_app_lv1', 'users_spd_dalam', array('id'=>'where/'.$id));
                     $this->approval->not_approve($form, $id, $receiver_id, $approval_status ,$this->detail_email($id));
+                    $this->approval->not_approve($form, $id, $task_receiver, $approval_status ,$this->detail_email($id));
                     //if(!empty(getEmail($receiver_id)))$this->send_email(getEmail($receiver_id), 'Status Pengajuan Permohonan Perjalanan Dinas Dari Atasan', $email_body);
                 break;
 
                 case 'lv3':
+
+                    $this->approval->not_approve($form, $id, $task_receiver, $approval_status ,$this->detail_email($id));
                     for($i=1;$i<3;$i++):
                         $receiver = getValue('user_app_lv'.$i, 'users_spd_dalam', array('id'=>'where/'.$id));
                         if(!empty($receiver)):
@@ -202,6 +207,8 @@ class Form_spd_dalam extends MX_Controller {
                 break;
 
                 case 'hrd':
+                
+                            $this->approval->not_approve($form, $id, $task_receiver, $approval_status ,$this->detail_email($id));
                     for($i=1;$i<4;$i++):
                         $receiver = getValue('user_app_lv'.$i, 'users_spd_dalam', array('id'=>'where/'.$id));
                         if(!empty($receiver)):
@@ -275,14 +282,14 @@ class Form_spd_dalam extends MX_Controller {
                 $isi_email = get_name($task_creator).' mengajukan Perjalanan Dinas Dalam Kota, untuk melihat detail silakan <a href='.base_url().'form_spd_dalam/submit/'.$spd_id.'>Klik Disini</a><br />';
 
                 if($task_creator!==$created_by):
-                    $this->approval->by_admin('spd_dalam', $spd_id, $created_by, $task_creator, $this->detail_email_submit($spd_id));
+                    $this->approval->by_admin('spd_dalam', $spd_id, $created_by, $task_creator, $this->detail_email($spd_id));
                 endif;
                 if(!empty($user_app_lv1)):
                     if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), 'Pengajuan Perjalanan Dinas Dalam Kota', $isi_email);
-                    $this->approval->request('lv1', 'spd_dalam', $spd_id, $task_creator, $this->detail_email_submit($spd_id));
+                    $this->approval->request('lv1', 'spd_dalam', $spd_id, $task_creator, $this->detail_email($spd_id));
                 else:
                     if(!empty(getEmail($this->approval->approver('dinas'))))$this->send_email(getEmail($this->approval->approver('dinas')), 'Pengajuan Perjalanan Dinas Dalam Kota', $isi_email);
-                    $this->approval->request('hrd', 'spd_dalam', $spd_id, $task_creator, $this->detail_email_submit($spd_id));
+                    $this->approval->request('hrd', 'spd_dalam', $spd_id, $task_creator, $this->detail_email($spd_id));
                 endif;
                 $this->send_spd_mail($spd_id, $user_id, $task_creator);
                 redirect('form_spd_dalam', 'refresh');
@@ -294,6 +301,7 @@ class Form_spd_dalam extends MX_Controller {
     {
         $this->data['title'] = "Report SPD - Dalam Kota";
         $user_id = $this->session->userdata('user_id');
+        $sess_nik = get_nik($user_id);
         $report_id = getValue('id', 'users_spd_dalam_report', array('user_spd_dalam_id'=>'where/'.$id));
 
         if (!$this->ion_auth->logged_in())
@@ -323,7 +331,7 @@ class Form_spd_dalam extends MX_Controller {
             
             $report = $this->data['report'] = $this->form_spd_dalam_model->where('users_spd_dalam_report.user_spd_dalam_id', $id)->form_spd_dalam_report($report_id)->result();
             $n_report = $this->data['n_report'] = $this->form_spd_dalam_model->where('users_spd_dalam_report.user_spd_dalam_id', $id)->form_spd_dalam_report($report_id)->num_rows();
-        
+            $receiver_id = getValue('task_receiver', 'users_spd_dalam', array('id'=>'where/'.$id));
             if($n_report==0){
                 $this->data['is_done'] = '';
                 //$this->data['tujuan'] = '';
@@ -352,6 +360,11 @@ class Form_spd_dalam extends MX_Controller {
                 $this->data['created_on'] = $key->created_on;
                 $this->data['disabled'] = 'disabled='.'"disabled"';
             }}
+
+            if($sess_nik != $receiver_id):
+                $this->data['disabled'] = 'disabled='.'"disabled"';
+            endif;
+
 
             $this->_render_page('form_spd_dalam/report', $this->data);
         }
@@ -518,7 +531,7 @@ class Form_spd_dalam extends MX_Controller {
                     'receiver_id' => $receiver_id,
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Pemberian Tugas Perjalanan Dinas Dalam Kota',
-                    'email_body' => get_name($sender).' memberikan tugas perjalan dinas dalam kota, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$this->detail_email_submit($spd_id),
+                    'email_body' => get_name($sender).' memberikan tugas perjalan dinas dalam kota, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$this->detail_email($spd_id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data);
@@ -533,7 +546,7 @@ class Form_spd_dalam extends MX_Controller {
                     'receiver_id' => $receiver_id,
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Persetujuan Tugas Perjalanan Dinas Dalam Kota',
-                    'email_body' => get_name($sender).' telah menyetujui tugas perjalan dinas dalam kota yang anda berikan, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$this->detail_email_submit($spd_id),
+                    'email_body' => get_name($sender).' telah menyetujui tugas perjalan dinas dalam kota yang anda berikan, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$this->detail_email($spd_id),
                     'is_read' => 0,
                 );
         $this->db->insert('email', $data);

@@ -2,16 +2,15 @@ $(document).ready(function() {
   $(".select2").select2();
   $('#limit').select2();
 
-	 $('#formaddrecruitment').submit(function(response){
-        $.post($('#formaddrecruitment').attr('action'), $('#formaddrecruitment').serialize(),function(json){
-            if(json.st == 0){
-                $('#MsgBad').html(json.errors).fadeIn();
-            }else{
-                window.location.href = json.recruitment_url;
-            }
-        }, 'json');
-        return false;
-    });
+	 $( "#formadd" ).validate({
+    rules: {
+      atasan1: {notEqual:0}
+    },
+
+    messages: {
+          atasan1 : "Silakan Pilih Atasan"
+      }
+  });
 
 	var url = $.url();
     var baseurl = url.attr('protocol')+'://'+url.attr('host')+'/'+url.segment(1)+'/';
@@ -138,6 +137,11 @@ $(document).ready(function() {
             }
         });
     }
+
+    
+  $.validator.addMethod('notEqual',function(value, element, param){
+    return this.optional(element)||value != param;
+  });
 
 });	
 	 

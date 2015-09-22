@@ -28,9 +28,9 @@
                         <tr>
                           <th width="15%">Nama</th>
                           <th width="1%">Gol</th>
-                          <th width="10%">Uang Makan</th>
-                          <th width="10%">Uang Saku</th>
-                          <th width="10%">Hotel</th>
+                          <th width="10%">Uang Makan**</th>
+                          <th width="10%">Uang Saku**</th>
+                          <th width="10%">Hotel**</th>
                           <?php foreach($biaya_pjd->result() as $b):?>
                           <th width="10%"><?php echo $b->jenis_biaya?> *</th>
                         <?php endforeach; ?> 
@@ -68,7 +68,8 @@
                       <?php endforeach ?>
                       </tbody>
                     </table>
-                    * Biaya Disesuaikan
+                    *  Biaya Disesuaikan
+                    ** Biaya Perhari
                     <div class="form-actions">
                       <div class="pull-right">
                         <button id="" class="btn btn-success btn-cons" type="submit" ><i class="icon-ok"></i> <?php echo lang('save_button') ?></button>

@@ -59,11 +59,11 @@
                               <tbody>
                               <?php if($_num_rows>0){
                                 foreach($form_medical as $row):
-                                  $txt_app_lv1 = $txt_app_lv2 = $txt_app_lv3 = $txt_app_hrd = "<i class='icon-question' title = 'Pending'></i>";
-                                  $approval_status_lv1 = ($row->app_status_id_lv1 == 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($row->app_status_id_lv1 == 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-question' title = 'Pending'></i>");
-                                  $approval_status_lv2 = "<i class='icon-ok-sign' title = 'Approved'></i>";
-                                  $approval_status_lv3 = "<i class='icon-ok-sign' title = 'Approved'></i>";
-                                  $approval_status_hrd = "<i class='icon-ok-sign' title = 'Approved'></i>";
+                                  $txt_app_lv1 = $txt_app_lv2 = $txt_app_lv3 = $txt_app_hrd = "<i class='icon-question' title = 'no respond'></i>";
+                                  $approval_status_lv1 = ($row->app_status_id_lv1 == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($row->app_status_id_lv1 == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($row->app_status_id_lv1 == 3) ? "<i class='icon-info' style='color:#EDE427;' title = 'Pending'></i>" : "<i class='icon-question' title = 'No Respond'></i>"));
+                                  $approval_status_lv2 = "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>";
+                                  $approval_status_lv3 = "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>";
+                                  $approval_status_hrd = "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>";
 
                                 //Approval Level 1
                                   if(empty($row->user_app_lv1)){

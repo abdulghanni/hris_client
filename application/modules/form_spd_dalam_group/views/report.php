@@ -175,21 +175,58 @@
                 </div>
             </div>
             <div class="row form-row">
-              <div class="col-md-12">
-                <label class="form-label text-left">Maksud dan Tujuan : </label>
-              </div>
-              <div class="col-md-12">
-                <textarea name="maksud" id="text-editor" placeholder="maksud dan tujuan ..." class="form-control" rows="5" required></textarea>
-              </div>
-            </div>
-            <div class="row form-row">
-              <div class="col-md-12">
-                <label class="form-label text-left">Hasil Kegiatan : </label>
-              </div>
-              <div class="col-md-12">
-                <textarea name="hasil" id="text-editor" placeholder="Hasil Kegiatan ..." class="form-control" rows="5" required></textarea>
-              </div>
-            </div>
+                      <div class="col-md-2">
+                        <label class="form-label text-left">What</label>
+                      </div>
+                      <div class="col-md-10">
+                        <input name="what" type="text"  class="form-control" placeholder="Isi Disini..." value="<?php echo $what?>" required>
+                      </div>
+                    </div>
+
+                    <div class="row form-row">
+                      <div class="col-md-2">
+                        <label class="form-label text-left">Why</label>
+                      </div>
+                      <div class="col-md-10">
+                        <input name="why" type="text"  class="form-control" placeholder="Isi Disini..." value="<?php echo $why?>" required>
+                      </div>
+                    </div>
+
+                    <div class="row form-row">
+                      <div class="col-md-2">
+                        <label class="form-label text-left">Where</label>
+                      </div>
+                      <div class="col-md-10">
+                        <input name="where" type="text"  class="form-control" placeholder="Isi Disini..." value="<?php echo $where?>" required>
+                      </div>
+                    </div>
+
+                    <div class="row form-row">
+                      <div class="col-md-2">
+                        <label class="form-label text-left">When</label>
+                      </div>
+                      <div class="col-md-10">
+                        <input name="when" type="text"  class="form-control" placeholder="Isi Disini..." value="<?php echo $when?>" required>
+                      </div>
+                    </div>
+
+                    <div class="row form-row">
+                      <div class="col-md-2">
+                        <label class="form-label text-left">Who</label>
+                      </div>
+                      <div class="col-md-10">
+                        <input name="who" type="text"  class="form-control" placeholder="Isi Disini..." value="<?php echo $who?>" required>
+                      </div>
+                    </div>
+
+                    <div class="row form-row">
+                      <div class="col-md-12">
+                        <label class="form-label text-left">How : </label>
+                      </div>
+                      <div class="col-md-12">
+                        <textarea name="how" id="text-editor" placeholder="Hasil Kegiatan ..." class="form-control" rows="3" required><?php echo $how?></textarea>
+                      </div>
+                    </div>
 
             <div class="row form-row">
               <div class="col-md-12">

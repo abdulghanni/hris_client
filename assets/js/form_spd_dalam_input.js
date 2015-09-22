@@ -28,11 +28,13 @@ $(document).ready(function() {
       employee: {
         required: true,
         notEqual : 0,
-      }
+      },
+       atasan1: {notEqual:0}
     },
 
     messages: {
           employee: "Silakan Pilih Karyawan",
+          atasan1 : "Silakan Pilih Atasan"
       }
   });
 

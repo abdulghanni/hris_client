@@ -20,7 +20,7 @@
               </div>
               <div class="grid-body no-border">
                  <?php //echo form_open("form_exit/add",array("id"=>"formaddexit"));?>
-                 <?php echo form_open("form_exit/add",array("id"=>""));?>
+                 <?php echo form_open("form_exit/add",array("id"=>"formadd"));?>
                 <div class="row column-seperation">
                   <div class="col-md-12">    
                     <div class="row form-row">

@@ -130,16 +130,14 @@ $(document).ready(function() {
         });  
     });
 
-//add training
-    $('#formaddtraining').submit(function(response){
-        $.post($('#formaddtraining').attr('action'), $('#formaddtraining').serialize(),function(json){
-            if(json.st == 0){
-                $('#MsgBad').html(json.errors).fadeIn();
-            }else{
-                window.location.href = baseurl+url.segment(2);
-            }
-        }, 'json');
-        return false;
-    });
+$( "#formadd" ).validate({
+    rules: {
+      atasan1: {notEqual:0}
+    },
+
+    messages: {
+          atasan1 : "Silakan Pilih Atasan"
+      }
+  });
 
 });	

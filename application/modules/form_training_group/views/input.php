@@ -20,7 +20,9 @@
             </div>
             <div class="grid-body no-border">
               <!--<form class="form-no-horizontal-spacing" id="formaddtraining" action="<?php echo site_url('form_training_group/add')?>"> -->
-              <?php echo form_open('form_training_group/add');?>
+              <?php 
+              $att = array('class' => 'form-no-horizontal-spacing', 'id' => 'formadd');
+              echo form_open('form_training_group/add', $att);?>
                 <div class="row column-seperation">
                   <div class="col-md-5">
                     <h4>Yang Mengajukan Pelatihan</h4>

@@ -58,11 +58,11 @@
                                   $id_cuti = $user->id;
                                   $session_nik = get_nik($this->session->userdata('user_id'));
                                   $id_user = $this->session->userdata('user_id');
-                                  $txt_app_lv1 = $txt_app_lv2 = $txt_app_lv3 = $txt_app_hrd = "<i class='icon-question' title = 'Pending'></i>";
-                                  $approval_status_lv1 = ($user->approval_status_id_lv1 == 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($user->approval_status_id_lv1 == 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-question' title = 'Pending'></i>");
-                                  $approval_status_lv2 = ($user->approval_status_id_lv2 == 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($user->approval_status_id_lv2 == 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-question' title = 'Pending'></i>");
-                                  $approval_status_lv3 = ($user->approval_status_id_lv3 == 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($user->approval_status_id_lv3 == 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-question' title = 'Pending'></i>");
-                                  $approval_status_hrd = ($user->approval_status_id_hrd == 1)? "<i class='icon-ok-sign' title = 'Approved'></i>" : (($user->approval_status_id_hrd == 2) ? "<i class='icon-remove-sign' title = 'Rejected'></i>" : "<i class='icon-question' title = 'Pending'></i>");
+                                  $txt_app_lv1 = $txt_app_lv2 = $txt_app_lv3 = $txt_app_hrd = "<i class='icon-question' title = 'no respond'></i>";
+                                  $approval_status_lv1 = ($user->approval_status_id_lv1 == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($user->approval_status_id_lv1 == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($user->approval_status_id_lv1 == 3) ? "<i class='icon-info' style='color:#EDE427;' title = 'Pending'></i>" : "<i class='icon-question' title = 'No Respond'></i>"));
+                                  $approval_status_lv2 = ($user->approval_status_id_lv2 == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($user->approval_status_id_lv2 == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($user->approval_status_id_lv2 == 3) ? "<i class='icon-info' style='color:#EDE427;' title = 'Pending'></i>" : "<i class='icon-question' title = 'No Respond'></i>"));
+                                  $approval_status_lv3 = ($user->approval_status_id_lv3 == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($user->approval_status_id_lv3 == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($user->approval_status_id_lv3 == 3) ? "<i class='icon-info' style='color:#EDE427;' title = 'Pending'></i>" : "<i class='icon-question' title = 'No Respond'></i>"));
+                                  $approval_status_hrd = ($user->approval_status_id_hrd == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($user->approval_status_id_hrd == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($user->approval_status_id_hrd == 3) ? "<i class='icon-info' style='color:#EDE427;' title = 'Pending'></i>" : "<i class='icon-question' title = 'No Respond'></i>"));
                                   
                   
                                   //Approval Level 1
@@ -73,7 +73,7 @@
                                     }elseif(!empty($user->user_app_lv1)){
                                       $txt_app_lv1 = "<a href='".site_url('form_cuti/detail/'.$user->id)."''>$approval_status_lv1</a>";
                                     }else{
-                                    $txt_app_lv1 = "<i class='icon-minus' title = 'Tidak Butuh Approval'></i>";
+                                    $txt_app_lv1 = "<i class='icon-minus' style='color:black;' title = 'Tidak Butuh Approval'></i>";
                                   }
                                   
 
@@ -86,7 +86,7 @@
                                     }elseif(!empty($user->user_app_lv2)){
                                       $txt_app_lv2 = "<a href='".site_url('form_cuti/detail/'.$user->id)."''>$approval_status_lv2</a>";
                                     }else{
-                                    $txt_app_lv2 = "<i class='icon-minus' title = 'Tidak Butuh Approval'></i>";
+                                    $txt_app_lv2 = "<i class='icon-minus' style='color:black;' title = 'Tidak Butuh Approval'></i>";
                                   }
 
                                   //Approval Level 3
@@ -98,7 +98,7 @@
                                     }elseif(!empty($user->user_app_lv3)){
                                       $txt_app_lv3 = "<a href='".site_url('form_cuti/detail/'.$user->id)."''>$approval_status_lv3</a>";
                                     }else{
-                                    $txt_app_lv3 = "<i class='icon-minus' title = 'Tidak Butuh Approval'></i>";
+                                    $txt_app_lv3 = "<i class='icon-minus' style='color:black;' title = 'Tidak Butuh Approval'></i>";
                                   }
 
                                   //Approval HRD

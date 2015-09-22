@@ -194,19 +194,30 @@ class Form_spd_dalam_group extends MX_Controller {
         }elseif($type == 'hrd' && $approval_status == 1){
             $this->approval->task_receiver($form, $id, $this->detail_email($id));
         }else{
+            $task_receiver = getValue('task_receiver', 'users_spd_dalam_group', array('id'=>'where/'.$id));
+            $task_receiver_id = explode(',',$task_receiver);
             //$email_body = "Status pengajuan permohonan spd_dalam_group yang diajukan oleh ".get_name($user_spd_dalam_group_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_spd_dalam_group/detail/'.$id.'>Klik Disini</a><br />';
             switch($type){
                 case 'lv1':
+                    for($j=0;$j<sizeof($task_receiver_id);$j++):
+                        $this->approval->not_approve($form, $id, $task_receiver_id[$j], $approval_status ,$this->detail_email($id));
+                    endfor;
                     //$this->approval->not_approve('spd_dalam_group', $id, )
                 break;
 
                 case 'lv2':
+                    for($j=0;$j<sizeof($task_receiver_id);$j++):
+                        $this->approval->not_approve($form, $id, $task_receiver_id[$j], $approval_status ,$this->detail_email($id));
+                    endfor;
                     $receiver_id = getValue('user_app_lv1', 'users_spd_dalam_group', array('id'=>'where/'.$id));
                     $this->approval->not_approve($form, $id, $receiver_id, $approval_status ,$this->detail_email($id));
                     //if(!empty(getEmail($receiver_id)))$this->send_email(getEmail($receiver_id), 'Status Pengajuan Permohonan Perjalanan Dinas Dari Atasan', $email_body);
                 break;
 
                 case 'lv3':
+                    for($j=0;$j<sizeof($task_receiver_id);$j++):
+                        $this->approval->not_approve($form, $id, $task_receiver_id[$j], $approval_status ,$this->detail_email($id));
+                    endfor;
                     for($i=1;$i<3;$i++):
                         $receiver = getValue('user_app_lv'.$i, 'users_spd_dalam_group', array('id'=>'where/'.$id));
                         if(!empty($receiver)):
@@ -217,6 +228,9 @@ class Form_spd_dalam_group extends MX_Controller {
                 break;
 
                 case 'hrd':
+                    for($j=0;$j<sizeof($task_receiver_id);$j++):
+                        $this->approval->not_approve($form, $id, $task_receiver_id[$j], $approval_status ,$this->detail_email($id));
+                    endfor;
                     for($i=1;$i<4;$i++):
                         $receiver = getValue('user_app_lv'.$i, 'users_spd_dalam_group', array('id'=>'where/'.$id));
                         if(!empty($receiver)):
@@ -368,24 +382,39 @@ class Form_spd_dalam_group extends MX_Controller {
             $report = $this->data['report'] = $this->form_spd_dalam_group_model->where('users_spd_dalam_report_group.user_spd_dalam_group_id', $id)->form_spd_dalam_report_group($report_id, $user_id)->result();
             $n_report = $this->data['n_report'] = $this->form_spd_dalam_group_model->where('users_spd_dalam_report_group.user_spd_dalam_group_id', $id)->form_spd_dalam_report_group($report_id, $user_id)->num_rows();
 
+            $receiver_id = getValue('task_receiver', 'users_spd_dalam_group', array('id'=>'where/'.$id));
             if($n_report==0){
                 $this->data['is_done'] = '';
-                $this->data['tujuan'] = '';
-                $this->data['hasil'] = '';
+                //$this->data['tujuan'] = '';
+                //$this->data['hasil'] = '';
+                $this->data['what'] = '';
+                $this->data['why'] = '';
+                $this->data['where'] = '';
+                $this->data['when'] = '';
+                $this->data['who'] = '';
+                $this->data['how'] = '';
                 $this->data['attachment'] = '-';
                 $this->data['disabled'] = '';
-
-            
             }else{
                 foreach ($report as $key) {
                 $this->data['id_report'] = $key->id;
                 $this->data['is_done'] = $key->is_done;    
-                $this->data['tujuan'] = $key->description;
-                $this->data['hasil'] = $key->result;
+                //$this->data['tujuan'] = '';
+                //$this->data['hasil'] = '';
+                $this->data['what'] = $key->what;
+                $this->data['why'] = $key->why;
+                $this->data['where'] = $key->where;
+                $this->data['when'] = $key->when;
+                $this->data['who'] = $key->who;
+                $this->data['how'] = $key->how;
                 $this->data['attachment'] = (!empty($key->attachment)) ? $key->attachment : 2 ;
                 $this->data['created_on'] = $key->created_on;
                 $this->data['disabled'] = 'disabled='.'"disabled"';
             }}
+
+            if($sess_nik != $receiver_id):
+                $this->data['disabled'] = 'disabled='.'"disabled"';
+            endif;
 
             $this->_render_page('form_spd_dalam_group/report_detail', $this->data);
         }
@@ -422,8 +451,14 @@ class Form_spd_dalam_group extends MX_Controller {
                 {
                     $additional_data = array(
                         'is_done'       => $this->input->post('is_done'),
-                        'description'   => $this->input->post('maksud'),
-                        'result'        => $this->input->post('hasil'),
+                        //'description'   => $this->input->post('maksud'),
+                        //'result'        => $this->input->post('hasil'),
+                        'what' => $this->input->post('what'),
+                        'why' => $this->input->post('why'),
+                        'where' => $this->input->post('where'),
+                        'when' => $this->input->post('when'),
+                        'who' => $this->input->post('who'),
+                        'how' => $this->input->post('how'),
                         'date_submit'   => date('Y-m-d',strtotime('now')),
                         'created_on'    => date('Y-m-d',strtotime('now')),
                         'created_by'    => $sess_id
@@ -436,8 +471,14 @@ class Form_spd_dalam_group extends MX_Controller {
                 
                     $additional_data = array(
                         'is_done'       => $this->input->post('is_done'),
-                        'description'   => $this->input->post('maksud'),
-                        'result'        => $this->input->post('hasil'),
+                        //'description'   => $this->input->post('maksud'),
+                        //'result'        => $this->input->post('hasil'),
+                        'what' => $this->input->post('what'),
+                        'why' => $this->input->post('why'),
+                        'where' => $this->input->post('where'),
+                        'when' => $this->input->post('when'),
+                        'who' => $this->input->post('who'),
+                        'how' => $this->input->post('how'),
                         'attachment'    => $file_name,
                         'date_submit'   => date('Y-m-d',strtotime('now')),
                         'created_on'    => date('Y-m-d',strtotime('now')),
@@ -488,8 +529,14 @@ class Form_spd_dalam_group extends MX_Controller {
                 {
                     $additional_data = array(
                         'is_done'       => $this->input->post('is_done'),
-                        'description'   => $this->input->post('maksud'),
-                        'result'        => $this->input->post('hasil'),
+                        //'description'   => $this->input->post('maksud'),
+                        //'result'        => $this->input->post('hasil'),
+                        'what' => $this->input->post('what'),
+                        'why' => $this->input->post('why'),
+                        'where' => $this->input->post('where'),
+                        'when' => $this->input->post('when'),
+                        'who' => $this->input->post('who'),
+                        'how' => $this->input->post('how'),
                         'attachment'    => '',
                         'date_submit'   => date('Y-m-d',strtotime('now')),
                         'edited_on'    => date('Y-m-d',strtotime('now')),
@@ -503,8 +550,14 @@ class Form_spd_dalam_group extends MX_Controller {
                 
                     $additional_data = array(
                         'is_done'       => $this->input->post('is_done'),
-                        'description'   => $this->input->post('maksud'),
-                        'result'        => $this->input->post('hasil'),
+                        //'description'   => $this->input->post('maksud'),
+                        //'result'        => $this->input->post('hasil'),
+                        'what' => $this->input->post('what'),
+                        'why' => $this->input->post('why'),
+                        'where' => $this->input->post('where'),
+                        'when' => $this->input->post('when'),
+                        'who' => $this->input->post('who'),
+                        'how' => $this->input->post('how'),
                         'attachment'    => $file_name,
                         'date_submit'   => date('Y-m-d',strtotime('now')),
                         'edited_on'    => date('Y-m-d',strtotime('now')),

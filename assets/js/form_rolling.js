@@ -19,18 +19,16 @@ $(document).ready(function() {
         placeholder: "Search for a position",
         //minimumInputLength: 3,
     });
-                
-    $('#formaddrolling').submit(function(response){
-        $.post($('#formaddrolling').attr('action'), $('#formaddrolling').serialize(),function(json){
-            if(json.st == 0){
-                $('#MsgBad').html(json.errors).fadeIn();
-            }else{
-                window.location.href = json.rolling_url;
-            }
-        }, 'json');
-        return false;
-    });
+            
+    $( "#formadd" ).validate({
+    rules: {
+      atasan1: {notEqual:0}
+    },
 
+    messages: {
+          atasan1 : "Silakan Pilih Atasan"
+      }
+    });
     //approval script
 
     var url = $.url();

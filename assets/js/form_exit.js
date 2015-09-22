@@ -30,6 +30,17 @@ $(document).ready(function() {
 	    })
 	    .change();
 
+
+      $( "#formadd" ).validate({
+    rules: {
+      atasan1: {notEqual:0}
+    },
+
+    messages: {
+          atasan1 : "Silakan Pilih Atasan"
+      }
+  });
+      
       $("#empExit").change(function() {
           var empId = $(this).val();
           get_employee_org(empId);
@@ -139,20 +150,7 @@ $(document).ready(function() {
         });
     }
 
-    $('#formaddexit').submit(function(response){
-                  $.post($('#formaddexit').attr('action'), $('#formaddexit').serialize(),function(json){
-                      if(json.st == 0){
-                          $('#MsgBad').html(json.errors).fadeIn();
-                      }else{
-                          window.location.href = exit_url;
-                      }
-                  }, 'json');
-                  return false;
-              });
-
-    $('button[data-loading-text]').click(function () {
-    $(this).button('loading');
-    });
+    
 
     $('#btnAppLv1').click(function(){
         var $btn = $(this).button('loading');

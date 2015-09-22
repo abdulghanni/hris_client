@@ -154,8 +154,13 @@ function  resetcheckbox(){
           rules: {
             'userfile[]': {
               filesize: 2048000,
-            }
-          }
+            },
+            atasan1: {notEqual:0}
+          },
+
+          messages: {
+          atasan1 : "Silakan Pilih Atasan"
+      }
         });
 
     $( "#formEdit" ).validate({

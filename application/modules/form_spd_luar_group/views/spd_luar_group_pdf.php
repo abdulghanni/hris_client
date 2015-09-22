@@ -51,7 +51,7 @@ if ($td_num_rows > 0) {
     $j = $a - $b;
     $jml_pjd = floor($j/(60*60*24)+1);
     ?>
-<table width="1200" height="128" border="0" class="style3">
+<table width="1000" height="128" border="0" class="style3">
 <tr class="style4"><td>Yang bertanda tangan dibawah ini : </td></tr>
 <tr><td height="30"></td></tr>
   <tr>
@@ -72,13 +72,13 @@ if ($td_num_rows > 0) {
 <?php endforeach; }?> 
 </table>
 
-<table width="1200" height="128" border="0" class="style3">
+<table width="1000" height="128" border="0" class="style3">
 <tr><td height="40"></td></tr>
 <tr><td>Memberi tugas / ijin kepada : </td></tr>
 <tr><td height="30"></td></tr>
 </table>
 
-<table width="1500" height="128" border="1" class="style3">
+<table width="1200" height="128" border="1" class="style3">
   <thead>
     <tr>
       <th width="2%">No</th>
@@ -104,7 +104,7 @@ if ($td_num_rows > 0) {
   </tbody>
 </table>
 <br/>
-<table width="1200" height="128" border="0" style="" class="style3">
+<table width="1000" height="128" border="0" style="" class="style3">
   <?php if ($td_num_rows > 0) {
       foreach ($task_detail as $td):
 
@@ -151,7 +151,7 @@ if ($td_num_rows > 0) {
 <tr><td>Ketentuan Biaya Perjalan Dinas : </td></tr>
 <tr><td height="30"></td></tr>
 </table>
-<table width="1650" height="128" border="1" class="style3">
+<table width="1200" height="128" border="1" class="style3">
   <thead>
     <tr>
       <th width="15%">Nama</th>
@@ -206,25 +206,25 @@ if ($td_num_rows > 0) {
 </div> 
 <div style="clear: both; margin: 0pt; padding: 0pt; "></div>
 <br/>
-<table width="1200" align="center">
+<table width="1000" align="center">
   <tbody>
     <tr>
-      <th width="375" height="100"></th>
-      <th width="375">Mengetahui/Menyetujui</th>
-      <th width="375"></th>
-      <th width="375"></th>
+      <th width="250" height="100"></th>
+      <th width="250">Mengetahui/Menyetujui</th>
+      <th width="250"></th>
+      <th width="250"></th>
     </tr>
     <tr>
       <?php if(!empty($td->user_app_lv1)){?>
-      <td width="375" align="center"><?php echo ($td->app_status_id_lv1 == 1)?"<img class=approval-img-md src=$approved>":(($td->app_status_id_lv1 == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
+      <td width="250" align="center"><?php echo ($td->app_status_id_lv1 == 1)?"<img class=approval-img-md src=$approved>":(($td->app_status_id_lv1 == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
       <?php }?>
       <?php if(!empty($td->user_app_lv2)){?>
-      <td width="375" align="center"><?php echo ($td->app_status_id_lv2 == 1)?"<img class=approval-img-md src=$approved>":(($td->app_status_id_lv2 == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
+      <td width="250" align="center"><?php echo ($td->app_status_id_lv2 == 1)?"<img class=approval-img-md src=$approved>":(($td->app_status_id_lv2 == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
       <?php }?>
       <?php if(!empty($td->user_app_lv3)){?>
-      <td width="375" align="center"><?php echo ($td->app_status_id_lv3 == 1)?"<img class=approval-img-md src=$approved>":(($td->app_status_id_lv3 == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
+      <td width="250" align="center"><?php echo ($td->app_status_id_lv3 == 1)?"<img class=approval-img-md src=$approved>":(($td->app_status_id_lv3 == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
       <?php }?>
-      <td width="375" align="center"><?php echo ($td->app_status_id_hrd == 1)?"<img class=approval-img-md src=$approved>":(($td->app_status_id_hrd == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
+      <td width="250" align="center"><?php echo ($td->app_status_id_hrd == 1)?"<img class=approval-img-md src=$approved>":(($td->app_status_id_hrd == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
     </tr>
     <tr>
     <?php if(!empty($td->user_app_lv1)){?>
@@ -245,7 +245,7 @@ if ($td_num_rows > 0) {
     <?php if(!empty($td->user_app_lv2)){?>
       <td align="center"><?php echo dateIndo($td->date_app_lv2)?><br/><?php echo get_user_position($td->user_app_lv2)?></td>
     <?php }?>
-    <?php if(!empty($td->user_app_lv2)){?>
+    <?php if(!empty($td->user_app_lv3)){?>
       <td align="center"><?php echo dateIndo($td->date_app_lv3)?><br/><?php echo get_user_position($td->user_app_lv3)?></td>
     <?php }?>
       <td align="center"><?php echo dateIndo($td->date_app_hrd)?><br/>(HRD)</td>

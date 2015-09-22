@@ -19,17 +19,6 @@ $(document).ready(function() {
         placeholder: "Search for a position",
         //minimumInputLength: 3,
     });
-                
-    $('#formadddemotion').submit(function(response){
-        $.post($('#formadddemotion').attr('action'), $('#formadddemotion').serialize(),function(json){
-            if(json.st == 0){
-                $('#MsgBad').html(json.errors).fadeIn();
-            }else{
-                window.location.href = json.demotion_url;
-            }
-        }, 'json');
-        return false;
-    });
 
     //approval script
 
@@ -260,4 +249,14 @@ $(document).ready(function() {
                 }
             });
         }       
+
+        $( "#formadd" ).validate({
+    rules: {
+      atasan1: {notEqual:0}
+    },
+
+    messages: {
+          atasan1 : "Silakan Pilih Atasan"
+      }
+  });
 }); 

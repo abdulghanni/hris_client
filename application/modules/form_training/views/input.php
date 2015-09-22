@@ -19,7 +19,9 @@
             </div>
             <div class="grid-body no-border">
               <!--<form class="form-no-horizontal-spacing" id="formaddtraining" action="<?php echo site_url('form_training/add')?>"> -->
-              <?php echo form_open('form_training/add');?>
+              <?php 
+              $att = array('class' => 'form-no-horizontal-spacing', 'id' => 'formadd');
+              echo form_open('form_training/add', $att);?>
                 <div class="row column-seperation">
                   <div class="col-md-12">
                   <?php if(is_admin() || is_admin_bagian()){?>

@@ -80,12 +80,14 @@ $(document).ready(function() {
 });
 
 
-  $( "#formaddcuti" ).validate({
+  $( "#formadd" ).validate({
     rules: {
       sisa_cuti: {
         required: true,
         notEqual : 0,
       },
+
+      atasan1: {notEqual:0},
 
       alasan_cuti: {
         required : true,
@@ -95,13 +97,10 @@ $(document).ready(function() {
 
     messages: {
           alasan_cuti: "This field is required.",
+          atasan1 : "Silakan Pilih Atasan",
+          sisa_cuti : "Sisa Cuti anda 0",
       }
   });
-
-  $.validator.addMethod('notEqual',function(value, element, param){
-    return this.optional(element)||value != param;
-  }, "Sisa Cuti Anda 0" );
-
 
     /*   
     $(document).ready(function(){
