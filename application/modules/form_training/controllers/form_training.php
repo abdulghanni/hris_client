@@ -492,7 +492,7 @@ class form_training extends MX_Controller {
 
     function get_vendor()
     {
-        $url = get_api_key().'training/tipe_ikatan_dinas/format/json';
+        $url = get_api_key().'training/vendor/format/json';
       
         $headers = get_headers($url);
         $response = substr($headers[0], 9, 3);

@@ -563,6 +563,7 @@
                         echo form_dropdown('vendor',$vendor,'',$style_up);
                       ?>
                     </div>
+                    <br/>
                   </div>
                   <div class="row form-row">
                     <div class="col-md-3">
