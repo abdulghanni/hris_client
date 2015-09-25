@@ -147,7 +147,7 @@
                   <hr/>
                   <div class="row">
                     <div class="col-md-7 col-md-offset-2">
-                    <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#editModal"><i class='icon-edit'> Edit Approval</i></div>
+                    <!--<div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#editModal"><i class='icon-edit'> Edit Approval</i></div>-->
                       <h5 class="text-center"><span class="semi-bold">Ketentuan Biaya Perjalanan Dinas</span></h5>
                       <p>&nbsp;</p>
                           <p class="bold">Grade Penerima Tugas : <span id="grade" class="semi-bold"><?php echo get_grade($tc_id)?></span></p>
