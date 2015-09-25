@@ -121,7 +121,7 @@ class Form_spd_luar_group extends MX_Controller {
             $this->data['biaya_pjd_group'] = getAll('users_spd_luar_group_biaya', array('user_spd_luar_group_id'=>'where/'.$id));
             $this->data['biaya_tambahan'] = getAll('pjd_biaya', array('type_grade' => 'where/0'));
             $this->data['receiver'] = $p = explode(",", $receiver);
-            $this->data['receiver_submit'] = explode(",", $user_submit);
+            $this->data['receiver_submit'] = explode(",", $user_submit);print_mz($this->data['receiver_submit']);
             $this->data['id']=$id;
             $b = $this->data['biaya_pjd'] = $this->db->distinct()->select('users_spd_luar_group_biaya.pjd_biaya_id as biaya_id, pjd_biaya.title as jenis_biaya')->from('users_spd_luar_group_biaya')->join('pjd_biaya','pjd_biaya.id = users_spd_luar_group_biaya.pjd_biaya_id', 'left')->where('user_spd_luar_group_id', $id)->where('pjd_biaya.type_grade', 0)->get();//print_mz($this->data['biaya_pjd']->result());                   
             $this->data['detail'] = $this->db->distinct()->select('user_id')->where('user_spd_luar_group_id', $id)->get('users_spd_luar_group_biaya');

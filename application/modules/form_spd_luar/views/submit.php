@@ -147,7 +147,7 @@
                   <hr/>
                   <div class="row">
                     <div class="col-md-7 col-md-offset-2">
-                    <!--<div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#editModal"><i class='icon-edit'> Edit Approval</i></div>-->
+                    <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#editModal"><i class='icon-edit'> Edit Approval</i></div>
                       <h5 class="text-center"><span class="semi-bold">Ketentuan Biaya Perjalanan Dinas</span></h5>
                       <p>&nbsp;</p>
                           <p class="bold">Grade Penerima Tugas : <span id="grade" class="semi-bold"><?php echo get_grade($tc_id)?></span></p>
@@ -492,9 +492,9 @@
                                   $total += $jumlah_biaya;
                                 ?>
                                   <tr>
-                                    <td><?php echo $i++?></td>
-                                    <td><?php echo $row->jenis_biaya.$jumlah_hari?></td>
-                                    <td align="right"><?php echo number_format($jumlah_biaya, 0)?></td>
+                                    <td><?php echo $row->id?></td>
+                                    <td><input type="text" class="form-control" value="<?php echo $row->jenis_biaya.$jumlah_hari?>"></td>
+                                    <td align="right"><input type="text" class="form-control" value="<?php echo number_format($jumlah_biaya, 0)?>"></td>
                                   </tr>
                                 <?php endforeach; ?>
                                   <tr>

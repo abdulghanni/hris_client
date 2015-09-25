@@ -217,10 +217,11 @@
                         <div class="col-md-3">
                           <p class="wf-approve-sp">
                             <?php
+                            $hide = (sizeof($receiver_submit)<sizeof($receiver)) ? 'style="display:none"' : '';
                             $approved = assets_url('img/approved_stamp.png');
                             $rejected = assets_url('img/rejected_stamp.png');
                             if(!empty($td->user_app_lv1) && $td->is_app_lv1 == 0 && get_nik($sess_id) == $td->user_app_lv1){?>
-                              <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitModalLv1"><i class="icon-ok"></i>Submit</div>
+                              <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitModalLv1"><i class="icon-ok" <?= $hide ?>></i>Submit</div>
                               <span class="semi-bold"></span><br/>
                               <span class="small"></span><br/>
                               <span class="semi-bold"><?php echo get_name($td->user_app_lv1)?></span><br/>
@@ -249,7 +250,7 @@
                           <p class="wf-approve-sp">
                             <?php
                             if(!empty($td->user_app_lv2) && $td->is_app_lv2 == 0 && get_nik($sess_id) == $td->user_app_lv2){?>
-                             <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitModalLv2"><i class="icon-ok"></i>Submit</div>
+                             <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitModalLv2" <?= $hide ?>><i class="icon-ok"></i>Submit</div>
                               <span class="semi-bold"></span><br/>
                               <span class="small"></span><br/>
                               <span class="semi-bold"><?php echo (!empty($td->user_app_lv2))?get_name($td->user_app_lv2):'';?></span><br/>
@@ -278,7 +279,7 @@
                           <p class="wf-approve-sp">
                             <?php
                             if(!empty($td->user_app_lv3) && $td->is_app_lv3 == 0 && get_nik($sess_id) == $td->user_app_lv3){?>
-                              <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitModalLv3"><i class="icon-ok"></i>Submit</div>
+                              <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitModalLv3" <?= $hide ?>><i class="icon-ok"></i>Submit</div>
                               <span class="semi-bold"></span><br/>
                               <span class="small"></span><br/>
                               <span class="semi-bold"><?php echo  get_name($td->user_app_lv3)?></span><br/>
@@ -307,7 +308,7 @@
                           <p class="wf-approve-sp">
                             <?php
                             if($td->is_app_hrd == 0 && $this->approval->approver('dinas') == $sess_nik){?>
-                              <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitModalHrd"><i class="icon-ok"></i>Submit</div>
+                              <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitModalHrd" <?= $hide ?>><i class="icon-ok"></i>Submit</div>
                               <span class="small"></span>
                               <span class="semi-bold"></span><br/>
                               <span class="small"></span><br/>
