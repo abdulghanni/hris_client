@@ -1126,8 +1126,8 @@ class Auth extends MX_Controller {
         $this->data['password'] = array(
             'name' => 'password',
             'id'   => 'password',
-            'type' => 'text',
-            'onfocus' =>"this.select();this.setAttribute('type','password')",
+            'type' => 'password',
+            //'onfocus' =>"this.select();this.setAttribute('type','password')",
             $required => $required
         );
 
