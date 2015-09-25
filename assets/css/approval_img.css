@@ -49,6 +49,8 @@
 
     #submitresignmentModalHrd .modal-dialog{
         width: 900px;
+    }#editModal .modal-dialog{
+        width: 900px;
     }
 }
 
@@ -61,5 +63,7 @@
     }
 
 #submitresignmentModalHrd .modal-dialog{
+    width: 75%;
+}#editModal .modal-dialog{
     width: 75%;
 }

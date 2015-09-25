@@ -57,7 +57,13 @@
                             </thead>
                             <tbody>
                               <?php foreach ($form_spd_dalam as $spd) :
+                              $app_lv1 = getValue('app_status_id_lv1', 'users_spd_dalam', array('id'=>'where/'.$spd->id));
+                              $app_lv2 = getValue('app_status_id_lv2', 'users_spd_dalam', array('id'=>'where/'.$spd->id));
+                              $app_lv3 = getValue('app_status_id_lv3', 'users_spd_dalam', array('id'=>'where/'.$spd->id));
+                              $app_hrd = getValue('app_status_id_hrd', 'users_spd_dalam', array('id'=>'where/'.$spd->id));
 
+                              $reject = ($app_lv1==2 || $app_lv2==2 || $app_lv2 ==2|| $app_hrd ==2) ? 'Rejected' : 'Report';
+                              $reject2 = ($app_lv1 ==2|| $app_lv2==2 || $app_lv2==2 || $app_hrd ==2) ? 'style="background-color:red"' : '';
                               $txt_app_lv1 = $txt_app_lv2 = $txt_app_lv3 = $txt_app_hrd = "<i class='icon-question' title = 'no respond'></i>";
                                   $approval_status_lv1 = ($spd->app_status_id_lv1 == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($spd->app_status_id_lv1 == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($spd->app_status_id_lv1 == 3) ? "<i class='icon-info' style='color:#719218;' title = 'Pending'></i>" : "<i class='icon-question' title = 'No Respond'></i>"));
                                   $approval_status_lv2 = ($spd->app_status_id_lv2 == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($spd->app_status_id_lv2 == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($spd->app_status_id_lv2 == 3) ? "<i class='icon-info' style='color:#719218;' title = 'Pending'></i>" : "<i class='icon-question' title = 'No Respond'></i>"));
@@ -125,7 +131,11 @@
                                   $report_disable = '';//'disabled';
                                   $btn_sub = "Submit";
                                 }
+                                if(($app_lv1==2 || $app_lv2==2 || $app_lv2 ==2|| $app_hrd ==2)){
+                                  $btn_rep = $reject;
+                                }else{
                                 $btn_rep = ($report_num>0)?'View Report':(($report_num < 1 && get_nik($sess_id) == $spd->task_receiver)?'Create Report':'Report');
+                                }
                                ?>
                                 <tr>
                                   <td>
@@ -158,7 +168,7 @@
                                            <?php echo $btn_sub; ?>
                                         </button>
                                       </a>
-                                        <button class="btn btn-info btn-cons" type="button" onclick='window.location.href="<?php echo base_url()?>form_spd_dalam/report/<?php echo $spd->id ?>"' <?php echo $report_disable?>>
+                                        <button class="btn btn-info btn-cons" type="button" <?php echo $reject2 ?> onclick='window.location.href="<?php echo base_url()?>form_spd_dalam/report/<?php echo $spd->id ?>"' <?php echo $report_disable?>>
                                           <i class="icon-paste"></i>
                                           <?php echo $btn_rep; ?>
                                         </button>

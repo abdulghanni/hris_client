@@ -147,7 +147,9 @@
                   <hr/>
                   <div class="row">
                     <div class="col-md-7 col-md-offset-2">
-                    <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#editModal"><i class='icon-edit'> Edit Approval</i></div>
+                    <?php if($sess_id == $created_by || $sess_nik == $task_creator):?>
+                    <div class='btn btn-primary text-center' title='Edit Approval' data-toggle="modal" data-target="#editModal"><i class='icon-edit'> Ubah PJD</i></div>
+                      <?php endif ?>
                       <h5 class="text-center"><span class="semi-bold">Ketentuan Biaya Perjalanan Dinas</span></h5>
                       <p>&nbsp;</p>
                           <p class="bold">Grade Penerima Tugas : <span id="grade" class="semi-bold"><?php echo get_grade($tc_id)?></span></p>
@@ -460,7 +462,7 @@
 <?php endfor;?>
 
 <!--approval  Modal HRD -->
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="submitModalHrd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog" id="modaldialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -469,44 +471,34 @@
       </div>
       <div class="modal-body">
         <form class="form-no-horizontal-spacing"  id="formAppHrd">
-            <div class="row">
-                    <div class="col-md-7 col-md-offset-2">
-                      <h5 class="text-center"><span class="semi-bold">Ketentuan Biaya Perjalanan Dinas</span></h5>
-                      <p>&nbsp;</p>
-                          <p class="bold">Grade Penerima Tugas : <span id="grade" class="semi-bold"><?php echo get_grade($tc_id)?></span></p>
-                            <div class="row form-row">
-                              <div class="col-md-12">
-                              <table class="table table-bordered">
-                                <thead>
-                                  <tr>
-                                    <th width="2%">No</th>
-                                    <th width="40%">Jenis Biaya</th>
-                                    <th width="40%">Jumlah Biaya(Rp)</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                <?php $total = 0;
-                                  $i=1;foreach($biaya_pjd->result() as $row):
-                                  $jumlah_biaya = (!empty($row->type)) ? $row->jumlah_biaya*$jml_pjd : $row->jumlah_biaya;
-                                  $jumlah_hari = (!empty($row->type)) ? '/'.$jml_pjd.' hari' : '';
-                                  $total += $jumlah_biaya;
-                                ?>
-                                  <tr>
-                                    <td><?php echo $row->id?></td>
-                                    <td><input type="text" class="form-control" value="<?php echo $row->jenis_biaya.$jumlah_hari?>"></td>
-                                    <td align="right"><input type="text" class="form-control" value="<?php echo number_format($jumlah_biaya, 0)?>"></td>
-                                  </tr>
-                                <?php endforeach; ?>
-                                  <tr>
-                                    <td>&nbsp;</td>
-                                    <td align="right">Total :</td>
-                                    <td align="right"><?php echo number_format($total, 0) ?></td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                        </div>
+            <div class="row form-row">
+              <div class="col-md-12">
+                <label class="form-label text-left">Status Approval </label>
+              </div>
+              <div class="col-md-12">
+                <div class="radio">
+                  <?php 
+                  if($approval_status->num_rows() > 0){
+                    foreach($approval_status->result() as $app){
+                      $checked = ($app->id <> 0 && $app->id == $td->app_status_id_hrd) ? 'checked = "checked"' : '';
+                      ?>
+                  <input id="app_status_hrd<?php echo $app->id?>" type="radio" name="app_status_hrd" value="<?php echo $app->id?>" <?php echo $checked?>>
+                  <label for="app_status_hrd<?php echo $app->id?>"><?php echo $app->title?></label>
+                  <?php }}else{?>
+                  <input id="app_status" type="radio" name="app_status_hrd" value="0">
+                  <label for="app_status">No Data</label>
+                    <?php } ?>
+                </div>
+              </div>
+            </div>
+            <div class="row form-row">
+              <div class="col-md-12">
+                <label class="form-label text-left">Note : </label>
+              </div>
+              <div class="col-md-12">
+                <textarea name="note_hrd" class="form-control" placeholder="Isi note disini...."><?php echo $td->note_hrd?></textarea>
+              </div>
+            </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="icon-remove"></i>&nbsp;<?php echo lang('close_button')?></button> 
@@ -519,100 +511,121 @@
 <!--end approve modal--> 
 
 
-
-<div class="modal fade" id="submitMedicalModalHrd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<!--approval  Modal HRD -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog" id="modaldialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Approval Form Rekapitulasi Medical</h4>
+        <h4 class="modal-title" id="myModalLabel">Ubah Data PJD Luar Kota</h4>
       </div>
       <div class="modal-body">
-        <form class="form-no-horizontal-spacing" id="formAppHrd">
-         <div class="row">
-         <div class="col-md-12">
-            <table id="dataTable" class="table table-bordered">
-              <thead>
-                <tr>
-                  <th width="4%">NIK</th>
-                  <th width="20%">Nama</th>
-                  <th width="20%">Nama Pasien</th>
-                  <th width="15%">Hubungan</th>
-                  <th width="15%" class="text-center">Jenis Pemeriksaan</th>
-                  <th width="20%">Rupiah</th>
-                  <th class="text-center"><div>Disetujui</div>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <?php 
-                  if(!empty($detail)){
-                     $total = $detail[0]['rupiah'];
-                     $approved = assets_url('img/approved_stamp.png');
-                     $rejected = assets_url('img/rejected_stamp.png');
-                      for($i=0;$i<sizeof($detail);$i++):
-                      ?>
-                  <tr>
-                    <input type="hidden" name="detail_id[]" value="<?php echo $detail[$i]['id']?>">
-                    <td><?php echo get_nik($detail[$i]['karyawan_id'])?></td>
-                    <td><?php echo get_name($detail[$i]['karyawan_id'])?></td>
-                    <td><?php echo $detail[$i]['pasien']?></td>
-                    <td><?php echo $detail[$i]['hubungan']?></td>
-                    <td><?php echo $detail[$i]['jenis']?></td>
-                    <td>
-                      <div id="rupiah_hrd<?php echo $i?>"><?php echo  'Rp. '.number_format($detail[$i]['rupiah'], 0).' '?>
-                        <button type="button" id="edit_hrd<?php echo $i?>" class='btn btn-info btn-small text-right' title='Edit' onclick="edit_hrd<?php echo get_nik($detail[$i]['karyawan_id']).$i?>()"><i class='icon-edit'></i></button>
-                      </div>
-                      <input name="rupiah_update[]" type="text" id="rupiah_hrd_update<?php echo $i?>" value="<?php echo $detail[$i]['rupiah']?>" style="display:none"> 
-                    </td>
-                    <td class="text-center" valign="middle" class="small-cell">
-                      <input type="checkbox" name="checkbox1_checkbox[]" id="checkbox1_checkbox" class="checkbox1" />
-                      <input type="hidden" name="checkbox1[]" value="0" />
-                    </td>
-                  </tr>
-                    <?php /*
-                      if(sizeof($detail)>1){?>
-                        <?php if($detail[$i]['karyawan_id'] != $detail[$i+1]['karyawan_id']){
-                            $sub_total = $detail[$i]['rupiah'] + $detail[$i+1]['rupiah']
-                          ?>
-                          <tr>
-                            <td align="right" colspan="5">Total <?php echo $detail[$i]['karyawan_id']?>: </td><td><?php echo $sub_total?></td>
-                          </tr>
-                          <?php } ?>
-                    <?php };*/?>
-                    <?php
-                    if(sizeof($detail)>1 && isset($detail[$i+1])){
-                    $total = $total + $detail[$i+1]['rupiah'];
-                    }
-                    endfor;}
-                    ?>
-                    <tr>
-                    <td align="right" colspan="5">Total : </td><td><?php echo 'Rp. '.number_format($total, 0)?></td>
-                    </tr>
-                </tbody>
-              </table>
-
+        <!--<form class="form-no-horizontal-spacing"  id="formAppHrd">-->
+        <?php echo form_open(site_url('form_spd_luar/edit/'.$id)) ?>
+            <div class="row">
             <div class="row form-row">
-              <div class="col-md-12">
-                <label class="form-label text-left">Note (HRD) : </label>
-              </div>
-              <div class="col-md-12">
-                <textarea name="note_hrd" class="custom-txtarea-form" placeholder="Note HRD isi disini"><?php echo $row->note_hrd?></textarea>
-              </div>
-            </div>
+                          <div class="col-md-3">
+                            <label class="form-label text-right">Tgl. Berangkat</label>
+                          </div>
+                          <div class="col-md-8">
+                            <div class="input-append date success no-padding">
+                              <input type="text" id="from_date" class="form-control from_date" name="date_spd_start" value="" required>
+                              <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span> 
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row form-row">
+                          <div class="col-md-3">
+                            <label class="form-label text-right">Tgl. Pulang</label>
+                          </div>
+                          <div class="col-md-8">
+                            <div class="input-append date success no-padding">
+                              <input type="text" id="to_date" class="form-control to_date" name="date_spd_end" value="" required>
+                              <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span> 
+                            </div>
+                          </div>
+                        </div>
+                    <div class="col-md-7 col-md-offset-2">
 
-              </div>
-          </div>   
+                      <h5 class="text-center"><span class="semi-bold">Ketentuan Biaya Perjalanan Dinas</span></h5>
+                      <div class="col-md-6 text-left">
+                        <button type="button" id="btnAddBiaya" class="btn btn-primary btn-xs" onclick="addRow('dataTable')"><i class="icon-plus"></i>&nbsp;<?php echo 'Tambah Biaya';?></button>
+                        <button type="button" id="btnRemove" class="btn btn-danger btn-xs" onclick="deleteRow('dataTable')" style="display: none;"><i class="icon-remove"></i>&nbsp;<?php echo 'Remove'?></button>
+                      </div> 
+                      <p>&nbsp;</p>
+                          <p class="bold">Grade Penerima Tugas : <span id="grade" class="semi-bold"><?php echo get_grade($tc_id)?></span></p>
+                            <div class="row form-row">
+                              <div class="col-md-12">
+                              <table id="dataTable" class="table table-bordered">
+                                <thead>
+                                  <tr>
+                                    <th width="2%"></th>
+                                    <th width="2%">No</th>
+                                    <th width="40%">Jenis Biaya</th>
+                                    <th width="40%">Jumlah Biaya(Rp)</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                <?php $total = 0;
+                                  $i=1;foreach($biaya_pjd->result() as $row):
+                                  //$jumlah_biaya = (!empty($row->type)) ? $row->jumlah_biaya*$jml_pjd : $row->jumlah_biaya;
+                                  $jumlah_biaya = $row->jumlah_biaya;
+                                  //$jumlah_hari = (!empty($row->type)) ? '/'.$jml_pjd.' hari' : '';
+                                  $jumlah_hari = (!empty($row->type)) ? '/'.' hari' : '';
+                                  $total += $jumlah_biaya;
+                                ?>
+                                  <tr>
+                                    <td></td>
+                                    <td><?php echo $i++?></td>
+                                    <input type="hidden" name="biaya_id[]" value="<?php echo $row->id?>">
+                                    <input type="hidden" name="biaya_tambahan_id[]" value="">
+                                    <td><?php echo $row->jenis_biaya.$jumlah_hari?></td>
+                                    <td align="right"><input type="text" name="jumlah_biaya[]" class="form-control" value="<?php echo number_format($jumlah_biaya, 0)?>"></td>
+                                  </tr>
+                                <?php endforeach; ?>
+                                  <!--<tr>
+                                    <td>&nbsp;</td>
+                                    <td align="right">Total :</td>
+                                    <td align="right"><?php echo number_format($total, 0) ?></td>
+                                  </tr>-->
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="icon-remove"></i>&nbsp;<?php echo lang('close_button')?></button> 
-        <button id="btn_app_hrd" class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
+        <button id="" type="submit"  class="btn btn-success btn-cons"><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
       </div>
         <?php echo form_close()?>
     </div>
   </div>
 </div>
-
+<!--end approve modal--> 
 
 
 <?php endforeach;} ?>
+
+<script type="text/javascript">
+  function addRow(tableID){
+  var table=document.getElementById(tableID);
+  var rowCount=table.rows.length;
+  var row=table.insertRow(rowCount);
+
+  var cell1=row.insertCell(0);
+  var element1=document.createElement("input");
+  element1.type="checkbox";
+  element1.name="chkbox[]";
+  element1.className="checkbox1";
+  cell1.appendChild(element1);
+
+  var cell2=row.insertCell(1);
+  cell2.innerHTML=rowCount+1-1;
+  var cell3=row.insertCell(2);
+  cell3.innerHTML = "<select name='biaya_tambahan_id[]' class='select2' style='width:100%'><?php foreach($biaya_tambahan->result() as $row):?><option value='<?php echo $row->id?>'><?php echo $row->title?></option><?php endforeach;?></select>";  
+  var cell4=row.insertCell(3);
+  cell4.innerHTML = "<input type='hidden' name='biaya_id[]' value=''><input type='text' name='jumlah_biaya[]' class='form-control text-right biaya-tambahan angka' value='0'>";
+}
+  function deleteRow(tableID){try{var table=document.getElementById(tableID);var rowCount=table.rows.length;for(var i=0;i<rowCount;i++){var row=table.rows[i];var chkbox=row.cells[0].childNodes[0];if(null!=chkbox&&true==chkbox.checked){table.deleteRow(i);rowCount--;i--;}}}catch(e){alert(e);}}
+</script>

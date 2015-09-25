@@ -114,7 +114,7 @@ class Dropdown extends MX_Controller {
         $id = $this->input->post('id');
         $id = get_nik($id);
         $grade = substr(get_grade($id),-1);
-        if($grade>7){
+        if($grade>4){
             echo '1';
         }else{
             echo '0';

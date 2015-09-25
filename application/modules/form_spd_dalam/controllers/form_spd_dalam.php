@@ -65,7 +65,7 @@ class Form_spd_dalam extends MX_Controller {
              $config['total_rows'] = $this->data['num_rows_all'];
              $config['per_page'] = $limit;
              $config['uri_segment'] = 6;
-
+             
             //inisialisasi config
              $this->pagination->initialize($config);
 

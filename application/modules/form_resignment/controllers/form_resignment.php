@@ -364,7 +364,7 @@ class Form_resignment extends MX_Controller {
                 $user_app = ($lv<4) ? getValue('user_app_'.$lv_app, 'users_resignment', array('id'=>'where/'.$id)):0;
                 if(!empty($user_app)):
                  if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), 'Pengajuan Permohonan Resignment', $isi_email);
-                    $this->approval->request('lv1', 'resignment', $id, $user_resignment_id, $this->detail_email($id));
+                    $this->approval->request($lv_app, 'resignment', $id, $user_resignment_id, $this->detail_email($id));
                  else:
                     if(!empty(getEmail($this->approval->approver('resignment'))))$this->send_email(getEmail($this->approval->approver('resignment')), 'Pengajuan Permohonan Resignment', $isi_email);
                     $this->approval->request('hrd', 'resignment', $id, $user_resignment_id, $this->detail_email($id));

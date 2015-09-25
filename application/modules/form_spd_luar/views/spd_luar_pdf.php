@@ -191,7 +191,7 @@
   </tbody>
 </table>
 
-<table width="1500" align="center">
+<table width="1000" align="center">
   <tbody>
     <tr>
       <th width="250" height="100"></th>

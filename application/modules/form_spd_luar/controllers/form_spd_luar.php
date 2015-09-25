@@ -112,6 +112,9 @@ class Form_spd_luar extends MX_Controller {
             $this->data['id'] = $id;
             $sess_id= $this->data['sess_id'] = $this->session->userdata('user_id');
             $this->data['sess_nik'] = $sess_nik = get_nik($sess_id);
+            $this->data['created_by'] = getValue('created_by', 'users_spd_luar', array('id'=>'where/'.$id));
+            $this->data['task_creator'] = getValue('task_creator', 'users_spd_luar', array('id'=>'where/'.$id));
+            $this->data['sess_nik'] = $sess_nik = get_nik($sess_id);
             $data_result = $this->data['task_detail'] = $this->form_spd_luar_model->where('users_spd_luar.id',$id)->form_spd_luar($id)->result();
             $this->data['td_num_rows'] = $this->form_spd_luar_model->where('users_spd_luar.id',$id)->form_spd_luar($id)->num_rows();
         
@@ -119,7 +122,7 @@ class Form_spd_luar extends MX_Controller {
             $this->data['tc_id'] = $task_receiver_id = getValue('task_receiver', 'users_spd_luar', array('id' => 'where/'.$id));
             $this->data['biaya_pjd'] = getJoin('users_spd_luar_biaya','pjd_biaya','users_spd_luar_biaya.pjd_biaya_id = pjd_biaya.id','left', 'users_spd_luar_biaya.*, pjd_biaya.title as jenis_biaya, pjd_biaya.type_grade as type', array('user_spd_luar_id'=>'where/'.$id));
             $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
-
+            $this->data['biaya_tambahan'] = getAll('pjd_biaya', array('type_grade' => 'where/0'));
             $this->_render_page('form_spd_luar/submit', $this->data);
         }
     }
@@ -384,6 +387,45 @@ class Form_spd_luar extends MX_Controller {
                 //echo json_encode(array('st' =>1));   
             }
         }
+    }
+
+    public function edit($id)
+    {
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+
+        $data1 = array(
+                'date_spd_start'             => date('Y-m-d', strtotime($this->input->post('date_spd_start'))),
+                'date_spd_end'              => date('Y-m-d', strtotime($this->input->post('date_spd_end'))),
+            );
+
+
+
+        $this->db->where('id', $id);
+        $this->db->update('users_spd_luar', $data1);
+
+        $biaya_id = $this->input->post('biaya_id');
+        $biaya_tambahan = $this->input->post('biaya_tambahan_id');
+        $jumlah_biaya = $this->input->post('jumlah_biaya');
+        //$jumlah_biaya = $this->input->post('jumlah_biaya');
+
+        for($i=0;$i<sizeof($biaya_id);$i++)
+        {
+            if(!empty($biaya_id[$i])){
+            $data2 = array('jumlah_biaya' => str_replace( ',', '',$jumlah_biaya[$i]));
+            $this->db->where('id', $biaya_id[$i]);
+            $this->db->update('users_spd_luar_biaya', $data2);
+            }else{
+                $data3 = array('jumlah_biaya' => str_replace( ',', '',$jumlah_biaya[$i]), 'pjd_biaya_id' => $biaya_tambahan[$i], 'user_spd_luar_id'=>$id);
+                $this->db->insert('users_spd_luar_biaya', $data3);
+            }
+        }
+
+        redirect('form_spd_luar/submit/'.$id);
+
     }
 
     public function report($id)
@@ -828,16 +870,27 @@ class Form_spd_luar extends MX_Controller {
                     $this->template->set_layout('default');
 
                     
-                    $this->template->add_js('jquery.sidr.min.js');
+                   $this->template->add_js('jquery.sidr.min.js');
                     $this->template->add_js('breakpoints.js');
+                    $this->template->add_js('select2.min.js');
+
                     $this->template->add_js('core.js');
                     $this->template->add_js('purl.js');
 
                     $this->template->add_js('respond.min.js');
+                    $this->template->add_js('jquery.validate.min.js');
+                    $this->template->add_js('bootstrap-datepicker.js');
+                    $this->template->add_js('jquery.maskMoney.js');
+                    $this->template->add_js('emp_dropdown.js');
+                    $this->template->add_js('jquery-validate.bootstrap-tooltip.min.js');
                     $this->template->add_js('form_spd_luar.js');
+                    $this->template->add_js('form_spd_luar_input.js');
                     
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
+                    $this->template->add_css('plugins/select2/select2.css');
+                    $this->template->add_css('datepicker.css');
                     $this->template->add_css('approval_img.css');
+
                      
                 }elseif(in_array($view, array('form_spd_luar/report')))
                 {

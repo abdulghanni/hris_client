@@ -121,8 +121,10 @@ class Form_spd_luar_group extends MX_Controller {
             $this->data['biaya_pjd_group'] = getAll('users_spd_luar_group_biaya', array('user_spd_luar_group_id'=>'where/'.$id));
             $this->data['biaya_tambahan'] = getAll('pjd_biaya', array('type_grade' => 'where/0'));
             $this->data['receiver'] = $p = explode(",", $receiver);
-            $this->data['receiver_submit'] = explode(",", $user_submit);print_mz($this->data['receiver_submit']);
+            $this->data['receiver_submit'] = explode(",", $user_submit);
             $this->data['id']=$id;
+            $this->data['created_by'] = getValue('created_by', 'users_spd_luar', array('id'=>'where/'.$id));
+            $this->data['task_creator'] = getValue('task_creator', 'users_spd_luar', array('id'=>'where/'.$id));
             $b = $this->data['biaya_pjd'] = $this->db->distinct()->select('users_spd_luar_group_biaya.pjd_biaya_id as biaya_id, pjd_biaya.title as jenis_biaya')->from('users_spd_luar_group_biaya')->join('pjd_biaya','pjd_biaya.id = users_spd_luar_group_biaya.pjd_biaya_id', 'left')->where('user_spd_luar_group_id', $id)->where('pjd_biaya.type_grade', 0)->get();//print_mz($this->data['biaya_pjd']->result());                   
             $this->data['detail'] = $this->db->distinct()->select('user_id')->where('user_spd_luar_group_id', $id)->get('users_spd_luar_group_biaya');
             $this->data['ci'] = $this;
@@ -368,6 +370,48 @@ class Form_spd_luar_group extends MX_Controller {
                 redirect('form_spd_luar_group/input_biaya/'.$spd_id,'refresh');
             }
         }
+    }
+
+    function edit_biaya($id)
+    {
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+
+        $this->data['id']=$id;
+        $b = $this->data['biaya_pjd'] = $this->db->distinct()->select('users_spd_luar_group_biaya.pjd_biaya_id as biaya_id, pjd_biaya.title as jenis_biaya')->from('users_spd_luar_group_biaya')->join('pjd_biaya','pjd_biaya.id = users_spd_luar_group_biaya.pjd_biaya_id', 'left')->where('user_spd_luar_group_id', $id)->where('pjd_biaya.type_grade', 0)->get();                  
+        $this->data['detail'] = $this->db->distinct()->select('user_id')->where('user_spd_luar_group_id', $id)->get('users_spd_luar_group_biaya');
+        $this->data['ci'] = $this;
+        $this->data['created_by'] = getValue('created_by', 'users_spd_luar', array('id'=>'where/'.$id));
+        $this->data['task_creator'] = getValue('task_creator', 'users_spd_luar', array('id'=>'where/'.$id));
+
+        $this->_render_page('form_spd_luar_group/edit_biaya', $this->data);
+    }
+
+    function do_edit($id)
+    {
+        $data1 = array(
+                'date_spd_start'             => date('Y-m-d', strtotime($this->input->post('date_spd_start'))),
+                'date_spd_end'              => date('Y-m-d', strtotime($this->input->post('date_spd_end'))),
+            );
+
+        $this->db->where('id', $id);
+        $this->db->update('users_spd_luar_group', $data1);
+
+        $this->db->where('id', $id);
+        $this->db->update('users_spd_luar_group', $data1);
+
+        $biaya_id = $this->input->post('biaya_id');
+        $jumlah_biaya = $this->input->post('jumlah_biaya');
+        for($i=0;$i<sizeof($biaya_id);$i++):
+            $data2 = array('jumlah_biaya' => str_replace( ',', '',$jumlah_biaya[$i]));
+
+        $this->db->where('id', $biaya_id[$i])->update('users_spd_luar_group_biaya', $data2);
+        endfor;
+        redirect('form_spd_luar_group/submit/'.$id, 'refresh');
+
     }
 
     public function report($id)
@@ -933,7 +977,8 @@ class Form_spd_luar_group extends MX_Controller {
                     
                 }
                 elseif(in_array($view, array('form_spd_luar_group/input',
-                                             'form_spd_luar_group/input_biaya'
+                                             'form_spd_luar_group/input_biaya',
+                                             'form_spd_luar_group/edit_biaya'
                                              )))
                 {
 
