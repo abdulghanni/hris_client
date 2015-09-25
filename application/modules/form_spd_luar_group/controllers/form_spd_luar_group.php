@@ -24,7 +24,7 @@ class Form_spd_luar_group extends MX_Controller {
 
     function index($ftitle = "fn:",$sort_by = "id", $sort_order = "asc", $offset = 0)
     { 
-        $this->data['title'] = "Daftar SPD - Luar Kota (Group)";
+        $this->data['title'] = "Daftar PJD - Luar Kota (Group)";
         if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page
@@ -100,7 +100,7 @@ class Form_spd_luar_group extends MX_Controller {
 
     function submit($id)
     {
-        $this->data['title'] = "Detail SPD - Luar Kota (Group)";
+        $this->data['title'] = "Detail PJD - Luar Kota (Group)";
         if (!$this->ion_auth->logged_in())
         {
             $this->session->set_userdata('last_link', $this->uri->uri_string());
@@ -108,6 +108,7 @@ class Form_spd_luar_group extends MX_Controller {
         }
         else
         {
+            $this->data['id'] = $id;
             $sess_id= $this->data['sess_id'] = $this->session->userdata('user_id');
             $this->data['sess_nik'] = $sess_nik = get_nik($sess_id);
             $data_result = $this->data['task_detail'] = $this->form_spd_luar_group_model->where('users_spd_luar_group.id',$id)->form_spd_luar_group($id)->result();
@@ -257,7 +258,7 @@ class Form_spd_luar_group extends MX_Controller {
 
     public function input()
     {
-        $this->data['title'] = "Daftar SPD - luar Kota (Group)";
+        $this->data['title'] = "Daftar PJD - luar Kota (Group)";
         $user_id = $this->data['sess_id'] = $this->session->userdata('user_id');
         $sess_id = $this->session->userdata('user_id');
         $nik = get_nik($sess_id);
@@ -371,7 +372,7 @@ class Form_spd_luar_group extends MX_Controller {
 
     public function report($id)
     {
-        $this->data['title'] = "Daftar Report SPD - Luar Kota (Group)";
+        $this->data['title'] = "Daftar Report PJD - Luar Kota (Group)";
         $user_id = $this->data['sess_id'] = $this->session->userdata('user_id');
         $report_id = $this->db->where('users_spd_luar_report_group.user_spd_luar_group_id', $id)->get('users_spd_luar_report_group')->row('id');
 
@@ -403,7 +404,7 @@ class Form_spd_luar_group extends MX_Controller {
 
     public function report_detail($id, $user_id)
     {
-        $this->data['title'] = "Report Detail SPD - Luar Kota (Group)";
+        $this->data['title'] = "Report Detail PJD - Luar Kota (Group)";
         $report_id = getValue('id','users_spd_luar_report_group', array('user_spd_luar_group_id'=>'where/'.$id, 'created_by'=>'where/'.$user_id));
         if (!$this->ion_auth->logged_in())
         {
@@ -454,18 +455,18 @@ class Form_spd_luar_group extends MX_Controller {
                 $this->data['disabled'] = 'disabled='.'"disabled"';
             }}
 
-            if($sess_nik != $receiver_id):
-                $this->data['disabled'] = 'disabled='.'"disabled"';
-            endif;
-
             $this->_render_page('form_spd_luar_group/report_detail', $this->data);
         }
     }
 
     public function add_report($spd_id)
     {
-        $this->form_validation->set_rules('maksud', 'Maksud dan Tujuan', 'trim|required');
-        $this->form_validation->set_rules('hasil', 'Hasil Kegiatan', 'trim|required');
+        $this->form_validation->set_rules('what', 'What', 'trim|required');
+        $this->form_validation->set_rules('who', 'Who', 'trim|required');
+        $this->form_validation->set_rules('where', 'Where', 'trim|required');
+        $this->form_validation->set_rules('when', 'When', 'trim|required');
+        $this->form_validation->set_rules('why', 'Why', 'trim|required');
+        $this->form_validation->set_rules('how', 'How', 'trim|required');
         
         if($this->form_validation->run() == FALSE)
         {
@@ -541,8 +542,12 @@ class Form_spd_luar_group extends MX_Controller {
      public function update_report($report_id, $user_id)
     {
         $spd_id = getValue('user_spd_luar_group_id', 'users_spd_luar_report_group', array('id'=>'where/'.$report_id, 'created_by'=>'where/'.$user_id));
-        $this->form_validation->set_rules('maksud', 'Maksud dan Tujuan', 'trim|required');
-        $this->form_validation->set_rules('hasil', 'Hasil Kegiatan', 'trim|required');
+        $this->form_validation->set_rules('what', 'What', 'trim|required');
+        $this->form_validation->set_rules('who', 'Who', 'trim|required');
+        $this->form_validation->set_rules('where', 'Where', 'trim|required');
+        $this->form_validation->set_rules('when', 'When', 'trim|required');
+        $this->form_validation->set_rules('why', 'Why', 'trim|required');
+        $this->form_validation->set_rules('how', 'How', 'trim|required');
         
         if($this->form_validation->run() == FALSE)
         {
@@ -709,6 +714,7 @@ class Form_spd_luar_group extends MX_Controller {
             $b = $this->data['biaya_pjd'] = $this->db->distinct()->select('users_spd_luar_group_biaya.pjd_biaya_id as biaya_id, pjd_biaya.title as jenis_biaya')->from('users_spd_luar_group_biaya')->join('pjd_biaya','pjd_biaya.id = users_spd_luar_group_biaya.pjd_biaya_id', 'left')->where('user_spd_luar_group_id', $id)->where('pjd_biaya.type_grade', 0)->get();//print_mz($this->data['biaya_pjd']->result());                   
             $this->data['detail'] = $this->db->distinct()->select('user_id')->where('user_spd_luar_group_id', $id)->get('users_spd_luar_group_biaya');
             $this->data['ci'] = $this;
+            
 
             return $this->load->view('form_spd_luar_group/spd_luar_group_mail', $this->data, TRUE);
         }
@@ -716,6 +722,12 @@ class Form_spd_luar_group extends MX_Controller {
 
     function input_biaya($id)
     {
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+        
         $this->data['id']=$id;
         $b = $this->data['biaya_pjd'] = $this->db->distinct()->select('users_spd_luar_group_biaya.pjd_biaya_id as biaya_id, pjd_biaya.title as jenis_biaya')->from('users_spd_luar_group_biaya')->join('pjd_biaya','pjd_biaya.id = users_spd_luar_group_biaya.pjd_biaya_id', 'left')->where('user_spd_luar_group_id', $id)->where('pjd_biaya.type_grade', 0)->get();                  
         $this->data['detail'] = $this->db->distinct()->select('user_id')->where('user_spd_luar_group_id', $id)->get('users_spd_luar_group_biaya');

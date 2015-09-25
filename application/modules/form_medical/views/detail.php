@@ -16,6 +16,8 @@
           <div class="grid simple">
             <div class="grid-title no-border">
               <h4>Detail Rekapitulasi <span class="semi-bold"><a href="<?php echo site_url('form_medical')?>">Rawat Jalan & Inap</a></span></h4>
+              <?php $disabled = ($is_app_hrd==0) ? "disabled='disabled'" : '' ?>
+              <a href="<?php echo site_url('form_medical/form_medical_pdf/'.$id)?>" target="_blank"><button class="btn btn-primary pull-right" <?php echo $disabled ?>><i class="icon-print"> Cetak</i></button></a>
             </div>
             <div class="grid-body no-border">
             <h6 class="bold">BAGIAN : <?php echo $bagian?></h6>
@@ -84,7 +86,7 @@
                       <?php if(!empty($note_lv1)):?>
                       <div class="row form-row">
                         <div class="col-md-12">
-                          <label class="form-label text-left">Note (Supervisor) : </label>
+                          <label class="form-label text-left">Note (Atasan Langsung) : </label>
                         </div>
                         <div class="col-md-12">
                           <textarea name="note_lv1" class="form-control" placeholder="" disabled="disabled"><?php echo $note_lv1?></textarea>
@@ -165,15 +167,16 @@
                 </div>
 
                     <!-- <div class="col-md-12 text-center"> -->
-                      <div class="row wf-spd">
+                      <div class="row wf-cuti">
                         <div class="col-md-4">
                           <p>Hormat Kami,</p>
                           <p class="wf-submit">
                           <span class="semi-bold"></span><br/>
                             <span class="small"></span><br/>
+                            <span class="small"></span><br/>
                             <span class="semi-bold"><?php echo get_name($row->user_id) ?></span><br/>
-                            <span class="semi-bold"><?php echo (!empty(get_user_position(get_nik($row->user_id)))) ? get_user_position(get_nik($row->user_id)) : ''?></span><br/>
                             <span class="small"><?php echo dateIndo($row->created_on) ?></span><br/>
+                            <span class="semi-bold"><?php echo (!empty(get_user_position(get_nik($row->user_id)))) ? get_user_position(get_nik($row->user_id)) : ''?></span><br/>   
                           </p>
                         </div>
 
@@ -181,12 +184,11 @@
                           <p>Disetujui,</p>
                           <p class="wf-approve-sp">
                           <?php if($row->is_app_hrd==1) {
-                            echo "<img class=approval_img src=$approved>"?>
-                            <span class="semi-bold"></span><br/>
+                            echo "<img class=approval-img src=$approved>"?>
                             <span class="small"></span><br/>
-                            <span class="semi-bold"><?php echo get_name($row->user_app_hrd) ?></span><br/>
-                            <span class="semi-bold"></span><br/>
-                            <span class="small"><?php echo dateIndo($row->date_app_hrd) ?></span><br/>
+                            <span class="semi-bold"><?php echo get_name($row->user_app_hrd)?></span><br/>
+                            <span class="small"><?php echo dateIndo($row->date_app_hrd)?></span><br/>
+                            <span class="semi-bold">(HRD)</span>
                             <?php }elseif($this->approval->approver('medical') == $sess_nik && $row->is_app_hrd==0){?>
                             <span class="semi-bold"></span><br/>
                             <span class="small"></span><br/>
@@ -206,22 +208,25 @@
                           <p>Mengetahui,</p>
                           <p class="wf-approve-sp">
                           <?php if($row->is_app_lv1==1) {
-                            echo ($row->app_status_id_lv1 == 1)?"<img class=approval_img src=$approved>":(($row->app_status_id_lv1 == 2) ? "<img class=approval_img src=$rejected>":'<span class="small"></span><br/>');?>
+                            echo ($row->app_status_id_lv1 == 1)?"<img class=approval-img src=$approved>":(($row->app_status_id_lv1 == 2) ? "<img class=approval-img src=$rejected>":'<span class="small"></span><br/>');?>
                             <span class="semi-bold"></span><br/>
                             <span class="small"></span><br/>
                             <span class="semi-bold"><?php echo get_name($row->user_app_lv1) ?></span><br/>
-                            <span class="semi-bold"><?php echo (!empty($row->user_app_lv1)) ? get_user_position($row->user_app_lv1) : ''?></span><br/>
                             <span class="small"><?php echo dateIndo($row->date_app_lv1) ?></span><br/>
+                            <span class="semi-bold">(<?php echo get_user_position($row->user_app_lv1)?>)</span><br/>
                             <?php }elseif($row->is_app_lv1==0 && $sess_nik == $row->user_app_lv1){?>
                             <span class="semi-bold"></span><br/>
-                            <span class="small"></span><br/>
-                            <button type="button" data-toggle="modal" data-target="#submitMedicalModalLv1" class="btn btn-success btn-cons"><i class="icon-ok"></i>Submit</button>
-                            <p class="">...............................</p>
+                            <button type="button" data-toggle="modal" data-target="#submitMedicalModalLv1" class="btn btn-success btn-cons"><i class="icon-ok"></i>Submit</button><br/>
+                            <span class="semi-bold"><?php echo get_name($row->user_app_lv1) ?></span><br/>
+                            <span class="small"><?php echo dateIndo($row->date_app_lv1) ?></span><br/>
+                            <span class="semi-bold">(<?php echo get_user_position($row->user_app_lv1)?>)</span><br/>
                             <?php }else{?>
                             <span class="semi-bold"></span><br/>
-                            <span class="small"></span><br/>
-                            <span class="small"></span><br/>
-                            <p class="">...............................</p>
+                            <span class="semi-bold"></span><br/>
+                            <span class="semi-bold"></span><br/>
+                            <span class="semi-bold"><?php echo get_name($row->user_app_lv1) ?></span><br/>
+                            <span class="small"><?php echo dateIndo($row->date_app_lv1) ?></span><br/>
+                            <span class="semi-bold">(<?php echo get_user_position($row->user_app_lv1)?>)</span><br/>
                             <?php } ?>
                           </p>
                         </div>
@@ -233,22 +238,25 @@
                           <p>Mengetahui,</p>
                           <p class="wf-approve-sp">
                           <?php if($row->is_app_lv2==1) {
-                            echo "<img class=approval-img-al src=$approved>"?>
+                            echo "<img class=approval-img src=$approved>"?>
                             <span class="semi-bold"></span><br/>
                             <span class="small"></span><br/>
                             <span class="semi-bold"><?php echo get_name($row->user_app_lv2) ?></span><br/>
-                            <span class="semi-bold"><?php echo (!empty($row->user_app_lv2)) ? get_user_position($row->user_app_lv2) : ''?></span><br/>
                             <span class="small"><?php echo dateIndo($row->date_app_lv2) ?></span><br/>
+                            <span class="semi-bold">(<?php echo get_user_position($row->user_app_lv2)?>)</span><br/>
                             <?php }elseif($row->is_app_lv2==0 && $sess_nik == $row->user_app_lv2){?>
                             <span class="semi-bold"></span><br/>
-                            <span class="small"></span><br/>
-                            <button id="btn_app_lv2" class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok"></i>Submit</button>
-                            <p class="">...............................</p>
+                            <button id="btn_app_lv2" class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok"></i>Submit</button><br/>
+                            <span class="semi-bold"><?php echo get_name($row->user_app_lv2) ?></span><br/>
+                            <span class="small"><?php echo dateIndo($row->date_app_lv2) ?></span><br/>
+                            <span class="semi-bold">(<?php echo get_user_position($row->user_app_lv2)?>)</span><br/>
                             <?php }else{?>
                             <span class="semi-bold"></span><br/>
-                            <span class="small"></span><br/>
-                            <span class="small"></span><br/>
-                            <p class="">...............................</p>
+                            <span class="semi-bold"></span><br/>
+                            <span class="semi-bold"></span><br/>
+                            <span class="semi-bold"><?php echo get_name($row->user_app_lv2) ?></span><br/>
+                            <span class="small"><?php echo dateIndo($row->date_app_lv2) ?></span><br/>
+                            <span class="semi-bold">(<?php echo get_user_position($row->user_app_lv2)?>)</span><br/>
                             <?php } ?>
                           </p>
                         </div>
@@ -259,22 +267,25 @@
                           <p>Mengetahui,</p>
                           <p class="wf-approve-sp">
                           <?php if($row->is_app_lv3==1) {
-                            echo "<img class=approval_img_md src=$approved>"?>
+                            echo "<img class=approval-img src=$approved>"?>
                             <span class="semi-bold"></span><br/>
                             <span class="small"></span><br/>
                             <span class="semi-bold"><?php echo get_name($row->user_app_lv3) ?></span><br/>
-                            <span class="semi-bold"><?php echo (!empty($row->user_app_lv3)) ? get_user_position($row->user_app_lv3) : ''?></span><br/>
                             <span class="small"><?php echo dateIndo($row->date_app_lv3) ?></span><br/>
+                            <span class="semi-bold">(<?php echo get_user_position($row->user_app_lv3)?>)</span><br/>
                             <?php }elseif($row->is_app_lv3==0 && $sess_nik == $row->user_app_lv3){?>
                             <span class="semi-bold"></span><br/>
-                            <span class="small"></span><br/>
-                            <button id="btn_app_lv3" class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok"></i>Submit</button>
-                            <p class="">...............................</p>
+                            <button id="btn_app_lv3" class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok"></i>Submit</button><br/>
+                            <span class="semi-bold"><?php echo get_name($row->user_app_lv3) ?></span><br/>
+                            <span class="small"><?php echo dateIndo($row->date_app_lv3) ?></span><br/>
+                            <span class="semi-bold">(<?php echo get_user_position($row->user_app_lv3)?>)</span><br/>
                             <?php }else{?>
                             <span class="semi-bold"></span><br/>
-                            <span class="small"></span><br/>
-                            <span class="small"></span><br/>
-                            <p class="">...............................</p>
+                            <span class="semi-bold"></span><br/>
+                            <span class="semi-bold"></span><br/>
+                            <span class="semi-bold"><?php echo get_name($row->user_app_lv3) ?></span><br/>
+                            <span class="small"><?php echo dateIndo($row->date_app_lv3) ?></span><br/>
+                            <span class="semi-bold">(<?php echo get_user_position($row->user_app_lv3)?>)</span><br/>
                             <?php } ?>
                           </p>
                         </div>
@@ -397,7 +408,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Approval Form medical - Supervisor</h4>
+        <h4 class="modal-title" id="myModalLabel">Approval Form Medical</h4>
       </div>
       <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
       <div class="modal-body">
@@ -424,10 +435,10 @@
             </div>
             <div class="row form-row">
               <div class="col-md-12">
-                <label class="form-label text-left">Note (Supervisor) : </label>
+                <label class="form-label text-left">Note (Atasan Langsung) : </label>
               </div>
               <div class="col-md-12">
-                <textarea name="note_lv1" class="custom-txtarea-form" placeholder="Note Supervisor isi disini"><?php echo $row->note_lv1?></textarea>
+                <textarea name="note_lv1" class="custom-txtarea-form" placeholder="Note Atasan Langsung isi disini"><?php echo $row->note_lv1?></textarea>
               </div>
             </div>
       </div>

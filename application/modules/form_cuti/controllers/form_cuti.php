@@ -27,6 +27,7 @@ class Form_cuti extends MX_Controller {
 
     function index($ftitle = "fn:",$sort_by = "id", $sort_order = "asc", $offset = 0)
     {  
+        $this->data['title'] = 'Form Cuti';
         $sess_id= $this->session->userdata('user_id');
         $sess_nik= get_nik($sess_id);
 
@@ -107,6 +108,7 @@ class Form_cuti extends MX_Controller {
 
     function input()
     {
+         $this->data['title'] = 'Input - Cuti';
         if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page
@@ -217,14 +219,14 @@ class Form_cuti extends MX_Controller {
 
     function detail($id)
     {
+        $this->data['title'] = 'Detail - Cuti';
         if (!$this->ion_auth->logged_in())
         {
             $this->session->set_userdata('last_link', $this->uri->uri_string());
             //redirect them to the login page
             redirect('auth/login', 'refresh');
         }
-
-
+        $this->data['id'] = $id;
         $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
         $sess_nik = $this->data['sess_nik'] = get_nik($sess_id);
         $user_id = getValue('user_id', 'users_cuti', array('id'=>'where/'.$id));
@@ -340,12 +342,11 @@ class Form_cuti extends MX_Controller {
         }
 
         $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
+        $sess_nik = $this->data['sess_nik'] = get_nik($sess_id);
         $user_id = getValue('user_id', 'users_cuti', array('id'=>'where/'.$id));
         $user_nik = get_nik($user_id);
         $cuti_details = $this->data['form_cuti'] = $this->form_cuti_model->form_cuti_supervisor($id)->result();
         $this->data['_num_rows'] = $this->form_cuti_model->form_cuti_supervisor($id)->num_rows();
-
-        $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
        
         return $this->load->view('form_cuti/cuti_email', $this->data, true);
     }

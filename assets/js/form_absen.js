@@ -1,12 +1,4 @@
 $(document).ready(function() {              
-$(".select2").select2();
-$('#limit').select2();
-
-$('.input-append.date').datepicker({
-    format: "dd-mm-yyyy",
-    autoclose: true,
-    todayHighlight: true
-});
 
 //approval absen
 $('button[data-loading-text]').click(function () {
@@ -75,26 +67,4 @@ $('button[data-loading-text]').click(function () {
             ev.preventDefault(); 
         });  
     });
-
-    $( "#formadd" ).validate({
-    rules: {
-      atasan1: {notEqual:0}
-    },
-
-    messages: {
-          atasan1 : "Silakan Pilih Atasan"
-      }
-  });
-
-//input absen
-    /*$('#formaddabsen').submit(function(response){
-        $.post($('#formaddabsen').attr('action'), $('#formaddabsen').serialize(),function(json){
-            if(json.st == 0){
-                $('#MsgBad').html(json.errors).fadeIn();
-            }else{
-                window.location.href = baseurl+url.segment(2);
-            }
-        }, 'json');
-        return false;
-    });*/
 });

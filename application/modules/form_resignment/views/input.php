@@ -42,7 +42,7 @@
                             </select>
                         <?php }else{?>
                             <input type="text" class="form-control" value="<?php echo get_name($sess_id)?>" readonly>
-                            <input type="hidden" value="<?php echo $sess_id?>" name="emp">
+                            <input type="hidden" value="<?php echo $sess_id?>" name="emp" id="emp">
                         <?php }?>
                         </div>
                       </div>
@@ -142,21 +142,13 @@
                         <label class="form-label text-left"><?php echo 'Atasan Langsung' ?></label>
                       </div>
                       <div class="col-md-8">
-                      <?php if(is_admin()){
-                        $style_up='class="select2" style="width:100%" id="atasan1"';
-                            echo form_dropdown('atasan1',array('0'=>'- Pilih Atasan Langsung -'),'',$style_up);
-                        }else{?>
-                        <select name="atasan1" id="atasan1" class="select2" style="width:100%">
-                            <option value="0">- Pilih Atasan Langsung -</option>
-                            <?php foreach ($user_atasan as $key => $up) : ?>
-                              <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
-                            <?php endforeach;?>
-                          </select>
-                            <?php }?>
+                        <?php
+                          $style_up='class="select2" style="width:100%" id="atasan1"';
+                              echo form_dropdown('atasan1',array('0'=>'- Pilih Atasan Langsung -'),'',$style_up);
+                        ?>
                       </div>
                     </div>
                     
-                  <!--
                     <div class="row form-row">
                       <div class="col-md-4">
                         <label class="form-label text-left"><?php echo 'Atasan Tidak Langsung' ?></label>
@@ -179,8 +171,7 @@
                       </div>
                     </div>
 
-                    --> 
-                    </div>
+                  </div>
                 </div>
                 <div class="form-actions">
                   <div class="pull-right">

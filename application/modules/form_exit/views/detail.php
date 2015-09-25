@@ -17,6 +17,7 @@
             <div class="grid simple">
               <div class="grid-title no-border">
                   <h4>Form Rekomendasi <span class="semi-bold"><a href="<?php echo site_url('form_exit')?>">Karyawan Keluar</a></span></h4>
+              <a href="<?php echo site_url('form_exit/form_exit_pdf/'.$id)?>" target="_blank"><button class="btn btn-primary pull-right"><i class="icon-print"> Cetak</i></button></a>
               </div>
               <div class="grid-body no-border">
                  <?php echo form_open("form_exit/add",array("id"=>"formaddexit"));
@@ -517,20 +518,20 @@
                         <span class="small"></span><br/>
                         <span class="semi-bold"><?php echo get_name($row->user_app_lv1)?></span><br/>
                         <span class="small"><?php echo dateIndo($row->date_app_lv1)?></span><br/>
-                        <span class="semi-bold"></span>
                         <span class="semi-bold"><?php echo get_user_position($row->user_app_lv1);?></span>
                       <?php }else{?>
                         <span class="small"></span><br/>
                         <span class="small"></span><br/>
                         <span class="semi-bold"></span><br/>
-                        <span class="small"></span><br/>
-                        <span class="semi-bold"></span><br/>
-                        <span class="semi-bold"><p class="">...............................</p></span>
+                        <span class="semi-bold"><?php echo get_name($row->user_app_lv1)?></span><br/>
+                        <span class="small"><?php echo dateIndo($row->date_app_lv1)?></span><br/>
+                        <span class="semi-bold"><?php echo get_user_position($row->user_app_lv1);?></span>
                       <?php } ?>
                     </p>
                   </div>
                     
                   <div class="col-md-4">
+                  <?php if(!empty($row->user_app_lv2)) : ?>
                     <p class="wf-approve-sp">
                     <div class="col-md-12"><span class="semi-bold">Mengetahui / Menyetujui,</span><br/></div>
                     <?php
@@ -546,19 +547,18 @@
                         <span class="small"></span><br/>
                         <span class="semi-bold"><?php echo get_name($row->user_app_lv2)?></span><br/>
                         <span class="small"><?php echo dateIndo($row->date_app_lv2)?></span><br/>
-                        <span class="semi-bold"></span>
                         <span class="semi-bold"><?php echo get_user_position($row->user_app_lv2);?></span>
                       <?php }else{?>
                         <span class="small"></span><br/>
                         <span class="small"></span><br/>
                         <span class="semi-bold"></span><br/>
-                        <span class="small"></span><br/>
-                        <span class="semi-bold"></span><br/>
-                        <span class="semi-bold"><p class="">...............................</p></span>
+                        <span class="semi-bold"><?php echo get_name($row->user_app_lv2)?></span><br/>
+                        <span class="small"><?php echo dateIndo($row->date_app_lv2)?></span><br/>
+                        <span class="semi-bold"><?php echo get_user_position($row->user_app_lv2);?></span>
                       <?php } ?>
                     </p>
+                  <?php endif; ?>
                   </div>
-
                 </div>
               </div> 
 

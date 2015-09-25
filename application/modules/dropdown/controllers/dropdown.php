@@ -13,21 +13,21 @@ class Dropdown extends MX_Controller {
     {
         $id = $this->input->post('id');
         if($id == '0'){
-        echo '-';
+            echo '-';
         }else{
-        $id = get_nik($id);
-        echo get_user_bu($id);
+            $id = get_nik($id);
+            echo get_user_bu($id);
         }
     }
 
     public function get_emp_org()
     {
         $id = $this->input->post('id');
-        if($id == '0'){
+            if($id == '0'){
         echo '-';
         }else{
-        $id = get_nik($id);
-        echo get_user_organization($id);
+            $id = get_nik($id);
+            echo get_user_organization($id);
         }
     }
 
@@ -35,10 +35,43 @@ class Dropdown extends MX_Controller {
     {
         $id = $this->input->post('id');
         if($id == '0'){
-        echo '-';
+            echo '-';
         }else{
-        $id = get_nik($id);
-        echo get_user_position($id);
+            $id = get_nik($id);
+            echo get_user_position($id);
+        }
+    }
+
+    public function get_emp_bu_id()
+    {
+        $id = $this->input->post('id');
+        if($id == '0'){
+            echo '-';
+        }else{
+            $id = get_nik($id);
+            echo get_user_buid($id);
+        }
+    }
+
+    public function get_emp_org_id()
+    {
+        $id = $this->input->post('id');
+        if($id == '0'){
+            echo '-';
+        }else{
+            $id = get_nik($id);
+            echo get_user_organization_id($id);
+        }
+    }
+
+    public function get_emp_pos_id()
+    {
+        $id = $this->input->post('id');
+        if($id == '0'){
+            echo '-';
+        }else{
+            $id = get_nik($id);
+            echo get_user_position_id($id);
         }
     }
 
@@ -73,6 +106,18 @@ class Dropdown extends MX_Controller {
         }else{
         $id = get_nik($id);
         echo get_grade($id);
+        }
+    }
+
+    public function is_grade_tujuh_keatas()
+    {
+        $id = $this->input->post('id');
+        $id = get_nik($id);
+        $grade = substr(get_grade($id),-1);
+        if($grade>7){
+            echo '1';
+        }else{
+            echo '0';
         }
     }
 
@@ -280,7 +325,8 @@ class Dropdown extends MX_Controller {
                  foreach ($task_receiver as $row)
                     {
                         $result['0']= '-- Pilih Karyawan --';
-                        $result[$row['ID']]= ucwords(strtolower($row['NAME']).' - '.$row['ID']);
+                        $reg = (is_registered($row['ID'])) ? '' : 'Belum Terdaftar';
+                        $result[$row['ID']]= ucwords(strtolower($row['NAME']).' - '.$row['ID'].' - '.$reg);
                     }
             } else {
                $result['-']= '- Not Availbale -';

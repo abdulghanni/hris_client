@@ -17,6 +17,7 @@
           <div class="grid simple">
             <div class="grid-title no-border">
               <h4>Form <a href="<?php echo site_url('form_spd_dalam')?>">Perjalanan Dinas <span class="semi-bold">Dalam Kota</span></a></h4>
+              <a href="<?php echo site_url('form_spd_dalam/pdf/'.$id)?>" target="_blank"><button class="btn btn-primary pull-right"><i class="icon-print"> Cetak</i></button></a>
             </div>
             <div class="grid-body no-border">
               <form class="form-no-horizontal-spacing" id="formSpdDalam"> 
@@ -228,7 +229,7 @@
                               <span class="small"></span><br/>
                               <span class="semi-bold"><?php echo get_name($td->user_app_lv1)?></span><br/>
                               <span class="small"><?php echo dateIndo($td->date_app_lv1)?></span><br/>
-                              <span class="semi-bold"><?php echo '('.get_user_position($td->user_app_lv1).')'?></span>
+                              <span class="semi-bold">(<?php echo get_user_position($td->user_app_lv1)?>)</span>
                             <?php }else{?>
                               <span class="small"></span><br/>
                               <span class="small"></span><br/>

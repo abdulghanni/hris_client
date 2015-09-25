@@ -18,6 +18,7 @@
           <div class="grid simple">
             <div class="grid-title no-border">
               <h4>View Permintaan <span class="semi-bold"><a href="<?php echo site_url('form_training_group')?>">Pelatihan (Group)</a></span></h4>
+              <a href="<?php echo site_url('form_training_group/form_training_group_pdf/'.$id)?>" target="_blank"><button class="btn btn-primary pull-right"><i class="icon-print"> Cetak</i></button></a>
             </div>
             <div class="grid-body no-border">
             <?php
@@ -345,6 +346,7 @@
                         </div>
 
                         <div class="col-md-3">
+                        <?php if(!empty($user->user_app_lv3)): ?>
                           <p class="wf-approve-sp">
                             <?php
                             if(!empty($user->user_app_lv2) && $user->is_app_lv2 == 0 && get_nik($sess_id) == $user->user_app_lv2){?>
@@ -371,9 +373,11 @@
                               <span class="semi-bold"><?php echo (!empty($user->user_app_lv2))?'('.get_user_position($user->user_app_lv2).')':'';?></span>
                             <?php } ?>
                           </p>
+                        <?php endif; ?>
                         </div>
                           
                         <div class="col-md-3">
+                          <?php if(!empty($user->user_app_lv3)): ?>
                           <p class="wf-approve-sp">
                             <?php
                             if(!empty($user->user_app_lv3) && $user->is_app_lv3 == 0 && get_nik($sess_id) == $user->user_app_lv3){?>
@@ -400,6 +404,7 @@
                               <span class="semi-bold"><?php echo (!empty($user->user_app_lv3))?'('.get_user_position($user->user_app_lv3).')':'';?></span>
                             <?php } ?>
                           </p>
+                        <?php endif; ?>
                         </div>
                           
                         <div class="col-md-3">
@@ -516,18 +521,17 @@
                     </div>
                     <div class="col-md-9">
                       <select name="ikatan" class="select2" id="ikatan" style="width:100%" >
-                          <?php if($ikatan->num_rows()>0){
-                              foreach ($ikatan->result_array() as $key => $value) {
-                              $selected = ($user->ikatan_dinas_id <> 0 && $user->ikatan_dinas_id == $value['id']) ? 'selected = selected' : '';
-                              echo '<option value="'.$value['id'].'" '.$selected.'>'.$value['title'].'</option>';
-                              }}else{
-                              echo '<option value="0">'.'No Data'.'</option>';
-                              }
-                              ?>
-
+                          <option value="0">-- Pilih Tipe Ikatan Dinas --</option>
+                          <?php if(!empty($ikatan)):
+                            foreach ($ikatan->result_array() as $key => $value) {
+                            $selected = ($user->ikatan == $value['DESCRIPTION']) ? 'selected = selected' : '';
+                            echo '<option value="'.$value['DESCRIPTION'].'" '.$selected.'>'.$value['DESCRIPTION'].'</option>';
+                            }endif;
+                          ?>
                       </select>
                     </div>
                   </div>
+                  <br/>
                   <div class="row form-row">
                     <div class="col-md-3">
                       <label class="form-label text-right">Waktu</label>
@@ -575,7 +579,15 @@
                       <label class="form-label text-right">Nama Vendor</label>
                     </div>
                     <div class="col-md-9">
-                      <input name="vendor" id="vendor" type="text"  class="form-control" placeholder="Nama Vendor" value="<?php echo $user->vendor?>" required>
+                      <select name="vendor" class="select2" id="vendor" style="width:100%" >
+                          <option value="0">-- Pilih Nama Vendor --</option>
+                          <?php if(!empty($vendor)):
+                            foreach ($vendor->result_array() as $key => $value) {
+                            $selected = ($user->vendor == $value['NAME']) ? 'selected = selected' : '';
+                            echo '<option value="'.$value['NAME'].'" '.$selected.'>'.$value['NAME'].'</option>';
+                            }endif;
+                          ?>
+                      </select>  
                     </div>
                   </div>
                   <div class="row form-row">

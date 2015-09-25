@@ -36,8 +36,9 @@
                         <select id="emp" class="select2" style="width:100%" name="emp_tc">
                           <?php
                           foreach ($all_users->result() as $u) :
-                            $selected = $u->id == $sess_id ? 'selected = selected' : '';?>
-                            <option value="<?php echo get_nik($u->id)?>" <?php echo $selected?>><?php echo $u->username; ?></option>
+                            $selected = $u->id == $sess_id ? 'selected = selected' : '';
+                            ?>
+                            <option value="<?php echo get_nik($u->id)?>" <?php echo $selected?>><?php echo $u->username ?></option>
                           <?php endforeach; ?>
                         </select>
                       <?php }else{?>
@@ -207,7 +208,7 @@
                           </div>
                           <div class="col-md-8">
                             <div class="input-append date success no-padding">
-                              <input type="text" class="form-control from_date" name="date_spd_start" value="" required>
+                              <input type="text" id="from_date" class="form-control from_date" name="date_spd_start" value="" required>
                               <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span> 
                             </div>
                           </div>
@@ -218,11 +219,21 @@
                           </div>
                           <div class="col-md-8">
                             <div class="input-append date success no-padding">
-                              <input type="text" class="form-control to_date" name="date_spd_end" value="" required>
+                              <input type="text" id="to_date" class="form-control to_date" name="date_spd_end" value="" required>
                               <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span> 
                             </div>
                           </div>
                         </div>
+                        <!--
+                        <div class="row form-row">
+                          <div class="col-md-3">
+                            <label class="form-label text-right">Jumlah Hari</label>
+                          </div>
+                          <div class="col-md-2">
+                            <input name="title" id="jml_hari" type="hidden" class="form-control" placeholder="0" value="" readonly>
+                          </div>
+                        </div>
+                        -->
                     </div>
                     <br/>
                     <hr/>
@@ -255,6 +266,18 @@
                                         <td></td>
                                         <td></td>
                                       </tr>
+                                  </tbody>
+                                </table>
+                                <table id="dataTable" class="table">
+                                  <thead>
+                                    <tr>
+                                      <td width="2%"></td>
+                                      <td width="2%"></td>
+                                      <td width="40%" align="right">Total (Rp.)</td>
+                                      <td width="30%"><input type="text" id="total" class="form-control text-right rupiah total" readonly="readonly"></td>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
                                   </tbody>
                                 </table>
                               </div>
@@ -300,7 +323,7 @@
   var cell3=row.insertCell(2);
   cell3.innerHTML = "<select name='biaya_tambahan_id[]' class='select2' style='width:100%'><?php foreach($biaya_tambahan->result() as $row):?><option value='<?php echo $row->id?>'><?php echo $row->title?></option><?php endforeach;?></select>";  
   var cell4=row.insertCell(3);
-  cell4.innerHTML = "<input type='text' name='jumlah_biaya_tambahan[]' class='form-control rupiah text-right'>";
+  cell4.innerHTML = "<input type='text' name='jumlah_biaya_tambahan[]' class='form-control text-right biaya-tambahan angka' value='0'>";
 }
   function deleteRow(tableID){try{var table=document.getElementById(tableID);var rowCount=table.rows.length;for(var i=0;i<rowCount;i++){var row=table.rows[i];var chkbox=row.cells[0].childNodes[0];if(null!=chkbox&&true==chkbox.checked){table.deleteRow(i);rowCount--;i--;}}}catch(e){alert(e);}}
 </script>

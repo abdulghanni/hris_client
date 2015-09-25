@@ -50,7 +50,6 @@
                                   <th width="15%">Nama Karyawan</th>
                                   <th width="15%">Nama Pengaju</th>
                                   <th width="20%">Jabatan Lama</th>
-                                  <th width="5%">Tanggal Pengangkatan</th>
                                   <th width="20%">Jabatan Baru</th>
                                   <th width="5%">Tanggal Pengangkatan</th>
                                   <th width="5%" class="text-center">appr. atasan langsung</th>
@@ -64,10 +63,10 @@
                                 <?php
                                   foreach($form_promosi as $user):
                                   $txt_app_lv1 = $txt_app_lv2 = $txt_app_lv3 = $txt_app_hrd = "<i class='icon-question' title = 'no respond'></i>";
-                                  $approval_status_lv1 = ($user->app_status_id_lv1 == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($user->app_status_id_lv1 == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($user->app_status_id_lv1 == 3) ? "<i class='icon-info' style='color:#EDE427;' title = 'Pending'></i>" : "<i class='icon-question' title = 'No Respond'></i>"));
-                                  $approval_status_lv2 = ($user->app_status_id_lv2 == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($user->app_status_id_lv2 == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($user->app_status_id_lv2 == 3) ? "<i class='icon-info' style='color:#EDE427;' title = 'Pending'></i>" : "<i class='icon-question' title = 'No Respond'></i>"));
-                                  $approval_status_lv3 = ($user->app_status_id_lv3 == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($user->app_status_id_lv3 == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($user->app_status_id_lv3 == 3) ? "<i class='icon-info' style='color:#EDE427;' title = 'Pending'></i>" : "<i class='icon-question' title = 'No Respond'></i>"));
-                                  $approval_status_hrd = ($user->app_status_id_hrd == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($user->app_status_id_hrd == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($user->app_status_id_hrd == 3) ? "<i class='icon-info' style='color:#EDE427;' title = 'Pending'></i>" : "<i class='icon-question' title = 'No Respond'></i>"));
+                                  $approval_status_lv1 = ($user->app_status_id_lv1 == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($user->app_status_id_lv1 == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($user->app_status_id_lv1 == 3) ? "<i class='icon-info' style='color:#719218;' title = 'Pending'></i>" : "<i class='icon-question' title = 'No Respond'></i>"));
+                                  $approval_status_lv2 = ($user->app_status_id_lv2 == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($user->app_status_id_lv2 == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($user->app_status_id_lv2 == 3) ? "<i class='icon-info' style='color:#719218;' title = 'Pending'></i>" : "<i class='icon-question' title = 'No Respond'></i>"));
+                                  $approval_status_lv3 = ($user->app_status_id_lv3 == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($user->app_status_id_lv3 == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($user->app_status_id_lv3 == 3) ? "<i class='icon-info' style='color:#719218;' title = 'Pending'></i>" : "<i class='icon-question' title = 'No Respond'></i>"));
+                                  $approval_status_hrd = ($user->app_status_id_hrd == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($user->app_status_id_hrd == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($user->app_status_id_hrd == 3) ? "<i class='icon-info' style='color:#719218;' title = 'Pending'></i>" : "<i class='icon-question' title = 'No Respond'></i>"));
                                   
                     
                                     //Approval Level 1
@@ -119,7 +118,6 @@
                                     <td><a href="<?php echo site_url('form_promosi/detail/'.$user->id)?>"><?php echo get_name($user->user_id)?></a></td>
                                     <td><a href="<?php echo site_url('form_promosi/detail/'.$user->id)?>"><?php echo get_name($user->created_by)?></a></td>
                                     <td><?php echo get_position_name($user->old_pos)?></td>
-                                    <td><?php echo dateIndo(get_seniority_date(get_nik($user->user_id)))?></td>
                                     <td><?php echo get_position_name($user->new_pos)?></td>
                                     <td><?php echo dateIndo($user->date_promosi)?></td>
                                     <td class="text-center">

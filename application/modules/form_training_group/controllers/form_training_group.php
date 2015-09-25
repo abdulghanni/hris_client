@@ -107,6 +107,7 @@ class form_training_group extends MX_Controller {
         }
         else
         {
+            $this->data['id'] = $id;
             $user_id= getValue('user_pengaju_id', 'users_training_group', array('id'=>'where/'.$id));
             $this->data['user_nik'] = $sess_nik = get_nik($user_id);
             $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
@@ -121,6 +122,9 @@ class form_training_group extends MX_Controller {
             $this->data['ikatan'] = GetAll('training_ikatan_dinas', array('is_deleted' => 'where/0'));
             $this->data['waktu'] = GetAll('training_waktu', array('is_deleted' => 'where/0'));
             $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
+
+            $this->data['ikatan'] = $this->get_tipe_ikatan_dinas();
+            $this->data['vendor'] = $this->get_vendor();
 
             $this->_render_page('form_training_group/detail', $this->data);
         }
@@ -439,18 +443,51 @@ class form_training_group extends MX_Controller {
         
         $user_id= getValue('user_pengaju_id', 'users_training_group', array('id'=>'where/'.$id));
         $this->data['user_nik'] = $sess_nik = get_nik($user_id);
-        $this->data['sess_id'] = $this->session->userdata('user_id');
+        $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
+        $this->data['sess_nik'] = get_nik($sess_id);
 
-        $form_training_group = $this->data['form_training_group'] = $this->form_training_group_model->form_training_group($id)->result($id);
-        $this->data['_num_rows'] = $this->form_training_group_model->form_training_group($id)->num_rows($id);
-        
+        $form_training_group = $this->data['form_training_group'] = $this->form_training_group_model->form_training_group($id)->result();
+        $this->data['_num_rows'] = $this->form_training_group_model->form_training_group($id)->num_rows();
 
         $this->data['training_type'] = GetAll('training_type', array('is_deleted' => 'where/0'));
         $this->data['penyelenggara'] = GetAll('penyelenggara', array('is_deleted' => 'where/0'));
         $this->data['pembiayaan'] = GetAll('pembiayaan', array('is_deleted' => 'where/0'));
-        $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
+        $this->data['ikatan'] = GetAll('training_ikatan_dinas', array('is_deleted' => 'where/0'));
+        $this->data['waktu'] = GetAll('training_waktu', array('is_deleted' => 'where/0'));
 
         return $this->load->view('form_training_group/training_mail', $this->data, TRUE);
+    }
+
+    function get_tipe_ikatan_dinas()
+    {
+        $url = get_api_key().'training/tipe_ikatan_dinas/format/json';
+      
+        $headers = get_headers($url);
+        $response = substr($headers[0], 9, 3);
+        if ($response != "404") {
+            $get_task_receiver = file_get_contents($url);
+            $ikatan = json_decode($get_task_receiver, true);
+
+            return $ikatan;
+        }else{
+            return false;
+        }
+    }
+
+    function get_vendor()
+    {
+        $url = get_api_key().'training/vendor/format/json';
+      
+        $headers = get_headers($url);
+        $response = substr($headers[0], 9, 3);
+        if ($response != "404") {
+            $get_task_receiver = file_get_contents($url);
+            $vendor = json_decode($get_task_receiver, true);
+            
+            return $vendor;
+        } else {
+           return false;
+        }
     }
 
 function get_penerima_tugas()

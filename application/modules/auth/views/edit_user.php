@@ -111,7 +111,7 @@
                                         </div>
                                     </div>
 									
-									
+									<?php if($id != 1): ?>
                                     <div class="form-group">
                                         <?php echo 'Superior Name';?>
                                         <div class="input-with-icon right">
@@ -131,7 +131,7 @@
                                             </div>
                                         </div>
                                     </div>
-
+                                    <?php endif ?>
                                     <div class="form-group">
                                     <!-- <div class="input-with-icon right"> -->
                                         <div class="row text-center">

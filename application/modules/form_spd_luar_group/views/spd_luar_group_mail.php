@@ -1,4 +1,5 @@
-<div class="row">
+<div id="container">
+        <div class="row">
         <div class="col-md-12">
           <div class="grid simple">
             <div class="grid-title no-border">
@@ -167,27 +168,39 @@
                           <td class="text-center">
                             <?php echo get_grade($key->user_id)?>
                           </td>
-                          <?php $c = $ci->db->select('users_spd_luar_group_biaya.jumlah_biaya')->from('users_spd_luar_group_biaya')->join('pjd_biaya','pjd_biaya.id = users_spd_luar_group_biaya.pjd_biaya_id', 'left')->where('user_spd_luar_group_id', $id)->where('user_id', $key->user_id)->where('pjd_biaya.type_grade != ', 0)->get();
+                          <?php $i = 0;
+                              $c = $ci->db->select('users_spd_luar_group_biaya.jumlah_biaya')->from('users_spd_luar_group_biaya')->join('pjd_biaya','pjd_biaya.id = users_spd_luar_group_biaya.pjd_biaya_id', 'left')->where('user_spd_luar_group_id', $id)->where('user_id', $key->user_id)->where('pjd_biaya.type_grade != ', 0)->get();
                               foreach ($c->result() as $c) {
                               $total_fix += $c->jumlah_biaya*$jml_pjd;
                           ?>
                           <td align="right">
-                            <?php echo number_format($c->jumlah_biaya*$jml_pjd, 0)?>
+
+                          <?php $i++ ?>
+                            <span class="fix<?php echo $i ?>"><?php echo number_format($c->jumlah_biaya*$jml_pjd, 0)?></span>
                           </td>
-                              
-                          <?php }?>
-                          <?php
+                          <?php }
+                            $j = 0;
                             $b = $ci->db->select('users_spd_luar_group_biaya.jumlah_biaya')->from('users_spd_luar_group_biaya')->join('pjd_biaya','pjd_biaya.id = users_spd_luar_group_biaya.pjd_biaya_id', 'left')->where('user_spd_luar_group_id', $id)->where('user_id', $key->user_id)->where('pjd_biaya.type_grade', 0)->get();
                               foreach ($b->result() as $b) {
                                 $total_lain += $b->jumlah_biaya;
                           ?>
-                          <td align="right"><?php echo number_format($b->jumlah_biaya, 0)?></td>
+                          <?php $j++ ?>
+                          <td align="right"><span class="tambahan<?php echo $j ?>"><?php echo number_format($b->jumlah_biaya, 0)?></span></td>
                             <?php } ?>
                         </tr>
                       <?php 
                       endforeach ?>
                       <tr>
-                        <td align="center"><b>Total : Rp. <?php echo number_format($total_fix+$total_lain,0)?></b></td>
+                         <td colspan="2"><b>Sub Total</b></td>
+                          <td id="totalfix1" class="total_fix" align="right"></td>
+                          <td id="totalfix2" class="total_fix" align="right"></td>
+                          <td id="totalfix3" class="total_fix" align="right"></td>
+                          <?php $o = 0;foreach($biaya_pjd->result() as $b):$o++;?>
+                            <td id="totaltambahan<?=$o?>" class="total_tambahan" align="right"></td>
+                          <?php endforeach ?>
+                        </tr>
+                      <tr>
+                        <td align="right" colspan="<?php $cs=4+sizeof($biaya_pjd->result());echo $cs;?>"><b>Total : Rp. <?php echo number_format($total_fix+$total_lain,0)?></b></td>
                       </tr>
                       </tbody>
                     </table>
@@ -234,12 +247,160 @@
                       <?php } ?>
                       
                 </div>
+                <div class="form-actions text-center">
+                    <!-- <div class="col-md-12 text-center"> -->
+                      <div class="row wf-spd">
+                        <div class="col-md-6">
+                          <p>Yang bersangkutan</p>
+                          <?php if (in_array($this->session->userdata('user_id'), $receiver) && !in_array($this->session->userdata('user_id'), $receiver_submit)|| in_array(get_nik($this->session->userdata('user_id')),$receiver) && !in_array(get_nik($this->session->userdata('user_id')), $receiver_submit)) { ?>
+                            <br/><p class="">...............................</p>
+                          <?php }elseif(in_array($this->session->userdata('user_id'), $receiver) && in_array($this->session->userdata('user_id'), $receiver_submit)|| in_array(get_nik($this->session->userdata('user_id')),$receiver) && in_array(get_nik($this->session->userdata('user_id')), $receiver_submit)) { ?>
+                            <span class="semi-bold"><?php echo get_name($this->session->userdata('user_id')) ?></span><br/>
+                            <span class="small"><?php echo dateIndo($td->date_submit) ?></span><br/>
+                          <?php }else{ ?>
+                          <p class="wf-submit">
+                            <p class="">...............................</p>
+                          </p>
+                          <?php } ?>
+                        </div>
+                        <div class="col-md-6">
+                          <p>Admin Pembuat Tugas</p>
+                          <p class="wf-approve-sp">
+                            <span class="semi-bold"><?php echo get_name($td->task_creator) ?></span><br/>
+                            <span class="small"><?php echo dateIndo($td->created_on) ?></span><br/>
+                          </p>
+                        </div>
+                      </div>
+                    <!-- /div> -->
+                  </div>
+                  <div class="form-actions">
+                      <div class="col-md-12 text-center"><div class="col-md-12 text-center"><span class="semi-bold">Mengetahui,</span><br/><br/><br/></div>
+                      
 
-                </div>
+                      <div class="row wf-cuti">
+                        <div class="col-md-3">
+                          <p class="wf-approve-sp">
+                            <?php
+                            $approved = assets_url('img/approved_stamp.png');
+                            $rejected = assets_url('img/rejected_stamp.png');
+                            if(!empty($td->user_app_lv1) && $td->is_app_lv1 == 0 && get_nik($sess_id) == $td->user_app_lv1){?>
+                              <span class="semi-bold"></span><br/>
+                              <span class="small"></span><br/><span class="semi-bold"></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"><?php echo get_name($td->user_app_lv1)?></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"><?php echo '('.get_user_position($td->user_app_lv1).')'?></span>
+                            <?php }elseif(!empty($td->user_app_lv1) && $td->is_app_lv1 == 1){
+                             echo ($td->app_status_id_lv1 == 1)?"<img class=approval_img_md src=$approved>":(($td->app_status_id_lv1 == 2) ? "<img class=approval_img_md src=$rejected>":'<span class="small"></span><br/>');?>
+                              <span class="small"></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"><?php echo get_name($td->user_app_lv1)?></span><br/>
+                              <span class="small"><?php echo dateIndo($td->date_app_lv1)?></span><br/>
+                              <span class="semi-bold"><?php echo '('.get_user_position($td->user_app_lv1).')'?></span>
+                            <?php }else{?>
+                              <span class="small"></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"></span><br/>
+                              <span class="semi-bold"><?php echo (!empty($td->user_app_lv1))?get_name($td->user_app_lv1):'';?></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"><?php echo (!empty($td->user_app_lv1))?'('.get_user_position($td->user_app_lv1).')':'';?></span>
+                            <?php } ?>
+                          </p>
+                        </div>
+
+                        <div class="col-md-3">
+                          <p class="wf-approve-sp">
+                            <?php
+                            if(!empty($td->user_app_lv2) && $td->is_app_lv2 == 0 && get_nik($sess_id) == $td->user_app_lv2){?>
+                            <span class="semi-bold"></span><br/>
+                              <span class="small"></span><br/> <span class="semi-bold"></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"><?php echo (!empty($td->user_app_lv2))?get_name($td->user_app_lv2):'';?></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"><?php echo'('.get_user_position($td->user_app_lv2).')'?></span>
+                            <?php }elseif(!empty($td->user_app_lv2) && $td->is_app_lv2 == 1){
+                             echo ($td->app_status_id_lv2 == 1)?"<img class=approval_img_md src=$approved>":(($td->app_status_id_lv2 == 2) ? "<img class=approval_img_md src=$rejected>":'<span class="small"></span><br/>');?>
+                              <span class="small"></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"><?php echo get_name($td->user_app_lv2)?></span><br/>
+                              <span class="small"><?php echo dateIndo($td->date_app_lv2)?></span><br/>
+                              <span class="semi-bold"><?php echo '('.get_user_position($td->user_app_lv2).')'?></span>
+                            <?php }else{?>
+                              <span class="small"></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"><?php echo (!empty($td->user_app_lv2))?get_name($td->user_app_lv2):'';?></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"><?php echo (!empty($td->user_app_lv2))?'('.get_user_position($td->user_app_lv2).')':'';?></span>
+                            <?php } ?>
+                          </p>
+                        </div>
+                          
+                        <div class="col-md-3">
+                          <p class="wf-approve-sp">
+                            <?php
+                            if(!empty($td->user_app_lv3) && $td->is_app_lv3 == 0 && get_nik($sess_id) == $td->user_app_lv3){?>
+                              <span class="semi-bold"></span><br/>
+                              <span class="small"></span><br/><span class="semi-bold"></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"><?php echo  get_name($td->user_app_lv3)?></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold">(<?php echo get_user_position($td->user_app_lv3)?>)</span>
+                            <?php }elseif(!empty($td->user_app_lv3) && $td->is_app_lv3 == 1){
+                             echo ($td->app_status_id_lv3 == 1)?"<img class=approval_img_md src=$approved>":(($td->app_status_id_lv3 == 2) ? "<img class=approval_img_md src=$rejected>":'<span class="small"></span><br/>');?>
+                              <span class="small"></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"><?php echo get_name($td->user_app_lv3)?></span><br/>
+                              <span class="small"><?php echo dateIndo($td->date_app_lv3)?></span><br/>
+                              <span class="semi-bold">(<?php echo get_user_position($td->user_app_lv3)?>)</span>
+                            <?php }else{?>
+                              <span class="small"></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"></span><br/>
+                              <span class="semi-bold"></span><br/>
+                              <span class="semi-bold"><?php echo (!empty($td->user_app_lv3))?get_name($td->user_app_lv3):'';?></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"><?php echo (!empty($td->user_app_lv3))?'('.get_user_position($td->user_app_lv3).')':'';?></span>
+                            <?php } ?>
+                          </p>
+                        </div>
+                          
+                        <div class="col-md-3">
+                          <p class="wf-approve-sp">
+                            <?php
+                            if($td->is_app_hrd == 0 && $this->approval->approver('dinas') == $sess_nik){?>
+                              <span class="semi-bold"></span><br/>
+                              <span class="small"></span><br/><span class="small"></span>
+                              <span class="semi-bold"></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"></span><br/>
+                              <span class="semi-bold">(HRD)</span>
+                            <?php }elseif($td->is_app_hrd == 1){
+                             echo ($td->app_status_id_hrd == 1)?"<img class=approval_img_md src=$approved>":(($td->app_status_id_hrd == 2) ? "<img class=approval_img_md src=$rejected>":'<span class="small"></span><br/>');?>
+                              <span class="small"></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"><?php echo get_name($td->user_app_hrd)?></span><br/>
+                              <span class="small"><?php echo dateIndo($td->date_app_hrd)?></span><br/>
+                              <span class="semi-bold">(HRD)</span>
+                            <?php }else{?>
+                              <span class="small"></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"></span><br/>
+                              <span class="semi-bold">(HRD)</span>
+                            <?php } ?>
+                          </p>
+                        </div>
                       </div>
                     </div> 
                   </div>
               </form>
             </div>
           </div>
+        </div>
+      </div>
+
       <?php endforeach;} ?>

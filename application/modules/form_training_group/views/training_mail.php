@@ -1,4 +1,4 @@
-      <div id="container">
+<div id="container">
         <div class="row">
         <div class="col-md-12">
           <div class="grid simple">
@@ -274,13 +274,139 @@
                           <label class="form-label text-right">Note (HRD) : </label>
                         </div>
                         <div class="col-md-7">
-                          <textarea name="" class="custom-txtarea-form" placeholder="Note HRD isi disini" disabled="disabled"><?php echo $user->note_app_hrd?></textarea>
+                          <textarea name="" class="form-control" class="custom-txtarea-form" placeholder="Note HRD isi disini" disabled="disabled"><?php echo $user->note_app_hrd?></textarea>
                         </div>
                       </div>
                       <?php } ?>
                     </div>
                     <?php } ?>
                   </div>
+
+
+                      <div class="col-md-12 text-center"><div class="col-md-12 text-center"><span class="semi-bold">Mengetahui,</span><br/><br/><br/></div>
+                      <div class="row wf-training">
+                        <div class="col-md-3">
+                          <p class="wf-approve-sp">
+                            <?php
+                            $approved = assets_url('img/approved_stamp.png');
+                            $rejected = assets_url('img/rejected_stamp.png');
+                            if(!empty($user->user_app_lv1) && $user->is_app_lv1 == 0 && get_nik($sess_id) == $user->user_app_lv1){?>
+                              <span class="semi-bold"></span><br/>
+                              <span class="semi-bold"></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"><?php echo get_name($user->user_app_lv1)?></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"><?php echo '('.get_user_position($user->user_app_lv1).')'?></span>
+                            <?php }elseif(!empty($user->user_app_lv1) && $user->is_app_lv1 == 1){
+                             echo ($user->approval_status_id_lv1 == 1)?"<img class=approval_img_md src=$approved>":(($user->approval_status_id_lv1 == 2) ? "<img class=approval_img_md src=$rejected>":'<span class="small"></span><br/>');?>
+                              <span class="small"></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"><?php echo get_name($user->user_app_lv1)?></span><br/>
+                              <span class="small"><?php echo dateIndo($user->date_app_lv1)?></span><br/>
+                              <span class="semi-bold"><?php echo '('.get_user_position($user->user_app_lv1).')'?></span>
+                            <?php }else{?>
+                              <span class="small"></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"></span><br/>
+                              <span class="semi-bold"><?php echo (!empty($user->user_app_lv1))?get_name($user->user_app_lv1):'';?></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"><?php echo (!empty($user->user_app_lv1))?'('.get_user_position($user->user_app_lv1).')':'';?></span>
+                            <?php } ?>
+                          </p>
+                        </div>
+
+                        <div class="col-md-3">
+                        <?php if(!empty($user->user_app_lv3)): ?>
+                          <p class="wf-approve-sp">
+                            <?php
+                            if(!empty($user->user_app_lv2) && $user->is_app_lv2 == 0 && get_nik($sess_id) == $user->user_app_lv2){?>
+                            <span class="semi-bold"></span><br/>
+                               <span class="semi-bold"></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"><?php echo (!empty($user->user_app_lv2))?get_name($user->user_app_lv2):'';?></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"><?php echo'('.get_user_position($user->user_app_lv2).')'?></span>
+                            <?php }elseif(!empty($user->user_app_lv2) && $user->is_app_lv2 == 1){
+                             echo ($user->approval_status_id_lv2 == 1)?"<img class=approval_img_md src=$approved>":(($user->approval_status_id_lv2 == 2) ? "<img class=approval_img_md src=$rejected>":'<span class="small"></span><br/>');?>
+                              <span class="small"></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"><?php echo get_name($user->user_app_lv2)?></span><br/>
+                              <span class="small"><?php echo dateIndo($user->date_app_lv2)?></span><br/>
+                              <span class="semi-bold"><?php echo '('.get_user_position($user->user_app_lv2).')'?></span>
+                            <?php }else{?>
+                              <span class="small"></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"><?php echo (!empty($user->user_app_lv2))?get_name($user->user_app_lv2):'';?></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"><?php echo (!empty($user->user_app_lv2))?'('.get_user_position($user->user_app_lv2).')':'';?></span>
+                            <?php } ?>
+                          </p>
+                        <?php endif; ?>
+                        </div>
+                          
+                        <div class="col-md-3">
+                          <?php if(!empty($user->user_app_lv3)): ?>
+                          <p class="wf-approve-sp">
+                            <?php
+                            if(!empty($user->user_app_lv3) && $user->is_app_lv3 == 0 && get_nik($sess_id) == $user->user_app_lv3){?>
+                              <span class="semi-bold"></span><br/>
+                              <span class="semi-bold"></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"><?php echo  get_name($user->user_app_lv3)?></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold">(<?php echo get_user_position($user->user_app_lv3)?>)</span>
+                            <?php }elseif(!empty($user->user_app_lv3) && $user->is_app_lv3 == 1){
+                             echo ($user->approval_status_id_lv3 == 1)?"<img class=approval_img_md src=$approved>":(($user->approval_status_id_lv3 == 2) ? "<img class=approval_img_md src=$rejected>":'<span class="small"></span><br/>');?>
+                              <span class="small"></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"><?php echo get_name($user->user_app_lv3)?></span><br/>
+                              <span class="small"><?php echo dateIndo($user->date_app_lv3)?></span><br/>
+                              <span class="semi-bold">(<?php echo get_user_position($user->user_app_lv3)?>)</span>
+                            <?php }else{?>
+                              <span class="small"></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"></span><br/>
+                              <span class="semi-bold"></span><br/>
+                              <span class="semi-bold"><?php echo (!empty($user->user_app_lv3))?get_name($user->user_app_lv3):'';?></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"><?php echo (!empty($user->user_app_lv3))?'('.get_user_position($user->user_app_lv3).')':'';?></span>
+                            <?php } ?>
+                          </p>
+                        <?php endif; ?>
+                        </div>
+                          
+                        <div class="col-md-3">
+                          <p class="wf-approve-sp">
+                            <?php
+                            if($user->is_app_hrd == 0 && $this->approval->approver('training') == $sess_nik){?>
+                              <span class="semi-bold"></span><br/>
+                              <span class="small"></span>
+                              <span class="semi-bold"></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"></span><br/>
+                              <span class="semi-bold">(HRD)</span>
+                            <?php }elseif($user->is_app_hrd == 1){
+                             echo ($user->approval_status_id_hrd == 1)?"<img class=approval_img_md src=$approved>":(($user->approval_status_id_hrd == 2) ? "<img class=approval_img_md src=$rejected>":'<span class="small"></span><br/>');?>
+                              <span class="small"></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"><?php echo get_name($user->user_app_hrd)?></span><br/>
+                              <span class="small"><?php echo dateIndo($user->date_app_hrd)?></span><br/>
+                              <span class="semi-bold">(HRD)</span>
+                            <?php }else{?>
+                              <span class="small"></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"></span><br/>
+                              <span class="semi-bold"><?php echo get_name($this->approval->approval('training'))?></span><br/>
+                              <span class="semi-bold"></span><br/>
+                              <span class="semi-bold">(HRD)</span>
+                            <?php } ?>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
                   </form>
                 </div>
                </div>

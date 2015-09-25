@@ -23,6 +23,7 @@ class form_training extends MX_Controller {
 
     function index($ftitle = "fn:",$sort_by = "id", $sort_order = "asc", $offset = 0)
     {
+        $this->data['title'] = 'Form Pelataihan';
         if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page
@@ -98,12 +99,14 @@ class form_training extends MX_Controller {
 
     function detail($id)
     {
+         $this->data['title'] = 'Detail - Form Pelataihan';
         if (!$this->ion_auth->logged_in())
         {
             $this->session->set_userdata('last_link', $this->uri->uri_string());
             //redirect them to the login page
             redirect('auth/login', 'refresh');
         }
+            $this->data['id'] = $id;
             $user_id= getValue('user_pengaju_id', 'users_training', array('id'=>'where/'.$id));
             $this->data['user_nik'] = $sess_nik = get_nik($user_id);
             $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
@@ -119,13 +122,14 @@ class form_training extends MX_Controller {
             $this->data['waktu'] = GetAll('training_waktu', array('is_deleted' => 'where/0'));
             $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
 
-            $this->get_tipe_ikatan_dinas();
-            $this->get_vendor();
+            $this->data['ikatan'] = $this->get_tipe_ikatan_dinas();//print_mz( $this->data['ikatan']);
+            $this->data['vendor'] = $this->get_vendor();//print_mz( $this->data['vendor'][0]['NAME']);
             $this->_render_page('form_training/detail', $this->data);
     }
 
     function input()
     {
+         $this->data['title'] = 'Input - Form Pelataihan';
         if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page
@@ -431,7 +435,8 @@ class form_training extends MX_Controller {
         }
             $user_id= getValue('user_pengaju_id', 'users_training', array('id'=>'where/'.$id));
             $this->data['user_nik'] = $sess_nik = get_nik($user_id);
-            $this->data['sess_id'] = $this->session->userdata('user_id');
+            $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
+            $this->data['sess_nik'] = get_nik($sess_id);
 
             $this->data['form_training'] = $this->form_training_model->form_training($id)->result();
             $this->data['_num_rows'] = $this->form_training_model->form_training($id)->num_rows();
@@ -439,7 +444,8 @@ class form_training extends MX_Controller {
             $this->data['training_type'] = GetAll('training_type', array('is_deleted' => 'where/0'));
             $this->data['penyelenggara'] = GetAll('penyelenggara', array('is_deleted' => 'where/0'));
             $this->data['pembiayaan'] = GetAll('pembiayaan', array('is_deleted' => 'where/0'));
-            $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
+            $this->data['ikatan'] = GetAll('training_ikatan_dinas', array('is_deleted' => 'where/0'));
+            $this->data['waktu'] = GetAll('training_waktu', array('is_deleted' => 'where/0'));
             
         
         return $this->load->view('form_training/training_mail', $this->data, TRUE);
@@ -478,16 +484,12 @@ class form_training extends MX_Controller {
         $response = substr($headers[0], 9, 3);
         if ($response != "404") {
             $get_task_receiver = file_get_contents($url);
-            $task_receiver = json_decode($get_task_receiver, true);
-             foreach ($task_receiver as $row)
-                {
-                    $result['0']= '-- Pilih Tipe Ikatan Dinas --';
-                    $result[$row['DESCRIPTION']]= ucwords(strtolower($row['DESCRIPTION']));
-                }
-        } else {
-           $result['-']= '- Not Availbale -';
-            }
-        $this->data['result']=$result;
+            $ikatan = json_decode($get_task_receiver, true);
+
+            return $ikatan;
+        }else{
+            return false;
+        }
     }
 
     function get_vendor()
@@ -498,16 +500,12 @@ class form_training extends MX_Controller {
         $response = substr($headers[0], 9, 3);
         if ($response != "404") {
             $get_task_receiver = file_get_contents($url);
-            $task_receiver = json_decode($get_task_receiver, true);
-             foreach ($task_receiver as $row)
-                {
-                    $result['0']= '-- Pilih Vendor --';
-                    $result[$row['NAME']]= ucwords(strtolower($row['NAME']));
-                }
+            $vendor = json_decode($get_task_receiver, true);
+            
+            return $vendor;
         } else {
-           $result['-']= '- Not Availbale -';
-            }
-        $this->data['vendor']=$result;
+           return false;
+        }
     }
 
     function _render_page($view, $data=null, $render=false)

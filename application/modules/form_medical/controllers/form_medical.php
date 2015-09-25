@@ -25,6 +25,7 @@ class Form_medical extends MX_Controller {
 
     function index($ftitle = "fn:",$sort_by = "id", $sort_order = "asc", $offset = 0)
     {   
+        $this->data['title'] = 'Form Kesehatan';
         $sess_nik= get_nik($this->session->userdata('user_id'));
         $sess_id= $this->session->userdata('user_id');
 
@@ -102,6 +103,7 @@ class Form_medical extends MX_Controller {
 
     function input()
     {
+        $this->data['title'] = 'Input - Kesehatan';
         if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page
@@ -240,12 +242,14 @@ class Form_medical extends MX_Controller {
 
     function detail($id)
     {
+        $this->data['title'] = 'Detail - Kesehatan';
         if (!$this->ion_auth->logged_in())
         {
             $this->session->set_userdata('last_link', $this->uri->uri_string());
             //redirect them to the login page
             redirect('auth/login', 'refresh');
         }
+        $this->data['id'] = $id;
         $this->data['user_id'] =$user_id = getValue('user_id', 'users_medical', array('id'=>'where/'.$id));
         $this->data['sess_id'] = $sess_id= $this->session->userdata('user_id');
         $this->data['sess_nik'] = get_nik($sess_id);
@@ -538,16 +542,29 @@ class Form_medical extends MX_Controller {
             //redirect them to the login page
             redirect('auth/login', 'refresh');
         }
-        $user_id = getValue('user_id', 'users_medical', array('id'=>'where/'.$id));
-        $sess_id= $this->session->userdata('user_id');
+        $this->data['user_id'] =$user_id = getValue('user_id', 'users_medical', array('id'=>'where/'.$id));
+        $this->data['sess_id'] = $sess_id= $this->session->userdata('user_id');
         $this->data['sess_nik'] = get_nik($sess_id);
         $this->data['is_app_hrd'] = getValue('is_app_hrd', 'users_medical', array('id'=>'where/'.$id));
+        $this->data['note_hrd'] = getValue('note_hrd', 'users_medical', array('id'=>'where/'.$id));
+        $this->data['app_status_id_lv1'] = getValue('app_status_id_lv1', 'users_medical', array('id'=>'where/'.$id));
+        $this->data['note_lv1'] = getValue('note_lv1', 'users_medical', array('id'=>'where/'.$id));
+        $this->data['creator_id'] = getValue('created_by', 'users_medical', array('id'=>'where/'.$id));
         $this->data['bagian'] = get_user_organization(get_nik($user_id));
         $this->data['detail'] = $this->form_medical_model->form_medical_detail($id)->result_array();
         $this->data['detail_hrd'] = $this->form_medical_model->form_medical_hrd($id)->result_array();
         $this->data['total_medical_hrd'] = $this->form_medical_model->get_total_medical_hrd($id);
         $form_medical = $this->data['form_medical'] = $this->form_medical_model->form_medical($id)->result();
+        $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
         $this->data['_num_rows'] = $this->form_medical_model->form_medical($id)->num_rows();
+        $first_name = getValue('first_name', 'users', array('id'=>'where/'.$user_id));
+        $this->data['user_folder'] = $user_id.$first_name.'/medical/';
+        $attachment = getValue('attachment', 'users_medical', array('id' => 'where/'.$id));
+        $this->data['attachment'] = explode(",",$attachment);
+        $this->get_user_same_org($user_id);
+        $this->data['all_users'] = getAll('users', array('active'=>'where/1', 'username'=>'order/asc'), array('!=id'=>'1'))->result_array();
+        $this->data['hubungan'] = getAll('medical_hubungan', array('is_deleted' => 'where/0'))->result_array();
+        $this->data['jenis'] = getAll('medical_jenis_pemeriksaan', array('is_deleted' => 'where/0'))->result_array();
 
         return $this->load->view('form_medical/medical_mail', $this->data, true);
     }

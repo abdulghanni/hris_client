@@ -23,6 +23,7 @@ class Form_resignment extends MX_Controller {
 
     function index($ftitle = "fn:",$sort_by = "id", $sort_order = "asc", $offset = 0)
     {
+        $this->data['title'] = 'Form Pengunduran Diri';
         if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page
@@ -98,7 +99,7 @@ class Form_resignment extends MX_Controller {
 
     function input()
     {
-
+        $this->data['title'] = 'Input - Form Pengunduran Diri';
         if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page
@@ -193,12 +194,13 @@ class Form_resignment extends MX_Controller {
 
     function detail($id)
     {
+        $this->data['title'] = 'Detail - Form Pengunduran Diri';
         if(!$this->ion_auth->logged_in())
         {
             $this->session->set_userdata('last_link', $this->uri->uri_string());
             redirect('auth/login', 'refresh');
         }
-
+        $this->data['id'] = $id;
         $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
         $sess_nik = $this->data['sess_nik'] = get_nik($sess_id);
         $user_id = getValue('user_id', 'users_resignment', array('id'=>'where/'.$id));
@@ -415,13 +417,15 @@ class Form_resignment extends MX_Controller {
             redirect('auth/login', 'refresh');
         }
 
-        $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
+       $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
+        $sess_nik = $this->data['sess_nik'] = get_nik($sess_id);
         $user_id = getValue('user_id', 'users_resignment', array('id'=>'where/'.$id));
         $this->data['user_nik'] = get_nik($user_id);
         $form_resignment = $this->data['form_resignment'] = $this->form_resignment_model->form_resignment($id)->result();
         $this->data['_num_rows'] = $this->form_resignment_model->form_resignment($id)->num_rows();
-        
-        $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
+        $this->data['alasan_resign'] = getAll('alasan_resign', array('is_deleted'=>'where/0'));
+        $alasan = explode(',', getValue('alasan_resign_id', 'users_resignment_wawancara', array('user_resignment_id' => 'where/'.$id)));
+        $this->data['alasan'] = $this->form_resignment_model->get_alasan($alasan);
 
         return $this->load->view('form_resignment/resignment_mail', $this->data, TRUE);
     }

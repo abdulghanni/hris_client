@@ -16,6 +16,7 @@
           <div class="grid simple">
             <div class="grid-title no-border">
               <h4>Form Keterangan Tidak <a href="<?php echo site_url('form_absen')?>"><span class="semi-bold">Absen</span></a></h4>
+              <a href="<?php echo site_url('form_absen/form_absen_pdf/'.$id)?>" target="_blank"><button class="btn btn-primary pull-right"><i class="icon-print"> Cetak</i></button></a>
             </div>
             <div class="grid-body no-border">
             <?php 
@@ -104,15 +105,14 @@
                               <span class="small"></span><br/>
                               <span class="semi-bold"><?php echo get_name($absen->user_app_lv1)?></span><br/>
                               <span class="small"><?php echo dateIndo($absen->date_app_lv1)?></span><br/>
-                              <span class="semi-bold"></span>
                               <span class="semi-bold">(Atasan Langsung)</span>
                             <?php }else{?>
                               <span class="small"></span><br/>
                               <span class="small"></span><br/>
                               <span class="semi-bold"></span><br/>
-                              <span class="small"></span><br/>
-                              <span class="semi-bold"></span><br/>
-                              <span class="semi-bold"><?php echo (!empty($absen->user_app_lv1))?'(Atasan Langsung)':'';?></span>
+                              <span class="semi-bold"><?php echo get_name($absen->user_app_lv1)?></span><br/>
+                              <span class="small"><?php echo dateIndo($absen->date_app_lv1)?></span><br/>
+                              <span class="semi-bold">(Atasan Langsung)</span>
                             <?php } ?>
                           </p>
                         </div>
@@ -132,15 +132,14 @@
                               <span class="small"></span><br/>
                               <span class="semi-bold"><?php echo get_name($absen->user_app_lv2)?></span><br/>
                               <span class="small"><?php echo dateIndo($absen->date_app_lv2)?></span><br/>
-                              <span class="semi-bold"></span>
                               <span class="semi-bold">(Atasan Tidak Langsung)</span>
                             <?php }else{?>
                               <span class="small"></span><br/>
                               <span class="small"></span><br/>
                               <span class="semi-bold"></span><br/>
-                              <span class="small"></span><br/>
-                              <span class="semi-bold"></span><br/>
-                              <span class="semi-bold"><?php echo (!empty($absen->user_app_lv2))?'(Atasan Tidak Langsung)':'';?></span>
+                              <span class="semi-bold"><?php echo get_name($absen->user_app_lv2)?></span><br/>
+                              <span class="small"><?php echo dateIndo($absen->date_app_lv2)?></span><br/>
+                              <span class="semi-bold">(Atasan Tidak Langsung)</span>
                             <?php } ?>
                           </p>
                         </div>
@@ -160,15 +159,14 @@
                               <span class="small"></span><br/>
                               <span class="semi-bold"><?php echo get_name($absen->user_app_lv3)?></span><br/>
                               <span class="small"><?php echo dateIndo($absen->date_app_lv3)?></span><br/>
-                              <span class="semi-bold"></span>
                               <span class="semi-bold">(<?php echo get_user_position($absen->user_app_lv3)?>)</span>
                             <?php }else{?>
                               <span class="small"></span><br/>
                               <span class="small"></span><br/>
                               <span class="semi-bold"></span><br/>
-                              <span class="small"></span><br/>
-                              <span class="semi-bold"></span><br/>
-                              <span class="semi-bold"><?php echo (!empty($absen->user_app_lv3))?get_user_position($absen->user_app_lv3):'';?></span>
+                              <span class="semi-bold"><?php echo get_name($absen->user_app_lv3)?></span><br/>
+                              <span class="small"><?php echo dateIndo($absen->date_app_lv3)?></span><br/>
+                              <span class="semi-bold">(<?php echo get_user_position($absen->user_app_lv3)?>)</span>
                             <?php } ?>
                           </p>
                         </div>
@@ -188,14 +186,13 @@
                               <span class="small"></span><br/>
                               <span class="semi-bold"><?php echo get_name($absen->user_app_hrd)?></span><br/>
                               <span class="small"><?php echo dateIndo($absen->date_app_hrd)?></span><br/>
-                              <span class="semi-bold"></span>
                               <span class="semi-bold">(HRD)</span>
                             <?php }else{?>
                               <span class="small"></span><br/>
                               <span class="small"></span><br/>
                               <span class="semi-bold"></span><br/>
-                              <span class="small"></span><br/>
-                              <span class="semi-bold"></span><br/>
+                              <span class="semi-bold"><?php echo get_name($this->approval->approver('absen'))?></span><br/>
+                              <span class="small"><?php echo dateIndo($absen->date_app_hrd)?></span><br/>
                               <span class="semi-bold">(HRD)</span>
                             <?php } ?>
                           </p>

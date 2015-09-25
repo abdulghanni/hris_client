@@ -5,6 +5,10 @@
 <title><?php echo $title?></title>
 <style type="text/css">
 <!--
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{ height:40px;font-family:Arial, sans-serif;font-size:14px;padding:12px 16px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+.tg th{height:40px; font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:12px 16px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+
 .style3 {
   font-size: 16px;
 }
@@ -157,12 +161,12 @@
   <p align="center" class="style6">Form Surat Perjalan Dinas Dalam Kota </p>
 </div>
 <h5 align="center"><span class="semi-bold">Ketentuan Biaya Perjalanan Dinas</span></h5>
-<table width="800" height="128" border="1" class="style3" style="float:center;margin-left:25%;margin-right:25%;">
+<table width="800" height="128" border="1" border-style:solid class="tg" style="float:center;margin-left:25%;margin-right:25%;">
   <thead>
     <tr>
       <th width="4%" height="50">No</th>
       <th width="48%">Jenis Biaya</th>
-      <th width="48%">Jumlah Biaya</th>
+      <th width="48%">Jumlah Biaya (Rp.)</th>
     </tr>
   </thead>
   <tbody>
@@ -174,14 +178,14 @@
      $total += $jumlah_biaya;
     ?>
       <tr>
-        <td align="center" height="40"><?php echo $i++?></td>
+        <td align="center" height="40" class="tg-031e"><?php echo $i++?></td>
         <td><?php echo $row->jenis_biaya.$jumlah_hari?></td>
-        <td align="right">Rp. <?php echo number_format($jumlah_biaya, 0)?></td>
+        <td align="right"><?php echo number_format($jumlah_biaya, 0)?></td>
       </tr>
     <?php endforeach ?>
       <tr>
         <td>&nbsp;</td>
-        <td align="right">Total :</td>
+        <td align="right">Total(Rp.) :</td>
         <td align="right"><?php echo number_format($total, 0) ?></td>
       </tr>
   </tbody>

@@ -2,17 +2,47 @@ $(document).ready(function() {
   $(".select2").select2();
 
   //Date Pickers
-  $('.input-append.date').datepicker({
-            autoclose: true,
-            todayHighlight: true
-   });
+  $('.input-append.date')
+        .datepicker({todayHighlight: true})
+        .on('changeDate', function(ev){
+            days();
+            $(this).datepicker('hide').blur();
+    });
 
-  $('.rupiah').maskMoney({precision: 0});
+  $('.rupiah').maskMoney({precision: 0, allowZero:true});
 
   $('#btnAddBiaya').on('click', function () {
     $(document).find("select.select2").select2();
-    $('.rupiah').maskMoney({precision: 0});
     $('#btnRemove').show();
+    $('.rupiah').maskMoney({precision: 0});
+    $(".angka").keydown(function(event) {
+        // Allow only backspace and delete
+        if ( event.keyCode == 46 || event.keyCode == 8 ) {
+            // let it happen, don't do anything
+        }
+        else {
+            // Ensure that it is a number and stop the keypress
+            if (event.keyCode < 48 || event.keyCode > 57 ) {
+                event.preventDefault(); 
+            }   
+        }
+    });
+
+    $(".biaya-tambahan").keyup(function() {
+   
+        var total = 0;
+        var total2 = 0;
+        $('.biaya').each(function (index, element) {
+            total = total + parseInt($(element).val());
+        });
+
+        $('.biaya-tambahan').each(function (index, element) {
+            total2 = total2 + parseInt($(element).val());
+        });
+
+        val = total+total2;
+       $("#total").val(val);
+    })
   });
 
     $('#btnAdd').on('click', function () {
@@ -28,6 +58,14 @@ var ToEndDate = new Date();
 
 ToEndDate.setDate(ToEndDate.getDate()+365);
 
+function days() 
+{
+  var a = $("#from_date").datepicker('getFormattedDate'),
+                    b = $("#to_date").datepicker('getFormattedDate'),
+                    c = 24*60*60*1000,
+                    diffDays = Math.floor(( Date.parse(b) - Date.parse(a) ) / c);
+                $("#jml_hari").val(diffDays+1);
+}
 $('.from_date').datepicker({
     
     weekStart: 1,
@@ -72,6 +110,7 @@ $('.to_date')
           atasan1 : "Silakan Pilih Atasan"
       }
   });
+
 
   $.validator.addMethod('notEqual',function(value, element, param){
     return this.optional(element)||value != param;

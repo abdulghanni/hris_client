@@ -17,12 +17,11 @@ class Form_promosi extends MX_Controller {
 
         $this->lang->load('auth');
         $this->load->helper('language');
-
-        
     }
 
     function index($ftitle = "fn:",$sort_by = "id", $sort_order = "asc", $offset = 0)
     {
+        $this->data['title'] = "Form Promosi";
         if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page
@@ -32,7 +31,6 @@ class Form_promosi extends MX_Controller {
         {
             $sess_id= $this->data['sess_id'] = $this->session->userdata('user_id');
             $this->data['sess_nik'] = $sess_nik = get_nik($sess_id);
-
 
             //set sort order
             $this->data['sort_order'] = $sort_order;
@@ -98,6 +96,7 @@ class Form_promosi extends MX_Controller {
 
     function input()
     {
+        $this->data['title'] = "Input - Form Promosi";
         if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page
@@ -115,18 +114,23 @@ class Form_promosi extends MX_Controller {
 
     function detail($id)
     {
+        $this->data['title'] = "Detail - Form Promosi";
         if (!$this->ion_auth->logged_in())
         {
             $this->session->set_userdata('last_link', $this->uri->uri_string());
             //redirect them to the login page
             redirect('auth/login', 'refresh');
         }else{
-           
+           $this->data['id'] = $id;
             $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
             $this->data['sess_nik'] = get_nik($sess_id);
             $form_promosi = $this->data['form_promosi'] = $this->form_promosi_model->form_promosi($id)->result();
             $this->data['_num_rows'] = $this->form_promosi_model->form_promosi($id)->num_rows();
-
+            $this->data['user_id'] =$user_id = getValue('created_by', 'users_promosi', array('id'=>'where/'.$id));
+            $first_name = getValue('first_name', 'users', array('id'=>'where/'.$user_id));
+            $this->data['user_folder'] = $user_id.$first_name.'/sdm/';
+            $attachment = getValue('attachment', 'users_promosi', array('id' => 'where/'.$id));
+            $this->data['attachment'] = explode(",",$attachment);
             $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
             $this->_render_page('form_promosi/detail', $this->data);
         }
@@ -162,6 +166,8 @@ class Form_promosi extends MX_Controller {
                     'user_app_lv1'          => $this->input->post('atasan1'),
                     'user_app_lv2'          => $this->input->post('atasan2'),
                     'user_app_lv3'          => $this->input->post('atasan3'),
+                    'user_app_lv4'          => $this->input->post('atasan4'),
+                    'user_app_lv5'          => $this->input->post('atasan5'),
                     'created_on'            => date('Y-m-d',strtotime('now')),
                     'created_by'            => $this->session->userdata('user_id')
                 );
@@ -169,6 +175,7 @@ class Form_promosi extends MX_Controller {
                 if ($this->form_validation->run() == true && $this->form_promosi_model->create_($user_id, $additional_data))
                 {
                      $promosi_id = $this->db->insert_id();
+                     $this->upload_attachment($promosi_id);
                      $user_app_lv1 = getValue('user_app_lv1', 'users_promosi', array('id'=>'where/'.$promosi_id));
                      $isi_email = get_name($user_id).' mengajukan Permohonan promosi, untuk melihat detail silakan <a href='.base_url().'form_promosi/detail/'.$promosi_id.'>Klik Disini</a><br />';
 
@@ -183,6 +190,45 @@ class Form_promosi extends MX_Controller {
                     //echo json_encode(array('st' =>1, 'promosi_url' => $promosi_url));
                 }
             }
+        }
+    }
+
+    function upload_attachment($id)
+    {
+        $user_id = getValue('created_by', 'users_promosi', array('id' => 'where/'.$id));
+        $user = getAll('users', array('id'=>'where/'.$user_id))->row();
+        $user_folder = $user->id.$user->first_name;
+        if(!is_dir('./'.'uploads')){
+        mkdir('./'.'uploads', 0777);
+        }
+        if(!is_dir('./uploads/'.$user_folder)){
+        mkdir('./uploads/'.$user_folder, 0777);
+        }
+        if(!is_dir("./uploads/$user_folder/sdm/")){
+        mkdir("./uploads/$user_folder/sdm/", 0777);
+        }
+
+
+        $path = "./uploads/$user_folder/sdm/";
+        $this->load->library('upload');
+        $this->upload->initialize(array(
+            "upload_path"=>$path,
+            "overwrite" => TRUE,
+            "allowed_types"=>"*"
+        ));
+
+        if($this->upload->do_multi_upload("userfile")){
+            $up = $this->upload->get_multi_upload_data();
+            $attachment = '';
+            for($i=0;$i<sizeof($up);$i++):
+                $koma = ($i<sizeof($up)-1)?',':'';
+                $attachment .= $up[$i]['file_name'].$koma;
+            endfor;
+            $data = array(
+                    'attachment' => $attachment,
+                );
+            $this->db->where('id', $id)->update('users_promosi', $data);
+            return true;
         }
     }
 
@@ -228,7 +274,7 @@ class Form_promosi extends MX_Controller {
             if($type !== 'hrd' && $approval_status == 1){
                 $lv = substr($type, -1)+1;
                 $lv_app = 'lv'.$lv;
-                $user_app = ($lv<4) ? getValue('user_app_'.$lv_app, 'users_promosi', array('id'=>'where/'.$id)):0;
+                $user_app = ($lv<6) ? getValue('user_app_'.$lv_app, 'users_promosi', array('id'=>'where/'.$id)):0;
                if(!empty($user_app)){
                     $this->approval->request($lv_app, 'promosi', $id, $user_promosi_id, $this->detail_email($id));
                     if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), 'Pengajuan Permohonan Promosi', $isi_email_request);
@@ -240,44 +286,57 @@ class Form_promosi extends MX_Controller {
                 $this->send_user_notification($id, $user_promosi_id);
             }else{
                 $email_body = "Status pengajuan permohonan promosi yang diajukan oleh ".get_name($user_promosi_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_promosi/detail/'.$id.'>Klik Disini</a><br />';
+                $form = 'promosi';
                 switch($type){
-                    case 'lv1':
-                        //$this->approval->not_approve('promosi', $id, )
-                    break;
+                case 'lv1':
+                    //$this->approval->not_approve('spd_dalam', $id, )
+                break;
 
-                    case 'lv2':
-                        $receiver_id = getValue('user_app_lv1', 'users_promosi', array('id'=>'where/'.$id));
-                        $this->approval->not_approve('promosi', $id, $receiver_id, $approval_status ,$this->detail_email($id));
-                        if(!empty(getEmail($receiver_id)))$this->send_email(getEmail($receiver_id), 'Status Pengajuan Permohonan promosi Dari Atasan', $email_body);
-                    break;
+                case 'lv2':
+                    $receiver_id = getValue('user_app_lv1', 'users_'.$form, array('id'=>'where/'.$id));
+                    $this->approval->not_approve($form, $id, $receiver_id, $approval_status ,$this->detail_email($id));
+                    //if(!empty(getEmail($receiver_id)))$this->send_email(getEmail($receiver_id), 'Status Pengajuan Permohonan Perjalanan Dinas Dari Atasan', $email_body);
+                break;
 
-                    case 'lv3':
-                        $receiver_lv2 = getValue('user_app_lv2', 'users_promosi', array('id'=>'where/'.$id));
-                        $this->approval->not_approve('promosi', $id, $receiver_lv2, $approval_status ,$this->detail_email($id));
-                        if(!empty(getEmail($receiver_lv2)))$this->send_email(getEmail($receiver_lv2), 'Status Pengajuan Permohonan promosi Dari Atasan', $email_body);
-
-                        $receiver_lv1 = getValue('user_app_lv1', 'users_promosi', array('id'=>'where/'.$id));
-                        $this->approval->not_approve('promosi', $id, $receiver_lv1, $approval_status ,$this->detail_email($id));
-                        if(!empty(getEmail($receiver_lv1)))$this->send_email(getEmail($receiver_lv1), 'Status Pengajuan Permohonan promosi Dari Atasan', $email_body);
-                    break;
-
-                    case 'hrd':
-                        $receiver_lv3 = getValue('user_app_lv3', 'users_promosi', array('id'=>'where/'.$id));
-                        if(!empty($receiver_lv3)):
-                            $this->approval->not_approve('promosi', $id, $receiver_lv3, $approval_status ,$this->detail_email($id));
-                            if(!empty(getEmail($receiver_lv3)))$this->send_email(getEmail($receiver_lv3), 'Status Pengajuan Permohonan promosi Dari Atasan', $email_body);
+                case 'lv3':
+                    for($i=1;$i<3;$i++):
+                        $receiver = getValue('user_app_lv'.$i, 'users_'.$form, array('id'=>'where/'.$id));
+                        if(!empty($receiver)):
+                            $this->approval->not_approve($form, $id, $receiver, $approval_status ,$this->detail_email($id));
+                            //if(!empty(getEmail($receiver)))$this->send_email(getEmail($receiver), 'Status Pengajuan Permohonan PJD Dalam Kota Dari Atasan', $email_body);
                         endif;
-                        $receiver_lv2 = getValue('user_app_lv2', 'users_promosi', array('id'=>'where/'.$id));
-                        if(!empty($receiver_lv2)):
-                            $this->approval->not_approve('promosi', $id, $receiver_lv2, $approval_status ,$this->detail_email($id));
-                            if(!empty(getEmail($receiver_lv2)))$this->send_email(getEmail($receiver_lv2), 'Status Pengajuan Permohonan promosi Dari Atasan', $email_body);
+                    endfor;
+                break;
+
+                case 'lv4':
+                    for($i=1;$i<4;$i++):
+                        $receiver = getValue('user_app_lv'.$i, 'users_'.$form, array('id'=>'where/'.$id));
+                        if(!empty($receiver)):
+                            $this->approval->not_approve($form, $id, $receiver, $approval_status ,$this->detail_email($id));
+                            //if(!empty(getEmail($receiver)))$this->send_email(getEmail($receiver), 'Status Pengajuan Permohonan PJD Dalam Kota Dari Atasan', $email_body);
                         endif;
-                        $receiver_lv1 = getValue('user_app_lv1', 'users_promosi', array('id'=>'where/'.$id));
-                        if(!empty($receiver_lv1)):
-                            $this->approval->not_approve('promosi', $id, $receiver_lv1, $approval_status ,$this->detail_email($id));
-                        if(!empty(getEmail($receiver_lv1)))$this->send_email(getEmail($receiver_lv1), 'Status Pengajuan Permohonan promosi Dari Atasan', $email_body);
+                    endfor;
+                break;
+
+                case 'lv5':
+                    for($i=1;$i<5;$i++):
+                        $receiver = getValue('user_app_lv'.$i, 'users_'.$form, array('id'=>'where/'.$id));
+                        if(!empty($receiver)):
+                            $this->approval->not_approve($form, $id, $receiver, $approval_status ,$this->detail_email($id));
+                            //if(!empty(getEmail($receiver)))$this->send_email(getEmail($receiver), 'Status Pengajuan Permohonan PJD Dalam Kota Dari Atasan', $email_body);
                         endif;
-                    break;
+                    endfor;
+                break;
+
+                case 'hrd':
+                    for($i=1;$i<6;$i++):
+                        $receiver = getValue('user_app_lv'.$i, 'users_'.$form, array('id'=>'where/'.$id));
+                        if(!empty($receiver)):
+                            $this->approval->not_approve($form, $id, $receiver, $approval_status ,$this->detail_email($id));
+                            //if(!empty(getEmail($receiver)))$this->send_email(getEmail($receiver), 'Status Pengajuan Permohonan PJD Dalam Kota Dari Atasan', $email_body);
+                        endif;
+                    endfor;
+                break;
                 }
             }
 
@@ -323,7 +382,7 @@ class Form_promosi extends MX_Controller {
                 $bu = json_decode($getbu, true);
                 foreach ($bu as $row)
             {
-                $result['-']= '- Pilih BU -';
+                $result['0']= '- Pilih Unit Bisnis Baru -';
                 if($row['NUM'] != null){
                 $result[$row['NUM']]= ucwords(strtolower($row['DESCRIPTION']));
                 }
@@ -348,7 +407,7 @@ class Form_promosi extends MX_Controller {
             $result[$row['ID']]= ucwords(strtolower($row['DESCRIPTION']));
         }
         } else {
-           $result['-']= '- Belum Ada Organization -';
+           $result['-']= '- Belum Ada Departement -';
         }
         $data['result']=$result;
         $this->load->view('dropdown_org',$data);
@@ -375,7 +434,6 @@ class Form_promosi extends MX_Controller {
 
     function get_emp_by_pos($posid)
     {
-        
         $url = get_api_key().'users/employee_by_pos/POSID/'.$posid.'/format/json';
         $headers = get_headers($url);
         $response = substr($headers[0], 9, 3);
@@ -387,150 +445,6 @@ class Form_promosi extends MX_Controller {
             return false;
         }
     }
-    
-    public function get_emp_org()
-    {
-        $id = $this->input->post('id');
-
-        $url = get_api_key().'users/employement/EMPLID/'.get_nik($id).'/format/json';
-            $headers = get_headers($url);
-            $response = substr($headers[0], 9, 3);
-            if ($response != "404") {
-                $getuser_info = file_get_contents($url);
-                $user_info = json_decode($getuser_info, true);
-                $org_nm = $user_info['ORGANIZATION'];
-            } else {
-                $org_nm = '';
-            }
-        
-        echo $org_nm;
-    }
-
-    public function get_emp_pos()
-    {
-        $id = $this->input->post('id');
-
-        $url = get_api_key().'users/employement/EMPLID/'.get_nik($id).'/format/json';
-            $headers = get_headers($url);
-            $response = substr($headers[0], 9, 3);
-            if ($response != "404") {
-                $getuser_info = file_get_contents($url);
-                $user_info = json_decode($getuser_info, true);
-                $pos_nm = $user_info['POSITION'];
-            } else {
-                $pos_nm = '';
-            }
-
-        echo $pos_nm;
-    }
-
-    public function get_emp_orgid()
-    {
-        $id = $this->input->post('id');
-
-        $url = get_api_key().'users/employement/EMPLID/'.get_nik($id).'/format/json';
-            $headers = get_headers($url);
-            $response = substr($headers[0], 9, 3);
-            if ($response != "404") {
-                $getuser_info = file_get_contents($url);
-                $user_info = json_decode($getuser_info, true);
-                $org_nm = $user_info['ORGID'];
-            } else {
-                $org_nm = '';
-            }
-        
-        echo $org_nm;
-    }
-
-    public function get_emp_posid()
-    {
-        $id = $this->input->post('id');
-
-        $url = get_api_key().'users/employement/EMPLID/'.get_nik($id).'/format/json';
-            $headers = get_headers($url);
-            $response = substr($headers[0], 9, 3);
-            if ($response != "404") {
-                $getuser_info = file_get_contents($url);
-                $user_info = json_decode($getuser_info, true);
-                $pos_nm = $user_info['POSID'];
-            } else {
-                $pos_nm = '';
-            }
-
-        echo $pos_nm;
-    }
-
-    public function get_emp_nik()
-    {
-        $id = $this->input->post('id');
-
-        $url = get_api_key().'users/employement/EMPLID/'.get_nik($id).'/format/json';
-            $headers = get_headers($url);
-            $response = substr($headers[0], 9, 3);
-            if ($response != "404") {
-                $getuser_info = file_get_contents($url);
-                $user_info = json_decode($getuser_info, true);
-                $nik = $user_info['EMPLID'];
-            } else {
-                $nik = '';
-            }
-
-        echo $nik;
-    }
-
-    public function get_emp_bu()
-    {
-        $id = $this->input->post('id');
-
-        $url = get_api_key().'users/employement/EMPLID/'.get_nik($id).'/format/json';
-            $headers = get_headers($url);
-            $response = substr($headers[0], 9, 3);
-            if ($response != "404") {
-                $getuser_info = file_get_contents($url);
-                $user_info = json_decode($getuser_info, true);
-                $bu_nm = $user_info['BU'];
-            } else {
-                $bu_nm = '';
-            }
-
-        echo $bu_nm;
-    }
-
-    public function get_emp_buid()
-    {
-        $id = $this->input->post('id');
-
-        $url = get_api_key().'users/employement/EMPLID/'.get_nik($id).'/format/json';
-            $headers = get_headers($url);
-            $response = substr($headers[0], 9, 3);
-            if ($response != "404") {
-                $getuser_info = file_get_contents($url);
-                $user_info = json_decode($getuser_info, true);
-                $bu_id = $user_info['BUID'];
-            } else {
-                $bu_id = '';
-            }
-
-        echo $bu_id;
-    }
-
-    public function get_emp_sendate()
-    {
-        $id = $this->input->post('id');
-
-        $url = get_api_key().'users/employement/EMPLID/'.get_nik($id).'/format/json';
-            $headers = get_headers($url);
-            $response = substr($headers[0], 9, 3);
-            if ($response != "404") {
-                $getuser_info = file_get_contents($url);
-                $user_info = json_decode($getuser_info, true);
-                $sen_date = dateIndo($user_info['SENIORITYDATE']);
-            } else {
-                $sen_date = '';
-            }
-
-        echo $sen_date;
-    }
 
     function form_promosi_pdf($id)
     {
@@ -538,23 +452,22 @@ class Form_promosi extends MX_Controller {
         {
             //redirect them to the login page
             redirect('auth/login', 'refresh');
-        }else{
-           
-            $user_id = $this->data['user_id'] = getValue('user_id', 'users_promosi', array('id'=>'where/'.$id));
-            $form_promosi = $this->data['form_promosi'] = $this->form_promosi_model->form_promosi($id)->result();
-            $this->data['_num_rows'] = $this->form_promosi_model->form_promosi($id)->num_rows();
+        }  
+        
+        $user_id = $this->data['user_id'] = getValue('user_id', 'users_promosi', array('id'=>'where/'.$id));
+        $form_promosi = $this->data['form_promosi'] = $this->form_promosi_model->form_promosi($id)->result();
+        $this->data['_num_rows'] = $this->form_promosi_model->form_promosi($id)->num_rows();
 
-            $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
+        $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
 
-            $this->data['id'] = $id;
-            $title = $this->data['title'] = 'Form Pengajuan Promosi-'.get_name($user_id);
-            $this->load->library('mpdf60/mpdf');
-            $html = $this->load->view('promosi_pdf', $this->data, true); 
-            $mpdf = new mPDF();
-            $mpdf = new mPDF('A4');
-            $mpdf->WriteHTML($html);
-            $mpdf->Output($id.'-'.$title.'.pdf', 'I');
-        }
+        $this->data['id'] = $id;
+        $title = $this->data['title'] = 'Form Pengajuan Promosi-'.get_name($user_id);
+        $this->load->library('mpdf60/mpdf');
+        $html = $this->load->view('promosi_pdf', $this->data, true); 
+        $mpdf = new mPDF();
+        $mpdf = new mPDF('A4');
+        $mpdf->WriteHTML($html);
+        $mpdf->Output($id.'-'.$title.'.pdf', 'I');
     }
 
     function _render_page($view, $data=null, $render=false)

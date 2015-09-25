@@ -1,4 +1,7 @@
-<div class="grid simple">
+<div id="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="grid simple">
               <div class="grid-title no-border">
                 <h4>View Permintaan <span class="semi-bold"><a href="<?php echo site_url('form_training')?>">Pelatihan</a></span></h4>
               </div>
@@ -79,21 +82,10 @@
                             <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Tujuan pelatihan" value="<?php echo $user->tujuan_training?>" disabled="disabled">
                           </div>
                         </div>
-                        <?php if(!empty($user->approval_status_id_lv1)){?>
-                        <div class="row form-row">
-                          <div class="col-md-3">
-                            <label class="form-label text-right">Approval Status(Supervisor)</label>
-                          </div>
-                          <div class="col-md-9">
-                            <input name="" id="alamat_training" type="text"  class="form-control" placeholder="Nama" value="<?php echo $user->approval_status_lv1; ?>" disabled="disabled">
-                          </div>
-                        </div>
-                        <?php } ?>
-
                         <?php if(!empty($user->note_app_lv1)){?>
                         <div class="row form-row">
                           <div class="col-md-3">
-                            <label class="form-label text-right">Note (Supervisor) : </label>
+                            <label class="form-label text-right">Note (Atasan Langsung) : </label>
                           </div>
                           <div class="col-md-9">
                             <textarea name="" class="custom-txtarea-form"  disabled="disabled"><?php echo $user->note_app_lv1?></textarea>
@@ -101,35 +93,13 @@
                         </div>
                         <?php } ?>
 
-                        <?php if(!empty($user->approval_status_id_lv2)){?>
-                        <div class="row form-row">
-                          <div class="col-md-3">
-                            <label class="form-label text-right">Approval Status(Ka. Bagian)</label>
-                          </div>
-                          <div class="col-md-9">
-                            <input name="" id="alamat_training" type="text"  class="form-control" placeholder="Nama" value="<?php echo $user->approval_status_lv2; ?>" disabled="disabled">
-                          </div>
-                        </div>
-                        <?php } ?>
-
                         <?php if(!empty($user->note_app_lv2)){?>
                         <div class="row form-row">
                           <div class="col-md-3">
-                            <label class="form-label text-right">Note (Ka. Bagian) : </label>
+                            <label class="form-label text-right">Note (Atasan Tidak Langsung) : </label>
                           </div>
                           <div class="col-md-9">
                             <textarea name="" class="custom-txtarea-form"  disabled="disabled"><?php echo $user->note_app_lv2?></textarea>
-                          </div>
-                        </div>
-                        <?php } ?>
-
-                        <?php if(!empty($user->approval_status_id_lv3)){?>
-                        <div class="row form-row">
-                          <div class="col-md-3">
-                            <label class="form-label text-right">Approval Status(Atasan Lainnya)</label>
-                          </div>
-                          <div class="col-md-9">
-                            <input name="" id="alamat_training" type="text"  class="form-control" placeholder="Nama" value="<?php echo $user->approval_status_lv3; ?>" disabled="disabled">
                           </div>
                         </div>
                         <?php } ?>
@@ -144,6 +114,7 @@
                           </div>
                         </div>
                         <?php } ?>
+
                       </div>
 
                    <!-- Isian HRD-->
@@ -199,12 +170,13 @@
                         </div>
                       </div>
 
+
                       <div class="row form-row">
                         <div class="col-md-2">
                           <label for="besar_biaya" class="form-label text-right">Besar Biaya (Rp.)</label>
                         </div>
                         <div class="col-md-7">
-                          <input name="besar_biaya" id="besar_biaya" type="text"  class="form-control" placeholder="Besar biaya (Rp.)" value="<?php echo $user->besar_biaya?>" <?php echo $disabled?> required>
+                          <input name="" id="" type="text"  class="form-control" placeholder="Besar biaya (Rp.)" value="<?php echo $user->besar_biaya?>" <?php echo $disabled?> required>
                         </div>
                       </div>
 
@@ -213,7 +185,7 @@
                           <label class="form-label text-right">Tempat Pelaksanaan</label>
                         </div>
                         <div class="col-md-7">
-                          <input name="tempat" id="tempat" type="text"  class="form-control" placeholder="Tempat Pelaksanaan" value="<?php echo $user->tempat?>" <?php echo $disabled?> required>
+                          <input name="" id="tempat" type="text"  class="form-control" placeholder="Tempat Pelaksanaan" value="<?php echo $user->tempat?>" <?php echo $disabled?> required>
                         </div>
                       </div>
 
@@ -222,7 +194,7 @@
                           <label class="form-label text-right">Nama Narasumber</label>
                         </div>
                         <div class="col-md-7">
-                          <input name="narasumber_update" id="tempat" type="text"  class="form-control" placeholder="Nama Narasumber" value="<?php echo $user->narasumber?>" disabled="disabled">
+                          <input name="" id="tempat" type="text"  class="form-control" placeholder="Nama Narasumber" value="<?php echo $user->narasumber?>" disabled="disabled">
                         </div>
                       </div>
 
@@ -231,7 +203,7 @@
                           <label class="form-label text-right">Nama Vendor</label>
                         </div>
                         <div class="col-md-7">
-                          <input name="vendor_update" id="vendor_update" type="text"  class="form-control" placeholder="Nama Vendor" value="<?php echo $user->vendor?>" disabled="disabled">
+                          <input name="" id="vendor_update" type="text"  class="form-control" placeholder="Nama Vendor" value="<?php echo $user->vendor?>" disabled="disabled">
                         </div>
                       </div>
 
@@ -240,13 +212,13 @@
                           <label class="form-label text-right">Waktu Pelaksanaan</label>
                         </div>
                         <div class="col-md-2">
-                          <input name="lama_training_bulan_update" id="" type="text"  class="form-control" value="<?php echo dateIndo($user->tanggal_mulai)?>" readonly>
+                          <input name="" id="" type="text"  class="form-control" value="<?php echo dateIndo($user->tanggal_mulai)?>" readonly>
                         </div>
                         <div class="col-md-1">
                           <label class="form-label text-center">s/d</label>
                         </div>
                         <div class="col-md-2">
-                           <input name="lama_training_bulan_update" id="" type="text"  class="form-control" value="<?php echo dateIndo($user->tanggal_akhir)?>" readonly>
+                           <input name="" id="" type="text"  class="form-control" value="<?php echo dateIndo($user->tanggal_akhir)?>" readonly>
                         </div>
                       </div>
 
@@ -255,10 +227,10 @@
                           <label class="form-label text-right">Lama Pelaksanaan</label>
                         </div>
                         <div class="col-md-2">
-                          <input name="lama_training_bulan_update" id="" type="text"  class="form-control text-center" value="<?php echo $user->lama_training_bulan?> Bulan" readonly>
+                          <input name="" id="" type="text"  class="form-control text-center" value="<?php echo $user->lama_training_bulan?> Bulan" readonly>
                         </div>
                         <div class="col-md-2">
-                          <input name="lama_training_hari_update" id="" type="text"  class="form-control text-center" value="<?php echo $user->lama_training_hari?> Hari" readonly>
+                          <input name="" id="" type="text"  class="form-control text-center" value="<?php echo $user->lama_training_hari?> Hari" readonly>
                         </div>
                       </div>
 
@@ -269,7 +241,7 @@
                         
                         <div class="col-md-2">
                           <div class="input-append bootstrap-timepicker">
-                            <input name="jam_mulai_update" id="timepicker2" type="text" class="timepicker-24" value="<?php echo $user->jam_mulai?>" disabled="disabled">
+                            <input name="" id="timepicker2" type="text" class="timepicker-24" value="<?php echo $user->jam_mulai?>" disabled="disabled">
                             <span class="add-on">
                                 <i class="icon-time"></i>
                             </span>
@@ -282,41 +254,149 @@
 
                         <div class="col-md-2">
                           <div class="input-append bootstrap-timepicker">
-                            <input name="jam_akhir_update" id="timepicker2" type="text" class="timepicker-24" value="<?php echo $user->jam_akhir?>" disabled="disabled">
+                            <input name="" id="timepicker2" type="text" class="timepicker-24" value="<?php echo $user->jam_akhir?>" disabled="disabled">
                             <span class="add-on">
                                 <i class="icon-time"></i>
                             </span>
                           </div>
                         </div>
                       </div>
-
-                      <?php if(!empty($user->approval_status_id_hrd)){?>
-                      <div class="row form-row">
-                        <div class="col-md-2">
-                          <label class="form-label text-right">Approval Status(HRD)</label>
-                        </div>
-                        <div class="col-md-7">
-                          <input name="approval_status" id="alamat_training" type="text"  class="form-control" placeholder="Nama" value="<?php echo $user->approval_status_hrd; ?>" disabled="disabled">
-                        </div>
-                      </div>
-                      <?php } ?>
-
+                      
                       <?php if(!empty($user->note_app_hrd)){?>
                       <div class="row form-row">
                         <div class="col-md-2">
                           <label class="form-label text-right">Note (HRD) : </label>
                         </div>
                         <div class="col-md-7">
-                          <textarea name="notes_hrd_update" class="custom-txtarea-form" placeholder="Note HRD isi disini" disabled="disabled"><?php echo $user->note_app_hrd?></textarea>
+                          <textarea name="" class="custom-txtarea-form" placeholder="Note HRD isi disini" disabled="disabled"><?php echo $user->note_app_hrd?></textarea>
                         </div>
                       </div>
                       <?php } ?>
                     </div>
-                    </div>
                     <?php } ?>
+                  </div>
+
+                      <div class="col-md-12 text-center"><div class="col-md-12 text-center"><span class="semi-bold">Mengetahui,</span><br/><br/><br/></div>
+                      <div class="row wf-training">
+                        <div class="col-md-3">
+                          <p class="wf-approve-sp">
+                            <?php
+                            $approved = assets_url('img/approved_stamp.png');
+                            $rejected = assets_url('img/rejected_stamp.png');
+                            if(!empty($user->user_app_lv1) && $user->is_app_lv1 == 0 && get_nik($sess_id) == $user->user_app_lv1){?>
+                              <span class="semi-bold"></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"></span><br/>
+                              <span class="semi-bold">(Atasan Langsung)</span>
+                            <?php }elseif(!empty($user->user_app_lv1) && $user->is_app_lv1 == 1){
+                              echo ($user->approval_status_id_lv1 == 1)?"<img class=approval_img_md src=$approved>":(($user->approval_status_id_lv1 == 2) ? "<img class=approval_img_md src=$rejected>":'<span class="small"></span><br/>');?>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"><?php echo get_name($user->user_app_lv1)?></span><br/>
+                              <span class="small"><?php echo dateIndo($user->date_app_lv1)?></span><br/>
+                              <span class="semi-bold">(Atasan Langsung)</span>
+                            <?php }else{?>
+                              <span class="small"></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"></span><br/>
+                              <span class="semi-bold"><?php echo get_name($user->user_app_lv1)?></span><br/>
+                              <span class="small"><?php echo dateIndo($user->date_app_lv1)?></span><br/>
+                              <span class="semi-bold">(Atasan Langsung)</span>
+                            <?php } ?>
+                          </p>
+                        </div>
+
+                        <div class="col-md-3">
+                        <?php if(!empty($user->user_app_lv2)):?>
+                          <p class="wf-approve-sp">
+                            <?php
+                            if(!empty($user->user_app_lv2) && $user->is_app_lv2 == 0 && get_nik($sess_id) == $user->user_app_lv2){?>
+                              <span class="semi-bold"></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"></span><br/>
+                              <span class="semi-bold">(Atasan Tidak Langsung)</span>
+                            <?php }elseif(!empty($user->user_app_lv2) && $user->is_app_lv2 == 1){
+                              echo ($user->approval_status_id_lv2 == 1)?"<img class=approval_img_md src=$approved>":(($user->approval_status_id_lv2 == 2) ? "<img class=approval_img_md src=$rejected>":'<span class="small"></span><br/>');?>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"><?php echo get_name($user->user_app_lv2)?></span><br/>
+                              <span class="small"><?php echo dateIndo($user->date_app_lv2)?></span><br/>
+                              <span class="semi-bold">(Atasan Tidak Langsung)</span>
+                            <?php }else{?>
+                              <span class="small"></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"></span><br/>
+                              <span class="semi-bold"><?php echo get_name($user->user_app_lv2)?></span><br/>
+                              <span class="small"><?php echo dateIndo($user->date_app_lv2)?></span><br/>
+                              <span class="semi-bold">(Atasan Tidak Langsung)</span>
+                            <?php } ?>
+                          </p>
+                        <?php endif; ?>
+                        </div>
+                          
+                        <div class="col-md-3">
+                        <?php if(!empty($row->user_app_lv3)):?>
+                          <p class="wf-approve-sp">
+                            <?php
+                            if(!empty($user->user_app_lv3) && $user->is_app_lv3 == 0 && get_nik($sess_id) == $user->user_app_lv3){?>
+                              <span class="semi-bold"></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"></span><br/>
+                              <span class="semi-bold">(<?php echo get_user_position($user->user_app_lv3)?>)</span>
+                            <?php }elseif(!empty($user->user_app_lv3) && $user->is_app_lv3 == 1){
+                              echo ($user->approval_status_id_lv3 == 1)?"<img class=approval_img_md src=$approved>":(($user->approval_status_id_lv3 == 2) ? "<img class=approval_img_md src=$rejected>":'<span class="small"></span><br/>');?>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"><?php echo get_name($user->user_app_lv3)?></span><br/>
+                              <span class="small"><?php echo dateIndo($user->date_app_lv3)?></span><br/>\
+                              <span class="semi-bold">(<?php echo get_user_position($user->user_app_lv3)?>)</span>
+                            <?php }else{?>
+                              <span class="small"></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"></span><br/>
+                              <span class="semi-bold"><?php echo get_name($user->user_app_lv3)?></span><br/>
+                              <span class="small"><?php echo dateIndo($user->date_app_lv3)?></span><br/>\
+                              <span class="semi-bold">(<?php echo get_user_position($user->user_app_lv3)?>)</span>
+                            <?php } ?>
+                          </p>
+                        <?php endif; ?>
+                        </div>
+                          
+                        <div class="col-md-3">
+                          <p class="wf-approve-sp">
+                            <?php
+                            if($user->is_app_hrd == 0 && $this->approval->approver('training') == $sess_nik){?>
+                              <span class="semi-bold"></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="small"></span>
+                              <span class="semi-bold"></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"></span><br/>
+                              <span class="semi-bold">(HRD)</span>
+                            <?php }elseif($user->is_app_hrd == 1){
+                              echo ($user->approval_status_id_hrd == 1)?"<img class=approval_img_md src=$approved>":(($user->approval_status_id_hrd == 2) ? "<img class=approval_img_md src=$rejected>":'<span class="small"></span><br/>');?>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"><?php echo get_name($user->user_app_hrd)?></span><br/>
+                              <span class="small"><?php echo dateIndo($user->date_app_hrd)?></span><br/>
+                              <span class="semi-bold">(HRD)</span>
+                            <?php }else{?>
+                              <span class="small"></span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"></span><br/>
+                              <span class="semi-bold"><?php echo get_name($this->approval->approver('training'))?></span><br/>
+                              <span class="small"><?php echo dateIndo($user->date_app_hrd)?></span><br/>
+                              <span class="semi-bold">(HRD)</span>
+                            <?php } ?>
+                          </p>
+                        </div>
+                      </div>
                     </div>
                   </form>
                 </div>
                </div>
             </div>
-        <?php endforeach;}?>
+          </div>
+        <?php endforeach;} ?>

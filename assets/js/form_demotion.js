@@ -27,7 +27,9 @@ $(document).ready(function() {
     var uri1 = url.segment(2)+'/do_approve/'+url.segment(4)+'/lv1';
     var uri2 = url.segment(2)+'/do_approve/'+url.segment(4)+'/lv2';
     var uri3 = url.segment(2)+'/do_approve/'+url.segment(4)+'/lv3';
-    var uri4 = url.segment(2)+'/do_approve/'+url.segment(4)+'/hrd';
+    var uri4 = url.segment(2)+'/do_approve/'+url.segment(4)+'/lv4';
+    var uri5 = url.segment(2)+'/do_approve/'+url.segment(4)+'/lv5';
+    var urihrd = url.segment(2)+'/do_approve/'+url.segment(4)+'/hrd';
     
     $('button[data-loading-text]').click(function () {
     $(this).button('loading');
@@ -84,12 +86,46 @@ $(document).ready(function() {
         });  
     });
 
+    $('#btn_app_lv4').click(function(){
+        var $btn = $(this).button('loading');
+        $('#formAppLv4').submit(function(ev){
+            $.ajax({
+                type: 'POST',
+                url: baseurl+uri4,
+                data: $('#formAppLv4').serialize(),
+                success: function() {
+                     $("[data-dismiss=modal]").trigger({ type: "click" });
+                     location.reload(),
+                     $btn.button('reset')
+                }
+            });
+            ev.preventDefault(); 
+        });  
+    });
+
+    $('#btn_app_lv5').click(function(){
+        var $btn = $(this).button('loading');
+        $('#formAppLv5').submit(function(ev){
+            $.ajax({
+                type: 'POST',
+                url: baseurl+uri5,
+                data: $('#formAppLv5').serialize(),
+                success: function() {
+                     $("[data-dismiss=modal]").trigger({ type: "click" });
+                     location.reload(),
+                     $btn.button('reset')
+                }
+            });
+            ev.preventDefault(); 
+        });  
+    });
+
     $('#btn_app_hrd').click(function(){
         var $btn = $(this).button('loading');
         $('#formAppHrd').submit(function(ev){
             $.ajax({
                 type: 'POST',
-                url: baseurl+uri4,
+                url: baseurl+urihrd,
                 data: $('#formAppHrd').serialize(),
                 success: function() {
                     $("[data-dismiss=modal]").trigger({ type: "click" });
@@ -100,159 +136,11 @@ $(document).ready(function() {
             ev.preventDefault(); 
         });  
     });
+     
 
-    $("#emp").change(function() {
-            var empId = $(this).val();
-            get_employee_org(empId);
-            get_employee_pos(empId);
-            get_employee_orgid(empId);
-            get_employee_posid(empId);
-            get_employee_nik(empId);
-            get_employee_bu(empId);
-            get_employee_buid(empId);
-            get_employee_sendate(empId);
-            getAtasan3(empId);
-        })
-        .change();
-
-    $("#empdemotion").change(function() {
-            var empId = $(this).val();
-            get_employee_org(empId);
-            get_employee_pos(empId);
-            get_employee_orgid(empId);
-            get_employee_posid(empId);
-            get_employee_nik(empId);
-            get_employee_bu(empId);
-            get_employee_buid(empId);
-            get_employee_sendate(empId);
-            getAtasan1(empId);
-            getAtasan3(empId);
-        })
-        .change();
-
-     function get_employee_org(empId)
-        {
-            $.ajax({
-                    type: 'POST',
-                    url: 'get_emp_org',
-                    data: {id : empId},
-                    success: function(data) {
-                        $('#old_org2').val(data);
-                    }
-                });
-        }
-
-        function get_employee_pos(empId)
-        {
-            $.ajax({
-                    type: 'POST',
-                    url: 'get_emp_pos',
-                    data: {id : empId},
-                    success: function(data) {
-                        $('#old_pos2').val(data);
-                    }
-                });
-        }
-
-        function get_employee_orgid(empId)
-        {
-            $.ajax({
-                    type: 'POST',
-                    url: 'get_emp_orgid',
-                    data: {id : empId},
-                    success: function(data) {
-                        $('#old_org').val(data);
-                    }
-                });
-        }
-
-        function get_employee_posid(empId)
-        {
-            $.ajax({
-                    type: 'POST',
-                    url: 'get_emp_posid',
-                    data: {id : empId},
-                    success: function(data) {
-                        $('#old_pos').val(data);
-                    }
-                });
-        }
-
-        function get_employee_nik(empId)
-        {
-            $.ajax({
-                    type: 'POST',
-                    url: 'get_emp_nik',
-                    data: {id : empId},
-                    success: function(data) {
-                        $('#nik').val(data);
-                    }
-                });
-        }
-
-        function get_employee_bu(empId)
-        {
-            $.ajax({
-                    type: 'POST',
-                    url: 'get_emp_bu',
-                    data: {id : empId},
-                    success: function(data) {
-                        $('#old_bu2').val(data);
-                    }
-                });
-        }
-
-        function get_employee_buid(empId)
-        {
-            $.ajax({
-                    type: 'POST',
-                    url: 'get_emp_buid',
-                    data: {id : empId},
-                    success: function(data) {
-                        $('#old_bu').val(data);
-                    }
-                });
-        }
-
-        function get_employee_sendate(empId)
-        {
-            $.ajax({
-                    type: 'POST',
-                    url: 'get_emp_sendate',
-                    data: {id : empId},
-                    success: function(data) {
-                        $('#seniority_date').val(data);
-                    }
-                });
-        }
-
-        function getAtasan1(empId)
-        {
-         $.ajax({
-                type: 'POST',
-                url: baseurl+'dropdown/get_atasan/'+empId,
-                data: {id : empId},
-                success: function(data) {
-                    $('#atasan1').html(data);
-                }
-            });
-        }
-
-        function getAtasan3(empId)
-        {
-         $.ajax({
-                type: 'POST',
-                url: baseurl+'dropdown/get_atasan3/'+empId,
-                data: {id : empId},
-                success: function(data) {
-                    $('#atasan3').html(data);
-                }
-            });
-        }       
-
-        $( "#formadd" ).validate({
-    rules: {
-      atasan1: {notEqual:0}
+    $( "#formadd" ).validate({
+        rules: {
+          atasan1: {notEqual:0}
     },
 
     messages: {

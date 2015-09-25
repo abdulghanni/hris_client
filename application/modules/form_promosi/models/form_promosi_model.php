@@ -318,6 +318,8 @@ class Form_promosi_model extends CI_Model
                 'status_lv1.title as approval_status_lv1',
                 'status_lv2.title as approval_status_lv2',
                 'status_lv3.title as approval_status_lv3',
+                'status_lv4.title as approval_status_lv4',
+                'status_lv5.title as approval_status_lv5',
                 'status_hrd.title as approval_status_hrd',
             ));
             $this->db->join('users', 'users.id = users_promosi.user_id', 'LEFT');
@@ -325,11 +327,13 @@ class Form_promosi_model extends CI_Model
             $this->db->join('approval_status as status_lv1', 'users_promosi.app_status_id_lv1 = status_lv1.id', 'left');
             $this->db->join('approval_status as status_lv2', 'users_promosi.app_status_id_lv2 = status_lv2.id', 'left');
             $this->db->join('approval_status as status_lv3', 'users_promosi.app_status_id_lv3 = status_lv3.id', 'left');
+            $this->db->join('approval_status as status_lv4', 'users_promosi.app_status_id_lv4 = status_lv4.id', 'left');
+            $this->db->join('approval_status as status_lv5', 'users_promosi.app_status_id_lv5 = status_lv5.id', 'left');
             $this->db->join('approval_status as status_hrd', 'users_promosi.app_status_id_hrd = status_hrd.id', 'left');
             if($id != null)$this->db->where('users_promosi.id', $id);
             if($is_approver !== $sess_nik && $is_admin!=1){
                 //$this->db->where("(users_promosi.user_id= $sess_id $sub_id $subsub_id )",null, false);
-                $this->db->where("(users_promosi.user_id = $sess_id OR  users_promosi.user_app_lv1 = '$sess_nik' OR users_promosi.user_app_lv2 = '$sess_nik' OR users_promosi.user_app_lv3 = '$sess_nik' OR users_promosi.created_by = '$sess_id')",null, false);
+                $this->db->where("(users_promosi.user_id = $sess_id OR  users_promosi.user_app_lv1 = '$sess_nik' OR users_promosi.user_app_lv2 = '$sess_nik' OR users_promosi.user_app_lv3 = '$sess_nik' OR users_promosi.user_app_lv4 = '$sess_nik' OR users_promosi.user_app_lv5 = '$sess_nik' OR users_promosi.created_by = '$sess_id')",null, false);
             }
             
             

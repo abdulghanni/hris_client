@@ -18,6 +18,7 @@
             <div class="grid simple">
               <div class="grid-title no-border">
                 <h4>Form <a href="<?php echo site_url('form_cuti')?>"><span class="semi-bold">Pengajuan Cuti</span></a></h4>
+              <a href="<?php echo site_url('form_cuti/form_cuti_pdf/'.$id)?>" target="_blank"><button class="btn btn-primary pull-right"><i class="icon-print"> Cetak</i></button></a>
               </div>
               <div class="grid-body no-border">
                 <form class="form-no-horizontal-spacing" id=""> 
@@ -170,7 +171,7 @@
                       <?php if(!empty($user->note_app_lv1)){?>
                       <div class="row form-row">
                         <div class="col-md-4">
-                          <label class="form-label text-right">Note (spv): </label>
+                          <label class="form-label text-right">Note (Atasan Langsung): </label>
                         </div>
                         <div class="col-md-8">
                           <textarea name="note_lv1" class="form-control" placeholder="Note Atasan Langsung isi disini" disabled="disabled"><?php echo $user->note_app_lv1 ?></textarea>
@@ -181,7 +182,7 @@
                       <?php if(!empty($user->note_app_lv2)){?>
                       <div class="row form-row">
                         <div class="col-md-4">
-                          <label class="form-label text-right">Note (ka. bag): </label>
+                          <label class="form-label text-right">Note (Atasan Tidak Langsung): </label>
                         </div>
                         <div class="col-md-8">
                           <textarea name="notes_kbg" class="form-control" placeholder="Note Atasan Tidak Langsung isi disini" disabled="disabled"><?php echo $user->note_app_lv2 ?></textarea>
@@ -251,20 +252,20 @@
                               <span class="small"></span><br/>
                               <span class="semi-bold"><?php echo get_name($user->user_app_lv1)?></span><br/>
                               <span class="small"><?php echo dateIndo($user->date_app_lv1)?></span><br/>
-                              <span class="semi-bold"></span><br/>
                               <span class="semi-bold">(Atasan Langsung)</span>
                             <?php }else{?>
                               <span class="small"></span><br/>
                               <span class="small"></span><br/>
                               <span class="semi-bold"></span><br/>
-                              <span class="small"></span><br/>
-                              <span class="semi-bold"></span><br/>
-                              <span class="semi-bold"><?php echo (!empty($user->user_app_lv1))?'(Atasan Langsung)':'';?></span>
+                              <span class="semi-bold"><?php echo get_name($user->user_app_lv1)?></span><br/>
+                              <span class="small"><?php echo dateIndo($user->date_app_lv1)?></span><br/>
+                              <span class="semi-bold">(Atasan Langsung)</span>
                             <?php } ?>
                           </p>
                         </div>
 
                         <div class="col-md-3">
+                          <?php if(!empty($user->user_app_lv2)) : ?>
                           <p class="wf-approve-sp">
                             <?php
                             if(!empty($user->user_app_lv2) && $user->is_app_lv2 == 0 && get_nik($sess_id) == $user->user_app_lv2){?>
@@ -279,20 +280,21 @@
                               <span class="small"></span><br/>
                               <span class="semi-bold"><?php echo get_name($user->user_app_lv2)?></span><br/>
                               <span class="small"><?php echo dateIndo($user->date_app_lv2)?></span><br/>
-                              <span class="semi-bold"></span><br/>
                               <span class="semi-bold">(Atasan Tidak Langsung)</span>
                             <?php }else{?>
                               <span class="small"></span><br/>
                               <span class="small"></span><br/>
                               <span class="semi-bold"></span><br/>
-                              <span class="small"></span><br/>
-                              <span class="semi-bold"></span><br/>
-                              <span class="semi-bold"><?php echo (!empty($user->user_app_lv2))?'(Atasan Tidak Langsung)':'';?></span>
+                              <span class="semi-bold"><?php echo get_name($user->user_app_lv2)?></span><br/>
+                              <span class="small"><?php echo dateIndo($user->date_app_lv2)?></span><br/>
+                              <span class="semi-bold">(Atasan Tidak Langsung)</span>
                             <?php } ?>
                           </p>
+                        <?php endif; ?>
                         </div>
                           
                         <div class="col-md-3">
+                        <?php if(!empty($user->user_app_lv3)) : ?>
                           <p class="wf-approve-sp">
                             <?php
                             if(!empty($user->user_app_lv3) && $user->is_app_lv3 == 0 && get_nik($sess_id) == $user->user_app_lv3){?>
@@ -307,17 +309,17 @@
                               <span class="small"></span><br/>
                               <span class="semi-bold"><?php echo get_name($user->user_app_lv3)?></span><br/>
                               <span class="small"><?php echo dateIndo($user->date_app_lv3)?></span><br/>
-                              <span class="semi-bold"></span><br/>
                               <span class="semi-bold">(<?php echo get_user_position($user->user_app_lv3)?>)</span>
                             <?php }else{?>
                               <span class="small"></span><br/>
                               <span class="small"></span><br/>
                               <span class="semi-bold"></span><br/>
-                              <span class="small"></span><br/>
-                              <span class="semi-bold"></span><br/>
-                              <span class="semi-bold"><?php echo (!empty($user->user_app_lv3))?get_user_position($user->user_app_lv3):'';?></span>
+                              <span class="semi-bold"><?php echo get_name($user->user_app_lv3)?></span><br/>
+                              <span class="small"><?php echo dateIndo($user->date_app_lv3)?></span><br/>
+                              <span class="semi-bold">(<?php echo get_user_position($user->user_app_lv3)?>)</span>
                             <?php } ?>
                           </p>
+                        <?php endif; ?>
                         </div>
                           
                         <div class="col-md-3">
@@ -335,14 +337,13 @@
                               <span class="small"></span><br/>
                               <span class="semi-bold"><?php echo get_name($user->user_app_hrd)?></span><br/>
                               <span class="small"><?php echo dateIndo($user->date_app_hrd)?></span><br/>
-                              <span class="semi-bold"></span><br/>
                               <span class="semi-bold">(HRD)</span>
                             <?php }else{?>
                               <span class="small"></span><br/>
                               <span class="small"></span><br/>
                               <span class="semi-bold"></span><br/>
-                              <span class="small"></span><br/>
-                              <span class="semi-bold"></span><br/>
+                              <span class="semi-bold"><?php echo get_name($this->approval->approver('cuti'))?></span><br/>
+                              <span class="small"><?php echo dateIndo($user->date_app_hrd)?></span><br/>
                               <span class="semi-bold">(HRD)</span>
                             <?php } ?>
                           </p>

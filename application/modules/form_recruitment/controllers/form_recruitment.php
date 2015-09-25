@@ -23,6 +23,7 @@ class Form_recruitment extends MX_Controller {
 
     function index($ftitle = "fn:",$sort_by = "users_recruitment.id", $sort_order = "asc", $offset = 0)
     {
+        $this->data['title'] = 'Form Permintaan SDM Baru';
         if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page
@@ -95,6 +96,7 @@ class Form_recruitment extends MX_Controller {
 
     function input()
     {
+        $this->data['title'] = 'Input Permintaan SDM Baru';
         $sess_id = $this->session->userdata('user_id');
         $nik = get_nik($sess_id);
         if (!$this->ion_auth->logged_in())
@@ -239,13 +241,14 @@ class Form_recruitment extends MX_Controller {
     
     function detail($id)
     { 
+        $this->data['title'] = 'Detail Permintaan SDM Baru';
         if (!$this->ion_auth->logged_in())
         {
             $this->session->set_userdata('last_link', $this->uri->uri_string());
             //redirect them to the login page
             redirect('auth/login', 'refresh');
         }
-
+        $this->data['id'] = $id;
         $sess_id= $this->data['sess_id'] = $this->session->userdata('user_id');
         $this->data['sess_nik'] = $sess_nik = get_nik($sess_id);
         $this->data['recruitment'] = $this->recruitment_model->recruitment($id)->result();

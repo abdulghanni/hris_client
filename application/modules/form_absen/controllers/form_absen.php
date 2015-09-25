@@ -24,6 +24,7 @@ class form_absen extends MX_Controller {
 
     function index($ftitle = "fn:",$sort_by = "id", $sort_order = "asc", $offset = 0)
     {
+        $this->data['title'] = 'Form Keterangan Tidak Absen';
         if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page
@@ -99,8 +100,7 @@ class form_absen extends MX_Controller {
 
     function detail($id)
     {
-        
-    
+        $this->data['title'] = 'Detail - Keterangan Tidak Absen';
         if (!$this->ion_auth->logged_in())
         {
             $this->session->set_userdata('last_link', $this->uri->uri_string());
@@ -109,7 +109,7 @@ class form_absen extends MX_Controller {
         }
         else
         {
-
+            $this->data['id'] = $id;
             $user_id= getValue('user_id', 'users_absen', array('id'=>'where/'.$id));
             $this->data['user_nik'] = get_nik($user_id);
             $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
@@ -125,6 +125,7 @@ class form_absen extends MX_Controller {
 
      function input()
     {
+        $this->data['title'] = 'Input - Keterangan Tidak Absen';
         if (!$this->ion_auth->logged_in())
         {
             redirect('auth/login', 'refresh');
@@ -270,9 +271,9 @@ class form_absen extends MX_Controller {
         }
 
         $user_id= getValue('user_id', 'users_absen', array('id'=>'where/'.$id));
-        $this->data['user_nik'] = $sess_nik = get_nik($user_id);
-        $this->data['sess_id'] = $this->session->userdata('user_id');
-        
+        $this->data['user_nik'] = get_nik($user_id);
+        $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
+        $sess_nik = $this->data['sess_nik'] = get_nik($sess_id);
         $form_absen = $this->data['form_absen'] = $this->form_absen_model->where('is_deleted',0)->form_absen_detail($id)->result();
         $this->data['_num_rows'] = $this->form_absen_model->where('is_deleted',0)->form_absen_detail($id)->num_rows();
     
@@ -384,12 +385,11 @@ class form_absen extends MX_Controller {
                     $this->template->add_js('jquery-validate.bootstrap-tooltip.min.js');
                     $this->template->add_js('bootstrap-datepicker.js');
                     $this->template->add_js('emp_dropdown.js');
-                    $this->template->add_js('form_absen.js');
+                    $this->template->add_js('form_absen_input.js');
                     
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                     $this->template->add_css('plugins/select2/select2.css');
                     $this->template->add_css('datepicker.css');
-                    $this->template->add_css('approval_img.css');
                     
                      
                 }elseif(in_array($view, array('form_absen/detail')))
@@ -406,7 +406,6 @@ class form_absen extends MX_Controller {
 
                     
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
-                    $this->template->add_css('plugins/select2/select2.css');
                     $this->template->add_css('approval_img.css');
                     
                 }

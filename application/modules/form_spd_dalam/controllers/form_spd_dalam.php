@@ -22,7 +22,7 @@ class Form_spd_dalam extends MX_Controller {
 
     function index($ftitle = "fn:",$sort_by = "id", $sort_order = "asc", $offset = 0)
     {
-        $this->data['title'] = "Daftar SPD - Dalam Kota";
+        $this->data['title'] = "PJD - Dalam Kota";
         if (!$this->ion_auth->logged_in())
         {
             
@@ -98,7 +98,7 @@ class Form_spd_dalam extends MX_Controller {
 
     function submit($id)
     { 
-        $this->data['title'] = "Detail SPD - Dalam Kota";
+        $this->data['title'] = "Detail PJD - Dalam Kota";
         if (!$this->ion_auth->logged_in())
         {
             $this->session->set_userdata('last_link', $this->uri->uri_string());
@@ -106,6 +106,7 @@ class Form_spd_dalam extends MX_Controller {
         }
         else
         {
+            $this->data['id'] = $id;
             $sess_id= $this->data['sess_id'] = $this->session->userdata('user_id');
             $this->data['sess_nik'] = get_nik($sess_id);
             $data_result = $this->data['task_detail'] = $this->form_spd_dalam_model->where('users_spd_dalam.id',$id)->form_spd_dalam($id)->result();
@@ -223,7 +224,7 @@ class Form_spd_dalam extends MX_Controller {
 
     public function input()
     {
-        $this->data['title'] = "Input SPD - Dalam Kota";
+        $this->data['title'] = "Input PJD - Dalam Kota";
         $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
         $this->data['sess_nik'] = $nik = get_nik($sess_id);
         if (!$this->ion_auth->logged_in())
@@ -299,7 +300,7 @@ class Form_spd_dalam extends MX_Controller {
 
     public function report($id)
     {
-        $this->data['title'] = "Report SPD - Dalam Kota";
+        $this->data['title'] = "Report PJD - Dalam Kota";
         $user_id = $this->session->userdata('user_id');
         $sess_nik = get_nik($user_id);
         $report_id = getValue('id', 'users_spd_dalam_report', array('user_spd_dalam_id'=>'where/'.$id));
@@ -372,8 +373,12 @@ class Form_spd_dalam extends MX_Controller {
 
     public function add_report($spd_id)
     {
-        $this->form_validation->set_rules('who', 'Maksud dan Tujuan', 'trim|required');
-        $this->form_validation->set_rules('why', 'Hasil Kegiatan', 'trim|required');
+        $this->form_validation->set_rules('what', 'What', 'trim|required');
+        $this->form_validation->set_rules('who', 'Who', 'trim|required');
+        $this->form_validation->set_rules('where', 'Where', 'trim|required');
+        $this->form_validation->set_rules('when', 'When', 'trim|required');
+        $this->form_validation->set_rules('why', 'Why', 'trim|required');
+        $this->form_validation->set_rules('how', 'How', 'trim|required');
         
         if($this->form_validation->run() == FALSE)
         {
@@ -448,8 +453,12 @@ class Form_spd_dalam extends MX_Controller {
      public function update_report($report_id)
     {
         $spd_id = $this->db->where('id', $report_id)->get('users_spd_dalam_report')->row('user_spd_dalam_id');
-        $this->form_validation->set_rules('who', 'Maksud dan Tujuan', 'trim|required');
-        $this->form_validation->set_rules('why', 'Hasil Kegiatan', 'trim|required');
+        $this->form_validation->set_rules('what', 'What', 'trim|required');
+        $this->form_validation->set_rules('who', 'Who', 'trim|required');
+        $this->form_validation->set_rules('where', 'Where', 'trim|required');
+        $this->form_validation->set_rules('when', 'When', 'trim|required');
+        $this->form_validation->set_rules('why', 'Why', 'trim|required');
+        $this->form_validation->set_rules('how', 'How', 'trim|required');
         
         if($this->form_validation->run() == FALSE)
         {
@@ -574,10 +583,12 @@ class Form_spd_dalam extends MX_Controller {
             redirect('auth/login', 'refresh');
         }
 
-        $data_result = $this->data['task_detail'] = $this->form_spd_dalam_model->where('users_spd_dalam.id',$id)->form_spd_dalam($id)->result();
-        $this->data['td_num_rows'] = $this->form_spd_dalam_model->where('users_spd_dalam.id',$id)->form_spd_dalam()->num_rows($id);
-        $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
-
+        $this->data['id'] = $id;
+            $sess_id= $this->data['sess_id'] = $this->session->userdata('user_id');
+            $this->data['sess_nik'] = get_nik($sess_id);
+            $data_result = $this->data['task_detail'] = $this->form_spd_dalam_model->where('users_spd_dalam.id',$id)->form_spd_dalam($id)->result();
+            $this->data['td_num_rows'] = $this->form_spd_dalam_model->where('users_spd_dalam.id',$id)->form_spd_dalam()->num_rows($id);
+            
         return $this->load->view('form_spd_dalam/spd_dalam_mail', $this->data, TRUE);
     } 
 

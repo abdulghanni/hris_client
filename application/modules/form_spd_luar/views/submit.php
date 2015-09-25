@@ -16,6 +16,7 @@
           <div class="grid simple">
             <div class="grid-title no-border">
               <h4>Form Perjalanan Dinas <a href="<?php echo site_url('form_spd_luar')?>"><span class="semi-bold">Luar Kota</span></a></h4>
+              <a href="<?php echo site_url('form_spd_luar/pdf/'.$id)?>" target="_blank"><button class="btn btn-primary pull-right"><i class="icon-print"> Cetak</i></button></a>
             </div>
             <div class="grid-body no-border">
               <!--<form class="form-no-horizontal-spacing" id="form_spd_dalam" action="<?php echo site_url().'form_spd_luar/do_submit/'.$id = $this->uri->segment(3, 0);?>" method="post">-->
@@ -146,6 +147,7 @@
                   <hr/>
                   <div class="row">
                     <div class="col-md-7 col-md-offset-2">
+                    <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#editModal"><i class='icon-edit'> Edit Approval</i></div>
                       <h5 class="text-center"><span class="semi-bold">Ketentuan Biaya Perjalanan Dinas</span></h5>
                       <p>&nbsp;</p>
                           <p class="bold">Grade Penerima Tugas : <span id="grade" class="semi-bold"><?php echo get_grade($tc_id)?></span></p>
@@ -458,7 +460,7 @@
 <?php endfor;?>
 
 <!--approval  Modal HRD -->
-<div class="modal fade" id="submitModalHrd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog" id="modaldialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -467,34 +469,44 @@
       </div>
       <div class="modal-body">
         <form class="form-no-horizontal-spacing"  id="formAppHrd">
-            <div class="row form-row">
-              <div class="col-md-12">
-                <label class="form-label text-left">Status Approval </label>
-              </div>
-              <div class="col-md-12">
-                <div class="radio">
-                  <?php 
-                  if($approval_status->num_rows() > 0){
-                    foreach($approval_status->result() as $app){
-                      $checked = ($app->id <> 0 && $app->id == $td->app_status_id_hrd) ? 'checked = "checked"' : '';
-                      ?>
-                  <input id="app_status_hrd<?php echo $app->id?>" type="radio" name="app_status_hrd" value="<?php echo $app->id?>" <?php echo $checked?>>
-                  <label for="app_status_hrd<?php echo $app->id?>"><?php echo $app->title?></label>
-                  <?php }}else{?>
-                  <input id="app_status" type="radio" name="app_status_hrd" value="0">
-                  <label for="app_status">No Data</label>
-                    <?php } ?>
-                </div>
-              </div>
-            </div>
-            <div class="row form-row">
-              <div class="col-md-12">
-                <label class="form-label text-left">Note : </label>
-              </div>
-              <div class="col-md-12">
-                <textarea name="note_hrd" class="form-control" placeholder="Isi note disini...."><?php echo $td->note_hrd?></textarea>
-              </div>
-            </div>
+            <div class="row">
+                    <div class="col-md-7 col-md-offset-2">
+                      <h5 class="text-center"><span class="semi-bold">Ketentuan Biaya Perjalanan Dinas</span></h5>
+                      <p>&nbsp;</p>
+                          <p class="bold">Grade Penerima Tugas : <span id="grade" class="semi-bold"><?php echo get_grade($tc_id)?></span></p>
+                            <div class="row form-row">
+                              <div class="col-md-12">
+                              <table class="table table-bordered">
+                                <thead>
+                                  <tr>
+                                    <th width="2%">No</th>
+                                    <th width="40%">Jenis Biaya</th>
+                                    <th width="40%">Jumlah Biaya(Rp)</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                <?php $total = 0;
+                                  $i=1;foreach($biaya_pjd->result() as $row):
+                                  $jumlah_biaya = (!empty($row->type)) ? $row->jumlah_biaya*$jml_pjd : $row->jumlah_biaya;
+                                  $jumlah_hari = (!empty($row->type)) ? '/'.$jml_pjd.' hari' : '';
+                                  $total += $jumlah_biaya;
+                                ?>
+                                  <tr>
+                                    <td><?php echo $i++?></td>
+                                    <td><?php echo $row->jenis_biaya.$jumlah_hari?></td>
+                                    <td align="right"><?php echo number_format($jumlah_biaya, 0)?></td>
+                                  </tr>
+                                <?php endforeach; ?>
+                                  <tr>
+                                    <td>&nbsp;</td>
+                                    <td align="right">Total :</td>
+                                    <td align="right"><?php echo number_format($total, 0) ?></td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="icon-remove"></i>&nbsp;<?php echo lang('close_button')?></button> 
@@ -505,6 +517,101 @@
   </div>
 </div>
 <!--end approve modal--> 
+
+
+
+<div class="modal fade" id="submitMedicalModalHrd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" id="modaldialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Approval Form Rekapitulasi Medical</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-no-horizontal-spacing" id="formAppHrd">
+         <div class="row">
+         <div class="col-md-12">
+            <table id="dataTable" class="table table-bordered">
+              <thead>
+                <tr>
+                  <th width="4%">NIK</th>
+                  <th width="20%">Nama</th>
+                  <th width="20%">Nama Pasien</th>
+                  <th width="15%">Hubungan</th>
+                  <th width="15%" class="text-center">Jenis Pemeriksaan</th>
+                  <th width="20%">Rupiah</th>
+                  <th class="text-center"><div>Disetujui</div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php 
+                  if(!empty($detail)){
+                     $total = $detail[0]['rupiah'];
+                     $approved = assets_url('img/approved_stamp.png');
+                     $rejected = assets_url('img/rejected_stamp.png');
+                      for($i=0;$i<sizeof($detail);$i++):
+                      ?>
+                  <tr>
+                    <input type="hidden" name="detail_id[]" value="<?php echo $detail[$i]['id']?>">
+                    <td><?php echo get_nik($detail[$i]['karyawan_id'])?></td>
+                    <td><?php echo get_name($detail[$i]['karyawan_id'])?></td>
+                    <td><?php echo $detail[$i]['pasien']?></td>
+                    <td><?php echo $detail[$i]['hubungan']?></td>
+                    <td><?php echo $detail[$i]['jenis']?></td>
+                    <td>
+                      <div id="rupiah_hrd<?php echo $i?>"><?php echo  'Rp. '.number_format($detail[$i]['rupiah'], 0).' '?>
+                        <button type="button" id="edit_hrd<?php echo $i?>" class='btn btn-info btn-small text-right' title='Edit' onclick="edit_hrd<?php echo get_nik($detail[$i]['karyawan_id']).$i?>()"><i class='icon-edit'></i></button>
+                      </div>
+                      <input name="rupiah_update[]" type="text" id="rupiah_hrd_update<?php echo $i?>" value="<?php echo $detail[$i]['rupiah']?>" style="display:none"> 
+                    </td>
+                    <td class="text-center" valign="middle" class="small-cell">
+                      <input type="checkbox" name="checkbox1_checkbox[]" id="checkbox1_checkbox" class="checkbox1" />
+                      <input type="hidden" name="checkbox1[]" value="0" />
+                    </td>
+                  </tr>
+                    <?php /*
+                      if(sizeof($detail)>1){?>
+                        <?php if($detail[$i]['karyawan_id'] != $detail[$i+1]['karyawan_id']){
+                            $sub_total = $detail[$i]['rupiah'] + $detail[$i+1]['rupiah']
+                          ?>
+                          <tr>
+                            <td align="right" colspan="5">Total <?php echo $detail[$i]['karyawan_id']?>: </td><td><?php echo $sub_total?></td>
+                          </tr>
+                          <?php } ?>
+                    <?php };*/?>
+                    <?php
+                    if(sizeof($detail)>1 && isset($detail[$i+1])){
+                    $total = $total + $detail[$i+1]['rupiah'];
+                    }
+                    endfor;}
+                    ?>
+                    <tr>
+                    <td align="right" colspan="5">Total : </td><td><?php echo 'Rp. '.number_format($total, 0)?></td>
+                    </tr>
+                </tbody>
+              </table>
+
+            <div class="row form-row">
+              <div class="col-md-12">
+                <label class="form-label text-left">Note (HRD) : </label>
+              </div>
+              <div class="col-md-12">
+                <textarea name="note_hrd" class="custom-txtarea-form" placeholder="Note HRD isi disini"><?php echo $row->note_hrd?></textarea>
+              </div>
+            </div>
+
+              </div>
+          </div>   
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="icon-remove"></i>&nbsp;<?php echo lang('close_button')?></button> 
+        <button id="btn_app_hrd" class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
+      </div>
+        <?php echo form_close()?>
+    </div>
+  </div>
+</div>
 
 
 

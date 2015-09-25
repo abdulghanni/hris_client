@@ -24,6 +24,7 @@ class Form_rolling extends MX_Controller {
 
     function index($ftitle = "fn:",$sort_by = "id", $sort_order = "asc", $offset = 0)
     {
+        $this->data['title'] = 'Form Mutasi';
         if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page
@@ -99,6 +100,7 @@ class Form_rolling extends MX_Controller {
 
     function input()
     {
+        $this->data['title'] = 'Input - Form Mutasi';
         if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page
@@ -116,20 +118,25 @@ class Form_rolling extends MX_Controller {
 
     function detail($id)
     {
+        $this->data['title'] = 'Detail - Form Mutasi';
         if (!$this->ion_auth->logged_in())
         {
             $this->session->set_userdata('last_link', $this->uri->uri_string());
             //redirect them to the login page
             redirect('auth/login', 'refresh');
         }else{
-           
+           $this->data['id'] = $id;
             $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
             $this->data['sess_nik'] = get_nik($sess_id);
             $user_id = getValue('user_id', 'users_rolling', array('id'=>'where/'.$id));
             $this->data['user_nik'] = get_nik($user_id);
             $form_rolling = $this->data['form_rolling'] = $this->form_rolling_model->form_rolling($id)->result();
             $this->data['_num_rows'] = $this->form_rolling_model->form_rolling($id)->num_rows();
-
+            $this->data['user_id'] =$user_id = getValue('created_by', 'users_rolling', array('id'=>'where/'.$id));
+            $first_name = getValue('first_name', 'users', array('id'=>'where/'.$user_id));
+            $this->data['user_folder'] = $user_id.$first_name.'/sdm/';
+            $attachment = getValue('attachment', 'users_rolling', array('id' => 'where/'.$id));
+            $this->data['attachment'] = explode(",",$attachment);
             $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
             $this->_render_page('form_rolling/detail', $this->data);
         }
@@ -163,6 +170,8 @@ class Form_rolling extends MX_Controller {
                     'user_app_lv1'          => $this->input->post('atasan1'),
                     'user_app_lv2'          => $this->input->post('atasan2'),
                     'user_app_lv3'          => $this->input->post('atasan3'),
+                    'user_app_lv4'          => $this->input->post('atasan4'),
+                    'user_app_lv5'          => $this->input->post('atasan5'),
                     'created_on'            => date('Y-m-d',strtotime('now')),
                     'created_by'            => $this->session->userdata('user_id')
                 );
@@ -170,6 +179,7 @@ class Form_rolling extends MX_Controller {
                 if ($this->form_validation->run() == true && $this->form_rolling_model->create_($user_id, $additional_data))
                 {
                      $rolling_id = $this->db->insert_id();
+                     $this->upload_attachment($rolling_id);
                      $user_app_lv1 = getValue('user_app_lv1', 'users_rolling', array('id'=>'where/'.$rolling_id));
                      if(!empty($user_app_lv1)):
                         $this->approval->request('lv1', 'rolling', $rolling_id, $user_id, $this->detail_email($rolling_id));
@@ -182,6 +192,47 @@ class Form_rolling extends MX_Controller {
             }
         }
     }
+
+    function upload_attachment($id)
+    {
+        $form = 'users_rolling';
+        $user_id = getValue('created_by', $form, array('id' => 'where/'.$id));
+        $user = getAll('users', array('id'=>'where/'.$user_id))->row();
+        $user_folder = $user->id.$user->first_name;
+        if(!is_dir('./'.'uploads')){
+        mkdir('./'.'uploads', 0777);
+        }
+        if(!is_dir('./uploads/'.$user_folder)){
+        mkdir('./uploads/'.$user_folder, 0777);
+        }
+        if(!is_dir("./uploads/$user_folder/sdm/")){
+        mkdir("./uploads/$user_folder/sdm/", 0777);
+        }
+
+
+        $path = "./uploads/$user_folder/sdm/";
+        $this->load->library('upload');
+        $this->upload->initialize(array(
+            "upload_path"=>$path,
+            "overwrite" => TRUE,
+            "allowed_types"=>"*"
+        ));
+
+        if($this->upload->do_multi_upload("userfile")){
+            $up = $this->upload->get_multi_upload_data();
+            $attachment = '';
+            for($i=0;$i<sizeof($up);$i++):
+                $koma = ($i<sizeof($up)-1)?',':'';
+                $attachment .= $up[$i]['file_name'].$koma;
+            endfor;
+            $data = array(
+                    'attachment' => $attachment,
+                );
+            $this->db->where('id', $id)->update('users_rolling', $data);
+            return true;
+        }
+    }
+
 
     function do_approve($id, $type)
     {
@@ -224,7 +275,7 @@ class Form_rolling extends MX_Controller {
             if($type !== 'hrd' && $approval_status == 1){
                 $lv = substr($type, -1)+1;
                 $lv_app = 'lv'.$lv;
-                $user_app = ($lv<4) ? getValue('user_app_'.$lv_app, 'users_rolling', array('id'=>'where/'.$id)):0;
+                $user_app = ($lv<6) ? getValue('user_app_'.$lv_app, 'users_rolling', array('id'=>'where/'.$id)):0;
                if(!empty($user_app)){
                     $this->approval->request($lv_app, 'rolling', $id, $user_rolling_id, $this->detail_email($id));
                     if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), 'Pengajuan Permohonan rolling', $isi_email_request);
@@ -236,44 +287,57 @@ class Form_rolling extends MX_Controller {
                 $this->send_user_notification($id, $user_rolling_id);
             }else{
                 $email_body = "Status pengajuan permohonan rolling yang diajukan oleh ".get_name($user_rolling_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_rolling/detail/'.$id.'>Klik Disini</a><br />';
+                $form = 'rolling';
                 switch($type){
-                    case 'lv1':
-                        //$this->approval->not_approve('rolling', $id, )
-                    break;
+                case 'lv1':
+                    //$this->approval->not_approve('spd_dalam', $id, )
+                break;
 
-                    case 'lv2':
-                        $receiver_id = getValue('user_app_lv1', 'users_rolling', array('id'=>'where/'.$id));
-                        $this->approval->not_approve('rolling', $id, $receiver_id, $approval_status ,$this->detail_email($id));
-                        if(!empty(getEmail($receiver_id)))$this->send_email(getEmail($receiver_id), 'Status Pengajuan Permohonan rolling Dari Atasan', $email_body);
-                    break;
+                case 'lv2':
+                    $receiver_id = getValue('user_app_lv1', 'users_'.$form, array('id'=>'where/'.$id));
+                    $this->approval->not_approve($form, $id, $receiver_id, $approval_status ,$this->detail_email($id));
+                    //if(!empty(getEmail($receiver_id)))$this->send_email(getEmail($receiver_id), 'Status Pengajuan Permohonan Perjalanan Dinas Dari Atasan', $email_body);
+                break;
 
-                    case 'lv3':
-                        $receiver_lv2 = getValue('user_app_lv2', 'users_rolling', array('id'=>'where/'.$id));
-                        $this->approval->not_approve('rolling', $id, $receiver_lv2, $approval_status ,$this->detail_email($id));
-                        if(!empty(getEmail($receiver_lv2)))$this->send_email(getEmail($receiver_lv2), 'Status Pengajuan Permohonan rolling Dari Atasan', $email_body);
-
-                        $receiver_lv1 = getValue('user_app_lv1', 'users_rolling', array('id'=>'where/'.$id));
-                        $this->approval->not_approve('rolling', $id, $receiver_lv1, $approval_status ,$this->detail_email($id));
-                        if(!empty(getEmail($receiver_lv1)))$this->send_email(getEmail($receiver_lv1), 'Status Pengajuan Permohonan rolling Dari Atasan', $email_body);
-                    break;
-
-                    case 'hrd':
-                        $receiver_lv3 = getValue('user_app_lv3', 'users_rolling', array('id'=>'where/'.$id));
-                        if(!empty($receiver_lv3)):
-                            $this->approval->not_approve('rolling', $id, $receiver_lv3, $approval_status ,$this->detail_email($id));
-                            if(!empty(getEmail($receiver_lv3)))$this->send_email(getEmail($receiver_lv3), 'Status Pengajuan Permohonan rolling Dari Atasan', $email_body);
+                case 'lv3':
+                    for($i=1;$i<3;$i++):
+                        $receiver = getValue('user_app_lv'.$i, 'users_'.$form, array('id'=>'where/'.$id));
+                        if(!empty($receiver)):
+                            $this->approval->not_approve($form, $id, $receiver, $approval_status ,$this->detail_email($id));
+                            //if(!empty(getEmail($receiver)))$this->send_email(getEmail($receiver), 'Status Pengajuan Permohonan PJD Dalam Kota Dari Atasan', $email_body);
                         endif;
-                        $receiver_lv2 = getValue('user_app_lv2', 'users_rolling', array('id'=>'where/'.$id));
-                        if(!empty($receiver_lv2)):
-                            $this->approval->not_approve('rolling', $id, $receiver_lv2, $approval_status ,$this->detail_email($id));
-                            if(!empty(getEmail($receiver_lv2)))$this->send_email(getEmail($receiver_lv2), 'Status Pengajuan Permohonan rolling Dari Atasan', $email_body);
+                    endfor;
+                break;
+
+                case 'lv4':
+                    for($i=1;$i<4;$i++):
+                        $receiver = getValue('user_app_lv'.$i, 'users_'.$form, array('id'=>'where/'.$id));
+                        if(!empty($receiver)):
+                            $this->approval->not_approve($form, $id, $receiver, $approval_status ,$this->detail_email($id));
+                            //if(!empty(getEmail($receiver)))$this->send_email(getEmail($receiver), 'Status Pengajuan Permohonan PJD Dalam Kota Dari Atasan', $email_body);
                         endif;
-                        $receiver_lv1 = getValue('user_app_lv1', 'users_rolling', array('id'=>'where/'.$id));
-                        if(!empty($receiver_lv1)):
-                            $this->approval->not_approve('rolling', $id, $receiver_lv1, $approval_status ,$this->detail_email($id));
-                        if(!empty(getEmail($receiver_lv1)))$this->send_email(getEmail($receiver_lv1), 'Status Pengajuan Permohonan rolling Dari Atasan', $email_body);
+                    endfor;
+                break;
+
+                case 'lv5':
+                    for($i=1;$i<5;$i++):
+                        $receiver = getValue('user_app_lv'.$i, 'users_'.$form, array('id'=>'where/'.$id));
+                        if(!empty($receiver)):
+                            $this->approval->not_approve($form, $id, $receiver, $approval_status ,$this->detail_email($id));
+                            //if(!empty(getEmail($receiver)))$this->send_email(getEmail($receiver), 'Status Pengajuan Permohonan PJD Dalam Kota Dari Atasan', $email_body);
                         endif;
-                    break;
+                    endfor;
+                break;
+
+                case 'hrd':
+                    for($i=1;$i<6;$i++):
+                        $receiver = getValue('user_app_lv'.$i, 'users_'.$form, array('id'=>'where/'.$id));
+                        if(!empty($receiver)):
+                            $this->approval->not_approve($form, $id, $receiver, $approval_status ,$this->detail_email($id));
+                            //if(!empty(getEmail($receiver)))$this->send_email(getEmail($receiver), 'Status Pengajuan Permohonan PJD Dalam Kota Dari Atasan', $email_body);
+                        endif;
+                    endfor;
+                break;
                 }
             }
             redirect('form_rolling/detail/'.$id, 'refresh');
@@ -300,7 +364,8 @@ class Form_rolling extends MX_Controller {
 
     function detail_email($id)
     {
-        $this->data['sess_id'] = $this->session->userdata('user_id');
+        $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
+        $this->data['sess_nik'] = get_nik($sess_id);
         $user_id = getValue('user_id', 'users_rolling', array('id'=>'where/'.$id));
         $this->data['user_nik'] = get_nik($user_id);
         $form_rolling = $this->data['form_rolling'] = $this->form_rolling_model->form_rolling($id)->result();

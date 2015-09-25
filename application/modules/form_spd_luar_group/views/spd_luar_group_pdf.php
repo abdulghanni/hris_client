@@ -5,6 +5,10 @@
 <title><?php echo $title?></title>
 <style type="text/css">
 <!--
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{ height:40px;font-family:Arial, sans-serif;font-size:14px;padding:12px 16px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+.tg th{height:40px; font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:12px 16px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+
 .style3 {
   font-size: 16px;
 }
@@ -78,7 +82,7 @@ if ($td_num_rows > 0) {
 <tr><td height="30"></td></tr>
 </table>
 
-<table width="1200" height="128" border="1" class="style3">
+<table width="1200" height="128" border-style:solid border="1" class="tg">
   <thead>
     <tr>
       <th width="2%">No</th>
@@ -93,7 +97,7 @@ if ($td_num_rows > 0) {
     <?php for($i=0;$i<sizeof($receiver);$i++):
     ?>
     <tr>
-    <td height="50" align="center"><?php echo $i+1?></td>
+    <td class="tg-031e" height="50" align="center"><?php echo $i+1?></td>
     <td  align="center"><?php echo $receiver[$i]?></td>
     <td>&nbsp;<?php echo get_name($receiver[$i])?></td>
       <td>&nbsp;<?php echo get_user_organization($receiver[$i])?></td>
@@ -151,23 +155,23 @@ if ($td_num_rows > 0) {
 <tr><td>Ketentuan Biaya Perjalan Dinas : </td></tr>
 <tr><td height="30"></td></tr>
 </table>
-<table width="1200" height="128" border="1" class="style3">
+<table width="1200" height="128" border-style:solid border="1" class="tg">
   <thead>
     <tr>
       <th width="15%">Nama</th>
         <th width="5%">Gol</th>
-        <th width="10%">Uang Makan</th>
-        <th width="10%">Uang Saku</th>
-        <th width="10%">Hotel</th>
+        <th width="10%" colspan="2">Uang Makan</th>
+        <th width="10%" colspan="2">Uang Saku</th>
+        <th width="10%" colspan="2">Hotel</th>
         <?php foreach($biaya_pjd->result() as $b):?>
-        <th width="10%"><?php echo $b->jenis_biaya?></th>
+        <th width="10%" colspan="2"><?php echo $b->jenis_biaya?></th>
       <?php endforeach; ?> 
     </tr>
   </thead>
   <tbody>
     <?php foreach ($detail->result() as $key):?>
       <tr>
-        <td height="50">
+        <td class="tg-031e" height="50">
           
           <?php echo get_name($key->user_id)?>
         </td>
@@ -178,19 +182,21 @@ if ($td_num_rows > 0) {
             foreach ($c->result() as $c) {
             $total_fix += $c->jumlah_biaya*$jml_pjd;
         ?>
-        <td align="right">Rp. <?php echo number_format($c->jumlah_biaya*$jml_pjd, 0)?> </td>
+        <td border="0" width="5px">Rp.</td>
+        <td align="right"><?php echo number_format($c->jumlah_biaya*$jml_pjd, 0)?> </td>
         <?php } ?>
         <?php
           $b = $ci->db->select('users_spd_luar_group_biaya.jumlah_biaya')->from('users_spd_luar_group_biaya')->join('pjd_biaya','pjd_biaya.id = users_spd_luar_group_biaya.pjd_biaya_id', 'left')->where('user_spd_luar_group_id', $id)->where('user_id', $key->user_id)->where('pjd_biaya.type_grade', 0)->get();
             foreach ($b->result() as $b) {
             $total_lain += $b->jumlah_biaya;
         ?>
-        <td align="right">Rp. <?php echo number_format($b->jumlah_biaya, 0)?> </td>
+        <td border="0" width="10px">Rp.</td>
+        <td align="right"><?php echo number_format($b->jumlah_biaya, 0)?> </td>
           <?php } ?>
       </tr>
     <?php endforeach ?>
     <tr>
-      <td align="center"><b>Total : Rp. <?php echo number_format($total_fix+$total_lain,0)?></b></td>
+      <td align="right" colspan="<?php $cs=8+sizeof($biaya_pjd->result())*2;echo $cs;?>"><b>Total : Rp. <?php echo number_format($total_fix+$total_lain,0)?></b></td>
     </tr>
     </tbody>
 </table>

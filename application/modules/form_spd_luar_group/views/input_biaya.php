@@ -15,7 +15,7 @@
           <div class="col-md-12">
             <div class="grid simple">
               <div class="grid-title no-border">
-                <h4>Detail Ketentuan Biaya <span class="semi-bold"><a href="<?php echo site_url('form_medical')?>">Perjalanan Dinas Luar Kota (Group)</a></span></h4>
+                <h4>Detail Ketentuan Biaya <span class="semi-bold"><a href="<?php echo site_url('form_spd_luar_kota_group')?>">Perjalanan Dinas Luar Kota (Group)</a></span></h4>
               </div>
               <div class="grid-body no-border">
                 <?php echo form_open('form_spd_luar_group/update_biaya/'.$id)?>
@@ -46,29 +46,43 @@
                           <td class="text-center">
                             <?php echo get_grade($key->user_id)?>
                           </td>
-                            <?php 
+                            <?php $i = 0;
                               $c = $ci->get_biaya_pjd($key->user_id);
                               foreach ($c->result() as $k) :
                             ?>
                           <td>
+                          <?php $i++ ?>
                           <input type="hidden" class="form-control" name="emp[]" value="<?php echo $key->user_id?>" />
                             <input type="hidden" class="form-control" name="biaya_fix_id[]" value="<?php echo $k->id?>" />
-                            <input type="text" class="form-control rupiah text-right"  name="biaya_fix[]" value="<?php echo number_format($k->jumlah_biaya,0);?>" />
+                            <input type="text" class="form-control rupiah text-right fix<?php echo $i ?>"  name="biaya_fix[]" value="<?php echo number_format($k->jumlah_biaya,0);?>" />
                           </td>
                             <?php endforeach;
+                              $j = 0;
                               $b = $ci->db->select('id, jumlah_biaya')->where('user_id', $key->user_id)->where('user_spd_luar_group_id', $id)->get('users_spd_luar_group_biaya');
                               foreach ($b->result() as $b) {
                             ?>
                           <td>
+                            <?php $j++ ?>
                             <input type="hidden" class="form-control" name="biaya_tambahan_id[]" value="<?php echo $b->id?>"/>
-                            <input type="text" class="form-control rupiah text-right" name="biaya_tambahan[]" value="<?php echo number_format($b->jumlah_biaya,0)?>"/>
+                            <input type="text" class="form-control rupiah text-right tambahan<?php echo $j ?>" name="biaya_tambahan[]" value="<?php echo number_format($b->jumlah_biaya,0)?>"/>
                           </td>
                             <?php } ?>
                         </tr>
-                      <?php endforeach ?>
+                          <?php endforeach ?>
+                        <tr>
+                           <td colspan="2"><b>Sub Total</b></td>
+                          <td id="totalfix1" class="total_fix" align="right"></td>
+                          <td id="totalfix2" class="total_fix" align="right"></td>
+                          <td id="totalfix3" class="total_fix" align="right"></td>
+                          <?php $o = 0;foreach($biaya_pjd->result() as $b):$o++;?>
+                            <td id="totaltambahan<?=$o?>" class="total_tambahan" align="right"></td>
+                          <?php endforeach ?>
+                        </tr>
+                        <tr><td><b>Total</b></td><td align="right" id="grand_total" colspan="<?php $cs=4+sizeof($biaya_pjd->result());echo $cs;?>"></td></tr>
                       </tbody>
                     </table>
-                    *  Biaya Disesuaikan
+                    <button type="button" class="btn-primary" onclick="hitungTotal()">Hitung Total</button><br/>
+                    *  Biaya Disesuaikan<br/>
                     ** Biaya Perhari
                     <div class="form-actions">
                       <div class="pull-right">
@@ -76,7 +90,6 @@
                         <a href="<?php echo site_url('form_spd_luar_group') ?>"><button id="btnCancelMedical" class="btn btn-white btn-cons" type="button" ><?php echo lang('cancel_button') ?></button></a>
                       </div>
                     </div>
-
                 </div>
               </form>
             </div>
@@ -85,3 +98,57 @@
       </div>
     </div>
   </div>
+
+
+<script type="text/javascript">
+window.onload = function(){fix();};  
+  function fix(){
+      for (var i = 1; i < 4; i++) {
+        total = 0;
+        $('.fix'+i).each(function (index, element) {
+            var num = parseInt($(element).val().replace(/,/g,""));
+            total = total + num;
+        });
+        $('#totalfix'+i).text(total);
+     }
+     tambahan();
+  }
+
+  function tambahan(){
+      <?php $t = sizeof($biaya_pjd->result());?>
+       for (var i = 1; i <= <?=$t?>; i++) {
+        total = 0;
+        $('.tambahan'+i).each(function (index, element) {
+            var num = parseInt($(element).val().replace(/,/g,""));
+            total = total + num;
+        });
+        $('#totaltambahan'+i).text(total);
+      }
+      grandTotal();
+  }
+
+  function grandTotal()
+  {
+        total = 0;
+        $('.total_fix').each(function (index, element) {
+            var num = parseInt($(element).text().replace(",",""));
+            total = total + num;
+        });
+        total_fix = total;
+
+        total2 = 0;
+        $('.total_tambahan').each(function (index, element) {
+            var num = parseInt($(element).text().replace(",",""));
+            total2 = total2 + num;
+        });
+        total_tambahan = total2;
+
+        gtotal = total_fix+total_tambahan;
+        $('#grand_total').text(gtotal);
+  }
+
+  function hitungTotal()
+  {
+    fix();
+  }
+</script>

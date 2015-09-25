@@ -21,6 +21,7 @@ th{border:2;}
           <div class="grid simple">
             <div class="grid-title no-border">
               <h4>Form <a href="<?php echo site_url('form_spd_luar_group')?>">Perjalanan Dinas <span class="semi-bold">Luar Kota (Group)</span></a></h4>
+              <a href="<?php echo site_url('form_spd_luar_group/pdf/'.$id)?>" target="_blank"><button class="btn btn-primary pull-right"><i class="icon-print"> Cetak</i></button></a>
             </div>
             <div class="grid-body no-border">
               <!--<form class="form-no-horizontal-spacing" id="form_spd_dalam" action="<?php echo site_url().'form_spd_luar_group/do_submit/'.$id = $this->uri->segment(3, 0);?>" method="post">-->
@@ -185,27 +186,39 @@ th{border:2;}
                           <td class="text-center">
                             <?php echo get_grade($key->user_id)?>
                           </td>
-                          <?php $c = $ci->db->select('users_spd_luar_group_biaya.jumlah_biaya')->from('users_spd_luar_group_biaya')->join('pjd_biaya','pjd_biaya.id = users_spd_luar_group_biaya.pjd_biaya_id', 'left')->where('user_spd_luar_group_id', $id)->where('user_id', $key->user_id)->where('pjd_biaya.type_grade != ', 0)->get();
+                          <?php $i = 0;
+                              $c = $ci->db->select('users_spd_luar_group_biaya.jumlah_biaya')->from('users_spd_luar_group_biaya')->join('pjd_biaya','pjd_biaya.id = users_spd_luar_group_biaya.pjd_biaya_id', 'left')->where('user_spd_luar_group_id', $id)->where('user_id', $key->user_id)->where('pjd_biaya.type_grade != ', 0)->get();
                               foreach ($c->result() as $c) {
                               $total_fix += $c->jumlah_biaya*$jml_pjd;
                           ?>
                           <td align="right">
-                            <?php echo number_format($c->jumlah_biaya*$jml_pjd, 0)?>
+
+                          <?php $i++ ?>
+                            <span class="fix<?php echo $i ?>"><?php echo number_format($c->jumlah_biaya*$jml_pjd, 0)?></span>
                           </td>
-                              
-                          <?php }?>
-                          <?php
+                          <?php }
+                            $j = 0;
                             $b = $ci->db->select('users_spd_luar_group_biaya.jumlah_biaya')->from('users_spd_luar_group_biaya')->join('pjd_biaya','pjd_biaya.id = users_spd_luar_group_biaya.pjd_biaya_id', 'left')->where('user_spd_luar_group_id', $id)->where('user_id', $key->user_id)->where('pjd_biaya.type_grade', 0)->get();
                               foreach ($b->result() as $b) {
                                 $total_lain += $b->jumlah_biaya;
                           ?>
-                          <td align="right"><?php echo number_format($b->jumlah_biaya, 0)?></td>
+                          <?php $j++ ?>
+                          <td align="right"><span class="tambahan<?php echo $j ?>"><?php echo number_format($b->jumlah_biaya, 0)?></span></td>
                             <?php } ?>
                         </tr>
                       <?php 
                       endforeach ?>
                       <tr>
-                        <td align="center"><b>Total : Rp. <?php echo number_format($total_fix+$total_lain,0)?></b></td>
+                         <td colspan="2"><b>Sub Total</b></td>
+                          <td id="totalfix1" class="total_fix" align="right"></td>
+                          <td id="totalfix2" class="total_fix" align="right"></td>
+                          <td id="totalfix3" class="total_fix" align="right"></td>
+                          <?php $o = 0;foreach($biaya_pjd->result() as $b):$o++;?>
+                            <td id="totaltambahan<?=$o?>" class="total_tambahan" align="right"></td>
+                          <?php endforeach ?>
+                        </tr>
+                      <tr>
+                        <td align="right" colspan="<?php $cs=4+sizeof($biaya_pjd->result());echo $cs;?>"><b>Total : Rp. <?php echo number_format($total_fix+$total_lain,0)?></b></td>
                       </tr>
                       </tbody>
                     </table>
@@ -534,3 +547,31 @@ th{border:2;}
 
 
 <?php endforeach;} ?>
+
+
+<script type="text/javascript">
+window.onload = function(){fix();};  
+  function fix(){
+      for (var i = 1; i < 4; i++) {
+        total = 0;
+        $('.fix'+i).each(function (index, element) {
+            var num = parseInt($(element).text().replace(/,/g,""));
+            total = total + num;
+        });
+        $('#totalfix'+i).text(total);
+     }
+     tambahan();
+  }
+
+  function tambahan(){
+      <?php $t = sizeof($biaya_pjd->result());?>
+       for (var i = 1; i <= <?=$t?>; i++) {
+        total = 0;
+        $('.tambahan'+i).each(function (index, element) {
+            var num = parseInt($(element).text().replace(/,/g,""));
+            total = total + num;
+        });
+        $('#totaltambahan'+i).text(total);
+      }
+  }
+  </script>

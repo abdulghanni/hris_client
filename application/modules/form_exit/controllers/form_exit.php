@@ -23,6 +23,7 @@ class Form_exit extends MX_Controller {
 
     function index($ftitle = "fn:",$sort_by = "id", $sort_order = "asc", $offset = 0)
     {
+        $this->data['title'] = 'Rekomendasi Karyawan Keluar';
         if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page
@@ -98,6 +99,7 @@ class Form_exit extends MX_Controller {
 
     function input($user_id = null)
     {
+        $this->data['title'] = 'Input - Rekomendasi Karyawan Keluar';
         if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page
@@ -443,6 +445,7 @@ class Form_exit extends MX_Controller {
   
     function detail($id)
     {  
+        $this->data['title'] = 'Detail - Rekomendasi Karyawan Keluar';
         if(!$this->ion_auth->logged_in())
         {
             $this->session->set_userdata('last_link', $this->uri->uri_string());
@@ -450,6 +453,7 @@ class Form_exit extends MX_Controller {
         }
         else
         {
+            $this->data['id'] = $id;
             $user_id = getValue('user_id','users_exit', array('id'=>'where/'.$id));
             $form_exit = $this->data['form_exit'] = $this->form_exit_model->form_exit($id, $user_id);
             $user_id = getValue('user_id', 'users_exit', array('id'=>'where/'.$id));

@@ -186,7 +186,6 @@
 	{	
 		function is_authorized($sess_id, $user_cuti_id)
 		{
-			//print_mz(get_superior($sess_id));
 			$CI =& get_instance();
 			
 			if($CI->ion_auth->is_admin() || $sess_id =$user_cuti_id || $sess_id = get_id(get_superior($user_cuti_id)) || $sess_id = get_id(get_superior(get_id(get_superior($user_cuti_id)))))
@@ -505,16 +504,10 @@
 
 	if (!function_exists('get_subsubordinate'))
 	{
-		//$CI =& get_instance();
-		//$sess_id = $CI->session->userdata('user_id');
-		//if(!empty(is_have_subordinate(1)))
-        //{
 	    function get_subsubordinate($id)
 	    {
 	         $x = '';
-	        //print_mz(is_have_subordinate(get_nik(20)));
 	        $input = is_have_subordinate(get_nik($id));
-	        //print_r($input);
 	        if(!empty($input))
 	        {
 	        $output = implode(', ', array_column($input, 'id'));
@@ -534,7 +527,6 @@
 	        return $x;
 	    	}
 	    }
-		//}
 	}
 
 
@@ -674,6 +666,25 @@
 		}
 	}
 
+	if(!function_exists('get_user_organization_id'))
+	{
+		function get_user_organization_id($user_id)
+		{
+			$CI =&get_instance();
+            $url = get_api_key().'users/employement/EMPLID/'.$user_id.'/format/json';
+            $headers = get_headers($url);
+            $response = substr($headers[0], 9, 3);
+            if ($response != "404") 
+            {
+                $getuser_info = file_get_contents($url);
+                $user_info = json_decode($getuser_info, true);
+                return $user_info['ORGID'];
+            } else {
+                return '-';
+            }
+		}
+	}
+
 	if(!function_exists('get_user_position'))
 	{
 		function get_user_position($user_id)
@@ -687,6 +698,25 @@
                 $getuser_info = file_get_contents($url);
                 $user_info = json_decode($getuser_info, true);
                 return $user_info['POSITION'];
+            } else {
+                return '-';
+            }
+		}
+	}
+
+	if(!function_exists('get_user_position_id'))
+	{
+		function get_user_position_id($user_id)
+		{
+			$CI =&get_instance();
+            $url = get_api_key().'users/employement/EMPLID/'.$user_id.'/format/json';
+            $headers = get_headers($url);
+            $response = substr($headers[0], 9, 3);
+            if ($response != "404") 
+            {
+                $getuser_info = file_get_contents($url);
+                $user_info = json_decode($getuser_info, true);
+                return $user_info['POSID'];
             } else {
                 return '-';
             }

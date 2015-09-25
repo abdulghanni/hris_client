@@ -48,10 +48,8 @@
                                   <th width="25%">Nama</th>
                                   <th width="15%">Tanggal Keluar</th>
                                   <th width="10%" class="text-center">appr. atasan langsung</th>
-                                  <!--
                                   <th width="10%" class="text-center">appr. atasan tidak langsung</th>
                                   <th width="10%" class="text-center">appr. Atasan Lainnya</th>
-                                  -->
                                   <th width="10%" class="text-center">appr. HRD</th>
                                   <th width="10%" class="text-center">Cetak</th>
                                 </tr>
@@ -60,10 +58,10 @@
                               <?php if($_num_rows>0){
                                 foreach($form_resignment as $user):
                                   $txt_app_lv1 = $txt_app_lv2 = $txt_app_lv3 = $txt_app_hrd = "<i class='icon-question' title = 'no respond'></i>";
-                                  $approval_status_lv1 = ($user->app_status_id_lv1 == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($user->app_status_id_lv1 == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($user->app_status_id_lv1 == 3) ? "<i class='icon-info' style='color:#EDE427;' title = 'Pending'></i>" : "<i class='icon-question' title = 'No Respond'></i>"));
-                                  $approval_status_lv2 = ($user->app_status_id_lv2 == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($user->app_status_id_lv2 == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($user->app_status_id_lv2 == 3) ? "<i class='icon-info' style='color:#EDE427;' title = 'Pending'></i>" : "<i class='icon-question' title = 'No Respond'></i>"));
-                                  $approval_status_lv3 = ($user->app_status_id_lv3 == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($user->app_status_id_lv3 == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($user->app_status_id_lv3 == 3) ? "<i class='icon-info' style='color:#EDE427;' title = 'Pending'></i>" : "<i class='icon-question' title = 'No Respond'></i>"));
-                                  $approval_status_hrd = ($user->app_status_id_hrd == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($user->app_status_id_hrd == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($user->app_status_id_hrd == 3) ? "<i class='icon-info' style='color:#EDE427;' title = 'Pending'></i>" : "<i class='icon-question' title = 'No Respond'></i>"));
+                                  $approval_status_lv1 = ($user->app_status_id_lv1 == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($user->app_status_id_lv1 == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($user->app_status_id_lv1 == 3) ? "<i class='icon-info' style='color:#719218;' title = 'Pending'></i>" : "<i class='icon-question' title = 'No Respond'></i>"));
+                                  $approval_status_lv2 = ($user->app_status_id_lv2 == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($user->app_status_id_lv2 == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($user->app_status_id_lv2 == 3) ? "<i class='icon-info' style='color:#719218;' title = 'Pending'></i>" : "<i class='icon-question' title = 'No Respond'></i>"));
+                                  $approval_status_lv3 = ($user->app_status_id_lv3 == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($user->app_status_id_lv3 == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($user->app_status_id_lv3 == 3) ? "<i class='icon-info' style='color:#719218;' title = 'Pending'></i>" : "<i class='icon-question' title = 'No Respond'></i>"));
+                                  $approval_status_hrd = ($user->app_status_id_hrd == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($user->app_status_id_hrd == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($user->app_status_id_hrd == 3) ? "<i class='icon-info' style='color:#719218;' title = 'Pending'></i>" : "<i class='icon-question' title = 'No Respond'></i>"));
                                   
                     
                                     //Approval Level 1
@@ -125,14 +123,12 @@
                                     <td class="text-center">
                                       <?php echo $txt_app_lv1;?>
                                     </td>
-                                    <!--
                                     <td class="text-center">
                                       <?php echo $txt_app_lv2; ?>
                                     </td>
                                     <td class="text-center">
                                       <?php echo $txt_app_lv3; ?>
                                     </td>
-                                    -->
                                     <td class="text-center">
                                       <?php echo $txt_app_hrd; ?>
                                     </td>
