@@ -274,16 +274,23 @@ class Dropdown extends MX_Controller {
 
     public function get_atasan3($id)
     {
-        $url_atasan_satu_bu = get_api_key().'users/atasan_satu_bu/EMPLID/'.get_nik($id).'/format/json';
+        $nik = get_nik($id);
+        $url_atasan_satu_bu = get_api_key().'users/atasan_satu_bu/EMPLID/'.$nik.'/format/json';
         $headers = get_headers($url_atasan_satu_bu);
         $response = substr($headers[0], 9, 3);
         if($response != "404") {
            $get_atasan = file_get_contents($url_atasan_satu_bu);
+           $at_khusus = $this->db->select('nik as ID')->get('users_approval_khusus')->result_array();
+
             $atasan = json_decode($get_atasan, true);
+            $uri = $this->uri->segment(3,9);
+            if(get_user_buid($nik) != '50' ):
+                $atasan = (array_merge_recursive($atasan, $at_khusus));
+            endif;
              foreach ($atasan as $row)
                 {
                     $result['0']= '-- Pilih Atasan --';
-                    $result[$row['ID']]= ucwords(strtolower($row['NAME']));
+                    $result[$row['ID']]= ucwords(strtolower(get_name($row['ID'])));
                 }
         }else{
             $result['0']= '- Karyawan Tidak Memiliki Atasan -';

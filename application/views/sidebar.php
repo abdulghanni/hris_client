@@ -69,6 +69,7 @@
           <!--<li > <a href="<?php echo site_url('library_table')?>">Library Reference Table</a> </li>-->
           <?php if(is_admin_inventaris()):?><li ><a href="<?php echo site_url('inventory')?>"><i class="icon-briefcase"></i> Inventaris</a> </li><?php endif?>
           <?php if(is_admin()):?><li ><a href="<?php echo site_url('approval')?>"> Approval</a> </li><?php endif?>
+          <?php if(is_admin()):?><li ><a href="<?php echo site_url('approval_khusus')?>"> Approval Khusus</a> </li><?php endif?>
           <?php if(is_admin()):?><li ><a href="<?php echo site_url('auth/list_group')?>"> Group</a> </li><?php endif?>
         </ul>
       </li>  

@@ -337,7 +337,7 @@ class Form_spd_luar_model extends CI_Model
                                OR users_spd_luar.user_app_lv1 = '$sess_nik'  OR users_spd_luar.user_app_lv2 = '$sess_nik'  OR users_spd_luar.user_app_lv3 = '$sess_nik' 
                     )",null, false);
             }
-            $this->db->where('users_spd_luar.is_deleted', 0);
+            //$this->db->where('users_spd_luar.is_deleted', 0);
             $this->db->order_by('users_spd_luar.id', 'desc');
         }
 

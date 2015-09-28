@@ -204,13 +204,14 @@ class Form_resignment extends MX_Controller {
         $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
         $sess_nik = $this->data['sess_nik'] = get_nik($sess_id);
         $user_id = getValue('user_id', 'users_resignment', array('id'=>'where/'.$id));
-        $this->data['user_nik'] = get_nik($user_id);
+        $user_nik = $this->data['user_nik'] = get_nik($user_id);
         $form_resignment = $this->data['form_resignment'] = $this->form_resignment_model->form_resignment($id)->result();
         $this->data['_num_rows'] = $this->form_resignment_model->form_resignment($id)->num_rows();
         $this->data['alasan_resign'] = getAll('alasan_resign', array('is_deleted'=>'where/0'));
         $alasan = explode(',', getValue('alasan_resign_id', 'users_resignment_wawancara', array('user_resignment_id' => 'where/'.$id)));
         $this->data['alasan'] = $this->form_resignment_model->get_alasan($alasan);
-        
+        $buid = get_user_buid($user_nik);
+        $this->data['hrd_list'] = $this->get_hrd($buid);
         $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
         $this->_render_page('form_resignment/detail', $this->data);
     }
@@ -428,6 +429,48 @@ class Form_resignment extends MX_Controller {
         $this->data['alasan'] = $this->form_resignment_model->get_alasan($alasan);
 
         return $this->load->view('form_resignment/resignment_mail', $this->data, TRUE);
+    }
+
+    public function get_hrd($buid)
+    {
+        
+        if($buid == '51'){
+            $buid = '50';
+        }else{
+            $url = get_api_key().'users/hrd_list/BUID/'.$buid.'/format/json';
+            $headers = get_headers($url);
+            $response = substr($headers[0], 9, 3);
+            if ($response != "404") {
+                $get_atasan = file_get_contents($url);
+                $hrd = json_decode($get_atasan, true);
+                return $hrd;
+            }else{
+                return false;
+            }
+        }
+    }
+
+    function get_hrd_phone()
+    {
+        $nik = $this->input->post('id');
+        if($nik == '0'){
+        echo '-';
+        }
+
+        if(!empty($nik)){
+            $url = get_api_key().'users/employement/EMPLID/'.$nik.'/format/json';
+            $headers = get_headers($url);
+            $response = substr($headers[0], 9, 3);
+            if ($response != "404") {
+                $getuser_info = file_get_contents($url);
+                $user_info = json_decode($getuser_info, true);
+                echo  $user_info['CELLULARPHONE'];
+            } else {
+                echo '0';
+            }
+        }else{
+            echo '0';
+        }
     }
 
     function form_resignment_pdf($id)

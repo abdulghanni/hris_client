@@ -11,6 +11,7 @@ $(document).ready(function() {
     var uri3 = url.segment(2)+'/do_approve/'+url.segment(4)+'/lv3';
     var uri4 = url.segment(2)+'/do_approve/'+url.segment(4)+'/hrd';
     var uriSubmit = url.segment(2)+'/do_submit/'+url.segment(4);
+    var uriCancel = url.segment(2)+'/do_cancel/'+url.segment(4);
 
     $('#btn_submit').click(function(){
         $('#formSpdLuar').submit(function(ev){
@@ -20,6 +21,23 @@ $(document).ready(function() {
                 data: $('#formSpdLuar').serialize(),
                 success: function() {
                      location.reload()
+                }
+            });
+            ev.preventDefault(); 
+        });  
+    });
+
+    $('#btn_cancel').click(function(){
+        var $btn = $(this).button('loading');
+        $('#formcancel').submit(function(ev){
+            $.ajax({
+                type: 'POST',
+                url: baseurl+uriCancel,
+                data: $('#formcancel').serialize(),
+                success: function() {
+                      $("[data-dismiss=modal]").trigger({ type: "click" });
+                    location.reload(),
+                    $btn.button('reset')
                 }
             });
             ev.preventDefault(); 

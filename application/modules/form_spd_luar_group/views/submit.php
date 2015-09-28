@@ -287,8 +287,16 @@ th{border:2;}
                         <div class="col-md-6">
                           <p>Admin Pembuat Tugas</p>
                           <p class="wf-approve-sp">
+                          <?php if($td->is_deleted == 0 && ($td->created_by == $sess_id || $td->task_creator == $sess_nik)){?>
+                            <div class='btn btn-danger text-center' title='Batalkan PJD' data-toggle="modal" data-target="#cancelModal"><i class='icon-remove'> Batalkan PJD</i></div><br/>
+                          <?php }elseif($td->is_deleted == 1){ 
+                          echo '<img class=approval-img src='.assets_url("img/rejected_stamp.png").'>';?><br/>
+                          <span class="semi-bold"><?php echo get_name($td->task_creator) ?></span><br/>
+                          <span class="small"><?php echo dateIndo($td->deleted_on) ?></span><br/>
+                        <?php }else{ ?>
                             <span class="semi-bold"><?php echo get_name($td->task_creator) ?></span><br/>
                             <span class="small"><?php echo dateIndo($td->created_on) ?></span><br/>
+                        <?php } ?>
                           </p>
                         </div>
                       </div>
@@ -444,6 +452,27 @@ th{border:2;}
 	</div>  
 	<!-- END PAGE --> 
 
+<!--Cancel Modal-->
+<div class="modal fade" id="cancelModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Konfirmasi Pembatalan Perjalan Dinas Luar Kota</h4>
+        </div>
+      <form class="form-no-horizontal-spacing" id="formcancel">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="display:none"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <p>Apakah anda yakin ingin membatalkan Perjalan Dinas Ini?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="icon-ban-circle"></i>&nbsp;Tidak</button> 
+        <button type="submit" class="btn btn-danger" style="margin-top: 3px;" id="btn_cancel"><i class="icon-ok-sign"></i>&nbsp;Ya</button> 
+      </div>
+        <?php echo form_close()?>
+    </div>
+  </div>
+</div>
 
   <?php for($i=1;$i<4;$i++):?>
 <!--approval  Modal atasan -->

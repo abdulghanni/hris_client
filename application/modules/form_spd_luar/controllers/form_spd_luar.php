@@ -54,12 +54,12 @@ class Form_spd_luar extends MX_Controller {
             $this->data['offset'] = 6;
 
             //list of filterize all form_spd_luar  
-            $this->data['form_spd_luar_all'] = $this->form_spd_luar_model->like($ftitle_post)->where('users_spd_luar.is_deleted',0)->form_spd_luar()->result();
+            $this->data['form_spd_luar_all'] = $this->form_spd_luar_model->like($ftitle_post)->form_spd_luar()->result();
             
-            $this->data['num_rows_all'] = $this->form_spd_luar_model->like($ftitle_post)->where('users_spd_luar.is_deleted',0)->form_spd_luar()->num_rows();
+            $this->data['num_rows_all'] = $this->form_spd_luar_model->like($ftitle_post)->form_spd_luar()->num_rows();
 
-            $form_spd_luar = $this->data['form_spd_luar'] = $this->form_spd_luar_model->like($ftitle_post)->where('users_spd_luar.is_deleted',0)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->form_spd_luar()->result();
-            $this->data['_num_rows'] = $this->form_spd_luar_model->like($ftitle_post)->where('users_spd_luar.is_deleted',0)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->form_spd_luar()->num_rows();
+            $form_spd_luar = $this->data['form_spd_luar'] = $this->form_spd_luar_model->like($ftitle_post)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->form_spd_luar()->result();
+            $this->data['_num_rows'] = $this->form_spd_luar_model->like($ftitle_post)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->form_spd_luar()->num_rows();
             
 
              //config pagination
@@ -123,6 +123,8 @@ class Form_spd_luar extends MX_Controller {
             $this->data['biaya_pjd'] = getJoin('users_spd_luar_biaya','pjd_biaya','users_spd_luar_biaya.pjd_biaya_id = pjd_biaya.id','left', 'users_spd_luar_biaya.*, pjd_biaya.title as jenis_biaya, pjd_biaya.type_grade as type', array('user_spd_luar_id'=>'where/'.$id));
             $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
             $this->data['biaya_tambahan'] = getAll('pjd_biaya', array('type_grade' => 'where/0'));
+            $this->data['spd_start'] = getValue('date_spd_start', 'users_spd_luar', array('id'=>'where/'.$id));
+        $this->data['spd_end'] = getValue('date_spd_end', 'users_spd_luar', array('id'=>'where/'.$id));
             $this->_render_page('form_spd_luar/submit', $this->data);
         }
     }
@@ -146,6 +148,30 @@ class Form_spd_luar extends MX_Controller {
         $this->form_spd_luar_model->update($id,$additional_data);
         
         $this->send_spd_submitted_mail($id, $receiver_id, $sender_id);
+
+        redirect('form_spd_luar/submit/'.$id,'refresh');
+    }
+
+    public function do_cancel($id)
+    {
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+
+        $date_now = date('Y-m-d');
+
+        $sender_id = $this->db->where('id', $id)->get('users_spd_luar')->row('task_creator');
+        $receiver_id = $this->db->where('id', $id)->get('users_spd_luar')->row('task_receiver');
+        $additional_data = array(
+        'is_deleted' => 1,  
+        'deleted_by' => $this->session->userdata('user_id'),
+        'deleted_on' => $date_now);
+
+        $this->form_spd_luar_model->update($id,$additional_data);
+        
+        $this->send_spd_canceled_mail($id, $receiver_id, $sender_id);
 
         redirect('form_spd_luar/submit/'.$id,'refresh');
     }
@@ -693,6 +719,21 @@ class Form_spd_luar extends MX_Controller {
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Persetujuan Tugas Perjalanan Dinas Luar Kota',
                     'email_body' => get_name($sender_id).' telah menyetujui tugas perjalan dinas luar kota yang anda berikan, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$this->detail_email($spd_id),
+                    'is_read' => 0,
+                );
+        $this->db->insert('email', $data);
+    }
+
+    function send_spd_canceled_mail($spd_id, $receiver_id, $sender_id)
+    {
+        $url = base_url().'form_spd_luar/submit/'.$spd_id;
+        //$sender = (!empty(get_nik($this->session->userdata('user_id')))) ? get_nik($this->session->userdata('user_id')) : $this->session->userdata('user_id');
+        $data = array(
+                    'sender_id' => $sender_id,
+                    'receiver_id' => $receiver_id,
+                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                    'subject' => 'Pembatalan Tugas Perjalanan Dinas Luar Kota',
+                    'email_body' => get_name($sender_id).' telah membatalkan tugas perjalan dinas luar kota, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$this->detail_email($spd_id),
                     'is_read' => 0,
                 );
         $this->db->insert('email', $data);

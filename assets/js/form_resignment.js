@@ -22,14 +22,32 @@ $(document).ready(function() {
     var uri5 = url.segment(2)+'/kirim_undangan/'+url.segment(4);
 
     $( "#formadd" ).validate({
-    rules: {
-      atasan1: {notEqual:0}
-    },
+        rules: {
+          atasan1: {notEqual:0}
+        },
 
-    messages: {
-          atasan1 : "Silakan Pilih Atasan"
-      }
-  });
+        messages: {
+              atasan1 : "Silakan Pilih Atasan"
+          }
+    });
+
+    $("#hrd_list").change(function() {
+        var empId = $(this).val();
+        getHrdPhone(empId);
+    })
+    .change();
+
+    function getHrdPhone(empId)
+    {
+        $.ajax({
+            type: 'POST',
+            url: '../get_hrd_phone',
+            data: {id : empId},
+            success: function(data) {
+                $('#hrd_phone').val(data);
+            }
+        });
+    }
             
     //approval script
 

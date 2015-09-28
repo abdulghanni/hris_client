@@ -1,6 +1,6 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class form_spd_luar_group_model extends CI_Model
+class approval_khusus_model extends CI_Model
 {
      /**
      * Holds an array of tables used
@@ -275,14 +275,14 @@ class form_spd_luar_group_model extends CI_Model
     }
 
     /**
-     * form_spd_luar_group
+     * approval_khusus
      *
-     * @return object form_spd_luar_group
+     * @return object approval_khusus
      * @author Deni
      **/
-    public function form_spd_luar_group($id = null)
+    public function approval_khusus($id = null)
     {
-        $this->trigger_events('form_spd_luar_group');
+        $this->trigger_events('approval_khusus');
 
         if (isset($this->_ion_select) && !empty($this->_ion_select))
         {
@@ -295,53 +295,20 @@ class form_spd_luar_group_model extends CI_Model
         }
         else
         {
-            $sess_id = $this->session->userdata('user_id');
-            $sess_nik = get_nik($sess_id);
-            $admin = is_admin();
-            $is_approver = $this->approval->approver('dinas');
             //default selects
             $this->db->select(array(
-                $this->tables['users_spd_luar_group'].'.*',
-                $this->tables['users_spd_luar_group'].'.id as id',
-                $this->tables['users_spd_luar_group'].'.id as form_spd_luar_id',
-                $this->tables['transportation'].'.title as transportation_nm',
-                'city_to.title as city_to',
-                'city_from.title as city_from',
+                $this->tables['users_approval_khusus'].'.*',
+                $this->tables['users_approval_khusus'].'.id as id',
+                'users.username as username',
             ));
-
-            $this->db->join('users', 'users_spd_luar_group.task_receiver = users.nik', 'left');
-            $this->db->join('users as creator', 'users_spd_luar_group.task_creator = creator.nik', 'left');
-            $this->db->join('transportation', 'users_spd_luar_group.transportation_id = transportation.id');
-            $this->db->join('city as city_to','users_spd_luar_group.to_city_id = city_to.id');
-            $this->db->join('city as city_from','users_spd_luar_group.from_city_id = city_from.id');
-            
-            if($id != null){
-                $this->db->where('users_spd_luar_group.id', $id);
-            }
-            
-            //$this->db->where('users_spd_luar_group.is_deleted', 0);
-            if($is_approver !== $sess_nik && $admin != 1){
-                //$this->db->where("(users_spd_luar_group.task_receiver like '%$sess_nik%' OR users_spd_luar_group.task_creator = '$sess_nik' )",null, false);
-                $this->db->where("(users_spd_luar_group.task_receiver like '%$sess_nik%' OR users_spd_luar_group.task_creator = '$sess_nik' OR users_spd_luar_group.created_by = '$sess_id' 
-                               OR users_spd_luar_group.user_app_lv1 = '$sess_nik'  OR users_spd_luar_group.user_app_lv2 = '$sess_nik'  OR users_spd_luar_group.user_app_lv3 = '$sess_nik' 
-                    )",null, false);
-            }
-            $this->db->order_by('users_spd_luar_group.id', 'desc');
+            $this->db->join('users', 'users.nik = users_approval_khusus.nik', 'LEFT');
+            $this->db->where('is_deleted', 0);
+            $this->db->order_by('users_approval_khusus.id', 'asc');
         }
 
         $this->trigger_events('extra_where');
 
         //run each where that was passed
-
-        if (isset($this->_ion_where) && !empty($this->_ion_where))
-        {
-            foreach ($this->_ion_where as $where)
-            {
-                $this->db->where($where);
-            }
-
-            $this->_ion_where = array();
-        }
 
         if (isset($this->_ion_like) && !empty($this->_ion_like))
         {
@@ -376,99 +343,14 @@ class form_spd_luar_group_model extends CI_Model
             $this->_ion_order_by = NULL;
         }
 
-        $this->response = $this->db->get($this->tables['users_spd_luar_group']);
+        $this->response = $this->db->get($this->tables['users_approval_khusus']);
 
         return $this;
     }
-
     
-    public function form_spd_luar_report_group($id = null, $user_id = null)
-    {
-        $this->trigger_events('form_spd_luar_report_group');
-
-        if (isset($this->_ion_select) && !empty($this->_ion_select))
-        {
-            foreach ($this->_ion_select as $select)
-            {
-                $this->db->select($select);
-            }
-
-            $this->_ion_select = array();
-        }
-        else
-        {
-            //default selects
-            $sess_nik = (!empty(get_nik($this->session->userdata('user_id'))))?get_nik($this->session->userdata('user_id')):$this->session->userdata('user_id');
-            $this->db->select(array(
-                $this->tables['users_spd_luar_report_group'].'.*',
-                $this->tables['users_spd_luar_report_group'].'.id as id',
-                $this->tables['users_spd_luar_group'].'.id as spd_id',
-
-            ));
-
-            $this->db->join('users_spd_luar_report_group', 'users_spd_luar_group.id = users_spd_luar_report_group.user_spd_luar_group_id', 'left');
-            if($id != null && $user_id != null){
-                //$this->db->where('users_spd_luar_report_group.user_spd_luar_group_id', $id);
-                $this->db->where('users_spd_luar_report_group.created_by', $user_id);
-            }
-            $this->db->where('users_spd_luar_group.is_deleted', 0);
-        }
-
-        $this->trigger_events('extra_where');
-
-        //run each where that was passed
-
-        if (isset($this->_ion_where) && !empty($this->_ion_where))
-        {
-            foreach ($this->_ion_where as $where)
-            {
-                $this->db->where($where);
-            }
-
-            $this->_ion_where = array();
-        }
-
-        if (isset($this->_ion_like) && !empty($this->_ion_like))
-        {
-            foreach ($this->_ion_like as $like)
-            {
-                $this->db->or_like($like);
-            }
-
-            $this->_ion_like = array();
-        }
-
-        if (isset($this->_ion_limit) && isset($this->_ion_offset))
-        {
-            $this->db->limit($this->_ion_limit, $this->_ion_offset);
-
-            $this->_ion_limit  = NULL;
-            $this->_ion_offset = NULL;
-        }
-        else if (isset($this->_ion_limit))
-        {
-            $this->db->limit($this->_ion_limit);
-
-            $this->_ion_limit  = NULL;
-        }
-
-        //set the order
-        if (isset($this->_ion_order_by) && isset($this->_ion_order))
-        {
-            $this->db->order_by($this->_ion_order_by, $this->_ion_order);
-
-            $this->_ion_order    = NULL;
-            $this->_ion_order_by = NULL;
-        }
-
-        $this->response = $this->db->get($this->tables['users_spd_luar_group']);
-
-        return $this;
-    }
-
     public function render_session()
     {
-         $this->trigger_events('form_spd_luar_group_input');
+         $this->trigger_events('approval_khusus_input');
 
         if (isset($this->_ion_select) && !empty($this->_ion_select))
         {
@@ -549,7 +431,7 @@ class form_spd_luar_group_model extends CI_Model
 
     public function get_comp_session_id()
     {
-        $this->trigger_events('form_spd_luar_group_input');
+        $this->trigger_events('approval_khusus_input');
 
         if (isset($this->_ion_select) && !empty($this->_ion_select))
         {
@@ -621,136 +503,6 @@ class form_spd_luar_group_model extends CI_Model
         $this->response = $this->db->get($this->tables['users']);
 
         return $this;
-    }
-
-    public function delete($id)
-    {
-        $this->trigger_events('pre_delete_frm_cuti');
-
-        $this->db->trans_begin();
-
-        // delete organization from users_cuti table
-        $this->db->delete($this->tables['users_cuti'], array('id' => $id));
-
-        // if user does not exist in database then it returns FALSE else removes the user from groups
-        if ($this->db->affected_rows() == 0)
-        {
-            return FALSE;
-        }
-
-        if ($this->db->trans_status() === FALSE)
-        {
-            $this->db->trans_rollback();
-            $this->trigger_events(array('post_delete_frm_cuti', 'post_delete_frm_cuti_unsuccessful'));
-            $this->set_error('delete_unsuccessful');
-            return FALSE;
-        }
-
-        $this->db->trans_commit();
-
-        $this->trigger_events(array('post_delete_frm_cuti', 'post_delete_frm_cuti_successful'));
-        $this->set_message('delete_successful');
-        return TRUE;
-    }
-
-    public function create_($user_id = FALSE, $additional_data = array())
-    {
-
-        $data = array('task_receiver'=>$user_id);
-
-        //filter out any data passed that doesnt have a matching column in the form cuti table
-        //and merge the set group data and the additional data
-        if (!empty($additional_data)) $data = array_merge($this->_filter_data($this->tables['users_spd_luar_group'], $additional_data), $data);
-
-        $this->trigger_events('extra_group_set');
-
-        // insert the new form_spd_luar_group
-        $this->db->insert($this->tables['users_spd_luar_group'], $data);
-        $id = $this->db->insert_id();
-
-        // report success
-        $this->set_message('frm_spd_luar_group_creation_successful');
-        // return the brand new id
-        return $id;
-    }
-
-    public function create_report($spd_id = FALSE, $additional_data = array())
-    {
-
-        $data = array('user_spd_luar_group_id'=>$spd_id);
-
-        //filter out any data passed that doesnt have a matching column in the form cuti table
-        //and merge the set group data and the additional data
-        if (!empty($additional_data)) $data = array_merge($this->_filter_data($this->tables['users_spd_luar_report_group'], $additional_data), $data);
-
-        $this->trigger_events('extra_group_set');
-
-        // insert the new form_spd_luar_group
-        $this->db->insert($this->tables['users_spd_luar_report_group'], $data);
-        $id = $this->db->insert_id();
-
-        // report success
-        $this->set_message('frm_spd_luar_group_report_creation_successful');
-        // return the brand new id
-        return $id;
-    }
-
-    public function update_report($id, array $data)
-    {
-        $this->trigger_events('pre_update_frm_spd_luar_group');
-
-        $this->db->trans_begin();
-
-        // Filter the data passed
-        $data = $this->_filter_data($this->tables['users_spd_luar_report_group'], $data);
-
-        $this->trigger_events('extra_where');
-        $this->db->update($this->tables['users_spd_luar_report_group'], $data, array('id' => $id));
-
-        if ($this->db->trans_status() === FALSE)
-        {
-            $this->db->trans_rollback();
-
-            $this->trigger_events(array('post_update_form_spd_luar_report_group', 'post_update_form_spd_luar_report_group_unsuccessful'));
-            $this->set_error('update_unsuccessful');
-            return FALSE;
-        }
-
-        $this->db->trans_commit();
-
-        $this->trigger_events(array('post_update_form_spd_luar_report_group', 'post_update_form_spd_luar_report_group_unsuccessful'));
-        $this->set_message('update_successful');
-        return TRUE;
-    }
-
-    public function update($id, array $data)
-    {
-        $this->trigger_events('pre_update_frm_spd_luar_group');
-
-        $form_spd_luar_group = $this->form_spd_luar_group($id)->row();
-
-        $this->db->trans_begin();
-
-        // Filter the data passed
-        $data = $this->_filter_data($this->tables['users_spd_luar_group'], $data);
-
-        $this->trigger_events('extra_where');
-        $this->db->update($this->tables['users_spd_luar_group'], $data, array('id' => $id));
-
-        if ($this->db->trans_status() === FALSE)
-        {
-            $this->db->trans_rollback();
-
-            $this->trigger_events(array('post_update_form_spd_luar_group', 'post_update_form_spd_luar_group_unsuccessful'));
-            $this->set_error('update_unsuccessful');
-            return FALSE;
-        }
-
-        $this->db->trans_commit();
-
-        $this->trigger_events(array('post_update_form_spd_luar_group', 'post_update_frm_cuti_unsuccessful'));
-        $this->set_message('update_successful');
-        return TRUE;
     }
 
     public function trigger_events($events)
@@ -945,14 +697,14 @@ class form_spd_luar_group_model extends CI_Model
         return $filtered_data;
     }
 
-    public function frm_cuti($id = NULL)
+    public function frm_approval_khusus($id = NULL)
     {
-        $this->trigger_events('frm_cuti');
+        $this->trigger_events('frm_approval_khusus');
 
         $this->limit(1);
-        $this->where($this->tables['users_cuti'].'.id', $id);
+        $this->where($this->tables['users_approval_khusus'].'.id', $id);
 
-        $this->form_spd_luar_group();
+        $this->approval_khusus();
 
         return $this;
     }

@@ -64,13 +64,13 @@
                               $app_lv3 = getValue('app_status_id_lv3', 'users_spd_luar_group', array('id'=>'where/'.$spd->id));
                               $app_hrd = getValue('app_status_id_hrd', 'users_spd_luar_group', array('id'=>'where/'.$spd->id));
 
-                              $reject = ($app_lv1==2 || $app_lv2==2 || $app_lv2 ==2|| $app_hrd ==2) ? 'Rejected' : 'Report';
-                              $reject2 = ($app_lv1 ==2|| $app_lv2==2 || $app_lv2==2 || $app_hrd ==2) ? 'style="background-color:red"' : '';
+                              $reject = ($app_lv1==2 || $app_lv2==2 || $app_lv2 ==2|| $app_hrd ==2 || $spd->is_deleted == 1) ? 'Rejected' : 'Report';
+                              $reject2 = ($app_lv1 ==2|| $app_lv2==2 || $app_lv2==2 || $app_hrd ==2 || $spd->is_deleted == 1) ? 'style="background-color:red" disabled="disabled"' : '';
                                 $txt_app_lv1 = $txt_app_lv2 = $txt_app_lv3 = $txt_app_hrd = "<i class='icon-question' title = 'no respond'></i>";
-                                  $approval_status_lv1 = ($spd->app_status_id_lv1 == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($spd->app_status_id_lv1 == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($spd->app_status_id_lv1 == 3) ? "<i class='icon-info' style='color:#719218;' title = 'Pending'></i>" : "<i class='icon-question' title = 'No Respond'></i>"));
-                                  $approval_status_lv2 = ($spd->app_status_id_lv2 == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($spd->app_status_id_lv2 == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($spd->app_status_id_lv2 == 3) ? "<i class='icon-info' style='color:#719218;' title = 'Pending'></i>" : "<i class='icon-question' title = 'No Respond'></i>"));
-                                  $approval_status_lv3 = ($spd->app_status_id_lv3 == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($spd->app_status_id_lv3 == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($spd->app_status_id_lv3 == 3) ? "<i class='icon-info' style='color:#719218;' title = 'Pending'></i>" : "<i class='icon-question' title = 'No Respond'></i>"));
-                                  $approval_status_hrd = ($spd->app_status_id_hrd == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($spd->app_status_id_hrd == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($spd->app_status_id_hrd == 3) ? "<i class='icon-info' style='color:#719218;' title = 'Pending'></i>" : "<i class='icon-question' title = 'No Respond'></i>"));
+                                  $approval_status_lv1 = ($spd->app_status_id_lv1 == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($spd->app_status_id_lv1 == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($spd->app_status_id_lv1 == 3) ? "<i class='icon-exclamation-sign' style='color:orange;' title = 'Pending'></i>" : "<i class='icon-question' title = 'No Respond'></i>"));
+                                  $approval_status_lv2 = ($spd->app_status_id_lv2 == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($spd->app_status_id_lv2 == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($spd->app_status_id_lv2 == 3) ? "<i class='icon-exclamation-sign' style='color:orange;' title = 'Pending'></i>" : "<i class='icon-question' title = 'No Respond'></i>"));
+                                  $approval_status_lv3 = ($spd->app_status_id_lv3 == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($spd->app_status_id_lv3 == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($spd->app_status_id_lv3 == 3) ? "<i class='icon-exclamation-sign' style='color:orange;' title = 'Pending'></i>" : "<i class='icon-question' title = 'No Respond'></i>"));
+                                  $approval_status_hrd = ($spd->app_status_id_hrd == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($spd->app_status_id_hrd == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($spd->app_status_id_hrd == 3) ? "<i class='icon-exclamation-sign' style='color:orange;' title = 'Pending'></i>" : "<i class='icon-question' title = 'No Respond'></i>"));
                                   
                   
                     
@@ -128,7 +128,7 @@
 
                                 $hidden = (!in_array(get_nik($sess_id), $p)) ? 'style="display:none"' : '';
                                 $btn_sub = (in_array(get_nik($sess_id), $p) && !in_array(get_nik($sess_id), $receiver_submit)) ? 'Submit' :((in_array(get_nik($sess_id), $p) && in_array(get_nik($sess_id), $receiver_submit))?'Submitted':'');
-                                if(($app_lv1==2 || $app_lv2==2 || $app_lv2 ==2|| $app_hrd ==2)){
+                                if(($app_lv1==2 || $app_lv2==2 || $app_lv2 ==2|| $app_hrd ==2 ||$spd->is_deleted == 1)){
                                   $btn_rep = $reject;
                                 }else{
                                 $btn_rep = ($report_num>0)?'View Report':(($report_num < 1 && in_array(get_nik($sess_id), $receiver_submit))?'Create Report':'Report');

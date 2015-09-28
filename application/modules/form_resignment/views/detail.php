@@ -143,7 +143,7 @@
                           <label class="form-label text-left">Nama Pewawancara</label>
                         </div>
                         <div class="col-md-8">
-                            <input type="text" class="form-control" id="sandbox-advance" name="date_resign" value="<?php echo $row->nama_pewawancara?>" disabled>
+                            <input type="text" class="form-control" id="sandbox-advance" name="date_resign" value="<?php $nama_pewawancara = (strlen($row->nama_pewawancara)!=5) ? $row->nama_pewawancara : get_name($row->nama_pewawancara);echo $nama_pewawancara?>" disabled>
                         </div>
                       </div>
 
@@ -292,9 +292,9 @@
                       if($row->$is_app == 1 && get_nik($sess_id) == $row->$user_app){?>
                         <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitModalLv<?php echo $i ?>"><i class='icon-edit'> Edit Approval</i></div>
                     <?php }endfor;
-                      if($row->is_app_hrd == 1 && get_nik($sess_id) == $this->approval->approver('recruitment')){?>
-                        <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitModalHrd"><i class='icon-edit'> Edit Approval</i></div>
-                    <?php } ?>
+                      if($row->is_app_hrd == 0 && $row->is_invited == 1 && get_nik($sess_id) == $this->approval->approver('resignment')){?>
+                        <div class='btn btn-info btn-small text-center' title='Edit undangan' data-toggle="modal" data-target="#undanganModal"><i class='icon-edit'> Ubah Tanggal Wawancara</i></div>
+                      <?php } ?>
                     </div>
                   </div>
 
@@ -382,8 +382,11 @@
                   <div class="col-md-3">
                     <p class="wf-approve-sp">
                     <div class="col-md-12"><span class="semi-bold">Diterima HRD</span><br/><br/></div>
-                      <?php if($row->is_app_hrd == 0 && $this->approval->approver('recruitment') == $sess_nik){?>
-                        <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitModalHrd"><i class="icon-ok"></i>Submit</div>
+                      <?php 
+                      $submitbutton = ($row->is_invited == 0) ? '#undanganModal' : '#submitModalHrd';
+                      $submitlabel =  ($row->is_invited == 0) ? 'Undang Wawancara' : 'Wawancara';
+                      if($row->is_app_hrd == 0 && $this->approval->approver('resignment') == $sess_nik){?>
+                        <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="<?php echo $submitbutton ?>"><i class="icon-ok"></i><?php echo $submitlabel?></div>
                         <span class="small"></span>
                         <span class="semi-bold"></span><br/>
                         <span class="small"></span><br/>
@@ -657,16 +660,25 @@
                 <label class="form-label text-left">Nama Pewawancara</label>
               </div>
               <div class="col-md-8">
-                <input type="text" class="form-control" id="sandbox-advance" name="nama_pewawancara" value="<?php echo $row->nama_pewawancara?>">
+                <?php if(!empty($hrd_list)){ ?>
+                  <select id="hrd_list" name="nama_pewawancara" class="form-control select2">
+                <?php
+                  foreach ($hrd_list as $key => $value):
+                    echo '<option value='.$value["EMPLID"].'>'.$value["NAME"].'</option>';
+                  endforeach;
+                    echo '</select>';
+                  } else { ?>
+                  <input type="text" class="form-control" id="sandbox-advance" name="nama_pewawancara" value="<?php echo $row->nama_pewawancara?>">
+                <?php } ?>
               </div>
             </div>
-
+            <br/>
             <div class="row form-row">
               <div class="col-md-4">
                 <label class="form-label text-left">No. Telp Pewawancara</label>
               </div>
               <div class="col-md-8">
-                <input type="text" class="form-control" id="sandbox-advance" name="telp_pewawancara" value="<?php echo $row->telp_pewawancara?>">
+                <input type="text" class="form-control" id="hrd_phone" name="telp_pewawancara" value="<?php echo $row->telp_pewawancara?>">
               </div>
             </div>
 
