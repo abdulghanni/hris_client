@@ -629,17 +629,29 @@ class Form_rolling extends MX_Controller {
         $this->data['user_nik'] = get_nik($user_id);
         $form_rolling = $this->data['form_rolling'] = $this->form_rolling_model->form_rolling($id)->result();
         $this->data['_num_rows'] = $this->form_rolling_model->form_rolling($id)->num_rows();
-
-        $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
-
-            $this->data['id'] = $id;
-            $title = $this->data['title'] = 'Form Pengajuan rolling-'.get_name($user_id);
-            $this->load->library('mpdf60/mpdf');
-            $html = $this->load->view('rolling_pdf', $this->data, true); 
-            $mpdf = new mPDF();
-            $mpdf = new mPDF('A4');
-            $mpdf->WriteHTML($html);
-            $mpdf->Output($id.'-'.$title.'.pdf', 'I');
+        $title = $this->data['title'] = 'Form Pengajuan rolling-'.get_name($user_id);
+        $creator = getValue('created_by', 'users_rolling', array('id'=>'where/'.$id));
+        $creator = get_nik($creator);
+        $this->data['form_id'] = 'MUT';
+        $this->data['bu'] = get_user_buid($creator);
+        $loc_id = get_user_locationid($creator);
+        $this->data['location'] = get_user_location($loc_id);
+        $date = getValue('created_on','users_rolling', array('id'=>'where/'.$id));
+        $this->data['m'] = date('m', strtotime($date));
+        $this->data['y'] = date('Y', strtotime($date));
+        $this->load->library('mpdf60/mpdf');
+        $html = $this->load->view('rolling_pdf', $this->data, true); 
+        $this->mpdf = new mPDF();
+        $this->mpdf->AddPage('P', // L - landscape, P - portrait
+            '', '', '', '',
+            30, // margin_left
+            30, // margin right
+            10, // margin top
+            10, // margin bottom
+            10, // margin header
+            10); // margin footer
+        $this->mpdf->WriteHTML($html);
+        $this->mpdf->Output($id.'-'.$title.'.pdf', 'I');
         }
     }
 

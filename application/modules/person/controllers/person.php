@@ -193,7 +193,7 @@ class Person extends MX_Controller {
 
         //Tab Inventaris
 
-        $i =$this->db->select('users_inventory.id as id, users_inventory.is_available, users_inventory.note, inventory.title as title')->from('users_inventory')->join('inventory', 'users_inventory.inventory_id = inventory.id', 'left')->where('users_inventory.user_id', $id)->get();
+        $i =$this->db->select('users_inventory_exit.id as id, users_inventory_exit.is_available, users_inventory_exit.note, inventory.title as title')->from('users_inventory_exit')->join('inventory', 'users_inventory_exit.inventory_id = inventory.id', 'left')->where('users_inventory_exit.user_id', $id)->get();
         $this->data['users_inventory'] = $i;
 
 		$this->data['aviva'] = (!empty($user_info['AVIVA'])) ? $user_info['AVIVA'] : '-';

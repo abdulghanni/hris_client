@@ -436,8 +436,46 @@ class Form_spd_luar_group extends MX_Controller {
 
         $this->db->where('id', $biaya_id[$i])->update('users_spd_luar_group_biaya', $data2);
         endfor;
+        $this->edit_mail($id);
         redirect('form_spd_luar_group/submit/'.$id, 'refresh');
 
+    }
+
+    function edit_mail($id){
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+
+        $url = base_url().'form_spd_luar_group/submit/'.$id;
+        $sess_id = $this->session->userdata('user_id');
+        $sender_id = get_nik($sess_id);
+
+        $task_receiver = getValue('task_receiver', 'users_spd_luar_group', array('id'=>'where/'.$id));
+        $task_receiver_id = explode(',',$task_receiver);
+
+        for($i=0;$i<sizeof($task_receiver_id);$i++):
+        $data = array(
+                    'sender_id' => $sender_id,
+                    'receiver_id' => $task_receiver_id[$i],
+                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                    'subject' => 'Perubahan Data Tugas Perjalanan Dinas Luar Kota(Group)',
+                    'email_body' => get_name($sender_id).' melakukan perubahan data tugas perjalan dinas luar kota(group), untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$this->detail_email($id),
+                    'is_read' => 0,
+                );
+            $this->db->insert('email', $data);
+        endfor;
+        $user_app_lv1 = getValue('user_app_lv1', 'users_spd_luar_group', array('id'=>'where/'.$id));
+        $data2 = array(
+                    'sender_id' => $sender_id,
+                    'receiver_id' => $user_app_lv1,
+                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                    'subject' => 'Perubahan Data Tugas Perjalanan Dinas Luar Kota(Group)',
+                    'email_body' => get_name($sender_id).' melakukan perubahan data tugas perjalan dinas luar kota(group), untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$this->detail_email($id),
+                    'is_read' => 0,
+                );
+            $this->db->insert('email', $data);
     }
 
     public function report($id)
@@ -986,7 +1024,25 @@ class Form_spd_luar_group extends MX_Controller {
         $b = $this->data['biaya_pjd'] = $this->db->distinct()->select('users_spd_luar_group_biaya.pjd_biaya_id as biaya_id, pjd_biaya.title as jenis_biaya')->from('users_spd_luar_group_biaya')->join('pjd_biaya','pjd_biaya.id = users_spd_luar_group_biaya.pjd_biaya_id', 'left')->where('user_spd_luar_group_id', $id)->where('pjd_biaya.type_grade', 0)->get();//print_mz($this->data['biaya_pjd']->result());                   
         $this->data['detail'] = $this->db->distinct()->select('user_id')->where('user_spd_luar_group_id', $id)->get('users_spd_luar_group_biaya');
         $this->data['ci'] = $this;
+        $creator = getValue('task_creator', 'users_spd_luar_group', array('id'=>'where/'.$id));
+        $this->data['form_id'] = 'PJD-LKG';
+        $this->data['bu'] = get_user_buid($creator);
+        $loc_id = get_user_locationid($creator);
+        $this->data['location'] = get_user_location($loc_id);
+        $date = getValue('created_on','users_spd_luar_group', array('id'=>'where/'.$id));
+        $this->data['m'] = date('m', strtotime($date));
+        $this->data['y'] = date('Y', strtotime($date));
+        $a = strtotime(getValue('date_spd_end', 'users_spd_luar_group', array('id'=>'where/'.$id)));
+        $b = strtotime(getValue('date_spd_start', 'users_spd_luar_group', array('id'=>'where/'.$id)));
 
+        $j = $a - $b;
+        $jml_pjd = floor($j/(60*60*24)+1);
+        $biaya_fix_1 = $this->db->select("(SELECT SUM(jumlah_biaya) FROM users_spd_luar_group_biaya WHERE user_spd_luar_group_id=$id and (pjd_biaya_id = 1 or pjd_biaya_id=4 or pjd_biaya_id=7 or pjd_biaya_id=10 or pjd_biaya_id=13 or pjd_biaya_id=19 or pjd_biaya_id=16)) AS uang_makan", FALSE)->get()->row_array();
+        $this->data['uang_makan'] = number_format($biaya_fix_1['uang_makan']*$jml_pjd);
+        $biaya_fix_2 = $this->db->select("(SELECT SUM(jumlah_biaya) FROM users_spd_luar_group_biaya WHERE user_spd_luar_group_id=$id and (pjd_biaya_id = 2 or pjd_biaya_id=5 or pjd_biaya_id=8 or pjd_biaya_id=11 or pjd_biaya_id=14 or pjd_biaya_id=20 or pjd_biaya_id=17)) AS uang_saku", FALSE)->get()->row_array();
+        $this->data['uang_saku'] = number_format($biaya_fix_2['uang_saku']*$jml_pjd);
+        $biaya_fix_3 = $this->db->select("(SELECT SUM(jumlah_biaya) FROM users_spd_luar_group_biaya WHERE user_spd_luar_group_id=$id and (pjd_biaya_id = 3 or pjd_biaya_id=6 or pjd_biaya_id=9 or pjd_biaya_id=12 or pjd_biaya_id=15 or pjd_biaya_id=21 or pjd_biaya_id=18)) AS hotel", FALSE)->get()->row_array();
+        $this->data['hotel'] = number_format($biaya_fix_3['hotel']*$jml_pjd);
         $this->load->library('mpdf60/mpdf');
         $html = $this->load->view('spd_luar_group_pdf', $this->data, true); 
         $this->mpdf = new mPDF();

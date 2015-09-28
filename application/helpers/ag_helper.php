@@ -780,6 +780,25 @@
 		}
 	}
 
+	if(!function_exists('get_user_location'))
+	{
+		function get_user_location($loc_id)
+		{
+			$CI =&get_instance();
+            $url = get_api_key().'users/location_desc/LOCID/'.$loc_id.'/format/json';
+            $headers = get_headers($url);
+            $response = substr($headers[0], 9, 3);
+            if ($response != "404") 
+            {
+                $getuser_info = file_get_contents($url);
+                $user_info = json_decode($getuser_info, true);
+                return $user_info;
+            } else {
+                return '';
+            }
+		}
+	}
+
 	if(!function_exists('get_user_emplgroupid'))
 	{
 		function get_user_emplgroupid($user_id)

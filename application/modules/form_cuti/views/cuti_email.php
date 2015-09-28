@@ -153,40 +153,21 @@
                           <input name="alamat_cuti" id="alamat_cuti" type="text"  class="form-control" placeholder="Nama" value="<?php echo $user->alamat_cuti; ?>" disabled="disabled">
                         </div>
                       </div>
-                      <?php if(!empty($user->note_app_lv1)){?>
+                      <?php 
+                      for($i=1;$i<4;$i++):
+                      $note_lv = 'note_app_lv'.$i;
+                      $user_lv = 'user_app_lv'.$i;
+                      if(!empty($user->$note_lv)){?>
                       <div class="row form-row">
                         <div class="col-md-4">
-                          <label class="form-label text-right">Note (Atasan Langsung): </label>
+                          <label class="form-label text-right">Note (<?php echo strtok(get_name($user->$user_lv), " ")?>):</label>
                         </div>
                         <div class="col-md-8">
-                          <textarea name="note_lv1" class="form-control" placeholder="Note Atasan Langsung isi disini" disabled="disabled"><?php echo $user->note_app_lv1 ?></textarea>
+                          <textarea name="notes_spv" class="form-control" disabled="disabled"><?php echo $user->$note_lv ?></textarea>
                         </div>
                       </div>
                       <?php } ?>
-
-                      <?php if(!empty($user->note_app_lv2)){?>
-                      <div class="row form-row">
-                        <div class="col-md-4">
-                          <label class="form-label text-right">Note (Atasan Tidak Langsung): </label>
-                        </div>
-                        <div class="col-md-8">
-                          <textarea name="notes_kbg" class="form-control" placeholder="Note Atasan Tidak Langsung isi disini" disabled="disabled"><?php echo $user->note_app_lv2 ?></textarea>
-                        </div>
-                      </div>
-                      <?php } ?>
-
-                      <input type="text" name="app_status" value="1" style="display:none" />
-
-                      <?php if(!empty($user->note_app_lv3)){?>
-                      <div class="row form-row">
-                        <div class="col-md-4">
-                          <label class="form-label text-right">Note (Atasan Lainnya): </label>
-                        </div>
-                        <div class="col-md-8">
-                          <textarea name="notes_hrd" placeholder="Note hrd isi disini" class="form-control" disabled="disabled"><?php echo $user->note_app_lv3 ?></textarea>
-                        </div>
-                      </div>
-                      <?php } ?>
+                    <?php endfor;?>
                       
                       <?php if(!empty($user->note_app_hrd)){?>
                       <div class="row form-row">

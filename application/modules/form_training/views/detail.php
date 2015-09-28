@@ -96,38 +96,21 @@
                             <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Tujuan pelatihan" value="<?php echo $user->tujuan_training?>" disabled="disabled">
                           </div>
                         </div>
-                        <?php if(!empty($user->note_app_lv1)){?>
-                        <div class="row form-row">
-                          <div class="col-md-3">
-                            <label class="form-label text-right">Note (Atasan Langsung) : </label>
-                          </div>
-                          <div class="col-md-9">
-                            <textarea name="" class="custom-txtarea-form"  disabled="disabled"><?php echo $user->note_app_lv1?></textarea>
-                          </div>
+                        <?php 
+                      for($i=1;$i<4;$i++):
+                      $note_lv = 'note_app_lv'.$i;
+                      $user_lv = 'user_app_lv'.$i;
+                      if(!empty($user->$note_lv)){?>
+                      <div class="row form-row">
+                        <div class="col-md-3">
+                          <label class="form-label text-right">Note (<?php echo strtok(get_name($user->$user_lv), " ")?>):</label>
                         </div>
-                        <?php } ?>
-
-                        <?php if(!empty($user->note_app_lv2)){?>
-                        <div class="row form-row">
-                          <div class="col-md-3">
-                            <label class="form-label text-right">Note (Atasan Tidak Langsung) : </label>
-                          </div>
-                          <div class="col-md-9">
-                            <textarea name="" class="custom-txtarea-form"  disabled="disabled"><?php echo $user->note_app_lv2?></textarea>
-                          </div>
+                        <div class="col-md-9">
+                          <textarea name="notes_spv" class="form-control" disabled="disabled"><?php echo $user->$note_lv ?></textarea>
                         </div>
-                        <?php } ?>
-
-                        <?php if(!empty($user->note_app_lv3)){?>
-                        <div class="row form-row">
-                          <div class="col-md-3">
-                            <label class="form-label text-right">Note (Atasan Lainnya) : </label>
-                          </div>
-                          <div class="col-md-9">
-                            <textarea name="" class="custom-txtarea-form"  disabled="disabled"><?php echo $user->note_app_lv3?></textarea>
-                          </div>
-                        </div>
-                        <?php } ?>
+                      </div>
+                      <?php } ?>
+                    <?php endfor;?>
 
                       </div>
 

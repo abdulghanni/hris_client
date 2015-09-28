@@ -662,7 +662,13 @@ class Form_spd_dalam extends MX_Controller {
             $this->data['title'] = $title = 'SPD - Dalam Kota';
             $data_result = $this->data['task_detail'] = $this->form_spd_dalam_model->where('users_spd_dalam.id',$id)->form_spd_dalam($id)->result();
             $this->data['td_num_rows'] = $this->form_spd_dalam_model->where('users_spd_dalam.id',$id)->form_spd_dalam()->num_rows($id);
-            $creator = getAll('users_spd_dalam', array('id'=>'where/'.$id))->row('task_creator');
+            $creator = getValue('task_creator', 'users_spd_dalam', array('id'=>'where/'.$id));
+            $this->data['form_id'] = 'PDJ-DK';
+            $this->data['bu'] = get_user_buid($creator);
+            $this->data['location'] = get_user_locationid($creator);
+            $date = getValue('created_on','users_spd_dalam', array('id'=>'where/'.$id));
+            $this->data['m'] = date('m', strtotime($date));
+            $this->data['y'] = date('Y', strtotime($date));
             $this->load->library('mpdf60/mpdf');
             $html = $this->load->view('spd_dalam_pdf', $this->data, true); 
             $mpdf = new mPDF();

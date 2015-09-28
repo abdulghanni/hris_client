@@ -4,20 +4,38 @@
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title><?php echo $title?></title>
 <style type="text/css">
-<!--
-tbody td{
-  border-collapse:collapse;border-spacing:0; height:40px;font-family:Arial, sans-serif;font-size:14px;padding:12px 16px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;
+html{
+  font-size: 100%;
+  height:100%;
+  font-family: Calibri, Candara, Segoe, 'Segoe UI', Optima, Arial, sans-serif; 
+  font-size: 10px;
 }
 
-th{
-  border-collapse:collapse;border-spacing:0; height:40px;font-family:Arial, sans-serif;font-size:14px;padding:12px 16px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{ height:40px;font-family: Calibri, Candara, Segoe, 'Segoe UI', Optima, Arial, sans-serif;font-size:14px;padding:12px 16px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+.tg th{height:40px; font-family: Calibri, Candara, Segoe, 'Segoe UI', Optima, Arial, sans-serif;font-size:14px;font-weight:normal;padding:12px 16px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+
+.nama{
+  font-size: 10px;
+  font-family: Calibri, Candara, Segoe, 'Segoe UI', Optima, Arial, sans-serif;
 }
 
+.position{
+  font-size: 8.8px;
+  font-family: Calibri, Candara, Segoe, 'Segoe UI', Optima, Arial, sans-serif;
+}
+
+.tanggal{
+  font-size: 8.5px;
+  font-family: Calibri, Candara, Segoe, 'Segoe UI', Optima, Arial, sans-serif;
+}
 .style3 {
   font-size: 16px;
+  font-family: Calibri, Candara, Segoe, 'Segoe UI', Optima, Arial, sans-serif;
 }
 .style4 {
-  font-size: 12px;
+  font-size: 11px;
+  font-family: Calibri, Candara, Segoe, 'Segoe UI', Optima, Arial, sans-serif;
 }
 .style6 {
   color: #000000;
@@ -31,19 +49,80 @@ th{
 }
 
 .approval-img-md{
-    height:12%;
-    width:15%;
+    height:50px;
+    width:90px;
+    margin-bottom: 8px;
     z-index:-1;
 }
+
+
+#container1 {
+  float:left;
+  width:100%;
+  position:relative;
+  font-size: 11px;
+  font-family: Calibri, Candara, Segoe, 'Segoe UI', Optima, Arial, sans-serif;
 }
--->
+#col1 {
+  float:left;
+  width:25%;
+  text-align: center;
+  position:relative;
+  margin-top: -4px;
+  left:77%;
+  overflow:hidden;
+}
+#col2 {
+  float:left;
+  width:25%;
+  text-align: center;
+  position:relative;
+  left:81%;
+  overflow:hidden;
+}
+#col3 {
+  float:left;
+  width:25%;
+  text-align: center;
+  position:relative;
+  left:85%;
+  overflow:hidden;
+}
+#col4 {
+  float:left;
+  width:25%;
+  text-align: center;
+  position:relative;
+  left:89%;
+  overflow:hidden;
+}
+
+#hormat {
+  float:left;
+  width:25%;
+  text-align: center;
+  position:relative;
+  margin-bottom: 20px;
+  left:77%;
+  overflow:hidden;
+}
+#menyetujui {
+  float:left;
+  width:25%;
+  text-align: center;
+  position:relative;
+  margin-bottom: 20px;
+  left:81%;
+  overflow:hidden;
+  margin-left: 150px;
+}
+}
 </style>
 </head>
 
 <body>
 <div align="center">
   <p align="left"><img src="<?php echo assets_url('img/erlangga.jpg')?>"/></p>
-  <p align="center" class="style6">Form Surat Perjalan Dinas Dalam Kota </p>
 </div>
 <?php
 	if ($td_num_rows > 0) {
@@ -51,27 +130,28 @@ th{
   $rejected = assets_url('img/rejected_stamp.png');
 	foreach ($task_detail as $td) : 
 ?>
-<p class="style7">Yang Memberi Tugas</p>
-<table width="1000" height="128" border="0" style="padding-left:30px;" class="style3">
-  <tr>
-    <td width="275" height="40"><span class="style3">Nama</span></td>
-    <td width="10" height="40"><div align="center">:</div></td>
-    <td width="440" height="40"><?php echo get_name($td->task_creator) ?></td>
-  </tr>
-  <tr>
-    <td height="40"><span class="style3">Bagian / Dept </span></td>
-    <td height="40"><div align="center">:</div></td>
-    <td height="40"><?php echo get_user_organization($td->task_creator)?></td>
-  </tr>
-  <tr>
-    <td height="40"><span class="style3">Jabatan</span></td>
-    <td height="40"><div align="center">:</div></td>
-    <td height="40"><?php echo get_user_position($td->task_creator);?></td>
-  </tr>
-</table>
+<div class="style4">
+  <div style="float: left; width: 54%;">
+  Nomor : <?php echo "$form_id/$bu/$m/$y/$td->id" ?>
+  </div>
 
-<p class="style7">Memberi tugas / Ijin Kepada</p>
-<table width="1000" align="center" height="128" style="padding-left:30px;" class="style3">
+
+  <div style="float: right; width: 28%;">
+  <?= $location.', '.dateIndo($td->created_on)?>
+  </div>
+
+  <div style="clear: both; margin: 0pt; padding: 0pt; "></div>
+  Perihal : Pengajuan PJD ke <?=$td->title?>
+  <p>Dengan hormat</p>
+  <p>Sehubungan dengan adanya kegiatan dalam rangka <?=$td->title?> di <?=$td->destination?>, bersama ini kami mengajukan perjalanan dinas sebagai berikut:</p>
+  <div style="padding-left:15px;">
+    <p>I.  &nbsp;Cabang/Depo yang dikunjungi&emsp;: <?=$td->destination?></p>
+    <p>II. Waktu kunjungan&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;: <?= $td->start_time.' s/d '.$td->end_time.', Tanggal : '.dateIndo($td->date_spd)?></p>
+    <p>III.Tujuan kunjungan&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;: <?=$td->title?></p>
+  </div>
+</div>
+
+<table width="800" align="center" height="128" class="tg">
   <thead>
     <tr>
       <th width="7%">NIK</th>
@@ -88,7 +168,7 @@ th{
   $n='';
   for($i=0;$i<sizeof($p);$i++):?>
   <tr>
-  <td><?php echo $p[$i]?></td>
+  <td class="tg-031e"><?php echo $p[$i]?></td>
   <td><?php echo get_name($p[$i])?></td>
   <td><?php echo get_user_organization($p[$i])?></td>
   <td><?php echo get_user_position($p[$i])?></td>
@@ -97,94 +177,72 @@ th{
 <?php endfor;?>
   </tbody>
   </table>
- <table width="1000" align="center" height="128" style="padding-left:30px;" class="style3">
-  <tr>
-    <td height="40"><span class="style3">Melakukan tugas / ijin ke </span></td>
-    <td height="40"><div align="center">:</div></td>
-    <td height="40"><?php echo $td->destination ?></td>
-  </tr>
-  <tr>
-    <td height="40"><span class="style3">Dalam rangka  </span></td>
-    <td height="40"><div align="center">:</div></td>
-    <td height="40"><?php echo $td->title; ?></td>
-  </tr>
-  <tr>
-    <td height="40"><span class="style3">Tanggal</span></td>
-    <td height="40"><div align="center">:</div></td>
-    <td height="40"><?php $task_date = dateIndo($td->date_spd) ?><?php echo $task_date; ?></td>
-  </tr>
-  <tr>
-    <td height="40"><span class="style3">Waktu</span></td>
-    <td height="40"><div align="center">:</div></td>
-    <td height="40"><?php echo date('H:i:s',strtotime($td->start_time)) ?> s/d <?php echo date('H:i:s',strtotime($td->end_time)) ?></td>
-  </tr>
-</table>
+<div class="style4">
+<p>Demikian surat pengajuan ini kami sampaikan, atas perhatian dan kerjasamanya kami ucapkan terima kasih.</p>
+</div>
+<br/>
 
-<div style="float: left; text-align: center; width: 50%;" class="style4">
-<!--<p>Yang bersangkutan</p>
-<?php if ($this->session->userdata('user_id') == $td->task_receiver && $td->is_submit == 0|| get_nik($this->session->userdata('user_id')) == $td->task_receiver && $td->is_submit == 0) { ?>
-<p class="">...............................</p>
-<?php }elseif ($this->session->userdata('user_id') != $td->task_receiver && $td->is_submit == 0) { ?>
-<p class="">...............................</p>
-<?php }else{ ?>
-<span class="semi-bold"><?php echo get_name($td->task_receiver) ?></span><br/>
-<span class="small"><?php echo dateIndo($td->date_submit) ?></span><br/>
-<?php } ?>-->
+<div id="container1">
+  <div id="hormat">
+    <!-- Column one start -->
+    <span class="small">Hormat Kami,</span>
+   <!-- Column one end -->
+  </div>
+  <div id="menyetujui">
+    <!-- Column three start -->
+    <span class="small">Menyetujui,</span>
+  </div>
 </div>
 
-<div style="float: right;text-align: center; width: 50%;" class="style4">
-<p>Yang memberi tugas / ijin</p>
-<span class="semi-bold"><?php echo get_name($td->task_creator) ?></span><br/>
-<span class="small"><?php echo dateIndo($td->created_on) ?></span><br/>
-</div> 
-<?php endforeach;}?>
-<div style="clear: both; margin: 0pt; padding: 0pt; "></div>
-<br/>
-<table width="1000" align="center" border="0">
-    <tr>
-      <tr width="250" height="100"></tr>
-      <tr width="250"><b>Mengetahui/Menyetujui</b></tr>
-      <tr width="250"></tr>
-      <tr width="250"></tr>
-    </tr>
-    <tr>
-      <?php if(!empty($td->user_app_lv1)){?>
-      <td width="250" align="center"><?php echo ($td->app_status_id_lv1 == 1)?"<img class=approval-img-md src=$approved>":(($td->app_status_id_lv1 == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
-      <?php }?>
-      <?php if(!empty($td->user_app_lv2)){?>
-      <td width="250" align="center"><?php echo ($td->app_status_id_lv2 == 1)?"<img class=approval-img-md src=$approved>":(($td->app_status_id_lv2 == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
-      <?php }?>
-      <?php if(!empty($td->user_app_lv3)){?>
-      <td width="250" align="center"><?php echo ($td->app_status_id_lv3 == 1)?"<img class=approval-img-md src=$approved>":(($td->app_status_id_lv3 == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
-      <?php }?>
-      <td width="250" align="center"><?php echo ($td->app_status_id_hrd == 1)?"<img class=approval-img-md src=$approved>":(($td->app_status_id_hrd == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
-    </tr>
-    <tr>
-    <?php if(!empty($td->user_app_lv1)){?>
-      <td height="80" align="center" class="style3"><?php echo get_name($td->user_app_lv1)?></td>
-    <?php }?>
-    <?php if(!empty($td->user_app_lv2)){?>
-      <td align="center" class="style3"><?php echo get_name($td->user_app_lv2)?></td>
-    <?php }?>
-    <?php if(!empty($td->user_app_lv3)){?>
-      <td align="center" class="style3"><?php echo get_name($td->user_app_lv3)?></td>
-    <?php }?>
-      <td align="center" class="style3"><?php echo get_name($td->user_app_hrd)?></td>
-    </tr>
-    <tr>
-    <?php if(!empty($td->user_app_lv1)){?>
-      <td align="center"><?php echo dateIndo($td->date_app_lv1)?><br/><?php echo get_user_position($td->user_app_lv1)?></td>
-    <?php }?>
-    <?php if(!empty($td->user_app_lv2)){?>
-      <td align="center"><?php echo dateIndo($td->date_app_lv2)?><br/><?php echo get_user_position($td->user_app_lv2)?></td>
-    <?php }?>
-    <?php if(!empty($td->user_app_lv2)){?>
-      <td align="center"><?php echo dateIndo($td->date_app_lv3)?><br/><?php echo get_user_position($td->user_app_lv3)?></td>
-    <?php }?>
-      <td align="center"><?php echo dateIndo($td->date_app_hrd)?><br/>(HRD)</td>
-    </tr>
-</table>
+<div id="container1">
+  <div id="col1">
+    <!-- Column one start -->
+    <span class="small"></span><br/><br/><br/><br/>
+    <span class="nama"><?php echo get_name($td->task_creator) ?></span><br/>
+    <span class="tanggal"><?php echo dateIndo($td->created_on) ?></span><br/>
+    <span class="position">(<?php echo get_user_position($td->task_creator) ?>)</span>
+   <!-- Column one end -->
+  </div>
+  <div id="col2">
+    <!-- Column two start -->
+    <?php echo ($td->app_status_id_lv1 == 1)?"<img class=approval-img-md src=$approved>":(($td->app_status_id_lv1 == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/><br/><br/>');?><br/>
+    <span class="nama"><?php echo get_name($td->user_app_lv1) ?></span><br/>
+    <span class="tanggal"><?php echo dateIndo($td->date_app_lv1) ?></span><br/>
+    <span class="position">(<?php echo get_user_position($td->user_app_lv1) ?>)</span><!-- Column two end -->
+  </div>
+  <div id="col3">&nbsp;
+  <?php if (!empty($td->user_app_lv2)) :?>
+    <!-- Column three start -->
+    <?php echo ($td->app_status_id_lv2 == 1)?"<img class=approval-img-md src=$approved>":(($td->app_status_id_lv2 == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/><br/><br/>');?><br/>
+    <span class="nama"><?php echo get_name($td->user_app_lv2) ?></span><br/>
+    <span class="tanggal"><?php echo dateIndo($td->date_app_lv2) ?></span><br/>
+    <span class="position">(<?php echo get_user_position($td->user_app_lv2) ?>)</span><!-- Column two end -->
+  <?php endif; ?>
+  </div>
+  <div id="col4">
+    <!-- Column four start -->
+    <?php echo ($td->app_status_id_hrd == 1)?"<img class=approval-img-md src=$approved>":(($td->app_status_id_hrd == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/><br/><br/>');?><br/>
+    <span class="nama"><?php echo get_name($td->user_app_hrd) ?></span><br/>
+    <span class="tanggal"><?php echo dateIndo($td->date_app_hrd) ?></span><br/>
+    <span class="position">(<?php echo get_user_position($td->user_app_hrd) ?>)</span><!-- Column two end -->
+    <!-- Column four end -->
+  </div>
+</div>
 <br />
 
+<?php if (!empty($td->user_app_lv3)) :?>
+<div id="container1">
+  <div id="hormat">
+    <span class="small">&nbsp;</span>
+  </div>
+  <div id="menyetujui">
+    <?php echo ($td->app_status_id_lv3 == 1)?"<img class=approval-img-md src=$approved>":(($td->app_status_id_lv3 == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/><br/><br/>');?><br/>
+    <span class="nama"><?php echo get_name($td->user_app_lv3) ?></span><br/>
+    <span class="tanggal"><?php echo dateIndo($td->date_app_lv3) ?></span><br/>
+    <span class="position">(<?php echo get_user_position($td->user_app_lv3) ?>)</span><!-- Column two end -->
+  </div>
+</div>
+<?php endif; ?>
+<?php endforeach; } ?>
 </body>
 </html>

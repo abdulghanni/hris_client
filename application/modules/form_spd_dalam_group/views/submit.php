@@ -126,36 +126,21 @@
                       </div>
                     </div>
 
-                    <?php if(!empty($td->note_lv1)){?>
+                    <?php 
+                      for($i=1;$i<4;$i++):
+                      $note_lv = 'note_lv'.$i;
+                      $user_lv = 'user_app_lv'.$i;
+                      if(!empty($td->$note_lv)){?>
                       <div class="row form-row">
                         <div class="col-md-3">
-                          <label class="form-label text-right">Note (Atasan Langsung): </label>
+                          <label class="form-label text-right">Note (<?php echo strtok(get_name($td->$user_lv), " ")?>):</label>
                         </div>
                         <div class="col-md-9">
-                          <textarea name="notes_spv" class="form-control" disabled="disabled"><?php echo $td->note_lv1 ?></textarea>
+                          <textarea name="notes_spv" class="form-control" disabled="disabled"><?php echo $td->$note_lv ?></textarea>
                         </div>
                       </div>
                       <?php } ?>
-                      <?php if(!empty($td->note_lv2)){?>
-                      <div class="row form-row">
-                        <div class="col-md-3">
-                          <label class="form-label text-right">Note (Atasan Tidak Langsung): </label>
-                        </div>
-                        <div class="col-md-9">
-                          <textarea name="notes_spv" class="form-control" disabled="disabled"><?php echo $td->note_lv2 ?></textarea>
-                        </div>
-                      </div>
-                      <?php } ?>
-                      <?php if(!empty($td->note_lv3)){?>
-                      <div class="row form-row">
-                        <div class="col-md-3">
-                          <label class="form-label text-right">Note (Atasan Lainnya): </label>
-                        </div>
-                        <div class="col-md-9">
-                          <textarea name="notes_spv" class="form-control" disabled="disabled"><?php echo $td->note_lv3 ?></textarea>
-                        </div>
-                      </div>
-                      <?php } ?>
+                    <?php endfor;?>
                       <?php if(!empty($td->note_hrd)){?>
                       <div class="row form-row">
                         <div class="col-md-3">

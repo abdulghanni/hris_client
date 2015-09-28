@@ -119,7 +119,7 @@ class form_training_group extends MX_Controller {
             $this->data['training_type'] = GetAll('training_type', array('is_deleted' => 'where/0'));
             $this->data['penyelenggara'] = GetAll('penyelenggara', array('is_deleted' => 'where/0'));
             $this->data['pembiayaan'] = GetAll('pembiayaan', array('is_deleted' => 'where/0'));
-            $this->data['ikatan'] = GetAll('training_ikatan_dinas', array('is_deleted' => 'where/0'));
+            //$this->data['ikatan'] = GetAll('training_ikatan_dinas', array('is_deleted' => 'where/0'));
             $this->data['waktu'] = GetAll('training_waktu', array('is_deleted' => 'where/0'));
             $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
 

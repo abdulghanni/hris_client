@@ -449,9 +449,43 @@ class Form_spd_luar extends MX_Controller {
                 $this->db->insert('users_spd_luar_biaya', $data3);
             }
         }
-
+        $this->edit_mail($id);
         redirect('form_spd_luar/submit/'.$id);
 
+    }
+
+    function edit_mail($id){
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+
+        $url = base_url().'form_spd_luar_group/submit/'.$id;
+        $sess_id = $this->session->userdata('user_id');
+        $sender_id = get_nik($sess_id);
+
+        $task_receiver = getValue('task_receiver', 'users_spd_luar', array('id'=>'where/'.$id));
+
+        $data = array(
+                    'sender_id' => $sender_id,
+                    'receiver_id' => $task_receiver,
+                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                    'subject' => 'Perubahan Data Tugas Perjalanan Dinas Luar Kota',
+                    'email_body' => get_name($sender_id).' melakukan perubahan data tugas perjalan dinas luar kota, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$this->detail_email($id),
+                    'is_read' => 0,
+                );
+            $this->db->insert('email', $data);
+        $user_app_lv1 = getValue('user_app_lv1', 'users_spd_luar', array('id'=>'where/'.$id));
+        $data2 = array(
+                    'sender_id' => $sender_id,
+                    'receiver_id' => $user_app_lv1,
+                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                    'subject' => 'Perubahan Data Tugas Perjalanan Dinas Luar Kota',
+                    'email_body' => get_name($sender_id).' melakukan perubahan data tugas perjalan dinas luar kota, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$this->detail_email($id),
+                    'is_read' => 0,
+                );
+            $this->db->insert('email', $data);
     }
 
     public function report($id)
@@ -766,10 +800,17 @@ class Form_spd_luar extends MX_Controller {
         $data_result = $this->data['task_detail'] = $this->form_spd_luar_model->where('users_spd_luar.id',$id)->form_spd_luar($id)->result();
         $this->data['td_num_rows'] = $this->form_spd_luar_model->where('users_spd_luar.id',$id)->form_spd_luar($id)->num_rows();
 
-        $creator = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('task_creator');
+        $creator = getAll('users_spd_luar', array('id'=>'where/'.$id))->row('task_creator');
         $this->data['tc_id'] = $task_receiver_id = getValue('task_receiver', 'users_spd_luar', array('id' => 'where/'.$id));
         $this->data['biaya_pjd'] = getJoin('users_spd_luar_biaya','pjd_biaya','users_spd_luar_biaya.pjd_biaya_id = pjd_biaya.id','left', 'users_spd_luar_biaya.*, pjd_biaya.title as jenis_biaya, pjd_biaya.type_grade as type', array('user_spd_luar_id'=>'where/'.$id));
-            
+        $creator = getValue('task_creator', 'users_spd_dalam_group', array('id'=>'where/'.$id));
+        $this->data['form_id'] = 'PJD-LK';
+        $this->data['bu'] = get_user_buid($creator);
+        $loc_id = get_user_locationid($creator);
+        $this->data['location'] = get_user_location($loc_id);
+        $date = getValue('created_on','users_spd_dalam_group', array('id'=>'where/'.$id));
+        $this->data['m'] = date('m', strtotime($date));
+        $this->data['y'] = date('Y', strtotime($date));
         $this->load->library('mpdf60/mpdf');
         $html = $this->load->view('spd_luar_pdf', $this->data, true); 
         $mpdf = new mPDF();

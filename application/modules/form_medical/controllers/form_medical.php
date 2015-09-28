@@ -257,6 +257,7 @@ class Form_medical extends MX_Controller {
         $this->data['note_hrd'] = getValue('note_hrd', 'users_medical', array('id'=>'where/'.$id));
         $this->data['app_status_id_lv1'] = getValue('app_status_id_lv1', 'users_medical', array('id'=>'where/'.$id));
         $this->data['note_lv1'] = getValue('note_lv1', 'users_medical', array('id'=>'where/'.$id));
+        $this->data['user_lv1'] = getValue('user_app_lv1', 'users_medical', array('id'=>'where/'.$id));
         $this->data['creator_id'] = getValue('created_by', 'users_medical', array('id'=>'where/'.$id));
         $this->data['bagian'] = get_user_organization(get_nik($user_id));
         $this->data['detail'] = $this->form_medical_model->form_medical_detail($id)->result_array();
@@ -547,6 +548,7 @@ class Form_medical extends MX_Controller {
         $this->data['sess_nik'] = get_nik($sess_id);
         $this->data['is_app_hrd'] = getValue('is_app_hrd', 'users_medical', array('id'=>'where/'.$id));
         $this->data['note_hrd'] = getValue('note_hrd', 'users_medical', array('id'=>'where/'.$id));
+        $this->data['user_lv1'] = getValue('user_app_lv1', 'users_medical', array('id'=>'where/'.$id));
         $this->data['app_status_id_lv1'] = getValue('app_status_id_lv1', 'users_medical', array('id'=>'where/'.$id));
         $this->data['note_lv1'] = getValue('note_lv1', 'users_medical', array('id'=>'where/'.$id));
         $this->data['creator_id'] = getValue('created_by', 'users_medical', array('id'=>'where/'.$id));

@@ -103,39 +103,21 @@
                             <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Tujuan pelatihan" value="<?php echo $user->tujuan_training?>" disabled="disabled">
                           </div>
                         </div>
-
-                        <?php if(!empty($user->note_app_lv1)){?>
-                        <div class="row form-row">
-                          <div class="col-md-3">
-                            <label class="form-label text-right">Note Atasan Langsung : </label>
-                          </div>
-                          <div class="col-md-9">
-                            <textarea name="" class="form-control" disabled="disabled"><?php echo $user->note_app_lv1?></textarea>
-                          </div>
+                    <?php 
+                        for($i=1;$i<4;$i++):
+                      $note_lv = 'note_app_lv'.$i;
+                      $user_lv = 'user_app_lv'.$i;
+                      if(!empty($user->$note_lv)){?>
+                      <div class="row form-row">
+                        <div class="col-md-3">
+                          <label class="form-label text-right">Note (<?php echo strtok(get_name($user->$user_lv), " ")?>):</label>
                         </div>
-                        <?php } ?>
-
-                        <?php if(!empty($user->note_app_lv2)){?>
-                        <div class="row form-row">
-                          <div class="col-md-3">
-                            <label class="form-label text-right">Note Atasan Tidak Langsung : </label>
-                          </div>
-                          <div class="col-md-9">
-                            <textarea name="" class="form-control" disabled="disabled"><?php echo $user->note_app_lv2?></textarea>
-                          </div>
+                        <div class="col-md-9">
+                          <textarea name="notes_spv" class="form-control" disabled="disabled"><?php echo $user->$note_lv ?></textarea>
                         </div>
-                        <?php } ?>
-
-                        <?php if(!empty($user->note_app_lv3)){?>
-                        <div class="row form-row">
-                          <div class="col-md-3">
-                            <label class="form-label text-right">Note Atasan Lainnya : </label>
-                          </div>
-                          <div class="col-md-9">
-                            <textarea name="" class="form-control" disabled="disabled"><?php echo $user->note_app_lv3?></textarea>
-                          </div>
-                        </div>
-                        <?php } ?>
+                      </div>
+                      <?php } ?>
+                    <?php endfor;?>
                         
                       </div>
 
@@ -522,11 +504,11 @@
                     <div class="col-md-9">
                       <select name="ikatan" class="select2" id="ikatan" style="width:100%" >
                           <option value="0">-- Pilih Tipe Ikatan Dinas --</option>
-                          <?php if(!empty($ikatan)):
-                            foreach ($ikatan->result_array() as $key => $value) {
-                            $selected = ($user->ikatan == $value['DESCRIPTION']) ? 'selected = selected' : '';
-                            echo '<option value="'.$value['DESCRIPTION'].'" '.$selected.'>'.$value['DESCRIPTION'].'</option>';
-                            }endif;
+                          <?php if(!empty($ikatan)){
+                            for($i=0;$i<sizeof($ikatan);$i++):
+                            $selected = ($user->ikatan == $ikatan[$i]['DESCRIPTION']) ? 'selected = selected' : '';
+                            echo '<option value="'.$ikatan[$i]['DESCRIPTION'].'" '.$selected.'>'.$ikatan[$i]['DESCRIPTION'].'</option>';
+                            endfor;}
                           ?>
                       </select>
                     </div>
@@ -581,13 +563,13 @@
                     <div class="col-md-9">
                       <select name="vendor" class="select2" id="vendor" style="width:100%" >
                           <option value="0">-- Pilih Nama Vendor --</option>
-                          <?php if(!empty($vendor)):
-                            foreach ($vendor->result_array() as $key => $value) {
-                            $selected = ($user->vendor == $value['NAME']) ? 'selected = selected' : '';
-                            echo '<option value="'.$value['NAME'].'" '.$selected.'>'.$value['NAME'].'</option>';
-                            }endif;
+                          <?php if(!empty($vendor)){
+                            for($i=0;$i<sizeof($vendor);$i++):
+                            $selected = ($user->vendor == $vendor[$i]['NAME']) ? 'selected = selected' : '';
+                            echo '<option value="'.$vendor[$i]['NAME'].'" '.$selected.'>'.$vendor[$i]['NAME'].'</option>';
+                            endfor;}
                           ?>
-                      </select>  
+                      </select>
                     </div>
                   </div>
                   <div class="row form-row">

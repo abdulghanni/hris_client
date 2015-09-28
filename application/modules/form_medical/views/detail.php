@@ -86,7 +86,7 @@
                       <?php if(!empty($note_lv1)):?>
                       <div class="row form-row">
                         <div class="col-md-12">
-                          <label class="form-label text-left">Note (Atasan Langsung) : </label>
+                          <label class="form-label text-left">Note (<?php echo strtok(get_name($user_lv1), " ")?>) : </label>
                         </div>
                         <div class="col-md-12">
                           <textarea name="note_lv1" class="form-control" placeholder="" disabled="disabled"><?php echo $note_lv1?></textarea>

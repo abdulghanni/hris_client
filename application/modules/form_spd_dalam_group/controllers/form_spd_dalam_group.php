@@ -741,13 +741,27 @@ class Form_spd_dalam_group extends MX_Controller {
         $this->data['td_num_rows'] = $this->form_spd_dalam_group_model->where('users_spd_dalam_group.id',$id)->form_spd_dalam_group()->num_rows($id);
         $user_submit = getAll('users_spd_dalam_group', array('id'=>'where/'.$id))->row('user_submit');
         $this->data['receiver_submit'] = explode(",", $user_submit);
-
+        $creator = getValue('task_creator', 'users_spd_dalam_group', array('id'=>'where/'.$id));
+        $this->data['form_id'] = 'PJD-DKG';
+        $this->data['bu'] = get_user_buid($creator);
+        $loc_id = get_user_locationid($creator);
+        $this->data['location'] = get_user_location($loc_id);
+        $date = getValue('created_on','users_spd_dalam_group', array('id'=>'where/'.$id));
+        $this->data['m'] = date('m', strtotime($date));
+        $this->data['y'] = date('Y', strtotime($date));
         $this->load->library('mpdf60/mpdf');
         $html = $this->load->view('spd_dalam_pdf', $this->data, true); 
-        $mpdf = new mPDF();
-        $mpdf = new mPDF('A4');
-        $mpdf->WriteHTML($html);
-        $mpdf->Output($id.'-'.$title.'-'.$task_creator.'pdf', 'I');
+        $this->mpdf = new mPDF();
+        $this->mpdf->AddPage('P', // L - landscape, P - portrait
+            '', '', '', '',
+            30, // margin_left
+            30, // margin right
+            10, // margin top
+            10, // margin bottom
+            10, // margin header
+            10); // margin footer
+        $this->mpdf->WriteHTML($html);
+        $this->mpdf->Output($id.'-'.$title.'-'.$task_creator.'pdf', 'I');
         
     }
     
