@@ -61,6 +61,7 @@ class MX_Controller
 	public function send_email($email, $subject, $isi_email)
   {
     $connected = @fsockopen("erlangga.co.id", 80);
+    $testing = '[TESTING EMAIL WEB] ';
     if($connected):
       $config = Array(
                     'protocol' => 'smtp',
@@ -77,7 +78,7 @@ class MX_Controller
        $this->email->set_newline("\r\n");  
        $this->email->from('ax.hrd@erlangga.co.id', 'HRIS-Erlangga');
        $this->email->to($email);
-       $this->email->subject('HRIS Erlangga - '.$subject);
+       $this->email->subject($testing.' HRIS Erlangga - '.$subject);
        $this->email->message($isi_email);
      
          if($this->email->send())
