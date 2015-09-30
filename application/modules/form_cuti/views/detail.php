@@ -17,7 +17,7 @@
           <div class="col-md-12">
             <div class="grid simple">
               <div class="grid-title no-border">
-                <h4>Form <a href="<?php echo site_url('form_cuti')?>"><span class="semi-bold">Pengajuan Cuti</span></a></h4>
+                <h4>Form <a href="<?php echo site_url('form_cuti')?>"><span class="semi-bold">Permohonan Cuti</span></a></h4>
               <a href="<?php echo site_url('form_cuti/form_cuti_pdf/'.$id)?>" target="_blank"><button class="btn btn-primary pull-right"><i class="icon-print"> Cetak</i></button></a>
               </div>
               <div class="grid-body no-border">

@@ -152,7 +152,7 @@
                     <!-- <div class="col-md-12 text-center"> -->
                       <div class="row wf-spd">
                         <div class="col-md-6">
-                          <p>Yang bersangkutan</p>
+                          <p>Yang Diberi Tugas</p>
                           <?php if ($this->session->userdata('user_id') == $td->task_receiver && $td->is_submit == 0|| get_nik($this->session->userdata('user_id')) == $td->task_receiver && $td->is_submit == 0) { ?>
                             <button id="btn_submit" class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok"></i>Submit</button>
                             <p class="">...............................</p>

@@ -23,8 +23,8 @@ foreach($form_training_group as $user):
   $peserta = getAll('users_training_group', array('id'=>'where/'.$user->id))->row('user_peserta_id');
   $p = explode(",", $peserta);
   $approved = assets_url('img/approved_stamp.png');
-  $rejected = assets_url('img/rejected_stamp.png');?>
-  ?>
+  $rejected = assets_url('img/rejected_stamp.png');
+  $signed = assets_url('img/signed.png');?>
   <tbody>
     <tr>
       <th width="44" height="45" scope="col">No.</th>
@@ -65,8 +65,7 @@ foreach($form_training_group as $user):
       <th width="333" scope="col">Mengetahui HRD</th>
     </tr>
    <tr>
-      <td height="117" align="center"><br/><br/><br/><br/><br/><?php echo get_name($user->user_pengaju_id)?><br/><?php echo dateIndo($user->created_on)?></td>
-      <td align="center"><?php echo ($user->approval_status_id_lv1 == 1)?"<img class=approval-img-md src=$approved>":(($user->approval_status_id_lv1 == 2) ? "<img class=approval-img-md src=$rejected>":'<br/><br/><br/><br/><br/>');?><br/><br/><?php echo get_name($user->user_app_lv1)?><br/><?php echo dateIndo($user->date_app_lv1)?></td>
+      <td align="center"><br/><br/><?php echo "<img class=signed-img src=$signed>";?><br/><br/><?php echo get_name($user->user_pengaju_id)?><br/><?php echo dateIndo($user->created_on)?></td><td align="center"><?php echo ($user->approval_status_id_lv1 == 1)?"<img class=approval-img-md src=$approved>":(($user->approval_status_id_lv1 == 2) ? "<img class=approval-img-md src=$rejected>":'<br/><br/><br/><br/><br/>');?><br/><br/><?php echo get_name($user->user_app_lv1)?><br/><?php echo dateIndo($user->date_app_lv1)?></td>
       <td align="center"><?php echo ($user->approval_status_id_hrd == 1)?"<img class=approval-img-md src=$approved>":(($user->approval_status_id_hrd == 2) ? "<img class=approval-img-md src=$rejected>":'<br/><br/><br/><br/><br/>');?><br/><br/><?php echo get_name($user->user_app_hrd)?><br/><?php echo dateIndo($user->date_app_hrd)?></td>
     </tr>
     <?php if(!empty($user->user_app_lv2)):?>

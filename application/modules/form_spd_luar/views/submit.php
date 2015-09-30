@@ -214,13 +214,24 @@
                         </div>
                       </div>
                       <?php } ?>
+
+                      <?php if(!empty($td->cancel_note)){?>
+                      <div class="row form-row">
+                        <div class="col-md-3">
+                          <label class="form-label text-left">Alasan Cancel: </label>
+                        </div>
+                        <div class="col-md-5">
+                          <textarea name="notes_spv" class="form-control" disabled="disabled"><?php echo $td->cancel_note ?></textarea>
+                        </div>
+                      </div>
+                      <?php } ?>
                     </div>
 
                 <div class="form-actions text-center">
                     <!-- <div class="col-md-12 text-center"> -->
                       <div class="row wf-spd">
                         <div class="col-md-6">
-                          <p>Yang bersangkutan</p>
+                          <p>Yang Diberi Tugas</p>
                           <?php if ($this->session->userdata('user_id') == $td->task_receiver && $td->is_submit == 0|| get_nik($this->session->userdata('user_id')) == $td->task_receiver && $td->is_submit == 0) { ?>
                             <button id="btn_submit" class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok"></i>Submit</button>
                             <p class="">...............................</p>
@@ -239,7 +250,7 @@
                             <?php if($td->is_deleted == 0 && ($td->created_by == $sess_id || $td->task_creator == $sess_nik)){?>
                             <div class='btn btn-danger text-center' title='Batalkan PJD' data-toggle="modal" data-target="#cancelModal"><i class='icon-remove'> Batalkan PJD</i></div><br/>
                           <?php }elseif($td->is_deleted == 1){ 
-                          echo '<img class=approval-img src='.assets_url("img/rejected_stamp.png").'>';?><br/>
+                          echo '<img class=approval-img src='.assets_url("img/cancelled.png").'>';?><br/>
                           <span class="semi-bold"><?php echo get_name($td->task_creator) ?></span><br/>
                           <span class="small"><?php echo dateIndo($td->deleted_on) ?></span><br/>
                         <?php }else{ ?>
@@ -411,7 +422,15 @@
       <form class="form-no-horizontal-spacing" id="formcancel">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="display:none"><span aria-hidden="true">&times;</span></button>
       <div class="modal-body">
-        <p>Apakah anda yakin ingin membatalkan Perjalan Dinas Ini</p>
+        <p>Apakah anda yakin ingin membatalkan Perjalan Dinas Ini ?</p>
+      <div class="row form-row">
+        <div class="col-md-12">
+          <label class="form-label text-left">Alasan : </label>
+        </div>
+        <div class="col-md-12">
+          <textarea name="cancel_note" class="form-control" placeholder="Isi alasan disini...."></textarea>
+        </div>
+      </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="icon-ban-circle"></i>&nbsp;Tidak</button> 

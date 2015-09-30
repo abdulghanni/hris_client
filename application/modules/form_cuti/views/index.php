@@ -25,7 +25,7 @@
                               <div class="row">
                                   <div class="col-md-5">
                                       <div class="row">
-                                          <div class="col-md-4 search_label"><?php echo form_label('Nama Pengaju','first_name')?></div>
+                                          <div class="col-md-4 search_label"><?php echo form_label('Nama Pemohosn','first_name')?></div>
                                           <div class="col-md-8"><?php echo bs_form_input($ftitle_search)?></div>
                                       </div>
                                   </div>
@@ -41,7 +41,7 @@
                           <table class="table table-striped table-flip-scroll cf">
                               <thead>
                                 <tr>
-                                  <th width="15%"><?php echo 'Nama Pengaju' ?></th>
+                                  <th width="15%"><?php echo 'Nama Pemohon' ?></th>
                                   <th width="15%"><?php echo lang('date_mulai_cuti') ?></th>
                                   <th width="15%"><?php echo lang('reason') ?></th>
                                   <th width="10%"><?php echo lang('count_day') ?></th>

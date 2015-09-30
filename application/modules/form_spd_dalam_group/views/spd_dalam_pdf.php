@@ -141,12 +141,12 @@ html{
   </div>
 
   <div style="clear: both; margin: 0pt; padding: 0pt; "></div>
-  Perihal : Pengajuan PJD ke <?=$td->title?>
+  Perihal : Pengajuan PJD ke <?=$td->destination?>
   <p>Dengan hormat</p>
   <p>Sehubungan dengan adanya kegiatan dalam rangka <?=$td->title?> di <?=$td->destination?>, bersama ini kami mengajukan perjalanan dinas sebagai berikut:</p>
   <div style="padding-left:15px;">
     <p>I.  &nbsp;Cabang/Depo yang dikunjungi&emsp;: <?=$td->destination?></p>
-    <p>II. Waktu kunjungan&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;: <?= $td->start_time.' s/d '.$td->end_time.', Tanggal : '.dateIndo($td->date_spd)?></p>
+    <p>II. Tanggal & Waktu kunjungan&emsp;&emsp;: <?= dateIndo($td->date_spd).', '.$td->start_time.' s/d '.$td->end_time?></p>
     <p>III.Tujuan kunjungan&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;: <?=$td->title?></p>
   </div>
 </div>

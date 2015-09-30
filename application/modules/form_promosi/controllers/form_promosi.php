@@ -105,10 +105,33 @@ class Form_promosi extends MX_Controller {
             $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
             $this->get_bu();
             $this->data['all_users'] = getAll('users', array('active'=>'where/1', 'username'=>'order/asc'), array('!=id'=>'1'));
-            $this->get_user_atasan();
+            //$this->get_user_atasan();
+            $this->get_superior($sess_id);
 
             $this->data['subordinate'] = getAll('users', array('superior_id'=>'where/'.get_nik($sess_id)));
             $this->_render_page('form_promosi/input', $this->data);
+        }
+    }
+
+    function get_superior($id)
+    {
+        $url_superior = get_api_key().'users/superior/EMPLID/'.get_nik($id).'/format/json';
+        $url_atasan_satu_bu = get_api_key().'users/atasan_satu_bu/EMPLID/'.get_nik($id).'/format/json';
+        $headers_superior = get_headers($url_superior);
+        $headers_atasan_satu_bu = get_headers($url_atasan_satu_bu);
+        $response = substr($headers_superior[0], 9, 3);
+        $response2 = substr($headers_atasan_satu_bu[0], 9, 3);
+        if ($response != "404") {
+            $get_user_pengganti = file_get_contents($url_superior);
+            $user_superior = json_decode($get_user_pengganti, true);
+            $this->data['user_atasan'] = $user_atasan;
+            $r = $this->data['selected_superior'] = $this->db->where('id', $id)->get('users')->row('superior_id');
+        }elseif ($response2 != "404"){
+            $get_user_pengganti = file_get_contents($url_atasan_satu_bu);
+            $user_atasan = json_decode($get_user_pengganti, true);
+            return $this->data['user_atasan'] = $user_atasan;
+        }else{
+             return $this->data['user_atasan'] = FALSE;
         }
     }
 

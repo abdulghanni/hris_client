@@ -36,7 +36,7 @@
 <body>
 <div align="center">
   <p align="left"><img src="<?php echo assets_url('img/erlangga.jpg')?>"/></p>
-  <p align="center" class="style6">Form Pengajuan Cuti</p>
+  <p align="center" class="style6">Form Permohonan Cuti</p>
 </div>
 <?php foreach($form_cuti as $user):
 $user_nik = get_nik($user->user_id);

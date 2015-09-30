@@ -165,6 +165,7 @@ class Form_spd_luar extends MX_Controller {
         $sender_id = $this->db->where('id', $id)->get('users_spd_luar')->row('task_creator');
         $receiver_id = $this->db->where('id', $id)->get('users_spd_luar')->row('task_receiver');
         $additional_data = array(
+        'cancel_note' => $this->input->post('cancel_note'),
         'is_deleted' => 1,  
         'deleted_by' => $this->session->userdata('user_id'),
         'deleted_on' => $date_now);

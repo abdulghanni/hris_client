@@ -4,6 +4,13 @@
     z-index:-1;
 }
 
+.signed-img{
+    height:70px;
+    width:110px;
+    z-index:-1;
+}
+
+
 .approval_img{
     height:20%;
     width:20%;

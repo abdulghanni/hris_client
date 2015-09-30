@@ -5,7 +5,7 @@ $(document).ready(function() {
   $('.input-append.date')
         .datepicker({todayHighlight: true})
         .on('changeDate', function(ev){
-            days();
+            //days();
             $(this).datepicker('hide').blur();
     });
 

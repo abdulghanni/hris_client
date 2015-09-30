@@ -15,7 +15,7 @@
           <div class="col-md-12">
             <div class="grid simple">
               <div class="grid-title no-border">
-                <h4>Ubah Data <span class="semi-bold"><a href="<?php echo site_url('form_spd_luar_kota_group')?>">Perjalanan Dinas Luar Kota (Group)</a></span></h4>
+                <h4>Ubah Data <span class="semi-bold"><a href="<?php echo site_url('form_spd_luar_group')?>">Perjalanan Dinas Luar Kota (Group)</a></span></h4>
               </div>
               <div class="grid-body no-border">
                 <?php echo form_open('form_spd_luar_group/do_edit/'.$id)?>

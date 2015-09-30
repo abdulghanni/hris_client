@@ -1,7 +1,4 @@
 <!-- BEGIN PAGE CONTAINER-->
-<style>
-th{border:2;}
-</style>
   <div class="page-content"> 
     <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
     <div id="portlet-config" class="modal hide">
@@ -156,9 +153,9 @@ th{border:2;}
                   </div>
 
                   &nbsp;<hr/>
-                  <?php if($sess_id == $created_by || $sess_nik == $task_creator):?>
+                  <?php //if($sess_id == $created_by || $sess_nik == $task_creator):?>
                   <a href="<?php echo site_url('form_spd_luar_group/edit_biaya/'.$id)?>"><div class='btn btn-primary text-center' title='Edit PJD'><i class='icon-edit'> Ubah PJD</i></div></a>
-                  <?php endif; ?>
+                  <?php //endif; ?>
                   <h5 class="text-center"><span class="semi-bold">Ketentuan Biaya Perjalan Dinas Luar Kota (Group)</span></h5>
 
                     <table class="table table-bordered">
@@ -211,12 +208,14 @@ th{border:2;}
                       <?php 
                       endforeach ?>
                       <tr>
-                         <td colspan="2"><b>Sub Total</b></td>
-                          <td id="totalfix1" class="total_fix" align="right"></td>
-                          <td id="totalfix2" class="total_fix" align="right"></td>
-                          <td id="totalfix3" class="total_fix" align="right"></td>
-                          <?php $o = 0;foreach($biaya_pjd->result() as $b):$o++;?>
-                            <td id="totaltambahan<?=$o?>" class="total_tambahan" align="right"></td>
+                         <td colspan="2"><b>Sub Total(Rp)</b></td>
+                          <td id="totalfix1" class="total_fix" align="right"><?= $uang_makan ?></td>
+                          <td id="totalfix2" class="total_fix" align="right"><?= $uang_saku?></td>
+                          <td id="totalfix3" class="total_fix" align="right"><?= $hotel?></td>
+                          <?php foreach($biaya_pjd->result() as $b):;
+                            $biaya_tambahan = $this->db->select("(SELECT SUM(jumlah_biaya) FROM users_spd_luar_group_biaya WHERE user_spd_luar_group_id=$id and pjd_biaya_id = $b->biaya_id) AS uang_makan", FALSE)->get()->row_array();
+                            $tambahan = $biaya_tambahan['uang_makan'];?>
+                            <td  class="total_tambahan" align="right"><?= number_format($tambahan, 0) ?></td>
                           <?php endforeach ?>
                         </tr>
                       <tr>
@@ -250,13 +249,25 @@ th{border:2;}
                         </div>
                       </div>
                       <?php } ?>
+
+                      <?php if(!empty($td->cancel_note)){?>
+                      <div class="row form-row">
+                        <div class="col-md-3">
+                          <label class="form-label text-left">Alasan Cancel: </label>
+                        </div>
+                        <div class="col-md-5">
+                          <textarea name="notes_spv" class="form-control" disabled="disabled"><?php echo $td->cancel_note ?></textarea>
+                        </div>
+                      </div>
+                      <?php } ?>
+
                       
                 </div>
                 <div class="form-actions text-center">
                     <!-- <div class="col-md-12 text-center"> -->
                       <div class="row wf-spd">
                         <div class="col-md-6">
-                          <p>Yang bersangkutan</p>
+                          <p>Yang Diberi Tugas</p>
                           <?php if (in_array($this->session->userdata('user_id'), $receiver) && !in_array($this->session->userdata('user_id'), $receiver_submit)|| in_array(get_nik($this->session->userdata('user_id')),$receiver) && !in_array(get_nik($this->session->userdata('user_id')), $receiver_submit)) { ?>
                             <button id="btn_submit" class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok"></i>Submit</button>
                             <p class="">...............................</p>
@@ -275,7 +286,7 @@ th{border:2;}
                           <?php if($td->is_deleted == 0 && ($td->created_by == $sess_id || $td->task_creator == $sess_nik)){?>
                             <div class='btn btn-danger text-center' title='Batalkan PJD' data-toggle="modal" data-target="#cancelModal"><i class='icon-remove'> Batalkan PJD</i></div><br/>
                           <?php }elseif($td->is_deleted == 1){ 
-                          echo '<img class=approval-img src='.assets_url("img/rejected_stamp.png").'>';?><br/>
+                          echo '<img class=approval-img src='.assets_url("img/cancelled.png").'>';?><br/>
                           <span class="semi-bold"><?php echo get_name($td->task_creator) ?></span><br/>
                           <span class="small"><?php echo dateIndo($td->deleted_on) ?></span><br/>
                         <?php }else{ ?>
@@ -449,6 +460,14 @@ th{border:2;}
         <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="display:none"><span aria-hidden="true">&times;</span></button>
       <div class="modal-body">
         <p>Apakah anda yakin ingin membatalkan Perjalan Dinas Ini?</p>
+      <div class="row form-row">
+        <div class="col-md-12">
+          <label class="form-label text-left">Alasan : </label>
+        </div>
+        <div class="col-md-12">
+          <textarea name="cancel_note" class="form-control" placeholder="Isi alasan disini...."></textarea>
+        </div>
+      </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="icon-ban-circle"></i>&nbsp;Tidak</button> 
@@ -659,7 +678,7 @@ th{border:2;}
 
 <?php endforeach;} ?>
 
-
+<!--
 <script type="text/javascript">
 window.onload = function(){fix();};  
   function fix(){
@@ -669,7 +688,7 @@ window.onload = function(){fix();};
             var num = parseInt($(element).text().replace(/,/g,""));
             total = total + num;
         });
-        $('#totalfix'+i).text(total);
+        $('#totalfix'+i).html('<b>'+total+'</b>');
      }
      tambahan();
   }
@@ -682,7 +701,8 @@ window.onload = function(){fix();};
             var num = parseInt($(element).text().replace(/,/g,""));
             total = total + num;
         });
-        $('#totaltambahan'+i).text(total);
+        $('#totaltambahan'+i).html('<b>'+total+'</b>');
       }
   }
   </script>
+  -->

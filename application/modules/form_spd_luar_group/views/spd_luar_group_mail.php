@@ -191,16 +191,18 @@
                       <?php 
                       endforeach ?>
                       <tr>
-                         <td colspan="2"><b>Sub Total</b></td>
-                          <td id="totalfix1" class="total_fix" align="right"></td>
-                          <td id="totalfix2" class="total_fix" align="right"></td>
-                          <td id="totalfix3" class="total_fix" align="right"></td>
-                          <?php $o = 0;foreach($biaya_pjd->result() as $b):$o++;?>
-                            <td id="totaltambahan<?=$o?>" class="total_tambahan" align="right"></td>
+                         <td colspan="2"><b>Sub Total(Rp)</b></td>
+                          <td id="totalfix1" class="total_fix" align="right"><?= $uang_makan ?></td>
+                          <td id="totalfix2" class="total_fix" align="right"><?= $uang_saku?></td>
+                          <td id="totalfix3" class="total_fix" align="right"><?= $hotel?></td>
+                          <?php foreach($biaya_pjd->result() as $b):;
+                            $biaya_tambahan = $this->db->select("(SELECT SUM(jumlah_biaya) FROM users_spd_luar_group_biaya WHERE user_spd_luar_group_id=$id and pjd_biaya_id = $b->biaya_id) AS uang_makan", FALSE)->get()->row_array();
+                            $tambahan = $biaya_tambahan['uang_makan'];?>
+                            <td  class="total_tambahan" align="right"><?= number_format($tambahan, 0) ?></td>
                           <?php endforeach ?>
                         </tr>
                       <tr>
-                        <td align="right" colspan="<?php $cs=4+sizeof($biaya_pjd->result());echo $cs;?>"><b>Total : Rp. <?php echo number_format($total_fix+$total_lain,0)?></b></td>
+                        <td align="right" colspan="<?php $cs=5+sizeof($biaya_pjd->result());echo $cs;?>"><b>Total : Rp. <?php echo number_format($total_fix+$total_lain,0)?></b></td>
                       </tr>
                       </tbody>
                     </table>

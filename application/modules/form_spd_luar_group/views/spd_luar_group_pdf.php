@@ -137,6 +137,7 @@ html{
 if ($td_num_rows > 0) {
   $approved = assets_url('img/approved_stamp.png');
   $rejected = assets_url('img/rejected_stamp.png');
+  $cancelled = assets_url('img/cancelled.png');
   $total_fix = 0;
   $total_lain = 0;
   foreach ($task_detail as $td) : 
@@ -159,13 +160,13 @@ if ($td_num_rows > 0) {
   </div>
 
   <div style="clear: both; margin: 0pt; padding: 0pt; "></div>
-  Perihal : Pengajuan Dana PJD ke <?=$td->title?><br/><br/>
+  Perihal : Pengajuan Dana PJD ke <?=$td->city_to?><br/><br/>
   Kepada Yth.,<br/>
   Departemen Keuangan<br/>
   Di Tempat<br/>
 
   <p>Dengan hormat,</p>
-  <p>Sehubungan dengan adanya kegiatan dalam rangka <?=$td->title?> di <?=$td->destination?>, bersama ini kami mengajukan perjalanan dinas sebagai berikut:</p>
+  <p>Sehubungan dengan adanya kegiatan dalam rangka <?=$td->title?> di <?=$td->city_to?>, bersama ini kami mengajukan perjalanan dinas sebagai berikut:</p>
   <div style="padding-left:15px;">
     <p>I.  &nbsp;Cabang/Depo yang dikunjungi&emsp;: <?=$td->city_to?></p>
     <p>II. Tanggal kunjungan&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;: <?= dateIndo($td->date_spd_start).' s/d '.dateIndo($td->date_spd_end)?></p>
@@ -190,9 +191,9 @@ if ($td_num_rows > 0) {
                         <tr>
                           <th width="15%">Nama</th>
         <th width="5%">Gol</th>
-        <th width="10%">Uang Makan(Rp)</th>
-        <th width="10%">Uang Saku(Rp)</th>
-        <th width="10%">Hotel(Rp)</th>
+        <th width="10%">Uang Makan(Rp)<br/><?=$jml_pjd?> Hari</th>
+        <th width="10%">Uang Saku(Rp)<br/><?=$jml_pjd?> Hari</th>
+        <th width="10%">Hotel(Rp)<br/><?=$jml_pjd?> Hari</th>
                           <?php 
                             $total_fix = 0;
                             $total_lain = 0;
@@ -279,7 +280,7 @@ if ($td_num_rows > 0) {
 <div id="container1">
   <div id="col1" style="margin-top:-4px;">
     <!-- Column one start -->
-    <span class="small"></span><br/><br/><br/><br/>
+    <?php echo ($td->is_deleted == 1)?"<img class=approval-img-md src=$cancelled>":'<span class="small"></span><br/><br/><br/>';?><br/>
     <span class="nama"><?php echo get_name($td->task_creator) ?></span><br/>
     <span class="tanggal"><?php echo dateIndo($td->created_on) ?></span><br/>
     <span class="position">(<?php echo get_user_position($td->task_creator) ?>)</span>
@@ -306,7 +307,7 @@ if ($td_num_rows > 0) {
     <?php echo ($td->app_status_id_hrd == 1)?"<img class=approval-img-md src=$approved>":(($td->app_status_id_hrd == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/><br/><br/>');?><br/>
     <span class="nama"><?php echo get_name($td->user_app_hrd) ?></span><br/>
     <span class="tanggal"><?php echo dateIndo($td->date_app_hrd) ?></span><br/>
-    <span class="position">(<?php echo get_user_position($td->user_app_hrd) ?>)</span><!-- Column two end -->
+    <span class="position">(HRD)</span><!-- Column two end -->
     <!-- Column four end -->
   </div>
 </div>
