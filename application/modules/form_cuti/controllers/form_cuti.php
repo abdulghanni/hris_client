@@ -275,7 +275,7 @@ class Form_cuti extends MX_Controller {
             
             if($is_app==0){
                 $this->approval->approve('cuti', $id, $approval_status, $this->detail_email($id));
-                if(!empty(getEmail($user_cuti_id)))$this->send_email(getEmail($user_cuti_id), , $isi_email);
+                if(!empty(getEmail($user_cuti_id)))$this->send_email(getEmail($user_cuti_id), $subject_email , $isi_email);
             }else{
                 $this->approval->update_approve('cuti', $id, $approval_status, $this->detail_email($id));
                 if(!empty(getEmail($user_cuti_id)))$this->send_email(getEmail($user_cuti_id), get_form_no($id).'-['.$approval_status_mail.']'.'Perubahan Status Pengajuan Permohonan Cuti dari Atasan', $isi_email);

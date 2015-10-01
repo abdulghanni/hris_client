@@ -185,12 +185,13 @@ class Form_rolling extends MX_Controller {
                      $isi_email = get_name($user_id).' mengajukan Permohonan mutasi karyawan, untuk melihat detail silakan <a href='.base_url().'form_rolling/detail/'.$rolling_id.'>Klik Disini</a><br />';
 
                      if(!empty($user_app_lv1)):
-                        $this->approval->request('lv1', 'rolling', $rolling_id, $user_id, $this->detail_email($rolling_id));
+
                         if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), $subject_email , $isi_email);
+                        $this->approval->request('lv1', 'rolling', $rolling_id, $user_id, $this->detail_email($rolling_id));
                      else:
+                          if(!empty(getEmail($this->approval->approver('rolling'))))$this->send_email(getEmail($this->approval->approver('rolling')), $subject_email, $isi_email);
                         $this->approval->request('hrd', 'rolling', $rolling_id, $user_id, $this->detail_email($rolling_id));
-                        if(!empty(getEmail($this->approval->approver('rolling'))))$this->send_email(getEmail($this->approval->approver('rolling')), $subject_email, $isi_email);
-                     endif;
+                       endif;
                      redirect('form_rolling', 'refresh');
                     //echo json_encode(array('st' =>1, 'rolling_url' => $rolling_url));    
                 }

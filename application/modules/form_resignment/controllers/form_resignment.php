@@ -189,7 +189,7 @@ class Form_resignment extends MX_Controller {
                 'is_read' => 0,
             );
         $this->db->insert('email', $data);
-        if(!empty(getEmail(get_nik($admin_payroll[$i]['user_id']))))$this->send_email(getEmail(get_nik($admin_payroll[$i]['user_id'])), get_form_no($id)'-Pengajuan Pengunduran Diri Karyawan', $msg);
+        if(!empty(getEmail(get_nik($admin_payroll[$i]['user_id']))))$this->send_email(getEmail(get_nik($admin_payroll[$i]['user_id'])), get_form_no($id).'-Pengajuan Pengunduran Diri Karyawan', $msg);
         endfor;
     }
 
@@ -415,7 +415,7 @@ class Form_resignment extends MX_Controller {
                     'is_read' => 0,
                 );
         $this->db->insert('email', $data);
-       if(!empty(getEmail(get_nik($user_id))))$this->send_email(getEmail($user_id), get_form_no($id)'-Undangan Wawancara Resignment', $isi_email);
+       if(!empty(getEmail(get_nik($user_id))))$this->send_email(getEmail($user_id), get_form_no($id).'-Undangan Wawancara Resignment', $isi_email);
         
     }
 
