@@ -80,7 +80,7 @@ class Form_demotion extends MX_Controller {
                 'type'  => 'text',
                 'value' => $this->form_validation->set_value('title'),
             );
-
+            $this->data['form_id'] = getValue('form_id', 'form_id', array('form_name'=>'like/demosi'));
             $this->_render_page('form_demotion/index', $this->data);
         }
     }
@@ -181,14 +181,15 @@ class Form_demotion extends MX_Controller {
                      $demotion_id = $this->db->insert_id();
                      $this->upload_attachment($demotion_id);
                      $user_app_lv1 = getValue('user_app_lv1', 'users_demotion', array('id'=>'where/'.$demotion_id));
+                     $subject_email = get_form_no($demotion_id).'-Pengajuan Permohonan Demosi';
                      $isi_email = get_name($user_id).' mengajukan Permohonan demotion, untuk melihat detail silakan <a href='.base_url().'form_demotion/detail/'.$demotion_id.'>Klik Disini</a><br />';
 
                      if(!empty($user_app_lv1)){
                         $this->approval->request('lv1', 'demotion', $demotion_id, $user_id, $this->detail_email($demotion_id));
-                        if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), 'Pengajuan Permohonan Demosi', $isi_email);
+                        if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), $subject_email, $isi_email);
                      }else{
                         $this->approval->request('hrd', 'demotion', $demotion_id, $user_id, $this->detail_email($demotion_id));
-                        if(!empty(getEmail($this->approval->approver('demosi'))))$this->send_email(getEmail($this->approval->approver('demosi')), 'Pengajuan Permohonan Demosi', $isi_email);
+                        if(!empty(getEmail($this->approval->approver('demosi'))))$this->send_email(getEmail($this->approval->approver('demosi')), $subject_email, $isi_email);
                      }
 
                      redirect('form_demotion', 'refresh');
@@ -265,15 +266,17 @@ class Form_demotion extends MX_Controller {
 
             $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
             $user_demotion_id = getValue('user_id', 'users_demotion', array('id'=>'where/'.$id));
+            $subject_email = get_form_no($id).'['.$approval_status_mail.']Status Pengajuan Permohonan Demosi dari Atasan';
+            $subject_email_request = get_form_no($id).'-Pengajuan Demosi Karyawan';
             $isi_email = 'Status pengajuan demotion anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_demotion/detail/'.$id.'>Klik Disini</a><br />';
             $isi_email_request = get_name($user_demotion_id).' mengajukan Permohonan demotion, untuk melihat detail silakan <a href='.base_url().'form_demotion/detail/'.$id.'>Klik Disini</a><br />';
             
             if($is_app==0){
                 $this->approval->approve('demotion', $id, $approval_status, $this->detail_email($id));
-                if(!empty(getEmail($user_demotion_id)))$this->send_email(getEmail($user_demotion_id), 'Status Pengajuan Permohonan Demosi dari Atasan', $isi_email);
+                if(!empty(getEmail($user_demotion_id)))$this->send_email(getEmail($user_demotion_id), $subject_email, $isi_email);
             }else{
                 $this->approval->update_approve('demotion', $id, $approval_status, $this->detail_email($id));
-                if(!empty(getEmail($user_demotion_id)))$this->send_email(getEmail($user_demotion_id), 'Perubahan Status Pengajuan Permohonan Demosi dari Atasan', $isi_email);
+                if(!empty(getEmail($user_demotion_id)))$this->send_email(getEmail($user_demotion_id), get_form_no($id).'['.$approval_status_mail.']Perubahan Status Pengajuan Permohonan Demosi dari Atasan', $isi_email);
             }
             if($type !== 'hrd' && $approval_status == 1)
             {
@@ -282,10 +285,10 @@ class Form_demotion extends MX_Controller {
                 $user_app = ($lv<6) ? getValue('user_app_'.$lv_app, 'users_demotion', array('id'=>'where/'.$id)):0;
                 if(!empty($user_app)){
                     $this->approval->request($lv_app, 'demotion', $id, $user_demotion_id, $this->detail_email($id));
-                    if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), 'Pengajuan Permohonan Demosi', $isi_email_request);
+                    if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), $subject_email_request, $isi_email_request);
                 }else{
                     $this->approval->request('hrd', 'demotion', $id, $user_demotion_id, $this->detail_email($id));
-                    if(!empty(getEmail($this->approval->approver('demosi'))))$this->send_email(getEmail($this->approval->approver('demosi')), 'Pengajuan Permohonan Demosi', $isi_email_request);
+                    if(!empty(getEmail($this->approval->approver('demosi'))))$this->send_email(getEmail($this->approval->approver('demosi')), $subject_email_request, $isi_email_request);
                 }
             }elseif($type == 'hrd' && $approval_status == 1){
                 $this->send_user_notification($id, $user_demotion_id);

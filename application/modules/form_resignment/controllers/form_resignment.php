@@ -79,7 +79,7 @@ class Form_resignment extends MX_Controller {
                 'type'  => 'text',
                 'value' => $this->form_validation->set_value('title'),
             );
-
+            $this->data['form_id'] = getValue('form_id', 'form_id', array('form_name'=>'like/resign'));
             $this->_render_page('form_resignment/index', $this->data);
         }
     }
@@ -151,17 +151,18 @@ class Form_resignment extends MX_Controller {
                 if ($this->form_validation->run() == true && $this->form_resignment_model->create_($user_id, $data))
                     {
                      $resignment_id = $this->db->insert_id();
-                     $isi_email = get_name($user_id).' mengajukan Permohonan Resign, untuk melihat detail silakan <a href='.base_url().'form_resignment/detail/'.$resignment_id.'>Klik Disini</a><br />';
+                     $subject_email = get_form_no($resignment_id).'-Pengajuan Permohonan Pengunduran Diri';
+                     $isi_email = get_name($user_id).' mengajukan Permohonan Pengunduran Diri, untuk melihat detail silakan <a href='.base_url().'form_resignment/detail/'.$resignment_id.'>Klik Disini</a><br />';
                     
                      $user_app_lv1 = getValue('user_app_lv1', 'users_resignment', array('id'=>'where/'.$resignment_id));
                      if($user_id!==$sess_id):
                      $this->approval->by_admin('resignment', $resignment_id, $sess_id, $user_id, $this->detail_email($resignment_id));
                      endif;
                      if(!empty($user_app_lv1)):
-                        if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), 'Pengajuan Permohonan Resignment', $isi_email);
+                        if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), $subject_email, $isi_email);
                         $this->approval->request('lv1', 'resignment', $resignment_id, $user_id, $this->detail_email($resignment_id));
                      else:
-                        if(!empty(getEmail($this->approval->approver('resignment'))))$this->send_email(getEmail($this->approval->approver('resignment')), 'Pengajuan Permohonan Resignment', $isi_email);
+                        if(!empty(getEmail($this->approval->approver('resignment'))))$this->send_email(getEmail($this->approval->approver('resignment')), $subject_email, $isi_email);
                         $this->approval->request('hrd', 'resignment', $resignment_id, $user_id, $this->detail_email($resignment_id));
                      endif;
 
@@ -177,18 +178,18 @@ class Form_resignment extends MX_Controller {
     {
         $sess_id = $this->session->userdata('user_id');
         $admin_payroll = $this->db->where('group_id',10)->get('users_groups')->result_array('user_id');
-        $msg = 'Dear Admin payroll,<br/><p>'.get_name($sess_id).' mengajukan Permohonan Resign, untuk melihat detail silakan <a href='.base_url().'form_resignment/detail/'.$id.'>Klik Disini</a></p>';
+        $msg = 'Dear Admin payroll,<br/><p>'.get_name($sess_id).' mengajukan Permohonan Pengunduran Diri, untuk melihat detail silakan <a href='.base_url().'form_resignment/detail/'.$id.'>Klik Disini</a></p>';
         for($i=0;$i<sizeof($admin_payroll);$i++):
         $data = array(
                 'sender_id' => get_nik($sess_id),
                 'receiver_id' => get_nik($admin_payroll[$i]['user_id']),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                'subject' => 'Pengajuan Resign Karyawan',
+                'subject' => 'Pengajuan Pengunduran Diri Karyawan',
                 'email_body' =>$msg.$this->detail_email($id),
                 'is_read' => 0,
             );
         $this->db->insert('email', $data);
-        if(!empty(getEmail(get_nik($admin_payroll[$i]['user_id']))))$this->send_email(getEmail(get_nik($admin_payroll[$i]['user_id'])), 'Status Pengajuan Training Karyawan oleh HRD', $msg);
+        if(!empty(getEmail(get_nik($admin_payroll[$i]['user_id']))))$this->send_email(getEmail(get_nik($admin_payroll[$i]['user_id'])), get_form_no($id)'-Pengajuan Pengunduran Diri Karyawan', $msg);
         endfor;
     }
 
@@ -353,21 +354,28 @@ class Form_resignment extends MX_Controller {
             endif;
 
             $approval_status = $this->input->post('app_status_'.$type);
-
+            $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
+            $subject_email = get_form_no($id).'['.$approval_status_mail.']Status Pengajuan Pengunduran Diri dari Atasan';
+            $subject_email_request = get_form_no($id).'-Pengajuan Pengunduran Diri';
+            $isi_email = 'Status pengajuan Pengunduran Diri anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_resignment/detail/'.$id.'>Klik Disini</a><br />';
+            $isi_email_request = get_name($user_resignment_id).' mengajukan Permohonan Pengunduran Diri, untuk melihat detail silakan <a href='.base_url().'form_resignment/detail/'.$id.'>Klik Disini</a><br />';
+            
             if($is_app==0){
                 $this->approval->approve('resignment', $id, $approval_status, $this->detail_email($id));
+                if(!empty(getEmail($user_resignment_id)))$this->send_email(getEmail($user_resignment_id), $subject_email, $isi_email);
             }else{
                 $this->approval->update_approve('resignment', $id, $approval_status, $this->detail_email($id));
+                if(!empty(getEmail($user_resignment_id)))$this->send_email(getEmail($user_resignment_id), get_form_no($id).'['.$approval_status_mail.']Perubahan Status Pengajuan Permohonan Pengunduran Diri dari Atasan', $isi_email);
             }
             if($type !== 'hrd'  && $approval_status == 1){
                 $lv = substr($type, -1)+1;
                 $lv_app = 'lv'.$lv;
                 $user_app = ($lv<4) ? getValue('user_app_'.$lv_app, 'users_resignment', array('id'=>'where/'.$id)):0;
                 if(!empty($user_app)):
-                 if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), 'Pengajuan Permohonan Resignment', $isi_email);
+                    if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), $subject_email_request, $isi_email_request);
                     $this->approval->request($lv_app, 'resignment', $id, $user_resignment_id, $this->detail_email($id));
                  else:
-                    if(!empty(getEmail($this->approval->approver('resignment'))))$this->send_email(getEmail($this->approval->approver('resignment')), 'Pengajuan Permohonan Resignment', $isi_email);
+                    if(!empty(getEmail($this->approval->approver('resignment'))))$this->send_email(getEmail($this->approval->approver('resignment')), $subject_email_request, $isi_email_request);
                     $this->approval->request('hrd', 'resignment', $id, $user_resignment_id, $this->detail_email($id));
                  endif;
             }
@@ -407,7 +415,7 @@ class Form_resignment extends MX_Controller {
                     'is_read' => 0,
                 );
         $this->db->insert('email', $data);
-       if(!empty(getEmail(get_nik($user_id))))$this->send_email(getEmail($user_id), 'Undangan Wawancara Resignment', $isi_email);
+       if(!empty(getEmail(get_nik($user_id))))$this->send_email(getEmail($user_id), get_form_no($id)'-Undangan Wawancara Resignment', $isi_email);
         
     }
 

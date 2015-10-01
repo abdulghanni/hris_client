@@ -17,7 +17,7 @@
           <div class="col-md-12">
               <div class="grid simple ">
                 <div class="grid-title no-border">
-                  <h4>Daftar Pengajuan <span class="semi-bold">Rolling</span></h4>
+                  <h4>Daftar Pengajuan <span class="semi-bold">Mutasi</span></h4>
                   <?php if(is_have_subordinate($sess_id)||is_admin()){?>
                   <div class="tools"> 
                     <a href="<?php echo site_url('form_rolling/input') ?>" class="config"><button type="button" class="btn btn-primary btn-sm"><i class="icon-plus"></i>&nbsp;<?php echo lang('add_button');?></button></a>
@@ -47,11 +47,12 @@
                           <table class="table table-striped table-flip-scroll cf">
                               <thead>
                                 <tr>
+                                  <th width="17%">No.</th>
                                   <th width="15%">Nama Pengaju</th>
                                   <th width="15%">Nama Karyawan</th>
                                   <th width="15%">Jabatan Lama</th>
                                   <th width="15%">Jabatan Baru</th>
-                                  <th width="15%">Tanggal rolling</th>
+                                  <th width="15%">Tgl mutasi</th>
                                   <th width="5%" class="text-center">appr. atasan langsung</th>
                                   <th width="5%" class="text-center">appr. atasan tidak langsung</th>
                                   <th width="5%" class="text-center">appr. Atasan Lainnya</th>
@@ -116,11 +117,19 @@
                                     }
                                   ?>
                                   <tr>
+                                    <td><a href="<?php echo site_url('form_rolling/detail/'.$user->id)?>">
+                                      <?php
+                                        $nik = get_nik($user->user_id);
+                                        $bu = get_user_buid($nik);
+                                        $date = date('m', strtotime($user->created_on)).'/'.date('Y', strtotime($user->created_on));
+                                        echo $form_id.'/'.$bu.'/'.$date.'/'.$user->id
+                                      ?>
+                                    </a></td>
                                     <td><a href="<?php echo site_url('form_rolling/detail/'.$user->id)?>"><?php echo get_name($user->created_by)?></a></td>
                                     <td><?php echo get_name($user->user_id)?></td>
                                     <td><?php echo get_position_name($user->old_pos)?></td>
                                     <td><?php echo get_position_name($user->new_pos)?></td>
-                                    <td><?php echo dateIndo($user->date_rolling)?></td>
+                                    <td><?php echo date('Y-m-d', strtotime($user->date_rolling))?></td>
                                     <td class="text-center">
                                       <?php echo $txt_app_lv1;?>
                                     </td>

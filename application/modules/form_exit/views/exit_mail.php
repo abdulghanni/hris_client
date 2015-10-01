@@ -3,7 +3,8 @@
           <div class="col-md-12">
             <div class="grid simple">
               <div class="grid-title no-border">
-                  <h4>Form Rekomendasi <span class="semi-bold"><a href="<?php echo site_url('form_exit')?>">Karyawan Keluar</a></span></h4>
+                  <h4>Form Rekomendasi <span class="semi-bold"><a href="<?php echo site_url('form_exit')?>">Karyawan Keluar</a></span></h4><br/>
+              No : <?= get_form_no($id) ?>
               </div>
               <div class="grid-body no-border">
                  <?php echo form_open("form_exit/add",array("id"=>"formaddexit"));

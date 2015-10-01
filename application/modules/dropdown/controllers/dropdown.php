@@ -185,11 +185,14 @@ class Dropdown extends MX_Controller {
     {
       $pos_group = get_pos_group(get_nik($id));
       $url = get_api_key().'users/superior/EMPLID/'.get_nik($id).'/format/json';
-      $url_atasan_satu_bu = get_api_key().'users/atasan_by_posgroup/EMPLID/'.get_nik($id).'/format/json';
+      $url_atasan_satu_bu = get_api_key().'users/atasan_satu_bu/EMPLID/'.get_nik($id).'/format/json';
+      $url_atasan_bypos = get_api_key().'users/atasan_by_posgroup/EMPLID/'.get_nik($id).'/format/json';
       $headers = get_headers($url);
       $headers2 = get_headers($url_atasan_satu_bu);
+      $headers3 = get_headers($url_atasan_bypos);
       $response = substr($headers[0], 9, 3);
       $response2 = substr($headers2[0], 9, 3);
+      $response3 = substr($headers3[0], 9, 3);
       //$url_atasan_satu_bu = get_api_key().'users/atasan_satu_bu/EMPLID/'.get_nik($id).'/format/json';
       if($pos_group == 'AMD' || $pos_group == 'DIR' || $pos_group == 'KACAB' || $pos_group == 'MGR' || $pos_group == 'ASM'):
           if ($response != "404") {
@@ -197,16 +200,31 @@ class Dropdown extends MX_Controller {
               $atasan = json_decode($get_atasan, true);
               $get_atasan2 = file_get_contents($url_atasan_satu_bu);
               $atasan2 = json_decode($get_atasan2, true);
-              $atasan3 = array_merge($atasan, $atasan2);
-              foreach ($atasan3 as $row)
+              $get_atasan3 = file_get_contents($url_atasan_bypos);
+              $atasan3 = json_decode($get_atasan3, true);
+              $atasan4 = array_merge($atasan, $atasan2, $atasan3);
+              foreach ($atasan4 as $row)
                 {
                     $result['0']= '-- Pilih Atasan --';
                     $result[$row['ID']]= ucwords(strtolower($row['NAME']));
                 }
-          }elseif($response == "404" && $response2 != "404") {
-            $get_atasan = file_get_contents($url_atasan_satu_bu);
-            $atasan = json_decode($get_atasan, true);
-              foreach ($atasan as $row)
+          }elseif($response == "404" && $response2 != "404" && $response3 != "404"){
+               
+              $get_atasan2 = file_get_contents($url_atasan_satu_bu);
+              $atasan2 = json_decode($get_atasan2, true);
+              $get_atasan3 = file_get_contents($url_atasan_bypos);
+              $atasan3 = json_decode($get_atasan3, true);
+              $atasan4 = array_merge($atasan2, $atasan3);
+              foreach ($atasan4 as $row)
+                {
+                    $result['0']= '-- Pilih Atasan --';
+                    $result[$row['ID']]= ucwords(strtolower($row['NAME']));
+                }
+          }elseif($response == "404" && $response2 == "404" && $response3 != "404"){
+              
+              $get_atasan3 = file_get_contents($url_atasan_bypos);
+              $atasan3 = json_decode($get_atasan3, true);
+              foreach ($atasan3 as $row)
                 {
                     $result['0']= '-- Pilih Atasan --';
                     $result[$row['ID']]= ucwords(strtolower($row['NAME']));
@@ -223,16 +241,16 @@ class Dropdown extends MX_Controller {
                     $result['0']= '-- Pilih Atasan --';
                     $result[$row['ID']]= ucwords(strtolower($row['NAME']));
                 }
-        } elseif($response == "404" && $response2 != "404") {
-           $get_atasan = file_get_contents($url_atasan_satu_bu);
+           }elseif($response == "404" && $response2 != "404") {
+            $get_atasan = file_get_contents($url_atasan_satu_bu);
             $atasan = json_decode($get_atasan, true);
              foreach ($atasan as $row)
                 {
                     $result['0']= '-- Pilih Atasan --';
                     $result[$row['ID']]= ucwords(strtolower($row['NAME']));
                 }
-        }else{
-            $result['0']= '- Karyawan Tidak Memiliki Atasan -';
+           }else{
+                $result['0']= '- Karyawan Tidak Memiliki Atasan -';
         }
       endif;
 
@@ -280,7 +298,7 @@ class Dropdown extends MX_Controller {
         $response = substr($headers[0], 9, 3);
         if($response != "404") {
            $get_atasan = file_get_contents($url_atasan_satu_bu);
-           $at_khusus = $this->db->select('nik as ID')->get('users_approval_khusus')->result_array();
+           $at_khusus = getJoin('users','users_approval_khusus','users.nik = users_approval_khusus.nik','left', 'users_approval_khusus.nik as ID, users.username as NAME', array())->result_array();;
 
             $atasan = json_decode($get_atasan, true);
             $uri = $this->uri->segment(3,9);
@@ -290,7 +308,7 @@ class Dropdown extends MX_Controller {
              foreach ($atasan as $row)
                 {
                     $result['0']= '-- Pilih Atasan --';
-                    $result[$row['ID']]= ucwords(strtolower(get_name($row['ID'])));
+                    $result[$row['ID']]= $row['NAME'];
                 }
         }else{
             $result['0']= '- Karyawan Tidak Memiliki Atasan -';

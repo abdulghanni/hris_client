@@ -30,7 +30,7 @@
                               <div class="row">
                                   <div class="col-md-5">
                                       <div class="row">
-                                          <div class="col-md-4 search_label"><?php echo form_label('Nama Pengaju','first_name')?></div>
+                                          <div class="col-md-4 search_label"><?php echo form_label('Nama','first_name')?></div>
                                           <div class="col-md-8"><?php echo bs_form_input($ftitle_search)?></div>
                                       </div>
                                   </div>
@@ -46,10 +46,10 @@
                           <table class="table table-striped table-flip-scroll cf">
                               <thead>
                                 <tr>
-                                  <th width="20%">Nama Pengaju</th>
-                                  <th width="25%">Nama Peserta</th>
-                                  <th width="20%">Nama pelatihan</th>
-                                  <th width="20%">Tujuan</th>
+                                  <th width="20">No.</th>
+                                  <th width="20%">Nama pemohon</th>
+                                  <th width="15%">Nama pelatihan</th>
+                                  <th width="15%">Tujuan</th>
                                   <th width="10%" style="text-align:center;">appr. atasan langsung</th>
                                   <th width="10%" style="text-align:center;">appr. atasan tidak langsung</th>
                                   <th width="10%" style="text-align:center;">appr. Atasan Lainnya</th>
@@ -119,17 +119,28 @@
                                   ?>
                                   <tr>
                                     <td>
-                                      <a href="<?php echo site_url('form_training_group/detail/'.$user->id)?>"><?php echo get_name($user->user_pengaju_id)?></a>
+                                      <a href="<?php echo site_url('form_training_group/detail/'.$user->id)?>">
+                                        <?php
+                                        $nik = get_nik($user->user_pengaju_id);
+                                        $bu = get_user_buid($nik);
+                                        $date = date('m', strtotime($user->created_on)).'/'.date('Y', strtotime($user->created_on));
+                                        echo $form_id.'/'.$bu.'/'.$date.'/'.$user->id
+                                      ?>
+                                      </a>
                                     </td>
 
                                     <td>
+                                      <a href="<?php echo site_url('form_training_group/detail/'.$user->id)?>"><?php echo get_name($user->user_pengaju_id)?></a>
+                                    </td>
+
+                                    <!--<td>
                                     <?php
                                       for($i=0;$i<sizeof($p);$i++):
                                         $n = get_name($p[$i]).'<br/>';
                                     ?>
                                       <a href="<?php echo site_url('form_training_group/detail/'.$user->id)?>"><?php echo $n;?></a>
                                     <?php endfor;?>
-                                    </td>
+                                    </td>-->
 
                                     <td>
                                       <?php echo $user->training_name?>

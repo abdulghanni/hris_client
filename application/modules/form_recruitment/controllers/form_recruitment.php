@@ -77,7 +77,7 @@ class Form_recruitment extends MX_Controller {
             'type'  => 'text',
             'value' => $this->form_validation->set_value('title'),
         );
-        
+        $this->data['form_id'] = getValue('form_id', 'form_id', array('form_name'=>'like/recruitment'));
         $this->_render_page('form_recruitment/index');
     }
 
@@ -224,13 +224,14 @@ class Form_recruitment extends MX_Controller {
                 
                      $recruitment_id = $this->db->insert_id();
                      $user_app_lv1 = getValue('user_app_lv1', 'users_recruitment', array('id'=>'where/'.$recruitment_id));
-                     $isi_email = get_name($user_id).' mengajukan Permohonan recruitment, untuk melihat detail silakan <a href='.base_url().'form_recruitment/detail/'.$recruitment_id.'>Klik Disini</a><br />';
+                     $subject_email = get_form_no($recruitment_id).'Pengajuan Permintaan SDM';
+                     $isi_email = get_name($user_id).' mengajukan Permohonan Permintaan SDM, untuk melihat detail silakan <a href='.base_url().'form_recruitment/detail/'.$recruitment_id.'>Klik Disini</a><br />';
 
                      if(!empty($user_app_lv1)):
-                        if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), 'Pengajuan Permohonan Recruitment', $isi_email);
+                        if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), $subject_email, $isi_email);
                         $this->approval->request('lv1', 'recruitment', $recruitment_id, $user_id, $this->detail_email($recruitment_id));
                      else:
-                        if(!empty(getEmail($this->approval->approver('recruitment'))))$this->send_email(getEmail($this->approval->approver('recruitment')), 'Pengajuan Permohonan Recruitment', $isi_email);
+                        if(!empty(getEmail($this->approval->approver('recruitment'))))$this->send_email(getEmail($this->approval->approver('recruitment')), $subject_email, $isi_email);
                         $this->approval->request('hrd', 'recruitment', $recruitment_id, $user_id, $this->detail_email($recruitment_id));
                      endif;
                      redirect('form_recruitment','refresh');
@@ -288,25 +289,27 @@ class Form_recruitment extends MX_Controller {
             $this->recruitment_model->update($id,$data);
             $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
             $user_recruitment_id = getValue('user_id', 'users_recruitment', array('id'=>'where/'.$id));
-            $isi_email = 'Status pengajuan recruitment anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_recruitment/detail/'.$id.'>Klik Disini</a><br />';
-            $isi_email_request = get_name($user_recruitment_id).' mengajukan Permohonan recruitment, untuk melihat detail silakan <a href='.base_url().'form_recruitment/detail/'.$id.'>Klik Disini</a><br />';
+            $subject_email = get_form_no($id).'['.$approval_status_mail.']Status Pengajuan Permohonan Permintaan SDM dari Atasan';
+            $subject_email_request = get_form_no($id).'Pengajuan Permintaan SDM';
+            $isi_email = 'Status pengajuan permintaan SDM anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_recruitment/detail/'.$id.'>Klik Disini</a><br />';
+            $isi_email_request = get_name($user_recruitment_id).' mengajukan Permohonan permintaan SDM, untuk melihat detail silakan <a href='.base_url().'form_recruitment/detail/'.$id.'>Klik Disini</a><br />';
             
            if($is_app==0){
                 $this->approval->approve('recruitment', $id, $approval_status, $this->detail_email($id));
-                if(!empty(getEmail($user_recruitment_id)))$this->send_email(getEmail($user_recruitment_id), 'Status Pengajuan Permohonan Recruitment dari Atasan', $isi_email);
+                if(!empty(getEmail($user_recruitment_id)))$this->send_email(getEmail($user_recruitment_id), $subject_email, $isi_email);
             }else{
                 $this->approval->update_approve('recruitment', $id, $approval_status, $this->detail_email($id));
-                if(!empty(getEmail($user_recruitment_id)))$this->send_email(getEmail($user_recruitment_id), 'Perubahan Status Pengajuan Permohonan Recruitment dari Atasan', $isi_email);
+                if(!empty(getEmail($user_recruitment_id)))$this->send_email(getEmail($user_recruitment_id), get_form_no($id).'['.$approval_status_mail.']Perubahan Status Pengajuan Permohonan Permintaan SDM dari Atasan', $isi_email);
             }
             if($type !== 'hrd' && $approval_status == 1){
                 $lv = substr($type, -1)+1;
                 $lv_app = 'lv'.$lv;
                 $user_app = ($lv<4) ? getValue('user_app_'.$lv_app, 'users_recruitment', array('id'=>'where/'.$id)):0;
                 if(!empty($user_app)):
-                    if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), 'Pengajuan Permohonan Recruitment', $isi_email_request);
+                    if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app),  $subject_email_request , $isi_email_request);
                     $this->approval->request($lv_app, 'recruitment', $id, $user_recruitment_id, $this->detail_email($id));
                 else:
-                    if(!empty(getEmail($this->approval->approver('recruitment'))))$this->send_email(getEmail($this->approval->approver('recruitment')), 'Pengajuan Permohonan Recruitment', $isi_email_request);
+                    if(!empty(getEmail($this->approval->approver('recruitment'))))$this->send_email(getEmail($this->approval->approver('recruitment')),  $subject_email_request , $isi_email_request);
                     $this->approval->request('hrd', 'recruitment', $id, $user_recruitment_id, $this->detail_email($id));
                 endif;
             }else{
@@ -319,34 +322,34 @@ class Form_recruitment extends MX_Controller {
                     case 'lv2':
                         $receiver_id = getValue('user_app_lv1', 'users_recruitment', array('id'=>'where/'.$id));
                         $this->approval->not_approve('recruitment', $id, $receiver_id, $approval_status ,$this->detail_email($id));
-                        if(!empty(getEmail($receiver_id)))$this->send_email(getEmail($receiver_id), 'Status Pengajuan Permohonan recruitment Dari Atasan', $email_body);
+                        //if(!empty(getEmail($receiver_id)))$this->send_email(getEmail($receiver_id), 'Status Pengajuan Permohonan recruitment Dari Atasan', $email_body);
                     break;
 
                     case 'lv3':
                         $receiver_lv2 = getValue('user_app_lv2', 'users_recruitment', array('id'=>'where/'.$id));
                         $this->approval->not_approve('recruitment', $id, $receiver_lv2, $approval_status ,$this->detail_email($id));
-                        if(!empty(getEmail($receiver_lv2)))$this->send_email(getEmail($receiver_lv2), 'Status Pengajuan Permohonan recruitment Dari Atasan', $email_body);
+                        //if(!empty(getEmail($receiver_lv2)))$this->send_email(getEmail($receiver_lv2), 'Status Pengajuan Permohonan recruitment Dari Atasan', $email_body);
 
                         $receiver_lv1 = getValue('user_app_lv1', 'users_recruitment', array('id'=>'where/'.$id));
                         $this->approval->not_approve('recruitment', $id, $receiver_lv1, $approval_status ,$this->detail_email($id));
-                        if(!empty(getEmail($receiver_lv1)))$this->send_email(getEmail($receiver_lv1), 'Status Pengajuan Permohonan recruitment Dari Atasan', $email_body);
+                        //if(!empty(getEmail($receiver_lv1)))$this->send_email(getEmail($receiver_lv1), 'Status Pengajuan Permohonan recruitment Dari Atasan', $email_body);
                     break;
 
                     case 'hrd':
                         $receiver_lv3 = getValue('user_app_lv3', 'users_recruitment', array('id'=>'where/'.$id));
                         if(!empty($receiver_lv3)):
                             $this->approval->not_approve('recruitment', $id, $receiver_lv3, $approval_status ,$this->detail_email($id));
-                            if(!empty(getEmail($receiver_lv3)))$this->send_email(getEmail($receiver_lv3), 'Status Pengajuan Permohonan recruitment Dari Atasan', $email_body);
+                            //if(!empty(getEmail($receiver_lv3)))$this->send_email(getEmail($receiver_lv3), 'Status Pengajuan Permohonan recruitment Dari Atasan', $email_body);
                         endif;
                         $receiver_lv2 = getValue('user_app_lv2', 'users_recruitment', array('id'=>'where/'.$id));
                         if(!empty($receiver_lv2)):
                             $this->approval->not_approve('recruitment', $id, $receiver_lv2, $approval_status ,$this->detail_email($id));
-                            if(!empty(getEmail($receiver_lv2)))$this->send_email(getEmail($receiver_lv2), 'Status Pengajuan Permohonan recruitment Dari Atasan', $email_body);
+                            //if(!empty(getEmail($receiver_lv2)))$this->send_email(getEmail($receiver_lv2), 'Status Pengajuan Permohonan recruitment Dari Atasan', $email_body);
                         endif;
                         $receiver_lv1 = getValue('user_app_lv1', 'users_recruitment', array('id'=>'where/'.$id));
                         if(!empty($receiver_lv1)):
                             $this->approval->not_approve('recruitment', $id, $receiver_lv1, $approval_status ,$this->detail_email($id));
-                        if(!empty(getEmail($receiver_lv1)))$this->send_email(getEmail($receiver_lv1), 'Status Pengajuan Permohonan recruitment Dari Atasan', $email_body);
+                            //if(!empty(getEmail($receiver_lv1)))$this->send_email(getEmail($receiver_lv1), 'Status Pengajuan Permohonan recruitment Dari Atasan', $email_body);
                         endif;
                     break;
                 }

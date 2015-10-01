@@ -83,7 +83,7 @@ class Form_medical extends MX_Controller {
                 'type'  => 'text',
                 'value' => $this->form_validation->set_value('title'),
             );
-
+            $this->data['form_id'] = getValue('form_id', 'form_id', array('form_name'=>'like/medical'));
             $this->_render_page('form_medical/index', $this->data);
         }
     }
@@ -192,16 +192,17 @@ class Form_medical extends MX_Controller {
                 endfor;
                 $user_id = $this->input->post('pengaju');
                 $user_app_lv1 = getValue('user_app_lv1', 'users_medical', array('id'=>'where/'.$last_medical_id));
+                $subject_email = get_form_no($last_medical_id).'Pengajuan Rekapitulasi Rawat Jalan/Inap';
                 $isi_email = get_name($user_id).' mengajukan Rekapitulasi Rawat Jalan/Inap, untuk melihat detail silakan <a href='.base_url().'form_medical/detail/'.$last_medical_id.'>Klik Disini</a><br />';
 
                 if($user_id!==$sess_id):
                      $this->approval->by_admin('medical', $last_medical_id, $sess_id, $user_id, $this->detail_email($last_medical_id));
                      endif;
                 if(!empty($user_app_lv1)):
-                     if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), 'Pengajuan Rekapitulasi Rawat Jalan/Inap', $isi_email);
+                     if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), $subject_email, $isi_email);
                      $this->approval->request('lv1', 'medical', $last_medical_id, $user_id, $this->detail_email($last_medical_id));
                 else:
-                     if(!empty(getEmail($this->approval->approver('medical'))))$this->send_email(getEmail($this->approval->approver('medical')), 'Pengajuan Rekapitulasi Rawat Jalan/Inap', $isi_email);
+                     if(!empty(getEmail($this->approval->approver('medical'))))$this->send_email(getEmail($this->approval->approver('medical')), $subject_email, $isi_email);
                      $this->approval->request('hrd', 'medical', $last_medical_id, $user_id, $this->detail_email($last_medical_id));
                 endif;
                 
@@ -378,21 +379,25 @@ class Form_medical extends MX_Controller {
         'note_'.$type => $this->input->post('note_'.$type),
         );
         
+       $approval_status = $this->input->post('app_status_id_'.$type);
        $this->form_medical_model->update($id,$data);
+       $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
        $this->approval_mail($id);
-       $isi_email = 'Status pengajuan Rekapitulasi Rawat Jalan/Inap anda disetujui oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_medical/detail/'.$id.'>Klik Disini</a><br />';
+       $subject_email = get_form_no($id).'['.$approval_status_mail.']Status Pengajuan Rekapitulasi Rawat Jalan/Inap dari Atasan';
+       $subject_email_request = get_form_no($id).'Pengajuan Rekapitulasi Rawat Jalan/Inap';
+       $isi_email = 'Status pengajuan Rekapitulasi Rawat Jalan/Inap anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_medical/detail/'.$id.'>Klik Disini</a><br />';
        $isi_email_request = get_name($user_medical_id).' mengajukan Rekapitulasi Rawat Jalan/Inap medical, untuk melihat detail silakan <a href='.base_url().'form_medical/detail/'.$id.'>Klik Disini</a><br />';
-       if(!empty(getEmail($user_medical_id)))$this->send_email(getEmail($user_medical_id), 'Status Pengajuan Rekapitulasi Rawat Jalan/Inap dari Atasan', $isi_email);
+       if(!empty(getEmail($user_medical_id)))$this->send_email(getEmail($user_medical_id), $subject_email, $isi_email);
           
        if($type !== 'hrd'){
             $lv = substr($type, -1)+1;
             $lv_app = 'lv'.$lv;
             $user_app = ($lv<4) ? getValue('user_app_'.$lv_app, 'users_medical', array('id'=>'where/'.$id)):0;
             if(!empty($user_app)):
-                if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), 'Pengajuan Rekapitulasi Rawat Jalan/Inap', $isi_email_request);
+                if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), $subject_email_request, $isi_email_request);
                 $this->approval->request($lv_app, 'medical', $id, $user_medical_id, $this->detail_email($id));
             else:
-                if(!empty(getEmail($this->approval->approver('medical'))))$this->send_email(getEmail($this->approval->approver('medical')), 'Pengajuan Rekapitulasi Rawat Jalan/Inap', $isi_email_request);
+                if(!empty(getEmail($this->approval->approver('medical'))))$this->send_email(getEmail($this->approval->approver('medical')), $subject_email_request, $isi_email_request);
                 $this->approval->request('hrd', 'medical', $id, $user_medical_id, $this->detail_email($id));
             endif;
         }
@@ -449,7 +454,7 @@ class Form_medical extends MX_Controller {
         $this->form_medical_model->update($id,$data2);
         $this->approval_mail($id);
         $isi_email = 'Status pengajuan Rekapitulasi Rawat Jalan/Inap anda disetujui oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_medical/detail/'.$id.'>Klik Disini</a><br />';
-        if(!empty(getEmail($user_medical_id)))$this->send_email(getEmail($user_medical_id), 'Status Pengajuan Rekapitulasi Rawat Jalan/Inap dari Atasan', $isi_email);
+        if(!empty(getEmail($user_medical_id)))$this->send_email(getEmail($user_medical_id), get_form_no($id).'[APPROVED]Status Pengajuan Rekapitulasi Rawat Jalan/Inap dari Atasan', $isi_email);
        
 
         redirect('form_medical/detail/'.$id, 'refresh');

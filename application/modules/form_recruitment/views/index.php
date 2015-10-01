@@ -44,6 +44,7 @@
                           <table class="table table-striped table-flip-scroll cf">
                               <thead>
                                 <tr>
+                                  <th width="17%">No.</th>
                                   <th width="15%">Nama Pengaju</th>
                                   <th width="15%">Unit Bisnis</th>
                                   <th width="20%">Job Desc</th>
@@ -112,6 +113,16 @@
                                     }
                                    ?>
                                   <tr>
+                                    <td>
+                                      <a href="<?php echo site_url('form_recruitment/detail/'.$row->id)?>">
+                                        <?php
+                                        $nik = get_nik($row->user_id);
+                                        $bu = get_user_buid($nik);
+                                        $date = date('m', strtotime($row->created_on)).'/'.date('Y', strtotime($row->created_on));
+                                        echo $form_id.'/'.$bu.'/'.$date.'/'.$row->id
+                                      ?>
+                                      </a>
+                                    </td>
                                     <td>
                                       <a href="<?php echo site_url('form_recruitment/detail/'.$row->id)?>"><?php echo get_name($row->user_id)?></a>
                                     </td>

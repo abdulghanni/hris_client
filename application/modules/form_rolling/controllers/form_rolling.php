@@ -80,7 +80,7 @@ class Form_rolling extends MX_Controller {
                 'type'  => 'text',
                 'value' => $this->form_validation->set_value('title'),
             );
-
+            $this->data['form_id'] = getValue('form_id', 'form_id', array('form_name'=>'like/rolling'));
             $this->_render_page('form_rolling/index', $this->data);
         }
     }
@@ -181,10 +181,15 @@ class Form_rolling extends MX_Controller {
                      $rolling_id = $this->db->insert_id();
                      $this->upload_attachment($rolling_id);
                      $user_app_lv1 = getValue('user_app_lv1', 'users_rolling', array('id'=>'where/'.$rolling_id));
+                     $subject_email = get_form_no($rolling_id).'Pengajuan Permohonan Mutasi';
+                     $isi_email = get_name($user_id).' mengajukan Permohonan mutasi karyawan, untuk melihat detail silakan <a href='.base_url().'form_rolling/detail/'.$rolling_id.'>Klik Disini</a><br />';
+
                      if(!empty($user_app_lv1)):
                         $this->approval->request('lv1', 'rolling', $rolling_id, $user_id, $this->detail_email($rolling_id));
+                        if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), $subject_email , $isi_email);
                      else:
                         $this->approval->request('hrd', 'rolling', $rolling_id, $user_id, $this->detail_email($rolling_id));
+                        if(!empty(getEmail($this->approval->approver('rolling'))))$this->send_email(getEmail($this->approval->approver('rolling')), $subject_email, $isi_email);
                      endif;
                      redirect('form_rolling', 'refresh');
                     //echo json_encode(array('st' =>1, 'rolling_url' => $rolling_url));    
@@ -259,17 +264,19 @@ class Form_rolling extends MX_Controller {
             $this->form_rolling_model->update($id,$data);
             $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
             $user_rolling_id = getValue('user_id', 'users_rolling', array('id'=>'where/'.$id));
-            $isi_email = 'Status pengajuan rolling anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_rolling/detail/'.$id.'>Klik Disini</a><br />';
-            $isi_email_request = get_name($user_rolling_id).' mengajukan Permohonan rolling, untuk melihat detail silakan <a href='.base_url().'form_rolling/detail/'.$id.'>Klik Disini</a><br />';
+            $subject_email = get_form_no($id).'['.$approval_status_mail.']Status Pengajuan Permohonan Mutasi dari Atasan';
+            $subject_email_request = get_form_no($id).'-Pengajuan Mutasi Karyawan';
+            $isi_email = 'Status pengajuan mutasi anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_rolling/detail/'.$id.'>Klik Disini</a><br />';
+            $isi_email_request = get_name($user_rolling_id).' mengajukan Permohonan mutasi, untuk melihat detail silakan <a href='.base_url().'form_rolling/detail/'.$id.'>Klik Disini</a><br />';
             
             $user_rolling_id = getValue('user_id', 'users_rolling', array('id'=>'where/'.$id));
             
             if($is_app==0){
                 $this->approval->approve('rolling', $id, $approval_status, $this->detail_email($id));
-                if(!empty(getEmail($user_rolling_id)))$this->send_email(getEmail($user_rolling_id), 'Status Pengajuan Permohonan Rolling dari Atasan', $isi_email);
+                if(!empty(getEmail($user_rolling_id)))$this->send_email(getEmail($user_rolling_id), $subject_email, $isi_email);
             }else{
                 $this->approval->update_approve('rolling', $id, $approval_status, $this->detail_email($id));
-                if(!empty(getEmail($user_rolling_id)))$this->send_email(getEmail($user_rolling_id), 'Perubahan Status Pengajuan Permohonan Rolling dari Atasan', $isi_email);
+                if(!empty(getEmail($user_rolling_id)))$this->send_email(getEmail($user_rolling_id), get_form_no($id).'['.$approval_status_mail.']Perubahan Status Pengajuan Permohonan Mutasi dari Atasan', $isi_email);
             }
 
             if($type !== 'hrd' && $approval_status == 1){
@@ -278,10 +285,10 @@ class Form_rolling extends MX_Controller {
                 $user_app = ($lv<6) ? getValue('user_app_'.$lv_app, 'users_rolling', array('id'=>'where/'.$id)):0;
                if(!empty($user_app)){
                     $this->approval->request($lv_app, 'rolling', $id, $user_rolling_id, $this->detail_email($id));
-                    if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), 'Pengajuan Permohonan rolling', $isi_email_request);
+                    if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), $subject_email_request, $isi_email_request);
                 }else{
                     $this->approval->request('hrd', 'rolling', $id, $user_rolling_id, $this->detail_email($id));
-                    if(!empty(getEmail($this->approval->approver('rolling'))))$this->send_email(getEmail($this->approval->approver('rolling')), 'Pengajuan Permohonan rolling', $isi_email_request);
+                    if(!empty(getEmail($this->approval->approver('rolling'))))$this->send_email(getEmail($this->approval->approver('rolling')), $subject_email_request, $isi_email_request);
                 }
             }elseif($type == 'hrd' && $approval_status == 1){
                 $this->send_user_notification($id, $user_rolling_id);

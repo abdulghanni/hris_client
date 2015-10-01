@@ -17,7 +17,8 @@
             <div class="grid simple">
               <div class="grid-title no-border">
                 <h4>Form Pengajuan <span class="semi-bold"><a href="<?php echo site_url('form_resignment')?>">Resign</a></span></h4>
-              <a href="<?php echo site_url('form_resignment/form_resignment_pdf/'.$id)?>" target="_blank"><button class="btn btn-primary pull-right"><i class="icon-print"> Cetak</i></button></a>
+              <a href="<?php echo site_url('form_resignment/form_resignment_pdf/'.$id)?>" target="_blank"><button class="btn btn-primary pull-right"><i class="icon-print"> Cetak</i></button></a><br/>
+              No : <?= get_form_no($id) ?>
               </div>
               <div class="grid-body no-border">
                 <?php
@@ -314,8 +315,8 @@
                         <span class="semi-bold"></span>
                         <span class="semi-bold">(<?php echo get_user_position($row->user_app_lv1)?>)</span>
                       <?php }elseif(!empty($row->user_app_lv1) && $row->is_app_lv1 == 1){
-                        echo ($row->app_status_id_lv1 == 1)?"<img class=approval-img src=$approved>":(($row->app_status_id_lv1 == 2) ? "<img class=approval-img src=$rejected>":'<span class="small"></span><br/>');?>
-                        <span class="small"></span><br/>
+                        echo ($row->app_status_id_lv1 == 1)?"<img class=approval-img src=$approved>": (($row->app_status_id_lv1 == 2) ? "<img class=approval-img src=$rejected>"  : (($row->app_status_id_lv1 == 3) ? "<img class=approval-img src=$pending>" : "<span class='small'></span><br/>"));?>
+                      <span class="small"></span><br/>
                         <span class="semi-bold"><?php echo get_name($row->user_app_lv1)?></span><br/>
                         <span class="small"><?php echo dateIndo($row->date_app_lv1)?></span><br/>
                         <span class="semi-bold">(<?php echo get_user_position($row->user_app_lv1)?>)</span>
@@ -345,8 +346,8 @@
                         <span class="semi-bold"></span><br/>
                         <span class="semi-bold">(Atasan Tidak Langsung)</span>
                       <?php }elseif(!empty($row->user_app_lv2) && $row->is_app_lv2 == 1){
-                        echo ($row->app_status_id_lv2 == 1)?"<img class=approval-img src=$approved>":(($row->app_status_id_lv2 == 2) ? "<img class=approval-img src=$rejected>":'<span class="small"></span><br/>');?>
-                        <span class="small"></span><br/>
+                        echo ($row->app_status_id_lv2 == 1)?"<img class=approval-img src=$approved>": (($row->app_status_id_lv2 == 2) ? "<img class=approval-img src=$rejected>"  : (($row->app_status_id_lv2 == 3) ? "<img class=approval-img src=$pending>" : "<span class='small'></span><br/>"));?>
+                      <span class="small"></span><br/>
                         <span class="semi-bold"><?php echo get_name($row->user_app_lv2)?></span><br/>
                         <span class="small"><?php echo dateIndo($row->date_app_lv2)?></span><br/>
                         <span class="semi-bold">(<?php echo get_user_position($row->user_app_lv2)?>)</span>
@@ -378,8 +379,8 @@
                         <span class="semi-bold"></span><br/>
                         <span class="semi-bold">(HRD)</span>
                       <?php }elseif($row->is_app_hrd == 1){
-                        echo ($row->app_status_id_hrd == 1)?"<img class=approval-img src=$approved>":(($row->app_status_id_hrd == 2) ? "<img class=approval-img src=$rejected>":'<span class="small"></span><br/>');?>
-                        <span class="small"></span><br/>
+                        echo ($row->app_status_id_hrd == 1)?"<img class=approval-img src=$approved>": (($row->app_status_id_hrd == 2) ? "<img class=approval-img src=$rejected>"  : (($row->app_status_id_hrd == 3) ? "<img class=approval-img src=$pending>" : "<span class='small'></span><br/>"));?>
+                      <span class="small"></span><br/>
                         <span class="semi-bold"><?php echo get_name($row->user_app_hrd)?></span><br/>
                         <span class="small"><?php echo dateIndo($row->date_app_hrd)?></span><br/>
                         <span class="semi-bold">(HRD)</span>
@@ -415,7 +416,7 @@
                       <span class="semi-bold"></span><br/>
                       <span class="semi-bold">(<?php echo get_user_position($row->user_app_lv3)?>)</span>
                     <?php }elseif(!empty($row->user_app_lv3) && $row->is_app_lv3 == 1){
-                      echo ($row->app_status_id_lv3 == 1)?"<img class=approval-img src=$approved>":(($row->app_status_id_lv3 == 2) ? "<img class=approval-img src=$rejected>":'<span class="small"></span><br/>');?>
+                      echo ($row->app_status_id_lv3 == 1)?"<img class=approval-img src=$approved>": (($row->app_status_id_lv3 == 2) ? "<img class=approval-img src=$rejected>"  : (($row->app_status_id_lv3 == 3) ? "<img class=approval-img src=$pending>" : "<span class='small'></span><br/>"));?>
                       <span class="small"></span><br/>
                       <span class="semi-bold"><?php echo get_name($row->user_app_lv3)?></span><br/>
                       <span class="small"><?php echo dateIndo($row->date_app_lv3)?></span><br/>

@@ -76,7 +76,7 @@ class Form_promosi extends MX_Controller {
                 'type'  => 'text',
                 'value' => $this->form_validation->set_value('title'),
             );
-
+            $this->data['form_id'] = getValue('form_id', 'form_id', array('form_name'=>'like/promosi'));
             $this->_render_page('form_promosi/index', $this->data);
         }
     }
@@ -200,14 +200,15 @@ class Form_promosi extends MX_Controller {
                      $promosi_id = $this->db->insert_id();
                      $this->upload_attachment($promosi_id);
                      $user_app_lv1 = getValue('user_app_lv1', 'users_promosi', array('id'=>'where/'.$promosi_id));
+                     $subject_email = get_form_no($promosi_id).'Pengajuan Permohonan Promosi';
                      $isi_email = get_name($user_id).' mengajukan Permohonan promosi, untuk melihat detail silakan <a href='.base_url().'form_promosi/detail/'.$promosi_id.'>Klik Disini</a><br />';
 
                      if(!empty($user_app_lv1)){
                         $this->approval->request('lv1', 'promosi', $promosi_id, $user_id, $this->detail_email($promosi_id));
-                        if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), 'Pengajuan Permohonan Promosi', $isi_email);
+                        if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), $subject_email, $isi_email);
                      }else{
                         $this->approval->request('hrd', 'promosi', $promosi_id, $user_id, $this->detail_email($promosi_id));
-                        if(!empty(getEmail($this->approval->approver('promosi'))))$this->send_email(getEmail($this->approval->approver('promosi')), 'Pengajuan Permohonan Promosi', $isi_email);
+                        if(!empty(getEmail($this->approval->approver('promosi'))))$this->send_email(getEmail($this->approval->approver('promosi')), $subject_email, $isi_email);
                      }
                      redirect('form_promosi', 'refresh');
                     //echo json_encode(array('st' =>1, 'promosi_url' => $promosi_url));
@@ -282,16 +283,18 @@ class Form_promosi extends MX_Controller {
 
             $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
             $user_promosi_id = getValue('user_id', 'users_promosi', array('id'=>'where/'.$id));
+            $subject_email = get_form_no($id).'['.$approval_status_mail.']Status Pengajuan Permohonan Promosi dari Atasan';
+            $subject_email_request = get_form_no($id).'-Pengajuan Promosi Karyawan';
             $isi_email = 'Status pengajuan promosi anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_promosi/detail/'.$id.'>Klik Disini</a><br />';
             $isi_email_request = get_name($user_promosi_id).' mengajukan Permohonan promosi, untuk melihat detail silakan <a href='.base_url().'form_promosi/detail/'.$id.'>Klik Disini</a><br />';
             
             $user_promosi_id = getValue('user_id', 'users_promosi', array('id'=>'where/'.$id));
             if($is_app==0){
                 $this->approval->approve('promosi', $id, $approval_status, $this->detail_email($id));
-                if(!empty(getEmail($user_promosi_id)))$this->send_email(getEmail($user_promosi_id), 'Status Pengajuan Permohonan Promosi dari Atasan', $isi_email);
+                if(!empty(getEmail($user_promosi_id)))$this->send_email(getEmail($user_promosi_id), $subject_email, $isi_email);
             }else{
                 $this->approval->update_approve('promosi', $id, $approval_status, $this->detail_email($id));
-                if(!empty(getEmail($user_promosi_id)))$this->send_email(getEmail($user_promosi_id), 'Perubahan Status Pengajuan Permohonan Promosi dari Atasan', $isi_email);
+                if(!empty(getEmail($user_promosi_id)))$this->send_email(getEmail($user_promosi_id), get_form_no($id).'['.$approval_status_mail.']Perubahan Status Pengajuan Permohonan Promosi dari Atasan', $isi_email);
             }
 
             if($type !== 'hrd' && $approval_status == 1){
@@ -300,10 +303,10 @@ class Form_promosi extends MX_Controller {
                 $user_app = ($lv<6) ? getValue('user_app_'.$lv_app, 'users_promosi', array('id'=>'where/'.$id)):0;
                if(!empty($user_app)){
                     $this->approval->request($lv_app, 'promosi', $id, $user_promosi_id, $this->detail_email($id));
-                    if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), 'Pengajuan Permohonan Promosi', $isi_email_request);
+                    if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), $subject_email_request, $isi_email_request);
                 }else{
                     $this->approval->request('hrd', 'promosi', $id, $user_promosi_id, $this->detail_email($id));
-                    if(!empty(getEmail($this->approval->approver('promosi'))))$this->send_email(getEmail($this->approval->approver('promosi')), 'Pengajuan Permohonan Promosi', $isi_email_request);
+                    if(!empty(getEmail($this->approval->approver('promosi'))))$this->send_email(getEmail($this->approval->approver('promosi')), $subject_email_request, $isi_email_request);
                 }
             }elseif($type == 'hrd' && $approval_status == 1){
                 $this->send_user_notification($id, $user_promosi_id);

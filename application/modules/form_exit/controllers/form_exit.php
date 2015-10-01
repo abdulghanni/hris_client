@@ -79,7 +79,7 @@ class Form_exit extends MX_Controller {
                 'type'  => 'text',
                 'value' => $this->form_validation->set_value('title'),
             );
-
+            $this->data['form_id'] = getValue('form_id', 'form_id', array('form_name'=>'like/exit'));
             $this->_render_page('form_exit/index', $this->data);
         }
     }

@@ -3,7 +3,8 @@
         <div class="col-md-12">
           <div class="grid simple">
             <div class="grid-title no-border">
-              <h4>Form <a href="<?php echo site_url('form_spd_dalam_group')?>">Perjalanan Dinas <span class="semi-bold">Dalam Kota (Group)</span></a></h4>
+              <h4>Form <a href="<?php echo site_url('form_spd_dalam_group')?>">Perjalanan Dinas <span class="semi-bold">Dalam Kota (Group)</span></a></h4><br/>
+              No : <?= get_form_no($id) ?>
              </div>
             <div class="grid-body no-border">
              <!-- <form class="form-no-horizontal-spacing" id="form_spd_dalam_group" action="<?php echo site_url().'form_spd_dalam_group/do_submit/'.$id = $this->uri->segment(3, 0);?>" method="post"> -->

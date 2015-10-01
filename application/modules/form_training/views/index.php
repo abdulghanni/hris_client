@@ -46,7 +46,8 @@
                           <table class="table table-striped table-flip-scroll cf">
                               <thead>
                                 <tr>
-                                  <th width="15%">Nama Pengaju</th>
+                                  <th width="15%">No.</th>
+                                  <th width="15%">Nama Pemohon</th>
                                   <th width="15%">Nama Karyawan</th>
                                   <th width="10%">Nama pelatihan</th>
                                   <th width="10%">Tujuan</th>
@@ -115,6 +116,17 @@
                                     }
                                   ?>
                                   <tr>
+                                    <td>
+                                      <a href="<?php echo site_url('form_training/detail/'.$user->id)?>">
+                                      <?php
+                                        $nik = get_nik($user->user_pengaju_id);
+                                        $bu = get_user_buid($nik);
+                                        $date = date('m', strtotime($user->created_on)).'/'.date('Y', strtotime($user->created_on));
+                                        echo $form_id.'/'.$bu.'/'.$date.'/'.$user->id
+                                      ?>
+                                      </a>
+                                    </td>
+
                                     <td>
                                       <a href="<?php echo site_url('form_training/detail/'.$user->id)?>"><?php echo get_name($user->user_pengaju_id)?></a>
                                     </td>

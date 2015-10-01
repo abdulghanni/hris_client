@@ -28,7 +28,7 @@
                               <div class="row">
                                   <div class="col-md-5">
                                       <div class="row">
-                                          <div class="col-md-4 search_label"><?php echo form_label('Nama Pengaju','first_name')?></div>
+                                          <div class="col-md-4 search_label"><?php echo form_label('Nama','first_name')?></div>
                                           <div class="col-md-8"><?php echo bs_form_input($ftitle_search)?></div>
                                       </div>
                                   </div>
@@ -44,7 +44,7 @@
                           <table class="table table-striped table-flip-scroll cf">
                               <thead>
                                 <tr>
-                                  <th width="10%">NIK</th>
+                                  <th width="17%">No</th>
                                   <th width="25%">Nama</th>
                                   <th width="15%">Tanggal Keluar</th>
                                   <th width="10%" class="text-center">appr. atasan langsung</th>
@@ -111,7 +111,14 @@
                                   ?>
                                   <tr>
                                     <td>
-                                      <a href="<?php echo site_url('form_resignment/detail/'.$user->id)?>"><?php echo get_nik($user->user_id)?></a>
+                                      <a href="<?php echo site_url('form_resignment/detail/'.$user->id)?>">
+                                        <?php
+                                        $nik = get_nik($user->user_id);
+                                        $bu = get_user_buid($nik);
+                                        $date = date('m', strtotime($user->created_on)).'/'.date('Y', strtotime($user->created_on));
+                                        echo $form_id.'/'.$bu.'/'.$date.'/'.$user->id
+                                      ?>
+                                      </a>
                                     </td>
                                     <td>
                                       <a href="<?php echo site_url('form_resignment/detail/'.$user->id)?>"><?php echo get_name($user->user_id)?></a>

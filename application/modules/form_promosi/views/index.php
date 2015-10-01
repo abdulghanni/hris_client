@@ -47,8 +47,9 @@
                           <table class="table table-striped table-flip-scroll cf">
                               <thead>
                                 <tr>
+                                  <th width="20%">No.</th>
                                   <th width="15%">Nama Karyawan</th>
-                                  <th width="15%">Nama Pengaju</th>
+                                  <th width="15%">Nama Pemohon</th>
                                   <th width="20%">Jabatan Lama</th>
                                   <th width="20%">Jabatan Baru</th>
                                   <th width="5%">Tanggal Pengangkatan</th>
@@ -115,11 +116,19 @@
                                     }
                                   ?>
                                   <tr>
+                                    <td><a href="<?php echo site_url('form_promosi/detail/'.$user->id)?>">
+                                      <?php
+                                        $nik = get_nik($user->user_id);
+                                        $bu = get_user_buid($nik);
+                                        $date = date('m', strtotime($user->created_on)).'/'.date('Y', strtotime($user->created_on));
+                                        echo $form_id.'/'.$bu.'/'.$date.'/'.$user->id
+                                      ?>
+                                    </a></td>
                                     <td><a href="<?php echo site_url('form_promosi/detail/'.$user->id)?>"><?php echo get_name($user->user_id)?></a></td>
                                     <td><a href="<?php echo site_url('form_promosi/detail/'.$user->id)?>"><?php echo get_name($user->created_by)?></a></td>
                                     <td><?php echo get_position_name($user->old_pos)?></td>
                                     <td><?php echo get_position_name($user->new_pos)?></td>
-                                    <td><?php echo dateIndo($user->date_promosi)?></td>
+                                    <td><?php echo date('Y-m-d', strtotime($user->date_promosi))?></td>
                                     <td class="text-center">
                                       <?php echo $txt_app_lv1;?>
                                     </td>

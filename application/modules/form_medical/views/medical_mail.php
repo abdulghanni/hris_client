@@ -3,7 +3,8 @@
         <div class="col-md-12">
           <div class="grid simple">
             <div class="grid-title no-border">
-              <h4>Detail Rekapitulasi <span class="semi-bold"><a href="<?php echo site_url('form_medical')?>">Rawat Jalan & Inap</a></span></h4>
+              <h4>Detail Rekapitulasi <span class="semi-bold"><a href="<?php echo site_url('form_medical')?>">Rawat Jalan & Inap</a></span></h4><br/>
+              No : <?= get_form_no($id) ?>
             </div>
             <div class="grid-body no-border">
             <h6 class="bold">BAGIAN : <?php echo $bagian?></h6>

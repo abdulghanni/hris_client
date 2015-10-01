@@ -44,6 +44,7 @@
                     <table class="table table-striped table-flip-scroll cf">
                         <thead>
                           <tr>
+                            <th width="15%">No.</th>
                             <th width="15%">Tanggal</th>
                             <th width="20%">Nama</th>
                             <th width="15%">Keterangan</th>
@@ -113,7 +114,16 @@
                             <tr>
                               <td>
                                 <a href="<?php echo site_url('form_absen/detail/'.$absen->id)?>">
-                                  <?php echo dateIndo($absen->date_tidak_hadir)?>
+                                  <?php 
+                                  $nik = get_nik($absen->user_id);
+                                  $bu = get_user_buid($nik);
+                                  $date = date('m', strtotime($absen->created_on)).'/'.date('Y', strtotime($absen->created_on));
+                                  echo $form_id.'/'.$bu.'/'.$date.'/'.$absen->id?>
+                                </a>
+                              </td>
+                              <td>
+                                <a href="<?php echo site_url('form_absen/detail/'.$absen->id)?>">
+                                  <?php echo date('Y-m-d', strtotime($absen->date_tidak_hadir))?>
                                 </a>
                               </td>
                               <td>

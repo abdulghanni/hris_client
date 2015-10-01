@@ -837,11 +837,41 @@
 		}
 	}
 
+	function get_form_no($id)
+	{
+		$CI =&get_instance();
+		$form = substr($CI->uri->segment(1,0), 5);
+
+		if ($form == 'training_group' || $form == 'training') {
+			$user_id = 'user_pengaju_id';
+		}elseif(substr($form, 0, 3) == 'spd' ){
+			$user_id = 'task_creator';
+		}else{
+			$user_id = 'user_id';
+		}
+
+		$user_id = getValue($user_id,'users_'.$form, array('id'=>'where/'.$id));
+		$nik = get_nik($user_id);
+		$bu = get_user_buid($nik);
+		$date = getValue('created_on','users_'.$form, array('id'=>'where/'.$id));
+		$m = date('m', strtotime($date));
+		$y = date('Y', strtotime($date));
+		if(substr($form, 1, 3) == 'spd'){$form = 'pjd';}
+		$form = str_replace('_', '-', $form);
+		if(substr($form, 0, 3) == 'spd' ) $form='pjd';
+		$form_id = getValue('form_id', 'form_id', array('form_name'=>'like/'.$form));
+		$no = "$form_id/$bu/$m/$y/$id";
+		return $no;
+	}
+
 	if(!function_exists('get_user_buid'))
 	{
 		function get_user_buid($user_id)
 		{
 			$CI =&get_instance();
+			if(empty($user_id)){
+				return '-';
+			}else{
             $url = get_api_key().'users/employement/EMPLID/'.$user_id.'/format/json';
             $headers = get_headers($url);
             $response = substr($headers[0], 9, 3);
@@ -853,6 +883,7 @@
             } else {
                 return '';
             }
+        	}
 		}
 	}
 

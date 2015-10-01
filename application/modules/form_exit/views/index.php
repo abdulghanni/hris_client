@@ -30,7 +30,7 @@
                               <div class="row">
                                   <div class="col-md-5">
                                       <div class="row">
-                                          <div class="col-md-4 search_label"><?php echo form_label('Nama Pengaju','first_name')?></div>
+                                          <div class="col-md-4 search_label"><?php echo form_label('Nama','first_name')?></div>
                                           <div class="col-md-8"><?php echo bs_form_input($ftitle_search)?></div>
                                       </div>
                                   </div>
@@ -46,9 +46,9 @@
                           <table class="table table-striped table-flip-scroll cf">
                               <thead>
                                 <tr>
-                                  <th width="1%">NIK</th>
-                                  <th width="10%">Nama</th>
-                                  <th width="10%">Tanggal Keluar</th>
+                                  <th width="20%">No</th>
+                                  <th width="20%">Nama</th>
+                                  <th width="15%">Tanggal Keluar</th>
                                   <!--
                                   <th width="2%" class="text-center">Approval Mgr GA Nasional</th>
                                   <th width="2%" class="text-center">Approval Koperasi</th>
@@ -58,10 +58,10 @@
                                   <th width="2%" class="text-center">Approval Keuangan</th>
                                   <th width="2%" class="text-center">Approval Asset Mgr</th>
                                   -->
-                                  <th width="2%" class="text-center">appr. atasan langsung</th>
-                                  <th width="2%" class="text-center">appr. atasan tidak langsung</th>
-                                  <th width="2%" class="text-center">appr. Atasan Lainnya</th>
-                                  <th width="2%" class="text-center">Cetak</th>
+                                  <th width="5%" class="text-center">appr. atasan langsung</th>
+                                  <th width="5%" class="text-center">appr. atasan tidak langsung</th>
+                                  <th width="5%" class="text-center">appr. Atasan Lainnya</th>
+                                  <th width="5%" class="text-center">Cetak</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -185,14 +185,17 @@
 
                                   <tr>
                                     <td>
-                                      <a href="<?php echo site_url('form_exit/detail/'.$row->id)?>"><?php echo get_nik($row->user_id)?></a>
-                                    </td>
-                                    <td>
-                                      <a href="<?php echo site_url('form_exit/detail/'.$row->id)?>"><?php echo get_name($row->user_id)?></a>
-                                    </td>
-                                    <td>
-                                      <?php echo dateIndo($row->date_exit)?>
-                                    </td>
+                                      <a href="<?php echo site_url('form_exit/detail/'.$row->id)?>">
+                                        <?php
+                                        $nik = get_nik($row->user_id);
+                                        $bu = get_user_buid($nik);
+                                        $date = date('m', strtotime($row->created_on)).'/'.date('Y', strtotime($row->created_on));
+                                        echo $form_id.'/'.$bu.'/'.$date.'/'.$row->id
+                                      ?>
+                                    </a>
+                                      </td>
+                                      <td><?php echo get_name($row->user_id)?></td>
+                                      <td><?php echo dateIndo($row->date_exit)?></td>
                                     <!--
                                     <td class="text-center">
                                       <?php echo $txt_app_mgr; ?>

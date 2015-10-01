@@ -16,7 +16,8 @@
           <div class="grid simple">
             <div class="grid-title no-border">
               <h4>Form Keterangan Tidak <a href="<?php echo site_url('form_absen')?>"><span class="semi-bold">Absen</span></a></h4>
-              <a href="<?php echo site_url('form_absen/form_absen_pdf/'.$id)?>" target="_blank"><button class="btn btn-primary pull-right"><i class="icon-print"> Cetak</i></button></a>
+              <a href="<?php echo site_url('form_absen/form_absen_pdf/'.$id)?>" target="_blank"><button class="btn btn-primary pull-right"><i class="icon-print"> Cetak</i></button></a><br/>
+              No : <?= get_form_no($id) ?>
             </div>
             <div class="grid-body no-border">
             <?php 

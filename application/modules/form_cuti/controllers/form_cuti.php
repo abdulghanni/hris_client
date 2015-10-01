@@ -88,7 +88,7 @@ class Form_cuti extends MX_Controller {
                 'type'  => 'text',
                 'value' => $this->form_validation->set_value('title'),
             );
-
+            $this->data['form_id'] = getValue('form_id', 'form_id', array('form_name'=>'like/cuti'));
             $this->_render_page('form_cuti/index', $this->data);
         }
     }
@@ -194,16 +194,17 @@ class Form_cuti extends MX_Controller {
                  $cuti_id = $this->db->insert_id();
                  $leave_request_id = $this->get_last_leave_request_id();
                  $user_app_lv1 = getValue('user_app_lv1', 'users_cuti', array('id'=>'where/'.$cuti_id));
+                 $subject_email = get_form_no($cuti_id).'-Pengajuan Permohonan Cuti';
                  $isi_email = get_name($user_id).' mengajukan Permohonan Cuti, untuk melihat detail silakan <a href='.base_url().'form_cuti/detail/'.$cuti_id.'>Klik Disini</a><br />';
                  if($user_id!==$sess_id):
                     $this->approval->by_admin('cuti', $cuti_id, $sess_id, $user_id, $this->detail_email($cuti_id));
                  endif;
                  if(!empty($user_app_lv1)){
                     $this->approval->request('lv1', 'cuti', $cuti_id, $user_id, $this->detail_email($cuti_id));
-                    if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), 'Pengajuan Permohonan Cuti', $isi_email);
+                    if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), $subject_email, $isi_email);
                  }else{
                     $this->approval->request('hrd', 'cuti', $cuti_id, $user_id, $this->detail_email($cuti_id));
-                    if(!empty(getEmail($this->approval->approver('cuti'))))$this->send_email(getEmail($this->approval->approver('cuti')), 'Pengajuan Permohonan Cuti', $isi_email);
+                    if(!empty(getEmail($this->approval->approver('cuti'))))$this->send_email(getEmail($this->approval->approver('cuti')), $subject_email, $isi_email);
                  }
 
                  if($this->input->post('insert') == 1)
@@ -260,19 +261,24 @@ class Form_cuti extends MX_Controller {
             'date_app_'.$type => $date_now,
             'note_app_'.$type => $this->input->post('note_'.$type)
             );
+
             $is_app = getValue('is_app_'.$type, 'users_cuti', array('id'=>'where/'.$id));
             $approval_status = $this->input->post('app_status_'.$type);
             $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
             $this->form_cuti_model->update($id,$data);
             $user_cuti_id = getValue('user_id', 'users_cuti', array('id'=>'where/'.$id));
+
+            $subject_email = get_form_no($id).'-['.$approval_status_mail.']Status Pengajuan Permohonan Cuti dari Atasan';
+            $subject_email_request = get_form_no($id).'Pengajuan Permohonan Cuti';
             $isi_email = 'Status pengajuan cuti anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_cuti/detail/'.$id.'>Klik Disini</a><br />';
             $isi_email_request = get_name($user_cuti_id).' mengajukan Permohonan Cuti, untuk melihat detail silakan <a href='.base_url().'form_cuti/detail/'.$id.'>Klik Disini</a><br />';
+            
             if($is_app==0){
                 $this->approval->approve('cuti', $id, $approval_status, $this->detail_email($id));
-                if(!empty(getEmail($user_cuti_id)))$this->send_email(getEmail($user_cuti_id), 'Status Pengajuan Permohonan Cuti dari Atasan', $isi_email);
+                if(!empty(getEmail($user_cuti_id)))$this->send_email(getEmail($user_cuti_id), , $isi_email);
             }else{
                 $this->approval->update_approve('cuti', $id, $approval_status, $this->detail_email($id));
-                if(!empty(getEmail($user_cuti_id)))$this->send_email(getEmail($user_cuti_id), 'Perubahan Status Pengajuan Permohonan Cuti dari Atasan', $isi_email);
+                if(!empty(getEmail($user_cuti_id)))$this->send_email(getEmail($user_cuti_id), get_form_no($id).'-['.$approval_status_mail.']'.'Perubahan Status Pengajuan Permohonan Cuti dari Atasan', $isi_email);
             }
 
             if($type !== 'hrd' && $approval_status == 1){
@@ -281,10 +287,10 @@ class Form_cuti extends MX_Controller {
                 $user_app = ($lv<4) ? getValue('user_app_'.$lv_app, 'users_cuti', array('id'=>'where/'.$id)):0;
                 if(!empty($user_app)){
                     $this->approval->request($lv_app, 'cuti', $id, $user_cuti_id, $this->detail_email($id));
-                    if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), 'Pengajuan Permohonan Cuti', $isi_email_request);
+                    if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), $subject_email_request, $isi_email_request);
                 }else{
                     $this->approval->request('hrd', 'cuti', $id, $user_cuti_id, $this->detail_email($id));
-                    if(!empty(getEmail($this->approval->approver('cuti'))))$this->send_email(getEmail($this->approval->approver('cuti')), 'Pengajuan Permohonan Cuti', $isi_email_request);
+                    if(!empty(getEmail($this->approval->approver('cuti'))))$this->send_email(getEmail($this->approval->approver('cuti')), $subject_email_request, $isi_email_request);
                 }
             }else{
                 $email_body = "Status pengajuan permohonan cuti yang diajukan oleh ".get_name($user_cuti_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_cuti/detail/'.$id.'>Klik Disini</a><br />';
@@ -296,34 +302,34 @@ class Form_cuti extends MX_Controller {
                     case 'lv2':
                         $receiver_id = getValue('user_app_lv1', 'users_cuti', array('id'=>'where/'.$id));
                         $this->approval->not_approve('cuti', $id, $receiver_id, $approval_status ,$this->detail_email($id));
-                        if(!empty(getEmail($receiver_id)))$this->send_email(getEmail($receiver_id), 'Status Pengajuan Permohonan Cuti Dari Atasan', $email_body);
+                        if(!empty(getEmail($receiver_id)))$this->send_email(getEmail($receiver_id), $subject_email, $email_body);
                     break;
 
                     case 'lv3':
                         $receiver_lv2 = getValue('user_app_lv2', 'users_cuti', array('id'=>'where/'.$id));
                         $this->approval->not_approve('cuti', $id, $receiver_lv2, $approval_status ,$this->detail_email($id));
-                        if(!empty(getEmail($receiver_lv2)))$this->send_email(getEmail($receiver_lv2), 'Status Pengajuan Permohonan Cuti Dari Atasan', $email_body);
+                        if(!empty(getEmail($receiver_lv2)))$this->send_email(getEmail($receiver_lv2), $subject_email, $email_body);
 
                         $receiver_lv1 = getValue('user_app_lv1', 'users_cuti', array('id'=>'where/'.$id));
                         $this->approval->not_approve('cuti', $id, $receiver_lv1, $approval_status ,$this->detail_email($id));
-                        if(!empty(getEmail($receiver_lv1)))$this->send_email(getEmail($receiver_lv1), 'Status Pengajuan Permohonan Cuti Dari Atasan', $email_body);
+                        if(!empty(getEmail($receiver_lv1)))$this->send_email(getEmail($receiver_lv1), $subject_email, $email_body);
                     break;
 
                     case 'hrd':
                         $receiver_lv3 = getValue('user_app_lv3', 'users_cuti', array('id'=>'where/'.$id));
                         if(!empty($receiver_lv3)):
                             $this->approval->not_approve('cuti', $id, $receiver_lv3, $approval_status ,$this->detail_email($id));
-                            if(!empty(getEmail($receiver_lv3)))$this->send_email(getEmail($receiver_lv3), 'Status Pengajuan Permohonan Cuti Dari Atasan', $email_body);
+                            if(!empty(getEmail($receiver_lv3)))$this->send_email(getEmail($receiver_lv3), $subject_email, $email_body);
                         endif;
                         $receiver_lv2 = getValue('user_app_lv2', 'users_cuti', array('id'=>'where/'.$id));
                         if(!empty($receiver_lv2)):
                             $this->approval->not_approve('cuti', $id, $receiver_lv2, $approval_status ,$this->detail_email($id));
-                            if(!empty(getEmail($receiver_lv2)))$this->send_email(getEmail($receiver_lv2), 'Status Pengajuan Permohonan Cuti Dari Atasan', $email_body);
+                            if(!empty(getEmail($receiver_lv2)))$this->send_email(getEmail($receiver_lv2), $subject_email, $email_body);
                         endif;
                         $receiver_lv1 = getValue('user_app_lv1', 'users_cuti', array('id'=>'where/'.$id));
                         if(!empty($receiver_lv1)):
                             $this->approval->not_approve('cuti', $id, $receiver_lv1, $approval_status ,$this->detail_email($id));
-                        if(!empty(getEmail($receiver_lv1)))$this->send_email(getEmail($receiver_lv1), 'Status Pengajuan Permohonan Cuti Dari Atasan', $email_body);
+                        if(!empty(getEmail($receiver_lv1)))$this->send_email(getEmail($receiver_lv1), $subject_email, $email_body);
                         endif;
                     break;
                 }

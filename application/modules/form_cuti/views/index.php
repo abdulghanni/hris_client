@@ -25,7 +25,7 @@
                               <div class="row">
                                   <div class="col-md-5">
                                       <div class="row">
-                                          <div class="col-md-4 search_label"><?php echo form_label('Nama Pemohosn','first_name')?></div>
+                                          <div class="col-md-4 search_label"><?php echo form_label('Nama Pemohon','first_name')?></div>
                                           <div class="col-md-8"><?php echo bs_form_input($ftitle_search)?></div>
                                       </div>
                                   </div>
@@ -41,15 +41,16 @@
                           <table class="table table-striped table-flip-scroll cf">
                               <thead>
                                 <tr>
+                                  <th width="17%"><?php echo 'No.' ?></th>
                                   <th width="15%"><?php echo 'Nama Pemohon' ?></th>
-                                  <th width="15%"><?php echo lang('date_mulai_cuti') ?></th>
+                                  <th width="12%" class="text-center">tgl. mulai cuti</th>
                                   <th width="15%"><?php echo lang('reason') ?></th>
-                                  <th width="10%"><?php echo lang('count_day') ?></th>
-                                  <th width="10%" style="text-align:center;">appr. atasan langsung</th>
-                                  <th width="10%" style="text-align:center;">appr. atasan tidak langsung</th>
-                                  <th width="10%" style="text-align:center;">appr. Atasan Lainnya</th>
-                                  <th width="10%" style="text-align:center;">appr. HRD</th>
-                                  <th width="10%" style="align:center;">cetak</th>
+                                  <th width="8%" class="text-center">Jml. Hari</th>
+                                  <th width="10%" class="text-center">appr. atasan langsung</th>
+                                  <th width="10%" class="text-center">appr. atasan tidak langsung</th>
+                                  <th width="10%" class="text-center">appr. Atasan Lainnya</th>
+                                  <th width="10%" class="text-center">appr. HRD</th>
+                                  <th width="10%" class="text-center">cetak</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -126,29 +127,39 @@
                                   $user_pengganti = $user->name;
                                   ?>
                                   <tr class="itemcuti" id="<?php echo $id_cuti; ?>">
-                                  <td>
+                                    <td>
+                                      <a href="#" id="viewcuti-<?php echo $id_cuti; ?>">
+                                      <?php
+                                        $nik = get_nik($user->user_id);
+                                        $bu = get_user_buid($nik);
+                                        $date = date('m', strtotime($user->created_on)).'/'.date('Y', strtotime($user->created_on));
+                                        echo $form_id.'/'.$bu.'/'.$date.'/'.$user->id
+                                      ?>
+                                      </a>
+                                    </td> 
+                                    <td>
                                       <a href="#" id="viewcuti-<?php echo $id_cuti; ?>"><?php echo $user->name; ?></a>
                                     </td>
                                     <td>
-                                      <?php echo dateIndo($user->date_mulai_cuti); ?>
+                                      <?php echo date('Y-m-d', strtotime($user->date_mulai_cuti)); ?>
                                     </td>
                                     <td>
                                       <?php echo $user->alasan_cuti; ?>
                                     </td>
                                     
-                                    <td>
+                                    <td class="text-center">
                                       <?php echo $user->jumlah_hari; ?> hari
                                     </td>
-                                    <td style="text-align:center;">
+                                    <td class="text-center">
                                       <?php echo $txt_app_lv1;?>
                                     </td>
-                                    <td style="text-align:center;">
+                                    <td class="text-center">
                                       <?php echo $txt_app_lv2; ?>
                                     </td>
-                                    <td style="text-align:center;">
+                                    <td class="text-center">
                                       <?php echo $txt_app_lv3; ?>
                                     </td>
-                                    <td style="text-align:center;">
+                                    <td class="text-center">
                                       <?php echo $txt_app_hrd; ?>
                                     </td>
                                     <td class="text-center">
@@ -222,7 +233,7 @@
                                                 <label class="form-label text-right"><?php echo lang('replacement') ?></label>
                                               </div>
                                               <div class="col-md-10">
-                                                <input name="status" id="status" type="text"  class="form-control" placeholder="Status" value="<?php echo get_pengganti($user->id); ?>" disabled="disabled">
+                                                <input name="status" id="status" type="text"  class="form-control" placeholder="Status" value="<?php echo get_name($user->user_pengganti); ?>" disabled="disabled">
                                               </div>
                                             </div>
                                             <div class="row form-row">

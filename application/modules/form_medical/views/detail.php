@@ -17,7 +17,8 @@
             <div class="grid-title no-border">
               <h4>Detail Rekapitulasi <span class="semi-bold"><a href="<?php echo site_url('form_medical')?>">Rawat Jalan & Inap</a></span></h4>
               <?php $disabled = ($is_app_hrd==0) ? "disabled='disabled'" : '' ?>
-              <a href="<?php echo site_url('form_medical/form_medical_pdf/'.$id)?>" target="_blank"><button class="btn btn-primary pull-right" <?php echo $disabled ?>><i class="icon-print"> Cetak</i></button></a>
+              <a href="<?php echo site_url('form_medical/form_medical_pdf/'.$id)?>" target="_blank"><button class="btn btn-primary pull-right" <?php echo $disabled ?>><i class="icon-print"> Cetak</i></button></a><br/>
+              No : <?= get_form_no($id) ?>
             </div>
             <div class="grid-body no-border">
             <h6 class="bold">BAGIAN : <?php echo $bagian?></h6>
@@ -208,8 +209,8 @@
                           <p>Mengetahui,</p>
                           <p class="wf-approve-sp">
                           <?php if($row->is_app_lv1==1) {
-                            echo ($row->app_status_id_lv1 == 1)?"<img class=approval-img src=$approved>":(($row->app_status_id_lv1 == 2) ? "<img class=approval-img src=$rejected>":'<span class="small"></span><br/>');?>
-                            <span class="semi-bold"></span><br/>
+                            echo ($row->app_status_id_lv1 == 1)?"<img class=approval-img src=$approved>": (($row->app_status_id_lv1 == 2) ? "<img class=approval-img src=$rejected>"  : (($row->app_status_id_lv1 == 3) ? "<img class=approval-img src=$pending>" : "<span class='small'></span><br/>"));?>
+                      <span class="semi-bold"></span><br/>
                             <span class="small"></span><br/>
                             <span class="semi-bold"><?php echo get_name($row->user_app_lv1) ?></span><br/>
                             <span class="small"><?php echo dateIndo($row->date_app_lv1) ?></span><br/>
