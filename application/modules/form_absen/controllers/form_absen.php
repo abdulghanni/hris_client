@@ -277,6 +277,7 @@ class form_absen extends MX_Controller {
         }
 
         $user_id= getValue('user_id', 'users_absen', array('id'=>'where/'.$id));
+        $this->data['id'] = $id;
         $this->data['user_nik'] = get_nik($user_id);
         $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
         $sess_nik = $this->data['sess_nik'] = get_nik($sess_id);

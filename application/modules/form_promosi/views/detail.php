@@ -210,6 +210,7 @@
                       <?php 
                       $approved = assets_url('img/approved_stamp.png');
                       $rejected = assets_url('img/rejected_stamp.png');
+                      $pending = assets_url('img/pending_stamp.png');
                       if(!empty($row->user_app_lv1) && $row->is_app_lv1 == 0 && get_nik($sess_id) == $row->user_app_lv1){?>
                       <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitModalLv1"><i class="icon-ok"></i>Submit</div>
                       <span class="small"></span>

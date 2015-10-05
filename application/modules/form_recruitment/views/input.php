@@ -24,48 +24,44 @@
                 $att = array('class' => 'form-no-horizontal-spacing', 'id' => 'formadd');
                 echo form_open('form_recruitment/add', $att);
                 ?>
-                <div class="row column-seperation">
-                  <div class="col-md-12">    
-                    <div class="row form-row">
+                <div class="row column-seperation">  
+
+                  <div class="row form-row">
                       <div class="col-md-2">
                         <label class="form-label text-right">Unit Bisnis</label>
                       </div>
-                      <div class="col-md-4">
+                      <div class="col-md-6">
                         <?php
-                            $style_bu='class="form-control input-sm select2" style="width:100%" id="bu"  onChange="tampilParentOrg()" required';
+                            $style_bu='class="form-control input-sm select2" style="width:100%" id="bu"  onChange="tampilOrg()" required';
                             echo form_dropdown('bu',$bu,'',$style_bu);
                           ?>
                       </div>
+                  </div>
+                  <br/>
+                  <div class="row form-row">
                       <div class="col-md-2">
-                        <label class="form-label text-right">Departement</label>
+                        <label class="form-label text-right">Dept / Bagian</label>
                       </div>
-                      <div class="col-md-4">
-                        <?php
-                          $style_org='class="select2" id="parent_org" onChange="tampilOrg()" style="width:100%" required';
-                          echo form_dropdown("parent_org",array(''=>'- Pilih Departement -'),'',$style_org);
-                        ?>
-                      </div>
-                    </div>
-                    <div class="row form-row">
-                      <div class="col-md-2">
-                        <label class="form-label text-right">Bagian</label>
-                      </div>
-                      <div class="col-md-4">
+                      <div class="col-md-6">
                         <?php
                           $style_org='class="select2" id="org" onChange="tampilPos()" style="width:100%" required';
                           echo form_dropdown("org",array(''=>'- Pilih Bagian -'),'',$style_org);
                         ?>
                       </div>
+                  </div>
+
+                  <div class="row form-row">
                       <div class="col-md-2">
                         <label class="form-label text-right">Jabatan</label>
                       </div>
-                      <div class="col-md-4">
+                      <div class="col-md-6">
                         <?php
                             $style_pos='class="select2" id="pos" style="width:100%" required';
                             echo form_dropdown("pos",array(''=>'- Pilih Position -'),'',$style_pos);
                           ?>
                       </div>
-                    </div>
+                  </div>
+
                     <div class="row form-row">
                       <div class="col-md-2">
                         <label class="form-label text-right">Jml yang dibutuhkan</label>
@@ -195,7 +191,7 @@
                         <label class="form-label text-right">Bahasa Pemrograman</label>
                       </div>
                       <div class="col-md-10">
-                        <input name="pemrograman" id="pemrograman" type="text"  class="form-control" placeholder="bahasa pemrograman" value="">
+                        <input name="pemrograman" id="pemrograman" type="text"  class="form-control" placeholder="Bahasa Pemrograman" value="">
                       </div>
                     </div>
                     <div class="row form-row">
@@ -376,22 +372,10 @@
 	<!-- END PAGE -->
 
   <script type="text/javascript">
-  function tampilParentOrg()
- {
-     buid = document.getElementById("bu").value;
-     $.ajax({
-         url:"<?php echo base_url();?>form_recruitment/get_parent_org/"+buid+"",
-         success: function(response){
-         $("#parent_org").html(response);
-         },
-         dataType:"html"
-     });
-     return false;
- }
 
  function tampilOrg()
  {
-     orgid = document.getElementById("parent_org").value;
+     orgid = document.getElementById("bu").value;
      $.ajax({
          url:"<?php echo base_url();?>form_recruitment/get_org/"+orgid+"",
          success: function(response){

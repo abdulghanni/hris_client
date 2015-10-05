@@ -16,7 +16,7 @@
           <div class="col-md-12">
             <div class="grid simple">
               <div class="grid-title no-border">
-                <h4>Form Pengajuan <span class="semi-bold"><a href="<?php echo site_url('form_resignment')?>">Resign</a></span></h4>
+                <h4>Form Pengajuan <span class="semi-bold"><a href="<?php echo site_url('form_resignment')?>">Pengunduran Diri</a></span></h4>
               <a href="<?php echo site_url('form_resignment/form_resignment_pdf/'.$id)?>" target="_blank"><button class="btn btn-primary pull-right"><i class="icon-print"> Cetak</i></button></a><br/>
               No : <?= get_form_no($id) ?>
               </div>
@@ -83,7 +83,7 @@
                       
                     </div>
                     <div class="col-md-6">
-                      <h4>Resign Yang Diajukan</h4>
+                      <h4>Pengunduran Diri Yang Diajukan</h4>
                       <div class="row form-row">
                         <div class="col-md-4">
                           <label class="form-label text-left">Tanggal Pengajuan</label>
@@ -104,7 +104,7 @@
 
                       <div class="row form-row">
                       <div class="col-md-4">
-                        <label class="form-label text-left">Alasan Resign</label>
+                        <label class="form-label text-left">Alasan Pengunduran Diri</label>
                       </div>
                       <div class="col-md-8">
                          <textarea name="alasan" class="form-control" disabled><?php echo $row->alasan?></textarea>
@@ -199,7 +199,7 @@
 
                   <?php if($row->is_app_hrd>0):?>
                   <br/><hr/>
-                  <h4>Detail Wawancara Pengajuan Resign</h4>
+                  <h4>Detail Wawancara Pengajuan Pengunduran Diri</h4>
                   <div class="row column-seperation">
                     <div class="col-md-12">
                         <div class="col-md-12">
@@ -307,6 +307,7 @@
                       <?php 
                       $approved = assets_url('img/approved_stamp.png');
                       $rejected = assets_url('img/rejected_stamp.png');
+                       $pending = assets_url('img/pending_stamp.png');
                       if(!empty($row->user_app_lv1) && $row->is_app_lv1 == 0 && get_nik($sess_id) == $row->user_app_lv1){?>
                       <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitModalLv1"><i class="icon-ok"></i>Submit</div>
                       <span class="small"></span>
@@ -610,7 +611,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Form  Resignment - Undangan Wawancara</h4>
+        <h4 class="modal-title" id="myModalLabel">Form  Pengunduran Diri - Undangan Wawancara</h4>
       </div>
       <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
       <div class="modal-body">
@@ -694,7 +695,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Form Resignment - Wawancara HRD</h4>
+        <h4 class="modal-title" id="myModalLabel">Form Pengunduran Diri - Wawancara HRD</h4>
       </div>
       <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
       <div class="modal-body">

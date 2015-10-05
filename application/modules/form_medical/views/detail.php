@@ -51,6 +51,7 @@
                              $total = $detail[0]['rupiah'];
                              $approved = assets_url('img/approved_stamp.png');
                              $rejected = assets_url('img/rejected_stamp.png');
+                            $pending = assets_url('img/pending_stamp.png');
         					        	  for($i=0;$i<sizeof($detail);$i++):
                               ?>
       						        <tr>

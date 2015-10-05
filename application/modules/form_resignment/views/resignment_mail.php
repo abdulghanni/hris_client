@@ -3,7 +3,7 @@
           <div class="col-md-12">
             <div class="grid simple">
               <div class="grid-title no-border">
-                <h4>Form Pengajuan <span class="semi-bold"><a href="<?php echo site_url('form_resignment')?>">Resign</a></span></h4><br/>
+                <h4>Form Pengajuan <span class="semi-bold"><a href="<?php echo site_url('form_resignment')?>">Pengunduran Diri</a></span></h4><br/>
               No : <?= get_form_no($id) ?>
               </div>
               <div class="grid-body no-border">
@@ -69,7 +69,7 @@
                       
                     </div>
                     <div class="col-md-6">
-                      <h4>Resign Yang Diajukan</h4>
+                      <h4>Pengunduran Diri Yang Diajukan</h4>
                       <div class="row form-row">
                         <div class="col-md-4">
                           <label class="form-label text-left">Tanggal Pengajuan</label>
@@ -90,7 +90,7 @@
 
                       <div class="row form-row">
                       <div class="col-md-4">
-                        <label class="form-label text-left">Alasan Resign</label>
+                        <label class="form-label text-left">Alasan Pengunduran Diri</label>
                       </div>
                       <div class="col-md-8">
                          <textarea name="alasan" class="form-control" disabled><?php echo $row->alasan?></textarea>
@@ -185,7 +185,7 @@
 
                   <?php if($row->is_app_hrd>0):?>
                   <br/><hr/>
-                  <h4>Detail Wawancara Pengajuan Resign</h4>
+                  <h4>Detail Wawancara Pengajuan Pengunduran Diri</h4>
                   <div class="row column-seperation">
                     <div class="col-md-12">
                         <div class="col-md-12">
@@ -277,6 +277,8 @@
                       <?php 
                       $approved = assets_url('img/approved_stamp.png');
                       $rejected = assets_url('img/rejected_stamp.png');
+                             $pending = assets_url('img/pending_stamp.png');
+                      
                       if(!empty($row->user_app_lv1) && $row->is_app_lv1 == 0 && get_nik($sess_id) == $row->user_app_lv1){?>
                       <span class="semi-bold"></span><br/>
                         <span class="small"></span><br/>
@@ -285,8 +287,8 @@
                         <span class="semi-bold"></span>
                         <span class="semi-bold">(<?php echo get_user_position($row->user_app_lv1)?>)</span>
                       <?php }elseif(!empty($row->user_app_lv1) && $row->is_app_lv1 == 1){
-                        echo ($row->app_status_id_lv1 == 1)?"<img class=approval-img src=$approved>":(($row->app_status_id_lv1 == 2) ? "<img class=approval-img src=$rejected>":'<span class="small"></span><br/>');?>
-                        <span class="small"></span><br/>
+                        echo ($row->app_status_id_lv1 == 1)?"<img class=approval-img src=$approved>": (($row->app_status_id_lv1 == 2) ? "<img class=approval-img src=$rejected>"  : (($row->app_status_id_lv1 == 3) ? "<img class=approval-img src=$pending>" : "<span class='small'></span><br/>"));?>
+                      <span class="small"></span><br/>
                         <span class="semi-bold"><?php echo get_name($row->user_app_lv1)?></span><br/>
                         <span class="small"><?php echo dateIndo($row->date_app_lv1)?></span><br/>
                         <span class="semi-bold">(<?php echo get_user_position($row->user_app_lv1)?>)</span>
@@ -315,8 +317,8 @@
                         <span class="semi-bold"></span><br/>
                         <span class="semi-bold">(Atasan Tidak Langsung)</span>
                       <?php }elseif(!empty($row->user_app_lv2) && $row->is_app_lv2 == 1){
-                        echo ($row->app_status_id_lv2 == 1)?"<img class=approval-img src=$approved>":(($row->app_status_id_lv2 == 2) ? "<img class=approval-img src=$rejected>":'<span class="small"></span><br/>');?>
-                        <span class="small"></span><br/>
+                       echo ($row->app_status_id_lv2 == 1)?"<img class=approval-img src=$approved>": (($row->app_status_id_lv2 == 2) ? "<img class=approval-img src=$rejected>"  : (($row->app_status_id_lv2 == 3) ? "<img class=approval-img src=$pending>" : "<span class='small'></span><br/>"));?>
+                      <span class="small"></span><br/>
                         <span class="semi-bold"><?php echo get_name($row->user_app_lv2)?></span><br/>
                         <span class="small"><?php echo dateIndo($row->date_app_lv2)?></span><br/>
                         <span class="semi-bold">(<?php echo get_user_position($row->user_app_lv2)?>)</span>
@@ -344,8 +346,8 @@
                         <span class="semi-bold"></span><br/>
                         <span class="semi-bold">(HRD)</span>
                       <?php }elseif($row->is_app_hrd == 1){
-                        echo ($row->app_status_id_hrd == 1)?"<img class=approval-img src=$approved>":(($row->app_status_id_hrd == 2) ? "<img class=approval-img src=$rejected>":'<span class="small"></span><br/>');?>
-                        <span class="small"></span><br/>
+                        echo ($row->app_status_id_hrd == 1)?"<img class=approval-img src=$approved>": (($row->app_status_id_hrd == 2) ? "<img class=approval-img src=$rejected>"  : (($row->app_status_id_hrd == 3) ? "<img class=approval-img src=$pending>" : "<span class='small'></span><br/>"));?>
+                      <span class="small"></span><br/>
                         <span class="semi-bold"><?php echo get_name($row->user_app_hrd)?></span><br/>
                         <span class="small"><?php echo dateIndo($row->date_app_hrd)?></span><br/>
                         <span class="semi-bold">(HRD)</span>
@@ -372,8 +374,6 @@
                   <p class="wf-approve-sp">
                   <div class="col-md-12"><span class="semi-bold">Mengetahui / Menyetujui,</span><br/><br/></div>
                     <?php 
-                    $approved = assets_url('img/approved_stamp.png');
-                    $rejected = assets_url('img/rejected_stamp.png');
                     if(!empty($row->user_app_lv3) && $row->is_app_lv3 == 0 && get_nik($sess_id) == $row->user_app_lv3){?>
                       <span class="semi-bold"></span><br/>
                         <span class="small"></span><br/>
@@ -382,7 +382,7 @@
                       <span class="semi-bold"></span><br/>
                       <span class="semi-bold">(<?php echo get_user_position($row->user_app_lv3)?>)</span>
                     <?php }elseif(!empty($row->user_app_lv3) && $row->is_app_lv3 == 1){
-                      echo ($row->app_status_id_lv3 == 1)?"<img class=approval-img src=$approved>":(($row->app_status_id_lv3 == 2) ? "<img class=approval-img src=$rejected>":'<span class="small"></span><br/>');?>
+                      echo ($row->app_status_id_lv3 == 1)?"<img class=approval-img src=$approved>": (($row->app_status_id_lv3 == 2) ? "<img class=approval-img src=$rejected>"  : (($row->app_status_id_lv3 == 3) ? "<img class=approval-img src=$pending>" : "<span class='small'></span><br/>"));?>
                       <span class="small"></span><br/>
                       <span class="semi-bold"><?php echo get_name($row->user_app_lv3)?></span><br/>
                       <span class="small"><?php echo dateIndo($row->date_app_lv3)?></span><br/>

@@ -998,12 +998,12 @@ class Auth extends MX_Controller {
             }
 
             //update the password if it was posted
-            if ($this->input->post('password'))
+            if ($this->input->post('password_update'))
             {
-                $this->form_validation->set_rules('password', $this->lang->line('edit_user_validation_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[password_confirm]');
+                $this->form_validation->set_rules('password_update', $this->lang->line('edit_user_validation_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[password_confirm]');
                 $this->form_validation->set_rules('password_confirm', $this->lang->line('edit_user_validation_password_confirm_label'), 'required');
 
-                $data['password'] = $this->input->post('password');
+                $data['password'] = $this->input->post('password_update');
             }
 
             if ($this->form_validation->run() === TRUE)
@@ -1123,8 +1123,8 @@ class Auth extends MX_Controller {
         );
 
         
-        $this->data['password'] = array(
-            'name' => 'password',
+        $this->data['password_update'] = array(
+            'name' => 'password_update',
             'id'   => 'password',
             'type' => 'password',
             //'onfocus' =>"this.select();this.setAttribute('type','password')",
@@ -1416,6 +1416,62 @@ class Auth extends MX_Controller {
 
     function get_superior($id)
     {
+        $pos_group = get_pos_group(get_nik($id));
+      $url = get_api_key().'users/superior/EMPLID/'.get_nik($id).'/format/json';
+      $url_atasan_satu_bu = get_api_key().'users/atasan_satu_bu/EMPLID/'.get_nik($id).'/format/json';
+      $url_atasan_bypos = get_api_key().'users/atasan_by_posgroup/EMPLID/'.get_nik($id).'/format/json';
+      $headers = get_headers($url);
+      $headers2 = get_headers($url_atasan_satu_bu);
+      $headers3 = get_headers($url_atasan_bypos);
+      $response = substr($headers[0], 9, 3);
+      $response2 = substr($headers2[0], 9, 3);
+      $response3 = substr($headers3[0], 9, 3);
+      //$url_atasan_satu_bu = get_api_key().'users/atasan_satu_bu/EMPLID/'.get_nik($id).'/format/json';
+      if($pos_group == 'AMD' || $pos_group == 'DIR' || $pos_group == 'KACAB' || $pos_group == 'MGR' || $pos_group == 'ASM'):
+          if ($response != "404") {
+              $get_atasan = file_get_contents($url);
+              $atasan = json_decode($get_atasan, true);
+              $get_atasan2 = file_get_contents($url_atasan_satu_bu);
+              $atasan2 = json_decode($get_atasan2, true);
+              $get_atasan3 = file_get_contents($url_atasan_bypos);
+              $atasan3 = json_decode($get_atasan3, true);
+              $atasan4 = array_merge($atasan, $atasan2, $atasan3);
+              return $this->data['user_superior'] = $atasan4;
+          }elseif($response == "404" && $response2 != "404" && $response3 != "404"){
+               
+              $get_atasan2 = file_get_contents($url_atasan_satu_bu);
+              $atasan2 = json_decode($get_atasan2, true);
+              $get_atasan3 = file_get_contents($url_atasan_bypos);
+              $atasan3 = json_decode($get_atasan3, true);
+              $atasan4 = array_merge($atasan2, $atasan3);
+              return $this->data['user_superior'] = $atasan4;
+          }elseif($response == "404" && $response2 == "404" && $response3 != "404"){
+              
+              $get_atasan3 = file_get_contents($url_atasan_bypos);
+              $atasan3 = json_decode($get_atasan3, true);
+              return $this->data['user_superior'] = $atasan3;
+          }else{
+              return false;
+          }
+      else:
+          if($response != "404") {
+            $get_atasan = file_get_contents($url);
+            $atasan = json_decode($get_atasan, true);
+             foreach ($atasan as $row)
+                return $this->data['user_superior'] = $atasan;
+           }elseif($response == "404" && $response2 != "404") {
+            $get_atasan = file_get_contents($url_atasan_satu_bu);
+            $atasan = json_decode($get_atasan, true);
+             return $this->data['user_superior'] = $atasan;
+           }else{
+                $result['0']= '- Karyawan Tidak Memiliki Atasan -';
+        }
+      endif;
+    }
+
+    /*
+    function get_superior($id)
+    {
         $url_superior = get_api_key().'users/superior/EMPLID/'.get_nik($id).'/format/json';
         $url_atasan_satu_bu = get_api_key().'users/atasan_satu_bu/EMPLID/'.get_nik($id).'/format/json';
         $headers_superior = get_headers($url_superior);
@@ -1435,6 +1491,7 @@ class Auth extends MX_Controller {
              return $this->data['user_superior'] = FALSE;
         }
     }
+    */
 
     function detail($id, $sort_by = "id", $sort_order = "asc", $offset = 0)
     {

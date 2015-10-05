@@ -148,7 +148,7 @@
                   <hr/>
                   <div class="row">
                     <div class="col-md-7 col-md-offset-2">
-                    <?php if($sess_id == $created_by || $sess_nik == $task_creator):?>
+                    <?php if($td->is_deleted == 0 && ($sess_id == $created_by || $sess_nik == $task_creator)):?>
                     <div class='btn btn-primary text-center' title='Edit Approval' data-toggle="modal" data-target="#editModal"><i class='icon-edit'> Ubah PJD</i></div>
                       <?php endif ?>
                       <h5 class="text-center"><span class="semi-bold">Ketentuan Biaya Perjalanan Dinas</span></h5>
@@ -285,6 +285,7 @@
                             <?php
                             $approved = assets_url('img/approved_stamp.png');
                             $rejected = assets_url('img/rejected_stamp.png');
+                             $pending = assets_url('img/pending_stamp.png');
                             if(!empty($td->user_app_lv1) && $td->is_app_lv1 == 0 && get_nik($sess_id) == $td->user_app_lv1){?>
                               <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitModalLv1"><i class="icon-ok"></i>Submit</div>
                               <span class="semi-bold"></span><br/>

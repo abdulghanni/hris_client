@@ -30,6 +30,8 @@
                              $total = $detail[0]['rupiah'];
                              $approved = assets_url('img/approved_stamp.png');
                              $rejected = assets_url('img/rejected_stamp.png');
+                             $pending = assets_url('img/pending_stamp.png');
+                             
                               for($i=0;$i<sizeof($detail);$i++):
                               ?>
                           <tr>
@@ -176,8 +178,8 @@
                           <p>Mengetahui,</p>
                           <p class="wf-approve-sp">
                           <?php if($row->is_app_lv1==1) {
-                            echo ($row->app_status_id_lv1 == 1)?"<img class=approval-img src=$approved>":(($row->app_status_id_lv1 == 2) ? "<img class=approval-img src=$rejected>":'<span class="small"></span><br/>');?>
-                            <span class="semi-bold"></span><br/>
+                            echo ($row->app_status_id_lv1 == 1)?"<img class=approval-img src=$approved>": (($row->app_status_id_lv1 == 2) ? "<img class=approval-img src=$rejected>"  : (($row->app_status_id_lv1 == 3) ? "<img class=approval-img src=$pending>" : "<span class='small'></span><br/>"));?>
+                      <span class="semi-bold"></span><br/>
                             <span class="small"></span><br/>
                             <span class="semi-bold"><?php echo get_name($row->user_app_lv1) ?></span><br/>
                             <span class="small"><?php echo dateIndo($row->date_app_lv1) ?></span><br/>

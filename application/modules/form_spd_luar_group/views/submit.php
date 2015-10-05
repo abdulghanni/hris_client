@@ -18,7 +18,6 @@
           <div class="grid simple">
             <div class="grid-title no-border">
               <h4>Form <a href="<?php echo site_url('form_spd_luar_group')?>">Perjalanan Dinas <span class="semi-bold">Luar Kota (Group)</span></a></h4><br/>
-              No : <?= get_form_no($id) ?>
               <a href="<?php echo site_url('form_spd_luar_group/pdf/'.$id)?>" target="_blank"><button class="btn btn-primary pull-right"><i class="icon-print"> Cetak</i></button></a><br/>
               No : <?= get_form_no($id) ?>
             </div>
@@ -155,11 +154,10 @@
                   </div>
 
                   &nbsp;<hr/>
-                  <?php //if($sess_id == $created_by || $sess_nik == $task_creator):?>
+                  <?php if($td->is_deleted == 0 && ($sess_id == $created_by || $sess_nik == $task_creator)):?>
                   <a href="<?php echo site_url('form_spd_luar_group/edit_biaya/'.$id)?>"><div class='btn btn-primary text-center' title='Edit PJD'><i class='icon-edit'> Ubah PJD</i></div></a>
-                  <?php //endif; ?>
+                  <?php endif; ?>
                   <h5 class="text-center"><span class="semi-bold">Ketentuan Biaya Perjalan Dinas Luar Kota (Group)</span></h5>
-
                     <table class="table table-bordered">
                       <thead>
                         <tr>
@@ -324,6 +322,7 @@
                             $hide = (sizeof($receiver_submit)<sizeof($receiver)) ? 'style="display:none"' : '';
                             $approved = assets_url('img/approved_stamp.png');
                             $rejected = assets_url('img/rejected_stamp.png');
+                             $pending = assets_url('img/pending_stamp.png');
                             if(!empty($td->user_app_lv1) && $td->is_app_lv1 == 0 && get_nik($sess_id) == $td->user_app_lv1){?>
                               <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitModalLv1" ><i class="icon-ok"></i>Submit</div>
                               <span class="semi-bold"></span><br/>

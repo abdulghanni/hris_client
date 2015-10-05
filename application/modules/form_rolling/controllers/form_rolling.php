@@ -372,6 +372,12 @@ class Form_rolling extends MX_Controller {
 
     function detail_email($id)
     {
+        if(!$this->ion_auth->logged_in())
+        {
+            redirect('auth/login', 'refresh');
+        }
+        
+        $this->data['id'] = $id;
         $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
         $this->data['sess_nik'] = get_nik($sess_id);
         $user_id = getValue('user_id', 'users_rolling', array('id'=>'where/'.$id));

@@ -548,6 +548,7 @@ class Form_medical extends MX_Controller {
             //redirect them to the login page
             redirect('auth/login', 'refresh');
         }
+        $this->data['id'] = $id;
         $this->data['user_id'] =$user_id = getValue('user_id', 'users_medical', array('id'=>'where/'.$id));
         $this->data['sess_id'] = $sess_id= $this->session->userdata('user_id');
         $this->data['sess_nik'] = get_nik($sess_id);

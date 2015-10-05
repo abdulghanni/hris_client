@@ -106,32 +106,10 @@ class Form_promosi extends MX_Controller {
             $this->get_bu();
             $this->data['all_users'] = getAll('users', array('active'=>'where/1', 'username'=>'order/asc'), array('!=id'=>'1'));
             //$this->get_user_atasan();
-            $this->get_superior($sess_id);
+            $this->get_user_atasan();
 
             $this->data['subordinate'] = getAll('users', array('superior_id'=>'where/'.get_nik($sess_id)));
             $this->_render_page('form_promosi/input', $this->data);
-        }
-    }
-
-    function get_superior($id)
-    {
-        $url_superior = get_api_key().'users/superior/EMPLID/'.get_nik($id).'/format/json';
-        $url_atasan_satu_bu = get_api_key().'users/atasan_satu_bu/EMPLID/'.get_nik($id).'/format/json';
-        $headers_superior = get_headers($url_superior);
-        $headers_atasan_satu_bu = get_headers($url_atasan_satu_bu);
-        $response = substr($headers_superior[0], 9, 3);
-        $response2 = substr($headers_atasan_satu_bu[0], 9, 3);
-        if ($response != "404") {
-            $get_user_pengganti = file_get_contents($url_superior);
-            $user_superior = json_decode($get_user_pengganti, true);
-            $this->data['user_atasan'] = $user_atasan;
-            $r = $this->data['selected_superior'] = $this->db->where('id', $id)->get('users')->row('superior_id');
-        }elseif ($response2 != "404"){
-            $get_user_pengganti = file_get_contents($url_atasan_satu_bu);
-            $user_atasan = json_decode($get_user_pengganti, true);
-            return $this->data['user_atasan'] = $user_atasan;
-        }else{
-             return $this->data['user_atasan'] = FALSE;
         }
     }
 
@@ -389,6 +367,7 @@ class Form_promosi extends MX_Controller {
     
     function detail_email($id)
     {
+        $this->data['id'] = $id;
         $this->data['sess_id'] = $this->session->userdata('user_id');
         $form_promosi = $this->data['form_promosi'] = $this->form_promosi_model->form_promosi($id)->result();
         $this->data['_num_rows'] = $this->form_promosi_model->form_promosi($id)->num_rows();
@@ -400,23 +379,23 @@ class Form_promosi extends MX_Controller {
 
     function get_bu()
     {
-            $url = get_api_key().'users/bu/format/json';
-            $headers = get_headers($url);
-            $response = substr($headers[0], 9, 3);
-            if ($response != "404") {
-                $getbu = file_get_contents($url);
-                $bu = json_decode($getbu, true);
-                foreach ($bu as $row)
-            {
-                $result['0']= '- Pilih Unit Bisnis Baru -';
-                if($row['NUM'] != null){
-                $result[$row['NUM']]= ucwords(strtolower($row['DESCRIPTION']));
-                }
+        $url = get_api_key().'users/bu/format/json';
+        $headers = get_headers($url);
+        $response = substr($headers[0], 9, 3);
+        if ($response != "404") {
+            $getbu = file_get_contents($url);
+            $bu = json_decode($getbu, true);
+            foreach ($bu as $row)
+        {
+            $result['0']= '- Pilih Unit Bisnis Baru -';
+            if($row['NUM'] != null){
+            $result[$row['NUM']]= ucwords(strtolower($row['DESCRIPTION']));
             }
-                return $this->data['bu'] = $result;
-            } else {
-                return $this->data['bu'] = '';
-            }
+        }
+            return $this->data['bu'] = $result;
+        } else {
+            return $this->data['bu'] = '';
+        }
     }
 
     public function get_org($id)

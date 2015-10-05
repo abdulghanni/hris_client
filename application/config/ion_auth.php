@@ -86,6 +86,7 @@ $config['tables']['users_rolling']  = 'users_rolling';
 $config['tables']['users_exit']  = 'users_exit';
 $config['tables']['users_approval']  = 'users_approval';
 $config['tables']['users_approval_khusus']  = 'users_approval_khusus';
+$config['tables']['users_form_template']  = 'users_form_template';
 
 /*
  | Users table column and Group table column you want to join WITH.

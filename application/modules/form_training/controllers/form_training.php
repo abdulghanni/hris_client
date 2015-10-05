@@ -436,6 +436,7 @@ class form_training extends MX_Controller {
             //redirect them to the login page
             redirect('auth/login', 'refresh');
         }
+            $this->data['id'] = $id;
             $user_id= getValue('user_pengaju_id', 'users_training', array('id'=>'where/'.$id));
             $this->data['user_nik'] = $sess_nik = get_nik($user_id);
             $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
@@ -543,7 +544,9 @@ class form_training extends MX_Controller {
                     $this->template->add_js('jquery.sidr.min.js');
                     $this->template->add_js('breakpoints.js');
                     $this->template->add_js('select2.min.js');
-
+                    
+                    $this->template->add_js('jquery.validate.min.js');
+                    $this->template->add_js('jquery-validate.bootstrap-tooltip.min.js');
                     $this->template->add_js('core.js');
                     
                     $this->template->add_js('purl.js');
@@ -552,8 +555,6 @@ class form_training extends MX_Controller {
                     $this->template->add_js('respond.min.js');
 
                     $this->template->add_js('jquery.bootstrap.wizard.min.js');
-                    $this->template->add_js('jquery.validate.min.js');
-                    $this->template->add_js('jquery-validate.bootstrap-tooltip.min.js');
                     $this->template->add_js('bootstrap-datepicker.js');
                     $this->template->add_js('bootstrap-timepicker.js');
                     $this->template->add_js('emp_dropdown.js');

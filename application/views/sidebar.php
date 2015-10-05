@@ -44,7 +44,8 @@
           <li > <a href="<?php echo site_url('form_training')?>">Pelatihan</a> </li>          
           <li > <a href="<?php echo site_url('form_training_group')?>">Pelatihan (Group)</a> </li>
           <li > <a href="<?php echo site_url('form_resignment')?>">Pengunduran Diri</a> </li>
-          <?php if(is_spv($nik)||is_admin()||is_admin_bagian()):?><li > <a href="<?php echo site_url('form_exit')?>">Rekomendasi Karyawan Keluar</a> </li>  <?php endif?>           
+          <?php if(is_spv($nik)||is_admin()||is_admin_bagian()):?><li > <a href="<?php echo site_url('form_exit')?>">Rekomendasi Karyawan Keluar</a> </li>  <?php endif?>
+          <li > <a href="<?php echo site_url('form_template')?>">Form Template</a> </li>        
            </ul>
       </li>
       <!--<li class=""> <a href="javascript:;"> <i class="icon-custom-form"></i> <span class="title">Analisis & Laporan</span> <span class="arrow "></span> </a>
@@ -71,6 +72,7 @@
           <?php if(is_admin()):?><li ><a href="<?php echo site_url('approval')?>"> Approval</a> </li><?php endif?>
           <?php if(is_admin()):?><li ><a href="<?php echo site_url('approval_khusus')?>"> Approval Khusus</a> </li><?php endif?>
           <?php if(is_admin()):?><li ><a href="<?php echo site_url('auth/list_group')?>"> Group</a> </li><?php endif?>
+          <?php if(is_admin()):?><li > <a href="<?php echo site_url('form_template')?>">Form Template</a> </li><?php endif?>
         </ul>
       </li>  
       <?php } ?>    

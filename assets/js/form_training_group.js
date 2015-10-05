@@ -49,7 +49,7 @@ $(document).ready(function() {
     }
      
 
-    $('#besar_biaya').maskMoney({precision: 0});
+    $('#besar_biaya').maskMoney({precision: 0, allowZero:true});
 
     $('button[data-loading-text]').click(function () {
     $(this).button('loading');
@@ -114,8 +114,8 @@ $(document).ready(function() {
     });
 
     $('#btn_app_hrd').click(function(){
-        var $btn = $(this).button('loading');
         $('#formAppHrd').submit(function(ev){
+        var $btn = $('#btn_app_hrd').button('loading'); 
             $.ajax({
                 type: 'POST',
                 url: baseurl+uri4,

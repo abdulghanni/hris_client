@@ -169,7 +169,7 @@ if ($td_num_rows > 0) {
   <p>Sehubungan dengan adanya kegiatan dalam rangka <?=$td->title?> di <?=$td->city_to?>, bersama ini kami mengajukan perjalanan dinas sebagai berikut:</p>
   <div style="padding-left:15px;">
     <p>I.  &nbsp;Cabang/Depo yang dikunjungi&emsp;: <?=$td->city_to?></p>
-    <p>II. Tanggal kunjungan&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;: <?= dateIndo($td->date_spd_start).' s/d '.dateIndo($td->date_spd_end)?></p>
+    <p>II. Tanggal kunjungan&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;: <?= dateIndo($td->date_spd_start).' s/d '.dateIndo($td->date_spd_end)?> (<?=$jml_pjd?> Hari)</p>
     <p>III.Tujuan kunjungan &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;: <?=$td->title?></p>
   </div>
 </div>
@@ -191,15 +191,15 @@ if ($td_num_rows > 0) {
                         <tr>
                           <th width="15%">Nama</th>
         <th width="5%">Gol</th>
-        <th width="10%">Uang Makan(Rp)<br/><?=$jml_pjd?> Hari</th>
-        <th width="10%">Uang Saku(Rp)<br/><?=$jml_pjd?> Hari</th>
-        <th width="10%">Hotel(Rp)<br/><?=$jml_pjd?> Hari</th>
+        <th width="10%">Uang Makan</th>
+        <th width="10%">Uang Saku</th>
+        <th width="10%">Hotel</th>
                           <?php 
                             $total_fix = 0;
                             $total_lain = 0;
                             foreach($biaya_pjd->result() as $b):
                           ?>
-                          <th width="10%" class="text-center"><?php echo $b->jenis_biaya?>(Rp)</th>
+                          <th width="10%" class="text-center"><?php echo $b->jenis_biaya?></th>
                         <?php endforeach; ?> 
                         </tr>
                       </thead>

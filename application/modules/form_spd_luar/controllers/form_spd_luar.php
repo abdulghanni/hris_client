@@ -210,21 +210,22 @@ class Form_spd_luar extends MX_Controller {
             $lv_app = 'lv'.$lv;
             $user_app = ($lv<4) ? getValue('user_app_'.$lv_app, 'users_spd_luar', array('id'=>'where/'.$id)) : 0;
             $user_spd_luar_id = getValue('task_creator', 'users_spd_luar', array('id'=>'where/'.$id));
-
-            $isi_email = 'Status pengajuan perjalan dinas dalam kota anda disetujui oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_spd_luar/submit/'.$id.'>Klik Disini</a><br />';
-            $isi_email_request = get_name($user_spd_luar_id ).' mengajukan Permohonan perjalan dinas dalam kota, untuk melihat detail silakan <a href='.base_url().'form_spd_luar/submit/'.$id.'>Klik Disini</a><br />';
+            //$subject_email = get_form_no($id).'['.$approval_status_mail.']Status Pengajuan Perjalanan Dinas Dalam Kota dari Atasan';
+            $subject_email_request = get_form_no($id).'-Pengajuan Perjalanan Dinas Luar Kota';
+            $isi_email = 'Status pengajuan perjalan dinas luar kota anda disetujui oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_spd_luar/submit/'.$id.'>Klik Disini</a><br />';
+            $isi_email_request = get_name($user_spd_luar_id ).' mengajukan Permohonan perjalan dinas luar kota, untuk melihat detail silakan <a href='.base_url().'form_spd_luar/submit/'.$id.'>Klik Disini</a><br />';
             
             if(!empty($user_app)):
-                if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), 'Pengajuan Perjalanan Dinas Dalam Kota', $isi_email_request);
+                if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), $subject_email_request, $isi_email_request);
                 $this->approval->request($lv_app, $form, $id, $user_spd_luar_id, $this->detail_email($id));
             else:
-                if(!empty(getEmail($this->approval->approver('dinas'))))$this->send_email(getEmail($this->approval->approver('dinas')), 'Pengajuan Perjalanan Dinas Dalam Kota', $isi_email_request);
+                if(!empty(getEmail($this->approval->approver('dinas'))))$this->send_email(getEmail($this->approval->approver('dinas')), $subject_email_request, $isi_email_request);
                 $this->approval->request('hrd', $form, $id, $user_spd_luar_id, $this->detail_email($id));
             endif;
         }elseif($type == 'hrd' && $approval_status == 1){
             $this->approval->task_receiver($form, $id, $this->detail_email($id));
         }else{
-            $task_receiver = getValue('task_receiver', 'users_spd_dalam', array('id'=>'where/'.$id));
+            $task_receiver = getValue('task_receiver', 'users_spd_luar', array('id'=>'where/'.$id));
             //$email_body = "Status pengajuan permohonan spd_luar yang diajukan oleh ".get_name($user_spd_luar_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_spd_luar/detail/'.$id.'>Klik Disini</a><br />';
             switch($type){
                 case 'lv1':
@@ -397,16 +398,17 @@ class Form_spd_luar extends MX_Controller {
                      endfor;
                  }
                 $user_app_lv1 = getValue('user_app_lv1', 'users_spd_luar', array('id'=>'where/'.$spd_id));
+                $subject_email = get_form_no($spd_id).'-Pengajuan Perjalanan Dinas Luar Kota';
                 $isi_email = get_name($task_creator).' mengajukan Perjalanan Dinas Luar Kota, untuk melihat detail silakan <a href='.base_url().'form_spd_luar/submit/'.$spd_id.'>Klik Disini</a><br />';
 
                 if($task_creator!==$created_by):
                     $this->approval->by_admin('spd_luar', $spd_id, $created_by, $task_creator, $this->detail_email($spd_id));
                 endif;
                  if(!empty($user_app_lv1)):
-                    if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), 'Pengajuan Perjalanan Dinas Luar Kota', $isi_email);
+                    if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), $subject_email, $isi_email);
                     $this->approval->request('lv1', 'spd_luar', $spd_id, $task_creator, $this->detail_email($spd_id));
                  else:
-                    if(!empty(getEmail($this->approval->approver('dinas'))))$this->send_email(getEmail($this->approval->approver('dinas')), 'Pengajuan Perjalanan Dinas Luar Kota', $isi_email);
+                    if(!empty(getEmail($this->approval->approver('dinas'))))$this->send_email(getEmail($this->approval->approver('dinas')), $subject_email, $isi_email);
                     $this->approval->request('hrd', 'spd_luar', $spd_id, $task_creator, $this->detail_email($spd_id));
                  endif;
                 $this->send_spd_mail($spd_id, $user_id, $task_creator);
@@ -525,7 +527,7 @@ class Form_spd_luar extends MX_Controller {
             $report = $this->data['report'] = $this->form_spd_luar_model->where('users_spd_luar_report.user_spd_luar_id', $id)->form_spd_luar_report($report_id)->result();
             $n_report = $this->data['n_report'] = $this->form_spd_luar_model->where('users_spd_luar_report.user_spd_luar_id', $id)->form_spd_luar_report($report_id)->num_rows();
             
-            $receiver_id = getValue('task_receiver', 'users_spd_dalam', array('id'=>'where/'.$id));
+            $receiver_id = getValue('task_receiver', 'users_spd_luar', array('id'=>'where/'.$id));
             if($n_report==0){
                 $this->data['is_done'] = '';
                 //$this->data['tujuan'] = '';
@@ -804,12 +806,12 @@ class Form_spd_luar extends MX_Controller {
         $creator = getAll('users_spd_luar', array('id'=>'where/'.$id))->row('task_creator');
         $this->data['tc_id'] = $task_receiver_id = getValue('task_receiver', 'users_spd_luar', array('id' => 'where/'.$id));
         $this->data['biaya_pjd'] = getJoin('users_spd_luar_biaya','pjd_biaya','users_spd_luar_biaya.pjd_biaya_id = pjd_biaya.id','left', 'users_spd_luar_biaya.*, pjd_biaya.title as jenis_biaya, pjd_biaya.type_grade as type', array('user_spd_luar_id'=>'where/'.$id));
-        $creator = getValue('task_creator', 'users_spd_dalam_group', array('id'=>'where/'.$id));
+        $creator = getValue('task_creator', 'users_luar', array('id'=>'where/'.$id));
         $this->data['form_id'] = 'PJD-LK';
         $this->data['bu'] = get_user_buid($creator);
         $loc_id = get_user_locationid($creator);
         $this->data['location'] = get_user_location($loc_id);
-        $date = getValue('created_on','users_spd_dalam_group', array('id'=>'where/'.$id));
+        $date = getValue('created_on','users_spd_luar', array('id'=>'where/'.$id));
         $this->data['m'] = date('m', strtotime($date));
         $this->data['y'] = date('Y', strtotime($date));
         $this->load->library('mpdf60/mpdf');
@@ -829,6 +831,7 @@ class Form_spd_luar extends MX_Controller {
         }
         else
         {
+            $this->data['id'] = $id;
            $sess_id= $this->data['sess_id'] = $this->session->userdata('user_id');
             $this->data['sess_nik'] = $sess_nik = get_nik($sess_id);
             $data_result = $this->data['task_detail'] = $this->form_spd_luar_model->where('users_spd_luar.id',$id)->form_spd_luar($id)->result();

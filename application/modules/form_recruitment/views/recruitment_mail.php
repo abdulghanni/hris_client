@@ -19,27 +19,23 @@
                       <div class="col-md-2">
                         <label class="form-label text-right">Unit Bisnis</label>
                       </div>
-                      <div class="col-md-4">
+                      <div class="col-md-6">
                         <input name="jumlah" id="form3LastName" type="text"  class="form-control" placeholder="-" value="<?php echo get_bu_name(substr($row->bu_id,0,2))?>" disabled="disabled">
-                      </div>
-                      <div class="col-md-2">
-                        <label class="form-label text-right">Departement</label>
-                      </div>
-                      <div class="col-md-4">
-                        <input name="jumlah" id="form3LastName" type="text"  class="form-control" placeholder="-" value="<?php echo get_organization_name($row->parent_organization_id)?>" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
                       <div class="col-md-2">
-                        <label class="form-label text-right">Bagian</label>
+                        <label class="form-label text-right">Dept / Bagian</label>
                       </div>
-                      <div class="col-md-4">
+                      <div class="col-md-6">
                         <input name="jumlah" id="form3LastName" type="text"  class="form-control" placeholder="-" value="<?php echo get_organization_name($row->organization_id)?>" disabled="disabled">
                       </div>
+                    </div>
+                    <div class="row form-row">
                       <div class="col-md-2">
                         <label class="form-label text-right">Jabatan</label>
                       </div>
-                      <div class="col-md-4">
+                      <div class="col-md-6">
                         <input name="jumlah" id="form3LastName" type="text"  class="form-control" placeholder="-" value="<?php echo get_position_name($row->position_id)?>" disabled="disabled">
                       </div>
                     </div>
@@ -286,6 +282,7 @@
                       <?php 
                       $approved = assets_url('img/approved_stamp.png');
                       $rejected = assets_url('img/rejected_stamp.png');
+                             $pending = assets_url('img/pending_stamp.png');
                       if(!empty($row->user_app_lv1) && $row->is_app_lv1 == 0 && get_nik($sess_id) == $row->user_app_lv1){?>
                       <span class="semi-bold"></span><br/>
                         <span class="small"></span><br/>
@@ -294,8 +291,8 @@
                         <span class="semi-bold"></span>
                         <span class="semi-bold">(<?php echo get_user_position($row->user_app_lv1)?>)</span>
                       <?php }elseif(!empty($row->user_app_lv1) && $row->is_app_lv1 == 1){
-                        echo ($row->approval_status_id_lv1 == 1)?"<img class=approval-img src=$approved>":(($row->approval_status_id_lv1 == 2) ? "<img class=approval-img src=$rejected>":'<span class="small"></span><br/>');?>
-                        <span class="small"></span><br/>
+                        echo ($row->approval_status_id_lv1 == 1)?"<img class=approval-img src=$approved>": (($row->approval_status_id_lv1 == 2) ? "<img class=approval-img src=$rejected>"  : (($row->approval_status_id_lv1 == 3) ? "<img class=approval-img src=$pending>" : "<span class='small'></span><br/>"));?>
+                      <span class="small"></span><br/>
                         <span class="semi-bold"><?php echo get_name($row->user_app_lv1)?></span><br/>
                         <span class="small"><?php echo dateIndo($row->date_app_lv1)?></span><br/>
                         <span class="semi-bold">(<?php echo get_user_position($row->user_app_lv1)?>)</span>
@@ -313,6 +310,7 @@
                   </div>
                     
                   <div class="col-md-3">
+                  <?php if(!empty($row->user_app_lv2)):?>
                     <p class="wf-approve-sp">
                     <div class="col-md-12"><span class="semi-bold">Mengetahui / Menyetujui,</span><br/><br/></div>
                     <?php
@@ -324,8 +322,8 @@
                         <span class="semi-bold"></span><br/>
                         <span class="semi-bold">(Atasan Tidak Langsung)</span>
                       <?php }elseif(!empty($row->user_app_lv2) && $row->is_app_lv2 == 1){
-                        echo ($row->approval_status_id_lv2 == 1)?"<img class=approval-img src=$approved>":(($row->approval_status_id_lv2 == 2) ? "<img class=approval-img src=$rejected>":'<span class="small"></span><br/>');?>
-                        <span class="small"></span><br/>
+                        echo ($row->approval_status_id_lv2 == 1)?"<img class=approval-img src=$approved>": (($row->approval_status_id_lv2 == 2) ? "<img class=approval-img src=$rejected>"  : (($row->approval_status_id_lv2 == 3) ? "<img class=approval-img src=$pending>" : "<span class='small'></span><br/>"));?>
+                      <span class="small"></span><br/>
                         <span class="semi-bold"><?php echo get_name($row->user_app_lv2)?></span><br/>
                         <span class="small"><?php echo dateIndo($row->date_app_lv2)?></span><br/>
                         <span class="semi-bold">(<?php echo get_user_position($row->user_app_lv2)?>)</span>
@@ -340,6 +338,7 @@
                         <span class="semi-bold">(<?php echo get_user_position($row->user_app_lv2)?>)</span>
                       <?php } ?>
                     </p>
+                  <?php endif; ?>
                   </div>
                     
                   <div class="col-md-3">
@@ -353,8 +352,8 @@
                         <span class="semi-bold"></span><br/>
                         <span class="semi-bold">(HRD)</span>
                       <?php }elseif($row->is_app_hrd == 1){
-                        echo ($row->approval_status_id_hrd == 1)?"<img class=approval-img src=$approved>":(($row->approval_status_id_hrd == 2) ? "<img class=approval-img src=$rejected>":'<span class="small"></span><br/>');?>
-                        <span class="small"></span><br/>
+                       echo ($row->approval_status_id_hrd == 1)?"<img class=approval-img src=$approved>": (($row->approval_status_id_hrd == 2) ? "<img class=approval-img src=$rejected>"  : (($row->approval_status_id_hrd == 3) ? "<img class=approval-img src=$pending>" : "<span class='small'></span><br/>"));?>
+                      <span class="small"></span><br/>
                         <span class="semi-bold"><?php echo get_name($row->user_app_hrd)?></span><br/>
                         <span class="small"><?php echo dateIndo($row->date_app_hrd)?></span><br/>
                         <span class="semi-bold">(HRD)</span>
@@ -375,7 +374,7 @@
               </div> 
 
               <br/>
-              <?php if(!empty($row->user_app_lv4)){?>
+              <?php if(!empty($row->user_app_lv3)){?>
               <div class="col-md-12 text-xenter">
                 <div class="col-md-12 text-center">
                   <p class="wf-approve-sp">
@@ -383,19 +382,19 @@
                     <?php 
                     $approved = assets_url('img/approved_stamp.png');
                     $rejected = assets_url('img/rejected_stamp.png');
-                    if(!empty($row->user_app_lv4) && $row->is_app_lv4 == 0 && get_nik($sess_id) == $row->user_app_lv4){?>
+                    if(!empty($row->user_app_lv3) && $row->is_app_lv3 == 0 && get_nik($sess_id) == $row->user_app_lv3){?>
                      <span class="semi-bold"></span><br/>
                         <span class="small"></span><br/>
                       <span class="semi-bold"></span><br/>
                       <span class="small"></span><br/>
                       <span class="semi-bold"></span><br/>
-                      <span class="semi-bold">(<?php echo get_user_position($row->user_app_lv4)?>)</span>
-                    <?php }elseif(!empty($row->user_app_lv4) && $row->is_app_lv4 == 1){
-                      echo ($row->approval_status_id_lv4 == 1)?"<img class=approval-img src=$approved>":(($row->approval_status_id_lv4 == 2) ? "<img class=approval-img src=$rejected>":'<span class="small"></span><br/>');?>
+                      <span class="semi-bold">(<?php echo get_user_position($row->user_app_lv3)?>)</span>
+                    <?php }elseif(!empty($row->user_app_lv3) && $row->is_app_lv3 == 1){
+                      echo ($row->approval_status_id_lv3 == 1)?"<img class=approval-img src=$approved>": (($row->approval_status_id_lv3 == 2) ? "<img class=approval-img src=$rejected>"  : (($row->approval_status_id_lv3 == 3) ? "<img class=approval-img src=$pending>" : "<span class='small'></span><br/>"));?>
                       <span class="small"></span><br/>
-                      <span class="semi-bold"><?php echo get_name($row->user_app_lv4)?></span><br/>
-                      <span class="small"><?php echo dateIndo($row->date_app_lv4)?></span><br/>
-                      <span class="semi-bold">(<?php echo get_user_position($row->user_app_lv4)?>)</span>
+                      <span class="semi-bold"><?php echo get_name($row->user_app_lv3)?></span><br/>
+                      <span class="small"><?php echo dateIndo($row->date_app_lv3)?></span><br/>
+                      <span class="semi-bold">(<?php echo get_user_position($row->user_app_lv3)?>)</span>
                     <?php }else{?>
                         <span class="small"></span><br/>
                         <span class="small"></span><br/>
@@ -403,9 +402,9 @@
                         <span class="small"></span><br/>
                         <span class="small"></span><br/>
                         <span class="semi-bold"></span><br/>
-                        <span class="semi-bold"><?php echo get_name($row->user_app_lv4)?></span><br/>
-                        <span class="small"><?php echo dateIndo($row->date_app_lv4)?></span><br/>
-                        <span class="semi-bold">(<?php echo get_user_position($row->user_app_lv4)?>)</span>
+                        <span class="semi-bold"><?php echo get_name($row->user_app_lv3)?></span><br/>
+                        <span class="small"><?php echo dateIndo($row->date_app_lv3)?></span><br/>
+                        <span class="semi-bold">(<?php echo get_user_position($row->user_app_lv3)?>)</span>
                     <?php } ?>
                   </p>
                 </div>

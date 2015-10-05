@@ -111,7 +111,7 @@ class Approval {
                     'sender_id' => get_nik($user_id),
                     'receiver_id' => $receiver,
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                    'subject' => 'Pengajuan '.ucfirst($form),
+                    'subject' => get_form_no($id).'Pengajuan '.ucfirst($form),
                     'email_body' => $isi_email,
                     'is_read' => 0,
                 );
@@ -123,7 +123,7 @@ class Approval {
 	                    'sender_id' => get_nik($user_id),
 	                    'receiver_id' => $user_app,
 	                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-	                    'subject' => 'Pengajuan '.ucfirst($form),
+	                    'subject' => get_form_no($id).'-Pengajuan '.ucfirst($form),
 	                    'email_body' => $isi_email,
 	                    'is_read' => 0,
 	                );
@@ -188,7 +188,7 @@ class Approval {
                 'sender_id' => $created_by,
                 'receiver_id' => $created_for,
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                'subject' => 'Pengajuan '.ucfirst($form),
+                'subject' => get_form_no($id).'Pengajuan '.ucfirst($form),
                 'email_body' => get_name($created_by).' membuat pengajuan '.$form.' atas nama anda, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>',
                 'is_read' => 0,
             );
@@ -254,7 +254,7 @@ class Approval {
                 'sender_id' => get_nik($sess_id),
                 'receiver_id' => get_nik($receiver_id),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                'subject' => 'Status Pengajuan Permohonan '.ucfirst($form).' dari Atasan',
+                'subject' => get_form_no($id).'['.$approval_status.']Status Pengajuan Permohonan '.ucfirst($form).' dari Atasan',
                 'email_body' => "Status pengajuan $form anda $approval_status oleh $approver untuk detail silakan <a href=$url>Klik disini</a><br/>".$detail.'<br />untuk melihat detail silakan <a href='.$url.'>Klik Disini</a>',
                 'is_read' => 0,
             );
@@ -311,7 +311,7 @@ class Approval {
                 'sender_id' => get_nik($sess_id),
                 'receiver_id' => get_nik($receiver_id),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                'subject' => 'Perubahan Status Pengajuan Permohonan '.ucfirst($form).' dari Atasan',
+                'subject' => get_form_no($id).'['.$approval_status.']Perubahan Status Pengajuan Permohonan '.ucfirst($form).' dari Atasan',
                 'email_body' => "$approver melakukan perubahan status pengajuan $form anda menjadi $approval_status, untuk detail silakan <a class='klikmail' href=$url>Klik disini</a><br/>".$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>',
                 'is_read' => 0,
             );
@@ -370,7 +370,7 @@ class Approval {
                 'sender_id' => get_nik($sess_id),
                 'receiver_id' => $receiver_id,
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                'subject' => 'Status Pengajuan Permohonan '.ucfirst($form).' dari Atasan',
+                'subject' => get_form_no($id).'['.$approval_status.']Status Pengajuan Permohonan '.ucfirst($form).' dari Atasan',
                 'email_body' => "Status pengajuan $form yang diajukan oleh ".get_name($user_id).' '.$approval_status. ' oleh '.get_name($sess_id)." untuk detail silakan <a class='klikmail' href=$url>Klik Disini</a><br />".$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>',
                 'is_read' => 0,
             );
@@ -403,7 +403,7 @@ class Approval {
                 'sender_id' => get_nik($id),
                 'receiver_id' => $atasan,
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                'subject' => 'Permintaan Rekomendasi Karyawan Keluar (Resign)',
+                'subject' => get_form_no($id).'Permintaan Rekomendasi Karyawan Keluar (Resign)',
                 'email_body' => get_name($id)." mengajukan permintaan rekomendasi karyawan keluar (resign), silakan klik tautan berikut untuk menginput data <a href=$url>$url</a><br/>",
                 'is_read' => 0,
             );
@@ -428,7 +428,7 @@ class Approval {
                     'sender_id' => get_nik($sess_id),
                     'receiver_id' => $receiver_id,
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                    'subject' => 'Status Pengajuan Permohonan '.ucfirst($form).' dari HRD',
+                    'subject' => get_form_no($id).'[Approved]Status Pengajuan Permohonan '.ucfirst($form).' dari HRD',
                     'email_body' => "Status pengajuan $form yang diajukan oleh ".get_name($user_id).' untuk anda, disetujui oleh '.get_name($sess_id)." untuk detail silakan <a class='klikmail' href=$url>Klik Disini</a><br />".$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>',
                     'is_read' => 0,
                 );
@@ -447,7 +447,7 @@ class Approval {
                         'sender_id' => get_nik($sess_id),
                         'receiver_id' => $receiver_id[$i],
                         'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                        'subject' => 'Status Pengajuan Permohonan '.ucfirst($form).' dari HRD',
+                        'subject' => get_form_no($id).'[Approved]Status Pengajuan Permohonan '.ucfirst($form).' dari HRD',
                         'email_body' => "Status pengajuan $form yang diajukan oleh ".get_name($user_id).' untuk anda, disetujui oleh '.get_name($sess_id)." untuk detail silakan <a class='klikmail' href=$url>Klik Disini</a><br />".$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>',
                         'is_read' => 0,
                     );

@@ -33,27 +33,23 @@
                       <div class="col-md-2">
                         <label class="form-label text-right">Unit Bisnis</label>
                       </div>
-                      <div class="col-md-4">
+                      <div class="col-md-6">
                         <input name="jumlah" id="form3LastName" type="text"  class="form-control" placeholder="-" value="<?php echo get_bu_name(substr($row->bu_id,0,2))?>" disabled="disabled">
-                      </div>
-                      <div class="col-md-2">
-                        <label class="form-label text-right">Departement</label>
-                      </div>
-                      <div class="col-md-4">
-                        <input name="jumlah" id="form3LastName" type="text"  class="form-control" placeholder="-" value="<?php echo get_organization_name($row->parent_organization_id)?>" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
                       <div class="col-md-2">
-                        <label class="form-label text-right">Bagian</label>
+                        <label class="form-label text-right">Dept / Bagian</label>
                       </div>
-                      <div class="col-md-4">
+                      <div class="col-md-6">
                         <input name="jumlah" id="form3LastName" type="text"  class="form-control" placeholder="-" value="<?php echo get_organization_name($row->organization_id)?>" disabled="disabled">
                       </div>
+                    </div>
+                    <div class="row form-row">
                       <div class="col-md-2">
                         <label class="form-label text-right">Jabatan</label>
                       </div>
-                      <div class="col-md-4">
+                      <div class="col-md-6">
                         <input name="jumlah" id="form3LastName" type="text"  class="form-control" placeholder="-" value="<?php echo get_position_name($row->position_id)?>" disabled="disabled">
                       </div>
                     </div>
@@ -314,6 +310,7 @@
                       <?php 
                       $approved = assets_url('img/approved_stamp.png');
                       $rejected = assets_url('img/rejected_stamp.png');
+                       $pending = assets_url('img/pending_stamp.png');
                       if(!empty($row->user_app_lv1) && $row->is_app_lv1 == 0 && get_nik($sess_id) == $row->user_app_lv1){?>
                       <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitModalLv1"><i class="icon-ok"></i>Submit</div>
                       <span class="small"></span>
@@ -341,6 +338,7 @@
                   </div>
                     
                   <div class="col-md-3">
+                  <?php if(!empty($row->user_app_lv2)):?>
                     <p class="wf-approve-sp">
                     <div class="col-md-12"><span class="semi-bold">Mengetahui / Menyetujui,</span><br/><br/></div>
                     <?php
@@ -368,6 +366,7 @@
                         <span class="semi-bold">(<?php echo get_user_position($row->user_app_lv2)?>)</span>
                       <?php } ?>
                     </p>
+                  <?php endif;?>
                   </div>
                     
                   <div class="col-md-3">

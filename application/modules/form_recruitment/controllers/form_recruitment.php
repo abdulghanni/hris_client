@@ -176,7 +176,7 @@ class Form_recruitment extends MX_Controller {
                     'id_comp_session' => 1,
                     'user_id'       => $user_id,
                     'bu_id'       => $this->input->post('bu'),
-                    'parent_organization_id'       => $this->input->post('parent_org'),
+                    //'parent_organization_id'       => $this->input->post('parent_org'),
                     'organization_id'     => $this->input->post('org'),
                     'position_id'           => $this->input->post('pos'),
                     'jumlah'           => $this->input->post('jumlah'),
@@ -360,6 +360,7 @@ class Form_recruitment extends MX_Controller {
 
     function detail_email($id)
     {
+        $this->data['id'] = $id;
         $sess_id= $this->data['sess_id'] = $this->session->userdata('user_id');
         $this->data['sess_nik'] = $sess_nik = get_nik($sess_id);
         $this->data['recruitment'] = $this->recruitment_model->recruitment($id)->result();
@@ -409,7 +410,7 @@ class Form_recruitment extends MX_Controller {
                 $user_info = json_decode($getuser_info, true);
                  foreach ($user_info as $row)
                 {
-                    $result[$row['ID']]= ucwords(strtolower($row['DESCRIPTION']));
+                    $result[$row['PARENT_ID'].','.$row['ID']]= ucwords(strtolower($row['DESCRIPTION']));
                 }
             } else {
                $result['']= '- Belum Ada Departement -';
@@ -420,8 +421,8 @@ class Form_recruitment extends MX_Controller {
 
     public function get_org($id)
     {
-        $url = get_api_key().'users/org_from_parent_org/ORGID/'.$id.'/format/json';
-        //print_r($url);
+        //$url = get_api_key().'users/org_from_parent_org/ORGID/'.$id.'/format/json';
+        $url = get_api_key().'users/org_from_bu/BUID/'.$id.'/format/json';
             $headers = get_headers($url);
             $response = substr($headers[0], 9, 3);
             if ($response != "404") {
@@ -429,7 +430,7 @@ class Form_recruitment extends MX_Controller {
                 $user_info = json_decode($getuser_info, true);
                  foreach ($user_info as $row)
         {
-            $result[$row['ID']]= ucwords(strtolower($row['DESCRIPTION']));
+            $result[$row['ID']]= $row['DESCRIPTION'];
         }
         } else {
            $result['']= '- Belum Ada Bagian -';

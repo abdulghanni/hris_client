@@ -346,7 +346,7 @@ class Form_cuti extends MX_Controller {
             //redirect them to the login page
             redirect('auth/login', 'refresh');
         }
-
+        $this->data['id'] = $id;
         $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
         $sess_nik = $this->data['sess_nik'] = get_nik($sess_id);
         $user_id = getValue('user_id', 'users_cuti', array('id'=>'where/'.$id));

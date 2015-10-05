@@ -593,7 +593,7 @@ class Form_exit extends MX_Controller {
         {
             redirect('auth/login', 'refresh');
         }
-        
+        $this->data['id'] = $id;
         $user_id = getValue('user_id','users_exit', array('id'=>'where/'.$id));
         $form_exit = $this->data['form_exit'] = $this->form_exit_model->form_exit($id, $user_id);
         $user_id = getAll('users_exit', array('id'=>'where/'.$id, ))->row()->user_id;

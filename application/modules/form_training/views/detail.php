@@ -296,6 +296,7 @@
                             <?php
                             $approved = assets_url('img/approved_stamp.png');
                             $rejected = assets_url('img/rejected_stamp.png');
+                            $pending = assets_url('img/pending_stamp.png');
                             if(!empty($user->user_app_lv1) && $user->is_app_lv1 == 0 && get_nik($sess_id) == $user->user_app_lv1){?>
                               <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submittrainingModalLv1"><i class="icon-ok"></i>Submit</div>
                               <span class="small"></span>
@@ -426,238 +427,233 @@
       </div>
       <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
       <div class="modal-body">
-        <form class="form-no-horizontal-spacing" id="formAppHrd">
-            <div class="row form-row">
-              <div class="col-md-3">
-                <label class="form-label text-right">Tipe Pelatihan</label>
-              </div>
-              <div class="col-md-9">
-                <select name="training_type" class="select2" id="training_type" style="width:100%">
-                    <?php 
-                    $tanggal_mulai = ($user->tanggal_mulai == '0000-00-00')?date('Y-m-d'):$user->tanggal_mulai;
-                    $tanggal_akhir = ($user->tanggal_akhir == '0000-00-00')?date('Y-m-d'):$user->tanggal_akhir;
-                    if($training_type->num_rows()>0){
-                        foreach ($training_type->result_array() as $key => $value) {
-                        $selected = ($user->training_type_id <> 0 && $user->training_type_id == $value['id']) ? 'selected = selected' : '';
-                        echo '<option value="'.$value['id'].'" '.$selected.'>'.$value['title'].'</option>';
-                        }}else{
-                        echo '<option value="0">'.'No Data'.'</option>';
-                        }
-                        ?>
-                </select>
-              </div>
+        <!--<form class="form-no-horizontal-spacing" id="formAppHrd">-->
+        <?php $att = array('class'=>'', 'id'=>'formAppHrd');
+        echo form_open('', $att);?>
+  <div class="row form-row">
+    <div class="col-md-3">
+      <label class="form-label text-right">Tipe Pelatihan</label>
+    </div>
+    <div class="col-md-9">
+      <select name="training_type" class="select2" id="training_type" style="width:100%">
+          <?php 
+          $tanggal_mulai = ($user->tanggal_mulai == '0000-00-00')?date('Y-m-d'):$user->tanggal_mulai;
+          $tanggal_akhir = ($user->tanggal_akhir == '0000-00-00')?date('Y-m-d'):$user->tanggal_akhir;
+          if($training_type->num_rows()>0){
+              foreach ($training_type->result_array() as $key => $value) {
+              $selected = ($user->training_type_id <> 0 && $user->training_type_id == $value['id']) ? 'selected = selected' : '';
+              echo '<option value="'.$value['id'].'" '.$selected.'>'.$value['title'].'</option>';
+              }}else{
+              echo '<option value="0">'.'No Data'.'</option>';
+              }
+              ?>
+      </select>
+    </div>
+  </div>
+  <div class="row form-row">
+          <div class="col-md-3">
+            <label class="form-label text-right">Penyelenggara</label>
+          </div>
+          <div class="col-md-9">
+                <?php if($penyelenggara->num_rows()>0){
+                foreach($penyelenggara->result() as $row){
+                 $checked = ($user->penyelenggara_id<>0 && $user->penyelenggara_id == $row->id) ? 'checked = checked' : '';
+              ?>
+              <input id="penyelenggara-<?php echo $row->id?>" type="radio" name="penyelenggara" value="<?php echo $row->id?>"  <?php echo $checked?> required> <?php echo $row->title?>
+              <?php }}else{?>
+              <input id="penyelenggara" type="radio" name="penyelenggara" value="0" checked="checked"  required>
+              <label for="penyelenggara">No Data</label>
+              <?php } ?>
+          </div>
+        </div>
+        <div class="row form-row">
+          <div class="col-md-3">
+            <label class="form-label text-right">Pembiayaan</label>
+          </div>
+          <div class="col-md-9">
+            <select name="pembiayaan" class="select2" id="pembiayaan" style="width:100%" >
+                <?php if($pembiayaan->num_rows()>0){
+                    foreach ($pembiayaan->result_array() as $key => $value) {
+                    $selected = ($user->pembiayaan_id <> 0 && $user->pembiayaan_id == $value['id']) ? 'selected = selected' : '';
+                    echo '<option value="'.$value['id'].'" '.$selected.'>'.$value['title'].'</option>';
+                    }}else{
+                    echo '<option value="0">'.'No Data'.'</option>';
+                    }
+                    ?>
+
+            </select>
+          </div>
+        </div>
+        <div class="row form-row">
+          <div class="col-md-3">
+            <label class="form-label text-right">Tipe Ikatan Dinas</label>
+          </div>
+          <div class="col-md-9">
+            <select name="ikatan" class="select2" id="ikatan" style="width:100%" >
+                <option value="0">-- Pilih Tipe Ikatan Dinas --</option>
+                <?php if(!empty($ikatan)){
+                  for($i=0;$i<sizeof($ikatan);$i++):
+                  $selected = ($user->ikatan == $ikatan[$i]['DESCRIPTION']) ? 'selected = selected' : '';
+                  echo '<option value="'.$ikatan[$i]['DESCRIPTION'].'" '.$selected.'>'.$ikatan[$i]['DESCRIPTION'].'</option>';
+                  endfor;}
+                ?>
+            </select>
+          </div>
+        </div>
+        <div class="row form-row">
+          <div class="col-md-3">
+            <label class="form-label text-right">Waktu</label>
+          </div>
+          <div class="col-md-9">
+            <select name="waktu" class="select2" id="waktu" style="width:100%" >
+                <?php if($waktu->num_rows()>0){
+                    foreach ($waktu->result_array() as $key => $value) {
+                    $selected = ($user->waktu_id <> 0 && $user->waktu_id == $value['id']) ? 'selected = selected' : '';
+                    echo '<option value="'.$value['id'].'" '.$selected.'>'.$value['title'].'</option>';
+                    }}else{
+                    echo '<option value="0">'.'No Data'.'</option>';
+                    }
+                    ?>
+
+            </select>
+          </div>
+        </div>
+        <div class="row form-row">
+          <div class="col-md-3">
+            <label for="besar_biaya" class="form-label text-right">Besar Biaya (Rp.)</label>
+          </div>
+          <div class="col-md-9">
+            <input name="besar_biaya" id="besar_biaya" type="text"  class="form-control" placeholder="Besar biaya (Rp.)" value="<?php echo $user->besar_biaya?>" required>
+          </div>
+        </div>
+        <div class="row form-row">
+          <div class="col-md-3">
+            <label class="form-label text-right">Tempat Pelaksanaan</label>
+          </div>
+          <div class="col-md-9">
+            <input name="tempat" id="tempat" type="text"  class="form-control" placeholder="Tempat Pelaksanaan" value="<?php echo $user->tempat?>"  required>
+          </div>
+        </div>
+        <div class="row form-row">
+          <div class="col-md-3">
+            <label class="form-label text-right">Nama Narasumber</label>
+          </div>
+          <div class="col-md-9">
+            <input name="narasumber" id="tempat" type="text"  class="form-control" placeholder="Nama Narasumber" value="<?php echo $user->narasumber?>" required>
+          </div>
+        </div>
+        <div class="row form-row">
+          <div class="col-md-3">
+            <label class="form-label text-right">Nama Vendor</label>
+          </div>
+          <div class="col-md-9">
+            <select name="vendor" class="select2" id="vendor" style="width:100%" >
+                <option value="0">-- Pilih Nama Vendor --</option>
+                <?php if(!empty($vendor)){
+                  for($i=0;$i<sizeof($vendor);$i++):
+                  $selected = ($user->vendor == $vendor[$i]['NAME']) ? 'selected = selected' : '';
+                  echo '<option value="'.$vendor[$i]['NAME'].'" '.$selected.'>'.$vendor[$i]['NAME'].'</option>';
+                  endfor;}
+                ?>
+            </select>
+          </div>
+        </div>
+        <div class="row form-row">
+          <div class="col-md-3">
+            <label class="form-label text-right">Waktu Pelaksanaan</label>
+          </div>
+          <div class="col-md-3">
+            <div class="input-with-icon right">
+                <div class="input-append success date no-padding">
+                    <input type="text" class="datepicker" id="tanggal_mulai" name="tanggal_mulai" value="<?php echo $tanggal_mulai?>" required>
+                    <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span> 
+                </div>
             </div>
-            <div class="row form-row">
-                    <div class="col-md-3">
-                      <label class="form-label text-right">Penyelenggara</label>
-                    </div>
-                    <div class="col-md-9">
-                      <div class="radio">
-                          <?php if($penyelenggara->num_rows()>0){
-                          foreach($penyelenggara->result() as $row){
-                           $checked = ($user->penyelenggara_id<>0 && $user->penyelenggara_id == $row->id) ? 'checked = checked' : '';
-                        ?>
-                        <input id="penyelenggara-<?php echo $row->id?>" type="radio" name="penyelenggara" value="<?php echo $row->id?>"  <?php echo $checked?>>
-                        <label for="penyelenggara-<?php echo $row->id?>"><?php echo $row->title?></label>
-                        <?php }}else{?>
-                        <input id="penyelenggara" type="radio" name="penyelenggara" value="0" checked="checked"  required>
-                        <label for="penyelenggara">No Data</label>
-                        <?php } ?>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row form-row">
-                    <div class="col-md-3">
-                      <label class="form-label text-right">Pembiayaan</label>
-                    </div>
-                    <div class="col-md-9">
-                      <select name="pembiayaan" class="select2" id="pembiayaan" style="width:100%" >
-                          <?php if($pembiayaan->num_rows()>0){
-                              foreach ($pembiayaan->result_array() as $key => $value) {
-                              $selected = ($user->pembiayaan_id <> 0 && $user->pembiayaan_id == $value['id']) ? 'selected = selected' : '';
-                              echo '<option value="'.$value['id'].'" '.$selected.'>'.$value['title'].'</option>';
-                              }}else{
-                              echo '<option value="0">'.'No Data'.'</option>';
-                              }
-                              ?>
+          </div>
+          <div class="col-md-2">
+            <label class="form-label text-center">s/d</label>
+          </div>
+          <div class="col-md-3">
+            <div class="input-with-icon right">
+                <div class="input-append success date no-padding">
+                    <input type="text" class="datepicker" id="tanggal_akhir" name="tanggal_akhir" value="<?php echo $tanggal_akhir?>" required>
+                    <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span> 
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="row form-row">
+          <div class="col-md-3">
+            <label class="form-label text-right">Lama Pelaksanaan</label>
+          </div>
+          <div class="col-md-2">
+            <input name="lama_training_bulan" id="lama_training_bulan" type="text"  class="form-control text-center" value="<?php echo $user->lama_training_bulan?> Bulan" readonly>
+          </div>
+          <div class="col-md-2">
+            <input name="lama_training_hari" id="lama_training_hari" type="text"  class="form-control text-center" value="<?php echo $user->lama_training_hari?> Hari" readonly>
+          </div>
+        </div>
+        <div class="row form-row">
+          <div class="col-md-3">
+            <label class="form-label text-right">Jam</label>
+          </div>
+          
+          <div class="col-md-3">
+            <div class="input-append bootstrap-timepicker">
+              <input name="jam_mulai" id="timepicker2" type="text" class="timepicker-24" value="<?php echo $user->jam_mulai?>" required>
+              <span class="add-on">
+                  <i class="icon-time"></i>
+              </span>
+            </div>
+          </div>
 
-                      </select>
-                    </div>
-                  </div>
-                  <div class="row form-row">
-                    <div class="col-md-3">
-                      <label class="form-label text-right">Tipe Ikatan Dinas</label>
-                    </div>
-                    <div class="col-md-9">
-                      <select name="ikatan" class="select2" id="ikatan" style="width:100%" >
-                          <option value="0">-- Pilih Tipe Ikatan Dinas --</option>
-                          <?php if(!empty($ikatan)){
-                            for($i=0;$i<sizeof($ikatan);$i++):
-                            $selected = ($user->ikatan == $ikatan[$i]['DESCRIPTION']) ? 'selected = selected' : '';
-                            echo '<option value="'.$ikatan[$i]['DESCRIPTION'].'" '.$selected.'>'.$ikatan[$i]['DESCRIPTION'].'</option>';
-                            endfor;}
-                          ?>
-                      </select>
-                    </div>
-                  </div>
-                  <br/>
-                  <div class="row form-row">
-                    <div class="col-md-3">
-                      <label class="form-label text-right">Waktu</label>
-                    </div>
-                    <div class="col-md-9">
-                      <select name="waktu" class="select2" id="waktu" style="width:100%" >
-                          <?php if($waktu->num_rows()>0){
-                              foreach ($waktu->result_array() as $key => $value) {
-                              $selected = ($user->waktu_id <> 0 && $user->waktu_id == $value['id']) ? 'selected = selected' : '';
-                              echo '<option value="'.$value['id'].'" '.$selected.'>'.$value['title'].'</option>';
-                              }}else{
-                              echo '<option value="0">'.'No Data'.'</option>';
-                              }
-                              ?>
+          <div class="col-md-2">
+            <label class="form-label text-center">s/d</label>
+          </div>
 
-                      </select>
-                    </div>
-                  </div>
-                  <div class="row form-row">
-                    <div class="col-md-3">
-                      <label for="besar_biaya" class="form-label text-right">Besar Biaya (Rp.)</label>
-                    </div>
-                    <div class="col-md-9">
-                      <input name="besar_biaya" id="besar_biaya" type="text"  class="form-control" placeholder="Besar biaya (Rp.)" value="<?php echo $user->besar_biaya?>"  required>
-                    </div>
-                  </div>
-                  <div class="row form-row">
-                    <div class="col-md-3">
-                      <label class="form-label text-right">Tempat Pelaksanaan</label>
-                    </div>
-                    <div class="col-md-9">
-                      <input name="tempat" id="tempat" type="text"  class="form-control" placeholder="Tempat Pelaksanaan" value="<?php echo $user->tempat?>"  required>
-                    </div>
-                  </div>
-                  <div class="row form-row">
-                    <div class="col-md-3">
-                      <label class="form-label text-right">Nama Narasumber</label>
-                    </div>
-                    <div class="col-md-9">
-                      <input name="narasumber" id="tempat" type="text"  class="form-control" placeholder="Nama Narasumber" value="<?php echo $user->narasumber?>" required>
-                    </div>
-                  </div>
-                  <div class="row form-row">
-                    <div class="col-md-3">
-                      <label class="form-label text-right">Nama Vendor</label>
-                    </div>
-                    <div class="col-md-9">
-                      <select name="vendor" class="select2" id="vendor" style="width:100%" >
-                          <option value="0">-- Pilih Nama Vendor --</option>
-                          <?php if(!empty($vendor)){
-                            for($i=0;$i<sizeof($vendor);$i++):
-                            $selected = ($user->vendor == $vendor[$i]['NAME']) ? 'selected = selected' : '';
-                            echo '<option value="'.$vendor[$i]['NAME'].'" '.$selected.'>'.$vendor[$i]['NAME'].'</option>';
-                            endfor;}
-                          ?>
-                      </select>
-                    </div>
-                    </div>
-                  </div>
-                  <br/>
-                  <div class="row form-row">
-                    <div class="col-md-3">
-                      <label class="form-label text-right">Waktu Pelaksanaan</label>
-                    </div>
-                    <div class="col-md-3">
-                      <div class="input-with-icon right">
-                          <div class="input-append success date no-padding">
-                              <input type="text" class="datepicker" id="tanggal_mulai" name="tanggal_mulai" value="<?php echo $tanggal_mulai?>" required>
-                              <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span> 
-                          </div>
-                      </div>
-                    </div>
-                    <div class="col-md-2">
-                      <label class="form-label text-center">s/d</label>
-                    </div>
-                    <div class="col-md-3">
-                      <div class="input-with-icon right">
-                          <div class="input-append success date no-padding">
-                              <input type="text" class="datepicker" id="tanggal_akhir" name="tanggal_akhir" value="<?php echo $tanggal_akhir?>" required>
-                              <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span> 
-                          </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row form-row">
-                    <div class="col-md-3">
-                      <label class="form-label text-right">Lama Pelaksanaan</label>
-                    </div>
-                    <div class="col-md-2">
-                      <input name="lama_training_bulan" id="lama_training_bulan" type="text"  class="form-control text-center" value="<?php echo $user->lama_training_bulan?> Bulan" readonly>
-                    </div>
-                    <div class="col-md-2">
-                      <input name="lama_training_hari" id="lama_training_hari" type="text"  class="form-control text-center" value="<?php echo $user->lama_training_hari?> Hari" readonly>
-                    </div>
-                  </div>
-                  <div class="row form-row">
-                    <div class="col-md-3">
-                      <label class="form-label text-right">Jam</label>
-                    </div>
-                    
-                    <div class="col-md-3">
-                      <div class="input-append bootstrap-timepicker">
-                        <input name="jam_mulai" id="timepicker2" type="text" class="timepicker-24" value="<?php echo $user->jam_mulai?>" required>
-                        <span class="add-on">
-                            <i class="icon-time"></i>
-                        </span>
-                      </div>
-                    </div>
+          <div class="col-md-3">
+            <div class="input-append bootstrap-timepicker">
+              <input name="jam_akhir" id="timepicker2" type="text" class="timepicker-24" value="<?php echo $user->jam_akhir?>" required>
+              <span class="add-on">
+                  <i class="icon-time"></i>
+              </span>
+            </div>
+          </div>
+        </div>
 
-                    <div class="col-md-2">
-                      <label class="form-label text-center">s/d</label>
-                    </div>
+        <div class="row form-row">
+          <div class="col-md-3">
+            <label class="form-label text-right">Status Approval </label>
+          </div>
+          <div class="col-md-9">
+            <div class="radio">
+              <?php 
+              if($approval_status->num_rows() > 0){
+                foreach($approval_status->result() as $app){
+                  $checked = ($app->id <> 0 && $app->id == $user->approval_status_id_hrd) ? 'checked = "checked"' : '';
+              ?>
+              <input id="app_status<?php echo $app->id?>" type="radio" name="app_status" value="<?php echo $app->id?>" <?php echo $checked?>>
+              <label for="app_status<?php echo $app->id?>"><?php echo $app->title?></label>
+              <?php }}else{?>
+              <input id="app_status" type="radio" name="app_status" value="0">
+              <label for="app_status">No Data</label>
+                <?php } ?>
+            </div>
+          </div>
+        </div>
 
-                    <div class="col-md-3">
-                      <div class="input-append bootstrap-timepicker">
-                        <input name="jam_akhir" id="timepicker2" type="text" class="timepicker-24" value="<?php echo $user->jam_akhir?>" required>
-                        <span class="add-on">
-                            <i class="icon-time"></i>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="row form-row">
-                    <div class="col-md-3">
-                      <label class="form-label text-left">Status Approval </label>
-                    </div>
-                    <div class="col-md-9">
-                      <div class="radio">
-                        <?php 
-                        if($approval_status->num_rows() > 0){
-                          foreach($approval_status->result() as $app){
-                            $checked = ($app->id <> 0 && $app->id == $user->approval_status_id_hrd) ? 'checked = "checked"' : '';
-                            ?>
-                        <input id="app_status<?php echo $app->id?>" type="radio" name="app_status" value="<?php echo $app->id?>" <?php echo $checked?>>
-                        <label for="app_status<?php echo $app->id?>"><?php echo $app->title?></label>
-                        <?php }}else{?>
-                        <input id="app_status" type="radio" name="app_status" value="0">
-                        <label for="app_status">No Data</label>
-                          <?php } ?>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="row form-row">
-                    <div class="col-md-12">
-                      <label class="form-label text-left">Note (HRD) : </label>
-                    </div>
-                    <div class="col-md-12">
-                      <textarea name="note_hrd" class="custom-txtarea-form" placeholder="Note HRD isi disini"><?php echo $user->note_app_hrd?></textarea>
-                    </div>
-                  </div>
-
+        <div class="row form-row">
+          <div class="col-md-3">
+            <label class="form-label text-right">Note (HRD) : </label>
+          </div>
+          <div class="col-md-9">
+            <textarea name="note_hrd" class="custom-txtarea-form" placeholder="Note HRD isi disini"><?php echo $user->note_app_hrd?></textarea>
+          </div>
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="icon-remove"></i>&nbsp;<?php echo lang('close_button')?></button> 
-        <button id="btn_app_hrd" class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
+        <button id="btn_app_hrd" class="btn btn-success btn-cons"><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
       </div>
         <?php echo form_close()?>
     </div>

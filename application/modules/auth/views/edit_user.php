@@ -200,7 +200,7 @@
                                         <?php echo lang('edit_user_password_label', 'password');?>
                                         <div class="input-with-icon  right">                                       
                                             <i class=""></i>
-                                            <?php echo bs_form_input($password);?>                               
+                                            <?php echo bs_form_input($password_update);?>                               
                                         </div>
                                     </div>
                                     <div class="form-group">

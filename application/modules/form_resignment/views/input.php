@@ -16,7 +16,7 @@
           <div class="col-md-12">
             <div class="grid simple">
               <div class="grid-title no-border">
-                <h4>Form Pengajuan <span class="semi-bold"><a href="<?php echo site_url('form_resignment')?>">Resignment</a></span></h4>
+                <h4>Form Pengajuan <span class="semi-bold"><a href="<?php echo site_url('form_resignment')?>">Pengunduran Diri</a></span></h4>
               </div>
               <div class="grid-body no-border">
                 <?php
@@ -89,7 +89,7 @@
                     </div>
 
                     <div class="col-md-7">
-                      <h4>Resignment Yang Diajukan</h4>
+                      <h4>Pengunduran Diri Yang Diajukan</h4>
                       <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
                       <div class="row form-row">
                         <div class="col-md-4">
@@ -114,7 +114,7 @@
 
                       <div class="row form-row">
                         <div class="col-md-4">
-                          <label class="form-label text-left">Alasan Resign</label>
+                          <label class="form-label text-left">Alasan Pengunduran Diri</label>
                         </div>
                         <div class="col-md-8">
                            <textarea name="alasan" class="form-control"></textarea>

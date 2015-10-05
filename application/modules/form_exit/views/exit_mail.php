@@ -112,9 +112,11 @@
                                 <?php 
                                 $approved = assets_url('img/approved_stamp.png');
                                 $rejected = assets_url('img/rejected_stamp.png');
+                             $pending = assets_url('img/pending_stamp.png');
+                                
                                 if($row->is_app_mgr == 1){
-                                echo ($row->app_status_id_mgr == 1)? "<img class=approval_img_md src=$approved>":(($row->app_status_id_mgr == 2) ? "<img class=approval_img_md src=$rejected>":'');?><br/>
-                                <span class="semi-bold"><?php echo get_name($row->user_app_mgr)?></span><br/>
+                                echo ($row->app_status_id_mgr == 1)?"<img class=approval-img src=$approved>": (($row->app_status_id_mgr == 2) ? "<img class=approval-img src=$rejected>"  : (($row->app_status_id_mgr == 3) ? "<img class=approval-img src=$pending>" : "<span class='small'></span><br/>"));?>
+                      <span class="semi-bold"><?php echo get_name($row->user_app_mgr)?></span><br/>
                                 <span class="small"><?php echo dateIndo($row->date_app_mgr)?></span><br/>
                                 <?php }elseif($row->is_app_mgr == 0 && $is_admin_logistik == 1){?>
                                 <span class="semi-bold"></span><br/>
@@ -135,8 +137,8 @@
                           <div class="col-md-2">
                             <p class="wf-approve-sp">
                               <?php if($row->is_app_koperasi == 1){
-                              echo ($row->app_status_id_koperasi == 1)? "<img class=approval_img_md src=$approved>":(($row->app_status_id_koperasi == 2) ? "<img class=approval_img_md src=$rejected>":'');?><br/>
-                              <span class="semi-bold"><?php echo get_name($row->user_app_koperasi)?></span><br/>
+                              echo ($row->app_status_id_koperasi == 1)?"<img class=approval-img src=$approved>": (($row->app_status_id_koperasi == 2) ? "<img class=approval-img src=$rejected>"  : (($row->app_status_id_koperasi == 3) ? "<img class=approval-img src=$pending>" : "<span class='small'></span><br/>"));?>
+                      <span class="semi-bold"><?php echo get_name($row->user_app_koperasi)?></span><br/>
                               <span class="small"><?php echo dateIndo($row->date_app_koperasi)?></span><br/>
                               <?php }elseif($row->is_app_koperasi == 0 && $is_admin_koperasi == 1){?>
                              <span class="semi-bold"></span><br/>
@@ -157,8 +159,8 @@
                           <div class="col-md-2">
                             <p class="wf-approve-sp">
                               <?php if($row->is_app_perpus == 1){
-                                echo ($row->app_status_id_perpus == 1)? "<img class=approval_img_md src=$approved>":(($row->app_status_id_perpus == 2) ? "<img class=approval_img_md src=$rejected>":'');?><br/>
-                              <span class="semi-bold"><?php echo get_name($row->user_app_perpus)?></span><br/>
+                                echo ($row->app_status_id_perpus == 1)?"<img class=approval-img src=$approved>": (($row->app_status_id_perpus == 2) ? "<img class=approval-img src=$rejected>"  : (($row->app_status_id_perpus == 3) ? "<img class=approval-img src=$pending>" : "<span class='small'></span><br/>"));?>
+                      <span class="semi-bold"><?php echo get_name($row->user_app_perpus)?></span><br/>
                               <span class="small"><?php echo dateIndo($row->date_app_perpus)?></span><br/>
                               <?php }elseif($row->is_app_perpus == 0 && $is_admin_perpus == 1){?>
                               <span class="semi-bold"></span><br/>
@@ -179,8 +181,8 @@
                           <div class="col-md-2">
                             <p class="wf-approve-sp">
                               <?php if($row->is_app_hrd == 1){
-                              echo ($row->app_status_id_hrd == 1)? "<img class=approval_img_md src=$approved>":(($row->app_status_id_hrd == 2) ? "<img class=approval_img_md src=$rejected>":'');?><br/>
-                              <span class="semi-bold"><?php echo get_name($row->user_app_hrd)?></span><br/>
+                              echo ($row->app_status_id_hrd == 1)?"<img class=approval-img src=$approved>": (($row->app_status_id_hrd == 2) ? "<img class=approval-img src=$rejected>"  : (($row->app_status_id_hrd == 3) ? "<img class=approval-img src=$pending>" : "<span class='small'></span><br/>"));?>
+                      <span class="semi-bold"><?php echo get_name($row->user_app_hrd)?></span><br/>
                               <span class="small"><?php echo dateIndo($row->date_app_hrd)?></span><br/>
                               <?php }elseif($row->is_app_hrd == 0 && $is_admin_hrd == 1){?>
                               <span class="semi-bold"></span><br/>
@@ -201,8 +203,8 @@
                           <div class="col-md-2">
                             <p class="wf-approve-sp">
                               <?php if($row->is_app_it == 1){
-                              echo ($row->app_status_id_it == 1)? "<img class=approval_img_md src=$approved>":(($row->app_status_id_it == 2) ? "<img class=approval_img_md src=$rejected>":'');?><br/>
-                              <span class="semi-bold"><?php echo get_name($row->user_app_it)?></span><br/>
+                              echo ($row->app_status_id_it == 1)?"<img class=approval-img src=$approved>": (($row->app_status_id_it == 2) ? "<img class=approval-img src=$rejected>"  : (($row->app_status_id_it == 3) ? "<img class=approval-img src=$pending>" : "<span class='small'></span><br/>"));?>
+                      <span class="semi-bold"><?php echo get_name($row->user_app_it)?></span><br/>
                               <span class="small"><?php echo dateIndo($row->date_app_it)?></span><br/>
                               <?php }elseif($row->is_app_it == 0 && $is_admin_it == 1){?>
                               <span class="semi-bold"></span><br/>
@@ -222,8 +224,8 @@
                           <div class="col-md-2">
                             <p class="wf-approve-sp">
                               <?php if($row->is_app_keuangan == 1){
-                              echo ($row->app_status_id_keuangan == 1)? "<img class=approval_img_md src=$approved>":(($row->app_status_id_keuangan == 2) ? "<img class=approval_img_md src=$rejected>":'');?><br/>
-                              <span class="semi-bold"><?php echo get_name($row->user_app_keuangan)?></span><br/>
+                              echo ($row->app_status_id_keuangan == 1)?"<img class=approval-img src=$approved>": (($row->app_status_id_keuangan == 2) ? "<img class=approval-img src=$rejected>"  : (($row->app_status_id_keuangan == 3) ? "<img class=approval-img src=$pending>" : "<span class='small'></span><br/>"));?>
+                      <span class="semi-bold"><?php echo get_name($row->user_app_keuangan)?></span><br/>
                               <span class="small"><?php echo dateIndo($row->date_app_keuangan)?></span><br/>
                               <?php }elseif($row->is_app_keuangan == 0 && $is_admin_keuangan == 1){?>
                               <span class="semi-bold"></span><br/>
@@ -245,8 +247,8 @@
                         <div class="row text-center">
                             <p class="wf-approve-sp">
                               <?php if($row->is_app_asset == 1){
-                              echo ($row->app_status_id_asset == 1)? "<img class=approval-img-sm src=$approved>":(($row->app_status_id_asset == 2) ? "<img class=approval_img_md src=$rejected>":'');?><br/>
-                              <span class="semi-bold"><?php echo get_name($row->user_app_asset)?></span><br/>
+                              echo ($row->app_status_id_asset == 1)?"<img class=approval-img src=$approved>": (($row->app_status_id_asset == 2) ? "<img class=approval-img src=$rejected>"  : (($row->app_status_id_asset == 3) ? "<img class=approval-img src=$pending>" : "<span class='small'></span><br/>"));?>
+                      <span class="semi-bold"><?php echo get_name($row->user_app_asset)?></span><br/>
                               <span class="small"><?php echo dateIndo($row->date_app_asset)?></span><br/>
                               <?php }elseif($row->is_app_asset == 0 && $sess_nik === $row->user_app_asset){?>
                               <span class="semi-bold"></span><br/>
@@ -471,8 +473,8 @@
                         <span class="semi-bold"></span>
                         <span class="semi-bold">(Atasan Langsung)</span>
                       <?php }elseif(!empty($row->user_app_lv1) && $row->is_app_lv1 == 1){
-                        echo ($row->app_status_id_lv1 == 1)?"<img class=approval-img-md src=$approved>":(($row->app_status_id_lv1 == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?>
-                        <span class="small"></span><br/>
+                        echo ($row->app_status_id_lv1 == 1)?"<img class=approval-img src=$approved>": (($row->app_status_id_lv1 == 2) ? "<img class=approval-img src=$rejected>"  : (($row->app_status_id_lv1 == 3) ? "<img class=approval-img src=$pending>" : "<span class='small'></span><br/>"));?>
+                      <span class="small"></span><br/>
                         <span class="semi-bold"><?php echo get_name($row->user_app_lv1)?></span><br/>
                         <span class="small"><?php echo dateIndo($row->date_app_lv1)?></span><br/>
                         <span class="semi-bold"><?php echo get_user_position($row->user_app_lv1);?></span>
@@ -500,8 +502,8 @@
                         <span class="semi-bold"></span><br/>
                         <span class="semi-bold">(Atasan Tidak Langsung)</span>
                       <?php }elseif(!empty($row->user_app_lv2) && $row->is_app_lv2 == 1){
-                        echo ($row->app_status_id_lv2 == 1)?"<img class=approval-img-md src=$approved>":(($row->app_status_id_lv2 == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?>
-                        <span class="small"></span><br/>
+                       echo ($row->app_status_id_lv2 == 1)?"<img class=approval-img src=$approved>": (($row->app_status_id_lv2 == 2) ? "<img class=approval-img src=$rejected>"  : (($row->app_status_id_lv2 == 3) ? "<img class=approval-img src=$pending>" : "<span class='small'></span><br/>"));?>
+                      <span class="small"></span><br/>
                         <span class="semi-bold"><?php echo get_name($row->user_app_lv2)?></span><br/>
                         <span class="small"><?php echo dateIndo($row->date_app_lv2)?></span><br/>
                         <span class="semi-bold"><?php echo get_user_position($row->user_app_lv2);?></span>
@@ -535,8 +537,8 @@
                       <span class="semi-bold"></span><br/>
                       <span class="semi-bold">(<?php echo get_user_position($row->user_app_lv3)?>)</span>
                     <?php }elseif(!empty($row->user_app_lv3) && $row->is_app_lv3 == 1){
-                      echo ($row->app_status_id_lv3 == 1)?"<img class='approval-img-al' src=$approved>":(($row->app_status_id_lv3 == 2) ? "<img class='approval-img-al' src=$rejected>":'<span class="small"></span><br/>');?>
-                      <span class="small"></span><br/>
+                     echo ($row->app_status_id_lv3 == 1)?"<img class=approval-img src=$approved>": (($row->app_status_id_lv3 == 2) ? "<img class=approval-img src=$rejected>"  : (($row->app_status_id_lv3 == 3) ? "<img class=approval-img src=$pending>" : "<span class='small'></span><br/>"));?>
+                       <span class="small"></span><br/>
                       <span class="semi-bold"><?php echo get_name($row->user_app_lv3)?></span><br/>
                       <span class="small"><?php echo dateIndo($row->date_app_lv3)?></span><br/>
                       <span class="semi-bold"></span>

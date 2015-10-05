@@ -443,7 +443,7 @@ class form_training_group extends MX_Controller {
 
     function detail_email($id)
     {
-        
+        $this->data['id'] = $id;
         $user_id= getValue('user_pengaju_id', 'users_training_group', array('id'=>'where/'.$id));
         $this->data['user_nik'] = $sess_nik = get_nik($user_id);
         $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');

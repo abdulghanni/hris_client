@@ -29,7 +29,7 @@ $rejected = assets_url('img/rejected_stamp.png');
     <td class="tg-031e">Unit Bisnis</td>
     <td class="tg-031e"><?php echo get_bu_name(substr($row->bu_id,0,2))?></td>
     <td class="tg-031e">Departement</td>
-    <td class="tg-031e"><?php echo get_organization_name($row->parent_organization_id)?></td>
+    <td class="tg-031e"><?php echo get_organization_name($row->organization_id)?></td>
   </tr>
   <tr>
     <td class="tg-031e">Bagian</td>
@@ -163,9 +163,9 @@ $rejected = assets_url('img/rejected_stamp.png');
     <td class="tg-031e">Jabatan</td>
     <td class="tg-031e"><?php echo $position_pengaju?></td>
     <td class="tg-031e">Jabatan</td>
-    <td class="tg-031e">Supervisor</td>
+    <td class="tg-031e"><?php echo get_user_position($row->user_app_lv1) ?></td>
     <td class="tg-031e">Jabatan</td>
-    <td class="tg-031e">Ka. Bagian</td>
+    <td class="tg-031e"><?php if(!empty($row->user_app_lv2))echo get_user_position($row->user_app_lv2) ?></td>
     <td class="tg-031e">Jabatan</td>
     <td class="tg-031e">HRD Database</td>
   </tr>

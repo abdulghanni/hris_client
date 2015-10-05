@@ -42,11 +42,11 @@ $(document).ready(function() {
     }
      
 
-    $('#besar_biaya').maskMoney({precision: 0});
+    $('#besar_biaya').maskMoney({precision: 0, allowZero:true});
 
-    $('button[data-loading-text]').click(function () {
+    /*$('button[data-loading-text]').click(function () {
     $(this).button('loading');
-    });
+    });*/
 
     var url = $.url();
     var baseurl = url.attr('protocol')+'://'+url.attr('host')+'/'+url.segment(1)+'/';
@@ -107,13 +107,13 @@ $(document).ready(function() {
     });
 
     $('#btn_app_hrd').click(function(){
-        var $btn = $(this).button('loading');
         $('#formAppHrd').submit(function(ev){
+        var $btn = $('#btn_app_hrd').button('loading');  
             $.ajax({
                 type: 'POST',
                 url: baseurl+uri4,
                 data: $('#formAppHrd').serialize(),
-                success: function() {
+                success: function() { 
                     $("[data-dismiss=modal]").trigger({ type: "click" });
                     location.reload(),
                     $btn.button('reset')
@@ -123,14 +123,14 @@ $(document).ready(function() {
         });  
     });
 
-$( "#formadd" ).validate({
-    rules: {
-      atasan1: {notEqual:0}
-    },
+    $( "#formadd" ).validate({
+        rules: {
+          atasan1: {notEqual:0}
+        },
 
-    messages: {
-          atasan1 : "Silakan Pilih Atasan"
-      }
-  });
+        messages: {
+              atasan1 : "Silakan Pilih Atasan"
+          }
+    });
 
 });	

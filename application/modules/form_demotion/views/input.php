@@ -16,7 +16,7 @@
           <div class="col-md-12">
             <div class="grid simple">
               <div class="grid-title no-border">
-                <h4>Form Pengajuan <span class="semi-bold"><a href="<?php echo site_url('form_demotion')?>">Demotion</a></span></h4>
+                <h4>Form Pengajuan <span class="semi-bold"><a href="<?php echo site_url('form_demotion')?>">Demosi</a></span></h4>
               </div>
               <div class="grid-body no-border">
                 <?php
@@ -166,7 +166,7 @@
                     </div>
 
                     <div class="col-md-7">
-                      <h4>Demotion Yang Diajukan</h4>
+                      <h4>Demosi Yang Diajukan</h4>
                       <div class="row form-row">
                         <div class="col-md-4">
                           <label class="form-label text-left">Unit Bisnis Baru</label>
@@ -204,7 +204,7 @@
                       </div>
                       <div class="row form-row">
                         <div class="col-md-4">
-                          <label class="form-label text-left">Tgl. demotion</label>
+                          <label class="form-label text-left">Tgl. Demosi</label>
                         </div>
                         <div class="col-md-8">
                           <div class="input-append date success no-padding">

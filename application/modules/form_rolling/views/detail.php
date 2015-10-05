@@ -17,7 +17,7 @@
           <div class="col-md-12">
             <div class="grid simple">
               <div class="grid-title no-border">
-                <h4>Form <span class="semi-bold"><a href="<?php echo site_url('form_rolling')?>">Rolling</a></span></h4>
+                <h4>Form <span class="semi-bold"><a href="<?php echo site_url('form_rolling')?>">Mutasi</a></span></h4>
               <a href="<?php echo site_url('form_rolling/form_rolling_pdf/'.$id)?>" target="_blank"><button class="btn btn-primary pull-right"><i class="icon-print"> Cetak</i></button></a><br/>
               No : <?= get_form_no($id) ?>
               </div>
@@ -80,7 +80,7 @@
                       
                     </div>
                     <div class="col-md-7">
-                      <h4>Rolling Yang Diajukan</h4>
+                      <h4>Mutasi Yang Diajukan</h4>
                      <div class="row form-row">
                         <div class="col-md-4">
                           <label class="form-label text-left">Unit Bisnis Baru</label>
@@ -109,7 +109,7 @@
                       </div>
                       <div class="row form-row">
                         <div class="col-md-4">
-                          <label class="form-label text-left">Tgl. rolling</label>
+                          <label class="form-label text-left">Tgl. Mutasi</label>
                         </div>
                         <div class="col-md-8">
                           <input type="text" class="form-control" name="date_rolling" value="<?php echo dateIndo($row->date_rolling)?>" disabled="disabled">
@@ -117,7 +117,7 @@
                       </div>
                       <div class="row form-row">
                         <div class="col-md-4">
-                          <label class="form-label text-left">Alasan rolling</label>
+                          <label class="form-label text-left">Alasan Mutasi</label>
                         </div>
                         <div class="col-md-8">
                           <textarea name="alasan" id="alasan" type="text"  class="form-control" placeholder="Alasan rolling" disabled="disabled"><?php echo $row->alasan?></textarea>
@@ -201,6 +201,7 @@
                       <?php 
                       $approved = assets_url('img/approved_stamp.png');
                       $rejected = assets_url('img/rejected_stamp.png');
+                       $pending = assets_url('img/pending_stamp.png');
                       if(!empty($row->user_app_lv1) && $row->is_app_lv1 == 0 && get_nik($sess_id) == $row->user_app_lv1){?>
                       <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitModalLv1"><i class="icon-ok"></i>Submit</div>
                       <span class="small"></span>
