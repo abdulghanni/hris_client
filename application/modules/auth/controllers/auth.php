@@ -241,7 +241,7 @@ class Auth extends MX_Controller {
                 'id' => 'identity',
                 'type' => 'text',
                 'value' => $this->form_validation->set_value('identity'),
-                'placeholder' => 'NIK / E-mail',
+                'placeholder' => 'NIK',
                 'required'=> 'required',
             );
             $this->data['password'] = array('name' => 'password',
