@@ -286,9 +286,16 @@ class Auth extends MX_Controller {
     { 
         $user_bu = get_user_buid($nik);
         $admin_inventaris = $this->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 3)->where('bu', $user_bu)->get()->result_array();
+        $emails = '';
+        foreach ($admin_inventaris as $key => $value) {
+            $email = getEmail($value['user_id']).',';
+            $emails .= $email;
+        }
         $user_id = get_id($nik);
         $msg = 'Dear admin [IT/GA/Koperasi/Perpustakaan/HRD/Keuangan],<br/><p>'.get_name($nik).' telah berhasil melakukan registrasi di Web-HRIS. silakan melakukan input item inventaris karyawan yang bersangkutan.<br/>'
                .'Silakan klik tautan berikut untuk mengarahkan ke halaman input inventaris <a class="klikemail" href="'.base_url("form_exit/input_inventory/$user_id").'">'.base_url("form_exit/input_inventory/$user_id").'</a></p>';
+        
+        if(!empty($emails))$this->send_email($emails, 'Permintaan Input Data Inventaris Karyawan', $msg);
         for($i=0;$i<sizeof($admin_inventaris);$i++):
         $data = array(
                 'sender_id' => $nik,
@@ -299,7 +306,6 @@ class Auth extends MX_Controller {
                 'is_read' => 0,
             );
         $this->db->insert('email', $data);
-        if(!empty(getEmail($admin_inventaris[$i]['user_id'])))$this->send_email(getEmail($admin_inventaris[$i]['user_id']), 'Permintaan Input Data Inventaris Karyawan', $msg);
         endfor;
     }
 
