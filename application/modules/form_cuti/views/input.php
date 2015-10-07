@@ -145,7 +145,7 @@
                     <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
                     <div class="row form-row">
                       <div class="col-md-3">
-                        <label class="form-label text-right"><?php echo lang('year') ?></label>
+                        <label class="form-label text-right"><?php echo 'Tahun' ?></label>
                       </div>
                       <div class="col-md-9">
                         <select id="tahuncuti" class="select2" style="width:100%">
