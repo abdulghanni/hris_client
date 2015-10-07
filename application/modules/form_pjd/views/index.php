@@ -17,16 +17,16 @@
         <div class="col-md-12">
             <div class="grid simple ">
               <div class="grid-title no-border">
-                <h4>Form <a href="<?php echo site_url('form_spd_luar_group')?>">Perjalanan Dinas <span class="semi-bold">Luar Kota (Group)</span></a></h4>
+                <h4>Form <a href="<?php echo site_url('form_pjd')?>">Perjalanan Dinas</a></h4>
                 <?php if(is_spv($nik)||is_admin()||is_admin_bagian()):?>
                 <div class="tools"> 
-                  <a href="<?php echo site_url() ?>form_spd_luar_group/input" class="config"><button type="button" class="btn btn-primary btn-sm"><i class="icon-plus"></i>&nbsp;<?php echo lang('add_button');?></button></a>
+                  <a href="<?php echo site_url() ?>form_pjd/input" class="config"><button type="button" class="btn btn-primary btn-sm"><i class="icon-plus"></i>&nbsp;<?php echo lang('add_button');?></button></a>
                 </div>
               <?php endif ?>
               </div>
                 <div class="grid-body no-border">
                          <br/>   
-                            <?php echo form_open(site_url('form_spd_luar_group/keywords'))?>
+                            <?php echo form_open(site_url('form_pjd/keywords'))?>
                               <div class="row">
                                   <div class="col-md-5">
                                       <div class="row">
@@ -46,7 +46,8 @@
                         <table class="table table-striped table-flip-scroll cf">
                             <thead>
                               <tr>
-                                <th width="90%">Kegiatan</th>
+                                <th width="20%">No.</th>
+                                <th width="70%">Kegiatan</th>
                                 <th width="10%" class="text-center">appr. atasan langsung</th>
                                 <th width="10%" class="text-center">appr. atasan tidak langsung</th>
                                 <th width="10%" class="text-center">appr. Atasan Lainnya</th>
@@ -76,11 +77,11 @@
                     
                                     //Approval Level 1
                                     if(!empty($spd->user_app_lv1) && $spd->is_app_lv1 == 0 && $sess_nik == $spd->user_app_lv1){
-                                        $txt_app_lv1 = "<a href='".site_url('form_spd_luar_group/submit/'.$spd->id)."''>
+                                        $txt_app_lv1 = "<a href='".site_url('form_pjd/submit/'.$spd->id)."''>
                                                         <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-edit'></i></button>
                                                         </a>";
                                       }elseif(!empty($spd->user_app_lv1)){
-                                        $txt_app_lv1 = "<a href='".site_url('form_spd_luar_group/submit/'.$spd->id)."''>$approval_status_lv1</a>";
+                                        $txt_app_lv1 = "<a href='".site_url('form_pjd/submit/'.$spd->id)."''>$approval_status_lv1</a>";
                                       }else{
                                       $txt_app_lv1 = "<i class='icon-minus' title = 'Tidak Butuh Approval'></i>";
                                     }
@@ -89,11 +90,11 @@
                                     //ApprovalLevel 2
                                     
                                     if(!empty($spd->user_app_lv2) && $spd->is_app_lv2 == 0 && $sess_nik == $spd->user_app_lv2){
-                                        $txt_app_lv2 = "<a href='".site_url('form_spd_luar_group/submit/'.$spd->id)."''>
+                                        $txt_app_lv2 = "<a href='".site_url('form_pjd/submit/'.$spd->id)."''>
                                                         <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-edit'></i></button>
                                                         </a>";
                                       }elseif(!empty($spd->user_app_lv2)){
-                                        $txt_app_lv2 = "<a href='".site_url('form_spd_luar_group/submit/'.$spd->id)."''>$approval_status_lv2</a>";
+                                        $txt_app_lv2 = "<a href='".site_url('form_pjd/submit/'.$spd->id)."''>$approval_status_lv2</a>";
                                       }else{
                                       $txt_app_lv2 = "<i class='icon-minus' title = 'Tidak Butuh Approval'></i>";
                                     }
@@ -101,22 +102,22 @@
                                     //Approval Level 3
 
                                     if(!empty($spd->user_app_lv3) && $spd->is_app_lv3 == 0 && $sess_nik == $spd->user_app_lv3){
-                                        $txt_app_lv3 = "<a href='".site_url('form_spd_luar_group/submit/'.$spd->id)."''>
+                                        $txt_app_lv3 = "<a href='".site_url('form_pjd/submit/'.$spd->id)."''>
                                                         <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-edit'></i></button>
                                                         </a>";
                                       }elseif(!empty($spd->user_app_lv3)){
-                                        $txt_app_lv3 = "<a href='".site_url('form_spd_luar_group/submit/'.$spd->id)."''>$approval_status_lv3</a>";
+                                        $txt_app_lv3 = "<a href='".site_url('form_pjd/submit/'.$spd->id)."''>$approval_status_lv3</a>";
                                       }else{
                                       $txt_app_lv3 = "<i class='icon-minus' title = 'Tidak Butuh Approval'></i>";
                                     }
 
                                      //Approval HRD
                                     if($this->approval->approver('dinas') == $sess_nik && $spd->is_app_hrd == 0){
-                                      $txt_app_hrd = "<a href='".site_url('form_spd_luar_group/submit/'.$spd->id)."''>
+                                      $txt_app_hrd = "<a href='".site_url('form_pjd/submit/'.$spd->id)."''>
                                                       <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-edit'></i></button>
                                                       </a>";
                                     }elseif($spd->is_app_hrd == 1){
-                                      $txt_app_hrd =  "<a href='".site_url('form_spd_luar_group/submit/'.$spd->id)."''>$approval_status_hrd</a>";
+                                      $txt_app_hrd =  "<a href='".site_url('form_pjd/submit/'.$spd->id)."''>$approval_status_hrd</a>";
                                     }
 
 
@@ -135,8 +136,16 @@
                                 }
                                ?>
                                 <tr>
+                                <td>
+                                  <?php
+                                      $nik = $spd->task_creator;
+                                      $bu = get_user_buid($nik);
+                                      $date = date('m', strtotime($spd->created_on)).'/'.date('Y', strtotime($spd->created_on));
+                                      echo $form_id.'/'.$bu.'/'.$date.'/'.$spd->id
+                                    ?>
+                                </td>
                                   <td>
-                                    <a href="<?php echo base_url() ?>form_spd_luar_group/submit/<?php echo $spd->id ?>"><h4><?php echo $spd->title ?></h4>
+                                    <a href="<?php echo base_url() ?>form_pjd/submit/<?php echo $spd->id ?>"><h4><?php echo $spd->title ?></h4>
                                       <div class="small-text-custom">
                                         <span>Pemberi tugas : </span><?php echo get_name($spd->task_creator) ?><br/>
                                         <span>Penerima tugas : </span>
@@ -144,7 +153,7 @@
                                           for($i=0;$i<sizeof($p);$i++):
                                             $n = get_name($p[$i]).',';
                                         ?>
-                                          <a href="<?php echo site_url('form_spd_luar_group/submit/'.$spd->id)?>"><?php echo $n;?></a>
+                                          <a href="<?php echo site_url('form_pjd/submit/'.$spd->id)?>"><?php echo $n;?></a>
                                         <?php endfor;?><br/>
                                         <span>Tanggal : </span><?php echo dateIndo($spd->date_spd_start).' s/d '.dateIndo($spd->date_spd_end)?><br/>
                                         <span>Tempat : </span><?php echo $spd->destination ?><br />
@@ -166,17 +175,17 @@
                                   </td>
                                   <td>
                                     <div class="list-actions" class="text-center">
-                                      <a href="<?php echo base_url() ?>form_spd_luar_group/submit/<?php echo $spd->id ?>">
+                                      <a href="<?php echo base_url() ?>form_pjd/submit/<?php echo $spd->id ?>">
                                         <button class="btn btn-primary btn-cons" type="button" <?php echo $hidden?>>
                                           <i class="icon-ok"></i>
                                            <?php echo $btn_sub; ?>
                                         </button>
                                       </a>
-                                        <button class="btn btn-info btn-cons" type="button" <?php echo $reject2 ?> onclick='window.location.href="<?php echo base_url()?>form_spd_luar_group/report/<?php echo $spd->id ?>"'>
+                                        <button class="btn btn-info btn-cons" type="button" <?php echo $reject2 ?> onclick='window.location.href="<?php echo base_url()?>form_pjd/report/<?php echo $spd->id ?>"'>
                                           
                                           <?php echo $btn_rep; ?>
                                         </button>
-                                      <a href="<?php echo base_url() ?>form_spd_luar_group/pdf/<?php echo $spd->id ?>" target="_blank">
+                                      <a href="<?php echo base_url() ?>form_pjd/pdf/<?php echo $spd->id ?>" target="_blank">
                                         <button class="btn btn-info btn-cons" type="button">
                                           <i class="icon-print"></i>
                                           Print

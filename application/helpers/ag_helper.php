@@ -840,7 +840,9 @@
 	function get_form_no($id)
 	{
 		$CI =&get_instance();
-		$form = substr($CI->uri->segment(1,0), 5);
+		$uri = $CI->uri->segment(1,0);
+		if($uri == 'form_pjd')$uri='form_spd_luar_group';
+		$form = substr($uri, 5);
 
 		if ($form == 'training_group' || $form == 'training') {
 			$user_id = 'user_pengaju_id';

@@ -17,10 +17,10 @@
         <div class="col-md-12">
           <div class="grid simple">
             <div class="grid-title no-border">
-              <h4>Form <a href="<?php echo site_url('form_spd_luar_group')?>">Perjalanan Dinas <span class="semi-bold">Luar Kota (Group)</span></a></h4>
+              <h4>Form <a href="<?php echo site_url('form_pjd')?>">Perjalanan Dinas <span class="semi-bold"></span></a></h4>
             </div>
             <div class="grid-body no-border">
-             <?php echo form_open_multipart('form_spd_luar_group/add_report/'.$this->uri->segment(3));?>
+             <?php echo form_open_multipart('form_pjd/add_report/'.$this->uri->segment(3));?>
                 <div class="row column-seperation">
                   <div class="col-md-5">
                     <h4>Pelaksanaan Perjalanan Dinas</h4>
@@ -212,7 +212,7 @@
                   <p>Yang bersangkutan</p>
                   <?php if ($this->session->userdata('user_id') == $td->task_receiver && $n_report== 0|| get_nik($this->session->userdata('user_id')) == $td->task_receiver && $n_report== 0) { ?>
                     <button class="btn btn-danger btn-cons" type="submit"><i class="icon-ok"></i> Save</button>
-                    <a href="<?php echo site_url('form_spd_luar_group')?>"><button class="btn btn-white btn-cons" type="button">Cancel</button></a>
+                    <a href="<?php echo site_url('form_pjd')?>"><button class="btn btn-white btn-cons" type="button">Cancel</button></a>
                     <?php }elseif ($this->session->userdata('user_id') != $td->task_receiver && $n_report== 0) { ?>
                             <p class="">...............................</p>
                           <?php }elseif($this->session->userdata('user_id') == $td->task_receiver && $n_report== 1|| get_nik($this->session->userdata('user_id')) == $td->task_receiver && $n_report== 1){ ?>
@@ -255,7 +255,7 @@
       <div class="modal-body">
         <?php 
             $att = array('class' => 'form-no-horizontal-spacing', 'id' => 'formupdatereport');
-            echo form_open_multipart('form_spd_luar_group/update_report/'.$id_report.'/'.get_id($report_creator), $att)?>
+            echo form_open_multipart('form_pjd/update_report/'.$id_report.'/'.get_id($report_creator), $att)?>
             <h4>Laporan Kegiatan PJD</h4>
             <div class="row form-row">
               <div class="col-md-4">

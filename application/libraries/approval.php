@@ -49,9 +49,9 @@ class Approval {
                 break;
             case "spd_luar_group":
                 $receiver = $CI->approval->approver('dinas');
-                $url = base_url().'form_'.$form.'/submit/'.$id;
-                $form = 'Perjalanan Dinas Luar Kota(Group)';
-                $isi_email = get_name($user_id).' membuat surat perintah perjalanan dinas Luar kota(Group), untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>';
+                $url = base_url().'form_pjd/submit/'.$id;
+                $form = 'Perjalanan Dinas';
+                $isi_email = get_name($user_id).' membuat surat perintah Perjalanan Dinas, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>';
                 break;
             case "promosi":
                 $receiver = $CI->approval->approver($form);
@@ -174,8 +174,8 @@ class Approval {
                 $form = 'Perjalanan Dinas Dalam Kota (Group)';
                 break;
             case "spd_luar_group":
-                $url = base_url().'form_'.$form.'/submit/'.$id;
-                $form = 'Perjalanan Dinas Luar Kota (Group)';
+                $url = base_url().'form_pjd/submit/'.$id;
+                $form = 'Perjalanan Dinas';
                 break;
             
             /*
@@ -239,8 +239,8 @@ class Approval {
             case "spd_luar_group":
                 $receiver_id = getValue('task_creator', 'users_'.$form, array('id'=>'where/'.$id));
                 $receiver_id = get_id($receiver_id);
-                $url = base_url().'form_'.$form.'/submit/'.$id;
-                $form = 'Perjalanan Dinas Luar Kota (Group)';
+                $url = base_url().'form_pjd/submit/'.$id;
+                $form = 'Perjalanan Dinas';
             break;
             case "absen":
                 $receiver_id = getValue('user_id', 'users_'.$form, array('id'=>'where/'.$id));
@@ -300,8 +300,8 @@ class Approval {
             case "spd_luar_group":
                 $receiver_id = getValue('task_creator', 'users_'.$form, array('id'=>'where/'.$id));
                 $receiver_id = get_id($receiver_id);
-                $url = base_url().'form_'.$form.'/submit/'.$id;
-                $form = 'Perjalanan Dinas Luar Kota (Group)';
+                $url = base_url().'form_pjd/submit/'.$id;
+                $form = 'Perjalanan Dinas';
             break;
             default:
             $receiver_id = getValue('user_id', 'users_'.$form, array('id'=>'where/'.$id));
@@ -353,8 +353,8 @@ class Approval {
             break;
             case "spd_luar_group":
                 $user_id = getValue('task_creator', 'users_'.$form, array('id'=>'where/'.$id));
-                $url = base_url().'form_'.$form.'/submit/'.$id;
-                $form = 'Perjalanan Dinas Luar Kota (Group)';
+                $url = base_url().'form_pjd/submit/'.$id;
+                $form = 'Perjalanan Dinas';
             break;
             case "training":
                 $user_id = getValue('user_pengaju_id', 'users_'.$form, array('id'=>'where/'.$id));
@@ -414,7 +414,7 @@ class Approval {
     {
         $CI =& get_instance();
         $sess_id = $CI->session->userdata('user_id');
-        $url = base_url().'form_'.$form.'/submit/'.$id;
+        $url = base_url().'form_pjd/submit/'.$id;
 
         switch ($form) {
             case "spd_dalam":
@@ -440,7 +440,7 @@ class Approval {
                 $receivers_id = getValue('task_receiver', 'users_'.$form, array('id'=>'where/'.$id));
                 $receiver_id = explode(',',$receivers_id);
                 $form = ($form == 'spd_dalam_group') ? 'Dalam Kota (Group)' : 'Luar Kota (Group)';
-                $form = 'Perjalanan Dinas'.' '.ucfirst($form);
+                $form = 'Perjalanan Dinas';
 
                 for($i=0;$i<sizeof($receiver_id);$i++):
                     $data = array(

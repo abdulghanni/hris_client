@@ -15,35 +15,14 @@
           <div class="col-md-12">
             <div class="grid simple">
               <div class="grid-title no-border">
-                <h4>Ubah Data <span class="semi-bold"><a href="<?php echo site_url('form_spd_luar_group')?>">Perjalanan Dinas Luar Kota (Group)</a></span></h4>
+                <h4>Detail Ketentuan Biaya <span class="semi-bold"><a href="<?php echo site_url('form_pjd')?>">Perjalanan Dinas</a></span></h4>
               </div>
               <div class="grid-body no-border">
-                <?php echo form_open('form_spd_luar_group/do_edit/'.$id)?>
+                <?php echo form_open('form_pjd/update_biaya/'.$id)?>
                   <div class="row column-seperation">
                     <hr/>
-                    <h5 class="text-center"><span class="semi-bold">Ketentuan Biaya Perjalan Dinas Luar Kota (Group)</span></h5>
-                    <div class="row form-row">
-                          <div class="col-md-2">
-                            <label class="form-label text-left">Tgl. Berangkat</label>
-                          </div>
-                          <div class="col-md-8">
-                            <div class="input-append date success no-padding">
-                              <input type="text" class="form-control from_date" name="date_spd_start" value="<?php echo $spd_start?>" required>
-                              <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span> 
-                            </div>
-                          </div>
-                        </div>
-                        <div class="row form-row">
-                          <div class="col-md-2">
-                            <label class="form-label text-left">Tgl. Pulang</label>
-                          </div>
-                          <div class="col-md-8">
-                            <div class="input-append date success no-padding">
-                              <input type="text" class="form-control to_date" name="date_spd_end" value="<?php echo $spd_end ?>" required>
-                              <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span> 
-                            </div>
-                          </div>
-                        </div>
+                    <h5 class="text-center"><span class="semi-bold">Ketentuan Biaya Perjalan Dinas</span></h5>
+
                     <table class="table table-bordered">
                       <thead>
                         <tr>
@@ -68,24 +47,24 @@
                             <?php echo get_grade($key->user_id)?>
                           </td>
                             <?php $i = 0;
-                              $c = getJoin('users_spd_luar_group_biaya','pjd_biaya','users_spd_luar_group_biaya.pjd_biaya_id = pjd_biaya.id','left', 'users_spd_luar_group_biaya.*, pjd_biaya.title as jenis_biaya, pjd_biaya.type_grade as type', array('user_spd_luar_group_id'=>'where/'.$id, 'user_id'=>'where/'.$key->user_id),array('!=type_grade'=>'0'));
-                             foreach ($c->result() as $k) :
+                              $c = $ci->get_biaya_pjd($key->user_id);
+                              foreach ($c->result() as $k) :
                             ?>
                           <td>
                           <?php $i++ ?>
                           <input type="hidden" class="form-control" name="emp[]" value="<?php echo $key->user_id?>" />
-                            <input type="hidden" class="form-control" name="biaya_id[]" value="<?php echo $k->id?>" />
-                            <input type="text" class="form-control rupiah text-right fix<?php echo $i ?>"  name="jumlah_biaya[]" value="<?php echo number_format($k->jumlah_biaya,0);?>" />
+                            <input type="hidden" class="form-control" name="biaya_fix_id[]" value="<?php echo $k->id?>" />
+                            <input type="text" class="form-control rupiah text-right fix<?php echo $i ?>"  name="biaya_fix[]" value="<?php echo number_format($k->jumlah_biaya,0);?>" />
                           </td>
                             <?php endforeach;
                               $j = 0;
-                              $b = getJoin('users_spd_luar_group_biaya','pjd_biaya','users_spd_luar_group_biaya.pjd_biaya_id = pjd_biaya.id','left', 'users_spd_luar_group_biaya.*, pjd_biaya.title as jenis_biaya, pjd_biaya.type_grade as type', array('user_spd_luar_group_id'=>'where/'.$id, 'user_id'=>'where/'.$key->user_id, 'type_grade'=>'where/0'));
+                              $b = $ci->db->select('id, jumlah_biaya')->where('user_id', $key->user_id)->where('user_spd_luar_group_id', $id)->get('users_spd_luar_group_biaya');
                               foreach ($b->result() as $b) {
                             ?>
                           <td>
                             <?php $j++ ?>
-                            <input type="hidden" class="form-control" name="biaya_id[]" value="<?php echo $b->id?>"/>
-                            <input type="text" class="form-control rupiah text-right tambahan<?php echo $j ?>" name="jumlah_biaya[]" value="<?php echo number_format($b->jumlah_biaya,0)?>"/>
+                            <input type="hidden" class="form-control" name="biaya_tambahan_id[]" value="<?php echo $b->id?>"/>
+                            <input type="text" class="form-control rupiah text-right tambahan<?php echo $j ?>" name="biaya_tambahan[]" value="<?php echo number_format($b->jumlah_biaya,0)?>"/>
                           </td>
                             <?php } ?>
                         </tr>
@@ -99,7 +78,7 @@
                             <td id="totaltambahan<?=$o?>" class="total_tambahan" align="right"></td>
                           <?php endforeach ?>
                         </tr>
-                        <tr><td><b>Total(Rp)</b></td><td align="right" id="grand_total" colspan="<?php $cs=4+sizeof($biaya_pjd->result());echo $cs;?>"></td></tr>
+                        <tr><td><b>Total</b></td><td align="right" id="grand_total" colspan="<?php $cs=4+sizeof($biaya_pjd->result());echo $cs;?>"></td></tr>
                       </tbody>
                     </table>
                     <button type="button" class="btn-primary" onclick="hitungTotal()">Hitung Total</button><br/>
@@ -108,7 +87,7 @@
                     <div class="form-actions">
                       <div class="pull-right">
                         <button id="" class="btn btn-success btn-cons" type="submit" ><i class="icon-ok"></i> <?php echo lang('save_button') ?></button>
-                        <a href="<?php echo site_url('form_spd_luar_group') ?>"><button id="btnCancelMedical" class="btn btn-white btn-cons" type="button" ><?php echo lang('cancel_button') ?></button></a>
+                        <a href="<?php echo site_url('form_pjd') ?>"><button id="" class="btn btn-white btn-cons" type="button" ><?php echo lang('cancel_button') ?></button></a>
                       </div>
                     </div>
                 </div>

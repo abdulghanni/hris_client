@@ -1,8 +1,8 @@
 <div class="grid-title no-border">
-              <h4>Form <a href="<?php echo site_url('form_spd_luar_group')?>">Perjalanan Dinas <span class="semi-bold">Luar Kota (Group)</span></a></h4>
+              <h4>Form <a href="<?php echo site_url('form_pjd')?>">Perjalanan Dinas <span class="semi-bold"></span></a></h4>
             </div>
             <div class="grid-body no-border">
-             <?php echo form_open_multipart('form_spd_luar_group/add_report/'.$this->uri->segment(3));?>
+             <?php echo form_open_multipart('form_pjd/add_report/'.$this->uri->segment(3));?>
                 <div class="row column-seperation">
                   <div class="col-md-5">
                     <h4>Pelaksanaan Perjalanan Dinas</h4>

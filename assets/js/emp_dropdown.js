@@ -67,6 +67,7 @@ $(document).ready(function() {
                 getEmpPos(empId);
                 break;
             case 'form_spd_luar_group':
+            case 'form_pjd':
                 getAtasan1(empId);
                 getAtasan3(empId);
                 getEmpOrg(empId);

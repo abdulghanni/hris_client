@@ -102,11 +102,23 @@ $('.to_date')
         required: true,
         notEqual : 0,
       },
+
+      city_from: {
+        required: true,
+        notEqual : 0,
+      },
+
+      city_to: {
+        required: true,
+        notEqual : 0,
+      },
        atasan1: {notEqual:0}
     },
 
     messages: {
           employee: "Silakan Pilih Karyawan",
+          city_to: "Silakan Pilih Kota",
+          city_from: "Silakan Pilih Kota",
           atasan1 : "Silakan Pilih Atasan"
       }
   });

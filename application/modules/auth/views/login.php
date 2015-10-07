@@ -13,7 +13,7 @@
           <div class="panel-body">
             <?php echo form_open("auth/login",array("id"=>"login-form","class"=>"login-form"));?>  
               <fieldset>
-              <div <?php ( ! empty($message)) && print('class="alert alert-danger text-center" role="alert"'); ?> id="infoMessage"><?php echo $message;?></div>
+              <div <?php (! empty($message)) && print('class="alert alert-danger text-center" role="alert"'); ?> id="infoMessage"><?php echo $message;?></div>
               <div class="form-group">
               <div class="input-group">
               <span class="input-group-addon"><i class="icon-user"></i></span>

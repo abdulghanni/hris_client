@@ -17,10 +17,10 @@
         <div class="col-md-12">
           <div class="grid simple">
             <div class="grid-title no-border">
-              <h4>Form <a href="<?php echo site_url('form_spd_luar_group')?>">Perjalanan Dinas <span class="semi-bold">Luar Kota (Group)</span></a></h4>
+              <h4>Form <a href="<?php echo site_url('form_pjd')?>">Perjalanan Dinas <span class="semi-bold"></span></a></h4>
             </div>
             <div class="grid-body no-border">
-              <form class="form-no-horizontal-spacing" id="form_spd_luar_group" action="<?php echo site_url().'form_spd_luar_group/do_submit/'.$id = $this->uri->segment(3, 0);?>" method="post"> 
+              <form class="form-no-horizontal-spacing" id="form_spd_luar_group" action="<?php echo site_url().'form_pjd/do_submit/'.$id = $this->uri->segment(3, 0);?>" method="post"> 
                 <div class="row column-seperation">
                   <div class="col-md-5">
                     <h4>Yang Memberi Tugas</h4>
@@ -127,7 +127,7 @@
                             <?php 
                             for($i=0;$i<sizeof($receiver);$i++):
                             $report_num = getAll('users_spd_luar_report_group', array('user_spd_luar_group_id'=>'where/'.$td->id, 'created_by'=>'where/'.get_id($receiver[$i])))->num_rows();
-                                $btn_report = (in_array(get_nik($sess_id), $receiver_submit) && $report_num==0 && get_nik($sess_id)== $receiver[$i]) ?'<div class="btn btn-info btn-small" data-toggle="modal" data-target="#createreportModal" title="Create Report"><i class="icon-edit"></i></div><br/>':(($report_num>0)?'<a href='.site_url('form_spd_luar_group/report_detail/'.$td->id.'/'.get_id($receiver[$i])).'>View Report</a>':'<i class="icon-minus"></i>');
+                                $btn_report = (in_array(get_nik($sess_id), $receiver_submit) && $report_num==0 && get_nik($sess_id)== $receiver[$i]) ?'<div class="btn btn-info btn-small" data-toggle="modal" data-target="#createreportModal" title="Create Report"><i class="icon-edit"></i></div><br/>':(($report_num>0)?'<a href='.site_url('form_pjd/report_detail/'.$td->id.'/'.get_id($receiver[$i])).'>View Report</a>':'<i class="icon-minus"></i>');
                             ?>
                               <tr>
                                 <td><?php echo get_name($receiver[$i])?></td>
@@ -169,7 +169,7 @@
       <div class="modal-body">
         <?php 
             $att = array('class' => 'form-no-horizontal-spacing', 'id' => 'formaddreport');
-            echo form_open_multipart('form_spd_luar_group/add_report/'.$id_spd_group, $att)?>
+            echo form_open_multipart('form_pjd/add_report/'.$id_spd_group, $att)?>
             <h4>Laporan Kegiatan PJD</h4>
             <div class="row form-row">
               <div class="col-md-4">

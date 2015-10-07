@@ -35,10 +35,13 @@
           <li > <a href="<?php echo site_url('form_demotion')?>">Demosi</a> </li>          
           <li > <a href="<?php echo site_url('form_rolling')?>">Mutasi</a> </li>    
           <li > <a href="<?php echo site_url('form_cuti')?>">Cuti</a> </li>
-          <li > <a href="<?php echo site_url('form_spd_dalam') ?>">Perjalanan dinas - dalam kota</a> </li>         
+          <!--
+          <li > <a href="<?php echo site_url('form_spd_dalam') ?>">Perjalanan dinas - dalam kota</a> </li>  
           <li > <a href="<?php echo site_url('form_spd_dalam_group') ?>">PJD - dalam kota (Group)</a> </li>         
           <li > <a href="<?php echo site_url('form_spd_luar') ?>">Perjalanan dinas - luar kota</a> </li>     
-          <li > <a href="<?php echo site_url('form_spd_luar_group') ?>">PJD - luar kota (Group)</a> </li>     
+          <li > <a href="<?php echo site_url('form_spd_luar_group') ?>">PJD - luar kota (Group)</a> </li>
+          -->   
+          <li > <a href="<?php echo site_url('form_pjd') ?>">Perjalanan Dinas</a> </li>     
           <li > <a href="<?php echo site_url('form_absen')?>">Keterangan tidak absen</a> </li>
           <?php if(is_spv($nik)||is_admin()||is_admin_bagian()):?><li > <a href="<?php echo site_url('form_medical')?>">Kesehatan</a> </li><?php endif; ?>          
           <li > <a href="<?php echo site_url('form_training')?>">Pelatihan</a> </li>          

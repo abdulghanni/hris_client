@@ -17,13 +17,13 @@
         <div class="col-md-12">
           <div class="grid simple">
             <div class="grid-title no-border">
-              <h4>Form Perjalanan Dinas <span class="semi-bold"><a href="<?php echo site_url('form_spd_luar_group')?>">Luar Kota</a></span></h4>
+              <h4><a href="<?php echo site_url('form_pjd')?>">Form Perjalanan Dinas </a></h4>
             </div>
             <div class="grid-body no-border">
               <!--<form class="form-no-horizontal-spacing" id="add_spd_luar" action="<?php echo site_url() ?>form_spd_luar/add" method="post">-->
               <?php 
                 $att = array('class' => 'form-no-horizontal-spacing', 'id' => 'formadd');
-                echo form_open('form_spd_luar_group/add', $att); ?>
+                echo form_open('form_pjd/add', $att); ?>
                 <div class="row column-seperation">
                   <div class="col-md-5">
                     <h4>Admin Pembuat Tugas</h4> 
@@ -149,6 +149,7 @@
                           </div>
                           <div class="col-md-9">
                             <select id="city_to" name="city_to" class="select2" style="width:100%">
+                              <option value="0">-- Pilih Kota Tujuan --</option>
                               <?php if ($cl_num_rows > 0) {
                               foreach ($city_list as $cl) :
                               ?>    
@@ -164,6 +165,7 @@
                           </div>
                           <div class="col-md-9">
                             <select id="city_from" name="city_from" class="select2" style="width:100%">
+                            <option value="0">-- Pilih Kota Dari --</option>
                               <?php if ($cl_num_rows > 0) {
                               foreach ($city_list as $cl) :
                               ?>    
@@ -245,7 +247,7 @@
                 <div class="form-actions">
                   <div class="pull-right">
                     <button  id="btnSave" class="btn btn-danger btn-cons" type="submit" style="display: none;"><i class="icon-ok"></i> Save</button>
-                    <a href="<?php echo site_url() ?>form_spd_luar_group"><button id="btnCancel" class="btn btn-white btn-cons" type="button" style="display: none;">Cancel</button></a>
+                    <a href="<?php echo site_url() ?>form_pjd"><button id="btnCancel" class="btn btn-white btn-cons" type="button" style="display: none;">Cancel</button></a>
                   </div>
                 </div>
               </form>

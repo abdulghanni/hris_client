@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Form_spd_luar_group extends MX_Controller {
+class Form_pjd extends MX_Controller {
 
     public $data;
 
@@ -13,8 +13,7 @@ class Form_spd_luar_group extends MX_Controller {
         $this->load->helper('url');
         
         $this->load->database();
-        $this->load->model('person/person_model','person_model');
-        $this->load->model('form_spd_luar_group/form_spd_luar_group_model','form_spd_luar_group_model');
+        $this->load->model('form_pjd/form_spd_luar_group_model','form_spd_luar_group_model');
         
         $this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
 
@@ -24,7 +23,7 @@ class Form_spd_luar_group extends MX_Controller {
 
     function index($ftitle = "fn:",$sort_by = "id", $sort_order = "asc", $offset = 0)
     { 
-        $this->data['title'] = "Daftar PJD - Luar Kota (Group)";
+        $this->data['title'] = "Daftar Perjalanan Dinas";
         if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page
@@ -63,7 +62,7 @@ class Form_spd_luar_group extends MX_Controller {
             
 
              //config pagination
-             $config['base_url'] = base_url().'form_spd_luar_group/index/fn:'.$exp_ftitle[1].'/'.$sort_by.'/'.$sort_order.'/';
+             $config['base_url'] = base_url().'form_pjd/index/fn:'.$exp_ftitle[1].'/'.$sort_by.'/'.$sort_order.'/';
              $config['total_rows'] = $this->data['num_rows_all'];
              $config['per_page'] = $limit;
              $config['uri_segment'] = 6;
@@ -81,7 +80,7 @@ class Form_spd_luar_group extends MX_Controller {
                 'value' => $this->form_validation->set_value('title'),
             );
             $this->data['form_id'] = getValue('form_id', 'form_id', array('form_name'=>'like/pjd'));
-            $this->_render_page('form_spd_luar_group/index', $this->data);
+            $this->_render_page('form_pjd/index', $this->data);
         }
     }
 
@@ -94,13 +93,13 @@ class Form_spd_luar_group extends MX_Controller {
         {
             $ftitle_post = (strlen($this->input->post('title')) > 0) ? strtolower(url_title($this->input->post('title'),'_')) : "" ;
 
-            redirect('form_spd_luar_group/index/fn:'.$ftitle_post, 'refresh');
+            redirect('form_pjd/index/fn:'.$ftitle_post, 'refresh');
         }
     }
 
     function submit($id)
     {
-        $this->data['title'] = "Detail PJD - Luar Kota (Group)";
+        $this->data['title'] = "Detail Perjalanan Dinas";
         if (!$this->ion_auth->logged_in())
         {
             $this->session->set_userdata('last_link', $this->uri->uri_string());
@@ -143,7 +142,7 @@ class Form_spd_luar_group extends MX_Controller {
             
             $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
 
-            $this->_render_page('form_spd_luar_group/submit', $this->data);
+            $this->_render_page('form_pjd/submit', $this->data);
         }
     }
 
@@ -171,7 +170,7 @@ class Form_spd_luar_group extends MX_Controller {
 
         if($this->form_spd_luar_group_model->update($id,$additional_data)) {
         $this->send_spd_submitted_mail($id, $creator_id);
-        redirect('form_spd_luar_group/submit/'.$id,'refresh');
+        redirect('form_pjd/submit/'.$id,'refresh');
        }
     }
 
@@ -234,9 +233,9 @@ class Form_spd_luar_group extends MX_Controller {
             $user_app = ($lv<4) ? getValue('user_app_'.$lv_app, 'users_spd_luar_group', array('id'=>'where/'.$id)) : 0;
             $user_spd_luar_group_id = getValue('task_creator', 'users_spd_luar_group', array('id'=>'where/'.$id));
             //$subject_email = get_form_no($id).'['.$approval_status_mail.']Status Pengajuan Perjalanan Dinas Dalam Kota dari Atasan';
-            $subject_email_request = get_form_no($id).'-Pengajuan Perjalanan Dinas Luar Kota(Group)';
-            $isi_email = 'Status pengajuan perjalan dinas dalam kota anda disetujui oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_spd_luar_group/submit/'.$id.'>Klik Disini</a><br />';
-            $isi_email_request = get_name($user_spd_luar_group_id ).' mengajukan Permohonan perjalan dinas dalam kota, untuk melihat detail silakan <a href='.base_url().'form_spd_luar_group/submit/'.$id.'>Klik Disini</a><br />';
+            $subject_email_request = get_form_no($id).' - Pengajuan Perjalanan Dinas';
+            $isi_email = 'Status pengajuan perjalan dinas anda disetujui oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_pjd/submit/'.$id.'>Klik Disini</a><br />';
+            $isi_email_request = get_name($user_spd_luar_group_id ).' mengajukan Permohonan perjalan dinas, untuk melihat detail silakan <a href='.base_url().'form_pjd/submit/'.$id.'>Klik Disini</a><br />';
             
             if(!empty($user_app)):
                 if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), $subject_email_request, $isi_email_request);
@@ -250,7 +249,7 @@ class Form_spd_luar_group extends MX_Controller {
         }else{
             $task_receiver = getValue('task_receiver', 'users_spd_luar_group', array('id'=>'where/'.$id));
             $task_receiver_id = explode(',',$task_receiver);
-            //$email_body = "Status pengajuan permohonan spd_luar_group yang diajukan oleh ".get_name($user_spd_luar_group_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_spd_luar_group/detail/'.$id.'>Klik Disini</a><br />';
+            //$email_body = "Status pengajuan permohonan spd_luar_group yang diajukan oleh ".get_name($user_spd_luar_group_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_pjd/detail/'.$id.'>Klik Disini</a><br />';
             switch($type){
                 case 'lv1':
                     for($j=0;$j<sizeof($task_receiver_id);$j++):
@@ -298,7 +297,7 @@ class Form_spd_luar_group extends MX_Controller {
 
     public function input()
     {
-        $this->data['title'] = "Daftar PJD - luar Kota (Group)";
+        $this->data['title'] = "Input Perjalanan Dinas";
         $user_id = $this->data['sess_id'] = $this->session->userdata('user_id');
         $sess_id = $this->session->userdata('user_id');
         $nik = get_nik($sess_id);
@@ -323,7 +322,7 @@ class Form_spd_luar_group extends MX_Controller {
             $this->data['city_list'] = getAll('city', array('is_deleted'=>'where/0'))->result();
             $this->data['cl_num_rows'] = getAll('city', array('is_deleted'=>'where/0'))->num_rows();
 
-            $this->_render_page('form_spd_luar_group/input', $this->data);
+            $this->_render_page('form_pjd/input', $this->data);
         }
     }
 
@@ -340,7 +339,7 @@ class Form_spd_luar_group extends MX_Controller {
         if($this->form_validation->run() == FALSE)
         {
             //echo json_encode(array('st'=>0, 'errors'=>validation_errors('<div class="alert alert-danger" role="alert">', '</div>')));
-            redirect('form_spd_luar_group/input','refresh');
+            redirect('form_pjd/input','refresh');
         }
         else
         {
@@ -388,20 +387,21 @@ class Form_spd_luar_group extends MX_Controller {
                     }
                  }
 
+                
                 $task_receiver_id = explode(',',$task_receiver);
 
                 $user_app_lv1 = getValue('user_app_lv1', 'users_spd_luar_group', array('id'=>'where/'.$spd_id));
-                $subject_email = get_form_no($spd_id).'-Pengajuan Perjalanan Dinas Luar Kota(Group)';
-                $isi_email = get_name($task_creator).' mengajukan Perjalanan Dinas Luar Kota, untuk melihat detail silakan <a href='.base_url().'form_spd_luar_group/submit/'.$spd_id.'>Klik Disini</a><br />';
+                $subject_email = get_form_no($spd_id).' - Pengajuan Perjalanan Dinas';
+                $isi_email = get_name($task_creator).' mengajukan Perjalanan Dinas, untuk melihat detail silakan <a href='.base_url().'form_pjd/submit/'.$spd_id.'>Klik Disini</a><br />';
                 if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), $subject_email, $isi_email);
                 $emails = '';
                 foreach ($task_receiver_id as $key => $value) {
                     $email = getEmail($value).',';
                     $emails .= $email;
                 }
-                $msg = get_name($task_creator).' memberikan tugas perjalan dinas luar kota(group), untuk melihat detail silakan <a href='.base_url().'form_spd_luar_group/submit/'.$spd_id.'>Klik Disini</a><br />';
-                if(!empty($emails))$this->send_email($emails, 'Pemberian Tugas Perjalanan Dinas Luar Kota(Group)', $msg);
-                redirect('form_spd_luar_group/input_biaya/'.$spd_id,'refresh');
+                $msg = get_name($task_creator).' memberikan tugas perjalan dinas, untuk melihat detail silakan <a href='.base_url().'form_pjd/submit/'.$spd_id.'>Klik Disini</a><br />';
+                if(!empty($emails))$this->send_email($emails, get_form_no($spd_id).' - Pemberian Tugas Perjalanan Dinas', $msg);
+                redirect('form_pjd/input_biaya/'.$spd_id,'refresh');
             }
         }
     }
@@ -423,7 +423,7 @@ class Form_spd_luar_group extends MX_Controller {
         $this->data['spd_start'] = getValue('date_spd_start', 'users_spd_luar_group', array('id'=>'where/'.$id));
         $this->data['spd_end'] = getValue('date_spd_end', 'users_spd_luar_group', array('id'=>'where/'.$id));
 
-        $this->_render_page('form_spd_luar_group/edit_biaya', $this->data);
+        $this->_render_page('form_pjd/edit_biaya', $this->data);
     }
 
     function do_edit($id)
@@ -447,7 +447,7 @@ class Form_spd_luar_group extends MX_Controller {
         $this->db->where('id', $biaya_id[$i])->update('users_spd_luar_group_biaya', $data2);
         endfor;
         $this->edit_mail($id);
-        redirect('form_spd_luar_group/submit/'.$id, 'refresh');
+        redirect('form_pjd/submit/'.$id, 'refresh');
 
     }
 
@@ -458,7 +458,7 @@ class Form_spd_luar_group extends MX_Controller {
             redirect('auth/login', 'refresh');
         }
 
-        $url = base_url().'form_spd_luar_group/submit/'.$id;
+        $url = base_url().'form_pjd/submit/'.$id;
         $sess_id = $this->session->userdata('user_id');
         $sender_id = get_nik($sess_id);
 
@@ -470,8 +470,8 @@ class Form_spd_luar_group extends MX_Controller {
                     'sender_id' => $sender_id,
                     'receiver_id' => $task_receiver_id[$i],
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                    'subject' => 'Perubahan Data Tugas Perjalanan Dinas Luar Kota(Group)',
-                    'email_body' => get_name($sender_id).' melakukan perubahan data tugas perjalan dinas luar kota(group), untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$this->detail_email($id),
+                    'subject' => 'Perubahan Data Tugas Perjalanan Dinas',
+                    'email_body' => get_name($sender_id).' melakukan perubahan data tugas perjalan dinas , untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$this->detail_email($id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data);
@@ -481,8 +481,8 @@ class Form_spd_luar_group extends MX_Controller {
                     'sender_id' => $sender_id,
                     'receiver_id' => $user_app_lv1,
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                    'subject' => 'Perubahan Data Tugas Perjalanan Dinas Luar Kota(Group)',
-                    'email_body' => get_name($sender_id).' melakukan perubahan data tugas perjalan dinas luar kota(group), untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$this->detail_email($id),
+                    'subject' => 'Perubahan Data Tugas Perjalanan Dinas',
+                    'email_body' => get_name($sender_id).' melakukan perubahan data tugas perjalan dinas , untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$this->detail_email($id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data);
@@ -490,7 +490,7 @@ class Form_spd_luar_group extends MX_Controller {
 
     public function report($id)
     {
-        $this->data['title'] = "Daftar Report PJD - Luar Kota (Group)";
+        $this->data['title'] = "Daftar Report PJD";
         $user_id = $this->data['sess_id'] = $this->session->userdata('user_id');
         $report_id = $this->db->where('users_spd_luar_report_group.user_spd_luar_group_id', $id)->get('users_spd_luar_report_group')->row('id');
 
@@ -516,13 +516,13 @@ class Form_spd_luar_group extends MX_Controller {
             $this->data['receiver_submit'] = explode(",", $user_submit);
 
             
-            $this->_render_page('form_spd_luar_group/report', $this->data);
+            $this->_render_page('form_pjd/report', $this->data);
         }
     }
 
     public function report_detail($id, $user_id)
     {
-        $this->data['title'] = "Report Detail PJD - Luar Kota (Group)";
+        $this->data['title'] = "Report Detail PJD";
         $report_id = getValue('id','users_spd_luar_report_group', array('user_spd_luar_group_id'=>'where/'.$id, 'created_by'=>'where/'.$user_id));
         if (!$this->ion_auth->logged_in())
         {
@@ -573,7 +573,7 @@ class Form_spd_luar_group extends MX_Controller {
                 $this->data['disabled'] = 'disabled='.'"disabled"';
             }}
 
-            $this->_render_page('form_spd_luar_group/report_detail', $this->data);
+            $this->_render_page('form_pjd/report_detail', $this->data);
         }
     }
 
@@ -589,7 +589,7 @@ class Form_spd_luar_group extends MX_Controller {
         if($this->form_validation->run() == FALSE)
         {
             $this->session->set_flashdata('message', $this->ion_auth->messages());
-            redirect('form_spd_luar_group/report/'.$spd_id, 'refresh');
+            redirect('form_pjd/report/'.$spd_id, 'refresh');
         }
         else
         {
@@ -651,7 +651,7 @@ class Form_spd_luar_group extends MX_Controller {
             if ($this->form_validation->run() == true && $this->form_spd_luar_group_model->create_report($spd_id,$additional_data))
             {
                 $this->send_spd_report_mail($spd_id, $receiver_id);
-                redirect('form_spd_luar_group/report_detail/'.$spd_id.'/'.$sess_id, 'refresh');  
+                redirect('form_pjd/report_detail/'.$spd_id.'/'.$sess_id, 'refresh');  
             }          
         }
 
@@ -670,7 +670,7 @@ class Form_spd_luar_group extends MX_Controller {
         if($this->form_validation->run() == FALSE)
         {
             $this->session->set_flashdata('message', $this->ion_auth->messages());
-            redirect('form_spd_luar_group/report/'.$spd_id, 'refresh');
+            redirect('form_pjd/report/'.$spd_id, 'refresh');
         }
         else
         {
@@ -734,7 +734,7 @@ class Form_spd_luar_group extends MX_Controller {
             if ($this->form_validation->run() == true && $this->form_spd_luar_group_model->update_report($report_id,$additional_data))
             {
                 $this->send_spd_report_mail($spd_id, $receiver_id);
-                redirect('form_spd_luar_group/report_detail/'.$spd_id.'/'.$user_id, 'refresh');  
+                redirect('form_pjd/report_detail/'.$spd_id.'/'.$user_id, 'refresh');  
             }          
         }
 
@@ -750,15 +750,15 @@ class Form_spd_luar_group extends MX_Controller {
         $sender_id = getValue('task_creator', 'users_spd_luar_group', array('id' => 'where/'.$spd_id));
         $task_receiver = getValue('task_receiver', 'users_spd_luar_group', array('id' => 'where/'.$spd_id));
         $task_receiver_id = explode(',',$task_receiver);
-        $url = base_url().'form_spd_luar_group/submit/'.$spd_id;
+        $url = base_url().'form_pjd/submit/'.$spd_id;
 
         for($i=0;$i<sizeof($task_receiver_id);$i++):
         $data = array(
                     'sender_id' => $sender_id,
                     'receiver_id' => $task_receiver_id[$i],
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                    'subject' => get_form_no($spd_id).'Pemberian Tugas Perjalanan Dinas Luar Kota(Group)',
-                    'email_body' => get_name($sender_id).' memberikan tugas perjalan dinas luar kota(group), untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$this->detail_email($spd_id),
+                    'subject' => get_form_no($spd_id).'-Pemberian Tugas Perjalanan Dinas',
+                    'email_body' => get_name($sender_id).' memberikan tugas perjalan dinas , untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$this->detail_email($spd_id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data);
@@ -772,14 +772,14 @@ class Form_spd_luar_group extends MX_Controller {
             //redirect them to the login page
             redirect('auth/login', 'refresh');
         }
-        $url = base_url().'form_spd_luar_group/submit/'.$spd_id;
+        $url = base_url().'form_pjd/submit/'.$spd_id;
         $sender = (!empty(get_nik($this->session->userdata('user_id')))) ? get_nik($this->session->userdata('user_id')) : $this->session->userdata('user_id');
         $data = array(
                     'sender_id' => $sender,
                     'receiver_id' => $receiver_id,
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                    'subject' => 'Persetujuan Tugas Perjalanan Dinas Luar Kota(Group)',
-                    'email_body' => get_name($sender).' telah menyetujui tugas perjalan dinas luar kota (group) yang anda berikan, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$this->detail_email($spd_id),
+                    'subject' => 'Persetujuan Tugas Perjalanan Dinas',
+                    'email_body' => get_name($sender).' telah menyetujui tugas perjalan dinas yang anda berikan, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$this->detail_email($spd_id),
                     'is_read' => 0,
                 );
         $this->db->insert('email', $data);
@@ -793,15 +793,15 @@ class Form_spd_luar_group extends MX_Controller {
             redirect('auth/login', 'refresh');
         }
 
-        $url = base_url().'form_spd_luar_group/submit/'.$spd_id;
+        $url = base_url().'form_pjd/submit/'.$spd_id;
         $receiver_id = explode(',',$task_receiver_id);
         for($i=0;$i<sizeof($task_receiver_id);$i++):
         $data = array(
                     'sender_id' => $sender_id,
                     'receiver_id' => $receiver_id[$i],
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                    'subject' => 'Pembatalan Tugas Perjalanan Dinas Luar Kota(Group)',
-                    'email_body' => get_name($sender_id).' membatalkan tugas perjalan dinas luar kota(group), untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$this->detail_email($spd_id),
+                    'subject' => 'Pembatalan Tugas Perjalanan Dinas',
+                    'email_body' => get_name($sender_id).' membatalkan tugas perjalan dinas , untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$this->detail_email($spd_id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data);
@@ -818,13 +818,13 @@ class Form_spd_luar_group extends MX_Controller {
 
         $sess_id = $this->session->userdata('user_id');
         $sender = (!empty(get_nik($sess_id))) ? get_nik($sess_id) : $sess_id;
-        $url = base_url().'form_spd_luar_group/report_detail/'.$spd_id.'/'.$sess_id;
+        $url = base_url().'form_pjd/report_detail/'.$spd_id.'/'.$sess_id;
         $data = array(
                     'sender_id' => $sender,
                     'receiver_id' => $receiver_id,
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                    'subject' => 'Laporan Tugas Perjalanan Dinas Luar Kota(Group)',
-                    'email_body' => get_name($sender).' telah membuat laporan perjalanan dinas luar kota(group), untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$this->detail_email_report($spd_id, $sess_id),
+                    'subject' => get_form_no($spd_id).' - Laporan Tugas Perjalanan Dinas',
+                    'email_body' => get_name($sender).' telah membuat laporan perjalanan dinas, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$this->detail_email_report($spd_id, $sess_id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data);
@@ -841,7 +841,7 @@ class Form_spd_luar_group extends MX_Controller {
         {
         $this->data['id'] = $id;
         $sess_id= $this->data['sess_id'] = $this->session->userdata('user_id');
-        $sess_nik = get_nik($sess_id);
+        $this->data['sess_nik'] = $sess_nik = get_nik($sess_id);
         $data_result = $this->data['task_detail'] = $this->form_spd_luar_group_model->where('users_spd_luar_group.id',$id)->form_spd_luar_group($id)->result();
         $this->data['td_num_rows'] = $this->form_spd_luar_group_model->where('users_spd_luar_group.id',$id)->form_spd_luar_group($id)->num_rows();
     
@@ -878,7 +878,7 @@ class Form_spd_luar_group extends MX_Controller {
         $this->data['hotel'] = number_format($biaya_fix_3['hotel']*$jml_pjd);
         
 
-            return $this->load->view('form_spd_luar_group/spd_luar_group_mail', $this->data, TRUE);
+            return $this->load->view('form_pjd/spd_luar_group_mail', $this->data, TRUE);
         }
     } 
 
@@ -894,7 +894,7 @@ class Form_spd_luar_group extends MX_Controller {
         $b = $this->data['biaya_pjd'] = $this->db->distinct()->select('users_spd_luar_group_biaya.pjd_biaya_id as biaya_id, pjd_biaya.title as jenis_biaya')->from('users_spd_luar_group_biaya')->join('pjd_biaya','pjd_biaya.id = users_spd_luar_group_biaya.pjd_biaya_id', 'left')->where('user_spd_luar_group_id', $id)->where('pjd_biaya.type_grade', 0)->get();                  
         $this->data['detail'] = $this->db->distinct()->select('user_id')->where('user_spd_luar_group_id', $id)->get('users_spd_luar_group_biaya');
         $this->data['ci'] = $this;
-        $this->_render_page('form_spd_luar_group/input_biaya', $this->data);
+        $this->_render_page('form_pjd/input_biaya', $this->data);
     }
 
     function update_biaya($id)
@@ -933,10 +933,10 @@ class Form_spd_luar_group extends MX_Controller {
 
         $this->send_spd_mail($spd_id);
 
-        //if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), 'Pengajuan Perjalanan Dinas Luar Kota (Group)', $isi_email);
+        //if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), 'Pengajuan Perjalanan Dinas (Group)', $isi_email);
         $user_app_lv1 = getValue('user_app_lv1', 'users_spd_luar_group', array('id'=>'where/'.$spd_id));
-        $subject_email = get_form_no($spd_id).'-Pengajuan Perjalanan Dinas Luar Kota(Group)';
-        $isi_email = get_name($task_creator).' mengajukan Perjalanan Dinas Luar Kota, untuk melihat detail silakan <a href='.base_url().'form_spd_luar_group/submit/'.$spd_id.'>Klik Disini</a><br />';
+        $subject_email = get_form_no($spd_id).' - Pengajuan Perjalanan Dinas';
+        $isi_email = get_name($task_creator).' mengajukan Perjalanan Dinas, untuk melihat detail silakan <a href='.base_url().'form_pjd/submit/'.$spd_id.'>Klik Disini</a><br />';
 
         if($task_creator!==$created_by):
             $this->approval->by_admin('spd_luar_group', $spd_id, $created_by, $task_creator, $this->detail_email($spd_id));
@@ -949,7 +949,7 @@ class Form_spd_luar_group extends MX_Controller {
             $this->approval->request('hrd', 'spd_luar_group', $spd_id, $task_creator, $this->detail_email($spd_id));
          endif;
 
-        redirect('form_spd_luar_group', 'refresh');
+        redirect('form_pjd', 'refresh');
     }
 
     function detail_email_report($id, $user_id)
@@ -994,7 +994,7 @@ class Form_spd_luar_group extends MX_Controller {
                 $this->data['disabled'] = 'disabled='.'"disabled"';
             }}
 
-            return $this->load->view('form_spd_luar_group/spd_luar_report_group_mail', $this->data, TRUE);
+            return $this->load->view('form_pjd/spd_luar_report_group_mail', $this->data, TRUE);
         }
     }
 
@@ -1060,7 +1060,7 @@ class Form_spd_luar_group extends MX_Controller {
             redirect('auth/login', 'refresh');
         }
 
-        $this->data['title'] = $title = 'SPD - Luar Kota (Group)';
+        $this->data['title'] = $title = 'Perjalanan Dinas';
         $sess_id= $this->data['sess_id'] = $this->session->userdata('user_id');
         $this->data['sess_nik'] = $sess_nik = get_nik($sess_id);
         $data_result = $this->data['task_detail'] = $this->form_spd_luar_group_model->where('users_spd_luar_group.id',$id)->form_spd_luar_group($id)->result();
@@ -1120,7 +1120,7 @@ class Form_spd_luar_group extends MX_Controller {
         {
             $this->load->library('template');
 
-                if(in_array($view, array('form_spd_luar_group/index')))
+                if(in_array($view, array('form_pjd/index')))
                 {
                     $this->template->set_layout('default');
 
@@ -1135,9 +1135,9 @@ class Form_spd_luar_group extends MX_Controller {
                     $this->template->add_css('plugins/select2/select2.css');
                     
                 }
-                elseif(in_array($view, array('form_spd_luar_group/input',
-                                             'form_spd_luar_group/input_biaya',
-                                             'form_spd_luar_group/edit_biaya'
+                elseif(in_array($view, array('form_pjd/input',
+                                             'form_pjd/input_biaya',
+                                             'form_pjd/edit_biaya'
                                              )))
                 {
 
@@ -1160,7 +1160,7 @@ class Form_spd_luar_group extends MX_Controller {
                     $this->template->add_css('plugins/select2/select2.css');
                     $this->template->add_css('datepicker.css');
 
-                }elseif(in_array($view, array('form_spd_luar_group/submit' )))
+                }elseif(in_array($view, array('form_pjd/submit' )))
                 {
 
                     $this->template->set_layout('default');
@@ -1175,8 +1175,8 @@ class Form_spd_luar_group extends MX_Controller {
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                     $this->template->add_css('approval_img.css');
 
-                }elseif(in_array($view, array('form_spd_luar_group/report',
-                                             'form_spd_luar_group/report_detail' )))
+                }elseif(in_array($view, array('form_pjd/report',
+                                             'form_pjd/report_detail' )))
                 {
 
                     $this->template->set_layout('default');
@@ -1209,4 +1209,4 @@ class Form_spd_luar_group extends MX_Controller {
 }
 
 /* End of file form_spd_luar_group.php */
-/* Location: ./application/modules/form_spd_luar_group/controllers/form_spd_luar_group.php */
+/* Location: ./application/modules/form_pjd/controllers/form_spd_luar_group.php */
