@@ -121,28 +121,28 @@ $rejected = assets_url('img/rejected_stamp.png');
   </tr>
   <?php if(!empty($user->note_app_lv1)){?>
   <tr>
-    <td height="40"><span class="style3">Note Supervisor </span></td>
+    <td height="40"><span class="style3">Note (<?php echo strtok(get_name($user->user_app_lv1), " ")?>) </span></td>
     <td height="40"><div align="center">:</div></td>
     <td height="40"><span class="style3"><?php echo $user->note_app_lv1?></span></td>
   </tr>
   <?php } ?>
   <?php if(!empty($user->note_app_lv2)){?>
   <tr>
-    <td height="40"><span class="style3">Note Ka. Bagian </span></td>
+    <td height="40"><span class="style3">Note (<?php echo strtok(get_name($user->user_app_lv2), " ")?>) </span></td>
     <td height="40"><div align="center">:</div></td>
     <td height="40"><span class="style3"><?php echo $user->note_app_lv2?></span></td>
   </tr>
   <?php } ?>
   <?php if(!empty($user->note_app_lv3)){?>
   <tr>
-    <td height="40"><span class="style3">Note Atasan Lain </span></td>
+    <td height="40"><span class="style3">Note (<?php echo strtok(get_name($user->user_app_lv3), " ")?>) </span></td>
     <td height="40"><div align="center">:</div></td>
     <td height="40"><span class="style3"><?php echo $user->note_app_lv3?></span></td>
   </tr>
   <?php } ?>
   <?php if(!empty($user->note_app_hrd)){?>
   <tr>
-    <td height="40"><span class="style3">Note HRD </span></td>
+    <td height="40"><span class="style3">Note (<?php echo strtok(get_name($user->user_app_hrd), " ")?>) </span></td>
     <td height="40"><div align="center">:</div></td>
     <td height="40"><span class="style3"><?php echo $user->note_app_hrd?></span></td>
   </tr>
@@ -169,8 +169,8 @@ $rejected = assets_url('img/rejected_stamp.png');
       <td align="center" class="style3"><?php echo get_name($user->user_app_hrd)?></td>
     </tr>
     <tr >
-      <td align="center"><?php echo dateIndo($user->date_app_lv1)?><br/>(Supervisor)</td>
-      <td align="center"><?php echo dateIndo($user->date_app_lv2)?><br/>(Ka. Bagian)</td>
+      <td align="center"><?php echo dateIndo($user->date_app_lv1)?><br/>(Atasan Langsung)</td>
+      <td align="center"><?php echo dateIndo($user->date_app_lv2)?><?php if(!empty($user->user_app_lv2)):?><br/><?php echo '('.get_user_position($user->user_app_lv2).')';endif;?></td>
       <td align="center"><?php echo dateIndo($user->date_app_lv3)?><?php if(!empty($user->user_app_lv3)):?><br/><?php echo '('.get_user_position($user->user_app_lv3).')';endif;?></td>
       <td align="center"><?php echo dateIndo($user->date_app_hrd)?><br/>(HRD)</td>
     </tr>

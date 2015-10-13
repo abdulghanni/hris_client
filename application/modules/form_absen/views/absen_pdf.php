@@ -16,7 +16,7 @@
 .style6 {
   color: #000000;
   font-weight: bold;
-  font-size: 26px;
+  font-size: 22px;
 }
 .style7 {
   padding-left: 20px;
@@ -46,7 +46,7 @@ $rejected = assets_url('img/rejected_stamp.png');
   <tr>
     <td width="275" height="40"><span class="style3">No</span></td>
     <td width="10" height="40"><div align="center">:</div></td>
-    <td width="440" height="40"><span class="style3"><?php echo $row->id?></span></td>
+    <td width="440" height="40"><span class="style3"><?php echo get_form_no($row->id)?></span></td>
   </tr>
   <tr>
     <td height="40"><span class="style3">Tanggal absen </span></td>

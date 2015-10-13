@@ -1060,7 +1060,7 @@ class Form_pjd extends MX_Controller {
             redirect('auth/login', 'refresh');
         }
 
-        $this->data['title'] = $title = 'Perjalanan Dinas';
+        $this->data['title'] = $title = get_form_no($id);
         $sess_id= $this->data['sess_id'] = $this->session->userdata('user_id');
         $this->data['sess_nik'] = $sess_nik = get_nik($sess_id);
         $data_result = $this->data['task_detail'] = $this->form_spd_luar_group_model->where('users_spd_luar_group.id',$id)->form_spd_luar_group($id)->result();
@@ -1068,6 +1068,9 @@ class Form_pjd extends MX_Controller {
     
         
         $receiver = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('task_receiver');
+        $receiver_size = explode(',', $receiver);$receiver_size = sizeof($receiver_size); 
+        $this->data['biaya_single'] = getJoin('users_spd_luar_group_biaya','pjd_biaya','users_spd_luar_group_biaya.pjd_biaya_id = pjd_biaya.id','left', 'users_spd_luar_group_biaya.*, pjd_biaya.title as jenis_biaya, pjd_biaya.type_grade as type', array('user_spd_luar_group_id'=>'where/'.$id, 'user_id'=>'where/'.$receiver, 'pjd_biaya_id'=>'order/asc'));
+        
         $creator = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('task_creator');
         $user_submit = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('user_submit');
         $this->data['biaya_pjd_group'] = getAll('users_spd_luar_group_biaya', array('user_spd_luar_group_id'=>'where/'.$id));
@@ -1079,7 +1082,7 @@ class Form_pjd extends MX_Controller {
         $this->data['detail'] = $this->db->distinct()->select('user_id')->where('user_spd_luar_group_id', $id)->get('users_spd_luar_group_biaya');
         $this->data['ci'] = $this;
         $creator = getValue('task_creator', 'users_spd_luar_group', array('id'=>'where/'.$id));
-        $this->data['form_id'] = 'PJD-LKG';
+        $this->data['form_id'] = 'PJD';
         $this->data['bu'] = get_user_buid($creator);
         $loc_id = get_user_locationid($creator);
         $this->data['location'] = get_user_location($loc_id);
@@ -1098,9 +1101,10 @@ class Form_pjd extends MX_Controller {
         $biaya_fix_3 = $this->db->select("(SELECT SUM(jumlah_biaya) FROM users_spd_luar_group_biaya WHERE user_spd_luar_group_id=$id and (pjd_biaya_id = 3 or pjd_biaya_id=6 or pjd_biaya_id=9 or pjd_biaya_id=12 or pjd_biaya_id=15 or pjd_biaya_id=21 or pjd_biaya_id=18)) AS hotel", FALSE)->get()->row_array();
         $this->data['hotel'] = number_format($biaya_fix_3['hotel']*$jml_pjd);
         $this->load->library('mpdf60/mpdf');
-        $html = $this->load->view('spd_luar_group_pdf', $this->data, true); 
+        $html = ($receiver_size > 1) ? $this->load->view('spd_luar_group_pdf', $this->data, true) : $this->load->view('pjd_pdf', $this->data, true) ; 
+        $orientation = ($receiver_size>1) ? 'L' : 'P';
         $this->mpdf = new mPDF();
-        $this->mpdf->AddPage('L', // L - landscape, P - portrait
+        $this->mpdf->AddPage($orientation, // L - landscape, P - portrait
             '', '', '', '',
             30, // margin_left
             30, // margin right
@@ -1109,7 +1113,7 @@ class Form_pjd extends MX_Controller {
             10, // margin header
             10); // margin footer
     $this->mpdf->WriteHTML($html);
-    $this->mpdf->Output($id.'-'.$title.'-'.$creator.'pdf', 'I');
+    $this->mpdf->Output($id.'-'.get_form_no($id).'pdf', 'I');
         
     }
 

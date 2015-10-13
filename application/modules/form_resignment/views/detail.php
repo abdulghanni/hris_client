@@ -88,7 +88,7 @@
                         <div class="col-md-4">
                           <label class="form-label text-left">Tanggal Pengajuan</label>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-5">
                           <input name="old_org2" id="old_org2" class="form-control " placeholder="" value="<?php echo dateIndo($row->created_on)?>"  disabled="disabled">
                         </div>
                       </div>
@@ -97,7 +97,7 @@
                         <div class="col-md-4">
                           <label class="form-label text-left">Tanggal Terakhir Bekerja</label>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-5">
                             <input type="text" class="form-control" id="sandbox-advance" name="date_resign" value="<?php echo dateIndo($row->date_resign)?>" disabled>
                         </div>
                       </div>
@@ -116,7 +116,7 @@
                           <label class="form-label text-left">No. Telp Pengaju</label>
                         </div>
                         <div class="col-md-4">
-                          <input name="phone" id="phone" class="form-control " placeholder="" value="<?php echo $row->phone ?>">
+                          <input name="phone" id="phone" class="form-control " placeholder="" value="<?php echo $row->phone ?>" disabled>
                         </div>
                       </div>
 
@@ -755,7 +755,7 @@
 
             
               <div class="col-md-12">
-                <label class="form-label text-left">Apakah anda mempertimbangkan di masa datang untuk kembali bekerja di perusahaan ini? ?</label>
+                <label class="form-label text-left">Apakah anda mempertimbangkan di masa datang untuk kembali bekerja di perusahaan ini?</label>
               </div>
             
               <div class="col-md-12">

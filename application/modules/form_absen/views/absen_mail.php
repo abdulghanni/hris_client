@@ -105,6 +105,7 @@
                         </div>
 
                         <div class="col-md-3">
+                        <?php if(!empty($absen->user_app_lv2)) : ?>
                           <p class="wf-approve-sp">
                             <?php
                             if(!empty($absen->user_app_lv2) && $absen->is_app_lv2 == 0 && get_nik($sess_id) == $absen->user_app_lv2){?>
@@ -128,9 +129,11 @@
                               <span class="semi-bold">(Atasan Tidak Langsung)</span>
                             <?php } ?>
                           </p>
+                        <?php endif; ?>
                         </div>
                           
                         <div class="col-md-3">
+                        <?php if(!empty($absen->user_app_lv3)) : ?>
                           <p class="wf-approve-sp">
                             <?php
                             if(!empty($absen->user_app_lv3) && $absen->is_app_lv3 == 0 && get_nik($sess_id) == $absen->user_app_lv3){?>
@@ -154,6 +157,7 @@
                               <span class="semi-bold">(<?php echo get_user_position($absen->user_app_lv3)?>)</span>
                             <?php } ?>
                           </p>
+                        <?php endif; ?>
                         </div>
                           
                         <div class="col-md-3">
