@@ -515,6 +515,44 @@ class Form_pjd extends MX_Controller {
             $this->data['receiver'] = $p = explode(",", $receiver);
             $this->data['receiver_submit'] = explode(",", $user_submit);
 
+            $this->data['sess_id'] = $this->session->userdata('user_id');
+            $data_result = $this->data['task_detail'] = $this->form_spd_luar_group_model->where('users_spd_luar_group.id',$id)->form_spd_luar_group($id)->result();
+            $this->data['td_num_rows'] = $this->form_spd_luar_group_model->where('users_spd_luar_group.id',$id)->form_spd_luar_group($id)->num_rows();
+            
+
+           
+            $report = $this->data['report'] = $this->form_spd_luar_group_model->where('users_spd_luar_report_group.user_spd_luar_group_id', $id)->form_spd_luar_report_group($report_id, $user_id)->result();
+            $n_report = $this->data['n_report'] = $this->form_spd_luar_group_model->where('users_spd_luar_report_group.user_spd_luar_group_id', $id)->form_spd_luar_report_group($report_id, $user_id)->num_rows();
+
+            $receiver_id = getValue('task_receiver', 'users_spd_dalam', array('id'=>'where/'.$id));
+            if($n_report==0){
+                $this->data['is_done'] = '';
+                //$this->data['tujuan'] = '';
+                //$this->data['hasil'] = '';
+                $this->data['what'] = '';
+                $this->data['why'] = '';
+                $this->data['where'] = '';
+                $this->data['when'] = '';
+                $this->data['who'] = '';
+                $this->data['how'] = '';
+                $this->data['attachment'] = '-';
+                $this->data['disabled'] = '';
+            }else{
+                foreach ($report as $key) {
+                $this->data['id_report'] = $key->id;
+                $this->data['is_done'] = $key->is_done;    
+                //$this->data['tujuan'] = '';
+                //$this->data['hasil'] = '';
+                $this->data['what'] = $key->what;
+                $this->data['why'] = $key->why;
+                $this->data['where'] = $key->where;
+                $this->data['when'] = $key->when;
+                $this->data['who'] = $key->who;
+                $this->data['how'] = $key->how;
+                $this->data['attachment'] = (!empty($key->attachment)) ? $key->attachment : 2 ;
+                $this->data['created_on'] = $key->created_on;
+                $this->data['disabled'] = 'disabled='.'"disabled"';
+            }}
             
             $this->_render_page('form_pjd/report', $this->data);
         }
@@ -537,7 +575,7 @@ class Form_pjd extends MX_Controller {
             $this->data['td_num_rows'] = $this->form_spd_luar_group_model->where('users_spd_luar_group.id',$id)->form_spd_luar_group($id)->num_rows();
             
             $this->data['report_creator'] = $report_creator = getValue('created_by','users_spd_luar_report_group', array('id'=>'where/'.$report_id, 'created_by'=>'where/'.$user_id));
-            $this->data['user_folder'] = get_nik($report_creator);
+            $this->data['created_by'] = $this->data['user_folder'] = get_nik($report_creator);
 
            
             $report = $this->data['report'] = $this->form_spd_luar_group_model->where('users_spd_luar_report_group.user_spd_luar_group_id', $id)->form_spd_luar_report_group($report_id, $user_id)->result();

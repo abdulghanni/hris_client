@@ -373,7 +373,7 @@ class Form_recruitment extends MX_Controller {
         $this->data['jenis_kelamin'] = $this->recruitment_model->get_jk($jk);
         $this->data['pendidikan'] = $this->recruitment_model->get_pendidikan($pendidikan);
         $this->data['komputer'] = $this->recruitment_model->get_komputer($komputer);
-        $this->data['position_pengaju'] = $this->get_user_position($this->recruitment_model->recruitment($id)->row_array()['user_id']);
+        //$this->data['position_pengaju'] = $this->get_user_position($this->recruitment_model->recruitment($id)->row_array()['user_id']);
         $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
         return $this->load->view('form_recruitment/recruitment_mail', $this->data, TRUE);
     }

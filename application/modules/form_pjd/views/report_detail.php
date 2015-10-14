@@ -131,7 +131,7 @@
                         <label class="form-label text-left">What</label>
                       </div>
                       <div class="col-md-10">
-                        <input name="what" type="text"  class="form-control" placeholder="Isi Disini..." value="<?php echo $what?>" required>
+                        <input name="what" type="text"  class="form-control" placeholder="Isi Disini..." value="<?php echo $what?>" <?= $disabled ?>>
                       </div>
                     </div>
 
@@ -140,7 +140,7 @@
                         <label class="form-label text-left">Why</label>
                       </div>
                       <div class="col-md-10">
-                        <input name="why" type="text"  class="form-control" placeholder="Isi Disini..." value="<?php echo $why?>" required>
+                        <input name="why" type="text"  class="form-control" placeholder="Isi Disini..." value="<?php echo $why?>" <?= $disabled ?>>
                       </div>
                     </div>
 
@@ -149,7 +149,7 @@
                         <label class="form-label text-left">Where</label>
                       </div>
                       <div class="col-md-10">
-                        <input name="where" type="text"  class="form-control" placeholder="Isi Disini..." value="<?php echo $where?>" required>
+                        <input name="where" type="text"  class="form-control" placeholder="Isi Disini..." value="<?php echo $where?>" <?= $disabled ?>>
                       </div>
                     </div>
 
@@ -158,7 +158,7 @@
                         <label class="form-label text-left">When</label>
                       </div>
                       <div class="col-md-10">
-                        <input name="when" type="text"  class="form-control" placeholder="Isi Disini..." value="<?php echo $when?>" required>
+                        <input name="when" type="text"  class="form-control" placeholder="Isi Disini..." value="<?php echo $when?>" <?= $disabled ?>>
                       </div>
                     </div>
 
@@ -167,7 +167,7 @@
                         <label class="form-label text-left">Who</label>
                       </div>
                       <div class="col-md-10">
-                        <input name="who" type="text"  class="form-control" placeholder="Isi Disini..." value="<?php echo $who?>" required>
+                        <input name="who" type="text"  class="form-control" placeholder="Isi Disini..." value="<?php echo $who?>" <?= $disabled ?>>
                       </div>
                     </div>
 
@@ -176,7 +176,7 @@
                         <label class="form-label text-left">How : </label>
                       </div>
                       <div class="col-md-12">
-                        <textarea name="how" id="text-editor" placeholder="Hasil Kegiatan ..." class="form-control" rows="3" required><?php echo $how?></textarea>
+                        <textarea name="how" id="text-editor" placeholder="Hasil Kegiatan ..." class="form-control" rows="3" <?= $disabled ?>><?php echo $how?></textarea>
                       </div>
                     </div>
 

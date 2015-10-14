@@ -52,6 +52,7 @@
             <ul class="dropdown-menu  pull-right" role="menu" aria-labelledby="user-options">
               <li><a href="<?php echo site_url('auth/edit_user/'.$this->session->userdata('user_id'))?>"><i class="icon-fixed-width icon-pencil"></i> Edit Profile</a></li>
               <li><a href="<?php echo site_url('email')?>"><i class="icon-fixed-width icon-envelope"></i> Mail  <span class="badge badge-important animated bounceIn"><?php echo $email_unread; ?></span></a></li>
+              <li><a href="<?php echo site_url('user_guide')?>"><i class="icon-fixed-width icon-question"></i> Panduan  </a></li>
               
               <li class="divider"></li>
               <li><a href="<?php echo site_url('auth/logout')?>"><i class="icon-fixed-width icon-signout"></i> Sign Out</a></li>

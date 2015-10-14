@@ -76,7 +76,7 @@ class Approval {
                 break;
             case "recruitment":
                 $receiver = $CI->approval->approver($form);
-                $form = 'Recruitment Karyawan';
+                $form = 'Permintaan SDM Baru';
                 $isi_email = get_name($user_id).' mengajukan '.$form.', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>';
                 break;
             case "resignment":

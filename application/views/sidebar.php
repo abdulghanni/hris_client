@@ -65,7 +65,7 @@
         </ul>
       </li> -->
       <?php if(is_admin_inventaris()||is_admin()){?>
-      <li class=""> <a href="javascript:;"> <i class="icon-group"></i> <span class="title">Pengaturan Perusahaan</span> <span class="arrow "></span> </a>
+      <li class=""> <a href="javascript:;"> <i class="icon-group"></i> <span class="title">Pengaturan perusahaan</span> <span class="arrow "></span> </a>
         <ul class="sub-menu">
           <!--<li > <a href="<?php echo site_url('comp_session')?>">Company Session</a> </li>
           <li > <a href="<?php echo site_url('organization')?>">Organization</a> </li>
