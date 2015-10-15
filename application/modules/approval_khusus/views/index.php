@@ -19,26 +19,12 @@
                                 <h4>Daftar&nbsp;<span class="semi-bold">Karyawan Untuk approval Khusus</span></h4>
                             </div>
                         </div>
-                        <?php echo form_open(site_url('auth/keywords'))?>
-
-                            <div class="row">
-                                <div class="col-md-5">
-                                    <div class="row">
-                                        <div class="col-md-3 search_label"><?php echo form_label('Nama','first_name')?></div>
-                                        <div class="col-md-9"><?php echo bs_form_input($fname_search)?></div>
-                                    </div>
-                                </div>
-                                <div class="col-md-7">
-                                    <div class="row">
+                        <br/>
+                        <div class="row">
                                         <div class="col-md-12">
-                                            <button type="submit" class="btn btn-info"><i class="icon-search"></i>&nbsp;<?php echo lang('search_button')?></button>
                                             <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#addModal"><i class="icon-plus"></i>&nbsp;<?php echo lang('add_button');?></button>
                                         </div>
                                     </div>
-                                </div>    
-                            </div>
-                        <?php echo form_close()?>
-                        <br/>
                         <div <?php ( ! empty($message)) && print('class="alert alert-info text-center"'); ?> id="infoMessage"><?php echo $message;?></div>
                         <table class="table table-bordered">
                             <thead>

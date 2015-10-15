@@ -109,7 +109,7 @@ window.onload = function(){fix();};
             var num = parseInt($(element).val().replace(/,/g,""));
             total = total + num;
         });
-        $('#totalfix'+i).text(total);
+        $('#totalfix'+i).text(addCommas(total));
      }
      tambahan();
   }
@@ -122,7 +122,7 @@ window.onload = function(){fix();};
             var num = parseInt($(element).val().replace(/,/g,""));
             total = total + num;
         });
-        $('#totaltambahan'+i).text(total);
+        $('#totaltambahan'+i).text(addCommas(total));
       }
       grandTotal();
   }
@@ -144,11 +144,25 @@ window.onload = function(){fix();};
         total_tambahan = total2;
 
         gtotal = total_fix+total_tambahan;
-        $('#grand_total').text(gtotal);
+        $('#grand_total').text(addCommas(gtotal));
   }
 
   function hitungTotal()
   {
     fix();
   }
+
+  function addCommas(nStr)
+{
+  nStr += '';
+  x = nStr.split('.');
+  x1 = x[0];
+  x2 = x.length > 1 ? '.' + x[1] : '';
+  var rgx = /(\d+)(\d{3})/;
+  while (rgx.test(x1)) {
+    x1 = x1.replace(rgx, '$1' + ',' + '$2');
+  }
+  return x1 + x2;
+}
+
 </script>

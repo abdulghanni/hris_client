@@ -10,9 +10,8 @@
           <ul class="nav nav-pills" id="tab-4">
             <li class="active"><a href="#tab4user">Sebagai User</a></li>
             
-            <?php if(is_spv($nik)): ?><li><a href="#tab4atasan">Sebagai Atasan</a></li>
+            <?php if(is_spv($nik)): ?><li><a href="#tab4atasan">Sebagai Atasan</a></li><?php endif;?>
                 <!--
-            <li><a href="#tab4hrd">Sebagai HRD</a></li><?php endif;?>
             <?php if(is_admin_bagian()):?><li><a href="#tab4admdept">Sebagai Admin Departement</a></li><?php endif;?>
             <?php if(is_admin_inventaris()):?><li><a href="#tab4adminv">Sebagai Admin Inventaris</a></li><?php endif;?>
             <?php if(is_admin()):?><li><a href="#tab4admin">Sebagai Super Admin</a></li><?php endif;?>
@@ -65,7 +64,7 @@
                         <div class="dd" id="nestable">
                             <ol class="dd-list">
                                 <li>
-                                    <a href="<?= assets_url('user_guide/User-Guide-Web-HRIS(ATASAN).docx')?>"><div class="dd-handle">Download Panduan Lengkap (Atasan)</div></a>
+                                    <a href="<?= assets_url('user_guide/User-Guide-Web-HRIS(ATASAN).docx')?>"><div class="dd-handle">Download Panduan Lengkap</div></a>
                                 </li>
                             </ol>
                         </div>

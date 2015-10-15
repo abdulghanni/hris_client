@@ -260,13 +260,57 @@ class Dropdown extends MX_Controller {
 
     public function get_atasan2($id)
     {
-        $url = get_api_key().'users/superior/EMPLID/'.$id.'/format/json';
-        $url_atasan_satu_bu = get_api_key().'users/atasan_satu_bu/EMPLID/'.$id.'/format/json';
-        $headers = get_headers($url);
-        $headers2 = get_headers($url_atasan_satu_bu);
-        $response = substr($headers[0], 9, 3);
-        $response2 = substr($headers2[0], 9, 3);
-        if ($response != "404") {
+        $pos_group = get_pos_group(get_nik($id));
+      $url = get_api_key().'users/superior/EMPLID/'.get_nik($id).'/format/json';
+      $url_atasan_satu_bu = get_api_key().'users/atasan_satu_bu/EMPLID/'.get_nik($id).'/format/json';
+      $url_atasan_bypos = get_api_key().'users/atasan_by_posgroup/EMPLID/'.get_nik($id).'/format/json';
+      $headers = get_headers($url);
+      $headers2 = get_headers($url_atasan_satu_bu);
+      $headers3 = get_headers($url_atasan_bypos);
+      $response = substr($headers[0], 9, 3);
+      $response2 = substr($headers2[0], 9, 3);
+      $response3 = substr($headers3[0], 9, 3);
+      //$url_atasan_satu_bu = get_api_key().'users/atasan_satu_bu/EMPLID/'.get_nik($id).'/format/json';
+      if($pos_group == 'AMD' || $pos_group == 'DIR' || $pos_group == 'KACAB' || $pos_group == 'MGR' || $pos_group == 'ASM'):
+          if ($response != "404") {
+              $get_atasan = file_get_contents($url);
+              $atasan = json_decode($get_atasan, true);
+              $get_atasan2 = file_get_contents($url_atasan_satu_bu);
+              $atasan2 = json_decode($get_atasan2, true);
+              $get_atasan3 = file_get_contents($url_atasan_bypos);
+              $atasan3 = json_decode($get_atasan3, true);
+              $atasan4 = array_merge($atasan, $atasan2, $atasan3);
+              foreach ($atasan4 as $row)
+                {
+                    $result['0']= '-- Pilih Atasan --';
+                    $result[$row['ID']]= ucwords(strtolower($row['NAME']));
+                }
+          }elseif($response == "404" && $response2 != "404" && $response3 != "404"){
+               
+              $get_atasan2 = file_get_contents($url_atasan_satu_bu);
+              $atasan2 = json_decode($get_atasan2, true);
+              $get_atasan3 = file_get_contents($url_atasan_bypos);
+              $atasan3 = json_decode($get_atasan3, true);
+              $atasan4 = array_merge($atasan2, $atasan3);
+              foreach ($atasan4 as $row)
+                {
+                    $result['0']= '-- Pilih Atasan --';
+                    $result[$row['ID']]= ucwords(strtolower($row['NAME']));
+                }
+          }elseif($response == "404" && $response2 == "404" && $response3 != "404"){
+              
+              $get_atasan3 = file_get_contents($url_atasan_bypos);
+              $atasan3 = json_decode($get_atasan3, true);
+              foreach ($atasan3 as $row)
+                {
+                    $result['0']= '-- Pilih Atasan --';
+                    $result[$row['ID']]= ucwords(strtolower($row['NAME']));
+                }
+          }else{
+              $result['0']= '- Karyawan Tidak Memiliki Atasan -';
+          }
+      else:
+          if($response != "404") {
             $get_atasan = file_get_contents($url);
             $atasan = json_decode($get_atasan, true);
              foreach ($atasan as $row)
@@ -274,20 +318,21 @@ class Dropdown extends MX_Controller {
                     $result['0']= '-- Pilih Atasan --';
                     $result[$row['ID']]= ucwords(strtolower($row['NAME']));
                 }
-        } elseif($response == "404" && $response2 != "404") {
-           $get_atasan = file_get_contents($url_atasan_satu_bu);
+           }elseif($response == "404" && $response2 != "404") {
+            $get_atasan = file_get_contents($url_atasan_satu_bu);
             $atasan = json_decode($get_atasan, true);
              foreach ($atasan as $row)
                 {
                     $result['0']= '-- Pilih Atasan --';
                     $result[$row['ID']]= ucwords(strtolower($row['NAME']));
                 }
-        }else{
-            $result['0']= '- Karyawan Tidak Memiliki Atasan -';
+           }else{
+                $result['0']= '- Karyawan Tidak Memiliki Atasan -';
         }
+      endif;
 
-        $data['result']=$result;
-        $this->load->view('dropdown_atasan',$data);
+      $data['result']=$result;
+      $this->load->view('dropdown_atasan',$data); 
     }
 
     public function get_atasan3($id)
