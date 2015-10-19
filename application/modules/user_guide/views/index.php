@@ -11,9 +11,9 @@
             <li class="active"><a href="#tab4user">Sebagai User</a></li>
             
             <?php if(is_spv($nik)): ?><li><a href="#tab4atasan">Sebagai Atasan</a></li><?php endif;?>
-                <!--
+                
             <?php if(is_admin_bagian()):?><li><a href="#tab4admdept">Sebagai Admin Departement</a></li><?php endif;?>
-            <?php if(is_admin_inventaris()):?><li><a href="#tab4adminv">Sebagai Admin Inventaris</a></li><?php endif;?>
+            <!--<?php if(is_admin_inventaris()):?><li><a href="#tab4adminv">Sebagai Admin Inventaris</a></li><?php endif;?>
             <?php if(is_admin()):?><li><a href="#tab4admin">Sebagai Super Admin</a></li><?php endif;?>
             -->
           </ul>
@@ -108,12 +108,8 @@
                   <div class="cf nestable-lists">
                         <div class="dd" id="nestable">
                             <ol class="dd-list">
-                                
-                                <li class="dd-item" data-id="3">
-                                    <div class="dd-handle">Cara Melakukan Perjalanan Dinas</div>
-                                </li>
-                                <li class="dd-item" data-id="4">
-                                    <div class="dd-handle">Cara Mengajukan Pengunduran Diri</div>
+                                <li>
+                                    <a href="<?= assets_url('user_guide/User-Guide-Web-HRIS(admin_dept).docx')?>"><div class="dd-handle">Download Panduan Lengkap</div></a>
                                 </li>
                             </ol>
                         </div>
