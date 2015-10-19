@@ -796,7 +796,7 @@ class Form_pjd extends MX_Controller {
                     'receiver_id' => $task_receiver_id[$i],
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => get_form_no($spd_id).'-Pemberian Tugas Perjalanan Dinas',
-                    'email_body' => get_name($sender_id).' memberikan tugas perjalan dinas , untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$this->detail_email($spd_id),
+                    'email_body' => get_name($sender_id).' memberikan tugas perjalan dinas , untuk melakukan konfirmasi silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$this->detail_email($spd_id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data);
@@ -817,7 +817,7 @@ class Form_pjd extends MX_Controller {
                     'receiver_id' => $receiver_id,
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Persetujuan Tugas Perjalanan Dinas',
-                    'email_body' => get_name($sender).' telah menyetujui tugas perjalan dinas yang anda berikan, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$this->detail_email($spd_id),
+                    'email_body' => get_name($sender).' telah menyetujui tugas perjalan dinas yang anda berikan, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>',//.$this->detail_email($spd_id),
                     'is_read' => 0,
                 );
         $this->db->insert('email', $data);

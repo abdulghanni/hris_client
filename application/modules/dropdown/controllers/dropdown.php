@@ -42,6 +42,17 @@ class Dropdown extends MX_Controller {
         }
     }
 
+    public function get_emp_stat()
+    {
+        $id = $this->input->post('id');
+        if($id == '0'){
+            echo '-';
+        }else{
+            $id = get_nik($id);
+            echo get_user_status($id);
+        }
+    }
+
     public function get_emp_bu_id()
     {
         $id = $this->input->post('id');
@@ -72,6 +83,17 @@ class Dropdown extends MX_Controller {
         }else{
             $id = get_nik($id);
             echo get_user_position_id($id);
+        }
+    }
+
+    public function get_emp_stat_id()
+    {
+        $id = $this->input->post('id');
+        if($id == '0'){
+            echo '-';
+        }else{
+            $id = get_nik($id);
+            echo get_user_status_id($id);
         }
     }
 

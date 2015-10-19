@@ -16,6 +16,20 @@
 		}
 	}
 
+	if (!function_exists('is_publish'))
+	{	
+		function is_publish()
+		{
+			$CI =& get_instance();
+			$publish = getValue('title', 'pengumuman',array('is_publish'=>'where/1'));
+			if(!empty($publish)):
+				return TRUE;
+			else:
+				return false;
+			endif;
+		}
+	}
+
 	if (!function_exists('is_admin_bagian'))
 	{	
 		function is_admin_bagian()
@@ -679,6 +693,45 @@
                 $getuser_info = file_get_contents($url);
                 $user_info = json_decode($getuser_info, true);
                 return $user_info['ORGID'];
+            } else {
+                return '-';
+            }
+		}
+	}
+
+	if(!function_exists('get_user_status'))
+	{
+		function get_user_status($user_id)
+		{
+			$CI =&get_instance();
+            $url = get_api_key().'users/employement/EMPLID/'.$user_id.'/format/json';
+            $headers = get_headers($url);
+            $response = substr($headers[0], 9, 3);
+            if ($response != "404") 
+            {
+                $getuser_info = file_get_contents($url);
+                $user_info = json_decode($getuser_info, true);
+                $status = getValue('title', 'empl_status', array('id'=>'where/'.$user_info['EMPLOYEESTATUS']));
+                return $status;
+            } else {
+                return '-';
+            }
+		}
+	}
+
+	if(!function_exists('get_user_status_id'))
+	{
+		function get_user_status_id($user_id)
+		{
+			$CI =&get_instance();
+            $url = get_api_key().'users/employement/EMPLID/'.$user_id.'/format/json';
+            $headers = get_headers($url);
+            $response = substr($headers[0], 9, 3);
+            if ($response != "404") 
+            {
+                $getuser_info = file_get_contents($url);
+                $user_info = json_decode($getuser_info, true);
+                return $user_info['EMPLOYEESTATUS'];
             } else {
                 return '-';
             }

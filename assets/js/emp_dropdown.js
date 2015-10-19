@@ -79,9 +79,11 @@ $(document).ready(function() {
                 getEmpBu(empId);
                 getEmpOrg(empId);
                 getEmpPos(empId);
+                getEmpStat(empId);
                 getEmpBuId(empId);
                 getEmpOrgId(empId);
                 getEmpPosId(empId);
+                getEmpStatId(empId);
                 getEmpSenDate(empId);
                 isGradeTujuh(empId);
                 getAtasan1(empId);
@@ -134,9 +136,11 @@ $(document).ready(function() {
             getEmpBu(empId);
             getEmpOrg(empId);
             getEmpPos(empId);
+            getEmpStat(empId);
             getEmpBuId(empId);
             getEmpOrgId(empId);
             getEmpPosId(empId);
+            getEmpStatId(empId);
             getEmpSenDate(empId);
             isGradeTujuh(empId);
             getAtasan3(empId);
@@ -188,6 +192,30 @@ $(document).ready(function() {
             data: {id : empId},
             success: function(data) {
                 $('#position').val(data);
+            }
+        });
+    }
+
+    function getEmpStat(empId)
+    {
+        $.ajax({
+            type: 'POST',
+            url: baseurl+'dropdown/get_emp_stat/',
+            data: {id : empId},
+            success: function(data) {
+                $('#status').val(data);
+            }
+        });
+    }
+
+    function getEmpStatId(empId)
+    {
+        $.ajax({
+            type: 'POST',
+            url: baseurl+'dropdown/get_emp_stat_id/',
+            data: {id : empId},
+            success: function(data) {
+                $('#status_id').val(data);
             }
         });
     }

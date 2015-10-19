@@ -312,6 +312,8 @@
                                 </div>
                             </td>
                           </tr>
+
+                          <!--
                           <tr>
                             <td>3</td>
                             <td>Diberikan uang pisah</td>
@@ -323,6 +325,7 @@
                                 </div>
                             </td>
                           </tr>
+                          -->
                           <tr>
                             <td>4</td>
                             <td>Diberikan surat keterangan kerja</td>

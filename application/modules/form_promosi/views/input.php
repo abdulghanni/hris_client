@@ -84,6 +84,15 @@
                       </div>
                       <div class="row form-row">
                         <div class="col-md-3">
+                          <label class="form-label text-right">Status</label>
+                        </div>
+                        <div class="col-md-9">
+                          <input id="status" class="form-control "  value=""  disabled="disabled">
+                          <input name="old_status" id="status_id" type="hidden"  class="form-control " value="">
+                        </div>
+                      </div>
+                      <div class="row form-row">
+                        <div class="col-md-3">
                           <label class="form-label text-right">Tanggal Mulai Bekerja</label>
                         </div>
                         <div class="col-md-9">
@@ -205,15 +214,56 @@
                       </div>
                       <div class="row form-row">
                         <div class="col-md-4">
+                          <label class="form-label text-left">Status Baru</label>
+                        </div>
+                        <div class="col-md-8">
+                          <select class="select2 form-control" name="status">
+                            <option value="">- Pilih Status Baru -</option>
+                            <?php foreach ($status as $key) {?>
+                              <option value="<?=$key->id?>"><?=$key->title?></option>;
+                            <?php } ?>
+                          </select>
+                        </div>
+                      </div><br/>
+                      <div class="row form-row">
+                        <div class="col-md-4">
                           <label class="form-label text-left">Tgl. Pengangkatan</label>
                         </div>
                         <div class="col-md-8">
                           <div class="input-append date success no-padding">
-                          <input type="text" class="form-control" name="date_promosi" required>
+                            <input type="text" class="form-control" name="date_promosi" required>
+                            <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span> 
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="row form-row">
+                        <div class="col-md-4">
+                          <label class="form-label text-left">Tgl. Presentasi (Optional)</label>
+                        </div>
+                        <div class="col-md-8">
+                          <div class="input-append date success no-padding">
+                          <input type="text" class="form-control" name="date_presentasi" required>
                           <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span> 
                         </div>
                         </div>
                       </div>
+
+                      <div class="row form-row">
+                        <div class="col-md-4">
+                          <label class="form-label text-left">TOEFL (Optional)</label>
+                        </div>
+                        <div class="col-md-8">
+                          <select name="toefl" id="toefl" class="form-custom select2" style="width:100%">
+                          <option value="0">- Pilih Nilai Toefl -</option>
+                          <?php if($toefl->num_rows()>0){
+                            foreach($toefl->result() as $row):?>
+                            <option value="<?php echo $row->id?>"><?php echo $row->title?></option>
+                          <?php endforeach;}?>
+                        </select>
+                        </div>
+                      </div><br/>
+
                       <div class="row form-row">
                         <div class="col-md-4">
                           <label class="form-label text-left">Alasan Pengangkatan</label>

@@ -41,9 +41,11 @@
             </div> 
           </ul>-->
       </div>
-
+      <?php $style = '';if(is_publish()):?>
+      <div class="text-center" style="margin-right:50px;;"><span style="font-family:arial;z-index: -1; font-size: 14px; font-weight:bold; color:#FFFF00;"> <marquee direction="left" scrollamount="5" height="20px" width="70%" bgcolor="#0545A0" ><?= getValue('title', 'pengumuman', array('id'=>'where/1'))?></marquee></span></div>
+      <?php $style = 'style="z-index:10;margin-top:-25px;"'; endif; ?>
       <!-- BEGIN CHAT TOGGLER -->
-      <div class="pull-right">
+      <div class="pull-right" <?=$style?>>
         <ul class="nav quick-section ">
         <li class="quicklinks"> <span class="h-seperate"></span></li>
           <li class="quicklinks"> <a data-toggle="dropdown" class="dropdown-toggle  pull-right " href="#" id="user-options">
@@ -58,12 +60,11 @@
               <li><a href="<?php echo site_url('auth/logout')?>"><i class="icon-fixed-width icon-signout"></i> Sign Out</a></li>
             </ul>
           </li>
-
           <li class="quicklinks"> <span class="h-seperate"></span></li>
         </ul>
       </div>
       <!-- END CHAT TOGGLER -->
-
+      
       <!-- END TOP NAVIGATION MENU -->
     </div> 
     <!-- END TOP NAVIGATION MENU --> 

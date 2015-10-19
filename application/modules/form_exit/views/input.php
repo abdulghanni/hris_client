@@ -174,6 +174,7 @@
                             </label>
                           </td>
                         </tr>
+                        <!--
                         <tr>
                           <td>4</td>
                           <td>Diberikan uang Pisah</td>
@@ -186,6 +187,7 @@
                             </label>
                           </td>
                         </tr>
+                        -->
                         <tr>
                           <td>5</td>
                           <td>Diberikan surat keterangan kerja</td>
