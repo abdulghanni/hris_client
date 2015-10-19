@@ -81,7 +81,7 @@
                         <tr><td><b>Total</b></td><td align="right" id="grand_total" colspan="<?php $cs=4+sizeof($biaya_pjd->result());echo $cs;?>"></td></tr>
                       </tbody>
                     </table>
-                    <button type="button" class="btn-primary" onclick="hitungTotal()">Hitung Total</button><br/>
+                    <button type="button" class="btn-primary" onclick="hitungTotal()" style="margin-top:-10px;">Hitung Total</button><br/><br/>
                     *  Biaya Disesuaikan<br/>
                     ** Biaya Perhari
                     <div class="form-actions">
