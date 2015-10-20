@@ -371,6 +371,7 @@ class Form_demotion extends MX_Controller {
 
     function detail_email($id)
     {
+        $this->data['id'] = $id;
         $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
         $sess_nik = $this->data['sess_nik'] = get_nik($sess_id);
         $user_id = getValue('user_id', 'users_demotion', array('id'=>'where/'.$id));

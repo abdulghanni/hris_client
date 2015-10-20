@@ -103,7 +103,7 @@
                                 <tr>
                                     <td valign="middle"><?php echo $user->nik;?></td>
                                     <td valign="middle"><span class="muted"><?php echo $user->username;?></span></td>
-                                    <td valign="middle"><span class="muted"><?php echo $user->form_type;?></span></td>
+                                    <td valign="middle"><span class="muted"><?php echo $user->indo;?></span></td>
                                     <td valign="middle" class="text-center">
                                             <button type="button" class="btn btn-info btn-small" data-toggle="modal" data-target="#editModal<?php echo $user->id?>" title="<?php echo lang('edit_button')?>"><i class="icon-edit"></i></button>
                                     </td>
@@ -178,7 +178,7 @@
                                 <?php
                                     foreach ($form_type->result_array() as $key => $value) {
                                     $selected = ($user->form_type_id === $value['id']) ? 'selected = selected' : '';
-                                    echo '<option value="'.$value['id'].'" '.$selected.'>'.$value['title'].'</option>';
+                                    echo '<option value="'.$value['id'].'" '.$selected.'>'.$value['indo'].'</option>';
                                     }
                                     ?>
                                 </select>

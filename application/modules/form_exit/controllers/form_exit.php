@@ -594,21 +594,24 @@ class Form_exit extends MX_Controller {
             redirect('auth/login', 'refresh');
         }
         $this->data['id'] = $id;
-        $user_id = getValue('user_id','users_exit', array('id'=>'where/'.$id));
-        $form_exit = $this->data['form_exit'] = $this->form_exit_model->form_exit($id, $user_id);
-        $user_id = getAll('users_exit', array('id'=>'where/'.$id, ))->row()->user_id;
-        $this->data['user_nik'] = get_nik($user_id);
-        $this->data['mgr_ga_nas'] = $this->get_emp_by_pos('PST242');
-        $this->data['koperasi'] = $this->get_emp_by_pos('PST263');
-        $this->data['perpustakaan'] = $this->get_emp_by_pos('PST2');
-        $this->data['hrd'] = $this->get_emp_by_pos('PST129');
-        
-        $this->data['sess_id'] = $this->session->userdata('user_id');
-        $i =$this->db->select('*')->from('users_inventory')->join('inventory', 'users_inventory.inventory_id = inventory.id', 'left')->where('users_inventory.user_id', $user_id)->get();
-       
-        $this->data['users_inventory'] = $i;
-        $this->data['rekomendasi'] = getAll('users_exit_rekomendasi', array('user_exit_id'=>'where/'.$id, ))->row();
-        $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
+            $user_id = getValue('user_id','users_exit', array('id'=>'where/'.$id));
+            $form_exit = $this->data['form_exit'] = $this->form_exit_model->form_exit($id, $user_id);
+            $user_id = getValue('user_id', 'users_exit', array('id'=>'where/'.$id));
+            $user_nik = get_nik($user_id);
+            $user_nik = $this->data['user_nik'] = get_nik($user_id);//print_mz(get_user_buid($user_nik));
+            $this->data['sess_id'] = $sess_id = $this->session->userdata('user_id');
+            $sess_nik = $this->data['sess_nik'] = get_nik($sess_id);
+            $this->data['is_admin_it'] = (is_admin_it() && get_user_buid($sess_nik) == get_user_buid($user_nik)) ? TRUE : FALSE;
+            $this->data['is_admin_logistik'] = (is_admin_logistik() && get_user_buid($sess_nik) == get_user_buid($user_nik)) ? TRUE : FALSE;
+            $this->data['is_admin_hrd'] = (is_admin_hrd() && get_user_buid($sess_nik) == get_user_buid($user_nik)) ? TRUE : FALSE;
+            $this->data['is_admin_koperasi'] = (is_admin_koperasi() && get_user_buid($sess_nik) == get_user_buid($user_nik)) ? TRUE : FALSE;
+            $this->data['is_admin_perpus'] = (is_admin_perpus() && get_user_buid($sess_nik) == get_user_buid($user_nik)) ? TRUE : FALSE;
+            $this->data['is_admin_keuangan'] = (is_admin_keuangan() && get_user_buid($sess_nik) == get_user_buid($user_nik)) ? TRUE : FALSE;
+            $i =$this->db->select('*')->from('users_inventory')->join('inventory', 'users_inventory.inventory_id = inventory.id', 'left')->where('users_inventory.user_id', $user_id)->get();
+           
+            $this->data['users_inventory'] = $i;
+            $this->data['rekomendasi'] = getAll('users_exit_rekomendasi', array('user_exit_id'=>'where/'.$id, ))->row();
+            $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
 
         return $this->load->view('form_exit/exit_mail', $this->data, TRUE);
     }

@@ -83,6 +83,7 @@
                             <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Tujuan pelatihan" value="<?php echo $user->tujuan_training?>" disabled="disabled">
                           </div>
                         </div>
+                      <?php
                         for($i=1;$i<4;$i++):
                       $note_lv = 'note_app_lv'.$i;
                       $user_lv = 'user_app_lv'.$i;

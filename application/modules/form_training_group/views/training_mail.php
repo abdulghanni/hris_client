@@ -384,7 +384,7 @@
                               <span class="small"></span><br/>
                               <span class="small"></span><br/>
                               <span class="semi-bold"></span><br/>
-                              <span class="semi-bold"><?php echo get_name($this->approval->approval('training'))?></span><br/>
+                              <span class="semi-bold"><?php echo get_name($this->approval->approver('training'))?></span><br/>
                               <span class="semi-bold"></span><br/>
                               <span class="semi-bold">(HRD)</span>
                             <?php } ?>

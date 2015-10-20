@@ -300,6 +300,7 @@ class approval_model extends CI_Model
                 $this->tables['users_approval'].'.*',
                 $this->tables['users_approval'].'.id as id',
                 'form_type.title as form_type',
+                'form_type.indo as indo',
                 'users.nik as nik',
                 'users.username as username',
             ));
