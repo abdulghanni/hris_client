@@ -3136,6 +3136,11 @@ form legend,
 .user-info-wrapper .user-info .username{
 	font-size:14px;
 }
+
+.user-info-wrapper .user-info .usergroup {
+    font-size: 12px;
+}
+
 .user-info-wrapper .user-info .greeting{
 	font-size:18px;
 	font-weight:600;

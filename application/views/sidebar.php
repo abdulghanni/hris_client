@@ -15,6 +15,7 @@
       <div class="user-info">
         <div class="greeting">Welcome</div>
         <div class="username" title="<?php echo lang('edit_button')?>"><a href="<?php echo site_url('auth/edit_user/'.$this->session->userdata('user_id'))?>"><?php echo $this->session->userdata('username')?></a></div>
+        <div class="usergroup"><?=get_user_group($this->session->userdata('user_id'))?></div>
         <div class="status"><?php echo anchor(site_url('auth/logout'), lang('logout_link_label'), array('title' => lang('logout_link_label')));?></div>
         <br/> <br/>
       </div>
@@ -76,6 +77,7 @@
           <?php if(is_admin()):?><li ><a href="<?php echo site_url('approval_khusus')?>"> Approval Atasan Khusus</a> </li><?php endif?>
           <?php if(is_admin()):?><li > <a href="<?php echo site_url('form_template')?>">Form Template</a> </li><?php endif?>
           <?php if(is_admin()):?><li ><a href="<?php echo site_url('auth/list_group')?>"> Group</a> </li><?php endif?>
+          <?php if(is_admin()):?><li ><a href="<?php echo site_url('inventory_type')?>"> Inventaris</a> </li><?php endif?>
           <?php if(is_admin()):?><li > <a href="<?php echo site_url('pengumuman')?>">Pengumuman</a> </li><?php endif?>
         </ul>
       </li>  

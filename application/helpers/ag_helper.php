@@ -16,6 +16,23 @@
 		}
 	}
 
+	function get_User_group($id)
+	{
+		$CI =& get_instance();
+
+		//$group = getAll('users_groups', array('user_id'=>'where/'.$id))->result();
+		$group = getJoin('users_groups', 'groups', 'users_groups.group_id = groups.id', 'left', 'groups.name as group_name, users_groups.*', array('users_groups.user_id'=>'where/'.$id), array('!=groups.id'=>'2'));
+		$groups = '';
+		if(!empty($group))
+		{
+			foreach ($group->result() as $key) {
+				$groups .= '('.$key->group_name.')<br/>';
+			}
+
+			return $groups;
+		}
+	}
+
 	if (!function_exists('is_publish'))
 	{	
 		function is_publish()
