@@ -10,6 +10,12 @@ $(document).ready(function() {
                 getAtasan3(empId);
                 getEmpOrg(empId);
                 break;
+            case 'form_tidak_masuk':
+                getAtasan1(empId);
+                getAtasan3(empId);
+                getEmpOrg(empId);
+                getEmpPos(empId);
+                break;
             case 'form_cuti':
                 getAtasan1(empId);
                 getAtasan3(empId);

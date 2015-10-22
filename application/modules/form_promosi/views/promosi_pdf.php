@@ -48,7 +48,8 @@
 $user_nik = get_nik($row->user_id);
 $pengaju_nik = get_nik($row->created_by);
 $approved = assets_url('img/approved_stamp.png');
-$rejected = assets_url('img/rejected_stamp.png');?>
+$rejected = assets_url('img/rejected_stamp.png');
+$signed = assets_url('img/signed.png');?>
 <div class="style4">
   <div style="float: left; width: 54%;">
   Nomor : <?php echo "$form_id/$bu/$m/$y/$row->id" ?>
@@ -123,7 +124,7 @@ $rejected = assets_url('img/rejected_stamp.png');?>
       <th width="200"></th>
     </tr>
     <tr>
-      <td width="200" align="center"></td>
+      <td width="200" align="center"><img class="approval-img-md" src="<?=$signed?>"></td>
       <?php if(!empty($row->user_app_lv1)){?>
       <td width="200" align="center"><?php echo ($row->app_status_id_lv1 == 1)?"<img class=approval-img-md src=$approved>":(($row->app_status_id_lv1 == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
       <?php }?>

@@ -71,6 +71,7 @@ $config['tables']['transportation']  = 'transportation';
 $config['tables']['city']  = 'city';
 $config['tables']['keterangan_absen']  = 'keterangan_absen';
 $config['tables']['users_absen']  = 'users_absen';
+$config['tables']['users_tidak_masuk']  = 'users_tidak_masuk';
 $config['tables']['users_training']  = 'users_training';
 $config['tables']['users_training_group']  = 'users_training_group';
 $config['tables']['penyelenggara']  = 'penyelenggara';

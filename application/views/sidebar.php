@@ -44,6 +44,7 @@
           -->   
           <li > <a href="<?php echo site_url('form_pjd') ?>">Perjalanan Dinas</a> </li>     
           <li > <a href="<?php echo site_url('form_absen')?>">Keterangan tidak absen</a> </li>
+          <li > <a href="<?php echo site_url('form_tidak_masuk')?>">Keterangan tidak masuk</a> </li>
           <?php if(is_spv($nik)||is_admin()||is_admin_bagian()):?><li > <a href="<?php echo site_url('form_medical')?>">Kesehatan</a> </li><?php endif; ?>          
           <li > <a href="<?php echo site_url('form_training')?>">Pelatihan</a> </li>          
           <li > <a href="<?php echo site_url('form_training_group')?>">Pelatihan (Group)</a> </li>

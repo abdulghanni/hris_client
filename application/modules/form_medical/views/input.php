@@ -16,7 +16,7 @@
           		<div class="col-md-12">
               		<div class="grid simple ">
 		                <div class="grid-title no-border">
-		                  <h4>Input Rekapitulasi <span class="semi-bold"><a href="<?php echo site_url('form_medical')?>">Rawat Jalan & Inap</a></span></h4>
+		                  <h4>Input Rekapitulasi <span class="semi-bold"><a href="<?php echo site_url('form_medical')?>">Rawat Jalan</a></span></h4>
 		                </div>
                   	<div class="grid-body no-border">
                   	<h6 class="bold">BAGIAN : <span class="semi-bold" id="organization"><?php echo $bagian?></span></h6>

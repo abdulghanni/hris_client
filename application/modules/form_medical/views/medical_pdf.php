@@ -28,7 +28,7 @@ th{
 
 .style6 {
   font-weight: bold;
-  font-size: 20px;
+  font-size: 18px;
 }
 .style7 {
   padding-left: 20px;
@@ -48,11 +48,12 @@ th{
 <body>
 <div align="center">
   <p align="left"><img src="<?php echo assets_url('img/erlangga.jpg')?>"/></p>
-  <p align="center" class="style6">REKAPITULASI RAWAT JALAN & INAP</p>
+  <p align="center" class="style6">REKAPITULASI RAWAT JALAN</p>
+  <p style="font-size:10px;">No : <?= get_form_no($id)?></p>
 </div>
 
 <table width="1200" height="128" border="0" class="style4">
-<tr><td height="40"></td></tr>
+<tr><td height="20"></td></tr>
 <tr><td>Bagian : <?php echo $bagian?></td></tr>
 <tr><td height="30"></td></tr>
 </table>
@@ -103,7 +104,7 @@ th{
       <td width="333" align="center" class="style3">Mengetahui</td>
     </tr>
     <tr>
-      <td align="center"></td>
+      <td align="center"><img class="approval-img-md" src="<?=assets_url('img/signed.png');?>"></td>
       <td align="center"><?php echo ($row->is_app_hrd == 1)?"<img class=approval-img-md src=$approved>":'<span class="small"></span><br/>';?></td>
       <td align="center"><?php echo ($row->is_app_lv1 == 1)?"<img class=approval-img-md src=$approved>":'<span class="small"></span><br/>';?></td>
     </tr>

@@ -9,9 +9,19 @@
 .tg th{height:40px; font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:12px 16px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
 .jobdesc{font-family:Arial, sans-serif;font-size:10px;padding:12px 16px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
 .approval-img-md{
-    height:10%;
-    width:12%;
+    height:60px;
+    width:120px;
+    margin-bottom: 8px;
     z-index:-1;
+}
+
+.style6 {
+  color: #000000;
+  font-weight: bold;
+  font-size: 18px;
+}
+.style7 {
+  font-size: 10px;
 }
 </style>
 </head>
@@ -19,11 +29,12 @@
 <div align="center">
   <p align="left"><img src="<?php echo assets_url('img/erlangga.jpg')?>"/></p>
   <p align="center" class="style6">Formulir Permintaan SDM Baru</p>
+  <p class="style7">No : <?= get_form_no($id) ?></p>
 </div>
 <?php foreach($form_recruitment->result() as $row):
 $approved = assets_url('img/approved_stamp.png');
 $rejected = assets_url('img/rejected_stamp.png');
-?>
+$signed = assets_url('img/signed.png');?>
 <table class="tg" width="1000px" align="center">
   <tr>
     <td class="tg-031e">Unit Bisnis</td>
@@ -181,7 +192,7 @@ $rejected = assets_url('img/rejected_stamp.png');
   </tr>
   <tr>
     <td class="tg-031e">Tanda Tangan</td>
-    <td class="tg-031e"></td>
+    <td class="tg-031e" align="center"><img class='approval-img-md' src=<?=$signed?>></td>
     <td class="tg-031e">Tanda Tangan</td>
     <td class="tg-031e" align="center"><?php echo ($row->approval_status_id_lv1 == 1)?"<img class=approval-img-md src=$approved>":(($row->approval_status_id_lv1 == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
     <td class="tg-031e">Tanda Tangan</td>

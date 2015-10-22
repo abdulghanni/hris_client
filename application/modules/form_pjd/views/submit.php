@@ -97,7 +97,7 @@
                     </div>
                     <div class="row form-row">
                       <div class="col-md-2">
-                        <label class="form-label text-left">Tujuan</label>
+                        <label class="form-label text-left">Tujuan PJD</label>
                       </div>
                       <div class="col-md-5">
                         <input name="destination" id="destination" type="text"  class="form-control" placeholder="Tujuan" value="<?php echo $td->destination ?>" disabled="disabled">
@@ -105,10 +105,10 @@
                     </div>
                     <div class="row form-row">
                       <div class="col-md-2">
-                        <label class="form-label text-left">Dalam Rangka</label>
+                        <label class="form-label text-left">Deskripsi</label>
                       </div>
                       <div class="col-md-5">
-                        <input name="title" id="title" type="text"  class="form-control" placeholder="Dalam Rangka" value="<?php echo $td->title; ?>" disabled="disabled">
+                        <textarea class="form-control" disabled="disabled"><?php echo $td->title; ?></textarea>
                       </div>
                     </div>
                       <div class="row form-row">
@@ -289,7 +289,8 @@
                           echo '<img class=approval-img src='.assets_url("img/cancelled.png").'>';?><br/>
                           <span class="semi-bold"><?php echo get_name($td->task_creator) ?></span><br/>
                           <span class="small"><?php echo dateIndo($td->deleted_on) ?></span><br/>
-                        <?php }else{ ?>
+                        <?php }else{
+                            echo '<img class=approval-img src='.assets_url("img/signed.png").'>';?><br/>
                             <span class="semi-bold"><?php echo get_name($td->task_creator) ?></span><br/>
                             <span class="small"><?php echo dateIndo($td->created_on) ?></span><br/>
                         <?php } ?>

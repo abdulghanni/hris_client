@@ -643,7 +643,7 @@ class Form_rolling extends MX_Controller {
         $this->data['user_nik'] = get_nik($user_id);
         $form_rolling = $this->data['form_rolling'] = $this->form_rolling_model->form_rolling($id)->result();
         $this->data['_num_rows'] = $this->form_rolling_model->form_rolling($id)->num_rows();
-        $title = $this->data['title'] = 'Form Pengajuan rolling-'.get_name($user_id);
+        $title = $this->data['title'] = 'Form Pengajuan Mutasi-'.get_name($user_id);
         $creator = getValue('created_by', 'users_rolling', array('id'=>'where/'.$id));
         $creator = get_nik($creator);
         $this->data['form_id'] = 'MUT';

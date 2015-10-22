@@ -186,12 +186,11 @@
                   <div class="col-md-3">
                     <p class="wf-approve-sp">
                     <div class="col-md-12"><span class="semi-bold">Pemohon,</span><br/><br/></div>
+                      <img class="approval-img" src="<?=assets_url('img/signed.png');?>">
                       <span class="small"></span><br/>
-                      <span class="small"></span><br/>
-                      <span class="semi-bold"></span><br/>
-                      <span class="semi-bold"><?php echo get_name($row->created_by)?></span><br/>
+                      <span class="semi-bold"><?php echo get_name($row->user_id)?></span><br/>
                       <span class="small"><?php echo dateIndo($row->created_on)?></span><br/>
-                      <span class="semi-bold"><?php echo get_user_position(get_nik($row->created_by))?></span>
+                      <span class="semi-bold">(<?php echo get_user_position(get_nik($row->user_id))?>)</span>
                     </p>
                   </div>
 
@@ -230,6 +229,7 @@
                   </div>
                     
                   <div class="col-md-3">
+                  <?php if(!empty($row->user_app_lv2)):?>
                     <p class="wf-approve-sp">
                     <div class="col-md-12"><span class="semi-bold">Mengetahui / Menyetujui,</span><br/><br/></div>
                     <?php
@@ -258,6 +258,7 @@
                         <span class="semi-bold">(<?php echo get_user_position($row->user_app_lv2)?>)</span>
                       <?php } ?>
                     </p>
+                  <?php endif ?>
                   </div>
                     
                   <div class="col-md-3">

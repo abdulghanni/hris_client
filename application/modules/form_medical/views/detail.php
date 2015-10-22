@@ -15,7 +15,7 @@
         <div class="col-md-12">
           <div class="grid simple">
             <div class="grid-title no-border">
-              <h4>Detail Rekapitulasi <span class="semi-bold"><a href="<?php echo site_url('form_medical')?>">Rawat Jalan & Inap</a></span></h4>
+              <h4>Detail Rekapitulasi <span class="semi-bold"><a href="<?php echo site_url('form_medical')?>">Rawat Jalan</a></span></h4>
               <?php $disabled = ($is_app_hrd==0) ? "disabled='disabled'" : '' ?>
               <a href="<?php echo site_url('form_medical/form_medical_pdf/'.$id)?>" target="_blank"><button class="btn btn-primary pull-right" <?php echo $disabled ?>><i class="icon-print"> Cetak</i></button></a><br/>
               No : <?= get_form_no($id) ?>
@@ -33,7 +33,7 @@
                       </div>
                     </div><br/> 
                     <?php } ?>
-                  <h5 class="text-center"><span class="semi-bold">Rekapitulasi Rawat Jalan & Inap Yang Diajukan</span></h5>
+                  <h5 class="text-center"><span class="semi-bold">Rekapitulasi Rawat Jalan Yang Diajukan</span></h5>
                     <table id="dataTable" class="table table-bordered">
 		    	            <thead>
                         <tr>
@@ -105,7 +105,7 @@
                       </div>
                     </div><br/> 
                     <?php } ?>
-                  <h5 class="text-center"><span class="semi-bold">Rekapitulasi Rawat Jalan & Inap Yang Disetujui HRD</span></h5>
+                  <h5 class="text-center"><span class="semi-bold">Rekapitulasi Rawat Jalan Yang Disetujui HRD</span></h5>
                     <table id="dataTable" class="table table-bordered">
                       <thead>
                         <tr>
@@ -173,12 +173,11 @@
                         <div class="col-md-4">
                           <p>Hormat Kami,</p>
                           <p class="wf-submit">
-                          <span class="semi-bold"></span><br/>
-                            <span class="small"></span><br/>
+                            <img class="approval-img" src="<?=assets_url('img/signed.png');?>">
                             <span class="small"></span><br/>
                             <span class="semi-bold"><?php echo get_name($row->user_id) ?></span><br/>
                             <span class="small"><?php echo dateIndo($row->created_on) ?></span><br/>
-                            <span class="semi-bold"><?php echo (!empty(get_user_position(get_nik($row->user_id)))) ? get_user_position(get_nik($row->user_id)) : ''?></span><br/>   
+                            <span class="semi-bold">(<?php echo (!empty(get_user_position(get_nik($row->user_id)))) ? get_user_position(get_nik($row->user_id)) : ''?>)</span><br/>   
                           </p>
                         </div>
 

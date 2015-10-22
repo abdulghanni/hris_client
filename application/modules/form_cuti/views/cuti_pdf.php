@@ -16,12 +16,17 @@
 .style6 {
   color: #000000;
   font-weight: bold;
-  font-size: 26px;
+  font-size: 22px;
 }
 .style7 {
   padding-left: 20px;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: bold;
+}
+
+.style1{
+  font-size: 12px;
+  padding-left: 20px;
 }
 
 .approval-img-md{
@@ -37,6 +42,7 @@
 <div align="center">
   <p align="left"><img src="<?php echo assets_url('img/erlangga.jpg')?>"/></p>
   <p align="center" class="style6">Form Permohonan Cuti</p>
+  <p class="style1">No : <?= get_form_no($id) ?></p>
 </div>
 <?php foreach($form_cuti as $user):
 $user_nik = get_nik($user->user_id);
@@ -105,11 +111,6 @@ $rejected = assets_url('img/rejected_stamp.png');
     <td height="40"><span class="style3"><?php echo $user->remarks?></span></td>
   </tr>
   <tr>
-    <td height="40"><span class="style3">Pengganti</span></td>
-    <td height="40"><div align="center">:</div></td>
-    <td height="40"><span class="style3"><?php echo get_name($user->user_pengganti) ?></span></td>
-  </tr>
-  <tr>
     <td height="40"><span class="style3">No. HP</span></td>
     <td height="40"><div align="center">:</div></td>
     <td height="40"><span class="style3"><?php echo $user->contact?></span></td>
@@ -119,6 +120,12 @@ $rejected = assets_url('img/rejected_stamp.png');
     <td height="40"><div align="center">:</div></td>
     <td height="40"><span class="style3"><?php echo $user->alamat_cuti?></span></td>
   </tr>
+  <tr>
+    <td height="40"><span class="style3">Pengganti</span></td>
+    <td height="40"><div align="center">:</div></td>
+    <td height="40"><span class="style3"><?php echo get_name($user->user_pengganti) ?></span></td>
+  </tr>
+  
   <?php if(!empty($user->note_app_lv1)){?>
   <tr>
     <td height="40"><span class="style3">Note (<?php echo strtok(get_name($user->user_app_lv1), " ")?>) </span></td>

@@ -145,15 +145,6 @@
                       </div>
                       <div class="row form-row">
                         <div class="col-md-4">
-                          <label class="form-label text-right">Pengganti</label>
-                        </div>
-                        <div class="col-md-8">
-                          <input name="pengganti_cuti" id="pengganti_cuti" type="text"  class="form-control" placeholder="Nama" value="<?php echo get_name($user->user_pengganti) ?>" disabled="disabled">
-                        </div>
-                      </div>
-                      
-                      <div class="row form-row">
-                        <div class="col-md-4">
                           <label class="form-label text-right"><?php echo 'No. HP' ?></label>
                         </div>
                         <div class="col-md-8">
@@ -169,6 +160,16 @@
                           <input name="alamat_cuti" id="alamat_cuti" type="text"  class="form-control" placeholder="Nama" value="<?php echo $user->alamat_cuti; ?>" disabled="disabled">
                         </div>
                       </div>
+                      <div class="row form-row">
+                        <div class="col-md-4">
+                          <label class="form-label text-right">Pengganti</label>
+                        </div>
+                        <div class="col-md-8">
+                          <input name="pengganti_cuti" id="pengganti_cuti" type="text"  class="form-control" placeholder="Nama" value="<?php echo get_name($user->user_pengganti) ?>" disabled="disabled">
+                        </div>
+                      </div>
+                      
+                      
                       <?php 
                       for($i=1;$i<4;$i++):
                       $note_lv = 'note_app_lv'.$i;

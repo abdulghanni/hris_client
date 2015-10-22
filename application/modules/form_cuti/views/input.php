@@ -218,17 +218,6 @@
                     </div>
                     <div class="row form-row">
                       <div class="col-md-3">
-                        <label class="form-label text-right"><?php echo lang('replacement') ?></label>
-                      </div>
-                      <div class="col-md-9">
-                        <?php
-                          $style_up='class="select2" style="width:100%" id="user_pengganti"';
-                              echo form_dropdown('user_pengganti',array('0'=>'- Pilih User -'),'',$style_up);
-                        ?>
-                      </div>
-                    </div>
-                    <div class="row form-row">
-                      <div class="col-md-3">
                         <label class="form-label text-right"><?php echo 'No. HP' ?></label>
                       </div>
                       <div class="col-md-9">
@@ -241,6 +230,17 @@
                       </div>
                       <div class="col-md-9">
                         <input name="alamat" id="alamat" type="text"  class="form-control" placeholder="-" required>
+                      </div>
+                    </div>
+                    <div class="row form-row">
+                      <div class="col-md-3">
+                        <label class="form-label text-right"><?php echo lang('replacement') ?></label>
+                      </div>
+                      <div class="col-md-9">
+                        <?php
+                          $style_up='class="select2" style="width:100%" id="user_pengganti"';
+                              echo form_dropdown('user_pengganti',array('0'=>'- Pilih User -'),'',$style_up);
+                        ?>
                       </div>
                     </div>
                   </div>

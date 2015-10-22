@@ -129,7 +129,7 @@
                     </div>
                     <div class="row form-row">
                       <div class="col-md-3">
-                        <label class="form-label text-right">Tujuan</label>
+                        <label class="form-label text-right">Tujuan PJD</label>
                       </div>
                       <div class="col-md-9">
                         <input name="destination" id="destination" type="text"  class="form-control" placeholder="Tujuan" value="" required>
@@ -137,10 +137,10 @@
                     </div>
                     <div class="row form-row">
                       <div class="col-md-3">
-                        <label class="form-label text-right">Dalam Rangka</label>
+                        <label class="form-label text-right">Deskripsi</label>
                       </div>
                       <div class="col-md-9">
-                        <input name="title" id="title" type="text"  class="form-control" placeholder="Dalam Rangka" value="" required>
+                        <textarea class="form-control" id="title" name="title" required></textarea>
                       </div>
                     </div>
                         <div class="row form-row">

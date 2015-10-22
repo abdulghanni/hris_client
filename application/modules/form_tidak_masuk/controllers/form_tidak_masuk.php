@@ -1,0 +1,392 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
+
+class form_tidak_masuk extends MX_Controller {
+
+	public $data;
+    function __construct()
+    {
+        parent::__construct();
+        $this->load->library('authentication', NULL, 'ion_auth');
+        $this->load->library('form_validation');
+        $this->load->library('rest');
+        $this->load->library('approval');
+        $this->load->helper('url');
+        
+        $this->load->database();
+        $this->load->model('form_tidak_masuk/form_tidak_masuk_model','form_tidak_masuk_model');
+        
+        $this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
+
+        $this->lang->load('auth');
+        $this->load->helper('language');
+        
+    }
+
+    function index($ftitle = "fn:",$sort_by = "id", $sort_order = "asc", $offset = 0)
+    {
+        $this->data['title'] = 'Form Tidak Masuk';
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+        else
+        {
+            $sess_id= $this->data['sess_id'] = $this->session->userdata('user_id');
+            $this->data['sess_nik'] = $sess_nik = get_nik($sess_id);
+
+
+			//set sort order
+            $this->data['sort_order'] = $sort_order;
+            
+            //set sort by
+            $this->data['sort_by'] = $sort_by;
+           
+            //set filter by title
+            $this->data['ftitle_param'] = $ftitle; 
+            $exp_ftitle = explode(":",$ftitle);
+            $ftitle_re = str_replace("_", " ", $exp_ftitle[1]);
+            $ftitle_post = (strlen($ftitle_re) > 0) ? array('users.username'=>$ftitle_re) : array() ;
+            
+            //set default limit in var $config['list_limit'] at application/config/ion_auth.php 
+            $this->data['limit'] = $limit = (strlen($this->input->post('limit')) > 0) ? $this->input->post('limit') : 10 ;
+
+            $this->data['offset'] = 6;
+
+            //list of filterize all form_tidak_masuk  
+            $this->data['form_tidak_masuk_all'] = $this->form_tidak_masuk_model->like($ftitle_post)->where('is_deleted',0)->form_tidak_masuk()->result();
+            
+            $this->data['num_rows_all'] = $this->form_tidak_masuk_model->like($ftitle_post)->where('is_deleted',0)->form_tidak_masuk()->num_rows();
+
+            $form_tidak_masuk = $this->data['form_tidak_masuk'] = $this->form_tidak_masuk_model->like($ftitle_post)->where('is_deleted',0)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->form_tidak_masuk()->result();
+            $this->data['_num_rows'] = $this->form_tidak_masuk_model->like($ftitle_post)->where('is_deleted',0)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->form_tidak_masuk()->num_rows();
+            
+
+             //config pagination
+             $config['base_url'] = base_url().'form_tidak_masuk/index/fn:'.$exp_ftitle[1].'/'.$sort_by.'/'.$sort_order.'/';
+             $config['total_rows'] = $this->data['num_rows_all'];
+             $config['per_page'] = $limit;
+             $config['uri_segment'] = 6;
+
+            //inisialisasi config
+             $this->pagination->initialize($config);
+
+            //create pagination
+            $this->data['halaman'] = $this->pagination->create_links();
+
+            $this->data['ftitle_search'] = array(
+                'name'  => 'title',
+                'id'    => 'title',
+                'type'  => 'text',
+                'value' => $this->form_validation->set_value('title'),
+            );
+
+            $this->data['form_id'] = getValue('form_id', 'form_id', array('form_name'=>'like/tidak_masuk'));
+
+
+            $this->_render_page('form_tidak_masuk/index', $this->data);
+        }
+    }
+
+    function keywords(){
+        if (!$this->ion_auth->logged_in())
+        {
+            redirect('auth/login', 'refresh');
+        }
+        else
+        {
+            $ftitle_post = (strlen($this->input->post('title')) > 0) ? strtolower(url_title($this->input->post('title'),'_')) : "" ;
+
+            redirect('form_tidak_masuk/index/fn:'.$ftitle_post, 'refresh');
+        }
+    }
+
+    function detail($id)
+    {
+        $this->data['title'] = 'Detail - Keterangan Tidak Masuk';
+        if (!$this->ion_auth->logged_in())
+        {
+            $this->session->set_userdata('last_link', $this->uri->uri_string());
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+        else
+        {
+            $this->data['id'] = $id;
+            $user_id= getValue('user_id', 'users_tidak_masuk', array('id'=>'where/'.$id));
+            $this->data['user_nik'] = get_nik($user_id);
+            $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
+            $sess_nik = $this->data['sess_nik'] = get_nik($sess_id);
+            //$this->data['comp_session'] = $this->form_tidak_masuk_model->render_session()->result();
+            $form_tidak_masuk = $this->data['form_tidak_masuk'] = $this->form_tidak_masuk_model->where('is_deleted',0)->form_tidak_masuk_detail($id)->result();
+            $this->data['_num_rows'] = $this->form_tidak_masuk_model->where('is_deleted',0)->form_tidak_masuk_detail($id)->num_rows();
+            
+            $this->_render_page('form_tidak_masuk/detail', $this->data);
+        }
+    }
+
+
+     function input()
+    {
+        $this->data['title'] = 'Input - Keterangan Tidak Masuk';
+        if (!$this->ion_auth->logged_in())
+        {
+            redirect('auth/login', 'refresh');
+        }
+        else
+        {
+            $this->data['sess_id'] = $sess_id = $this->session->userdata('user_id'); 
+            $this->data['sess_nik'] = get_nik($sess_id);
+
+			$form_tidak_masuk = $this->data['form_tidak_masuk'] = getAll('users_tidak_masuk');
+            $tidak_masuk_id = $form_tidak_masuk->last_row();
+            $this->data['tidak_masuk_id'] = ($form_tidak_masuk->num_rows()>0)?$tidak_masuk_id->id+1:1;
+
+            $this->data['all_users'] = getAll('users', array('active'=>'where/1', 'username'=>'order/asc'), array('!=id'=>'1'));
+            
+            $this->_render_page('form_tidak_masuk/input', $this->data);
+        }
+    }
+
+    function add()
+    {
+        if (!$this->ion_auth->logged_in())
+        {
+            redirect('auth/login', 'refresh');
+        }
+        else
+        {
+            $this->form_validation->set_rules('alasan', 'Alasan', 'trim|required');
+
+            if($this->form_validation->run() == FALSE)
+            {
+            //echo json_encode(array('st'=>0, 'errors'=>validation_errors('<div class="alert alert-danger" role="alert">', '</div>')));
+            redirect('form_tidak_masuk/input', 'refresh');
+            }
+            else
+            {
+                $user_id= $this->input->post('emp');
+                $sess_id = $this->session->userdata('user_id');
+                $data = array(
+                    'dari_tanggal' => date('Y-m-d', strtotime($this->input->post('dari_tanggal'))),
+                    'sampai_tanggal' => date('Y-m-d', strtotime($this->input->post('sampai_tanggal'))),
+                    'jml_hari' => $this->input->post('jml_hari'),
+                    'alasan' => $this->input->post('alasan'),
+                    'user_app_lv1'          => $this->input->post('atasan1'),
+                    'user_app_lv2'          => $this->input->post('atasan2'),
+                    'user_app_lv3'          => $this->input->post('atasan3'),
+                    'created_on'            => date('Y-m-d',strtotime('now')),
+                    'created_by'            => $sess_id
+                    );
+                /*
+                if($this->input->post('potong_cuti') == 1){
+                    $user_nik = get_nik($user_id);
+                    $date = $this->input->post('date_tidak_hadir');
+                    $recid = $this->get_sisa_tidak_masuk($user_id)[0]['RECID'];
+                    $sisa_tidak_masuk = $this->get_sisa_tidak_masuk($user_id)[0]['ENTITLEMENT'] - 1;
+
+                    $this->update_sisa_tidak_masuk($recid, $sisa_tidak_masuk);
+
+                    $data2 = array(
+                                'nik'       => get_mchid($user_nik),
+                                'jhk'       => 1,
+                                'cuti'      => 1,
+                                'tanggal'   => date("d", strtotime($date)),
+                                'bulan'     => date("m", strtotime($date)),
+                                'tahun'     => date("Y", strtotime($date)),
+                                'create_date' => date('Y-m-d',strtotime('now')),
+                                'create_user_id' => $this->session->userdata('user_id'),
+                            );
+                    $this->db->insert('attendance', $data2);
+                }
+                */
+
+                if ($this->form_validation->run() == true && $this->form_tidak_masuk_model->create_($user_id,$data))
+                {
+                 $tidak_masuk_id = $this->db->insert_id();
+                 $user_app_lv1 = getValue('user_app_lv1', 'users_tidak_masuk', array('id'=>'where/'.$tidak_masuk_id));
+                 $subject_email = get_form_no($tidak_masuk_id).'-Pengajuan Keterangan Tidak Masuk';
+                 $isi_email = get_name($user_id).' mengajukan keterangan tidak masuk, untuk melihat detail silakan <a href='.base_url().'form_tidak_masuk/detail/'.$tidak_masuk_id.'>Klik Disini</a><br />';
+
+                 if($user_id!==$sess_id):
+                    $this->approval->by_admin('tidak_masuk', $tidak_masuk_id, $sess_id, $user_id, $this->detail_email($tidak_masuk_id));
+                 endif;
+                 if(!empty($user_app_lv1)):
+                     if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), $subject_email, $isi_email);
+                     $this->approval->request('lv1', 'tidak_masuk', $tidak_masuk_id, $user_id, $this->detail_email($tidak_masuk_id));
+                 else:
+                     if(!empty(getEmail($this->approval->approver('tidak_masuk'))))$this->send_email(getEmail($this->approval->approver('tidak_masuk')), $subject_email, $isi_email);
+                     $this->approval->request('hrd', 'tidak_masuk', $tidak_masuk_id, $user_id, $this->detail_email($tidak_masuk_id));
+                 endif;
+
+                  redirect('form_tidak_masuk', 'refresh');
+                 //echo json_encode(array('st' =>1));     
+                }
+            }
+        }
+    }
+
+    function do_approve($id, $type)
+    {
+        if(!$this->ion_auth->logged_in())
+        {
+            redirect('auth/login', 'refresh');
+        }
+
+        $user_id = get_nik($this->session->userdata('user_id'));
+        $date_now = date('Y-m-d');
+
+        $data = array(
+        'is_app_'.$type => 1,
+        'user_app_'.$type => $user_id, 
+        'date_app_'.$type => $date_now,
+        );
+        
+        $this->form_tidak_masuk_model->update($id,$data);
+        $user_tidak_masuk_id = getValue('user_id', 'users_tidak_masuk', array('id'=>'where/'.$id));
+        $approval_status = 1;
+        $this->approval->approve('tidak_masuk', $id, $approval_status, $this->detail_email($id));
+        $subject_email = get_form_no($id).'-[APPROVED]Status Pengajuan Keterangan Tidak Masuk dari Atasan';
+        $subject_email_request = get_form_no($id).'-Pengajuan Keterangan Tidak Masuk';
+        $isi_email = 'Status pengajuan keterangan tidak Masuk anda disetujui oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_tidak_masuk/detail/'.$id.'>Klik Disini</a><br />';
+        $isi_email_request = get_name($user_tidak_masuk_id).' mengajukan keterangan tidak Masuk, untuk melihat detail silakan <a href='.base_url().'form_tidak_masuk/detail/'.$id.'>Klik Disini</a><br />';
+        if(!empty(getEmail($user_tidak_masuk_id)))$this->send_email(getEmail($user_tidak_masuk_id), $subject_email, $isi_email);
+                
+        if($type !== 'hrd'){
+        $lv = substr($type, -1)+1;
+        $lv_app= 'lv'.$lv;
+        $user_app = ($lv<4) ? getValue('user_app_'.$lv_app, 'users_tidak_masuk', array('id'=>'where/'.$id)) : 0;
+        if(!empty($user_app)):
+            if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), $subject_email_request, $isi_email_request);
+            $this->approval->request($lv_app, 'tidak_masuk', $id, $user_tidak_masuk_id, $this->detail_email($id));
+        else:
+            if(!empty(getEmail($this->approval->approver('tidak_masuk'))))$this->send_email(getEmail($this->approval->approver('tidak_masuk')), $subject_email_request, $isi_email_request);
+            $this->approval->request('hrd', 'tidak_masuk', $id, $user_tidak_masuk_id, $this->detail_email($id));
+        endif;
+        }
+    }
+
+    function detail_email($id)
+    {
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+
+        $user_id= getValue('user_id', 'users_tidak_masuk', array('id'=>'where/'.$id));
+        $this->data['id'] = $id;
+        $this->data['user_nik'] = get_nik($user_id);
+        $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
+        $sess_nik = $this->data['sess_nik'] = get_nik($sess_id);
+        $form_tidak_masuk = $this->data['form_tidak_masuk'] = $this->form_tidak_masuk_model->where('is_deleted',0)->form_tidak_masuk_detail($id)->result();
+        $this->data['_num_rows'] = $this->form_tidak_masuk_model->where('is_deleted',0)->form_tidak_masuk_detail($id)->num_rows();
+    
+        return $this->load->view('form_tidak_masuk/tidak_masuk_mail', $this->data, TRUE);
+    }
+
+    function form_tidak_masuk_pdf($id)
+    {
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+        
+        $user_id= getValue('user_id', 'users_tidak_masuk', array('id'=>'where/'.$id));
+        $this->data['user_nik'] = $sess_nik = get_nik($user_id);
+        $this->data['sess_id'] = $this->session->userdata('user_id');
+        
+        $form_tidak_masuk = $this->data['form_tidak_masuk'] = $this->form_tidak_masuk_model->where('is_deleted',0)->form_tidak_masuk_detail($id)->result();
+        $this->data['_num_rows'] = $this->form_tidak_masuk_model->where('is_deleted',0)->form_tidak_masuk_detail($id)->num_rows();
+
+        $this->data['id'] = $id;
+        $title = $this->data['title'] = 'Form Keterangan Tidak Masuk-'.get_name($user_id);
+        $this->load->library('mpdf60/mpdf');
+        $html = $this->load->view('tidak_masuk_pdf', $this->data, true); 
+        $mpdf = new mPDF();
+        $mpdf = new mPDF('A4');
+        $mpdf->WriteHTML($html);
+        $mpdf->Output($id.'-'.$title.'.pdf', 'I');
+    }
+
+    function _render_page($view, $data=null, $render=false)
+    {
+        $data = (empty($data)) ? $this->data : $data;
+        if ( ! $render)
+        {
+            $this->load->library('template');
+
+                if(in_array($view, array('form_tidak_masuk/index')))
+                {
+                    $this->template->set_layout('default');
+
+                    $this->template->add_js('jquery.sidr.min.js');
+                    $this->template->add_js('breakpoints.js');
+                    $this->template->add_js('core.js');
+                    $this->template->add_js('select2.min.js');
+
+                    $this->template->add_js('form_index.js');
+
+                    $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
+                    $this->template->add_css('plugins/select2/select2.css');
+                    
+                }
+                elseif(in_array($view, array('form_tidak_masuk/input',)))
+                {
+
+                    $this->template->set_layout('default');
+
+                    $this->template->add_js('jquery.sidr.min.js');
+                    $this->template->add_js('breakpoints.js');
+                    $this->template->add_js('select2.min.js');
+
+                    $this->template->add_js('core.js');
+                    $this->template->add_js('purl.js');
+
+                    $this->template->add_js('respond.min.js');
+
+                    $this->template->add_js('jquery.bootstrap.wizard.min.js');
+                    $this->template->add_js('jquery.validate.min.js');
+                    $this->template->add_js('jquery-validate.bootstrap-tooltip.min.js');
+                    $this->template->add_js('bootstrap-datepicker.js');
+                    $this->template->add_js('emp_dropdown.js');
+                    $this->template->add_js('form_tidak_masuk_input.js');
+                    
+                    $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
+                    $this->template->add_css('plugins/select2/select2.css');
+                    $this->template->add_css('datepicker.css');
+                    
+                     
+                }elseif(in_array($view, array('form_tidak_masuk/detail')))
+                {
+                    $this->template->set_layout('default');
+
+                    $this->template->add_js('jquery.sidr.min.js');
+                    $this->template->add_js('breakpoints.js');
+                    $this->template->add_js('select2.min.js');
+
+                    $this->template->add_js('core.js');
+                    $this->template->add_js('purl.js');
+                    $this->template->add_js('form_tidak_masuk.js');
+
+                    
+                    $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
+                    $this->template->add_css('approval_img.css');
+                    
+                }
+
+
+            if ( ! empty($data['title']))
+            {
+                $this->template->set_title($data['title']);
+            }
+
+            $this->template->load_view($view, $data);
+        }
+        else
+        {
+            return $this->load->view($view, $data, TRUE);
+        }
+    }
+}
