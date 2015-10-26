@@ -241,6 +241,8 @@
                               </div> 
                             </div>
                             <p>&nbsp;</p>
+                            <div class="row form-row"><div class="col-md-12 text-center"><i class="icon-warning-sign" style="color:grey ;text-shadow: 1px 1px 1px #ccc;font-size: 14px;"> Biaya uang makan, uang saku & hotel diisi dihalaman selanjutnya </i></div>
+                        
                             <div class="row form-row">
                               <div class="col-md-12">
                                 <table id="dataTable" class="table table-bordered">
