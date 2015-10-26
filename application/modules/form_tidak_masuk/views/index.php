@@ -17,7 +17,7 @@
           <div class="col-md-12">
               <div class="grid simple ">
                 <div class="grid-title no-border">
-                  <h4>Daftar Keterangan Tidak <span class="semi-bold">Masuk</span></h4>
+                  <h4>Daftar Izin Tidak <span class="semi-bold">Masuk</span></h4>
                   <div class="tools"> 
                     <a href="<?php echo site_url('form_tidak_masuk/input')?>" class="config"><button type="button" class="btn btn-primary btn-sm"><i class="icon-plus"></i>&nbsp;<?php echo lang('add_button');?></button></a>
                   </div>
@@ -28,7 +28,7 @@
                       <div class="row">
                           <div class="col-md-5">
                               <div class="row">
-                                  <div class="col-md-4 search_label"><?php echo form_label('Nama Pengaju','first_name')?></div>
+                                  <div class="col-md-4 search_label"><?php echo form_label('Nama','first_name')?></div>
                                   <div class="col-md-8"><?php echo bs_form_input($ftitle_search)?></div>
                               </div>
                           </div>
@@ -44,9 +44,9 @@
                     <table class="table table-striped table-flip-scroll cf">
                         <thead>
                           <tr>
-                            <th width="15%">No.</th>
+                            <th width="20%">No.</th>
                             <th width="15%">Tanggal</th>
-                            <th width="20%">Nama</th>
+                            <th width="15%">Nama</th>
                             <th width="15%">Alasan</th>
                             <th width="10%" class="text-center">appr. spv</th>
                             <th width="10%" class="text-center">appr. atasan tidak langsung</th>
@@ -115,15 +115,13 @@
                               <td>
                                 <a href="<?php echo site_url('form_tidak_masuk/detail/'.$tidak_masuk->id)?>">
                                   <?php 
-                                  $nik = get_nik($tidak_masuk->user_id);
-                                  $bu = get_user_buid($nik);
-                                  $date = date('m', strtotime($tidak_masuk->created_on)).'/'.date('Y', strtotime($tidak_masuk->created_on));
-                                  echo $form_id.'/'.$bu.'/'.$date.'/'.$tidak_masuk->id?>
+                                  echo get_form_no($tidak_masuk->id);
+                                  ?>
                                 </a>
                               </td>
                               <td>
                                 <a href="<?php echo site_url('form_tidak_masuk/detail/'.$tidak_masuk->id)?>">
-                                  <?php echo date('Y-m-d', strtotime($tidak_masuk->date_tidak_masuk))?>
+                                  <?php echo date('Y-m-d', strtotime($tidak_masuk->dari_tanggal))?>
                                 </a>
                               </td>
                               <td>

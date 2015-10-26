@@ -1,6 +1,9 @@
+
 <div class="col-md-12">
         <div class="grid simple">
+    
             <div class="grid-title">
+              <a href="<?= base_url()?>"><h4><i class="icon-home"></i> Kembali Ke Halaman Depan</h4></a>
               <h3>Panduan Penggunaan Web HRIS Erlangga</h3>
             </div>
             <div class="grid-body no-border"> 

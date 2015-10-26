@@ -17,7 +17,7 @@
         <div class="col-md-12">
           <div class="grid simple">
             <div class="grid-title no-border">
-              <h4>View Permintaan <span class="semi-bold"><a href="<?php echo site_url('form_training_group')?>">Pelatihan (Group)</a></span></h4>
+              <h4>View Permintaan <span class="semi-bold"><a href="<?php echo site_url('form_training_group')?>">Pelatihan</a></span></h4>
               <a href="<?php echo site_url('form_training_group/form_training_group_pdf/'.$id)?>" target="_blank"><button class="btn btn-primary pull-right"><i class="icon-print"> Cetak</i></button></a><br/>
               No : <?= get_form_no($id) ?>
             </div>
@@ -437,7 +437,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Edit Approval HRD - Form Training (Group)</h4>
+        <h4 class="modal-title" id="myModalLabel">Edit Approval HRD - Form Training</h4>
       </div>
       <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
       <div class="modal-body">
@@ -686,7 +686,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Approval Form Training (Group)</h4>
+        <h4 class="modal-title" id="myModalLabel">Approval Form Training</h4>
       </div>
       <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
       <div class="modal-body">
@@ -736,7 +736,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Approval Form Training (Group)</h4>
+        <h4 class="modal-title" id="myModalLabel">Approval Form Training</h4>
       </div>
       <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
       <div class="modal-body">
@@ -786,7 +786,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Approval Form Training (Group)</h4>
+        <h4 class="modal-title" id="myModalLabel">Approval Form Training</h4>
       </div>
       <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
       <div class="modal-body">

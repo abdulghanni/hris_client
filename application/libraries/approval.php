@@ -29,6 +29,11 @@ class Approval {
                 $form = 'Keterangan Tidak Absen';
                 $isi_email = get_name($user_id).' mengajukan '.$form.', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>';
                 break;
+            case "tidak_masuk":
+                $receiver = $CI->approval->approver('tidak');
+                $form = 'Izin Tidak Masuk';
+                $isi_email = get_name($user_id).' membuat '.$form.', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>';
+                break;
             case "spd_dalam":
                 $receiver = $CI->approval->approver('dinas');
                 $url = base_url().'form_'.$form.'/submit/'.$id;
@@ -63,15 +68,22 @@ class Approval {
             case "demotion":
                 $receiver = $CI->approval->approver('demosi');
                 $pengaju_id = getValue('created_by', 'users_'.$form, array('id'=>'where/'.$id));
-                $form = 'Demotion Karyawan';
-                $isi_email = get_name($pengaju_id).' mengajukan Demotion karyawan untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>';
+                $form = 'Demosi Karyawan';
+                $isi_email = get_name($pengaju_id).' mengajukan Demosi karyawan untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>';
                 $user_id = $pengaju_id;
                 break;
             case "rolling":
                 $receiver = $CI->approval->approver($form);
                 $pengaju_id = getValue('created_by', 'users_'.$form, array('id'=>'where/'.$id));
-                $form = 'Rolling Karyawan';
-                $isi_email = get_name($pengaju_id).' mengajukan rolling karyawan untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>';
+                $form = 'Mutasi Karyawan';
+                $isi_email = get_name($pengaju_id).' mengajukan mutasi karyawan untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>';
+                $user_id = $pengaju_id;
+                break;
+            case "kontrak":
+                $receiver = $CI->approval->approver($form);
+                $pengaju_id = getValue('created_by', 'users_'.$form, array('id'=>'where/'.$id));
+                $form = 'Perpanjangan Kontrak Karyawan';
+                $isi_email = get_name($pengaju_id).' mengajukan perpanjangan kontrak karyawan untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>';
                 $user_id = $pengaju_id;
                 break;
             case "recruitment":
@@ -139,6 +151,10 @@ class Approval {
         switch ($form) {
             case "absen":
                 $form = 'Keterangan Tidak Absen';
+                $created_for = get_nik($created_for);
+                break;
+            case "tidak_masuk":
+                $form = 'Izin Tidak Masuk';
                 $created_for = get_nik($created_for);
                 break;
             case "cuti":
@@ -245,6 +261,10 @@ class Approval {
             case "absen":
                 $receiver_id = getValue('user_id', 'users_'.$form, array('id'=>'where/'.$id));
                 $form = 'Keterangan Tidak Absen';
+                break;
+            case "tidak_masuk":
+                $receiver_id = getValue('user_id', 'users_'.$form, array('id'=>'where/'.$id));
+                $form = 'Izin Tidak Masuk';
                 break;
             default:
             $receiver_id = getValue('user_id', 'users_'.$form, array('id'=>'where/'.$id));

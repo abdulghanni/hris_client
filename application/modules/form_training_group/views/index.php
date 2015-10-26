@@ -17,7 +17,7 @@
           <div class="col-md-12">
               <div class="grid simple ">
                 <div class="grid-title no-border">
-                  <h4>Daftar Permintaan <span class="semi-bold">Pelatihan Group</span></h4>
+                  <h4>Daftar Permintaan <span class="semi-bold">Pelatihan</span></h4>
                   <?php if(is_spv($nik)||is_admin()||is_admin_bagian()){?>
                   <div class="tools"> 
                     <a href="<?php echo site_url('form_training_group/input')?>" class="config"><button type="button" class="btn btn-primary btn-sm"><i class="icon-plus"></i>&nbsp;<?php echo lang('add_button');?></button></a>

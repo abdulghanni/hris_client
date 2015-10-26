@@ -82,6 +82,7 @@ $(document).ready(function() {
             case 'form_promosi':
             case 'form_demotion':
             case 'form_rolling':
+            case 'form_kontrak':
                 getEmpBu(empId);
                 getEmpOrg(empId);
                 getEmpPos(empId);
@@ -136,7 +137,7 @@ $(document).ready(function() {
     $('#total').val(total);
 }
 
-    //promosi,demosi,rolling
+    //promosi,demosi,rolling, kontrak
     $("#empBawahan").change(function() {
             var empId = $(this).val();
             getEmpBu(empId);

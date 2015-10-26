@@ -84,6 +84,7 @@ $config['tables']['alasan_resign']  = 'alasan_resign';
 $config['tables']['users_promosi']  = 'users_promosi';
 $config['tables']['users_demotion']  = 'users_demotion';
 $config['tables']['users_rolling']  = 'users_rolling';
+$config['tables']['users_kontrak']  = 'users_kontrak';
 $config['tables']['users_exit']  = 'users_exit';
 $config['tables']['users_approval']  = 'users_approval';
 $config['tables']['users_approval_khusus']  = 'users_approval_khusus';

@@ -15,7 +15,7 @@
         <div class="col-md-12">
           <div class="grid simple">
             <div class="grid-title no-border">
-              <h4>Form Keterangan Tidak <a href="<?php echo site_url('form_tidak_masuk')?>"><span class="semi-bold">tidak_masuk</span></a></h4>
+              <h4>Form Izin Tidak <a href="<?php echo site_url('form_tidak_masuk')?>"><span class="semi-bold">Masuk Kerja</span></a></h4>
               <a href="<?php echo site_url('form_tidak_masuk/form_tidak_masuk_pdf/'.$id)?>" target="_blank"><button class="btn btn-primary pull-right"><i class="icon-print"> Cetak</i></button></a><br/>
               No : <?= get_form_no($id) ?>
             </div>
@@ -23,7 +23,7 @@
             <?php 
             if($_num_rows>0){
               foreach($form_tidak_masuk as $tidak_masuk){?>
-              <form class="form-no-horizontal-spacing" id="formtidak_masuk"> 
+              <form class="form-no-horizontal-spacing" id="form"> 
                 <div class="row column-seperation">
                   <div class="col-md-12">
                     <div class="row form-row">
@@ -45,10 +45,10 @@
 
                     <div class="row form-row">
                       <div class="col-md-3">
-                        <label class="form-label text-right">jabatan</label>
+                        <label class="form-label text-right">Jabatan</label>
                       </div>
                       <div class="col-md-9">
-                        <input name="position" id="position" type="text"  class="form-control" placeholder="position" value="" disabled="disabled">
+                        <input name="position" id="position" type="text"  class="form-control" placeholder="position" value="<?php echo get_user_position($user_nik)?>" disabled="disabled">
                       </div>
                     </div>
                     
@@ -176,7 +176,7 @@
                         <div class="col-md-3">
                           <p class="wf-approve-sp">
                             <?php
-                            if($tidak_masuk->is_app_hrd == 0 && $this->approval->approver('tidak_masuk') == $sess_nik){?>
+                            if($tidak_masuk->is_app_hrd == 0 && $this->approval->approver('tidak') == $sess_nik){?>
                               <button id="btn_app_hrd" class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok"></i>Submit</button>
                               <span class="small"></span>
                               <span class="semi-bold"></span><br/>
@@ -193,7 +193,7 @@
                               <span class="small"></span><br/>
                               <span class="small"></span><br/>
                               <span class="semi-bold"></span><br/>
-                              <span class="semi-bold"><?php echo get_name($this->approval->approver('tidak_masuk'))?></span><br/>
+                              <span class="semi-bold"><?php echo get_name($this->approval->approver('tidak'))?></span><br/>
                               <span class="small"><?php echo dateIndo($tidak_masuk->date_app_hrd)?></span><br/>
                               <span class="semi-bold">(HRD)</span>
                             <?php } ?>

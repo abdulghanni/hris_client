@@ -42,33 +42,36 @@ $approved = assets_url('img/approved_stamp.png');
 $rejected = assets_url('img/rejected_stamp.png');?>
 <table width="988" height="135" border="0" align="center" style="padding-left:30px">
   <tr>
-    <td width="220" height="30"><span class="style3">NIK</span></td>
+    <td width="220" height="30"><span class="style3">No</span></td>
     <td width="10"><div align="center" class="style3">:</div></td>
-    <td width="274"><div align="left" class="style3"><?php echo $user_nik?></div></td>
-    <td height="40"><span class="style3">Nama Karyawan </span></td>
+    <td width="274"><div align="left" class="style3"><?=get_form_no($id)?></div></td>
+    <td height="40"><span class="style3">NIK </span></td>
     <td><div align="center" class="style3">:</div></td>
-    <td><span class="style3"><?php echo get_name($row->user_id)?> </span></td>
+    <td><span class="style3"><?php echo $user_nik?> </span></td>
     </tr>
   <tr>
     <td width="200"><span class="style3">Jabatan</span></td>
     <td width="10"><div align="center" class="style3">:</div></td>
     <td width="300"><span class="style3"><?php echo get_user_position($user_nik)?></span></td>
-    <td><span class="style3">Tanggal Mulai Kerja</span></td>
+    <td><span class="style3">Nama Karyawan</span></td>
     <td><div align="center" class="style3">:</div></td>
-    <td><span class="style3"><?php echo dateIndo(get_user_sen_date($user_nik))?></span></td>
+    <td><span class="style3"><?php echo get_name($user_nik)?></span></td>
   </tr>
   <tr>
     <td height="40"><span class="style3">Wilayah </span></td>
     <td><div align="center" class="style3">:</div></td>
     <td><span class="style3"><?php echo get_user_bu($user_nik)?></span></td>
-    <td><span class="style3">Tanggal Keluar </span></td>
+    <td><span class="style3">Tanggal Masuk Kerja </span></td>
     <td><div align="center" class="style3">:</div></td>
-    <td><span class="style3"><?php echo dateIndo($row->date_exit)?> </span></td>
+    <td><span class="style3"><?php echo dateIndo(get_user_sen_date($user_nik))?> </span></td>
   </tr>
   <tr>
     <td><span class="style3">Tipe Rekomendasi </span></td>
     <td><div align="center" class="style3">:</div></td>
     <td><span class="style3"><?php echo $row->exit_type?> </span></td>
+    <td><span class="style3">Tanggal Keluar </span></td>
+    <td><div align="center" class="style3">:</div></td>
+    <td><span class="style3"><?php echo dateIndo($row->date_exit)?> </span></td>
   </tr>
 </table>
 <p class="style7">Inventaris yang harus diserahkan </p>

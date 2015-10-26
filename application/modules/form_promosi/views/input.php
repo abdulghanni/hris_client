@@ -236,7 +236,7 @@
                           </div>
                         </div>
                       </div>
-
+                      <!--
                       <div class="row form-row">
                         <div class="col-md-4">
                           <label class="form-label text-left">Tgl. Presentasi (Optional)</label>
@@ -248,7 +248,7 @@
                         </div>
                         </div>
                       </div>
-
+                      -->
                       <div class="row form-row">
                         <div class="col-md-4">
                           <label class="form-label text-left">TOEFL (Optional)</label>

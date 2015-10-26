@@ -115,11 +115,14 @@ class Form_pjd extends MX_Controller {
         
             
             $receiver = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('task_receiver');
+            $kota = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('location_id');
+            $this->data['kota'] = $p = explode(",", $kota);
             $creator = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('task_creator');
             $user_submit = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('user_submit');
             $this->data['biaya_pjd_group'] = getAll('users_spd_luar_group_biaya', array('user_spd_luar_group_id'=>'where/'.$id));
             $this->data['biaya_tambahan'] = getAll('pjd_biaya', array('type_grade' => 'where/0'));
             $this->data['receiver'] = $p = explode(",", $receiver);
+            
             $this->data['receiver_submit'] = explode(",", $user_submit);
             $this->data['id']=$id;
             $this->data['created_by'] = getValue('created_by', 'users_spd_luar_group', array('id'=>'where/'.$id));
@@ -316,7 +319,7 @@ class Form_pjd extends MX_Controller {
             $this->get_penerima_tugas();
             $this->get_penerima_tugas_satu_bu();
             $this->get_user_atasan();
-
+            $this->get_bu();
             $this->data['transportation_list'] = getAll('transportation', array('is_deleted'=>'where/0'))->result();
             $this->data['tl_num_rows'] = getAll('transportation', array('is_deleted'=>'where/0'))->num_rows();
             $this->data['city_list'] = getAll('city', array('is_deleted'=>'where/0'))->result();
@@ -355,6 +358,7 @@ class Form_pjd extends MX_Controller {
                 'date_spd_end'          => date('Y-m-d', strtotime($this->input->post('date_spd_end'))),
                 'from_city_id'          => $this->input->post('city_from'),
                 'to_city_id'            => $this->input->post('city_to'),
+                'location_id'            => implode(',', $this->input->post('kota')),
                 'transportation_id'     => $this->input->post('vehicle'),
                 'user_app_lv1'          => $this->input->post('atasan1'),
                 'user_app_lv2'          => $this->input->post('atasan2'),
@@ -510,9 +514,11 @@ class Form_pjd extends MX_Controller {
             $this->data['td_num_rows'] = $this->form_spd_luar_group_model->where('users_spd_luar_group.id',$id)->form_spd_luar_group()->num_rows($id);
         
             $receiver = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('task_receiver');
+            $kota = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('location_id');
             $creator = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('task_creator');
             $user_submit = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('user_submit');
             $this->data['receiver'] = $p = explode(",", $receiver);
+            $this->data['kota'] = $p = explode(",", $kota);
             $this->data['receiver_submit'] = explode(",", $user_submit);
 
             $this->data['sess_id'] = $this->session->userdata('user_id');
@@ -577,7 +583,8 @@ class Form_pjd extends MX_Controller {
             $this->data['report_creator'] = $report_creator = getValue('created_by','users_spd_luar_report_group', array('id'=>'where/'.$report_id, 'created_by'=>'where/'.$user_id));
             $this->data['created_by'] = $this->data['user_folder'] = get_nik($report_creator);
 
-           
+           $kota = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('location_id');
+            $this->data['kota'] = $p = explode(",", $kota);
             $report = $this->data['report'] = $this->form_spd_luar_group_model->where('users_spd_luar_report_group.user_spd_luar_group_id', $id)->form_spd_luar_report_group($report_id, $user_id)->result();
             $n_report = $this->data['n_report'] = $this->form_spd_luar_group_model->where('users_spd_luar_report_group.user_spd_luar_group_id', $id)->form_spd_luar_report_group($report_id, $user_id)->num_rows();
 
@@ -878,32 +885,29 @@ class Form_pjd extends MX_Controller {
         else
         {
         $this->data['id'] = $id;
-        $sess_id= $this->data['sess_id'] = $this->session->userdata('user_id');
-        $this->data['sess_nik'] = $sess_nik = get_nik($sess_id);
-        $data_result = $this->data['task_detail'] = $this->form_spd_luar_group_model->where('users_spd_luar_group.id',$id)->form_spd_luar_group($id)->result();
-        $this->data['td_num_rows'] = $this->form_spd_luar_group_model->where('users_spd_luar_group.id',$id)->form_spd_luar_group($id)->num_rows();
-    
+            $sess_id= $this->data['sess_id'] = $this->session->userdata('user_id');
+            $this->data['sess_nik'] = $sess_nik = get_nik($sess_id);
+            $data_result = $this->data['task_detail'] = $this->form_spd_luar_group_model->where('users_spd_luar_group.id',$id)->form_spd_luar_group($id)->result();
+            $this->data['td_num_rows'] = $this->form_spd_luar_group_model->where('users_spd_luar_group.id',$id)->form_spd_luar_group($id)->num_rows();
         
-        $receiver = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('task_receiver');
-        $creator = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('task_creator');
-        $user_submit = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('user_submit');
-        $this->data['biaya_pjd_group'] = getAll('users_spd_luar_group_biaya', array('user_spd_luar_group_id'=>'where/'.$id));
-        $this->data['biaya_tambahan'] = getAll('pjd_biaya', array('type_grade' => 'where/0'));
-        $this->data['receiver'] = $p = explode(",", $receiver);
-        $this->data['receiver_submit'] = explode(",", $user_submit);
-        $this->data['id']=$id;
-        $b = $this->data['biaya_pjd'] = $this->db->distinct()->select('users_spd_luar_group_biaya.pjd_biaya_id as biaya_id, pjd_biaya.title as jenis_biaya')->from('users_spd_luar_group_biaya')->join('pjd_biaya','pjd_biaya.id = users_spd_luar_group_biaya.pjd_biaya_id', 'left')->where('user_spd_luar_group_id', $id)->where('pjd_biaya.type_grade', 0)->get();//print_mz($this->data['biaya_pjd']->result());                   
-        $this->data['detail'] = $this->db->distinct()->select('user_id')->where('user_spd_luar_group_id', $id)->get('users_spd_luar_group_biaya');
-        $this->data['ci'] = $this;
-        $creator = getValue('task_creator', 'users_spd_luar_group', array('id'=>'where/'.$id));
-        $this->data['form_id'] = 'PJD-LKG';
-        $this->data['bu'] = get_user_buid($creator);
-        $loc_id = get_user_locationid($creator);
-        $this->data['location'] = get_user_location($loc_id);
-        $date = getValue('created_on','users_spd_luar_group', array('id'=>'where/'.$id));
-        $this->data['m'] = date('m', strtotime($date));
-        $this->data['y'] = date('Y', strtotime($date));
-        $a = strtotime(getValue('date_spd_end', 'users_spd_luar_group', array('id'=>'where/'.$id)));
+            
+            $receiver = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('task_receiver');
+            $kota = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('location_id');
+            $creator = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('task_creator');
+            $user_submit = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('user_submit');
+            $this->data['biaya_pjd_group'] = getAll('users_spd_luar_group_biaya', array('user_spd_luar_group_id'=>'where/'.$id));
+            $this->data['biaya_tambahan'] = getAll('pjd_biaya', array('type_grade' => 'where/0'));
+            $this->data['receiver'] = $p = explode(",", $receiver);
+            $this->data['kota'] = $p = explode(",", $kota);
+            $this->data['receiver_submit'] = explode(",", $user_submit);
+            $this->data['id']=$id;
+            $this->data['created_by'] = getValue('created_by', 'users_spd_luar_group', array('id'=>'where/'.$id));
+            $this->data['task_creator'] = getValue('task_creator', 'users_spd_luar_group', array('id'=>'where/'.$id));
+            $b = $this->data['biaya_pjd'] = $this->db->distinct()->select('users_spd_luar_group_biaya.pjd_biaya_id as biaya_id, pjd_biaya.title as jenis_biaya')->from('users_spd_luar_group_biaya')->join('pjd_biaya','pjd_biaya.id = users_spd_luar_group_biaya.pjd_biaya_id', 'left')->where('user_spd_luar_group_id', $id)->where('pjd_biaya.type_grade', 0)->get();//print_mz($this->data['biaya_pjd']->result());                   
+            $this->data['detail'] = $this->db->distinct()->select('user_id')->where('user_spd_luar_group_id', $id)->get('users_spd_luar_group_biaya');
+            $this->data['ci'] = $this;
+
+            $a = strtotime(getValue('date_spd_end', 'users_spd_luar_group', array('id'=>'where/'.$id)));
         $b = strtotime(getValue('date_spd_start', 'users_spd_luar_group', array('id'=>'where/'.$id)));
 
         $j = $a - $b;
@@ -914,7 +918,9 @@ class Form_pjd extends MX_Controller {
         $this->data['uang_saku'] = number_format($biaya_fix_2['uang_saku']*$jml_pjd);
         $biaya_fix_3 = $this->db->select("(SELECT SUM(jumlah_biaya) FROM users_spd_luar_group_biaya WHERE user_spd_luar_group_id=$id and (pjd_biaya_id = 3 or pjd_biaya_id=6 or pjd_biaya_id=9 or pjd_biaya_id=12 or pjd_biaya_id=15 or pjd_biaya_id=21 or pjd_biaya_id=18)) AS hotel", FALSE)->get()->row_array();
         $this->data['hotel'] = number_format($biaya_fix_3['hotel']*$jml_pjd);
-        
+            
+        $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
+
 
             return $this->load->view('form_pjd/spd_luar_group_mail', $this->data, TRUE);
         }
@@ -1007,7 +1013,8 @@ class Form_pjd extends MX_Controller {
             
             $this->data['report_creator'] = $report_creator = getValue('created_by','users_spd_luar_report_group', array('id'=>'where/'.$report_id, 'created_by'=>'where/'.$user_id));
             $this->data['user_folder'] = get_nik($report_creator);
-
+            $kota = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('location_id');
+            $this->data['kota'] = $p = explode(",", $kota);
            
             $report = $this->data['report'] = $this->form_spd_luar_group_model->where('users_spd_luar_report_group.user_spd_luar_group_id', $id)->form_spd_luar_report_group($report_id, $user_id)->result();
             $n_report = $this->data['n_report'] = $this->form_spd_luar_group_model->where('users_spd_luar_report_group.user_spd_luar_group_id', $id)->form_spd_luar_report_group($report_id, $user_id)->num_rows();
@@ -1059,6 +1066,71 @@ class Form_pjd extends MX_Controller {
                 return $this->data['biaya_fix'] = getAll('pjd_biaya', array('type_grade'=>'where/1'));
             }
     } 
+
+        function get_kota($bu)
+        {
+            $url = get_api_key().'users/location_by_bu/BU/'.$bu.'/format/json';
+            $headers = get_headers($url);
+            $response = substr($headers[0], 9, 3);
+            if ($response != "404") {
+                $getbu = file_get_contents($url);
+                $bu = json_decode($getbu, true);
+                foreach ($bu as $row)
+                {
+                $result['']= '- Pilih Kota -';
+                $result[$row['HRSLOCATIONID']]= ucwords(strtolower($row['DESCRIPTION']));
+                }
+            } else {
+                return $this->data['bu'] = '';
+            }
+
+            $data['result']=$result;
+            $this->load->view('dropdown_kota',$data);
+        }
+
+        function get_kota_lain($bu)
+        {
+            $url = get_api_key().'users/location_by_bu/BU/'.$bu.'/format/json';
+            $headers = get_headers($url);
+            $response = substr($headers[0], 9, 3);
+            if ($response != "404") {
+                $getbu = file_get_contents($url);
+                $bu = json_decode($getbu, true);
+                foreach ($bu as $row)
+                {
+                $result['']= '- Pilih Kota -';
+                $result[$row['HRSLOCATIONID']]= ucwords(strtolower($row['DESCRIPTION']));
+                }
+            } else {
+                return $this->data['bu'] = '';
+            }
+
+            $data['result']=$result;
+            $this->load->view('dropdown_kota_lain',$data);
+        }
+
+
+
+    function get_bu()
+    {
+            $url = get_api_key().'users/bu/format/json';
+            $headers = get_headers($url);
+            $response = substr($headers[0], 9, 3);
+            if ($response != "404") {
+                $getbu = file_get_contents($url);
+                $bu = json_decode($getbu, true);
+                foreach ($bu as $row)
+            {
+                $result['']= '- Pilih Cabang -';
+                if($row['NUM'] != null){
+                $result[$row['NUM']]= ucwords(strtolower($row['DESCRIPTION']));
+                }
+            }
+                return $this->data['bu'] = $result;
+            } else {
+                return $this->data['bu'] = '';
+            }
+    }
 
     function get_penerima_tugas()
     {

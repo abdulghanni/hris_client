@@ -54,7 +54,7 @@
                     </div>
                      <div class="row form-row">
                       <div class="col-md-3">
-                        <label class="form-label text-left">Tujuan</label>
+                        <label class="form-label text-left">Tujuan PJD</label>
                       </div>
                       <div class="col-md-9">
                         <input name="destination" id="destination" type="text"  class="form-control" placeholder="Tujuan" value="<?php echo $td->destination ?>" disabled="disabled">
@@ -62,28 +62,42 @@
                     </div>
                     <div class="row form-row">
                       <div class="col-md-3">
-                        <label class="form-label text-left">Dalam Rangka</label>
+                        <label class="form-label text-left">Deskripsi</label>
                       </div>
                       <div class="col-md-9">
-                        <input name="title" id="title" type="text"  class="form-control" placeholder="Dalam Rangka" value="<?php echo $td->title; ?>" disabled="disabled">
+                        <textarea class="form-control" disabled="disabled"><?php echo $td->title; ?></textarea>
                       </div>
                     </div>
+
                       <div class="row form-row">
+                        <div class="col-md-3">
+                          <label class="form-label text-left">Dari Cabang</label>
+                        </div>
+                        <div class="col-md-9">
+                          <input name="title" id="title" type="text"  class="form-control" placeholder="Kota Asal" value="<?php echo get_bu_name($td->from_city_id); ?>" disabled>
+                        </div>
+                      </div>
+
+                      <div class="row form-row">
+                        <div class="col-md-3">
+                          <label class="form-label text-left">Ke Cabang</label>
+                        </div>
+                        <div class="col-md-9">
+                          <input name="title" id="title" type="text"  class="form-control" placeholder="Kota Tujuan" value="<?php echo get_bu_name($td->to_city_id); ?>" disabled>
+                        </div>
+                      </div>
+
+                      <?php for($i=0;$i<sizeof($kota);$i++):
+                              ?>
+                        <div class="row form-row">
                         <div class="col-md-3">
                           <label class="form-label text-left">Kota Tujuan</label>
                         </div>
                         <div class="col-md-9">
-                          <input name="title" id="title" type="text"  class="form-control" placeholder="Kota Tujuan" value="<?php echo $td->city_to; ?>" disabled>
+                          <input name="title" id="title" type="text"  class="form-control" placeholder="Kota Tujuan" value="<?php echo 1+$i.'. '.get_user_location($kota[$i]) ?>" disabled>
                         </div>
                       </div>
-                      <div class="row form-row">
-                        <div class="col-md-3">
-                          <label class="form-label text-left">Dari</label>
-                        </div>
-                        <div class="col-md-9">
-                          <input name="title" id="title" type="text"  class="form-control" placeholder="Kota Asal" value="<?php echo $td->city_from; ?>" disabled>
-                        </div>
-                      </div>
+                    <?php endfor; ?>
                       <div class="row form-row">
                         <div class="col-md-3">
                           <label class="form-label text-left">Kendaraan</label>

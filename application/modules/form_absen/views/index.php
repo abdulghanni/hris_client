@@ -28,7 +28,7 @@
                       <div class="row">
                           <div class="col-md-5">
                               <div class="row">
-                                  <div class="col-md-4 search_label"><?php echo form_label('Nama Pengaju','first_name')?></div>
+                                  <div class="col-md-4 search_label"><?php echo form_label('Nama','first_name')?></div>
                                   <div class="col-md-8"><?php echo bs_form_input($ftitle_search)?></div>
                               </div>
                           </div>

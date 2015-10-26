@@ -156,8 +156,8 @@
                                           <a href="<?php echo site_url('form_pjd/submit/'.$spd->id)?>"><?php echo $n;?></a>
                                         <?php endfor;?><br/>
                                         <span>Tanggal : </span><?php echo dateIndo($spd->date_spd_start).' s/d '.dateIndo($spd->date_spd_end)?><br/>
-                                        <span>Tempat : </span><?php echo $spd->destination ?><br />
-                                        <span>Kota Tujuan : </span><?php echo $spd->city_to ?>
+                                        
+                                        <span>Cabang/Depo Tujuan : </span><?php echo get_bu_name($spd->to_city_id) ?>
                                       </div>
                                     </a>
                                   </td>

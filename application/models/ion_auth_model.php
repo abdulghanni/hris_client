@@ -1262,7 +1262,7 @@ class Ion_auth_model extends CI_Model
         $sess_id = $this->session->userdata('user_id');
         $is_inventory = $this->uri->segment(1);
         $this->trigger_events('users');
-        $is_admin_bagian = $this->ion_auth->is_admin_bagian();
+        $is_admin_bagian = is_admin_bagian();
         $user = ($is_inventory == 'inventory') ? get_user_same_bu(get_nik($sess_id)) : get_user_same_org(get_nik($sess_id));
         if (isset($this->_ion_select) && !empty($this->_ion_select))
         {

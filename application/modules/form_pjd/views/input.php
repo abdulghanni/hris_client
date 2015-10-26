@@ -143,38 +143,54 @@
                         <textarea class="form-control" id="title" name="title" required></textarea>
                       </div>
                     </div>
+
                         <div class="row form-row">
                           <div class="col-md-3">
-                            <label class="form-label text-right">Kota Tujuan</label>
+                            <label class="form-label text-right">Dari Cabang</label>
                           </div>
                           <div class="col-md-9">
-                            <select id="city_to" name="city_to" class="select2" style="width:100%">
-                              <option value="0">-- Pilih Kota Tujuan --</option>
-                              <?php if ($cl_num_rows > 0) {
-                              foreach ($city_list as $cl) :
-                              ?>    
-                              <option value="<?php echo $cl->id ?>" ><?php echo $cl->title ?></option>
-                            <?php endforeach;
-                            } ?>
-                            </select>
+                            <?php
+                                $style_bu='class="form-control input-sm select2" style="width:100%" id="fromCabang"  required';
+                                echo form_dropdown('city_from',$bu,'',$style_bu);
+                              ?>
                           </div>
                         </div>
+                        <br/>
                         <div class="row form-row">
                           <div class="col-md-3">
-                            <label class="form-label text-right">Dari</label>
+                            <label class="form-label text-right">Ke Cabang</label>
                           </div>
                           <div class="col-md-9">
-                            <select id="city_from" name="city_from" class="select2" style="width:100%">
-                            <option value="0">-- Pilih Kota Dari --</option>
-                              <?php if ($cl_num_rows > 0) {
-                              foreach ($city_list as $cl) :
-                              ?>    
-                              <option value="<?php echo $cl->id ?>" ><?php echo $cl->title ?></option>
-                            <?php endforeach;
-                            } ?>
-                            </select>
+                            <?php
+                                $style_bu='class="form-control input-sm select2" style="width:100%" id="toCabang" required';
+                                echo form_dropdown('city_to',$bu,'',$style_bu);
+                              ?>
                           </div>
                         </div>
+                        <br/>
+                         <div class="row form-row">
+                            <div class="col-md-3">
+                              <label class="form-label text-right">Kota Tujuan</label>
+                            </div>
+                            <div class="col-md-9">
+                              <?php
+                                  $style_pos='class="select2 kota" id="kota" style="width:100%" required';
+                                  echo form_dropdown("kota[]",array(''=>'- Pilih Kota -'),'',$style_pos);
+                                ?>
+                            </div>
+                          </div>
+
+                              <div id="kotaLain"></div>
+
+                          <div class="row form-row">
+                            <div class="col-md-3">
+                            </div>
+                            <div class="col-md-9">
+                              <button type="button" class="btn-primary" id="btnTambahKota" style="display:none">Tambah Kota</button>
+                            </div>
+                          </div>
+
+
                         <div class="row form-row">
                           <div class="col-md-3">
                             <label class="form-label text-right">Kendaraan</label>

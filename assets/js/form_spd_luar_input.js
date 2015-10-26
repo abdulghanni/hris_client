@@ -10,6 +10,30 @@ $(document).ready(function() {
     });
 
   $('.rupiah').maskMoney({precision: 0, allowZero:true});
+  $('#btnTambahKota').on('click', function(){
+    $(document).find("select.select2").select2();
+    var bu = $('#toCabang').val();
+    $.ajax({
+         url:"form_pjd/get_kota_lain/"+bu,
+         success: function(response){
+         $("#kotaLain").append(response);
+         },
+         dataType:"html"
+     });
+  });
+
+  $('#toCabang').on('change', function(){
+     var bu = $('#toCabang').val();
+     $.ajax({
+         url:"form_pjd/get_kota/"+bu+"",
+         success: function(response){
+         $("#kota").html(response);
+         },
+         dataType:"html"
+     });
+     $('#btnTambahKota').show();
+     return false;
+ });
 
   $('#btnAddBiaya').on('click', function () {
     $(document).find("select.select2").select2();

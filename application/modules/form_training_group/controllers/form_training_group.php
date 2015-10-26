@@ -23,7 +23,7 @@ class form_training_group extends MX_Controller {
 
     function index($ftitle = "fn:",$sort_by = "id", $sort_order = "asc", $offset = 0)
     {
-        $this->data['title'] = 'Daftar Training (Group)';
+        $this->data['title'] = 'Daftar Training';
         if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page
@@ -98,7 +98,7 @@ class form_training_group extends MX_Controller {
 
     function detail($id)
     {
-        $this->data['title'] = 'Detail Training (Group)';
+        $this->data['title'] = 'Detail Training';
         if (!$this->ion_auth->logged_in())
         {
             $this->session->set_userdata('last_link', $this->uri->uri_string());
@@ -132,7 +132,7 @@ class form_training_group extends MX_Controller {
 
     function input()
     {
-        $this->data['title'] = 'Input Training (Group)';
+        $this->data['title'] = 'Input Training';
         if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page
@@ -143,7 +143,7 @@ class form_training_group extends MX_Controller {
         $sess_nik = $this->data['sess_nik'] = get_nik($sess_id);
         $form_training_group = $this->data['training'] = $this->form_training_group_model->form_training_group($sess_id);
 
-        $this->data['all_users'] = $this->ion_auth->where('id != ', 1)->users();
+        $this->data['all_users'] = $this->ion_auth->where('id != ', 1)->order_by('users.username', 'asc')->users();
         $this->get_penerima_tugas();
         $this->get_penerima_tugas_satu_bu();
         $this->get_user_atasan();
@@ -191,7 +191,7 @@ class form_training_group extends MX_Controller {
                          $training_id = $this->db->insert_id();
                          $user_app_lv1 = getValue('user_app_lv1', 'users_training_group', array('id'=>'where/'.$training_id));
                          $subject_email = get_form_no($training_id).'-Pengajuan Permohonan Pelatihan(Group)';
-                         $isi_email = get_name($user_id).' mengajukan Permohonan pelatihan (Group), untuk melihat detail silakan <a href='.base_url().'form_training_group/detail/'.$training_id.'>Klik Disini</a><br />';
+                         $isi_email = get_name($user_id).' mengajukan Permohonan pelatihan, untuk melihat detail silakan <a href='.base_url().'form_training_group/detail/'.$training_id.'>Klik Disini</a><br />';
                          if($user_id!==$sess_id):
                          $this->approval->by_admin('training_group', $training_id, $sess_id, $user_id, $this->detail_email($training_id));
                          endif;
@@ -245,7 +245,7 @@ class form_training_group extends MX_Controller {
                 if(!empty(getEmail($user_training_id)))$this->send_email(getEmail($user_training_id), $subject_email, $isi_email);
             }else{
                 $this->update_approval_mail($id, $approval_status);
-                if(!empty(getEmail($user_training_id)))$this->send_email(getEmail($user_training_id), get_form_no($id).'['.$approval_status_mail.']Perubahan Status Pengajuan Permohonan Training (Group) dari Atasan', $isi_email);
+                if(!empty(getEmail($user_training_id)))$this->send_email(getEmail($user_training_id), get_form_no($id).'['.$approval_status_mail.']Perubahan Status Pengajuan Permohonan Training dari Atasan', $isi_email);
             }
 
             if($type !== 'hrd' && $approval_status == 1)
@@ -262,7 +262,7 @@ class form_training_group extends MX_Controller {
                     if(!empty(getEmail($this->approval->approver('training'))))$this->send_email(getEmail($this->approval->approver('training')), $subject_email_request, $isi_email_request);
                 }
             }else{
-                $email_body = "Status pengajuan permohonan Training (Group) yang diajukan oleh ".get_name($user_training_group_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_training_group/detail/'.$id.'>Klik Disini</a><br />';
+                $email_body = "Status pengajuan permohonan Training yang diajukan oleh ".get_name($user_training_group_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_training_group/detail/'.$id.'>Klik Disini</a><br />';
                 switch($type){
                     case 'lv1':
                         //$this->approval->not_approve('training_group', $id, )
@@ -271,34 +271,34 @@ class form_training_group extends MX_Controller {
                     case 'lv2':
                         $receiver_id = getValue('user_app_lv1', 'users_training_group', array('id'=>'where/'.$id));
                         $this->approval->not_approve('training_group', $id, $receiver_id, $approval_status ,$this->detail_email($id));
-                        //if(!empty(getEmail($receiver_id)))$this->send_email(getEmail($receiver_id), 'Status Pengajuan Permohonan Training (Group) Dari Atasan', $email_body);
+                        //if(!empty(getEmail($receiver_id)))$this->send_email(getEmail($receiver_id), 'Status Pengajuan Permohonan Training Dari Atasan', $email_body);
                     break;
 
                     case 'lv3':
                         $receiver_lv2 = getValue('user_app_lv2', 'users_training_group', array('id'=>'where/'.$id));
                         $this->approval->not_approve('training_group', $id, $receiver_lv2, $approval_status ,$this->detail_email($id));
-                        //if(!empty(getEmail($receiver_lv2)))$this->send_email(getEmail($receiver_lv2), 'Status Pengajuan Permohonan Training (Group) Dari Atasan', $email_body);
+                        //if(!empty(getEmail($receiver_lv2)))$this->send_email(getEmail($receiver_lv2), 'Status Pengajuan Permohonan Training Dari Atasan', $email_body);
 
                         $receiver_lv1 = getValue('user_app_lv1', 'users_training_group', array('id'=>'where/'.$id));
                         $this->approval->not_approve('training_group', $id, $receiver_lv1, $approval_status ,$this->detail_email($id));
-                        //if(!empty(getEmail($receiver_lv1)))$this->send_email(getEmail($receiver_lv1), 'Status Pengajuan Permohonan Training (Group) Dari Atasan', $email_body);
+                        //if(!empty(getEmail($receiver_lv1)))$this->send_email(getEmail($receiver_lv1), 'Status Pengajuan Permohonan Training Dari Atasan', $email_body);
                     break;
 
                     case 'hrd':
                         $receiver_lv3 = getValue('user_app_lv3', 'users_training_group', array('id'=>'where/'.$id));
                         if(!empty($receiver_lv3)):
                             $this->approval->not_approve('training_group', $id, $receiver_lv3, $approval_status ,$this->detail_email($id));
-                            //if(!empty(getEmail($receiver_lv3)))$this->send_email(getEmail($receiver_lv3), 'Status Pengajuan Permohonan Training (Group) Dari Atasan', $email_body);
+                            //if(!empty(getEmail($receiver_lv3)))$this->send_email(getEmail($receiver_lv3), 'Status Pengajuan Permohonan Training Dari Atasan', $email_body);
                         endif;
                         $receiver_lv2 = getValue('user_app_lv2', 'users_training_group', array('id'=>'where/'.$id));
                         if(!empty($receiver_lv2)):
                             $this->approval->not_approve('training_group', $id, $receiver_lv2, $approval_status ,$this->detail_email($id));
-                            //if(!empty(getEmail($receiver_lv2)))$this->send_email(getEmail($receiver_lv2), 'Status Pengajuan Permohonan Training (Group) Dari Atasan', $email_body);
+                            //if(!empty(getEmail($receiver_lv2)))$this->send_email(getEmail($receiver_lv2), 'Status Pengajuan Permohonan Training Dari Atasan', $email_body);
                         endif;
                         $receiver_lv1 = getValue('user_app_lv1', 'users_training_group', array('id'=>'where/'.$id));
                         if(!empty($receiver_lv1)):
                             $this->approval->not_approve('training_group', $id, $receiver_lv1, $approval_status ,$this->detail_email($id));
-                        //if(!empty(getEmail($receiver_lv1)))$this->send_email(getEmail($receiver_lv1), 'Status Pengajuan Permohonan Training (Group) Dari Atasan', $email_body);
+                        //if(!empty(getEmail($receiver_lv1)))$this->send_email(getEmail($receiver_lv1), 'Status Pengajuan Permohonan Training Dari Atasan', $email_body);
                         endif;
                     break;
                 }
@@ -339,7 +339,7 @@ class form_training_group extends MX_Controller {
         $this->form_training_group_model->update($id,$data);
         $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
         $user_training_id = getValue('user_pengaju_id', 'users_training_group', array('id'=>'where/'.$id));
-        $isi_email = 'Status pengajuan training (group) anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_training_group/detail/'.$id.'>Klik Disini</a><br />';
+        $isi_email = 'Status pengajuan training anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_training_group/detail/'.$id.'>Klik Disini</a><br />';
 
         if($is_app==0){
             $this->approval_mail($id, $approval_status);
@@ -356,17 +356,17 @@ class form_training_group extends MX_Controller {
             $receiver_lv3 = getValue('user_app_lv3', 'users_training_group', array('id'=>'where/'.$id));
             if(!empty($receiver_lv3)):
                 $this->approval->not_approve('training_group', $id, $receiver_lv3, $approval_status ,$this->detail_email($id));
-                //if(!empty(getEmail($receiver_lv3)))$this->send_email(getEmail($receiver_lv3), 'Status Pengajuan Permohonan Training (Group) Dari Atasan', $email_body);
+                //if(!empty(getEmail($receiver_lv3)))$this->send_email(getEmail($receiver_lv3), 'Status Pengajuan Permohonan Training Dari Atasan', $email_body);
             endif;
             $receiver_lv2 = getValue('user_app_lv2', 'users_training_group', array('id'=>'where/'.$id));
             if(!empty($receiver_lv2)):
                 $this->approval->not_approve('training_group', $id, $receiver_lv2, $approval_status ,$this->detail_email($id));
-                //if(!empty(getEmail($receiver_lv2)))$this->send_email(getEmail($receiver_lv2), 'Status Pengajuan Permohonan Training (Group) Dari Atasan', $email_body);
+                //if(!empty(getEmail($receiver_lv2)))$this->send_email(getEmail($receiver_lv2), 'Status Pengajuan Permohonan Training Dari Atasan', $email_body);
             endif;
             $receiver_lv1 = getValue('user_app_lv1', 'users_training_group', array('id'=>'where/'.$id));
             if(!empty($receiver_lv1)):
                 $this->approval->not_approve('training_group', $id, $receiver_lv1, $approval_status ,$this->detail_email($id));
-            //if(!empty(getEmail($receiver_lv1)))$this->send_email(getEmail($receiver_lv1), 'Status Pengajuan Permohonan Training (Group) Dari Atasan', $email_body);
+            //if(!empty(getEmail($receiver_lv1)))$this->send_email(getEmail($receiver_lv1), 'Status Pengajuan Permohonan Training Dari Atasan', $email_body);
             endif;
         }
     }
@@ -376,13 +376,13 @@ class form_training_group extends MX_Controller {
         $admin_legal = $this->db->where('group_id',9)->get('users_groups')->result_array('user_id');
         $user_id = getValue('user_pengaju_id', 'users_training_group', array('id'=>'where/'.$id));
         $user_hrd = getValue('user_app_hrd', 'users_training_group', array('id'=>'where/'.$id));
-        $msg = 'Dear Admin Legal,<br/><p>'.get_name($user_hrd).' telah menyetujui permintaan pelatihan (group) yang diajukan oleh '.get_name($user_id).' ,untuk melihat detail silakan <a class="klikemail" href="'.base_url("form_training_group/detail/$id").'">Klik Disini</a></p>';
+        $msg = 'Dear Admin Legal,<br/><p>'.get_name($user_hrd).' telah menyetujui permintaan pelatihan yang diajukan oleh '.get_name($user_id).' ,untuk melihat detail silakan <a class="klikemail" href="'.base_url("form_training_group/detail/$id").'">Klik Disini</a></p>';
         for($i=0;$i<sizeof($admin_legal);$i++):
         $data = array(
                 'sender_id' => get_nik($user_hrd),
                 'receiver_id' => get_nik($admin_legal[$i]['user_id']),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                'subject' => 'Status Pengajuan Training (Group) Karyawan oleh HRD',
+                'subject' => 'Status Pengajuan Training Karyawan oleh HRD',
                 'email_body' =>$msg.$this->detail_email($id),
                 'is_read' => 0,
             );
@@ -399,7 +399,7 @@ class form_training_group extends MX_Controller {
                 'sender_id' => get_nik($sender_id),
                 'receiver_id' => get_nik($peserta_id[$i]),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                'subject' => 'Pengajuan Training Karyawan (Group)',
+                'subject' => 'Pengajuan Training Karyawan',
                 'email_body' => get_name($sender_id).' mengajukan permohonan pelatihan group untuk anda, untuk melihat detail silakan <a class="klikmail" href='.$url.'/'.$id.'>Klik Disini</a><br/>'.$this->detail_email($id),
                 'is_read' => 0,
             );
@@ -417,7 +417,7 @@ class form_training_group extends MX_Controller {
                 'sender_id' => get_nik($this->session->userdata('user_id')),
                 'receiver_id' => get_nik($pengaju_id),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                'subject' => 'Status Pengajuan Training Karyawan (Group) dari Atasan',
+                'subject' => 'Status Pengajuan Training Karyawan dari Atasan',
                 'email_body' => "Status pengajuan permohonan training anda $approval_status oleh $approver untuk detail silakan <a class='klikmail' href=$url>Klik disini</a><br/>".$this->detail_email($id),
                 'is_read' => 0,
             );
@@ -434,7 +434,7 @@ class form_training_group extends MX_Controller {
                 'sender_id' => get_nik($this->session->userdata('user_id')),
                 'receiver_id' => get_nik($pengaju_id),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                'subject' => 'Perubahan Status Pengajuan Training Karyawan (Group) dari Atasan',
+                'subject' => 'Perubahan Status Pengajuan Training Karyawan dari Atasan',
                 'email_body' => "$approver melakukan perubahan status permintaan training group anda, Status permintaan anda kini $approval_status, untuk detail silakan <a class='klikmail' href=$url>Klik disini</a><br/>".$this->detail_email($id),
                 'is_read' => 0,
             );

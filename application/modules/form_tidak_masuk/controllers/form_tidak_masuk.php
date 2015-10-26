@@ -23,7 +23,7 @@ class form_tidak_masuk extends MX_Controller {
     }
 
     function index($ftitle = "fn:",$sort_by = "id", $sort_order = "asc", $offset = 0)
-    {
+    {   
         $this->data['title'] = 'Form Tidak Masuk';
         if (!$this->ion_auth->logged_in())
         {
@@ -215,7 +215,7 @@ class form_tidak_masuk extends MX_Controller {
                      if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), $subject_email, $isi_email);
                      $this->approval->request('lv1', 'tidak_masuk', $tidak_masuk_id, $user_id, $this->detail_email($tidak_masuk_id));
                  else:
-                     if(!empty(getEmail($this->approval->approver('tidak_masuk'))))$this->send_email(getEmail($this->approval->approver('tidak_masuk')), $subject_email, $isi_email);
+                     if(!empty(getEmail($this->approval->approver('tidak'))))$this->send_email(getEmail($this->approval->approver('tidak')), $subject_email, $isi_email);
                      $this->approval->request('hrd', 'tidak_masuk', $tidak_masuk_id, $user_id, $this->detail_email($tidak_masuk_id));
                  endif;
 
@@ -260,7 +260,7 @@ class form_tidak_masuk extends MX_Controller {
             if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), $subject_email_request, $isi_email_request);
             $this->approval->request($lv_app, 'tidak_masuk', $id, $user_tidak_masuk_id, $this->detail_email($id));
         else:
-            if(!empty(getEmail($this->approval->approver('tidak_masuk'))))$this->send_email(getEmail($this->approval->approver('tidak_masuk')), $subject_email_request, $isi_email_request);
+            if(!empty(getEmail($this->approval->approver('tidak'))))$this->send_email(getEmail($this->approval->approver('tidak')), $subject_email_request, $isi_email_request);
             $this->approval->request('hrd', 'tidak_masuk', $id, $user_tidak_masuk_id, $this->detail_email($id));
         endif;
         }
