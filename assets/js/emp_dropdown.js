@@ -150,10 +150,16 @@ $(document).ready(function() {
             getEmpStatId(empId);
             getEmpSenDate(empId);
             isGradeTujuh(empId);
-            getAtasan3(empId);
+            //getAtasan3(empId);
     })
     .change(); 
 
+    $("#empSess").change(function() {
+        var empId = $(this).val();
+        getAtasan1(empId);
+        getAtasan3(empId);
+    })
+    .change(); 
     $("#atasan1").change(function() {
                 var empId = $(this).val();
                 getAtasan2(empId);

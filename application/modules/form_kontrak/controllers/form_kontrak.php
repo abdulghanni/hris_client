@@ -185,7 +185,7 @@ class Form_kontrak extends MX_Controller {
             }
         }
     }
-
+/*
     function upload_attachment($id)
     {
         $user_id = getValue('created_by', 'users_kontrak', array('id' => 'where/'.$id));
@@ -224,7 +224,7 @@ class Form_kontrak extends MX_Controller {
             return true;
         }
     }
-
+*/
     function do_approve($id, $type)
     {
         if(!$this->ion_auth->logged_in())
@@ -367,80 +367,6 @@ class Form_kontrak extends MX_Controller {
         $this->data['lama'] = getValue('title', 'lama_kontrak', array('id'=>'where/'.$lama_id));
 
         return $this->load->view('form_kontrak/kontrak_mail', $this->data, TRUE);
-    }
-
-    function get_bu()
-    {
-        $url = get_api_key().'users/bu/format/json';
-        $headers = get_headers($url);
-        $response = substr($headers[0], 9, 3);
-        if ($response != "404") {
-            $getbu = file_get_contents($url);
-            $bu = json_decode($getbu, true);
-            foreach ($bu as $row)
-        {
-            $result['0']= '- Pilih Unit Bisnis Baru -';
-            if($row['NUM'] != null){
-            $result[$row['NUM']]= ucwords(strtolower($row['DESCRIPTION']));
-            }
-        }
-            return $this->data['bu'] = $result;
-        } else {
-            return $this->data['bu'] = '';
-        }
-    }
-
-    public function get_org($id)
-    {
-        $url = get_api_key().'users/org_from_bu/BUID/'.$id.'/format/json';
-        //print_r($url);
-            $headers = get_headers($url);
-            $response = substr($headers[0], 9, 3);
-            if ($response != "404") {
-                $getuser_info = file_get_contents($url);
-                $user_info = json_decode($getuser_info, true);
-                 foreach ($user_info as $row)
-        {
-            $result[$row['ID']]= ucwords(strtolower($row['DESCRIPTION']));
-        }
-        } else {
-           $result['-']= '- Belum Ada Departement -';
-        }
-        $data['result']=$result;
-        $this->load->view('dropdown_org',$data);
-    }
-
-    function get_pos($id)
-    {
-        $url = get_api_key().'users/pos_from_org/ORGID/'.$id.'/format/json';
-            $headers = get_headers($url);
-            $response = substr($headers[0], 9, 3);
-            if ($response != "404") {
-                $getuser_info = file_get_contents($url);
-                $user_info = json_decode($getuser_info, true);
-                 foreach ($user_info as $row)
-        {
-            $result[$row['ID']]= ucwords(strtolower($row['DESCRIPTION']));
-        }
-        } else {
-           $result['-']= '- Belum Ada Jabatan -';
-        }
-        $data['result']=$result;
-        $this->load->view('dropdown_pos',$data);
-    }
-
-    function get_emp_by_pos($posid)
-    {
-        $url = get_api_key().'users/employee_by_pos/POSID/'.$posid.'/format/json';
-        $headers = get_headers($url);
-        $response = substr($headers[0], 9, 3);
-        if ($response != "404") {
-            $getuser_info = file_get_contents($url);
-            $pos_info = json_decode($getuser_info, true);
-            return $pos_info['EMPLID'];
-        } else {
-            return false;
-        }
     }
 
     function form_kontrak_pdf($id)

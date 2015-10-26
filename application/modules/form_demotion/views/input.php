@@ -42,6 +42,7 @@
                               <?php endforeach; ?>
                             </select>
                           <?php }elseif($subordinate->num_rows() > 0){?>
+                          <input type="hidden" id="empSess" value="<?= $sess_id ?>">
                             <select id="empBawahan" class="select2" style="width:100%" name="emp">
                               <option value="0">-- Pilih Karyawan --</option>
                               <?php foreach($subordinate->result() as $row):?>
@@ -102,17 +103,10 @@
                           <label class="form-label text-left"><?php echo 'Atasan Langsung' ?></label>
                         </div>
                         <div class="col-md-9">
-                        <?php if(is_admin()){
+                        <?php 
                           $style_up='class="select2" style="width:100%" id="atasan1"';
                               echo form_dropdown('atasan1',array('0'=>'- Pilih Atasan Langsung -'),'',$style_up);
-                          }else{?>
-                          <select name="atasan1" id="atasan1" class="select2" style="width:100%">
-                              <option value="0">- Pilih Atasan Langsung -</option>
-                              <?php foreach ($user_atasan as $key => $up) : ?>
-                                <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
-                              <?php endforeach;?>
-                            </select>
-                              <?php }?>
+                          ?>
                         </div>
                       </div>
 
@@ -218,11 +212,10 @@
                           <label class="form-label text-left">Alasan Demosi</label>
                         </div>
                         <div class="col-md-8">
-                          <textarea name="alasan" id="alasan" class="form-control" placeholder="Alasan demotion" required></textarea>
+                          <textarea name="alasan" id="alasan" class="form-control" placeholder="Alasan Demosi" required></textarea>
                         </div>
                       </div>
-                    </div>
-                    <div class="row form-row">
+                      <div class="row form-row">
                         <div class="col-md-12">
                           <label class="bold form-label text-left">Attachment : </label>
                         </div>
@@ -235,6 +228,7 @@
                           <button type="button" id="btnAddAttachment" class="btn-primary btn-xs" onclick="addAttachment()"><i class="icon-plus"></i>&nbsp;<?php echo lang('add_button').' Attachment';?></button><br/><br/>
                         </div>
                       </div>
+                  </div>
                 </div>
                 <div class="form-actions">
                   <div class="pull-right">
