@@ -101,7 +101,7 @@ $rejected = assets_url('img/rejected_stamp.png');?>
         <td><div align="center"><?php echo dateIndo($row->date_kontrak)?></div></td>
       </tr>
       <tr>
-        <td height="100"><span class="style3">Alasan Perpanjngan Kontrak</span></td>
+        <td height="100"><span class="style3">Alasan Perpanjangan Kontrak</span></td>
         <td><span class="style3"><?php echo $row->alasan?></span></td>
       </tr>
 </table>
