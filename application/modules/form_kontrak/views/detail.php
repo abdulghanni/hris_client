@@ -470,15 +470,7 @@
       <div class="modal-body">
         <form class="form-no-horizontal-spacing"  id="formAppHrd">
             <div class="row form-row">
-                <div class="col-md-4">
-                  <label class="form-label text-left">Tgl. Presentasi (Optional)</label>
-                </div>
-                <div class="col-md-8">
-                  <div class="input-append date success no-padding">
-                    <input type="text" class="form-control" name="date_presentasi" required>
-                    <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span> 
-                  </div>
-                </div>
+                
               <div class="col-md-12">
                 <label class="form-label text-left">Status Approval </label>
               </div>

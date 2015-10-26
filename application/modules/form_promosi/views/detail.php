@@ -534,7 +534,7 @@
                 </div>
                 <div class="col-md-8">
                   <div class="input-append date success no-padding">
-                    <input type="text" class="form-control" name="date_presentasi" required>
+                    <input type="text" class="form-control" name="date_presentasi">
                     <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span> 
                   </div>
                 </div>

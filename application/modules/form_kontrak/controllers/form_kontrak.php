@@ -249,8 +249,7 @@ class Form_kontrak extends MX_Controller {
             $approval_status = $this->input->post('app_status_'.$type);
 
             $this->form_kontrak_model->update($id,$data);
-            if($type=='hrd') $this->db->where('id', $id)->update('users_kontrak', array('date_presentasi' => date('Y-m-d',strtotime($this->input->post('date_presentasi')))));
-
+           
             $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
             $user_kontrak_id = getValue('user_id', 'users_kontrak', array('id'=>'where/'.$id));
             $subject_email = get_form_no($id).'['.$approval_status_mail.']Status Pengajuan Perpanjangan Kontrak dari Atasan';
