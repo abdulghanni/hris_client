@@ -86,6 +86,13 @@ class Approval {
                 $isi_email = get_name($pengaju_id).' mengajukan perpanjangan kontrak karyawan untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>';
                 $user_id = $pengaju_id;
                 break;
+            case "pengangkatan":
+                $receiver = $CI->approval->approver($form);
+                $pengaju_id = getValue('created_by', 'users_'.$form, array('id'=>'where/'.$id));
+                $form = 'Pengangkatan Status Karyawan';
+                $isi_email = get_name($pengaju_id).' mengajukan Pengangkatan Status karyawan untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>';
+                $user_id = $pengaju_id;
+                break;
             case "recruitment":
                 $receiver = $CI->approval->approver($form);
                 $form = 'Permintaan SDM Baru';
@@ -123,7 +130,7 @@ class Approval {
                     'sender_id' => get_nik($user_id),
                     'receiver_id' => $receiver,
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                    'subject' => get_form_no($id).'Pengajuan '.ucfirst($form),
+                    'subject' => get_form_no($id).' Pengajuan '.ucfirst($form),
                     'email_body' => $isi_email,
                     'is_read' => 0,
                 );
@@ -226,14 +233,12 @@ class Approval {
                 $form = 'Perubahan Data Karywan';
             break;
             case "promosi":
-                $receiver_id = getValue('created_by', 'users_'.$form, array('id'=>'where/'.$id));
-            break;
             case "demotion":
+            case "rolling":
+            case "kontrak":
+            case "pengangkatan":
                 $receiver_id = getValue('created_by', 'users_'.$form, array('id'=>'where/'.$id));
             break;
-            case "rolling":
-                $receiver_id = getValue('created_by', 'users_'.$form, array('id'=>'where/'.$id));
-                break;
             case "spd_dalam":
                 $receiver_id = getValue('task_creator', 'users_'.$form, array('id'=>'where/'.$id));
                 $receiver_id = get_id($receiver_id);
@@ -291,12 +296,10 @@ class Approval {
 
         switch ($form) {
             case "promosi":
-                $receiver_id = getValue('created_by', 'users_'.$form, array('id'=>'where/'.$id));
-                break;
             case "demotion":
-                $receiver_id = getValue('created_by', 'users_'.$form, array('id'=>'where/'.$id));
-                break;
             case "rolling":
+            case "kontrak":
+            case "pengangkatan":
                 $receiver_id = getValue('created_by', 'users_'.$form, array('id'=>'where/'.$id));
                 break;
             case "spd_dalam":
@@ -348,12 +351,10 @@ class Approval {
 
         switch ($form) {
             case "promosi":
-                $user_id = getValue('created_by', 'users_'.$form, array('id'=>'where/'.$id));
-                break;
             case "demotion":
-                $user_id = getValue('created_by', 'users_'.$form, array('id'=>'where/'.$id));
-                break;
             case "rolling":
+            case "kontrak":
+            case "pengangkatan":
                 $user_id = getValue('created_by', 'users_'.$form, array('id'=>'where/'.$id));
                 break;
             case "spd_dalam":

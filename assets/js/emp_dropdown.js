@@ -83,6 +83,7 @@ $(document).ready(function() {
             case 'form_demotion':
             case 'form_rolling':
             case 'form_kontrak':
+            case 'form_pengangkatan':
                 getEmpBu(empId);
                 getEmpOrg(empId);
                 getEmpPos(empId);
