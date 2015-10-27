@@ -3,7 +3,7 @@
         <div class="col-md-12">
           <div class="grid simple">
             <div class="grid-title no-border">
-              <h4>Form Izin Tidak <a href="<?php echo site_url('form_tidak_masuk')?>"><span class="semi-bold">Masuk Kerja</span></a></h4>
+              <h4>Form Izin Tidak <a href="<?php echo site_url('form_tidak_masuk')?>"><span class="semi-bold">Masuk Kerja</span></a></h4><br/>
               No : <?= get_form_no($id) ?>
             </div>
             <div class="grid-body no-border">

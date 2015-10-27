@@ -123,7 +123,7 @@
                       <?php if(!empty($row->date_presentasi)):?>
                       <div class="row form-row">
                         <div class="col-md-4">
-                          <label class="form-label text-left">Tgl. Presentasi</label>
+                          <label class="form-label text-left">Tgl. Presentasi(Diisi HRD)</label>
                         </div>
                         <div class="col-md-8">
                           <input type="text" class="form-control" name="date_promosi" value="<?php echo dateIndo($row->date_presentasi)?>" disabled="disabled">
