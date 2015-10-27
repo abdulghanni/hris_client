@@ -147,7 +147,7 @@
                           <label class="form-label text-right">Ikatan</label>
                         </div>
                         <div class="col-md-7">
-                          <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Tujuan pelatihan" value="<?php echo $user->ikatan?>" disabled="disabled">
+                          <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Tujuan pelatihan" value="<?php echo $user->ikatan_dinas_id?>" disabled="disabled">
                         </div>
                       </div>
 

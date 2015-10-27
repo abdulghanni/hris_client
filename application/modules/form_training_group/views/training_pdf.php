@@ -122,7 +122,7 @@ foreach($form_training_group as $user):
     <tr>
       <td height="45" align="center">7</td>
       <td>&nbsp;Tipe Ikatan Dinas</td>
-      <td>&nbsp;<?php echo $user->ikatan?></td>
+      <td>&nbsp;<?php echo $user->ikatan_dinas_id?></td>
     </tr>
     <tr>
       <td height="45" align="center">8</td>
