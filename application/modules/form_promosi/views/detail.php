@@ -71,14 +71,7 @@
                           <input name="nik" id="form3LastName" type="text"  class="form-control " placeholder="Bussiness Unit Lama" value="<?php echo get_position_name($row->old_pos)?>" disabled="disabled">
                         </div>
                       </div>
-                      <div class="row form-row">
-                        <div class="col-md-3">
-                          <label class="form-label text-right">Status</label>
-                        </div>
-                        <div class="col-md-9">
-                          <input name="nik" id="form3LastName" type="text"  class="form-control " placeholder="Bussiness Unit Lama" value="<?php echo $row->old_status?>" disabled="disabled">
-                        </div>
-                      </div>
+                      
                       <div class="row form-row">
                         <div class="col-md-3">
                           <label class="form-label text-right">Tanggal Mulai Bekerja</label>
@@ -118,14 +111,7 @@
                           <input name="nik" id="form3LastName" type="text"  class="form-control " placeholder="Nama" value="<?php echo get_position_name($row->new_pos)?>" disabled="disabled">
                         </div>
                       </div>
-                      <div class="row form-row">
-                        <div class="col-md-4">
-                          <label class="form-label text-left">Status Baru</label>
-                        </div>
-                        <div class="col-md-8">
-                          <input name="nik" id="form3LastName" type="text"  class="form-control " placeholder="Bussiness Unit Lama" value="<?php echo $row->new_status?>" disabled="disabled">
-                        </div>
-                      </div>
+                     
                       <div class="row form-row">
                         <div class="col-md-4">
                           <label class="form-label text-left">Tgl. Pengangkatan</label>

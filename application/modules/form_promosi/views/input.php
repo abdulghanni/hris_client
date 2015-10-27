@@ -85,15 +85,6 @@
                       </div>
                       <div class="row form-row">
                         <div class="col-md-3">
-                          <label class="form-label text-right">Status</label>
-                        </div>
-                        <div class="col-md-9">
-                          <input id="status" class="form-control "  value=""  disabled="disabled">
-                          <input name="old_status" id="status_id" type="hidden"  class="form-control " value="">
-                        </div>
-                      </div>
-                      <div class="row form-row">
-                        <div class="col-md-3">
                           <label class="form-label text-right">Tanggal Mulai Bekerja</label>
                         </div>
                         <div class="col-md-9">
@@ -206,19 +197,6 @@
                           ?>
                         </div>
                       </div>
-                      <div class="row form-row">
-                        <div class="col-md-4">
-                          <label class="form-label text-left">Status Baru</label>
-                        </div>
-                        <div class="col-md-8">
-                          <select class="select2 form-control" name="status">
-                            <option value="">- Pilih Status Baru -</option>
-                            <?php foreach ($status as $key) {?>
-                              <option value="<?=$key->id?>"><?=$key->title?></option>;
-                            <?php } ?>
-                          </select>
-                        </div>
-                      </div><br/>
                       <div class="row form-row">
                         <div class="col-md-4">
                           <label class="form-label text-left">Tgl. Pengangkatan</label>

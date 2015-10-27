@@ -126,7 +126,7 @@ foreach($form_training_group as $user):
     </tr>
     <tr>
       <td height="45" align="center">8</td>
-      <td>&nbsp;Waktu</td>
+      <td>&nbsp;Periode Ikatan Dinas</td>
       <td>&nbsp;<?php echo $user->waktu?></td>
     </tr>
     <tr>

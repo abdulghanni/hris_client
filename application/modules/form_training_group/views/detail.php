@@ -159,7 +159,7 @@
 
                       <div class="row form-row">
                         <div class="col-md-2">
-                          <label class="form-label text-right">Ikatan</label>
+                          <label class="form-label text-right">Tipe Ikatan Dinas</label>
                         </div>
                         <div class="col-md-7">
                           <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Tujuan pelatihan" value="<?php echo $user->ikatan?>" disabled="disabled">
@@ -168,7 +168,7 @@
 
                       <div class="row form-row">
                         <div class="col-md-2">
-                          <label class="form-label text-right">Waktu</label>
+                          <label class="form-label text-right">Periode Ikatan Dinas</label>
                         </div>
                         <div class="col-md-7">
                           <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Tujuan pelatihan" value="<?php echo $user->waktu?>" disabled="disabled">
@@ -331,7 +331,7 @@
                         </div>
 
                         <div class="col-md-3">
-                        <?php if(!empty($user->user_app_lv3)): ?>
+                        <?php if(!empty($user->user_app_lv2)): ?>
                           <p class="wf-approve-sp">
                             <?php
                             if(!empty($user->user_app_lv2) && $user->is_app_lv2 == 0 && get_nik($sess_id) == $user->user_app_lv2){?>
@@ -521,7 +521,7 @@
           <br/>
           <div class="row form-row">
             <div class="col-md-3">
-              <label class="form-label text-right">Waktu</label>
+              <label class="form-label text-right">Periode Ikatan Dinas</label>
             </div>
             <div class="col-md-9">
               <select name="waktu" class="select2" id="waktu" style="width:100%" >

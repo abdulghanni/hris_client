@@ -105,7 +105,6 @@ class Form_promosi extends MX_Controller {
             $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
             $this->get_bu();
             $this->data['all_users'] = getAll('users', array('active'=>'where/1', 'username'=>'order/asc'), array('!=id'=>'1'));
-            $this->data['status'] = getAll('empl_status')->result();
             $this->data['toefl'] = getAll('toefl', array('is_deleted' => 'where/0'));
             //$this->get_user_atasan();
             $this->get_user_atasan();
@@ -161,11 +160,9 @@ class Form_promosi extends MX_Controller {
                     'old_bu'       => $this->input->post('old_bu'),
                     'old_org'     => $this->input->post('old_org'),
                     'old_pos'           => $this->input->post('old_pos'),
-                    'old_status'  => $this->input->post('old_status'),
                     'new_bu'        => $this->input->post('bu'),
                     'new_org'        => $this->input->post('org'),
                     'new_pos'           => $this->input->post('pos'),
-                    'new_status'      =>$this->input->post('status'),
                     'date_promosi'           => date('Y-m-d',strtotime($this->input->post('date_promosi'))),
                     //'date_presentasi'           => date('Y-m-d',strtotime($this->input->post('date_presentasi'))),
                     'toefl'         => $this->input->post('toefl'),
