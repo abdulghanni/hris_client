@@ -44,10 +44,10 @@
                     <table class="table table-striped table-flip-scroll cf">
                         <thead>
                           <tr>
-                            <th width="20%">No.</th>
-                            <th width="15%">Tanggal</th>
-                            <th width="15%">Nama</th>
-                            <th width="15%">Alasan</th>
+                            <th width="17%">No.</th>
+                            <th width="10%">Tanggal</th>
+                            <th width="20%">Nama</th>
+                            <th width="20%">Alasan</th>
                             <th width="10%" class="text-center">appr. spv</th>
                             <th width="10%" class="text-center">appr. atasan tidak langsung</th>
                             <th width="10%" class="text-center">appr. Atasan Lainnya</th>
@@ -129,7 +129,11 @@
                                   <?php echo get_name($tidak_masuk->user_id)?>
                                 </a>
                               </td>
-                              <td><?php echo $tidak_masuk->alasan;?> </td>
+                              <?php 
+                                $alasan = getValue('alasan_tidak_masuk_id', 'users_tidak_masuk', array('id'=>'where/'.$tidak_masuk->id));
+                                $alasan = getValue('title', 'alasan_tidak_masuk', array('id'=>'where/'.$alasan));
+                              ?>
+                              <td><?php echo $alasan;?> </td>
                               <td class="text-center">
                                 <?php echo $txt_app_lv1;?>
                               </td>

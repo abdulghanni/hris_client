@@ -131,6 +131,11 @@ class Form_kontrak extends MX_Controller {
             $lama_id = getValue('lama_kontrak', 'users_kontrak', array('id'=>'where/'.$id));
             $this->data['lama'] = getValue('title', 'lama_kontrak', array('id'=>'where/'.$lama_id));
             $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
+             $this->data['user_id'] =$user_id = getValue('created_by', 'users_kontrak', array('id'=>'where/'.$id));
+            $first_name = getValue('first_name', 'users', array('id'=>'where/'.$user_id));
+            $this->data['user_folder'] = $user_id.$first_name.'/sdm/';
+            $attachment = getValue('attachment', 'users_kontrak', array('id' => 'where/'.$id));
+            $this->data['attachment'] = explode(",",$attachment);
             $this->_render_page('form_kontrak/detail', $this->data);
         }
     }
@@ -142,8 +147,8 @@ class Form_kontrak extends MX_Controller {
             //redirect them to the login page
             redirect('auth/login', 'refresh');
         }else{
-            //$this->form_validation->set_rules('alasan', 'Alasan Pengangkatan', 'trim|required');
-            $this->form_validation->set_rules('date_kontrak', 'Tanggal Pengangkatan', 'trim|required');
+            //$this->form_validation->set_rules('alasan', 'Alasan kontrak', 'trim|required');
+            $this->form_validation->set_rules('date_kontrak', 'Tanggal kontrak', 'trim|required');
             
             if($this->form_validation->run() == FALSE)
             {
@@ -363,8 +368,13 @@ class Form_kontrak extends MX_Controller {
         $this->data['sess_nik'] = get_nik($sess_id);
         $form_kontrak = $this->data['form_kontrak'] = $this->form_kontrak_model->form_kontrak($id)->result();
         $this->data['_num_rows'] = $this->form_kontrak_model->form_kontrak($id)->num_rows();
+        $user_id = getValue('user_id', 'users_kontrak', array('id'=>'where/'.$id));
         $lama_id = getValue('lama_kontrak', 'users_kontrak', array('id'=>'where/'.$id));
         $this->data['lama'] = getValue('title', 'lama_kontrak', array('id'=>'where/'.$lama_id));
+
+        $this->data['lama_kontrak'] = $this->get_lama_kontrak($user_id);
+        $this->data['mulai_kontrak'] = $this->get_mulai_kontrak($user_id);
+        $this->data['akhir_kontrak'] = $this->get_akhir_kontrak($user_id);
 
         return $this->load->view('form_kontrak/kontrak_mail', $this->data, TRUE);
     }
@@ -405,6 +415,78 @@ class Form_kontrak extends MX_Controller {
             10); // margin footer
         $this->mpdf->WriteHTML($html);
         $this->mpdf->Output($id.'-'.$title.'.pdf', 'I');
+    }
+
+    function get_lama_kontrak($user_id = null){
+        if($user_id==null):$user_id = $this->input->post('id');$echo = 1;else:$echo = 0;endif;
+        
+        if($user_id==0){ echo '-';}else{
+            $user_id = get_nik($user_id);
+            $url = get_api_key().'kontrak/list/EMPLID/'.$user_id.'/format/json';
+            $headers = get_headers($url);
+            $response = substr($headers[0], 9, 3);
+            if ($response != "404") 
+            {
+                $getuser_info = file_get_contents($url);
+                $user_info = json_decode($getuser_info, true);
+                if($echo == 1){
+                    echo $user_info[0]['MONTHOFTERM'].' Bulan';
+                }else{
+                    return $user_info[0]['MONTHOFTERM'].' Bulan';
+                }
+            } else {
+                echo '-';
+                return '-';
+            }
+        }
+    }
+
+    function get_mulai_kontrak($user_id = null){
+        if($user_id==null):$user_id = $this->input->post('id');$echo = 1;else:$echo = 0;endif;
+        
+        if($user_id==0){ echo '-';}else{
+            $user_id = get_nik($user_id);
+            $url = get_api_key().'kontrak/list/EMPLID/'.$user_id.'/format/json';
+            $headers = get_headers($url);
+            $response = substr($headers[0], 9, 3);
+            if ($response != "404") 
+            {
+                $getuser_info = file_get_contents($url);
+                $user_info = json_decode($getuser_info, true);
+                if($echo == 1){
+                echo dateIndo($user_info[0]['STARTDATE']);
+                }else{
+                return dateIndo($user_info[0]['STARTDATE']);
+                }
+            } else {
+                echo '-';
+                return '-';
+            }
+        }
+    }
+
+    function get_akhir_kontrak($user_id = null){
+        if($user_id==null):$user_id = $this->input->post('id');$echo = 1;else:$echo = 0;endif;
+        
+        if($user_id==0){ echo '-';}else{
+            $user_id = get_nik($user_id);
+            $url = get_api_key().'kontrak/list/EMPLID/'.$user_id.'/format/json';
+            $headers = get_headers($url);
+            $response = substr($headers[0], 9, 3);
+            if ($response != "404") 
+            {
+                $getuser_info = file_get_contents($url);
+                $user_info = json_decode($getuser_info, true);
+                if($echo == 1){
+                echo dateIndo($user_info[0]['ENDDATE']);
+                }else{
+                return dateIndo($user_info[0]['ENDDATE']);
+                }
+            } else {
+                echo '-';
+                return '-';
+            }
+        }
     }
 
     function _render_page($view, $data=null, $render=false)

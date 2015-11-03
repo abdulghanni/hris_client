@@ -27,6 +27,7 @@ class Auth extends MX_Controller {
     //redirect if needed, otherwise display the user list
     function index($fname = "fn:",$email = "em:",$sort_by = "id", $sort_order = "asc", $offset = 0)
     { 
+        
         if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page
@@ -812,6 +813,7 @@ class Auth extends MX_Controller {
     //edit a user
     function edit_user($id = null, $first_login = false)
     {
+
         $this->data['title'] = "Edit User";
 
         if (!$this->ion_auth->logged_in())
@@ -824,7 +826,7 @@ class Auth extends MX_Controller {
         else:
             $id = $this->session->userdata('user_id');
         endif;
-        $nik = get_nik($id);
+        $this->data['user_nik'] = $nik = get_nik($id);
         $user_bu = get_user_buid($nik);
         $user = getAll('users', array('id'=>'where/'.$id))->row();       
         $this->data['first_login'] = $first_login;
@@ -1111,6 +1113,7 @@ class Auth extends MX_Controller {
             'type'  => 'text',
             'disabled'  => 'disabled',
             'value' => $this->form_validation->set_value('email', $user->email),
+            'required' => 'required'
         );
         $required = ($first_login == 1) ? 'required' : '';
         $this->data['previous_email'] = array(

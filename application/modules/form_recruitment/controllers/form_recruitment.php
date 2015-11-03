@@ -380,23 +380,23 @@ class Form_recruitment extends MX_Controller {
 
     function get_bu()
     {
-            $url = get_api_key().'users/bu/format/json';
-            $headers = get_headers($url);
-            $response = substr($headers[0], 9, 3);
-            if ($response != "404") {
-                $getbu = file_get_contents($url);
-                $bu = json_decode($getbu, true);
-                foreach ($bu as $row)
-            {
-                $result['']= '- Pilih BU -';
-                if($row['NUM'] != null){
-                $result[$row['NUM']]= ucwords(strtolower($row['DESCRIPTION']));
-                }
+        $url = get_api_key().'users/bu/format/json';
+        $headers = get_headers($url);
+        $response = substr($headers[0], 9, 3);
+        if ($response != "404") {
+            $getbu = file_get_contents($url);
+            $bu = json_decode($getbu, true);
+            foreach ($bu as $row)
+        {
+            $result['']= '- Pilih BU -';
+            if($row['NUM'] != null){
+            $result[$row['NUM']]= ucwords(strtolower($row['DESCRIPTION']));
             }
-                return $this->data['bu'] = $result;
-            } else {
-                return $this->data['bu'] = '';
-            }
+        }
+            return $this->data['bu'] = $result;
+        } else {
+            return $this->data['bu'] = '';
+        }
     }
 
     public function get_parent_org($id)

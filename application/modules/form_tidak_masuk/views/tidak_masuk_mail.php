@@ -63,12 +63,66 @@
 
                     <div class="row form-row">
                       <div class="col-md-3">
+                        <label class="form-label text-right">Sisa Cuti</label>
+                      </div>
+                      <div class="col-md-1">
+                        <input name="alasan" id="alasan" type="text"  class="form-control"  value="<?= $tidak_masuk->sisa_cuti?>" readonly="readonly">
+                      </div>
+                    </div>
+
+                    <div class="row form-row">
+                      <div class="col-md-3">
                         <label class="form-label text-right">Alasan</label>
                       </div>
                       <div class="col-md-9">
-                        <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Alasan" value="<?php echo $tidak_masuk->alasan?>" disabled="disabled">
+                        <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Alasan" value="<?php echo $alasan?>" disabled="disabled">
                       </div>
                     </div>
+
+                    <div class="row form-row">
+                      <div class="col-md-3">
+                        <label class="form-label text-right">Keterangan</label>
+                      </div>
+                      <div class="col-md-9">
+                        <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Alasan" value="<?php echo $tidak_masuk->keterangan?>" disabled="disabled">
+                      </div>
+                    </div>
+
+                    <?php if($tidak_masuk->potong_cuti == 1) :
+                    $potong = ($tidak_masuk->potong_cuti == 1) ? 'Ya' : 'Tidak';
+                  ?>
+
+                    <div class="row form-row">
+                      <div class="col-md-3">
+                        <label class="form-label text-right">Izin Potong Cuti</label>
+                      </div>
+                      <div class="col-md-9">
+                        <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Alasan" value="<?php echo $potong?>" disabled="disabled">
+                      </div>
+                    </div>
+
+                    <div class="row form-row">
+                      <div class="col-md-3">
+                        <label class="form-label text-right">Tipe Cuti</label>
+                      </div>
+                      <div class="col-md-9">
+                        <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Alasan" value="<?php echo $tipe_cuti?>" disabled="disabled">
+                      </div>
+                    </div>
+
+                  <?php endif; ?>
+
+                  <?php if(!empty($tidak_masuk->note_hrd)):?>
+                    <div class="row form-row">
+                        <div class="col-md-3">
+                          <label class="form-label text-right">Note (HRD): </label>
+                        </div>
+                        <div class="col-md-9">
+                          <textarea name="notes_hrd" placeholder="Note hrd isi disini" class="form-control" disabled="disabled"><?php echo $tidak_masuk->note_hrd ?></textarea>
+                        </div>
+                      </div>
+                  <?php endif; ?>
+                  
                   </div>
                 </div>
                 <div class="form-actions">
@@ -77,7 +131,9 @@
                         <div class="col-md-3">
                           <p class="wf-approve-sp">
                             <?php
-                            $approved = assets_url('img/approved_stamp.png');
+                             $approved = assets_url('img/approved_stamp.png');
+                            $rejected = assets_url('img/rejected_stamp.png');
+                            $pending = assets_url('img/pending_stamp.png');
                             if(!empty($tidak_masuk->user_app_lv1) && $tidak_masuk->is_app_lv1 == 0 && get_nik($sess_id) == $tidak_masuk->user_app_lv1){?>
                               <!--<button id="btn_app_lv1" class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok"></i>Submit</button>
                               --><span class="small"></span>
@@ -171,7 +227,7 @@
                               <span class="semi-bold"></span><br/>
                               <span class="semi-bold">(HRD)</span>
                             <?php }elseif($tidak_masuk->is_app_hrd == 1){
-                              echo "<img class=approval_img_md src=$approved>"?>
+                              echo ($tidak_masuk->app_status_id_hrd == 1)?"<img class=approval-img src=$approved>": (($tidak_masuk->app_status_id_hrd == 2) ? "<img class=approval-img src=$rejected>"  : (($tidak_masuk->app_status_id_hrd == 3) ? "<img class=approval-img src=$pending>" : "<span class='small'></span><br/>"));?>
                               <span class="small"></span><br/>
                               <span class="semi-bold"><?php echo get_name($tidak_masuk->user_app_hrd)?></span><br/>
                               <span class="small"><?php echo dateIndo($tidak_masuk->date_app_hrd)?></span><br/>

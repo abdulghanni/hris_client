@@ -82,6 +82,17 @@ $(document).ready(function() {
             case 'form_promosi':
             case 'form_demotion':
             case 'form_rolling':
+                getEmpBu(empId);
+                getEmpOrg(empId);
+                getEmpPos(empId);
+                getEmpBuId(empId);
+                getEmpOrgId(empId);
+                getEmpPosId(empId);
+                getEmpSenDate(empId);
+                isGradeTujuh(empId);
+                getAtasan1(empId);
+                getAtasan3(empId);
+                break;
             case 'form_kontrak':
             case 'form_pengangkatan':
                 getEmpBu(empId);
@@ -92,6 +103,9 @@ $(document).ready(function() {
                 getEmpOrgId(empId);
                 getEmpPosId(empId);
                 getEmpStatId(empId);
+                getLamaKontrak(empId);
+                getMulaiKontrak(empId);
+                getAkhirKontrak(empId);
                 getEmpSenDate(empId);
                 isGradeTujuh(empId);
                 getAtasan1(empId);
@@ -150,6 +164,25 @@ $(document).ready(function() {
             getEmpPosId(empId);
             getEmpStatId(empId);
             getEmpSenDate(empId);
+            isGradeTujuh(empId);
+            //getAtasan3(empId);
+    })
+    .change();
+
+    $("#empBawahanKontrak").change(function() {
+            var empId = $(this).val();
+            getEmpBu(empId);
+            getEmpOrg(empId);
+            getEmpPos(empId);
+            getEmpStat(empId);
+            getEmpBuId(empId);
+            getEmpOrgId(empId);
+            getEmpPosId(empId);
+            getEmpStatId(empId);
+            getEmpSenDate(empId);
+            getLamaKontrak(empId);
+            getMulaiKontrak(empId);
+            getAkhirKontrak(empId);
             isGradeTujuh(empId);
             //getAtasan3(empId);
     })
@@ -230,6 +263,42 @@ $(document).ready(function() {
             data: {id : empId},
             success: function(data) {
                 $('#status_id').val(data);
+            }
+        });
+    }
+
+    function getLamaKontrak(empId)
+    {
+        $.ajax({
+            type: 'POST',
+            url: baseurl+'form_kontrak/get_lama_kontrak/',
+            data: {id : empId},
+            success: function(data) {
+                $('#lama_kontrak').val(data);
+            }
+        });
+    }
+
+    function getMulaiKontrak(empId)
+    {
+        $.ajax({
+            type: 'POST',
+            url: baseurl+'form_kontrak/get_mulai_kontrak/',
+            data: {id : empId},
+            success: function(data) {
+                $('#mulai_kontrak').val(data);
+            }
+        });
+    }
+
+    function getAkhirKontrak(empId)
+    {
+        $.ajax({
+            type: 'POST',
+            url: baseurl+'form_kontrak/get_akhir_kontrak/',
+            data: {id : empId},
+            success: function(data) {
+                $('#akhir_kontrak').val(data);
             }
         });
     }

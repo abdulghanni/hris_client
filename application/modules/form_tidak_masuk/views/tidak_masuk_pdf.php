@@ -71,7 +71,12 @@ $rejected = assets_url('img/rejected_stamp.png');
   <tr>
     <td height="50"><span class="style3">Alasan</span></td>
     <td height="50"><div align="center">:</div></td>
-    <td height="50"><span class="style3"><?php echo $row->alasan?></span></td>
+    <td height="50"><span class="style3"><?php echo $alasan?></span></td>
+  </tr>
+  <tr>
+    <td height="50"><span class="style3">Keterangan</span></td>
+    <td height="50"><div align="center">:</div></td>
+    <td height="50"><span class="style3"><?php echo $row->keterangan?></span></td>
   </tr>
 </table>
 <p>&nbsp;</p>
@@ -96,8 +101,8 @@ $rejected = assets_url('img/rejected_stamp.png');
       <td align="center" class="style3"><?php echo get_name($row->user_app_hrd)?></td>
     </tr>
     <tr >
-      <td align="center"><?php echo dateIndo($row->date_app_lv1)?><br/>(Supervisor)</td>
-      <td align="center"><?php echo dateIndo($row->date_app_lv2)?><br/>(Ka. Bagian)</td>
+      <td align="center"><?php echo dateIndo($row->date_app_lv1)?><br/>(Atasan Langsung)</td>
+      <td align="center"><?php echo dateIndo($row->date_app_lv2)?><?php if(!empty($row->user_app_lv2)):?><br/><?php echo '('.get_user_position($row->user_app_lv2).')';endif;?></td>
       <td align="center"><?php echo dateIndo($row->date_app_lv3)?><?php if(!empty($row->user_app_lv3)):?><br/><?php echo '('.get_user_position($row->user_app_lv3).')';endif;?></td>
       <td align="center"><?php echo dateIndo($row->date_app_hrd)?><br/>(HRD)</td>
     </tr>

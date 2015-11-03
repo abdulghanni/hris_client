@@ -89,6 +89,7 @@ $config['tables']['users_pengangkatan']  = 'users_pengangkatan';
 $config['tables']['users_exit']  = 'users_exit';
 $config['tables']['users_approval']  = 'users_approval';
 $config['tables']['users_approval_khusus']  = 'users_approval_khusus';
+$config['tables']['users_admin_khusus']  = 'users_admin_khusus';
 $config['tables']['users_form_template']  = 'users_form_template';
 
 /*

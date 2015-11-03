@@ -1,6 +1,6 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Form_tidak_masuk_model extends CI_Model
+class admin_khusus_model extends CI_Model
 {
      /**
      * Holds an array of tables used
@@ -275,14 +275,14 @@ class Form_tidak_masuk_model extends CI_Model
     }
 
     /**
-     * form_tidak_masuk
+     * admin_khusus
      *
-     * @return object form_tidak_masuk
+     * @return object admin_khusus
      * @author Deni
      **/
-    public function form_tidak_masuk()
+    public function admin_khusus($id = null)
     {
-        $this->trigger_events('form_tidak_masuk');
+        $this->trigger_events('admin_khusus');
 
         if (isset($this->_ion_select) && !empty($this->_ion_select))
         {
@@ -295,37 +295,15 @@ class Form_tidak_masuk_model extends CI_Model
         }
         else
         {
-            $sess_id = $this->session->userdata('user_id');
-            $sess_nik = get_nik($sess_id);
-            $is_approver = $this->approval->approver('tidak');
-            $is_admin = is_admin();
-            if(!empty(is_have_subordinate(get_nik($sess_id)))){
-            $sub_id = get_subordinate($sess_id);
-            }else{
-                $sub_id = '';
-            }
-
-            if(!empty(is_have_subsubordinate($sess_id))){
-            $subsub_id = 'OR '.get_subsubordinate($sess_id);
-            }else{
-                $subsub_id = '';
-            }
-
             //default selects
             $this->db->select(array(
-                $this->tables['users_tidak_masuk'].'.*',
-                $this->tables['users_tidak_masuk'].'.id as id',
+                $this->tables['users_admin_khusus'].'.*',
+                $this->tables['users_admin_khusus'].'.id as id',
+                'users.username as username',
             ));
-
-            $this->db->join('users', 'users_tidak_masuk.user_id = users.id', 'left');
-			
-            if($is_approver !== $sess_nik && $is_admin!=1 ){
-                 $this->db->where("(users_tidak_masuk.user_id = '$sess_id' 
-                               OR users_tidak_masuk.user_app_lv1 = '$sess_nik'  OR users_tidak_masuk.user_app_lv2 = '$sess_nik'  OR users_tidak_masuk.user_app_lv3 = '$sess_nik' 
-                )",null, false);
-            }
-            
-            $this->db->order_by('users_tidak_masuk.id', 'desc');
+            $this->db->join('users', 'users.nik = users_admin_khusus.nik', 'LEFT');
+            $this->db->where('is_deleted', 0);
+            $this->db->order_by('users_admin_khusus.id', 'asc');
         }
 
         $this->trigger_events('extra_where');
@@ -365,14 +343,14 @@ class Form_tidak_masuk_model extends CI_Model
             $this->_ion_order_by = NULL;
         }
 
-        $this->response = $this->db->get($this->tables['users_tidak_masuk']);
+        $this->response = $this->db->get($this->tables['users_admin_khusus']);
 
         return $this;
     }
     
-    public function form_tidak_masuk_detail($id)
+    public function render_session()
     {
-        $this->trigger_events('form_tidak_masuk_supervisor');
+         $this->trigger_events('admin_khusus_input');
 
         if (isset($this->_ion_select) && !empty($this->_ion_select))
         {
@@ -385,42 +363,33 @@ class Form_tidak_masuk_model extends CI_Model
         }
         else
         {
-            $sess_id = $this->session->userdata('user_id');
-            $is_admin = is_admin();
-            if(!empty(is_have_subordinate(get_nik($sess_id)))){
-            $sub_id = get_subordinate($sess_id);
-            }else{
-                $sub_id = '';
-            }
-
-            if(!empty(is_have_subsubordinate($sess_id))){
-            $subsub_id = 'OR '.get_subsubordinate($sess_id);
-            }else{
-                $subsub_id = '';
-            }
-
             //default selects
             $this->db->select(array(
-                $this->tables['users_tidak_masuk'].'.*',
-                $this->tables['users_tidak_masuk'].'.id as id',
+                $this->tables['comp_session'].'.*',
+                $this->tables['comp_session'].'.id as id',
+                $this->tables['comp_session'].'.id as user_id',
 
-                $this->tables['users'].'.username as name',
+                $this->tables['comp_session'].'.title as title',
+                $this->tables['comp_session'].'.year as year'
             ));
 
-            $this->db->join('users', 'users_tidak_masuk.user_id = users.id', 'left');
-            
 
-
-            $this->db->where('users_tidak_masuk.id', $id);
-            if($is_admin!=1){
-                //$this->db->where("(users_tidak_masuk.user_id= $sess_id $sub_id $subsub_id )",null, false);
-            }
-            $this->db->order_by('users_tidak_masuk.id', 'desc');
+            $this->db->where('comp_session.is_deleted', 0);
         }
 
         $this->trigger_events('extra_where');
 
         //run each where that was passed
+
+        if (isset($this->_ion_where) && !empty($this->_ion_where))
+        {
+            foreach ($this->_ion_where as $where)
+            {
+                $this->db->where($where);
+            }
+
+            $this->_ion_where = array();
+        }
 
         if (isset($this->_ion_like) && !empty($this->_ion_like))
         {
@@ -455,66 +424,85 @@ class Form_tidak_masuk_model extends CI_Model
             $this->_ion_order_by = NULL;
         }
 
-        $this->response = $this->db->get($this->tables['users_tidak_masuk']);
+        $this->response = $this->db->get($this->tables['comp_session']);
 
         return $this;
     }
 
-    public function delete($id)
+    public function get_comp_session_id()
     {
-        $this->trigger_events('pre_delete_frm_tidak_masuk');
+        $this->trigger_events('admin_khusus_input');
 
-        $this->db->trans_begin();
-
-        // delete organization from users_tidak_masuk table
-        $this->db->delete($this->tables['users_tidak_masuk'], array('id' => $id));
-
-        // if user does not exist in database then it returns FALSE else removes the user from groups
-        if ($this->db->affected_rows() == 0)
+        if (isset($this->_ion_select) && !empty($this->_ion_select))
         {
-            return FALSE;
+            foreach ($this->_ion_select as $select)
+            {
+                $this->db->select($select);
+            }
+
+            $this->_ion_select = array();
+        }
+        else
+        {
+            //default selects
+            $this->db->select(array(
+                $this->tables['comp_session'].'.*',
+                $this->tables['comp_session'].'.id as id',
+                $this->tables['comp_session'].'.id as user_id',
+            ));
+            
         }
 
-        if ($this->db->trans_status() === FALSE)
+        $this->trigger_events('extra_where');
+
+        //run each where that was passed
+
+        if (isset($this->_ion_where) && !empty($this->_ion_where))
         {
-            $this->db->trans_rollback();
-            $this->trigger_events(array('post_delete_frm_tidak_masuk', 'post_delete_frm_tidak_masuk_unsuccessful'));
-            $this->set_error('delete_unsuccessful');
-            return FALSE;
+            foreach ($this->_ion_where as $where)
+            {
+                $this->db->where($where);
+            }
+
+            $this->_ion_where = array();
         }
 
-        $this->db->trans_commit();
+        if (isset($this->_ion_like) && !empty($this->_ion_like))
+        {
+            foreach ($this->_ion_like as $like)
+            {
+                $this->db->or_like($like);
+            }
 
-        $this->trigger_events(array('post_delete_frm_tidak_masuk', 'post_delete_frm_tidak_masuk_successful'));
-        $this->set_message('delete_successful');
-        return TRUE;
-    }
+            $this->_ion_like = array();
+        }
 
-    public function create_($user_id = FALSE, $additional_data = array())
-    {
+        if (isset($this->_ion_limit) && isset($this->_ion_offset))
+        {
+            $this->db->limit($this->_ion_limit, $this->_ion_offset);
 
-        $data = array('user_id'=>$user_id);
+            $this->_ion_limit  = NULL;
+            $this->_ion_offset = NULL;
+        }
+        else if (isset($this->_ion_limit))
+        {
+            $this->db->limit($this->_ion_limit);
 
-        //filter out any data passed that doesnt have a matching column in the form tidak_masuk table
-        //and merge the set group data and the additional data
-        if (!empty($additional_data)) $data = array_merge($this->_filter_data($this->tables['users_tidak_masuk'], $additional_data), $data);
+            $this->_ion_limit  = NULL;
+        }
 
-        $this->trigger_events('extra_group_set');
+        //set the order
+        if (isset($this->_ion_order_by) && isset($this->_ion_order))
+        {
+            $this->db->order_by($this->_ion_order_by, $this->_ion_order);
 
-        // insert the new form_tidak_masuk
-        $this->db->insert($this->tables['users_tidak_masuk'], $data);
-        $id = $this->db->insert_id();
+            $this->_ion_order    = NULL;
+            $this->_ion_order_by = NULL;
+        }
 
-        // report success
-        $this->set_message('frm_tidak_masuk_creation_successful');
-        // return the brand new id
-        return $id;
-    }
+        $this->response = $this->db->get($this->tables['users']);
 
-    public function update($id, $data)
-    {
-        $this->db->where('id', $id);
-        $this->db->update('users_tidak_masuk', $data);
+        return $this;
     }
 
     public function trigger_events($events)
@@ -709,14 +697,14 @@ class Form_tidak_masuk_model extends CI_Model
         return $filtered_data;
     }
 
-    public function frm_tidak_masuk($id = NULL)
+    public function frm_admin_khusus($id = NULL)
     {
-        $this->trigger_events('frm_tidak_masuk');
+        $this->trigger_events('frm_admin_khusus');
 
         $this->limit(1);
-        $this->where($this->tables['users_tidak_masuk'].'.id', $id);
+        $this->where($this->tables['users_admin_khusus'].'.id', $id);
 
-        $this->form_tidak_masuk();
+        $this->admin_khusus();
 
         return $this;
     }

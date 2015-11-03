@@ -1,5 +1,5 @@
 $(document).ready(function() {              
-
+$(".select2").select2();
 //approval absen
 $('button[data-loading-text]').click(function () {
     $(this).button('loading');
@@ -55,13 +55,16 @@ $('button[data-loading-text]').click(function () {
     });
 
     $('#btn_app_hrd').click(function(){
-        $('#form').submit(function(ev){
+        var $btn = $(this).button('loading');
+        $('#formAppHrd').submit(function(ev){
             $.ajax({
                 type: 'POST',
                 url: baseurl+uri4,
-                data: $('#form').serialize(),
+                data: $('#formAppHrd').serialize(),
                 success: function() {
-                     location.reload()
+                    $("[data-dismiss=modal]").trigger({ type: "click" });
+                    location.reload(),
+                    $btn.button('reset')
                 }
             });
             ev.preventDefault(); 

@@ -110,8 +110,8 @@
                                             </div>
                                         </div>
                                     </div>
-									
-									<?php if($id != 1): ?>
+									<?php //die(is_admin_khusus($user_nik)) ?>
+									<?php if($id != 1 && is_admin_khusus($user_nik) != 1): ?>
                                     <div class="form-group">
                                         <?php echo 'Superior Name';?>
                                         <div class="input-with-icon right">

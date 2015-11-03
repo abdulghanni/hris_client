@@ -28,76 +28,103 @@
                   foreach($form_kontrak as $row):
                 ?>
                   <div class="row column-seperation">
-                    <div class="col-md-5">
+                    <div class="col-md-6">
                       <h4>Informasi karyawan</h4>
                       <div class="row form-row">
-                        <div class="col-md-3">
-                          <label class="form-label text-right">NIK</label>
+                        <div class="col-md-4">
+                          <label class="form-label text-left">NIK</label>
                           
                         </div>
-                        <div class="col-md-9">
-                          <input name="nik" id="form3LastName" type="text"  class="form-control " placeholder="Nama" value="<?php echo get_nik($row->user_id)?>"  disabled="disabled">
+                        <div class="col-md-8">
+                          <input name="nik" type="text"  class="form-control " placeholder="Nama" value="<?php echo get_nik($row->user_id)?>"  disabled="disabled">
+                          <input type="hidden" id="emp" value="<?=$row->user_id?>">
                         </div>
                       </div>
                       <div class="row form-row">
-                        <div class="col-md-3">
-                          <label class="form-label text-right">Nama</label>
+                        <div class="col-md-4">
+                          <label class="form-label text-left">Nama</label>
                         </div>
-                        <div class="col-md-9">
+                        <div class="col-md-8">
                           <input name="name" id="form3LastName" type="text"  class="form-control " placeholder="Nama" value="<?php echo get_name($row->user_id)?>"  disabled="disabled">
                         </div>
-                      </div>          
+                      </div>        
                       <div class="row form-row">
-                        <div class="col-md-3">
-                          <label class="form-label text-right">Unit Bisnis</label>
+                        <div class="col-md-4">
+                          <label class="form-label text-left">Unit Bisnis</label>
                         </div>
-                        <div class="col-md-9">
-                          <input name="nik" id="form3LastName" type="text"  class="form-control " placeholder="Bussiness Unit Lama" value="<?php echo get_user_bu(get_nik($row->user_id))?>" disabled="disabled">
+                        <div class="col-md-8">
+                          <input id="bu" class="form-control " placeholder="Unit Bisnis" value=""  disabled="disabled">
                         </div>
                       </div>
                       <div class="row form-row">
-                        <div class="col-md-3">
-                          <label class="form-label text-right">Dept/Bagian</label>
+                        <div class="col-md-4">
+                          <label class="form-label text-left">Dept/Bagian</label>
                         </div>
-                        <div class="col-md-9">
-                            <input name="nik" id="form3LastName" type="text"  class="form-control " placeholder="Bussiness Unit Lama" value="<?php echo get_user_organization((get_nik($row->user_id)))?>" disabled="disabled">
-                        </div>
-                      </div>
-                      <div class="row form-row">
-                        <div class="col-md-3">
-                          <label class="form-label text-right">Jabatan</label>
-                        </div>
-                        <div class="col-md-9">
-                          <input name="nik" id="form3LastName" type="text"  class="form-control " placeholder="Bussiness Unit Lama" value="<?php echo get_user_position((get_nik($row->user_id)))?>" disabled="disabled">
+                        <div class="col-md-8">
+                          <input id="organization" class="form-control " placeholder="Dept/Bagian" value=""  disabled="disabled">
                         </div>
                       </div>
                       <div class="row form-row">
-                        <div class="col-md-3">
-                          <label class="form-label text-right">Status</label>
+                        <div class="col-md-4">
+                          <label class="form-label text-left">Jabatan</label>
                         </div>
-                        <div class="col-md-9">
-                          <input name="nik" id="form3LastName" type="text"  class="form-control " placeholder="Bussiness Unit Lama" value="<?php echo get_user_status((get_nik($row->user_id)))?>" disabled="disabled">
+                        <div class="col-md-8">
+                          <input id="position" class="form-control " placeholder="Jabatan" value=""  disabled="disabled">
+                         </div>
+                      </div>
+                      <div class="row form-row">
+                        <div class="col-md-4">
+                          <label class="form-label text-left">Status</label>
+                        </div>
+                        <div class="col-md-8">
+                          <input id="status" class="form-control "  value=""  disabled="disabled">
+                       </div>
+                      </div>
+                      <div class="row form-row">
+                        <div class="col-md-4">
+                          <label class="form-label text-left">Tgl. Mulai Bekerja</label>
+                        </div>
+                        <div class="col-md-8">
+                          <input name="form3LastName" id="seniority_date" type="text"  class="form-control " placeholder="Nama" value=""  disabled="disabled" >
                         </div>
                       </div>
                       <div class="row form-row">
-                        <div class="col-md-3">
-                          <label class="form-label text-right">Tanggal Mulai Bekerja</label>
+                        <div class="col-md-4">
+                          <label class="form-label text-left">Lama Kontrak</label>
                         </div>
-                        <div class="col-md-9">
-                          <input name="form3LastName" id="form3LastName" type="text"  class="form-control " placeholder="Nama" value="<?php echo dateIndo(get_user_sen_date(get_nik($row->user_id)))?>"  disabled="disabled" >
+                        <div class="col-md-8">
+                          <input name="form3LastName" id="lama_kontrak" type="text"  class="form-control " placeholder="Nama" value=""  disabled="disabled" >
+                        </div>
+                      </div>
+
+                      <div class="row form-row">
+                        <div class="col-md-4">
+                          <label class="form-label text-left">Tgl. Mulai Kontrak</label>
+                        </div>
+                        <div class="col-md-8">
+                          <input name="form3LastName" id="mulai_kontrak" type="text"  class="form-control " placeholder="Nama" value=""  disabled="disabled" >
+                        </div>
+                      </div>
+
+                      <div class="row form-row">
+                        <div class="col-md-4">
+                          <label class="form-label text-left">Tgl. Akhir Kontrak</label>
+                        </div>
+                        <div class="col-md-8">
+                          <input name="form3LastName" id="akhir_kontrak" type="text"  class="form-control " placeholder="Nama" value=""  disabled="disabled" >
                         </div>
                       </div>
                       
                       
                     </div>
-                   <div class="col-md-7">
+                   <div class="col-md-6">
                       <h4>Perpanjangan Kontrak Yang Diajukan</h4>
                       <div class="row form-row">
                         <div class="col-md-4">
                           <label class="form-label text-left">Lama Perpanjangan</label>
                         </div>
                         <div class="col-md-8">
-                          <input name="form3LastName" id="form3LastName" type="text"  class="form-control " placeholder="Nama" value="<?php echo dateIndo($lama)?>"  disabled="disabled" >
+                          <input name="form3LastName" id="form3LastName" type="text"  class="form-control " placeholder="Nama" value="<?php echo $lama?>"  disabled="disabled" >
                         </div>
                       </div>
                       <div class="row form-row">
@@ -105,7 +132,7 @@
                           <label class="form-label text-left">Tgl. Perpanjangan</label>
                         </div>
                         <div class="col-md-8">
-                          <input name="form3LastName" id="form3LastName" type="text"  class="form-control " placeholder="Nama" value="<?php echo $row->date_kontrak?>"  disabled="disabled" >
+                          <input name="form3LastName" id="form3LastName" type="text"  class="form-control " placeholder="Nama" value="<?php echo dateIndo($row->date_kontrak)?>"  disabled="disabled" >
                         </div>
                       </div>
                       <div class="row form-row">
@@ -116,6 +143,21 @@
                           <textarea name="alasan" id="alasan" class="form-control" placeholder="" disabled><?php echo $row->alasan ?></textarea>
                         </div>
                       </div>
+                      <?php if (!empty($attachment)):?>
+                      <div class="row form-row">
+                        <div class="col-md-12">
+                          <label class="form-label text-left">Attachment : </label>
+                        </div>
+                          <?php 
+                            for($i=0;$i<sizeof($attachment);$i++):
+                              if(file_exists('./uploads/'.$user_folder.$attachment[$i])){
+                          ?>
+                          <div class="col-md-12">
+                            <label class="form-label text-left"><a href="<?php echo site_url('uploads/'.$user_folder.$attachment[$i])?>" target="_blank"><?php echo '* '.$attachment[$i]?></a></label>
+                          </div>
+                        <?php }endfor; ?>
+                      </div>
+                    <?php endif ?>
 
 
                     <?php 
@@ -172,9 +214,9 @@
                     <div class="col-md-12"><span class="semi-bold">Pemohon,</span><br/><br/></div>
                       <img class=approval-img src="<?=assets_url('img/signed.png');?>">
                       <span class="small"></span><br/>
-                      <span class="semi-bold"><?php echo get_name($row->user_id)?></span><br/>
+                      <span class="semi-bold"><?php echo get_name($row->created_by)?></span><br/>
                       <span class="small"><?php echo dateIndo($row->created_on)?></span><br/>
-                      <span class="semi-bold">(<?php echo get_user_position(get_nik($row->user_id))?>)</span>
+                      <span class="semi-bold">(<?php echo get_user_position(get_nik($row->created_by))?>)</span>
                     </p>
                   </div>
 
@@ -279,7 +321,7 @@
               </div> 
 
               <br/>
-              <div class="col-md-4 text-xenter">
+              <div class="col-md-3 text-xenter">
               <?php if(!empty($row->user_app_lv4)){?>
                 <div class="col-md-12 text-center">
                   <p class="wf-approve-sp">
@@ -317,7 +359,7 @@
               </div>
 
               <?php if(!empty($row->user_app_lv3)){?>
-              <div class="col-md-4 text-xenter">
+              <div class="col-md-3 text-xenter">
                 <div class="col-md-12 text-center">
                   <p class="wf-approve-sp">
                   <div class="col-md-12"><span class="semi-bold">Mengetahui / Menyetujui,</span><br/><br/></div>
@@ -353,7 +395,7 @@
               </div>
               <?php } ?>
 
-              <div class="col-md-4 text-xenter">
+              <div class="col-md-3 text-xenter">
               <?php if(!empty($row->user_app_lv5)){?>
                 <div class="col-md-12 text-center">
                   <p class="wf-approve-sp">

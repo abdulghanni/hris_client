@@ -98,10 +98,33 @@
 
                     <div class="row form-row">
                       <div class="col-md-3">
+                        <label class="form-label text-right"><?php echo lang('cuti_remain') ?></label>
+                      </div>
+                      <div class="col-md-1">
+                        <input name="sisa_cuti" id="sisa_cuti" type="text"  class="form-control" placeholder="-" value="<?php echo $sisa_cuti ['sisa_cuti']?>" readonly required>
+                      </div>
+                    </div>
+
+                    <div class="row form-row">
+                      <div class="col-md-3">
                         <label class="form-label text-right">Alasan</label>
                       </div>
                       <div class="col-md-9">
-                        <input name="alasan" id="alasan" type="text"  class="form-control" placeholder="Alasan" value="" required>
+                        <div class="radio">
+                        <?php foreach($alasan->result() as $al):?>
+                          <input id="alasan<?= $al->id ?>" type="radio" name="alasan" value="<?= $al->id ?>">
+                          <label for="alasan<?= $al->id ?>"><?= $al->title ?></label>
+                        <?php endforeach;?>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row form-row">
+                      <div class="col-md-3">
+                        <label class="form-label text-right">Keterangan</label>
+                      </div>
+                      <div class="col-md-9">
+                        <input name="keterangan" id="keterangan" type="text"  class="form-control" placeholder="Isi Keterangan Disini...." value="" required>
                       </div>
                     </div>
                     <!--

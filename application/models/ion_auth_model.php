@@ -1260,10 +1260,21 @@ class Ion_auth_model extends CI_Model
     public function users($groups = NULL)
     {
         $sess_id = $this->session->userdata('user_id');
+        $sess_nik = get_nik($sess_id);
         $is_inventory = $this->uri->segment(1);
         $this->trigger_events('users');
         $is_admin_bagian = is_admin_bagian();
-        $user = ($is_inventory == 'inventory') ? get_user_same_bu(get_nik($sess_id)) : get_user_same_org(get_nik($sess_id));
+        $is_admin_khusus = is_admin_khusus();
+        //$user = ($is_inventory == 'inventory') ? get_user_same_bu(get_nik($sess_id)) : get_user_same_org(get_nik($sess_id));
+        if($is_inventory == 'inventory'){
+            $user = get_user_same_bu($sess_nik);
+        }elseif($is_admin_bagian == 1){
+            $user =  get_user_same_org($sess_nik);
+        }elseif($is_admin_khusus == 1){
+            $orgid = getValue('organization_id', 'users_admin_khusus', array('nik'=>'where/'.$sess_nik));
+            $user =  get_user_in_org($orgid);
+        }
+
         if (isset($this->_ion_select) && !empty($this->_ion_select))
         {
             foreach ($this->_ion_select as $select)
@@ -1282,6 +1293,11 @@ class Ion_auth_model extends CI_Model
                 $this->tables['users'].'.id as user_id'
             ));
             if($is_admin_bagian==1){
+                $this->db->where('id != ', 1);
+                for($i=0;$i<sizeof($user)-1;$i++):
+                $this->db->or_like('nik', $user[$i]);
+                endfor;
+            }elseif($is_admin_khusus == 1){
                 $this->db->where('id != ', 1);
                 for($i=0;$i<sizeof($user)-1;$i++):
                 $this->db->or_like('nik', $user[$i]);

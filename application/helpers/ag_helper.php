@@ -16,6 +16,23 @@
 		}
 	}
 
+	if (!function_exists('is_admin_khusus'))
+	{	
+		function is_admin_khusus($nik = null)
+		{
+			$CI =& get_instance();
+			if($nik == null):$nik = get_nik($CI->session->userdata('user_id'));else:$nik = $nik;endif;
+			//return $nik;
+			$num_rows = getValue('nik', 'users_admin_khusus', array('nik'=>'where/'.$nik));
+			if(!empty($num_rows))
+			{
+				return TRUE;
+			}else{
+				return FALSE;
+			}
+		}
+	}
+
 	function get_User_group($id)
 	{
 		$CI =& get_instance();
@@ -1050,6 +1067,30 @@
 	                 foreach ($task_receiver as $row)
 	                    {
 	                        $result.=$row['ID'].' ';
+	                    }
+	            } else {
+	               $result .= '';
+	            }
+
+	        return explode(' ' ,$result);
+	    }
+	}
+
+	if(!function_exists('get_user_in_org'))
+	{
+		function get_user_in_org($org_id)
+	    {
+	    	$result = '';
+	        $url = get_api_key().'users/user_in_org/ORGID/'.$org_id.'/format/json';
+	            $headers = get_headers($url);
+	            $response = substr($headers[0], 9, 3);
+	            if ($response != "404") {
+	                $get_task_receiver = file_get_contents($url);
+	                $task_receiver = json_decode($get_task_receiver, true);
+	                //return print_r($task_receiver);
+	                 foreach ($task_receiver as $row)
+	                    {
+	                        $result.=$row['EMPLID'].' ';
 	                    }
 	            } else {
 	               $result .= '';

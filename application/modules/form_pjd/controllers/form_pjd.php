@@ -308,7 +308,7 @@ class Form_pjd extends MX_Controller {
         {
             //redirect them to the login page
             redirect('auth/login', 'refresh');
-        }elseif(!is_spv($nik)&&!is_admin()&&!is_admin_bagian()){
+        }elseif(!is_spv($nik)&&!is_admin()&&!is_admin_bagian()&&!is_admin_khusus()){
             return show_error('You must be an administrator to view this page.');
         }else{
             $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
@@ -324,7 +324,7 @@ class Form_pjd extends MX_Controller {
             $this->data['tl_num_rows'] = getAll('transportation', array('is_deleted'=>'where/0'))->num_rows();
             $this->data['city_list'] = getAll('city', array('is_deleted'=>'where/0'))->result();
             $this->data['cl_num_rows'] = getAll('city', array('is_deleted'=>'where/0'))->num_rows();
-
+            $this->data['users'] =  getAll('users', array('active'=>'where/1', 'username'=>'order/asc'), array('!=id'=>'1'))->result_array();
             $this->_render_page('form_pjd/input', $this->data);
         }
     }

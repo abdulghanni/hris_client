@@ -31,7 +31,7 @@
                         <label class="form-label text-right">Nama</label>
                       </div>
                       <div class="col-md-9">
-                      <?php if(is_admin()||is_admin_bagian()){?>
+                      <?php if(is_admin()||is_admin_bagian()||is_admin_khusus()){?>
                       <select id="emp" class="select2" style="width:100%" name="emp">
                         <?php
                         foreach ($all_users->result() as $up) { ?>
@@ -188,6 +188,9 @@
   <?php }elseif(is_admin_bagian()){?>
   var cell3=row.insertCell(2);
   cell3.innerHTML = "<select name='peserta[]' class='select2' style='width:100%'><option value='0'> -- Pilih Karyawan -- </option><?php foreach ($penerima_tugas_satu_bu as $key => $up) :?><option value='<?php echo $up['ID'] ?>'><?php echo $up['NAME'].' - '.$up['ID'] ?></option><?php endforeach;?></select>"; 
+  <?php }elseif(is_admin_khusus()){?>
+  var cell3=row.insertCell(2);
+  cell3.innerHTML = "<select name='peserta[]' class='select2' style='width:100%'><option value='0'> -- Pilih Karyawan -- </option><?php foreach ($users as $key => $up) :?><option value='<?php echo $up['nik'] ?>'><?php echo $up['username'].' - '.$up['nik'] ?></option><?php endforeach;?></select>"; 
   <?php } else { ?>
   var cell3=row.insertCell(2);
   cell3.innerHTML = "<select name='peserta[]' class='select2' style='width:100%'><option value='0'> -- Pilih Karyawan -- </option><?php foreach ($penerima_tugas as $key => $up) :?><option value='<?php echo $up['ID'] ?>'><?php echo $up['NAME'].' - '.$up['ID'] ?></option><?php endforeach;?></select>";  
