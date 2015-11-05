@@ -862,34 +862,35 @@ class Auth extends MX_Controller {
              $phone_n = $this->input->post('phone');
              $previous_email_n = $this->input->post('previous_email');
              $bb_pin_n = $this->input->post('bb_pin');
+             if(!is_admin_khusus($nik)):
+                 if($first_name !== $first_name_n || $last_name !== $last_name_n || $bod_n !== $bod_n || $marital_id_n !== $marital_id || $phone_n !== $phone || $previous_email !== $previous_email_n || $bb_pin !==$bb_pin_n)
+                 {
+                    $data_n = array(
+                            'user_id' => $id,
+                            'first_name_new' => (!empty($first_name_n))?$first_name_n:$first_name,
+                            'last_name_new' => (!empty($last_name_n))?$last_name_n:$last_name,
+                            'bod_new'   => (!empty($bod_n))?$bod_n:$bod,
+                            'marital_id_new' => (!empty($marital_id_n))?$marital_id_n:$marital_id,
+                            'phone_new' => (!empty($phone_n))?$phone_n:$phone,
+                            'previous_email_new' => (!empty($previous_email_n))?$previous_email_n:$previous_email,
+                            'bb_pin_new' => (!empty($bb_pin_n))?$bb_pin_n:$bb_pin,
+                            'is_app'=> 0,
+                            'note' =>'',
+                        );
+                    $num_rows = getAll('users_edit_approval', array('user_id'=>'where/'.$id))->num_rows();
+                    if($num_rows > 0){
+                        $this->db->where('user_id', $id);
+                        $this->db->update('users_edit_approval', $data_n);
+                        $edit_id = getValue('id', 'users_edit_approval', array('user_id'=>'where/'.$id));
+                    }else{
+                        $this->db->insert('users_edit_approval', $data_n);
+                        $edit_id = $this->db->insert_id();
+                    }
+                        $this->approval->edit_user($edit_id);
 
-             if($first_name !== $first_name_n || $last_name !== $last_name_n || $bod_n !== $bod_n || $marital_id_n !== $marital_id || $phone_n !== $phone || $previous_email !== $previous_email_n || $bb_pin !==$bb_pin_n)
-             {
-                $data_n = array(
-                        'user_id' => $id,
-                        'first_name_new' => (!empty($first_name_n))?$first_name_n:$first_name,
-                        'last_name_new' => (!empty($last_name_n))?$last_name_n:$last_name,
-                        'bod_new'   => (!empty($bod_n))?$bod_n:$bod,
-                        'marital_id_new' => (!empty($marital_id_n))?$marital_id_n:$marital_id,
-                        'phone_new' => (!empty($phone_n))?$phone_n:$phone,
-                        'previous_email_new' => (!empty($previous_email_n))?$previous_email_n:$previous_email,
-                        'bb_pin_new' => (!empty($bb_pin_n))?$bb_pin_n:$bb_pin,
-                        'is_app'=> 0,
-                        'note' =>'',
-                    );
-                $num_rows = getAll('users_edit_approval', array('user_id'=>'where/'.$id))->num_rows();
-                if($num_rows > 0){
-                    $this->db->where('user_id', $id);
-                    $this->db->update('users_edit_approval', $data_n);
-                    $edit_id = getValue('id', 'users_edit_approval', array('user_id'=>'where/'.$id));
-                }else{
-                    $this->db->insert('users_edit_approval', $data_n);
-                    $edit_id = $this->db->insert_id();
-                }
-                    $this->approval->edit_user($edit_id);
-
-                $this->session->set_flashdata('message', '<div class="alert alert-info" role="alert">'.'Pengajuan perubahan data pribadi anda sudah terkirim ke administrator untuk disetujui'.'</div>');
-             }
+                    $this->session->set_flashdata('message', '<div class="alert alert-info" role="alert">'.'Pengajuan perubahan data pribadi anda sudah terkirim ke administrator untuk disetujui'.'</div>');
+                 }
+            endif;
 
 
             //if()

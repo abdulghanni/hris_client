@@ -190,7 +190,7 @@ class admin_khusus extends MX_Controller {
                             'first_name'            => $this->input->post('first_name'),
                             'last_name'             => $this->input->post('last_name'),
                             'nik'                   => $this->input->post('nik'),
-                            'active'                => 1
+                            
                         );
 
                 if ($this->form_validation->run() == true && $this->ion_auth->register($username, $password, $email, $additional_data))
@@ -202,6 +202,7 @@ class admin_khusus extends MX_Controller {
                             'created_on' => date('Y-m-d'),
                         );
                     $this->db->insert('users_admin_khusus', $data);
+                    $this->db->where('nik', $this->input->post('nik'))->update('users', array('active' => 1));
                     redirect('admin_khusus','refresh');
                 }
             }

@@ -148,7 +148,7 @@
                 <div class="form-actions">
                   <div class="pull-right">
                     <button class="btn btn-danger btn-cons" id="btnSave" type="submit" style="display: none;"><i class="icon-ok"></i> Save</button>
-                    <a href="<?php echo site_url('form_spd_dalam_group')?>"><button id="btnCancel" class="btn btn-white btn-cons" type="button" style="display: none;">Cancel</button></a>
+                    <a href="<?php echo site_url('form_training_group')?>"><button id="btnCancel" class="btn btn-white btn-cons" type="button" style="display: none;">Cancel</button></a>
                   </div>
                 </div>
               </form>
