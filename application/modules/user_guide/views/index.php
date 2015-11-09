@@ -13,12 +13,11 @@
           <ul class="nav nav-pills" id="tab-4">
             <li class="active"><a href="#tab4user">Sebagai User</a></li>
             
-            <?php if(is_spv($nik)): ?><li><a href="#tab4atasan">Sebagai Atasan</a></li><?php endif;?>
+            <?php //if(is_spv($nik)||is_admin()): ?><li><a href="#tab4atasan">Sebagai Atasan</a></li><?php //endif;?>
                 
-            <?php if(is_admin_bagian()):?><li><a href="#tab4admdept">Sebagai Admin Departement</a></li><?php endif;?>
-            <!--<?php if(is_admin_inventaris()):?><li><a href="#tab4adminv">Sebagai Admin Inventaris</a></li><?php endif;?>
-            <?php if(is_admin()):?><li><a href="#tab4admin">Sebagai Super Admin</a></li><?php endif;?>
-            -->
+            <?php //if(is_admin_bagian()||is_admin()):?><li><a href="#tab4admdept">Sebagai Admin Departement</a></li><?php //endif;?>
+            <?php //if(is_admin_inventaris()||is_admin()):?><li><a href="#tab4adminv">Sebagai Admin Inventaris</a></li><?php //endif;?>
+            <?php //if(is_admin()):?><li><a href="#tab4admin">Sebagai Super Admin</a></li><?php //endif;?>
           </ul>
           <div class="tab-content">
             <div class="tab-pane active" id="tab4user">
@@ -36,17 +35,24 @@
                                 <li class="dd-item" data-id="2">
                                     <div class="dd-handle" id="lupa">Lupa Password</div>
                                 </li>
-                                <!--
-                                <li class="dd-item" data-id="2">
-                                    <div class="dd-handle" id="cuti">Cara Mengajukan Cuti</div>
-                                </li>
                                 <li class="dd-item" data-id="3">
-                                    <div class="dd-handle">Cara Melakukan Perjalanan Dinas</div>
+                                    <div class="dd-handle" id="edit">Merubah Profile dan Password</div>
                                 </li>
                                 <li class="dd-item" data-id="4">
-                                    <div class="dd-handle">Cara Mengajukan Pengunduran Diri</div>
+                                    <div class="dd-handle" id="absen">Keterangan Tidak Absen</div>
                                 </li>
-                                -->
+                                <li class="dd-item" data-id="8">
+                                    <div class="dd-handle" id="tidak_masuk">Izin Tidak Masuk</div>
+                                </li>
+                                <li class="dd-item" data-id="5">
+                                    <div class="dd-handle" id="cuti">Mengajukan Cuti</div>
+                                </li>
+                                <li class="dd-item" data-id="6">
+                                    <div class="dd-handle" id="pjd">Melakukan Perjalanan Dinas</div>
+                                </li>
+                                <li class="dd-item" data-id="7">
+                                    <div class="dd-handle" id="resign">Mengajukan Pengunduran Diri</div>
+                                </li>
                             </ol>
                         </div>
                         <div class="clearfix"></div>
@@ -68,6 +74,21 @@
                             <ol class="dd-list">
                                 <li>
                                     <a href="<?= assets_url('user_guide/User-Guide-Web-HRIS(ATASAN).docx')?>"><div class="dd-handle">Download Panduan Lengkap</div></a>
+                                </li>
+                                <li class="dd-item" data-id="1">
+                                    <div class="dd-handle" id="recruit">Permintaan SDM Baru</div>
+                                </li>
+                                <li class="dd-item" data-id="2">
+                                    <div class="dd-handle" id="promosi">Promosi, Demosi & Mutasi</div>
+                                </li>
+                                <li class="dd-item" data-id="3">
+                                    <div class="dd-handle" id="pengangkatan">Pengangkatan</div>
+                                </li>
+                                <li class="dd-item" data-id="4">
+                                    <div class="dd-handle" id="perpanjangan">Perpanjangan Kontrak</div>
+                                </li>
+                                <li class="dd-item" data-id="4">
+                                    <div class="dd-handle" id="rekomendasi">Rekomendasi Karyawan Keluar</div>
                                 </li>
                             </ol>
                         </div>
@@ -99,7 +120,7 @@
                     <br>
                 </div>
                 <div class="col-md-8">
-                  <div id="help3"></div>
+                  <div id="help8"></div>
                 </div>
               </div>
             </div>
@@ -114,6 +135,15 @@
                                 <li>
                                     <a href="<?= assets_url('user_guide/User-Guide-Web-HRIS(admin_dept).docx')?>"><div class="dd-handle">Download Panduan Lengkap</div></a>
                                 </li>
+                                <li class="dd-item" data-id="1">
+                                    <div class="dd-handle" id="pjd_admin">Perjalanan Dinas</div>
+                                </li>
+                                <li class="dd-item" data-id="2">
+                                    <div class="dd-handle" id="training_admin">Pelatihan Karyawan</div>
+                                </li>
+                                <li class="dd-item" data-id="3">
+                                    <div class="dd-handle" id="medical">Kesehatan</div>
+                                </li>
                             </ol>
                         </div>
                         <div class="clearfix"></div>
@@ -121,7 +151,7 @@
                     <br>
                 </div>
                 <div class="col-md-8">
-                  <div id="help4"></div>
+                  <div id="help3"></div>
                 </div>
               </div>
             </div>

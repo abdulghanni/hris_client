@@ -23,17 +23,87 @@ class User_guide extends MX_Controller {
 
     function get_register()
     {
-        $this->load->view('user_guide/register');
+        $this->load->view('user_guide/user/register');
     }
 
     function get_lupa()
     {
-        $this->load->view('user_guide/lupa');
+        $this->load->view('user_guide/user/lupa');
     }
 
     function get_cuti()
     {
-        $this->load->view('user_guide/cuti');
+        $this->load->view('user_guide/user/cuti');
+    }
+
+    function get_edit()
+    {
+        $this->load->view('user_guide/user/edit');
+    }
+
+    function get_absen()
+    {
+        $this->load->view('user_guide/user/absen');
+    }
+
+     function get_tidak_masuk()
+    {
+        $this->load->view('user_guide/user/tidak_masuk');
+    }
+
+
+    function get_pjd()
+    {
+        $this->load->view('user_guide/user/pjd');
+    }
+
+    function get_resign()
+    {
+        $this->load->view('user_guide/user/resign');
+    }
+
+    //Role Atasan
+
+    function get_recruit()
+    {
+        $this->load->view('user_guide/atasan/recruit');
+    }
+
+    function get_promosi()
+    {
+        $this->load->view('user_guide/atasan/promosi');
+    }
+
+    function get_perpanjangan()
+    {
+        $this->load->view('user_guide/atasan/perpanjangan');
+    }
+
+    function get_pengangkatan()
+    {
+        $this->load->view('user_guide/atasan/pengangkatan');
+    }
+
+    function get_rekomendasi()
+    {
+        $this->load->view('user_guide/atasan/rekomendasi');
+    }
+
+    //ROLE ADMIN BAGIAN
+
+    function get_medical()
+    {
+        $this->load->view('user_guide/admin_bagian/medical');
+    }
+
+    function get_pjd_admin()
+    {
+        $this->load->view('user_guide/admin_bagian/pjd');
+    }
+
+    function get_training_admin()
+    {
+        $this->load->view('user_guide/admin_bagian/training');
     }
 
     function _render_page($view, $data=null, $render=false)

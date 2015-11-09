@@ -7,14 +7,14 @@
     kolom password masukan ‘password’(tanpa tanda petik). Password tersebut hanya digunakan pada saat pertama kali registrasi.
 </p>
 <p align="center">
-	<img class="img-responsive" height="500px" width="750px" src="<?= assets_url('user_guide/register/1.png')?>" /><br/>
+	<img class="img-responsive" height="500px" width="750px" src="<?= assets_url('user_guide/user/register/1.png')?>" /><br/>
     <em>Gambar 1</em>
 </p>
 <p>
     Jika sudah mengisi kolom NIK dan Password, tekan tombol login lalu tunggu beberapa saat sampai muncul notifikasi status login Anda.
 </p>
 <p align="center">
-<img class="img-responsive" height="500px" width="750px" src="<?= assets_url('user_guide/register/2.png')?>" /><br/>
+<img class="img-responsive" height="500px" width="750px" src="<?= assets_url('user_guide/user/register/2.png')?>" /><br/>
     <em>Gambar 2</em>
 </p>
 <p>
@@ -22,7 +22,7 @@
     terkirim ke Administrator untuk dilakukan verifikasi dan pengaktifan akun.
 </p>
 <p align="center">
-<img class="img-responsive" height="500px" width="750px" src="<?= assets_url('user_guide/register/3.png')?>" /><br/>
+<img class="img-responsive" height="500px" width="750px" src="<?= assets_url('user_guide/user/register/3.png')?>" /><br/>
     <em>Gambar 3</em>
 </p>
 <p>
@@ -34,7 +34,7 @@
     Berikut contoh tampilan notifikasi status pengaktifan akun yang dikirm ke email pribadi :
 </p>
 <p align="center">
-<img class="img-responsive" height="500px" width="750px" src="<?= assets_url('user_guide/register/4.png')?>" /><br/>
+<img class="img-responsive" height="500px" width="750px" src="<?= assets_url('user_guide/user/register/4.png')?>" /><br/>
     <em>Gambar 4</em>
 </p>
 <p>
