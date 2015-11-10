@@ -52,16 +52,16 @@
                         <label class="form-label text-right">Bagian</label>
                       </div>
                       <div class="col-md-9">
-                        <input name="organization" id="organization" type="text"  class="form-control" placeholder="Organization" value="" disabled="disabled">
+                        <input name="organization" id="organization" type="text"  class="form-control" placeholder="" value="" disabled="disabled">
                       </div>
                     </div>
 
                     <div class="row form-row">
                       <div class="col-md-3">
-                        <label class="form-label text-right">jabatan</label>
+                        <label class="form-label text-right">Jabatan</label>
                       </div>
                       <div class="col-md-9">
-                        <input name="position" id="position" type="text"  class="form-control" placeholder="position" value="" disabled="disabled">
+                        <input name="position" id="position" type="text"  class="form-control" placeholder="" value="" disabled="disabled">
                       </div>
                     </div>
 

@@ -126,7 +126,7 @@ class form_tidak_masuk extends MX_Controller {
             $this->data['alasan_cuti'] = $this->get_type_cuti();
             $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
             $tipe_cuti = getValue('type_cuti_id', 'users_tidak_masuk', array('id'=>'where/'.$id));
-            $this->data['tipe_cuti'] = getValue('title', 'alasan_cuti', array('HRSLEAVETYPEID'=>'where'.$tipe_cuti));
+            $this->data['tipe_cuti'] = getValue('title', 'alasan_cuti', array('HRSLEAVETYPEID'=>'where/'.$tipe_cuti));
             $this->data['sisa_cuti'] = $this->get_sisa_cuti($user_nik);
             $this->_render_page('form_tidak_masuk/detail', $this->data);
         }
@@ -347,7 +347,7 @@ class form_tidak_masuk extends MX_Controller {
         $this->data['alasan_cuti'] = $this->get_type_cuti();
         $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
         $tipe_cuti = getValue('type_cuti_id', 'users_tidak_masuk', array('id'=>'where/'.$id));
-        $this->data['tipe_cuti'] = getValue('title', 'alasan_cuti', array('HRSLEAVETYPEID'=>'where'.$tipe_cuti));
+        $this->data['tipe_cuti'] = getValue('title', 'alasan_cuti', array('HRSLEAVETYPEID'=>'where/'.$tipe_cuti));
 
         return $this->load->view('form_tidak_masuk/tidak_masuk_mail', $this->data, TRUE);
     }

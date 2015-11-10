@@ -102,7 +102,7 @@
                             }
 
                           //Approval HRD
-                            if($this->approval->approver('tidak_masuk') == $sess_nik && $tidak_masuk->is_app_hrd == 0){
+                            if($this->approval->approver('tidak') == $sess_nik && $tidak_masuk->is_app_hrd == 0){
                               $txt_app_hrd = "<a href='".site_url('form_tidak_masuk/detail/'.$tidak_masuk->id)."''>
                                               <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-edit'></i></button>
                                               </a>";

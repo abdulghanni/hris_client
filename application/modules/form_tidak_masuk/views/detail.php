@@ -57,11 +57,11 @@
                             <label class="form-label text-right">Tgl. Berangkat</label>
                           </div>
                           <div class="col-md-3">
-                            <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Alasan" value="<?php echo $tidak_masuk->dari_tanggal?>" disabled="disabled">
+                            <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Alasan" value="<?php echo dateIndo($tidak_masuk->dari_tanggal)?>" disabled="disabled">
                           </div>
                           <div class="col-md-1 form-label">s/d</div>  
                           <div class="col-md-3">
-                            <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Alasan" value="<?php echo $tidak_masuk->sampai_tanggal?>" disabled="disabled">
+                            <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Alasan" value="<?php echo dateIndo($tidak_masuk->sampai_tanggal)?>" disabled="disabled">
                           </div>
                     </div>
 
@@ -140,7 +140,7 @@
                 <div class="form-actions">
                     <div class="row form-row">
                         <div class="col-md-12 text-center">
-                        <?php if($row->is_app_hrd == 1 && get_nik($sess_id) == $this->approval->approver('tidak')){?>
+                        <?php if($tidak_masuk->is_app_hrd == 1 && $sess_nik == $this->approval->approver('tidak')){?>
                             <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitModalHrd"><i class='icon-edit'> Edit Approval</i></div>
                           <?php } ?>
                         </div>

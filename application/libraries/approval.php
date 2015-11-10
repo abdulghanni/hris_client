@@ -424,7 +424,7 @@ class Approval {
                 'sender_id' => get_nik($id),
                 'receiver_id' => $atasan,
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                'subject' => get_form_no($id).'Permintaan Rekomendasi Karyawan Keluar (Resign)',
+                'subject' => 'Permintaan Rekomendasi Karyawan Keluar (Resign)',
                 'email_body' => get_name($id)." mengajukan permintaan rekomendasi karyawan keluar (resign), silakan klik tautan berikut untuk menginput data <a href=$url>$url</a><br/>",
                 'is_read' => 0,
             );

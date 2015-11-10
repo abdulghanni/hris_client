@@ -278,8 +278,11 @@
                       if($row->$is_app == 1 && get_nik($sess_id) == $row->$user_app){?>
                         <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitModalLv<?php echo $i ?>"><i class='icon-edit'> Edit Approval</i></div>
                     <?php }endfor;
-                      if($row->is_app_hrd == 0 && $row->is_invited == 1 && get_nik($sess_id) == $this->approval->approver('resignment')){?>
-                        <div class='btn btn-info btn-small text-center' title='Edit undangan' data-toggle="modal" data-target="#undanganModal"><i class='icon-edit'> Ubah Tanggal Wawancara</i></div>
+                      if($row->is_app_hrd == 1 && get_nik($sess_id) == $this->approval->approver('resignment')){
+                      $submitbutton = ($row->is_invited == 0) ? '#undanganModal' : '#submitModalHrd';
+                      $submitlabel =  ($row->is_invited == 0) ? 'Ubah Undangan' : 'Ubah Wawancara';
+                      ?>
+                        <div class='btn btn-info btn-small text-center' title="<?php echo $submitlabel ?>" data-toggle="modal" data-target="<?php echo $submitbutton ?>"><i class='icon-edit'> <?php echo $submitlabel ?></i></div>
                       <?php } ?>
                     </div>
                   </div>
@@ -391,7 +394,7 @@
                         <span class="semi-bold"></span><br/>
                         <span class="small"></span><br/>
                         <span class="small"></span><br/>
-                        <span class="semi-bold"><?php echo get_name($this->approval->approver('recruitment'))?></span><br/>
+                        <span class="semi-bold"><?php echo get_name($this->approval->approver('resignment'))?></span><br/>
                         <span class="small"><?php echo dateIndo($row->date_app_hrd)?></span><br/>
                         <span class="semi-bold">(HRD)</span>
                       <?php } ?>
@@ -709,9 +712,10 @@
                 <div class="checkbox check-primary checkbox-circle" >
                     <?php
                       if($alasan_resign->num_rows()>0){
-                          foreach($alasan_resign->result() as $alasan):?>
+                          foreach($alasan_resign->result() as $alasan):
+                          $checked = ($alasan->id <> 0 && $alasan->id == $row->alasan_resign_id) ? 'checked = "checked"' : '';?>
 
-                    <input name="alasan_resign_id[]" id="alasan-<?php echo $alasan->id?>" class="checkbox1" type="checkbox" value="<?php echo $alasan->id?>">
+                    <input name="alasan_resign_id[]" id="alasan-<?php echo $alasan->id?>" class="checkbox1" type="checkbox" value="<?php echo $alasan->id?>" <?=$checked?>>
                     <label for="alasan-<?php echo $alasan->id?>"><?php echo $alasan->title?></label>
                     <?php endforeach;}?>
                   </div>
@@ -723,7 +727,7 @@
               </div>
             
               <div class="col-md-12">
-                <textarea id="text-editor" placeholder="Enter text ..." class="form-control" rows="3" name="desc_resign" required></textarea>
+                <textarea id="text-editor" placeholder="Enter text ..." class="form-control" rows="3" name="desc_resign" required><?= $row->desc_resign ?></textarea>
               </div>
 
             
@@ -732,7 +736,7 @@
               </div>
             
               <div class="col-md-12">
-                <textarea id="text-editor" placeholder="Enter text ..." class="form-control" rows="3" name="procedure_resign" required></textarea>
+                <textarea id="text-editor" placeholder="Enter text ..." class="form-control" rows="3" name="procedure_resign" required><?= $row->procedure_resign ?></textarea>
               </div>
 
             
@@ -741,7 +745,7 @@
               </div>
             
               <div class="col-md-12">
-                <textarea id="text-editor" placeholder="Enter text ..." class="form-control" rows="3" name="kepuasan_resign" required></textarea>
+                <textarea id="text-editor" placeholder="Enter text ..." class="form-control" rows="3" name="kepuasan_resign" required><?= $row->kepuasan_resign ?></textarea>
               </div>
 
             
@@ -750,7 +754,7 @@
               </div>
             
               <div class="col-md-12">
-                <textarea id="text-editor" placeholder="Enter text ..." class="form-control" rows="3" name="saran_resign" required></textarea>
+                <textarea id="text-editor" placeholder="Enter text ..." class="form-control" rows="3" name="saran_resign" required><?= $row->saran_resign ?></textarea>
               </div>
 
             
@@ -759,7 +763,7 @@
               </div>
             
               <div class="col-md-12">
-                <textarea id="text-editor" placeholder="Enter text ..." class="form-control" rows="3" name="rework_resign" required></textarea>
+                <textarea id="text-editor" placeholder="Enter text ..." class="form-control" rows="3" name="rework_resign" required><?= $row->rework_resign ?></textarea>
               </div>
             
               <div class="col-md-12">
