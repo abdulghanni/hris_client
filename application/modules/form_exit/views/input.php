@@ -189,7 +189,7 @@
                         </tr>
                         -->
                         <tr>
-                          <td>5</td>
+                          <td>4</td>
                           <td>Diberikan surat keterangan kerja</td>
                           <td>
                             <label class="radio-inline">
@@ -201,7 +201,7 @@
                           </td>
                         </tr>
                         <tr>
-                          <td>6</td>
+                          <td>5</td>
                           <td>Diberikan ijazah asli ybs</td>
                           <td>
                             <label class="radio-inline">

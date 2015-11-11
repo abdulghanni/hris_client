@@ -13,7 +13,8 @@
     <em></em>
 </p>
 <p align="center">
-    <em>Gambar 2.1</em>
+<img class="img-responsive" height="500px" width="750px" src="<?= assets_url('user_guide/atasan/promosi/1.png')?>" /><br/>
+    <em>Gambar 1</em>
 </p>
 <p>
     3. Di halaman input pengajuan, isi informasi yang akan diajukan dan atasan yang dibutuhkan untuk melakukan approval.
@@ -26,12 +27,12 @@
     5. Jika data sudah terisi tekan tombol save untuk menyimpan data dan mengirim notifikasi ke atasan dan HRD untuk melakukan approval.
 </p>
 <p align="center">
-    <strong> </strong>
-    <em>Gambar 2.2</em>
+<img class="img-responsive" height="500px" width="750px" src="<?= assets_url('user_guide/atasan/promosi/2.png')?>" /><br/>
+    <em>Gambar 2</em>
 </p>
 <p>
     <em> </em>
-    Keterangan gambar 2.2 :
+    Keterangan Gambar 2 :
 </p>
 <p>
     1. Tombol untuk mengunggah lampiran
@@ -46,7 +47,8 @@
     <strong> </strong>
 </p>
 <p align="center">
-    <em>Gambar 2.3</em>
+<img class="img-responsive" height="500px" width="750px" src="<?= assets_url('user_guide/atasan/promosi/3.png')?>" /><br/>
+    <em>Gambar 3</em>
     <strong></strong>
 </p>
 <p>
@@ -59,7 +61,8 @@
     <strong> </strong>
 </p>
 <p align="center">
-    <em>Gambar 2.4</em>
+<img class="img-responsive" height="500px" width="750px" src="<?= assets_url('user_guide/atasan/promosi/4.png')?>" /><br/>
+    <em>Gambar 4</em>
 </p>
 <p align="center">
     <strong> </strong>
@@ -74,7 +77,8 @@
     <strong> </strong>
 </p>
 <p align="center">
-    <em>Gambar 2.5</em>
+<img class="img-responsive" height="500px" width="750px" src="<?= assets_url('user_guide/atasan/promosi/5.png')?>" /><br/>
+    <em>Gambar 5</em>
     <strong></strong>
 </p>
 <p>
@@ -84,13 +88,15 @@
     <strong> </strong>
 </p>
 <p align="center">
-    <em>Gambar 2.6</em>
+<img class="img-responsive" height="500px" width="750px" src="<?= assets_url('user_guide/atasan/promosi/6.png')?>" /><br/>
+    <em>Gambar 6</em>
 </p>
 <p>
     <strong> </strong>
 </p>
 <p align="center">
-    <em>Gambar 2.7</em>
+<img class="img-responsive" height="500px" width="750px" src="<?= assets_url('user_guide/atasan/promosi/7.png')?>" /><br/>
+    <em>Gambar 7</em>
     <strong></strong>
 </p>
 <p>
@@ -100,21 +106,11 @@
     <strong> </strong>
 </p>
 <p align="center">
-    <em>Gambar 2.8</em>
+<img class="img-responsive" height="500px" width="750px" src="<?= assets_url('user_guide/atasan/promosi/8.png')?>" /><br/>
+    <em>Gambar 8</em>
     <strong></strong>
 </p>
-<p>
-    <strong> </strong>
-</p>
-<p>
-    <strong> </strong>
-</p>
-<p>
-    <strong> </strong>
-</p>
 <p align="center">
-    <em>Gambar 2.9</em>
-</p>
-<p align="center">
-    <em> </em>
+<img class="img-responsive" height="500px" width="750px" src="<?= assets_url('user_guide/atasan/promosi/9.png')?>" /><br/>
+    <em>Gambar 9</em>
 </p>

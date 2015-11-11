@@ -13,11 +13,11 @@
           <ul class="nav nav-pills" id="tab-4">
             <li class="active"><a href="#tab4user">Sebagai User</a></li>
             
-            <?php //if(is_spv($nik)||is_admin()): ?><li><a href="#tab4atasan">Sebagai Atasan</a></li><?php //endif;?>
+            <?php if(is_spv($nik)||is_admin()): ?><li><a href="#tab4atasan">Sebagai Atasan</a></li><?php endif;?>
                 
-            <?php //if(is_admin_bagian()||is_admin()):?><li><a href="#tab4admdept">Sebagai Admin Departement</a></li><?php //endif;?>
-            <?php //if(is_admin_inventaris()||is_admin()):?><li><a href="#tab4adminv">Sebagai Admin Inventaris</a></li><?php //endif;?>
-            <?php //if(is_admin()):?><li><a href="#tab4admin">Sebagai Super Admin</a></li><?php //endif;?>
+            <?php if(is_admin_bagian()||is_admin()):?><li><a href="#tab4admdept">Sebagai Admin Departement</a></li><?php endif;?>
+            <?php if(is_admin_inventaris()||is_admin()):?><li><a href="#tab4adminv">Sebagai Admin Inventaris</a></li><?php endif;?>
+            <?php if(is_admin()):?><li><a href="#tab4admin">Sebagai Super Admin</a></li><?php endif;?>
           </ul>
           <div class="tab-content">
             <div class="tab-pane active" id="tab4user">

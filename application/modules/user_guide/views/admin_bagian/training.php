@@ -1,7 +1,6 @@
 
 <p>
-    <a name="OLE_LINK60"></a>
-    <a name="OLE_LINK59"><strong>2. </strong><strong>Pengajuan Pelatihan Karyawan</strong></a>
+    <a name="OLE_LINK59"><strong>Pengajuan Pelatihan Karyawan</strong></a>
 </p>
 <p>
     Langkah mengajukan pelatihan :
@@ -13,11 +12,7 @@
     2. Tekan tombol add yang ada di pojok kanan atas halaman daftar pelatihan
 </p>
 <p align="center">
-    <a name="OLE_LINK81"></a>
-    <a name="OLE_LINK80"></a>
-    <a name="OLE_LINK79"></a>
-    <a name="OLE_LINK78"></a>
-    <a name="OLE_LINK77"></a>
+<img class="img-responsive" height="500px" width="750px" src="<?= assets_url('user_guide/admin_bagian/training/1.png')?>" /><br/>
     <a name="OLE_LINK76"><em>Gambar 2.1</em></a>
 </p>
 <p>
@@ -28,13 +23,14 @@
     4. Jika semua data sudah terisi tekan tombol save untuk menyimpan data dan mengirim permintaan approval ke atasan dan HRD.
 </p>
 <p align="center">
+<img class="img-responsive" height="500px" width="750px" src="<?= assets_url('user_guide/admin_bagian/training/2.png')?>" /><br/>
     <em>Gambar 2.2</em>
 </p>
 <p align="center">
+<img class="img-responsive" height="500px" width="750px" src="<?= assets_url('user_guide/admin_bagian/training/3.png')?>" /><br/>
     <em>Gambar 2.3</em>
 </p>
 <p>
-    <a name="OLE_LINK62"></a>
     <a name="OLE_LINK61">
         5. Setelah data terimpan selanjutnya untuk notifikasi approval dan status pengajuan akan dikirim ke Nama pemohon yang Anda isi sebelumnya.
     </a>
@@ -43,8 +39,10 @@
     6. Untuk mencetak form,tekan tombol cetak pada form daftar pelatihan atau pada detail form.
 </p>
 <p align="center">
+<img class="img-responsive" height="500px" width="750px" src="<?= assets_url('user_guide/admin_bagian/training/4.png')?>" /><br/>
     <em>Gambar 2.4</em>
 </p>
 <p align="center">
+<img class="img-responsive" height="500px" width="750px" src="<?= assets_url('user_guide/admin_bagian/training/5.png')?>" /><br/>
     <em>Gambar 2.5</em>
 </p>

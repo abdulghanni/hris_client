@@ -509,14 +509,16 @@ class Form_exit extends MX_Controller {
             $is_app = getValue('is_app_'.$type, 'users_exit', array('id'=>'where/'.$id));
             $approval_status = $this->input->post('app_status_'.$type);
 
-           if ($this->form_exit_model->update($id,$data)) {
-               redirect('form_exit/detail/'.$id, 'refresh');
-            }
 
             if($is_app==0){
                 $this->approval_mail($id, $approval_status);
             }else{
                 $this->update_approval_mail($id, $approval_status);
+            }
+
+
+           if ($this->form_exit_model->update($id,$data)) {
+               redirect('form_exit/detail/'.$id, 'refresh');
             }
         }
     }
@@ -533,7 +535,7 @@ class Form_exit extends MX_Controller {
                 'sender_id' => get_nik($this->session->userdata('user_id')),
                 'receiver_id' =>  $receiver,
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                'subject' => 'Status Pengajuan Rekomendasi Keluar dari Atasan',
+                'subject' => get_form_no($id).'['.$approval_status.']Status Pengajuan Rekomendasi Keluar dari Atasan',
                 'email_body' => "Status pengajuan Rekomendasi karyawan Keluar untuk anda oleh ".get_name($creator_id)." $approval_status oleh $approver untuk detail silakan <a class='klikmail' href=$url>Klik disini</a><br/>".$this->detail_email($id),
                 'is_read' => 0,
             );
@@ -544,9 +546,9 @@ class Form_exit extends MX_Controller {
 
         $data2 = array(
                 'sender_id' => get_nik($this->session->userdata('user_id')),
-                'receiver_id' => $creator_id,
+                'receiver_id' => get_nik($creator_id),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                'subject' => 'Status Pengajuan Rekomendasi Keluar dari Atasan',
+                'subject' => get_form_no($id).'['.$approval_status.']Status Pengajuan Rekomendasi Keluar dari Atasan',
                 'email_body' => "Status pengajuan Rekomendasi karyawan Keluar untuk ".get_name($user_id)." $approval_status oleh $approver untuk detail silakan <a class='klikmail' href=$url>Klik disini</a><br/>".$this->detail_email($id),
                 'is_read' => 0,
             );
@@ -554,7 +556,7 @@ class Form_exit extends MX_Controller {
         if(!empty(getEmail($creator_id)))$this->send_email(getEmail($creator_id), 'Status Pengajuan Rekomendasi Keluar dari Atasan', $isi_email);
     }
 
-    function update_approval_mail($id, $type, $approval_status)
+    function update_approval_mail($id, $approval_status)
     {
         $url = base_url().'form_exit/detail/'.$id;
         $approver = get_name(get_nik($this->session->userdata('user_id')));
@@ -566,7 +568,7 @@ class Form_exit extends MX_Controller {
                 'sender_id' => get_nik($this->session->userdata('user_id')),
                 'receiver_id' =>  $receiver,
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                'subject' => 'Perubahan Status Pengajuan Rekomendasi Keluar dari Atasan',
+                'subject' => get_form_no($id).'['.$approval_status.']Perubahan Status Pengajuan Rekomendasi Keluar dari Atasan',
                 'email_body' => $approver." melakukan perubahan status pengajuan rekomendasi karyawan Keluar untuk anda oleh ".get_name($creator_id)." status pengajuan anda saat ini $approval_status, untuk detail silakan <a href=$url>Klik disini</a><br/>".$this->detail_email($id),
                 'is_read' => 0,
             );
@@ -577,9 +579,9 @@ class Form_exit extends MX_Controller {
 
         $data2 = array(
                 'sender_id' => get_nik($this->session->userdata('user_id')),
-                'receiver_id' => $creator_id,
+                'receiver_id' => get_nik($creator_id),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                'subject' => 'Perubahan Status Pengajuan Rekomendasi Keluar dari Atasan',
+                'subject' => get_form_no($id).'['.$approval_status.']Perubahan Status Pengajuan Rekomendasi Keluar dari Atasan',
                 'email_body' => $approver." melakukan perubahan status pengajuan rekomendasi karyawan Keluar untuk  ".get_name($user_id)." status pengajuan anda saat ini $approval_status, untuk detail silakan <a href=$url>Klik disini</a><br/>".$this->detail_email($id),
                 'is_read' => 0,
             );
