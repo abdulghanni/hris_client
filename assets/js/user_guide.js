@@ -162,11 +162,65 @@ $(document).ready(function() {
     });
 
 
-    //END TAB USER
+    //ROLE SUPER ADMIN
 
-    //TAB ATASAN
+    $('#depan').click(function(){
+        $('#help6').html('<img src="assets/img/loading.gif"> loading...');
+        var url = 'user_guide/get_depan';
+        $('#help6').load(url);
+        return false;
+    });
 
-    //END TAB ATASAN
+    $('#khusus').click(function(){
+        $('#help6').html('<img src="assets/img/loading.gif"> loading...');
+        var url = 'user_guide/get_admin_Khusus';
+        $('#help6').load(url);
+        return false;
+    });
+
+    $('#hrd').click(function(){
+        $('#help6').html('<img src="assets/img/loading.gif"> loading...');
+        var url = 'user_guide/get_approval_hrd';
+        $('#help6').load(url);
+        return false;
+    });
+
+    $('#atasan').click(function(){
+        $('#help6').html('<img src="assets/img/loading.gif"> loading...');
+        var url = 'user_guide/get_atasan_Khusus';
+        $('#help6').load(url);
+        return false;
+    });
+
+    $('#template').click(function(){
+        $('#help6').html('<img src="assets/img/loading.gif"> loading...');
+        var url = 'user_guide/get_form_template';
+        $('#help6').load(url);
+        return false;
+    });
+
+    $('#group').click(function(){
+        $('#help6').html('<img src="assets/img/loading.gif"> loading...');
+        var url = 'user_guide/get_group';
+        $('#help6').load(url);
+        return false;
+    });
+
+    $('#inventaris').click(function(){
+        $('#help6').html('<img src="assets/img/loading.gif"> loading...');
+        var url = 'user_guide/get_inventaris';
+        $('#help6').load(url);
+        return false;
+    });
+
+    $('#pengumuman').click(function(){
+        $('#help6').html('<img src="assets/img/loading.gif"> loading...');
+        var url = 'user_guide/get_pengumuman';
+        $('#help6').load(url);
+        return false;
+    });
+
+
 
 
 });

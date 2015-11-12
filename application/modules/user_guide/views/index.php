@@ -181,7 +181,7 @@
               </div>
             </div>
 
-            <!-- Sebagai admin -->
+            <!-- Sebagai super admin -->
             <div class="tab-pane " id="tab4admin">
               <div class="row column-seperation">
                 <div class="col-md-4">
@@ -189,14 +189,32 @@
                         <div class="dd" id="nestable">
                             <ol class="dd-list">
                                 
+                                <li>
+                                    <a href="<?= assets_url('user_guide/User-Guide-Web-HRIS(Super Admin).docx')?>"><div class="dd-handle">Download Panduan (Super Admin)</div></a>
+                                </li>
+                                <li class="dd-item" data-id="1">
+                                    <div class="dd-handle" id="depan">Halaman Depan</div>
+                                </li>
                                 <li class="dd-item" data-id="2">
-                                    <div class="dd-handle" id="cuti">Cara Mengajukan Cuti</div>
+                                    <div class="dd-handle" id="khusus">Pengaturan Admin Khusus</div>
                                 </li>
                                 <li class="dd-item" data-id="3">
-                                    <div class="dd-handle">Cara Melakukan Perjalanan Dinas</div>
+                                    <div class="dd-handle" id="hrd">Pengaturan Approval HRD</div>
                                 </li>
                                 <li class="dd-item" data-id="4">
-                                    <div class="dd-handle">Cara Mengajukan Pengunduran Diri</div>
+                                    <div class="dd-handle" id="atasan">Pengaturan Atasan Khusus</div>
+                                </li>
+                                <li class="dd-item" data-id="8">
+                                    <div class="dd-handle" id="template">Pengaturan Form Template</div>
+                                </li>
+                                <li class="dd-item" data-id="5">
+                                    <div class="dd-handle" id="group">Pengaturan Group</div>
+                                </li>
+                                <li class="dd-item" data-id="6">
+                                    <div class="dd-handle" id="inventaris">Pengaturan Inventaris</div>
+                                </li>
+                                <li class="dd-item" data-id="7">
+                                    <div class="dd-handle" id="pengumuman">Pengaturan Pengumuman</div>
                                 </li>
                             </ol>
                         </div>

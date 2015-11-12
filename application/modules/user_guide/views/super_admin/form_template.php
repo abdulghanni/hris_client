@@ -8,69 +8,19 @@
     Untuk melakukan perubahan daftar form template, masuk ke menu pengaturan-&gt;form template.
 </p>
 <p align="center">
-    <em>Gambar 5.1</em>
+<img class="img-responsive" src="<?= assets_url('user_guide/super_admin/form_template/1.png')?>" /><br/>
+    <em>Gambar 1</em>
 </p>
 <p>
     Untuk menambahkan template baru tekan tombol add, pada form tambah template pilih tipe form, lalu pilih file template yang akan diupload, jika perlu isi
     kolom keterangan.
 </p>
-<table cellpadding="0" cellspacing="0" width="100%">
-    <tbody>
-        <tr>
-            <td>
-                <div>
-                    <p align="center">
-                        4
-                    </p>
-                </div>
-            </td>
-        </tr>
-    </tbody>
-</table>
-<table cellpadding="0" cellspacing="0" width="100%">
-    <tbody>
-        <tr>
-            <td>
-                <div>
-                    <p align="center">
-                        3
-                    </p>
-                </div>
-            </td>
-        </tr>
-    </tbody>
-</table>
-<table cellpadding="0" cellspacing="0" width="100%">
-    <tbody>
-        <tr>
-            <td>
-                <div>
-                    <p align="center">
-                        1
-                    </p>
-                </div>
-            </td>
-        </tr>
-    </tbody>
-</table>
-<table cellpadding="0" cellspacing="0" width="100%">
-    <tbody>
-        <tr>
-            <td>
-                <div>
-                    <p align="center">
-                        2
-                    </p>
-                </div>
-            </td>
-        </tr>
-    </tbody>
-</table>
 <p align="center">
-    <em>Gambar 5.2</em>
+<img class="img-responsive" height="500px" width="750px" src="<?= assets_url('user_guide/super_admin/form_template/2.png')?>" /><br/>
+    <em>Gambar 2</em>
 </p>
 <p>
-    Keterangan gambar 5.2 :
+    Keterangan Gambar 2 :
 </p>
 <p>
     1. Tombol add
@@ -85,11 +35,13 @@
     4. Tombol Unduh template
 </p>
 <p align="center">
-    <em>Gambar 5.3</em>
+<img class="img-responsive" height="500px" width="750px" src="<?= assets_url('user_guide/super_admin/form_template/3.png')?>" /><br/>
+    <em>Gambar 3</em>
 </p>
 <p>
     Untuk mengubah tekan tombol edit dan untuk menghapus template tekan tombol delete.
 </p>
 <p align="center">
-    <em>Gambar 5.4</em>
+<img class="img-responsive" height="500px" width="750px" src="<?= assets_url('user_guide/super_admin/form_template/4.png')?>" /><br/>
+    <em>Gambar 4</em>
 </p>
