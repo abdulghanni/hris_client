@@ -21,15 +21,15 @@
                         </div>
                         <br/>
                         <div class="row">
-                                        <div class="col-md-12">
-                                            <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#addModal"><i class="icon-plus"></i>&nbsp;<?php echo lang('add_button');?></button>
-                                        </div>
-                                    </div>
-                        <div <?php ( ! empty($message)) && print('class="alert alert-info text-center"'); ?> id="infoMessage"><?php echo $message;?></div>
+                            <div class="col-md-12">
+                                <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#addModal"><i class="icon-plus"></i>&nbsp;<?php echo lang('add_button');?></button>
+                            </div>
+                        </div>
+                        
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th width="5%" class="text-center">NIK</th>
+                                    <th width="10%" class="text-center">NIK Khusus</th>
                                     <th width="25%" class="text-center">Nama</th>
                                     <th width="25%" class="text-center">Dept / Bagian</th>
                                     <th width="20%" class="text-center">Group</th>
