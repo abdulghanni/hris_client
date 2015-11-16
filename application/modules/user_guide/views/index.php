@@ -15,7 +15,7 @@
             
             <?php if(is_spv($nik)||is_admin()): ?><li><a href="#tab4atasan">Sebagai Atasan</a></li><?php endif;?>
                 
-            <?php if(is_admin_bagian()||is_admin()):?><li><a href="#tab4admdept">Sebagai Admin Departement</a></li><?php endif;?>
+            <?php if(is_admin_bagian()||is_admin()):?><li><a href="#tab4admdept">Sebagai Admin Web</a></li><?php endif;?>
             <?php if(is_admin_inventaris()||is_admin()):?><li><a href="#tab4adminv">Sebagai Admin Inventaris</a></li><?php endif;?>
             <?php if(is_admin()):?><li><a href="#tab4admin">Sebagai Super Admin</a></li><?php endif;?>
           </ul>
@@ -134,6 +134,9 @@
                             <ol class="dd-list">
                                 <li>
                                     <a href="<?= assets_url('user_guide/User-Guide-Web-HRIS(admin_dept).docx')?>"><div class="dd-handle">Download Panduan Lengkap</div></a>
+                                </li>
+                                <li class="dd-item" data-id="1">
+                                    <div class="dd-handle" id="recruit_admin">Permintaan SDM Baru</div>
                                 </li>
                                 <li class="dd-item" data-id="1">
                                     <div class="dd-handle" id="pjd_admin">Perjalanan Dinas</div>

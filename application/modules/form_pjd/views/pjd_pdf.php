@@ -183,7 +183,7 @@ if ($td_num_rows > 0) {
   <p>Dengan hormat,</p>
   <p>Sehubungan dengan adanya kegiatan dalam rangka <?=$td->title?> di <?=get_bu_name($td->to_city_id)?>, bersama ini kami mengajukan perjalanan dinas sebagai berikut:</p>
   <div style="padding-left:15px;">
-    <p>I.  &nbsp;Cabang/Depo yang dikunjungi&emsp;: <?=get_bu_name($td->to_city_id)?></p>
+    <p>I.  &nbsp;Cabang/Depo yang dikunjungi&emsp;: get_bu_name($td->to_city_id)</p>
     <p>II. Tanggal kunjungan&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;: <?= dateIndo($td->date_spd_start).' s/d '.dateIndo($td->date_spd_end)?> (<?=$jml_pjd?> Hari)</p>
     <p>III.Tujuan kunjungan &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;: <?=$td->title?></p>
     <p>IV.Pelaksana&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;: <?=$td->task_receiver.' - '.get_name($td->task_receiver)?></p>

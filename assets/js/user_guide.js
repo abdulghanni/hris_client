@@ -139,6 +139,12 @@ $(document).ready(function() {
     });
 
     // ROLE ADMIN BAGIAN
+    $('#recruit_admin').click(function(){
+            $('#help3').html('<img src="assets/img/loading.gif"> loading...');
+            var url = 'user_guide/get_recruit';
+            $('#help3').load(url);
+            return false;
+    });
 
     $('#pjd_admin').click(function(){
         $('#help3').html('<img src="assets/img/loading.gif"> loading...');
