@@ -9,53 +9,16 @@
     Untuk menambahkan group baru masuk ke menu pengaturan-&gt;group, lalu tekan tombol add.
 </p>
 <p align="center">
-    <em>Gambar 6.1</em>
+<img class="img-responsive" src="<?= assets_url('user_guide/super_admin/group/1.png')?>" /><br/>
+    <em>Gambar 1</em>
 </p>
-<table cellpadding="0" cellspacing="0" width="100%">
-    <tbody>
-        <tr>
-            <td>
-                <div>
-                    <p align="center">
-                        3
-                    </p>
-                </div>
-            </td>
-        </tr>
-    </tbody>
-</table>
-<table cellpadding="0" cellspacing="0" width="100%">
-    <tbody>
-        <tr>
-            <td>
-                <div>
-                    <p align="center">
-                        2
-                    </p>
-                </div>
-            </td>
-        </tr>
-    </tbody>
-</table>
-<table cellpadding="0" cellspacing="0" width="100%">
-    <tbody>
-        <tr>
-            <td>
-                <div>
-                    <p align="center">
-                        1
-                    </p>
-                </div>
-            </td>
-        </tr>
-    </tbody>
-</table>
 <p align="center">
-    <em>Gambar 6.2</em>
+<img class="img-responsive" height="500px" width="750px" src="<?= assets_url('user_guide/super_admin/group/2.png')?>" /><br/>
+    <em>Gambar 2</em>
 </p>
 <p>
     <a name="OLE_LINK24"></a>
-    <a name="OLE_LINK23">Keterangan gambar 6.2 :</a>
+    <a name="OLE_LINK23">Keterangan Gambar 2 :</a>
 </p>
 <p>
     1. Tombol add
@@ -67,7 +30,8 @@
     3. Tombol Delete
 </p>
 <p align="center">
-    <em>Gambar 6.3</em>
+<img class="img-responsive" height="500px" width="750px" src="<?= assets_url('user_guide/super_admin/group/3.png')?>" /><br/>
+    <em>Gambar 3</em>
 </p>
 <p>
     Pada halaman tambah group, isi nama group dan keterangannya. Untuk tipe group dibagi menjadi 4, yaitu :
@@ -89,13 +53,15 @@
     -
 </p>
 <p align="center">
-    <em>Gambar 6.4</em>
+<img class="img-responsive" height="500px" width="750px" src="<?= assets_url('user_guide/super_admin/group/4.png')?>" /><br/>
+    <em>Gambar 4</em>
 </p>
 <p>
     Lalu pilih cabang untuk group tersebut, selanjutnya tekan tombol save untuk menyimpan group baru.
 </p>
 <p align="center">
-    <em>Gambar 6.5</em>
+<img class="img-responsive" height="500px" width="750px" src="<?= assets_url('user_guide/super_admin/group/5.png')?>" /><br/>
+    <em>Gambar 5</em>
 </p>
 <p>
     Untuk mengubah tekan tombol edit. Untuk menghapus group tekan tombol delete.

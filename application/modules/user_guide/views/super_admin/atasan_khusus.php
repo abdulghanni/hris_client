@@ -9,55 +9,18 @@
     Untuk melakukan perubahan daftar atasan khusus, masuk ke menu approval atasan khusus.
 </p>
 <p align="center">
-    <em>Gambar 4.1</em>
+<img class="img-responsive" src="<?= assets_url('user_guide/super_admin/atasan_khusus/1.png')?>" /><br/>
+    <em>Gambar 1</em>
 </p>
 <p>
     Untuk menambahkan atasan, tekan tombol add lalu pilih user yang akan ditambahkan sebagai atasan khusus.
 </p>
-<table cellpadding="0" cellspacing="0" width="100%">
-    <tbody>
-        <tr>
-            <td>
-                <div>
-                    <p align="center">
-                        3
-                    </p>
-                </div>
-            </td>
-        </tr>
-    </tbody>
-</table>
-<table cellpadding="0" cellspacing="0" width="100%">
-    <tbody>
-        <tr>
-            <td>
-                <div>
-                    <p align="center">
-                        2
-                    </p>
-                </div>
-            </td>
-        </tr>
-    </tbody>
-</table>
-<table cellpadding="0" cellspacing="0" width="100%">
-    <tbody>
-        <tr>
-            <td>
-                <div>
-                    <p align="center">
-                        1
-                    </p>
-                </div>
-            </td>
-        </tr>
-    </tbody>
-</table>
 <p align="center">
-    <em>Gambar 4.2</em>
+<img class="img-responsive" height="500px" width="750px" src="<?= assets_url('user_guide/super_admin/atasan_khusus/2.png')?>" /><br/>
+    <em>Gambar 2</em>
 </p>
 <p>
-    Keterangan gambar 4.2 :
+    Keterangan gambar 2 :
 </p>
 <p>
     1. Tombol add

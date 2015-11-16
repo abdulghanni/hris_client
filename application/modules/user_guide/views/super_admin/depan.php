@@ -9,11 +9,13 @@
     tekan tombol edit.
 </p>
 <p align="center">
-    <a name="OLE_LINK1"><em>Gambar 1.1</em></a>
+<img class="img-responsive" height="500px" width="750px" src="<?= assets_url('user_guide/super_admin/depan/1.png')?>" /><br/>
+    <a name="OLE_LINK1"><em>Gambar 1</em></a>
 </p>
 <p>
     Pada halaman edit profile karyawan, super administrator dapat mengubah data pribadi karyawan dan memberikan akses group admin kepada user.
 </p>
 <p align="center">
-    <em>Gambar 1.2</em>
+<img class="img-responsive" height="500px" width="750px" src="<?= assets_url('user_guide/super_admin/depan/1.png')?>" /><br/>
+    <em>Gambar 2</em>
 </p>

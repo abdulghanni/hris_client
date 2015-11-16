@@ -106,6 +106,53 @@ class User_guide extends MX_Controller {
         $this->load->view('user_guide/admin_bagian/training');
     }
 
+    //Role Super Administrator
+
+    function get_admin_khusus()
+    {
+        $this->load->view('user_guide/super_admin/admin_Khusus');
+    }
+
+    function get_depan()
+    {
+        $this->load->view('user_guide/super_admin/depan');
+    }
+
+    function get_approval_hrd()
+    {
+        $this->load->view('user_guide/super_admin/approval_hrd');
+    }
+
+    function get_atasan_Khusus()
+    {
+        $this->load->view('user_guide/super_admin/atasan_khusus');
+    }
+
+    function get_form_template()
+    {
+        $this->load->view('user_guide/super_admin/form_template');
+    }
+
+    function get_inventaris()
+    {
+        $this->load->view('user_guide/super_admin/inventaris');
+    }
+
+    function get_pengumuman()
+    {
+        $this->load->view('user_guide/super_admin/pengumuman');
+    }
+
+    function get_group()
+    {
+        $this->load->view('user_guide/super_admin/group');
+    }
+    //INVENTATRIS
+    function get_input_inventaris()
+    {
+        $this->load->view('user_guide/admin_inv/inventaris');
+    }
+
     function _render_page($view, $data=null, $render=false)
     {
         // $this->viewdata = (empty($data)) ? $this->data: $data;

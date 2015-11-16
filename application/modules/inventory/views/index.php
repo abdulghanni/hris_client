@@ -73,12 +73,18 @@
                                     <!--<td valign="middle"><?php //echo get_user_organization($user->nik);?></td>-->
                                     <td valign="middle"><?php echo get_user_position($user->nik);?></td>
                                     <td valign="middle" class="text-center">
+                                    <?php $is_submit = getValue('is_submit_'.$type,'users_exit', array('user_id'=>'where/'.$user->id));
+                                    if($is_submit == 1){?>
                                       <a href="<?php echo site_url('inventory/detail/'.$user->id)?>">
                                           <button type="button" class="btn btn-info btn-small" title="Lihat Inventaris"><i class="icon-briefcase"></i></button>
                                       </a>
+                                      <?php }else{?>
+                                       <a href="<?php echo site_url('inventory/input/'.$user->id)?>">
+                                          <button type="button" class="btn btn-info btn-small" title="Lihat Inventaris"><i class="icon-briefcase"></i></button>
+                                      </a>
+                                      <?php } ?>
                                     </td>
                                     <?php 
-                                        $is_submit = getValue('is_submit_'.$type,'users_exit', array('user_id'=>'where/'.$user->id));
                                         $submit = ($is_submit == 1) ? '<i class="icon-ok-sign"></i>' : "<i class='icon-remove-sign'></i>";
                                     ?>
                                     <td class="text-center"><?php echo $submit ?></td>

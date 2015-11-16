@@ -43,6 +43,7 @@
                           <?php endforeach; ?>
                         </select>
                         <?php }else{?>
+                            <input type="hidden" name="empatasan" id="empSess" value="<?php echo $sess_id ?>">
                             <?php if($subordinate->num_rows() > 0){?>
                             <select id="emp" class="select2" style="width:100%" name="emp">
                                 <?php foreach($subordinate->result() as $row):?>
@@ -225,17 +226,10 @@
                         <label class="form-label text-left"><?php echo 'Atasan Langsung' ?></label>
                       </div>
                       <div class="col-md-4">
-                      <?php if(is_admin()){
+                      <?php 
                         $style_up='class="select2" style="width:100%" id="atasan1"';
                             echo form_dropdown('atasan1',array('0'=>'- Pilih Atasan Langsung -'),'',$style_up);
-                        } else {?>
-                        <select name="atasan1" id="atasan1" class="select2" style="width:100%">
-                            <option value="0">- Pilih Atasan Langsung -</option>
-                            <?php foreach ($user_atasan as $key => $up) : ?>
-                              <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
-                            <?php endforeach;?>
-                          </select>
-                            <?php }?>
+                      ?>
                       </div>
                     </div>
 

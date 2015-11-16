@@ -122,23 +122,9 @@ class Inventory extends MX_Controller {
         }
     }
 
-    function input()
-    {
-        if (!$this->ion_auth->logged_in())
-        {
-            //redirect them to the login page
-            redirect('auth/login', 'refresh');
-        }
-
-            $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
-            $this->data['all_users'] = getAll('users', array('active'=>'where/1', 'username'=>'order/asc'), array('!=id'=>'1'));
-            $this->data['subordinate'] = getAll('users', array('superior_id'=>'where/'.get_nik($sess_id)));
-            $this->data['exit_type'] = getAll('exit_type', array('is_deleted'=>'where/0'));
-            $this->_render_page('form_exit/input', $this->data);
-    }
-
     function detail($user_id)
-    { 
+    {  
+        $this->data['title'] = 'Inventaris Karyawan';
         $this->data['sess_nik'] = $sess_nik = get_nik($this->session->userdata('user_id'));
         $superior_it = getValue('user_app_lv1_it', 'users_exit', array('user_id'=>'where/'.$user_id));
         $superior_hrd = getValue('user_app_lv1_hrd', 'users_exit', array('user_id'=>'where/'.$user_id));
@@ -201,11 +187,80 @@ class Inventory extends MX_Controller {
             $this->data['user_nik'] = get_nik($user_id);
             $this->get_user_atasan();
             $this->data['type'] = $type;
+            //$this->data['inventory'] = GetJoin("inventory", "users_inventory", "users_inventory.inventory_id = inventory.id",  "left", 'users_inventory.*, inventory.title as title', array('users_inventory.user_id'=>'where/'.$user_id, 'inventory.type_inventory_id'=>'where/'.$group_id));
             $this->data['inventory'] = GetAll('inventory', array('type_inventory_id'=>'where/'.$group_id));
-            $i =$this->db->select('users_inventory_exit.id as id, inventory.title, users_inventory_exit.is_available, users_inventory_exit.note')->from('users_inventory_exit')->join('inventory', 'users_inventory_exit.inventory_id = inventory.id', 'left')->where('inventory.type_inventory_id', $group_id)->where('users_inventory_exit.user_id', $user_id)->get();
-          
-            $this->data['users_inventory'] = $i;
-            $this->_render_page('inventory/input_inventory', $this->data);
+            $this->data['users_inventory'] = GetJoin("users_inventory", "inventory", "users_inventory.inventory_id = inventory.id",  "left", 'users_inventory.*, inventory.title as title', array('users_inventory.user_id'=>'where/'.$user_id, 'inventory.type_inventory_id'=>'where/'.$group_id));
+            $this->_render_page('inventory/detail', $this->data);
+        }
+    }
+
+    function input($user_id)
+    {
+        $this->data['title'] = 'Input Inventaris';
+        $this->data['sess_nik'] = $sess_nik = get_nik($this->session->userdata('user_id'));
+        $superior_it = getValue('user_app_lv1_it', 'users_exit', array('user_id'=>'where/'.$user_id));
+        $superior_hrd = getValue('user_app_lv1_hrd', 'users_exit', array('user_id'=>'where/'.$user_id));
+        $superior_logistik = getValue('user_app_lv1_logistik', 'users_exit', array('user_id'=>'where/'.$user_id));
+        $superior_koperasi = getValue('user_app_lv1_koperasi', 'users_exit', array('user_id'=>'where/'.$user_id));
+        $superior_perpus = getValue('user_app_lv1_perpus', 'users_exit', array('user_id'=>'where/'.$user_id));
+        $superior_keuangan = getValue('user_app_lv1_keuangan', 'users_exit', array('user_id'=>'where/'.$user_id));
+        if (!$this->ion_auth->logged_in())
+        {
+            $this->session->set_userdata('last_link', $this->uri->uri_string());
+            redirect('auth/login', 'refresh');
+        
+        }elseif(is_admin_inventaris() || $sess_nik==$superior_hrd || $sess_nik==$superior_it || $sess_nik==$superior_logistik || $sess_nik==$superior_koperasi || $sess_nik==$superior_perpus){
+          //  die($sess_nik.'=='.$superior_it);
+            if(is_admin_it() || $sess_nik===$superior_it){
+                $group_id = 2;
+                $type = 'it';
+            }elseif(is_admin_hrd() ||$sess_nik===$superior_hrd){
+                $group_id = 1;
+                $type = 'hrd';
+            }elseif(is_admin_logistik() || $sess_nik===$superior_logistik){
+                $group_id = 3;
+                $type = 'logistik';
+            }elseif(is_admin_perpus() || $sess_nik===$superior_perpus){
+                $group_id = 5;
+                $type = 'perpus';
+            }elseif(is_admin_koperasi() || $sess_nik===$superior_koperasi){
+                $group_id = 4;
+                $type = 'koperasi';
+            }elseif(is_admin_keuangan() || $sess_nik===$superior_keuangan){
+                $group_id = 6;
+                $type = 'keuangan';
+            }else{
+                $group_id = 0;
+            }
+
+            $num_rows = getAll('users_exit', array('user_id'=>'where/'.$user_id))->num_rows();
+            $num_rows_exit = getAll('users_exit')->num_rows();
+            if($num_rows>0){
+               $exit_id = getValue('id', 'users_exit', array('user_id'=>'where/'.$user_id));
+               $this->data['is_submit'] = getValue('is_submit_'.$type,'users_exit', array('id'=>'where/'.$exit_id));
+               $this->data['user_submit'] = getValue('user_submit_'.$type,'users_exit', array('id'=>'where/'.$exit_id));
+               $this->data['date_submit'] = getValue('date_submit_'.$type,'users_exit', array('id'=>'where/'.$exit_id));
+               $this->data['user_edit'] = getValue('user_edit_'.$type,'users_exit', array('id'=>'where/'.$exit_id));
+               $this->data['date_edit'] = getValue('date_edit_'.$type,'users_exit', array('id'=>'where/'.$exit_id));
+               $this->data['is_app_lv1'] = getValue('is_app_lv1_'.$type,'users_exit', array('id'=>'where/'.$exit_id));
+               $this->data['user_app_lv1'] = getValue('user_app_lv1_'.$type,'users_exit', array('id'=>'where/'.$exit_id));
+               $this->data['date_app_lv1'] = getValue('date_app_lv1_'.$type,'users_exit', array('id'=>'where/'.$exit_id));
+               $this->data['exit_id']  = getValue('id', 'users_exit', array('user_id'=>'where/'.$user_id));
+            }else{
+                $exit_id = $this->db->select('id')->order_by('id', 'asc')->get('users_exit')->last_row();
+                $this->data['exit_id']  = ($num_rows_exit>0)?$exit_id->id+1:1;
+                $this->data['is_submit'] = 0;
+            }
+            $this->db->insert_id();
+            $q = $this->db->get('users_exit');
+            
+            $this->data['user_id'] = $user_id;
+            $this->data['user_nik'] = get_nik($user_id);
+            $this->get_user_atasan();
+            $this->data['type'] = $type;
+            $this->data['inventory'] = GetAll('inventory', array('type_inventory_id'=>'where/'.$group_id));
+
+            $this->_render_page('inventory/input', $this->data);
         }
     }
 
@@ -248,7 +303,6 @@ class Inventory extends MX_Controller {
         for($i=0;$i<sizeof($inventory_id);$i++){
             $data = array(
                 'user_id' => $this->input->post('emp'),
-                'user_exit_id'=>$exit_id,
                 'inventory_id' => $inventory_id[$i],
                 'is_available'=>$is_available[$i],
                 'note'=>$note[$i],
@@ -257,7 +311,7 @@ class Inventory extends MX_Controller {
                 );
 
             $this->db->insert('users_inventory', $data);
-            $this->db->insert('users_inventory_exit', $data);
+            //$this->db->insert('users_inventory_exit', $data);
         }
 
         $data2 = array(
@@ -271,27 +325,36 @@ class Inventory extends MX_Controller {
         redirect('inventory/detail/'.$user_id,'refresh');
     }
 
-    function update($id, $type)
+    function update($user_id, $type)
     {
-        $user_inventory_id = $this->input->post('inventory_id_update');
+
+        $inventory_id = $this->input->post('inventory_id');
         $x='';
         $x2='';
-        for ($i=1; $i<=sizeof($user_inventory_id);$i++) {
-            $x .= $this->input->post('is_available_update'.$i).',';
-            $x2 .= $this->input->post('note_update'.$i).',';
+        for ($i=1; $i<=sizeof($inventory_id);$i++) {
+            $x .= $this->input->post('is_available_'.$i).',';
+            $x2 .= $this->input->post('note_'.$i).',';
         }
 
         $is_available = explode(',',$x);
         $note = explode(',',$x2);
-        for($i=0;$i<sizeof($user_inventory_id);$i++){
+        for($i=0;$i<sizeof($inventory_id);$i++){
             $data = array(
+                'user_id'=>$user_id,
+                'inventory_id'=>$inventory_id[$i],
                 'is_available'=>$is_available[$i],
                 'note'=>$note[$i],
                 'edited_by'=>$this->session->userdata('user_id'),
                 'edited_on' => date('Y-m-d',strtotime('now')),
                 );
-            $this->db->where('id', $user_inventory_id[$i]);
-            $this->db->update('users_inventory_exit', $data);
+
+        $num_rows = getAll('users_inventory', array('user_id'=>'where/'.$user_id, 'inventory_id'=>'where/'.$inventory_id[$i]))->num_rows();
+        if($num_rows>0):
+            $this->db->where('user_id', $user_id)->where('inventory_id', $inventory_id[$i]);
+            $this->db->update('users_inventory', $data);
+        else:
+            $this->db->insert('users_inventory',$data);
+        endif;
         }
 
         if(!empty($this->input->post('atasan1_update'))){
@@ -307,9 +370,9 @@ class Inventory extends MX_Controller {
                 'date_edit_'.$type => date('Y-m-d',strtotime('now')),
                 );
         }
-        $this->db->where('user_id',$id)->update('users_exit', $data2);
-        $this->send_approval_request_update($id, $type);
-        redirect('inventory/detail/'.$id,'refresh');
+        $this->db->where('user_id',$user_id)->update('users_exit', $data2);
+        $this->send_approval_request_update($user_id, $type);
+        redirect('inventory/detail/'.$user_id,'refresh');
     }
 
     function do_approve($id, $type)
@@ -385,36 +448,38 @@ class Inventory extends MX_Controller {
 
     function detail_email($user_id)
     { 
+        $this->data['title'] = 'Inventaris Karyawan';
         $this->data['sess_nik'] = $sess_nik = get_nik($this->session->userdata('user_id'));
         $superior_it = getValue('user_app_lv1_it', 'users_exit', array('user_id'=>'where/'.$user_id));
         $superior_hrd = getValue('user_app_lv1_hrd', 'users_exit', array('user_id'=>'where/'.$user_id));
         $superior_logistik = getValue('user_app_lv1_logistik', 'users_exit', array('user_id'=>'where/'.$user_id));
         $superior_koperasi = getValue('user_app_lv1_koperasi', 'users_exit', array('user_id'=>'where/'.$user_id));
         $superior_perpus = getValue('user_app_lv1_perpus', 'users_exit', array('user_id'=>'where/'.$user_id));
-        $superior_perpus = getValue('user_app_lv1_keuangan', 'users_exit', array('user_id'=>'where/'.$user_id));
+        $superior_keuangan = getValue('user_app_lv1_keuangan', 'users_exit', array('user_id'=>'where/'.$user_id));
 
         if (!$this->ion_auth->logged_in())
         {
+            $this->session->set_userdata('last_link', $this->uri->uri_string());
             redirect('auth/login', 'refresh');
         
         }elseif(is_admin_inventaris() || $sess_nik==$superior_hrd || $sess_nik==$superior_it || $sess_nik==$superior_logistik || $sess_nik==$superior_koperasi || $sess_nik==$superior_perpus){
-
-            if(is_admin_it() || $sess_nik==$superior_it){
+          //  die($sess_nik.'=='.$superior_it);
+            if(is_admin_it() || $sess_nik===$superior_it){
                 $group_id = 2;
                 $type = 'it';
-            }elseif(is_admin_hrd() ||$sess_nik==$superior_hrd){
+            }elseif(is_admin_hrd() ||$sess_nik===$superior_hrd){
                 $group_id = 1;
                 $type = 'hrd';
-            }elseif(is_admin_logistik() || $sess_nik==$superior_logistik){
+            }elseif(is_admin_logistik() || $sess_nik===$superior_logistik){
                 $group_id = 3;
                 $type = 'logistik';
-            }elseif(is_admin_perpus() || $sess_nik==$superior_perpus){
-                $group_id = 4;
-                $type = 'perpus';
-            }elseif(is_admin_koperasi() || $sess_nik==$superior_koperasi){
+            }elseif(is_admin_perpus() || $sess_nik===$superior_perpus){
                 $group_id = 5;
+                $type = 'perpus';
+            }elseif(is_admin_koperasi() || $sess_nik===$superior_koperasi){
+                $group_id = 4;
                 $type = 'koperasi';
-            }elseif(is_admin_keuangan() || $sess_nik==$superior_keuangan){
+            }elseif(is_admin_keuangan() || $sess_nik===$superior_keuangan){
                 $group_id = 6;
                 $type = 'keuangan';
             }else{
@@ -446,10 +511,9 @@ class Inventory extends MX_Controller {
             $this->data['user_nik'] = get_nik($user_id);
             $this->get_user_atasan();
             $this->data['type'] = $type;
+            //$this->data['inventory'] = GetJoin("inventory", "users_inventory", "users_inventory.inventory_id = inventory.id",  "left", 'users_inventory.*, inventory.title as title', array('users_inventory.user_id'=>'where/'.$user_id, 'inventory.type_inventory_id'=>'where/'.$group_id));
             $this->data['inventory'] = GetAll('inventory', array('type_inventory_id'=>'where/'.$group_id));
-            $i =$this->db->select('users_inventory_exit.id as id, inventory.title, users_inventory_exit.is_available, users_inventory_exit.note')->from('users_inventory_exit')->join('inventory', 'users_inventory_exit.inventory_id = inventory.id', 'left')->where('inventory.type_inventory_id', $group_id)->where('users_inventory_exit.user_id', $user_id)->get();
-          
-            $this->data['users_inventory'] = $i;
+            $this->data['users_inventory'] = GetJoin("users_inventory", "inventory", "users_inventory.inventory_id = inventory.id",  "left", 'users_inventory.*, inventory.title as title', array('users_inventory.user_id'=>'where/'.$user_id, 'inventory.type_inventory_id'=>'where/'.$group_id));
             return $this->load->view('inventory/inventory_mail', $this->data, TRUE);
         }
     }
@@ -476,7 +540,7 @@ class Inventory extends MX_Controller {
                     $this->template->add_css('plugins/select2/select2.css');
                     
                 }
-                elseif(in_array($view, array('inventory/input_inventory')))
+                elseif(in_array($view, array('inventory/input', 'inventory/detail')))
                 {
 
                     $this->template->set_layout('default');
