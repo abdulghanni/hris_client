@@ -1,4 +1,8 @@
-<div class="row">
+<div class="page-content"> 
+    <div class="clearfix"></div>
+    <div class="content">
+      <div id="container">
+        <div class="row">
           <div class="col-md-12">
             <div class="grid simple">
               <div class="grid-title no-border">
@@ -53,7 +57,13 @@
                         <h4>Inventaris yang Dimiliki</h4>
                       </div>
                     </div>
-                    
+                    <?php if($is_submit == 1 && is_admin_inventaris()){ ?>
+                    <div class="row form-row">
+                      <div class="col-md-12">
+                          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#updateInventarisModal"><i class="icon-edit"></i>&nbsp;Update Inventaris</button>
+                      </div>
+                    </div><br/>  
+                    <?php } ?>
                     <div class="row form-row">
                       <div class="col-md-12">
                         <table class="table no-more-tables">
@@ -103,7 +113,7 @@
                       <div class="col-md-4 text-center">
                         Mengetahui,<br/><br/>
                         <?php if(!empty($user_app_lv1) && $is_app_lv1 == 0 && $user_app_lv1 == $sess_nik){?>
-                        
+                        <button type="button" id="btnAppLv1<?php echo $type ?>" class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok"></i>Approve</button>
                         <?php }elseif($is_app_lv1 == 1){ ?>
                         <span class="semi-bold"><?php echo get_name($user_app_lv1)?></span><br/>
                         <span class="small"><?php echo dateIndo($date_app_lv1)?> </span><br/>  
@@ -116,3 +126,82 @@
               </div>
            </div>
         </div>
+      </div>
+    </div>  
+  <!-- END PAGE --> 
+
+
+  <!-- update inventory Modal -->
+<div class="modal fade" id="updateInventarisModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" id="modaldialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Update Inventaris Karyawan</h4>
+        <p class="txtBold txtRed" class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
+      </div>
+      <div class="modal-body">
+        <form class="form-no-horizontal-spacing"  id="formUpdateInv<?php echo $type?>">
+          <div class="row form-row">
+            <div class="col-md-12">
+              <table class="table no-more-tables">
+                <tr>
+                  <th>No</th>
+                  <th>Item</th>
+                  <th>Ketersediaan</th>
+                  <th>Keterangan</th>
+                </tr>
+                <?php 
+                $i=0;
+                if($inventory->num_rows()>0){
+                    foreach($inventory->result() as $row):
+                ?>
+                <tr>
+                  <td><?php echo 1+$i++?></td>
+                  <td><?php echo $row->title?></td>
+                  <td>
+                    <input type="hidden" name="inventory_id[]" value="<?php echo $row->id?>">
+                    <label class="radio-inline">
+                      <input type="radio" name="is_available_<?php echo $i?>" id="is_available<?php echo $row->id?>-1" required value="1">Ada
+                    </label>
+                    <label class="radio-inline">
+                      <input type="radio" name="is_available_<?php echo $i?>" id="is_available<?php echo $row->id?>-2" value="0">Tidak
+                    </label>
+                  </td>
+                  <td><input name="note_<?php echo $i?>" id="note<?php echo $row->id?>" type="text"  class="form-control" placeholder="" value=""><?</td>
+                </tr>
+              <?php endforeach;}?>
+              </table>
+              <div class="row form-row">
+                <div class="col-md-12">
+                  <label class="bold form-label text-left"><?php echo 'Approval' ?></label>
+                </div>
+              </div>
+
+              <div class="row form-row">
+                <div class="col-md-3">
+                  <label class="form-label text-left"><?php echo 'Atasan Langsung' ?></label>
+                </div>
+                <div class="col-md-8">
+                  <select name="atasan1_update" id="atasan1_update" class="select2" style="width:100%">
+                      <option value="0">- Pilih Atasan Langsung -</option>
+                      <?php foreach ($user_atasan as $key => $up) : ?>
+                        <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
+                      <?php endforeach;?>
+                  </select>
+                </div>
+              </div>
+
+            </div>
+          </div>
+                                    
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="icon-remove"></i>&nbsp;<?php echo lang('close_button')?></button> 
+        <button id="btnUpdateInv<?php echo $type?>" class="btn btn-primary" data-loading-text="Loading..."><i class="icon-ok-sign"></i>&nbsp;Update</button>
+      </div>
+        <?php echo form_close()?>
+    </div>
+  </div>
+</div>
+<!--end add modal-->

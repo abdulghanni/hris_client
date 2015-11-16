@@ -220,6 +220,13 @@ $(document).ready(function() {
         return false;
     });
 
+     $('#inv').click(function(){
+        $('#help6').html('<img src="assets/img/loading.gif"> loading...');
+        var url = 'user_guide/get_input_inventaris';
+        $('#help5').load(url);
+        return false;
+    });
+
 
 
 

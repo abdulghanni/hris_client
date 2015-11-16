@@ -164,10 +164,10 @@
                         <div class="dd" id="nestable">
                             <ol class="dd-list">
                                 <li class="dd-item" data-id="1">
-                                    <div class="dd-handle" id="register">Cara Registrasi</div>
+                                    <a href="<?= assets_url('user_guide/User-Guide-Web-HRIS(admin_inv).docx')?>"><div class="dd-handle">Download Panduan Lengkap</div></a>
                                 </li>
                                 <li class="dd-item" data-id="2">
-                                    <div class="dd-handle" id="cuti">Cara Mengajukan Cuti</div>
+                                    <div class="dd-handle" id="inv">Menambah & Mengubah Inventaris</div>
                                 </li>
                             </ol>
                         </div>

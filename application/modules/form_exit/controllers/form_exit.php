@@ -116,122 +116,6 @@ class Form_exit extends MX_Controller {
             $this->data['exit_type'] = getAll('exit_type', array('is_deleted'=>'where/0'));
             $this->_render_page('form_exit/input', $this->data);
     }
-
-    function input_inventory($user_id)
-    {
-        if (!$this->ion_auth->logged_in())
-        {
-            redirect('auth/login', 'refresh');
-        }elseif (!is_admin_inventaris())
-        {
-            echo 'Anda Tidak Punya Hak Akses Ke Halaman Ini';
-        }else{
-
-            if(is_admin_it()){
-                $group_id = 2;
-                $type = 'it';
-            }elseif(is_admin_hrd()){
-                $group_id = 1;
-                $type = 'hrd';
-            }elseif(is_admin_logistik()){
-                $group_id = 3;
-                $type = 'logistik';
-            }elseif(is_admin_perpus()){
-                $group_id = 5;
-                $type = 'perpus';
-            }elseif(is_admin_koperasi()){
-                $group_id = 4;
-                $type = 'koperasi';
-            }elseif(is_admin_keuangan()){
-                $group_id = 6;
-                $type = 'koperasi';
-            }else{
-                $group_id = 0;
-            }
-
-            $num_rows = getAll('users_exit', array('user_id'=>'where/'.$user_id))->num_rows();
-            $num_rows_exit = getAll('users_exit')->num_rows();
-            if($num_rows>0){
-               $exit_id = getValue('id', 'users_exit', array('user_id'=>'where/'.$user_id));
-               $this->data['is_submit'] = getValue('is_submit_'.$type,'users_exit', array('id'=>'where/'.$exit_id));
-               $this->data['user_submit'] = getValue('user_submit_'.$type,'users_exit', array('id'=>'where/'.$exit_id));
-               $this->data['date_submit'] = getValue('date_submit_'.$type,'users_exit', array('id'=>'where/'.$exit_id));
-               $this->data['exit_id']  = getValue('id', 'users_exit', array('user_id'=>'where/'.$user_id));
-            }else{
-                $exit_id = $this->db->select('id')->order_by('id', 'asc')->get('users_exit')->last_row();
-                $this->data['exit_id']  = ($num_rows_exit>0)?$exit_id->id+1:1;
-                $this->data['is_submit'] = 0;
-            }
-
-            $this->data['user_id'] = $user_id;
-            $this->data['user_nik'] = get_nik($user_id);
-            $this->data['type'] = $type;
-            $this->data['inventory'] = GetAll('inventory', array('type_inventory_id'=>'where/'.$group_id));
-            $i =$this->db->select('*')->from('users_inventory')->join('inventory', 'users_inventory.inventory_id = inventory.id', 'left')->where('inventory.type_inventory_id', $group_id)->where('users_inventory.user_id', $user_id)->get();
-           //print_mz($i->result());
-            $this->data['users_inventory'] = $i;
-            $this->_render_page('form_exit/input_inventory', $this->data);
-        }
-    }
-
-    function add_inventory($exit_id, $type)
-    {
-
-        $num_rows = getAll('users_exit', array('id'=>'where/'.$exit_id))->num_rows();
-
-            if($num_rows>0){
-                $exit_data = array(
-                'id_comp_session'=>1,
-                'user_id'=>$this->input->post('emp'),
-                'edited_by'=>$this->session->userdata('user_id'),
-                'edited_on' => date('Y-m-d',strtotime('now')),
-                );
-                $this->db->where('id',$exit_id)->update('users_exit', $exit_data);
-            }else{
-                $exit_data = array(
-                            'id_comp_session'=>1,
-                            'user_id'=>$this->input->post('emp'),
-                            'created_by'=>$this->session->userdata('user_id'),
-                            'created_on' => date('Y-m-d',strtotime('now')),
-                            );
-                $this->db->insert('users_exit', $exit_data);
-            }
-
-        $inventory_id = $this->input->post('inventory_id');
-        
-        $x='';
-        $x2='';
-        for ($i=1; $i<=sizeof($inventory_id);$i++) {
-            $x .= $this->input->post('is_available_'.$i).',';
-            $x2 .= $this->input->post('note_'.$i).',';
-        }
-
-        $is_available = explode(',',$x);
-        $note = explode(',',$x2);
-        for($i=0;$i<sizeof($inventory_id);$i++){
-            $data = array(
-                'user_id' => $this->input->post('emp'),
-                'user_exit_id'=>$exit_id,
-                'inventory_id' => $inventory_id[$i],
-                'is_available'=>$is_available[$i],
-                'note'=>$note[$i],
-                'created_by'=>$this->session->userdata('user_id'),
-                'created_on' => date('Y-m-d',strtotime('now')),
-                );
-
-            $this->db->insert('users_inventory', $data);
-        }
-
-        $data2 = array(
-            'is_submit_'.$type => 1,
-            'user_submit_'.$type =>$this->session->userdata('user_id'),
-            'date_submit_'.$type => date('Y-m-d',strtotime('now')),
-            );
-        $this->db->where('id',$exit_id)->update('users_exit', $data2);
-        $user_id = $this->input->post('emp');
-
-        redirect('form_exit/input_inventory/'.$user_id,'refresh');
-    }
     
     function add()
     {   
@@ -481,8 +365,7 @@ class Form_exit extends MX_Controller {
     {
         $user_id = $this->input->post('id');
         $this->data['laporan_num_rows'] = getAll('users_inventory', array('user_id'=>'where/'.$user_id, 'inventory_id'=>'where/10'))->num_rows();
-        $i =$this->db->select('users_inventory.id as id, users_inventory.is_available, users_inventory.note, inventory.title as title')->from('users_inventory')->join('inventory', 'users_inventory.inventory_id = inventory.id', 'left')->where('users_inventory.user_id', $user_id)->get();
-        $this->data['users_inventory'] = $i;
+        $this->data['users_inventory'] = GetJoin("users_inventory", "inventory", "users_inventory.inventory_id = inventory.id",  "left", 'users_inventory.*, inventory.title as title', array('users_inventory.user_id'=>'where/'.$user_id));
         $this->load->view('inventory_list',$this->data);
     }
 
@@ -798,7 +681,6 @@ class Form_exit extends MX_Controller {
                     
                 }
                 elseif(in_array($view, array('form_exit/input',
-                                             'form_exit/input_inventory',
                                              'form_exit/detail',)))
                 {
 

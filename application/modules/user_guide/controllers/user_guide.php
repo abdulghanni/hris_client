@@ -147,6 +147,11 @@ class User_guide extends MX_Controller {
     {
         $this->load->view('user_guide/super_admin/group');
     }
+    //INVENTATRIS
+    function get_input_inventaris()
+    {
+        $this->load->view('user_guide/admin_inv/inventaris');
+    }
 
     function _render_page($view, $data=null, $render=false)
     {
