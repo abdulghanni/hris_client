@@ -325,8 +325,8 @@ class Recruitment_model extends CI_Model
             
             
             $this->db->join('users', 'users_recruitment.user_id = users.id', 'left');
-            $this->db->join('users_recruitment_kualifikasi as kualifikasi', 'users_recruitment.user_kualifikasi_id = kualifikasi.id', 'left');
-            $this->db->join('users_recruitment_kemampuan as kemampuan', 'users_recruitment.user_kemampuan_id = kemampuan.id', 'left');
+            $this->db->join('users_recruitment_kualifikasi as kualifikasi', 'users_recruitment.id = kualifikasi.user_recruitment_id', 'left');
+            $this->db->join('users_recruitment_kemampuan as kemampuan', 'users_recruitment.id = kemampuan.user_recruitment_id', 'left');
             $this->db->join('recruitment_status as status', 'users_recruitment.status_id = status.id', 'left');
             $this->db->join('recruitment_urgensi as urgensi', 'users_recruitment.urgensi_id = urgensi.id', 'left');
             $this->db->join('recruitment_jurusan as jurusan', 'kualifikasi.jurusan = jurusan.id', 'left');
@@ -449,12 +449,10 @@ class Recruitment_model extends CI_Model
         $count = 0;
     }
 
-    public function create_($data1, $data2, $data3)
+    public function create_($data1)
     {
         // insert the new recruitment
         $this->db->insert($this->tables['recruitment'], $data1);
-        $this->db->insert('users_recruitment_kualifikasi', $data2);
-        $this->db->insert('users_recruitment_kemampuan', $data3);
         return TRUE;
     }
 

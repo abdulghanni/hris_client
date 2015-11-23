@@ -55,7 +55,7 @@ class Form_recruitment extends MX_Controller {
         $this->data['num_rows_all'] = $this->recruitment_model->like($ftitle_post)->where('is_deleted',0)->recruitment()->num_rows();
         
         $this->data['recruitment'] = $this->recruitment_model->like($ftitle_post)->where('is_deleted',0)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->recruitment()->result();
-
+        //print_mz($this->data['recruitment']);
         //list of filterize limit recruitment for pagination  d();
         $this->data['_num_rows'] = $this->recruitment_model->like($ftitle_post)->where('is_deleted',0)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->recruitment()->num_rows();
 
@@ -162,35 +162,26 @@ class Form_recruitment extends MX_Controller {
             }
             else
             {
-                $num_rows = getAll('users_recruitment')->num_rows();
-
-                if($num_rows>0){
-                    $recruitment_id = $this->db->select('id')->order_by('id', 'asc')->get('users_recruitment')->last_row();
-                    $recruitment_id = $recruitment_id->id+1;
-                }else{
-                    $recruitment_id = 1;
-                }
-                
                 $user_id = $this->session->userdata('user_id');
                 $data1 = array(
                     'id_comp_session' => 1,
                     'user_id'       => $user_id,
                     'bu_id'       => $this->input->post('bu'),
-                    //'parent_organization_id'       => $this->input->post('parent_org'),
                     'organization_id'     => $this->input->post('org'),
                     'position_id'           => $this->input->post('pos'),
                     'jumlah'           => $this->input->post('jumlah'),
                     'status_id'           => $this->input->post('status'),
                     'urgensi_id'           => $this->input->post('urgensi'),
-                    'user_kualifikasi_id'           => $recruitment_id,
-                    'user_kemampuan_id'           => $recruitment_id,
                     'user_app_lv1'          => $this->input->post('atasan1'),
                     'user_app_lv2'          => $this->input->post('atasan2'),
                     'user_app_lv3'          => $this->input->post('atasan3'),
                     'created_on'            => date('Y-m-d',strtotime('now')),
                     'created_by'            => $this->session->userdata('user_id')
                 );
-                
+
+                $this->db->insert('users_recruitment', $data1);
+                $recruitment_id = $this->db->insert_id();
+
                 $data2 = array(
                     'jenis_kelamin_id' => implode(',',$this->input->post('jenis_kelamin')),
                     'pendidikan_id' => implode(',',$this->input->post('pendidikan')),
@@ -202,9 +193,12 @@ class Form_recruitment extends MX_Controller {
                     'created_by'            => $this->session->userdata('user_id')
                 );
 
+                $this->db->insert('users_recruitment_kualifikasi', $data2);
+                $komputer = $this->input->post('komputer');
+                $komputer = (!empty($komputer)) ? implode(',',$this->input->post('komputer')) : '';
                 $data3 = array(
                         'user_recruitment_id' => $recruitment_id,
-                        'komputer' => implode(',',$this->input->post('komputer')),
+                        'komputer' => $komputer,
                         'bahasa_pemrograman' => $this->input->post('pemrograman'),
                         'komunikasi' => $this->input->post('komunikasi'),
                         'grafika' => $this->input->post('grafika'),
@@ -219,10 +213,9 @@ class Form_recruitment extends MX_Controller {
                         'created_on'            => date('Y-m-d',strtotime('now')),
                         'created_by'            => $this->session->userdata('user_id')
                     );
-
-                $this->recruitment_model->create_($data1, $data2, $data3);
                 
-                     $recruitment_id = $this->db->insert_id();
+                    $this->db->insert('users_recruitment_kemampuan', $data3);
+
                      $user_app_lv1 = getValue('user_app_lv1', 'users_recruitment', array('id'=>'where/'.$recruitment_id));
                      $subject_email = get_form_no($recruitment_id).'Pengajuan Permintaan SDM';
                      $isi_email = get_name($user_id).' mengajukan Permohonan Permintaan SDM, untuk melihat detail silakan <a href='.base_url().'form_recruitment/detail/'.$recruitment_id.'>Klik Disini</a><br />';
