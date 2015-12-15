@@ -85,7 +85,12 @@ class position extends MX_Controller {
                 'type'  => 'text',
                 'value' => $this->form_validation->set_value('title'),
             );
-
+            $this->get_bu();
+            $f_competency_group = array(
+                "is_deleted"=>"where/0"
+                );
+            $q_competency_group = GetAll('competency_group',$f_competency_group);
+            $this->data['competency_group'] = ($q_competency_group->num_rows() > 0 ) ? $q_competency_group : array();
             $this->_render_page('position/index', $this->data);
         }
     }
@@ -291,6 +296,89 @@ class position extends MX_Controller {
         }
     }
 
+    function get_bu()
+    {
+        $url = get_api_key().'users/bu/format/json';
+        $headers = get_headers($url);
+        $response = substr($headers[0], 9, 3);
+        if ($response != "404") {
+            $getbu = file_get_contents($url);
+            $bu = json_decode($getbu, true);
+            foreach ($bu as $row)
+        {
+            $result['']= '- Pilih BU -';
+            if($row['NUM'] != null){
+            $result[$row['NUM']]= ucwords(strtolower($row['DESCRIPTION']));
+            }
+        }
+            return $this->data['bu'] = $result;
+        } else {
+            return $this->data['bu'] = '';
+        }
+    }
+
+    public function get_org()
+    {
+        $id = $this->input->post('id');$id = substr($id, 0,2);
+        //$url = get_api_key().'users/org_from_parent_org/ORGID/'.$id.'/format/json';
+        $url = get_api_key().'users/org_from_bu/BUID/'.$id.'/format/json';
+            $headers = get_headers($url);
+            $response = substr($headers[0], 9, 3);
+            if ($response != "404") {
+                $getuser_info = file_get_contents($url);
+                $user_info = json_decode($getuser_info, true);
+                 foreach ($user_info as $row)
+        {
+            $result[$row['ID']]= $row['DESCRIPTION'];
+        }
+        } else {
+           $result['']= '- Belum Ada Bagian -';
+        }
+        $data['result']=$result;
+        $this->load->view('dropdown_org',$data);
+    }
+
+    public function get_child_org()
+    {
+        $id = $this->input->post('id');
+        //$id = '522130000';
+        //$url = get_api_key().'users/org_from_parent_org/ORGID/'.$id.'/format/json';
+        $url = get_api_key().'users/org_from_parent_org/ORGID/'.$id.'/format/json';
+        $headers = get_headers($url);
+        $response = substr($headers[0], 9, 3);
+        if ($response != "404") {
+                $getuser_info = file_get_contents($url);
+                $user_info = json_decode($getuser_info, true);
+                $result[0]= "-- Pilih Bagian --";
+                 foreach ($user_info as $row)
+                 {
+                    $result[$row['ID']]= $row['DESCRIPTION'];
+                 }
+
+                 $data['result']=$result;
+                 $view = $this->load->view('dropdown_org',$data, true);
+                 echo json_encode(array('st'=>1, 's'=>$view));
+                 //$this->load->view('dropdown_org',$data);
+        }else{
+            echo json_encode(array('st'=>0, 's'=>false));
+        }
+    }
+
+    function get_pos($id = null)
+    {
+        $url = get_api_key().'users/pos_from_org/ORGID/'.$id.'/format/json';
+        $headers = get_headers($url);
+        $response = substr($headers[0], 9, 3);
+        if ($response != "404") {
+             $get_position = file_get_contents($url);
+             $this->data['position'] = $position = json_decode($get_position, true);
+             $this->data['id'] = $id;
+             $this->load->view('table',$this->data);
+             //echo json_encode(array('st'=>0, 's'=>$view));
+        }
+
+    }
+
     function _get_csrf_nonce()
     {
         $this->load->helper('string');
@@ -322,29 +410,21 @@ class position extends MX_Controller {
         {
             $this->load->library('template');
 
-                if(in_array($view, array('position/index',
-										 'position/table/index',
-				)))
+                if(in_array($view, array('position/index')))
                 {
                     $this->template->set_layout('default');
 
-                    $this->template->add_js('jquery.min.js');
-                    $this->template->add_js('bootstrap.min.js');
-
-                    $this->template->add_js('jquery-ui-1.10.1.custom.min.js');
                     $this->template->add_js('jquery.sidr.min.js');
                     $this->template->add_js('breakpoints.js');
                     $this->template->add_js('select2.min.js');
 
                     $this->template->add_js('core.js');
                     $this->template->add_js('purl.js');
-
-                    $this->template->add_js('main.js');
                     $this->template->add_js('respond.min.js');
+                    $this->template->add_js('position.js');
 
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                     $this->template->add_css('plugins/select2/select2.css');
-                    
                 }
                 elseif(in_array($view, array('position/edit')))
                 {

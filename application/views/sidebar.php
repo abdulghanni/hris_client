@@ -74,7 +74,7 @@
           <!--<li > <a href="<?php echo site_url('comp_session')?>">Company Session</a> </li>
           <li > <a href="<?php echo site_url('organization')?>">Organization</a> </li>
           <li > <a href="<?php echo site_url('position')?>">Position</a> </li>
-          <!--<li > <a href="<?php echo site_url('library_table')?>">Library Reference Table</a> </li>-->
+          <li > <a href="<?php echo site_url('library_table')?>">Library Reference Table</a> </li>-->
           <?php if(is_admin_inventaris()):?><li ><a href="<?php echo site_url('inventory')?>"><i class="icon-briefcase"></i> Inventaris</a> </li><?php endif?>
           <?php if(is_admin()):?><li ><a href="<?php echo site_url('admin_khusus')?>"> Admin Khusus</a> </li><?php endif?>
           <?php if(is_admin()):?><li ><a href="<?php echo site_url('approval')?>"> Approval HRD</a> </li><?php endif?>
@@ -83,9 +83,21 @@
           <?php if(is_admin()):?><li ><a href="<?php echo site_url('auth/list_group')?>"> Group</a> </li><?php endif?>
           <?php if(is_admin()):?><li ><a href="<?php echo site_url('inventory_type')?>"> Inventaris</a> </li><?php endif?>
           <?php if(is_admin()):?><li > <a href="<?php echo site_url('pengumuman')?>">Pengumuman</a> </li><?php endif?>
+          <?php if(is_admin()):?><li > <a href="<?php echo site_url('position')?>">Position</a> </li><?php endif?>
         </ul>
       </li>  
-      <?php } ?>    
+      <?php } ?>  
+      <?php if (is_admin()):?>
+      <li class=""> <a href="javascript:;"> <i class="icon-group"></i> <span class="title">Kompetensi</span> <span class="arrow "></span> </a>
+        <ul class="sub-menu">
+          <li > <a href="<?php echo site_url('competency_assessment')?>">Kompetensi Assessment</a></li>
+          <li > <a href="<?php echo site_url('competency_behaviour')?>">Kompetensi Behaviour</a></li>
+          <li > <a href="<?php echo site_url('competency_def')?>">Kompetensi Def</a></li>
+          <li > <a href="<?php echo site_url('competency_group')?>">Kompetensi Group</a></li>
+          <li > <a href="<?php echo site_url('competency_level')?>">Kompetensi Level</a></li>
+        </ul>
+      </li>  
+    <?php endif;?>
     </ul>
     <a href="#" class="scrollup">Scroll</a>
     <div class="clearfix"></div>

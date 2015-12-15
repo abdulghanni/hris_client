@@ -17,117 +17,75 @@
                 <div class="grid simple ">                            
                     <div class="grid-body no-border">
                         <br/>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h4><?php echo lang('search_of_subheading')?>&nbsp;<span class="semi-bold"><?php echo lang('position_subheading');?></span></h4>
+                        <div class="form-row">
+                            <div class="col-md-4">
+                              <div class="col-md-4">
+                                <label class="form-label text-left">Depo/Cabang</label>
+                              </div>
+                              <div class="col-md-8">
+                                <?php
+                                    $style_bu='class="form-control input-sm select2" style="width:100%" id="bu" required';
+                                    echo form_dropdown('bu',$bu,'',$style_bu);
+                                  ?>
+                              </div>
                             </div>
-                        </div>
-                        <?php echo form_open(site_url('position/keywords'),array( 'id'=>'search_position'))?>
 
-                            <div class="row">
-                                <div class="col-md-5">
-                                    <div class="row">
-                                        <div class="col-md-3 search_label"><?php echo form_label(lang('index_ftitle_th'),'Title')?></div>
-                                        <div class="col-md-9"><?php echo bs_form_input($ftitle_search)?></div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <button type="submit" class="btn btn-info"><i class="icon-search"></i>&nbsp;<?php echo lang('search_button')?></button>
-                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal"><i class="icon-plus"></i>&nbsp;<?php echo lang('add_button');?></button>
-                                        </div>
-                                    </div>
-                                </div>    
-                            </div>
-                        <?php echo form_close()?>
-                        <br/>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div id="MsgGood" class="alert alert-success text-center" style="display:none;"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="tabel">
-						
-						<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th width="1%">
-                <div class="checkbox check-default">
-                    <input id="checkbox10" type="checkbox" value="1" class="checkall">
-                    <label for="checkbox10"></label>
-                </div>
-            </th>
-           <th width="10%"><?php echo anchor('position/index/'.$ftitle_param.'/title/'.(($sort_order == 'asc' && $sort_by == 'title') ? 'desc' : 'asc'), lang('index_ftitle_th'));?></th>
-            <th width="10%"><?php echo anchor('position/index/'.$ftitle_param.'/abbr/'.(($sort_order == 'asc' && $sort_by == 'abbr') ? 'desc' : 'asc'), lang('abbrevation'));?></th>
-            <th width="10%"><?php echo anchor('position/index/'.$ftitle_param.'/position_group/'.(($sort_order == 'asc' && $sort_by == 'position_group') ? 'desc' : 'asc'), lang('position_group'));?></th>
-			<th width="10%"><?php echo anchor('position/index/'.$ftitle_param.'/position_parent/'.(($sort_order == 'asc' && $sort_by == 'position_parent') ? 'desc' : 'asc'), lang('position_parent'));?></th>
-			<th width="10%"><?php echo anchor('position/index/'.$ftitle_param.'/organization/'.(($sort_order == 'asc' && $sort_by == 'organization') ? 'desc' : 'asc'), lang('organization'));?></th>
-			<th width="10%"><?php echo anchor('position/index/'.$ftitle_param.'/description/'.(($sort_order == 'asc' && $sort_by == 'description') ? 'desc' : 'asc'), lang('description'));?></th>
-			<th width="10%"><?php echo lang('index_action_th');?></th>                                  
-        </tr>
-    </thead>
-    <tbody>
-        <?php if($_num_rows > 0) { ?>
-            <?php foreach ($position as $user):?>
-                <tr>
-                    <td valign="middle">
-                         <div class="checkbox check-default">
-                            <input id="checkbox11" type="checkbox" value="1">
-                            <label for="checkbox11"></label>
-                        </div>
-                    </td>
-                    <td valign="middle"><?php echo $user->title;?></td>
-                    <td valign="middle"><?php echo $user->abbr;?></td>
-                    <td valign="middle"><?php echo $user->position_group;?></td>
-                    <td valign="middle"><?php echo $user->position_parent;?></td>
-                    <td valign="middle"><?php echo $user->organization;?></td>
-                    <td valign="middle"><?php echo $user->description;?></td>
-                    <td valign="middle">
-                        <button type="button" class="btn btn-info btn-small" data-toggle="modal" data-target="#editModal<?php echo $user->id?>" title="<?php echo lang('edit_button')?>"><i class="icon-paste"></i></button>
-                        
-                        <button class='btn btn-danger btn-small' type="button" name="remove_levels" value="Delete" data-toggle="modal" data-target="#deleteModal<?php echo $user->id?>" title="<?php echo lang('delete_button')?>"><i class="icon-warning-sign"></i></button>
-                    </td>
-                </tr>
-            <?php endforeach;?>
-        <?php }else{ ?>
-                <tr>
-                    <td valign="middle" colspan="3">
-                        <p class="text-center">No Data</p>
-                    </td>
-                </tr>
-        <?php } ?>
-    </tbody>
-</table>
-						
-						</div>
-
-                        <div class="row">
-                            <div class="col-md-4 page_limit">
-                                <?php echo form_open(uri_string());?>
-                                <?php 
-                                    $selectComponentData = array(
-                                        10  => '10',
-                                        25 => '25',
-                                        50 =>'50',
-                                        75 => '75',
-                                        100 => '100',);
-                                    $selectComponentJs = 'class="select2" onChange="this.form.submit()" id="limit"';
-                                    echo "Per page: ".form_dropdown('limit', $selectComponentData, $limit, $selectComponentJs);
-                                    echo '&nbsp;'.lang('found_subheading').'&nbsp;'.$num_rows_all.'&nbsp;'.lang('position_subheading');
+                            <div class="col-md-4">
+                              <div class="col-md-4">
+                                <label class="form-label text-left">Bagian</label>
+                              </div>
+                              <div class="col-md-8">
+                                <?php
+                                  $style_org='class="select2" id="org" style="width:100%" required';
+                                  echo form_dropdown("org",array(''=>'- Pilih Bagian -'),'',$style_org);
                                 ?>
-                                <?php echo form_close();?>
-                            </div>
-                            <div class="col-md-10">
-                                <ul class="pagination">
-                                    <?php echo $halaman;?>
-                                </ul>
+                              </div>
+                              <div class="col-md-4">
+                                <label class="form-label text-left"></label>
+                              </div>
+                              <div class="col-md-8">
+                                <?php
+                                  $style_org='class="select2" id="org_2" style="width:100%;display:none"';
+                                  echo form_dropdown("org_2",array(''=>'- Pilih Bagian -'),'',$style_org);
+                                ?>
+                              </div>
+                              <div id="org_child3" style="display:none">
+                                <div class="col-md-4">
+                                  <label class="form-label text-left"></label>
+                                </div>
+                                <div class="col-md-8">
+                                  <?php
+                                    $style_org='class="select2" id="org_3" style="width:100%"';
+                                    echo form_dropdown("org_3",array(''=>'- Pilih Bagian -'),'',$style_org);
+                                  ?>
+                                </div>
+                              </div>
+                              <div id="org_child4" style="display:none">
+                                <div class="col-md-4">
+                                  <label class="form-label text-left"></label>
+                                </div>
+                                <div class="col-md-8">
+                                  <?php
+                                    $style_org='class="select2" id="org_4" style="width:100%"';
+                                    echo form_dropdown("org_4",array(''=>'- Pilih Bagian -'),'',$style_org);
+                                  ?>
+                                </div>
+                              </div>
                             </div>
                         </div>
+
+                        <div id="table">
+                          
+                        </div>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
                     </div>
                 </div>
             </div>
@@ -135,23 +93,98 @@
     </div>
     <!-- END PAGE -->
 </div>
-<div id="modal">
-</div>
-<script type="text/javascript">
-    
-    window.onload = function(){
-        getModal();
-    }; 
 
-    function getTable() 
-    {
-        $('#tabel').load('<?php echo site_url('position/get_table/'); ?>');
-    }
-	
-	function getModal() 
-    {
-        $('#modal').load('<?php echo site_url('position/get_modal/'); ?>');
-    }
 
-    
-</script>
+<!--Edit Modal-->
+        <?php echo form_open('position/update/', array('id'=>'formupdate'))?>
+        <div class="modal fade" id="editModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel"><?php echo lang('edit_pos_group', 'edit_pos_group')?></h4>
+                    </div>
+                        <p class="error_msg" id="MsgBad2" style="background: #fff; display: none;"></p>
+                    <div class="modal-body">
+                        <div class="row form-row">
+                            <div class="col-md-12 text-center">
+                                <h4>Competency</h4>
+                            </div>
+                        </div>
+
+                        <?php foreach ($competency_group->result_array() as $row): ?>
+                            <div class="row form-row">
+                                <div class="col-md-4">
+                                    <label>Competency Group : <?php echo $row['title']?></label>
+                                </div>
+                                <div class="col-md-8">
+                                    <select name="competency_def<?php echo $row['id']?>[]" class="select2" id="competency<?php echo $row['id']?>_def" style="width:100%" placeholder="Competency" multiple>
+                                    <?php
+                                        $f_competency_def = array(
+                                            'is_deleted' => "where/0",
+                                            'comp_group_id' => "where/".$row['id'],
+                                            'title' => "order/asc",
+                                            );
+                                        $q_competency_def = GetAll('competency_def',$f_competency_def);
+                                        $competency_def = ($q_competency_def->num_rows() > 0 ) ? $q_competency_def : array();
+                                        foreach($competency_def->result_array() as $value) {
+                                            echo '<option value="'.$value['id'].'" >'.$value['title'].'</option>';
+                                        }
+                                    ?>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div id="position_conpetency_div">
+                            <?php 
+                            $f_position_competency = array(
+                                            'position_competency.is_deleted' => "where/0",
+                                            'position_competency.position_id' => "where/",
+                                            'competency_def.comp_group_id' => "where/".$row['id']
+                                            );
+                            $q_competency_def = GetJoin('position_competency','competency_def','position_competency.competency_def_id = competency_def.id','left','position_competency.id as id,position_competency.position_id as position_id,position_competency.itj as itj,competency_def.title as competency_title',$f_position_competency);
+                            if($q_competency_def->num_rows() > 0){ ?>
+                            <div class="row form-row">
+                                <div class="col-md-8 col-md-offset-4">
+                                    <table class="table">
+                                        <tr>
+                                            <th>Competency</th>
+                                            <th>ITJ</th>
+                                        </tr>
+                                        <?php foreach ($q_competency_def->result_array() as $comp): ?>
+                                        <tr id="row_pos_comp<?php echo $comp['id']?>">
+                                            <td>
+                                                <input type="hidden" name="url_del_pos_comp<?php echo $comp['id']?>" value="<?php echo site_url('position/del_pos_comp/')?>">
+                                                <a title="remove" id="pos_comp_del<?php echo $comp['id']?>" class="pos_comp_del" onclick="del_pos_comp('<?php echo $comp['id']?>','<?php echo site_url('position/del_pos_comp/')?>')">
+                                                    <i class="icon-remove"></i>
+                                                </a>
+                                                <u class="pos_comp" id="pos_comp<?php echo $comp['id']?>" onClick="toggle_form_('<?php echo $comp['id']?>')"><?php echo $comp['competency_title']?></u>
+                                            </td>
+                                            <td id="itj<?php echo $comp['id']?>">
+                                               <?php echo $comp['itj']?>
+                                            </td>
+                                            <td id="itj_box<?php echo $comp['id']?>" style="display:none;">
+                                                <input type="text" class="form-control" name="itj_txt<?php echo $comp['id']?>" value="<?php echo $comp['itj']?>" placeholder="important to job" onChange="update_itj('<?php echo $comp['id']?>','<?php echo site_url('position/update_itj/')?>')">
+                                                <div id="MsgBad"></div>
+                                            </td>
+                                        </tr>
+                                        <?php endforeach;?> 
+                                    </table>
+                                </div>
+                            </div>
+                            <?php } ?>
+                        </div>
+
+                        <?php endforeach;?> 
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="icon-remove"></i>&nbsp;<?php echo lang('close_button')?></button> 
+                        <button type="submit" class="btn btn-primary lnkBlkWhtArw" style="margin-top: 3px;" id="submit"><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button> 
+                    </div>             
+                </div>
+            </div>
+        </div>
+       
+        
+        <?php echo form_close()?>
+        <!-- End Edit Modal-->
