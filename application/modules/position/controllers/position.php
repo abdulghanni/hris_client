@@ -86,7 +86,7 @@ class position extends MX_Controller {
                 'value' => $this->form_validation->set_value('title'),
             );
             $this->get_bu();
-            $f_competency_group = array(
+             $f_competency_group = array(
                 "is_deleted"=>"where/0"
                 );
             $q_competency_group = GetAll('competency_group',$f_competency_group);
@@ -163,7 +163,7 @@ class position extends MX_Controller {
             $this->_render_page('position/table/index', $this->data);
         }
     }
-	public function get_modal(){
+	public function get_modal($id){
 			if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page
@@ -177,23 +177,14 @@ class position extends MX_Controller {
         }
         else
         {      
-            //list of filterize limit position for pagination  
-            $this->data['position'] = $this->position_model->position()->result();
-			
-			$f_position_group = array("is_deleted" => 0);
-            $q_position_group = GetAll('position_group', $f_position_group);
-            $this->data['position_group'] = ($q_position_group->num_rows() > 0 ) ? $q_position_group : array();
+            $this->data['id'] = $id;
+           $f_competency_group = array(
+                "is_deleted"=>"where/0"
+                );
+            $q_competency_group = GetAll('competency_group',$f_competency_group);
+            $this->data['competency_group'] = ($q_competency_group->num_rows() > 0 ) ? $q_competency_group : array();
 
-            $f_parent = array("is_deleted" => 0);
-            $q_parent = GetAll('position', $f_parent);
-			$this->data['q_parent'] = $q_parent;
-            $this->data['parent'] = ($q_parent->num_rows() > 0 ) ? $q_parent : array();
-			
-			$f_organization = array("is_deleted" => 0);
-            $q_organization = GetAll('organization', $f_organization);
-            $this->data['organization'] = ($q_organization->num_rows() > 0 ) ? $q_organization : array();
-
-            $this->_render_page('position/modal/index', $this->data);
+            $this->_render_page('position/modal', $this->data);
 		}
 	}
 
@@ -220,35 +211,6 @@ class position extends MX_Controller {
                 echo json_encode(array('st' =>1, 'title'=>$this->input->post('title'), 'base_url' => $base));
             }
         }
-    }
-
-    public function update($id)
-    {
-        $this->form_validation->set_rules('title', lang('title'), 'trim|required');
-        
-        if($this->form_validation->run() == FALSE)
-        {
-            echo json_encode(array('st'=>0, 'errors'=>validation_errors('<div class="alert alert-danger" role="alert">', '</div>')));
-        }
-        else
-        {         
-            $data = array(
-                    'title'             => $this->input->post('title'),
-                    'abbr'             => $this->input->post('abbr'),
-					'position_group_id'      => $this->input->post('position_group_id'),
-					'parent_position_id'      => $this->input->post('parent_position_id'),
-					'organization_id'      => $this->input->post('organization_id'),
-					'description'             => $this->input->post('description'),
-					'edited_on'        => date('Y-m-d H:i:s',strtotime('now')),
-					'edited_by'        => $this->session->userdata('user_id'),
-                    );
-
-            $this->position_model->update($id, $data);
-
-            echo json_encode(array('st'=>1));
-            
-        }
-
     }
 
     public function delete($id)
@@ -294,6 +256,122 @@ class position extends MX_Controller {
                 echo json_encode(array('st'=>0, 'errors'=>validation_errors('<div class="alert alert-danger" role="alert">', '</div>')));
             }
         }
+    }
+
+    public function ajax_edit($id)
+    {
+        $url = get_api_key().'users/pos_detail/POSID/'.$id.'/format/json';
+        $headers = get_headers($url);
+        $response = substr($headers[0], 9, 3);
+        if ($response != "404") {
+                $getuser_info = file_get_contents($url);
+                $user_info = json_decode($getuser_info, true);
+            }
+        //print_mz($user_info[0]);
+        echo json_encode($user_info[0]);
+    }
+
+    public function update()
+    {
+        $id = $this->input->post('id');
+            if($this->input->post('competency_def1'))
+            {
+                foreach ($this->input->post('competency_def1') as $value1) {
+                    if($this->cek_position_competency($id,$value1) == FALSE)
+                    {
+                        $data1 = array(
+                        'position_id'             => $id,
+                        'competency_def_id'       => $value1,
+                        'created_on'        => date('Y-m-d H:i:s',strtotime('now')),
+                        'created_by'        => $this->session->userdata('user_id'),
+                        );
+
+                        $this->db->insert('position_competency',$data1); 
+                    }        
+                }
+            }
+
+            if($this->input->post('competency_def2'))
+            {
+                foreach ($this->input->post('competency_def2') as $value2) 
+                {
+                    if($this->cek_position_competency($id,$value2) == FALSE)
+                    {
+                        $data2 = array(
+                            'position_id'             => $id,
+                            'competency_def_id'       => $value2,
+                            'created_on'        => date('Y-m-d H:i:s',strtotime('now')),
+                            'created_by'        => $this->session->userdata('user_id'),
+                            );
+
+                        $this->db->insert('position_competency',$data2);
+                    }
+                }
+            }
+
+            if($this->input->post('competency_def3'))
+            {
+                foreach ($this->input->post('competency_def3') as $value3) 
+                {
+                    if($this->cek_position_competency($id,$value3) == FALSE)
+                    {
+                        $data3 = array(
+                            'position_id'             => $id,
+                            'competency_def_id'       => $value3,
+                            'created_on'        => date('Y-m-d H:i:s',strtotime('now')),
+                            'created_by'        => $this->session->userdata('user_id'),
+                            );
+
+                        $this->db->insert('position_competency',$data3);
+                    }
+                }
+            }
+
+            echo json_encode(array('st'=>1));
+    }
+
+    private function cek_position_competency($position_id,$competency_def_id)
+    {
+        $f_ = array('competency_def_id'=>'where/'.$competency_def_id,'position_id'=>'where/'.$position_id,'is_deleted'=>'where/0');
+        $q_ = getAll('position_competency',$f_);
+        if($q_->num_rows() > 0){
+            return TRUE;
+        }else{
+            return FALSE;
+        }
+    }
+
+
+    public function update_itj()
+    {
+        $id = $this->input->post('id');
+        $itj = $this->input->post('itj');
+
+        $data = array('itj'=>$itj);
+        $this->db->where('id', $id);
+
+        if($this->db->update('position_competency',$data)){
+            echo json_encode(array('st'=>1,'itj_new'=>$itj));    
+        }else{
+            echo json_encode(array('st'=>0));    
+        }
+        
+    }
+
+    public function del_pos_comp()
+    {
+        $is_deleted = $this->input->post('is_deleted');
+        $id = $this->input->post('id');
+
+        $data = array('is_deleted'=>$is_deleted);
+        $this->db->where('id', $id);
+
+        if($this->db->update('position_competency',$data)){
+            echo json_encode(array('st'=>1));    
+        }else{
+            echo json_encode(array('st'=>0));    
+        }
+        
     }
 
     function get_bu()
@@ -373,7 +451,12 @@ class position extends MX_Controller {
              $get_position = file_get_contents($url);
              $this->data['position'] = $position = json_decode($get_position, true);
              $this->data['id'] = $id;
-             $this->load->view('table',$this->data);
+             $f_competency_group = array(
+                "is_deleted"=>"where/0"
+                );
+            $q_competency_group = GetAll('competency_group',$f_competency_group);
+            $this->data['competency_group'] = ($q_competency_group->num_rows() > 0 ) ? $q_competency_group : array();
+             $this->_render_page('table',$this->data);
              //echo json_encode(array('st'=>0, 's'=>$view));
         }
 
@@ -410,7 +493,8 @@ class position extends MX_Controller {
         {
             $this->load->library('template');
 
-                if(in_array($view, array('position/index')))
+                if(in_array($view, array('position/index',
+                    'position/modal')))
                 {
                     $this->template->set_layout('default');
 

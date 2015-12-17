@@ -17,7 +17,7 @@
       </tr>
   </thead>
   <tbody>
-  	<?php foreach ($position as $p) {?>
+  	<?php foreach ($position as $p) {$p_id = $p['ID'];?>
   		<tr>
   			<td valign="middle">
                  <div class="checkbox check-default">
@@ -31,10 +31,45 @@
             <td><?= $p['TYPE']?></td>
             <td><?= get_organization_name($id)?></td>
             <td valign="middle">
-                <button type="button" class="btn btn-info btn-small" data-toggle="modal" data-target="#editModal" title="<?php echo lang('edit_button')?>"><i class="icon-paste"></i></button>
-                <button class='btn btn-danger btn-small' type="button" name="remove_levels" value="Delete" data-toggle="modal" data-target="#deleteModal<?php echo $p['ID']?>" title="<?php echo lang('delete_button')?>"><i class="icon-warning-sign"></i></button>   
+                <a class="btn btn-sm btn-primary btn-mini" href="javascript:void(0)" title="Edit" onclick="edit_('<?=$p_id?>')"><i class="icon-edit"></i> Edit</a>
+                <button class='btn btn-danger btn-small' type="button"  value="Delete" data-toggle="modal" href="javascript:void()" title="<?php echo lang('delete_button')?>"><i class="icon-warning-sign"></i></button>   
             </td>
   		</tr>
   	<?php } ?>
   </tbody>
 </table>
+
+<script type="text/javascript">
+  function edit_(id)
+    {
+      save_method = 'update';
+      var url = 'position/get_modal/'+id;
+      $('#modal').load(url);
+      
+      //$('#form')[0].reset(); // reset form on modals
+      $('.form-group').removeClass('has-error'); // clear error class
+      $('.help-block').empty(); // clear error string
+
+      //Ajax Load data from ajax
+      $.ajax({
+        url : "position/ajax_edit/"+id,
+        type: "GET",
+        dataType: "JSON",
+        success: function(data)
+        {
+          $(document).find("select.select2").select2();
+            $('[name="id"]').val(data.HRSPOSITIONID);
+            $('[name="description"]').val(data.DESCRIPTION);
+            $('[name="positiongroup"]').val(data.HRSPOSITIONGROUPID);
+            $('[name="type"]').val(data.HRSPOSITIONTYPEID);
+            $('#modal_form').modal('show'); // show bootstrap modal when complete loaded
+            $('.modal-title').text('Edit'); // Set title to Bootstrap modal title
+            
+        },
+        error: function (jqXHR, textStatus, errorThrown)
+        {
+            alert('Error get data from ajax');
+        }
+    });
+    }
+</script>
