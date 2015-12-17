@@ -13,7 +13,7 @@
     <th width="10%">Position Type</th>
     <th width="10%">Departement</th>
     <!-- <th width="10%"><?php echo anchor('position/index/'.$ftitle_param.'/description/'.(($sort_order == 'asc' && $sort_by == 'description') ? 'desc' : 'asc'), lang('description'));?></th> -->
-    <th width="10%"><?php echo lang('index_action_th');?></th>                                  
+    <th width="5%" class="text-center"><?php echo lang('index_action_th');?></th>                                  
       </tr>
   </thead>
   <tbody>
@@ -30,10 +30,9 @@
             <td><?= $p['POSITIONGROUP']?></td>
             <td><?= $p['TYPE']?></td>
             <td><?= get_organization_name($id)?></td>
-            <td valign="middle">
+            <td class="text-center">
                 <a class="btn btn-sm btn-primary btn-mini" href="javascript:void(0)" title="Edit" onclick="edit_('<?=$p_id?>')"><i class="icon-edit"></i> Edit</a>
-                <button class='btn btn-danger btn-small' type="button"  value="Delete" data-toggle="modal" href="javascript:void()" title="<?php echo lang('delete_button')?>"><i class="icon-warning-sign"></i></button>   
-            </td>
+             </td>
   		</tr>
   	<?php } ?>
   </tbody>

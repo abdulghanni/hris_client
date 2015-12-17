@@ -126,10 +126,10 @@
            if(data.status) //if success close modal and reload ajax table
             {
                 $('#modal_form').modal('hide');
-                reload_table();
             }
             $('#btnSave').text('save'); //change button text
             $('#btnSave').attr('disabled',false); //set button enable
+            $('#modal_form').modal('hide');
         },
         error: function (jqXHR, textStatus, errorThrown)
         {

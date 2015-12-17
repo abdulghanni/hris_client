@@ -405,6 +405,7 @@ class position extends MX_Controller {
             if ($response != "404") {
                 $getuser_info = file_get_contents($url);
                 $user_info = json_decode($getuser_info, true);
+                $result[0]= "-- Pilih Bagian --";
                  foreach ($user_info as $row)
         {
             $result[$row['ID']]= $row['DESCRIPTION'];

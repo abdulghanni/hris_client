@@ -25,6 +25,12 @@ $(document).ready(function() {
     })
     .change();
 
+    $("#org_4").change(function() {
+        var id = $(this).val();
+        getChild4(id);
+    })
+    .change();
+
 
     function getOrg(id)
     {
@@ -94,6 +100,27 @@ $(document).ready(function() {
                     $(document).find("select.select2").select2();
                     $('#org_child4').show();
                     $('#org_4').html(obj.s);
+                    console.log(obj.st);
+                }else{
+                    $('#table').load(url);
+                }
+            }
+        });
+    }
+
+    function getChild4(id)
+    {
+        $.ajax({
+            type: 'POST',
+            url: 'position/get_child_org',
+            data: {id : id},
+            success: function(data) {
+                var obj = JSON.parse(data);
+                var url = 'position/get_pos/'+id;
+                if(obj.st == 1){
+                    $(document).find("select.select2").select2();
+                    $('#org_child5').show();
+                    $('#org_5').html(obj.s);
                     console.log(obj.st);
                 }else{
                     $('#table').load(url);
