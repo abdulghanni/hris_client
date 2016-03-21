@@ -150,8 +150,10 @@
                       <div class="col-md-9">
                         <select id="tahuncuti" class="select2" style="width:100%">
                           <?php if ($comp_session > 0) { ?>
-                              <?php foreach ($comp_session as $cs) : ?>
-                                <option value="<?php echo $cs->year; ?>"><?php echo $cs->year; ?></option>
+                              <?php foreach ($comp_session as $cs) :
+                                $selected = ($cs->year == date('Y'))?'selected="selected"':'';
+                               ?>
+                                <option value="<?php echo $cs->year; ?>" <?php echo $selected?>><?php echo $cs->year; ?></option>
                               <?php endforeach; ?>                      
                           <?php } ?>
                         </select>

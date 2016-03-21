@@ -1028,7 +1028,7 @@ class Auth extends MX_Controller {
                 }
                 else
                 {
-                    $this->session->set_flashdata('message', "Perubahan Tersimpan");
+                    $this->session->set_flashdata('message', '<div class="alert alert-info" role="alert">'.'Pengajuan perubahan data pribadi anda sudah terkirim ke administrator untuk disetujui'.'</div>');
                     redirect('person/detail/'.$id,'refresh');
                 }
             }
