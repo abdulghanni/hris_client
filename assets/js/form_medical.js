@@ -2,26 +2,26 @@ $(document).ready(function() {
 	$(".select2").select2();
 
     $('#btnAdd').on('click', function () {
-    $(document).find("select.select2").select2();
+        $(document).find("select.select2").select2();
 
-    $(".rupiah").keydown(function(event) {
-        // Allow only backspace and delete
-        if ( event.keyCode == 46 || event.keyCode == 8 ) {
-            // let it happen, don't do anything
-        }
-        else {
-            // Ensure that it is a number and stop the keypress
-            if (event.keyCode < 48 || event.keyCode > 57 ) {
-                event.preventDefault(); 
-            }   
-        }
-    });
+        $(".rupiah").keydown(function(event) {
+            // Allow only backspace and delete
+            if ( event.keyCode == 46 || event.keyCode == 8 ) {
+                // let it happen, don't do anything
+            }
+            else {
+                // Ensure that it is a number and stop the keypress
+                if (event.keyCode < 48 || event.keyCode > 57 ) {
+                    event.preventDefault(); 
+                }   
+            }
+        });
 
 
-    $('.rupiah').maskMoney({precision: 0});
-    $('#btnSaveMedical').show();
-    $('#btnCancelMedical').show();
-    $('#btnRemove').show();
+        $('.rupiah').maskMoney({precision: 0});
+        $('#btnSaveMedical').show();
+        $('#btnCancelMedical').show();
+        $('#btnRemove').show();
     });
 
     //approval Medical

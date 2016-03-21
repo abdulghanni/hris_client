@@ -7174,3 +7174,10 @@ ul.my-friends li .profile-pic{
 	color: #fff;
 	font-family: 'Dancing Script', cursive;
 }
+
+.modal.modal-wide .modal-dialog {
+  width: 90%;
+}
+.modal-wide .modal-body {
+  overflow-y: auto;
+}
