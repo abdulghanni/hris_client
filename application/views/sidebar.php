@@ -27,7 +27,7 @@
         <a href="<?php echo base_url()?>"> <i class="icon-custom-home"></i> <span class="title">Halaman Depan</span> <span class="selected"></span> </a> 
       </li>      
       <li class=""> <a href="<?php echo site_url('attendance')?>"> <i class="icon-signin"></i> <span class="title">Kehadiran</span></a>
-      <?php if(!is_admin()){?><li class=""> <a href="<?php echo site_url('attendance_axapta')?>"> <i class="icon-signin"></i> <span class="title">Kehadiran (Axapta)</span></a><?php } ?>
+      <?php if(get_nik($this->session->userdata('user_id')) != 1){?><li class=""> <a href="<?php echo site_url('attendance_axapta')?>"> <i class="icon-signin"></i> <span class="title">Kehadiran (Axapta)</span></a><?php } ?>
       </li>
       <li class=""> <a href="javascript:;"> <i class="icon-plus-sign"></i> <span class="title">Form pengajuan</span> <span class="arrow "></span> </a>
         <ul class="sub-menu">
