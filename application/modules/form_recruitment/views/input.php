@@ -108,7 +108,7 @@
                           foreach($jenis_kelamin->result() as $row):?>
                       <div class="col-md-1">
                         <div class="checkbox check-primary checkbox-circle" >
-                          <input name="jenis_kelamin[]" class="checkbox1" type="checkbox" id="jenis_kelamin<?php echo $row->id ?>" value="<?php echo $row->id ?>">
+                          <input name="jenis_kelamin[]" class="checkbox1" type="checkbox" id="jenis_kelamin<?php echo $row->id ?>" value="<?php echo $row->id ?>" checked="checked">
                             <label for="jenis_kelamin<?php echo $row->id ?>"><?php echo $row->title?></label>
                           </div>
                       </div>
@@ -123,7 +123,7 @@
                             foreach($pendidikan->result() as $row):?>
                         <div class="col-md-1">
                           <div class="checkbox check-primary checkbox-circle" >
-                            <input name="pendidikan[]" class="checkbox1" type="checkbox" id="pendidikan<?php echo $row->id ?>" value="<?php echo $row->id ?>">
+                            <input name="pendidikan[]" class="checkbox1" type="checkbox" id="pendidikan<?php echo $row->id ?>" value="<?php echo $row->id ?>" checked="checked">
                               <label for="pendidikan<?php echo $row->id ?>"><?php echo $row->title?></label>
                             </div>
                         </div>

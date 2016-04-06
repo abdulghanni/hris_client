@@ -209,6 +209,7 @@ class Email extends MX_Controller {
 
         if ($activation)
         {
+            //die();
             /*$email_id = $this->db->where('sender_id', $id)->get('email')->row('id');
             $data = array('is_deleted' => 1);
             $this->db->where('id', $email_id)->update('email', $data);*/
@@ -222,6 +223,8 @@ class Email extends MX_Controller {
         }
         else
         {
+             $this->delete_activation_mail($id);
+            //die('fail');
             //redirect them to the forgot password page
             $this->session->set_flashdata('message', $this->ion_auth->errors());
             redirect("email", 'refresh');

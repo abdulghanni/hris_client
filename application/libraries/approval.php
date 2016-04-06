@@ -274,16 +274,17 @@ class Approval {
             default:
             $receiver_id = getValue('user_id', 'users_'.$form, array('id'=>'where/'.$id));
         }
+        $form_no = ($form == 'Perubahan Data Karywan') ? '' :  get_form_no($id);
 
         $data = array(
                 'sender_id' => get_nik($sess_id),
                 'receiver_id' => get_nik($receiver_id),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                'subject' => get_form_no($id).'['.$approval_status.']Status Pengajuan Permohonan '.ucfirst($form).' dari Atasan',
+                'subject' => $form_no.'['.$approval_status.']Status Pengajuan Permohonan '.ucfirst($form).' dari Atasan',
                 'email_body' => "Status pengajuan $form anda $approval_status oleh $approver untuk detail silakan <a href=$url>Klik disini</a><br/>".$detail.'<br />untuk melihat detail silakan <a href='.$url.'>Klik Disini</a>',
                 'is_read' => 0,
             );
-        $CI->db->insert('email', $data);
+        $CI->db->insert('email', $data);//lastq();
     }
 
     public function update_approve($form, $id, $approval_status, $detail)

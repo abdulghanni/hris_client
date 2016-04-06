@@ -13,7 +13,7 @@
         <!-- / -->
 
         <!-- favicon.ico and apple-touch-icon.png -->
-
+        <link rel="icon" type="image/png" href="<?php echo base_url()?>favicon.ico">
         <!-- Bootstrap core CSS -->
         <link href="<?php echo assets_url('css/bootstrap.min.css'); ?>" rel="stylesheet" >
         <link href="<?php echo assets_url('css/plugins/font-awesome/css/font-awesome.css'); ?>" rel="stylesheet" >

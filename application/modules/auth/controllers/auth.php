@@ -165,10 +165,11 @@ class Auth extends MX_Controller {
         {
             $last_link = $this->session->userdata('last_link');
             $nik = $this->input->post('identity');
+            $nik = strtoupper($nik);
             $user_id = get_id($nik);
             $last_login = $this->db->select('last_login')->where('nik', $nik)->get('users')->row('last_login');
             $first_login = (!empty($last_login)) ? '' : '1';
-            if ($this->ion_auth->login($this->input->post('identity'), $this->input->post('password')))
+            if ($this->ion_auth->login($nik, $this->input->post('password')))
             {
                 if(!empty($last_link)):
                     redirect($last_link);
@@ -183,9 +184,9 @@ class Auth extends MX_Controller {
              //convert json object to php associative array
              $data = json_decode($jsondata, true);
              
-            if ($this->cekNik($data, 'EMPLID', $this->input->post('identity')) == TRUE && $this->input->post('password') == 'password' && is_registered($this->input->post('identity')) == false)
+            if ($this->cekNik($data, 'EMPLID', $nik) == TRUE && $this->input->post('password') == 'password' && is_registered($nik) == false)
             {
-              $getdata = file_get_contents(get_api_key().'users/list/EMPLID/'.$this->input->post('identity').'/format/json');
+              $getdata = file_get_contents(get_api_key().'users/list/EMPLID/'.$nik.'/format/json');
               $data = json_decode($getdata, true);
                 $username = $data['NAME'];
                 $password = $this->input->post('password');
@@ -193,7 +194,7 @@ class Auth extends MX_Controller {
                 $additional_data = array(
                     'first_name'            => $data['FIRSTNAME'],
                     'last_name'             => $data['LASTNAME'],
-                    'nik'                   => $this->input->post('identity'),
+                    'nik'                   => $nik,
                     'bod'                   => date('Y-m-d',strtotime($data['BIRTHDATE'])),
                     'phone'                 => $data['CELLULARPHONE'],
                     'marital_id'            => $data['MARITALSTATUS'],
@@ -201,7 +202,7 @@ class Auth extends MX_Controller {
                     'bb_pin'                => $data['PINBLACKBERRY'],
                     );
                 
-                    $email    = (!empty($data['EMAIL'])) ? $data['EMAIL'] : $this->input->post('identity');
+                    $email    = (!empty($data['EMAIL'])) ? $data['EMAIL'] : $nik;
                     if ($this->ion_auth->register($username, $password, $email, $additional_data))
                     {
                         
@@ -219,7 +220,7 @@ class Auth extends MX_Controller {
                                 
                             }*/
                             $this->send_email_activation($data['EMPLID']);
-                            $this->session->set_flashdata('message', 'Account is inactive');
+                            $this->session->set_flashdata('message', 'Your Account Is Waiting Approval From HR Admin');
                             redirect("auth/login", 'refresh');
                     }else{
                         $this->session->set_flashdata('message', 'Wrong Password or Account is still inactive, Please Contact The Administrator');
@@ -1316,7 +1317,7 @@ class Auth extends MX_Controller {
         else
         {
             $user = getJoin('users', 'users_edit_approval', 'users.id = users_edit_approval.user_id', 'left', 'users.*,users_edit_approval.*', array('users_edit_approval.id'=>'where/'.$id))->row();
-            $user_id = get_nik($this->session->userdata('user_id'));
+            $user_id = get_nik($this->session->userdata('user_id'));//print_mz($user_id);
             $date_now = date('Y-m-d');
             
             $data = array(
@@ -1340,8 +1341,10 @@ class Auth extends MX_Controller {
                 'bb_pin_new' => (!empty($user->bb_pin_new))?$user->bb_pin_new:'',
                 );
             $approval_status = $this->input->post('app_status');
-            $this->approval->approve('edit_user', $id, $approval_status, '');
-            if($approval_status==1):$this->update_employeetable($user->user_id, $data_n);endif;
+            $approval_status = 1;
+            //print_mz($approval_status);
+            $this->approval->approve('edit_user', $id, $approval_status, '');//lastq();
+            if($approval_status==1):$this->update_employeetable($user->user_id, $data_n);endif;print_mz($this->update_employeetable($user->user_id, $data_n));
         }
     }
 
@@ -1437,7 +1440,7 @@ class Auth extends MX_Controller {
       $response2 = substr($headers2[0], 9, 3);
       $response3 = substr($headers3[0], 9, 3);
       //$url_atasan_satu_bu = get_api_key().'users/atasan_satu_bu/EMPLID/'.get_nik($id).'/format/json';
-      if($pos_group == 'AMD' || $pos_group == 'DIR' || $pos_group == 'KACAB' || $pos_group == 'MGR' || $pos_group == 'ASM'):
+      if($pos_group == 'AMD' || $pos_group == 'DIR' || $pos_group == 'KACAB' || $pos_group == 'MGR' || $pos_group == 'ASM'  || $pos_group == 'KADEP'):
           if ($response != "404") {
               $get_atasan = file_get_contents($url);
               $atasan = json_decode($get_atasan, true);
