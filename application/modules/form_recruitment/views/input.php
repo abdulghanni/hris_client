@@ -121,7 +121,7 @@
                       <?php 
                           if($pendidikan->num_rows()>0){
                             foreach($pendidikan->result() as $row):?>
-                        <div class="col-md-1">
+                        <div class="col-md-2">
                           <div class="checkbox check-primary checkbox-circle" >
                             <input name="pendidikan[]" class="checkbox1" type="checkbox" id="pendidikan<?php echo $row->id ?>" value="<?php echo $row->id ?>" checked="checked">
                               <label for="pendidikan<?php echo $row->id ?>"><?php echo $row->title?></label>
@@ -177,7 +177,7 @@
                         <?php 
                           if($komputer->num_rows()>0){
                             foreach($komputer->result() as $row):?>
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                           <div class="checkbox check-primary checkbox-circle" >
                             <input name="komputer[]" class="checkbox1" type="checkbox" id="komputer<?php echo $row->id ?>" value="<?php echo $row->id ?>">
                               <label for="komputer<?php echo $row->id ?>"><?php echo $row->title?></label>

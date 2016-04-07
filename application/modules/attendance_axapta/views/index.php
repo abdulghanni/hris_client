@@ -19,7 +19,7 @@
         </ul> -->
         <div class="page-title">
             <i class="icon-custom-left"></i>
-            <h3><?php echo lang('list_of_subheading')?>&nbsp;<span class="semi-bold"><?php echo lang('att_subheading');?></span></h3> 
+            <h3><?php echo lang('list_of_subheading')?>&nbsp;<span class="semi-bold">Attendance(Axapta)</span></h3> 
         </div>
         <div class="row">
             <div class="col-md-12">

@@ -52,7 +52,7 @@ class Email extends MX_Controller {
         $subject_post = (strlen($subject_re) > 0) ? array('email.subject'=>$subject_re) : array() ;
         
         //set default limit in var $config['list_limit'] at application/config/ion_auth.php 
-        $this->data['limit'] = $limit = (strlen($this->input->post('limit')) > 0) ? $this->input->post('limit') : 10 ;
+        $this->data['limit'] = $limit = (strlen($this->input->post('limit')) > 0) ? $this->input->post('limit') : 25 ;
 
         $this->data['offset'] = 6;
 
@@ -69,8 +69,8 @@ class Email extends MX_Controller {
          //config pagination
          $config['base_url'] = base_url().'email/index/fn:'.$exp_name[1].'/em:'.$exp_subject[1].'/'.$sort_by.'/'.$sort_order.'/';
          $config['total_rows'] = $this->data['num_rows_all'];
-         $config['per_page'] = $limit;
-         $config['uri_segment'] = 6;
+         $config['per_page'] = 25;
+         $config['uri_segment'] = $this->config->item('uri_segment_pager', 'ion_auth');
 
         //inisialisasi config
          $this->pagination->initialize($config);
@@ -193,6 +193,7 @@ class Email extends MX_Controller {
      //activate the user
     function activate($id, $code=false)
     {
+        $this->session->set_userdata('last_link', $this->uri->uri_string());
         if ($code !== false)
         {
             
@@ -219,7 +220,7 @@ class Email extends MX_Controller {
             if(!empty(getEmail($user_id)))$this->send_email(getEmail($user_id), 'Status Aktivasi Akun', $isi_email);
             //redirect them to the auth page
             $this->session->set_flashdata('message', $this->ion_auth->messages());
-            redirect("email", 'refresh');
+            redirect($this->session->userdata('last_link'), 'refresh');
         }
         else
         {
