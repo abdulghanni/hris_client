@@ -405,15 +405,18 @@ class Approval {
         $sess_id = $CI->session->userdata('user_id');
         $url = base_url().'auth/edit_user_approval/'.$id;
         $user_id = getValue('user_id','users_edit_approval', array('id'=>'where/'.$id));
+        $admin = $this->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 1)->get()->result_array();
+        for($i=0;$i<sizeof($admin);$i++):
         $data = array(
                 'sender_id' => get_nik($user_id),
-                'receiver_id' => 1,
+                'receiver_id' => get_nik($admin[$i]['user_id']),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Perubahan Data Karyawan',
                 'email_body' => get_name($user_id)." mengajukan perubahan data pribadinya, untuk detail silakan <a href=$url>Klik disini</a><br/>",
                 'is_read' => 0,
             );
         $CI->db->insert('email', $data);
+        endfor;
     }
 
     public function request_exit($id)
