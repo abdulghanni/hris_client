@@ -796,6 +796,36 @@ class Form_cuti extends MX_Controller {
             return $this->load->view($view, $data, TRUE);
         }
     }
+
+    function get_libur($tglawal,$tglakhir,$delimiter) {
+         
+            $tgl_awal = $tgl_akhir = $minggu = $sabtu = $koreksi = $libur = 0;
+            $liburnasional = array("2016-04-13","2016-04-12","27-05-2014","29-05-2014");
+            
+        //  memecah tanggal untuk mendapatkan hari, bulan dan tahun
+            $pecah_tglawal = explode($delimiter, $tglawal);
+            $pecah_tglakhir = explode($delimiter, $tglakhir);
+            
+        //    mengubah Gregorian date menjadi Julian Day Count
+            $tgl_awal = gregoriantojd($pecah_tglawal[1], $pecah_tglawal[0], $pecah_tglawal[2]);
+            $tgl_akhir = gregoriantojd($pecah_tglakhir[1], $pecah_tglakhir[0], $pecah_tglakhir[2]);
+         
+        //    mengubah ke unix timestamp
+            $jmldetik = 24*3600;
+            $a = strtotime($tglawal);
+            $b = strtotime($tglakhir);
+            
+        //    menghitung jumlah libur nasional 
+            for($i=$a; $i<$b; $i+=$jmldetik){
+                foreach ($liburnasional as $key => $tgllibur) {
+                    if($tgllibur==date("Y-m-d",$i)){
+                        $libur++;
+                    }
+                }
+            }
+
+            echo json_encode($libur);
+        }
 }
 
 /* End of file form_cuti.php */
