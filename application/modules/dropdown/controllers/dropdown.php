@@ -7,6 +7,7 @@ class Dropdown extends MX_Controller {
     {
         parent::__construct();
         $this->load->database();
+        $this->load->library('authentication', NULL, 'ion_auth');
     }
 
     public function get_emp_bu()
@@ -462,6 +463,19 @@ class Dropdown extends MX_Controller {
 
         $data['result']=$result;
         $this->load->view('dropdown_atasan',$data);
+
+    }
+
+    function remove(){
+      $sess_id = $this->session->userdata('user_id');
+      $form = 'cuti';
+      $id = $this->input->post('id');
+      $user_app_lv1 = getValue('user_app_lv1', 'users_'.$form, array('id'=>'where/'.$id));
+      $subject_email = "Pembatalan Pengajuan $form";
+      $isi_email = get_name($sess_id).' membatalkan pengajuan '.$form;
+      $this->db->where('id', $id)->update('users_'.$form, array('is_deleted'=>1));
+      if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), $subject_email, $isi_email);
+      echo json_encode(array('status'=>true));
 
     }
 }

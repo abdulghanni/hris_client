@@ -335,7 +335,7 @@ class Form_cuti_model extends CI_Model
 			
 
 
-            //$this->db->where('users_cuti.is_deleted', 0);
+            $this->db->where('users_cuti.is_deleted', 0);
             if($is_approver !== $sess_nik && $is_admin != 1){
                 //$this->db->where("(users_cuti.user_id= $sess_id $sub_id $subsub_id )",null, false);
                 $this->db->where("(users_cuti.user_id = '$sess_id' 

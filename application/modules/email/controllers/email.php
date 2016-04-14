@@ -156,7 +156,9 @@ class Email extends MX_Controller {
             $name_post = (strlen($this->input->post('name')) > 0) ? strtolower(url_title($this->input->post('name'),'_')) : "" ;
             $subject_post = (strlen($this->input->post('subject')) > 0) ? strtolower(url_title($this->input->post('subject'),'_')) : "" ;
 
+            $this->session->set_userdata('last_link', 'email/index/fn:'.$name_post.'/em:'.$subject_post);
             redirect('email/index/fn:'.$name_post.'/em:'.$subject_post, 'refresh');
+
         }
     }
 
@@ -193,7 +195,7 @@ class Email extends MX_Controller {
      //activate the user
     function activate($id, $code=false)
     {
-        $this->session->set_userdata('last_link', $this->uri->uri_string());
+        //print_mz($this->session->userdata('last_link'));
         if ($code !== false)
         {
             
@@ -217,7 +219,7 @@ class Email extends MX_Controller {
             $this->delete_activation_mail($id);
             $user_id = getValue('sender_id', 'email', array('id'=>'where/'.$id));
             $isi_email = 'Akun anda di Web-HRIS Erlangga telah diaktifkan, silakan lakukan login untuk mulai mengakses Web-HRIS Erlangga';
-            if(!empty(getEmail($user_id)))$this->send_email(getEmail($user_id), 'Status Aktivasi Akun', $isi_email);
+            //if(!empty(getEmail($user_id)))$this->send_email(getEmail($user_id), 'Status Aktivasi Akun', $isi_email);
             //redirect them to the auth page
             $this->session->set_flashdata('message', $this->ion_auth->messages());
             redirect($this->session->userdata('last_link'), 'refresh');
@@ -228,7 +230,7 @@ class Email extends MX_Controller {
             //die('fail');
             //redirect them to the forgot password page
             $this->session->set_flashdata('message', $this->ion_auth->errors());
-            redirect("email", 'refresh');
+            redirect($this->session->userdata('last_link'), 'refresh');
         }
     }
 
