@@ -43,9 +43,10 @@
                                 <tr>
                                   <th width="1%"></th>
                                   <th width="17%"><?php echo 'No.' ?></th>
+                                  <th width="15%"><?php echo 'NIK.' ?></th>
                                   <th width="15%"><?php echo 'Nama Pemohon' ?></th>
                                   <th width="12%" class="text-center">tgl. mulai cuti</th>
-                                  <th width="15%"><?php echo lang('reason') ?></th>
+                                  <!-- <th width="15%"><?php //echo lang('reason') ?></th> -->
                                   <th width="8%" class="text-center">Jml. Hari</th>
                                   <th width="10%" class="text-center">appr. atasan langsung</th>
                                   <th width="10%" class="text-center">appr. atasan tidak langsung</th>
@@ -135,19 +136,22 @@
                                         $nik = get_nik($user->user_id);
                                         $bu = get_user_buid($nik);
                                         $date = date('m', strtotime($user->created_on)).'/'.date('Y', strtotime($user->created_on));
-                                        echo $form_id.'/'.$bu.'/'.$date.'/'.$user->id
+                                        echo $form_id.'/'.$bu.'/'.$date.'/'.$user->id;
                                       ?>
                                       </a>
                                     </td> 
+                                     <td>
+                                      <?php echo $nik ?>
+                                    </td>
                                     <td>
                                       <a href="#" id="viewcuti-<?php echo $id_cuti; ?>"><?php echo $user->name; ?></a>
                                     </td>
                                     <td>
                                       <?php echo date('Y-m-d', strtotime($user->date_mulai_cuti)); ?>
                                     </td>
-                                    <td>
-                                      <?php echo $user->alasan_cuti; ?>
-                                    </td>
+                                   <!--  <td>
+                                      <?php echo $user->alasan_cuti ?>
+                                    </td> -->
                                     
                                     <td class="text-center">
                                       <?php echo $user->jumlah_hari; ?> hari

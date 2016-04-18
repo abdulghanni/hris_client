@@ -54,7 +54,7 @@
                     
                     <div class="row form-row">
                           <div class="col-md-3">
-                            <label class="form-label text-right">Tgl. Berangkat</label>
+                            <label class="form-label text-right">Tanggal Tidak Masuk</label>
                           </div>
                           <div class="col-md-3">
                             <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Alasan" value="<?php echo dateIndo($tidak_masuk->dari_tanggal)?>" disabled="disabled">

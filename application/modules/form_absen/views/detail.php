@@ -46,6 +46,14 @@
                     </div>
                     <div class="row form-row">
                       <div class="col-md-3">
+                        <label class="form-label text-right">NIK</label>
+                      </div>
+                      <div class="col-md-9">
+                        <input name="nik" id="nik" type="text"  class="form-control" placeholder="NIK" value="<?php echo get_nik($absen->user_id)?>" disabled="disabled">
+                      </div>
+                    </div>
+                    <div class="row form-row">
+                      <div class="col-md-3">
                         <label class="form-label text-right">Nama</label>
                       </div>
                       <div class="col-md-9">

@@ -799,33 +799,50 @@ class Form_cuti extends MX_Controller {
 
     function get_libur($tglawal,$tglakhir,$delimiter) {
          
-            $tgl_awal = $tgl_akhir = $minggu = $sabtu = $koreksi = $libur = 0;
-            $liburnasional = array("2016-04-13","2016-04-12","27-05-2014","29-05-2014");
-            
-        //  memecah tanggal untuk mendapatkan hari, bulan dan tahun
-            $pecah_tglawal = explode($delimiter, $tglawal);
-            $pecah_tglakhir = explode($delimiter, $tglakhir);
-            
-        //    mengubah Gregorian date menjadi Julian Day Count
-            $tgl_awal = gregoriantojd($pecah_tglawal[1], $pecah_tglawal[0], $pecah_tglawal[2]);
-            $tgl_akhir = gregoriantojd($pecah_tglakhir[1], $pecah_tglakhir[0], $pecah_tglakhir[2]);
-         
-        //    mengubah ke unix timestamp
-            $jmldetik = 24*3600;
-            $a = strtotime($tglawal);
-            $b = strtotime($tglakhir);
-            
-        //    menghitung jumlah libur nasional 
-            for($i=$a; $i<$b; $i+=$jmldetik){
-                foreach ($liburnasional as $key => $tgllibur) {
-                    if($tgllibur==date("Y-m-d",$i)){
-                        $libur++;
-                    }
+        $tgl_awal = $tgl_akhir = $minggu = $sabtu = $koreksi = $libur = 0;
+        $liburnasional = $this->get_holiday();
+        
+    //  memecah tanggal untuk mendapatkan hari, bulan dan tahun
+        $pecah_tglawal = explode($delimiter, $tglawal);
+        $pecah_tglakhir = explode($delimiter, $tglakhir);
+        
+    //    mengubah Gregorian date menjadi Julian Day Count
+        $tgl_awal = gregoriantojd($pecah_tglawal[1], $pecah_tglawal[0], $pecah_tglawal[2]);
+        $tgl_akhir = gregoriantojd($pecah_tglakhir[1], $pecah_tglakhir[0], $pecah_tglakhir[2]);
+     
+    //    mengubah ke unix timestamp
+        $jmldetik = 24*3600;
+        $a = strtotime($tglawal);
+        $b = strtotime($tglakhir);
+    //    menghitung jumlah libur nasional 
+        for($i=$a; $i<$b; $i+=$jmldetik){
+            for($j=0;$j<sizeof($liburnasional);$j++) {
+                if($liburnasional[$j]==date("Y-m-d",$i)){
+                    $libur++;
                 }
             }
-
-            echo json_encode($libur);
         }
+
+        echo json_encode($libur);
+    }
+
+    public function get_holiday()
+    {
+        $url = get_api_key().'users/holiday/format/json';
+        $headers = get_headers($url);
+        $response = substr($headers[0], 9, 3);
+            $get_holiday = file_get_contents($url);
+            $holiday = json_decode($get_holiday, true);
+            $libur = array();
+            //print_mz($holiday);
+            foreach ($holiday as $key => $value) {
+                $libur[] = date('Y-m-d', strtotime($value['HOLIDAYDATE']));
+    
+             }
+
+             return $libur;
+            }
+
 }
 
 /* End of file form_cuti.php */

@@ -46,6 +46,7 @@
                           <tr>
                             <th width="15%">No.</th>
                             <th width="15%">Tanggal</th>
+                            <th width="15%">NIK</th>
                             <th width="20%">Nama</th>
                             <th width="15%">Keterangan</th>
                             <th width="10%" class="text-center">appr. spv</th>
@@ -124,6 +125,11 @@
                               <td>
                                 <a href="<?php echo site_url('form_absen/detail/'.$absen->id)?>">
                                   <?php echo date('Y-m-d', strtotime($absen->date_tidak_hadir))?>
+                                </a>
+                              </td>
+                              <td>
+                                <a href="<?php echo site_url('form_absen/detail/'.$absen->id)?>">
+                                  <?php echo $nik?>
                                 </a>
                               </td>
                               <td>

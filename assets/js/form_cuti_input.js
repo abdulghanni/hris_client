@@ -134,6 +134,7 @@ ToEndDate.setDate(ToEndDate.getDate()+365);
       },
 
       atasan1: {notEqual:0},
+      atasan2: {notEqual:0},
 
       alasan_cuti: {
         required : true,
@@ -144,6 +145,7 @@ ToEndDate.setDate(ToEndDate.getDate()+365);
     messages: {
           alasan_cuti: "This field is required.",
           atasan1 : "Silakan Pilih Atasan",
+          atasan2 : "Silakan Pilih Atasan Tidak Langsung",
           sisa_cuti : "Sisa Cuti anda 0",
       }
   });

@@ -52,6 +52,14 @@
                       <div class="col-md-8">
                         <input name="seniority_date" id="seniority_date" type="text"  class="form-control" placeholder="Lama Bekerja" value="<?php echo dateIndo(get_user_sen_date($user_nik)); ?>" disabled="disabled">
                       </div>
+                    </div>
+                    <div class="row form-row">
+                      <div class="col-md-4">
+                        <label class="form-label text-right"><?php echo 'NIK' ?></label>
+                      </div>
+                      <div class="col-md-8">
+                        <input name="nik" id="nik" type="text"  class="form-control" placeholder="NIK" value="<?php echo $user_nik; ?>" disabled="disabled">
+                      </div>
                     </div>          
                     <div class="row form-row">
                       <div class="col-md-4">
