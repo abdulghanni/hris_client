@@ -45,6 +45,7 @@
                               <thead>
                                 <tr>
                                   <th width="17%">No</th>
+                                  <th width="15%">NIK</th>
                                   <th width="25%">Nama</th>
                                   <th width="15%">Tanggal Keluar</th>
                                   <th width="10%" class="text-center">appr. atasan langsung</th>
@@ -119,6 +120,9 @@
                                         echo $form_id.'/'.$bu.'/'.$date.'/'.$user->id
                                       ?>
                                       </a>
+                                    </td>
+                                    <td>
+                                      <a href="<?php echo site_url('form_resignment/detail/'.$user->id)?>"><?php echo get_nik($user->user_id)?></a>
                                     </td>
                                     <td>
                                       <a href="<?php echo site_url('form_resignment/detail/'.$user->id)?>"><?php echo get_name($user->user_id)?></a>

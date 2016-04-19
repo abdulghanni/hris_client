@@ -47,6 +47,7 @@
                               <thead>
                                 <tr>
                                   <th width="20%">No</th>
+                                  <th width="15%">NIK</th>
                                   <th width="20%">Nama</th>
                                   <th width="15%">Tanggal Keluar</th>
                                   <!--
@@ -194,6 +195,7 @@
                                       ?>
                                     </a>
                                       </td>
+                                      <td><?php echo get_nik($row->user_id)?></td>
                                       <td><?php echo get_name($row->user_id)?></td>
                                       <td><?php echo dateIndo($row->date_exit)?></td>
                                     <!--

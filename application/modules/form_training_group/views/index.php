@@ -47,6 +47,7 @@
                               <thead>
                                 <tr>
                                   <th width="20">No.</th>
+                                  <th width="15%">NIK</th>
                                   <th width="20%">Nama pemohon</th>
                                   <th width="15%">Nama pelatihan</th>
                                   <th width="15%">Tujuan</th>
@@ -128,7 +129,9 @@
                                       ?>
                                       </a>
                                     </td>
-
+                                    <td>
+                                      <a href="<?php echo site_url('form_training_group/detail/'.$user->id)?>"><?php echo $nik?></a>
+                                    </td>
                                     <td>
                                       <a href="<?php echo site_url('form_training_group/detail/'.$user->id)?>"><?php echo get_name($user->user_pengaju_id)?></a>
                                     </td>

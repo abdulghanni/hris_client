@@ -47,8 +47,9 @@
                               <thead>
                                 <tr>
                                   <th width="17%">No.</th>
-                                  <th width="10%">Tanggal </th>
+                                  <th width="15%">NIK</th>
                                   <th width="20%">Nama Pembuat Rekap </th>
+                                  <th width="10%">Tanggal </th>
                                   <th width="15%">Bagian</th>
                                   <th width="10%" style="text-align:center;">appr. atasan langsung</th>
                                   <th width="10%" style="text-align:center;">appr. atasan tidak langsung</th>
@@ -121,10 +122,11 @@
                                         echo $form_id.'/'.$bu.'/'.$date.'/'.$row->id
                                       ?>
                                     </a></td>
-                                    <td><a href="<?php echo site_url('form_medical/detail/'.$row->id)?>"><?php echo date('Y-m-d', strtotime($row->created_on))?></a></td>
+                                    <td><a href="<?php echo site_url('form_medical/detail/'.$row->id)?>"><?php echo get_nik($row->user_id)?></a></td>
                                     <td>
                                       <a href="<?php echo site_url('form_medical/detail/'.$row->id)?>"><?php echo get_name($row->user_id)?></a>
                                     </td>
+                                    <td><a href="<?php echo site_url('form_medical/detail/'.$row->id)?>"><?php echo date('Y-m-d', strtotime($row->created_on))?></a></td>
                                     <td>
                                       <?php echo get_user_organization(get_nik($row->user_id))?>
                                     </td>
