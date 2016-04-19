@@ -43,7 +43,8 @@
                     </div>    
                 </div>
             <?php echo form_close()?>
-            <br/>          
+            <br/>    
+            <div class="table-responsive">     
             <table class="table table-fixed-layout table-hover" id="emails" > 
               <thead>
               <tr>
@@ -101,7 +102,7 @@
               
               </tbody>
             </table>
-
+            </div>
             <?php if($_num_rows > 0) : ?>
             <div class="row">
               <div class="col-md-4 page_limit">
