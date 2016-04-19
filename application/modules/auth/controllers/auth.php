@@ -266,6 +266,7 @@ class Auth extends MX_Controller {
 	
     function send_email_activation($nik)
     {
+        $user_bu = get_user_buid($nik);
         $admin = $this->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 1)->get()->result_array();
         for($i=0;$i<sizeof($admin);$i++):
             $data = array(
@@ -281,6 +282,23 @@ class Auth extends MX_Controller {
             $email_id = $this->db->insert_id();
             $isi_email = 'Karyawan atas nama '.get_name($nik).' dengan Nik '.$nik.' meminta pengaktifan akun di Web-HRIS Erlangga, silakan klik tautan berikut untuk melakukan aktivasi<br/>'.'<a href='.base_url().'email/detail/'.$email_id.'>'.base_url().'email/detail/'.$email_id.'</a>';
             if(!empty(getEmail($admin[$i]['user_id'])))$this->send_email(getEmail($admin[$i]['user_id']), 'Permintaan Aktivasi Akun', $isi_email);
+        endfor;
+    
+        $admin_cabang = $this->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 5)->where('groups.bu', $user_bu)->get()->result_array();//print_mz($admin_cabang);
+        for($i=0;$i<sizeof($admin_cabang);$i++):
+            $data = array(
+                    'sender_id' => $nik,
+                    'receiver_id' => get_nik($admin_cabang[$i]['user_id']),
+                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                    'subject' => 'Permintaan Aktivasi Akun',
+                    'email_body' =>'Karyawan dengan Nik '.$nik.' meminta pengaktifan akun, silakan klik button "activate" untuk mengaktifkan akun',
+                    'is_request_activation' => 1,
+                    'is_read' => 0,
+                );
+            $this->db->insert('email', $data);
+            $email_id = $this->db->insert_id();
+            $isi_email = 'Karyawan atas nama '.get_name($nik).' dengan Nik '.$nik.' meminta pengaktifan akun di Web-HRIS Erlangga, silakan klik tautan berikut untuk melakukan aktivasi<br/>'.'<a href='.base_url().'email/detail/'.$email_id.'>'.base_url().'email/detail/'.$email_id.'</a>';
+            if(!empty(getEmail($admin_cabang[$i]['user_id'])))$this->send_email(getEmail($admin_cabang[$i]['user_id']), 'Permintaan Aktivasi Akun', $isi_email);
         endfor;
     }
 

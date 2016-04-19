@@ -80,6 +80,22 @@
 		}
 	}
 
+	if (!function_exists('is_admin_cabang'))
+	{	
+		function is_admin_cabang()
+		{
+			$CI =& get_instance();
+
+			$sess_id = $CI->session->userdata('user_id');
+			$r = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 5)->get()->result_array('user_id');
+			for ($i = 0;$i<sizeof($r);$i++) {
+			if($sess_id == $r[$i]['user_id']):
+				return TRUE;
+			endif;
+			}
+		}
+	}
+
 	if (!function_exists('is_admin_inventaris'))
 	{	
 		function is_admin_inventaris()

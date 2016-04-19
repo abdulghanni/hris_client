@@ -54,7 +54,7 @@
                     <label for="selectall"></label>
                   </div>
                 </th>
-                <?php if(is_admin()){ ?>
+                <?php if(is_admin() || is_admin_cabang()){ ?>
                 <th width="11%"></th>
                 <?php } ?>
                 <th width="15%"></th>
@@ -73,7 +73,7 @@
                   <label for="checkbox<?php echo $row->id ?>"></label>
                 </div>
                 </td>
-                <?php if(is_admin()){?>
+                <?php if(is_admin() || is_admin_cabang()){?>
                 <td valign="middle" halign="middle"><?php if($row->is_request_activation == 1){?><h2 class="label label-success"><a href="<?php echo site_url('email/activate/'.$row->id)?>">inactive</h2><?php } ?></td>
                 <?php } ?>
                 <td valign="large"><a href="<?php echo site_url('email/detail/'.$row->id)?>"><?php echo get_name($row->sender_id) ?></a></td>

@@ -203,7 +203,7 @@ class Email extends MX_Controller {
             $user_id = get_id($user_nik);
             $activation = $this->ion_auth->activate($user_id, $code);
         }
-        else if ($this->ion_auth->is_admin())
+        else if ($this->ion_auth->is_admin() || is_admin_cabang())
         {
             $user_nik = getValue('sender_id','email', array('id'=>'where/'.$id));
             $user_id = get_id($user_nik);
@@ -222,7 +222,8 @@ class Email extends MX_Controller {
             //if(!empty(getEmail($user_id)))$this->send_email(getEmail($user_id), 'Status Aktivasi Akun', $isi_email);
             //redirect them to the auth page
             $this->session->set_flashdata('message', $this->ion_auth->messages());
-            redirect($this->session->userdata('last_link'), 'refresh');
+            //redirect($this->session->userdata('last_link'), 'refresh');
+            redirect('email', 'refresh');
         }
         else
         {
@@ -230,7 +231,7 @@ class Email extends MX_Controller {
             //die('fail');
             //redirect them to the forgot password page
             $this->session->set_flashdata('message', $this->ion_auth->errors());
-            redirect($this->session->userdata('last_link'), 'refresh');
+            redirect('email', 'refresh');
         }
     }
 

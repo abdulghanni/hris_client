@@ -104,7 +104,7 @@ class Approval {
                 $isi_email = get_name($user_id).' mengajukan '.$form.', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>';
                 break;
             case "training":
-                $receiver = $CI->approval->approver($form);
+                $receiver = $CI->approval->approver($form, $user_nik);
                 $form = 'Training Karyawan';
                 $isi_email = get_name($user_id).' mengajukan '.$form.', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>';
                 break;
@@ -114,7 +114,7 @@ class Approval {
                 $isi_email = get_name($user_id).' mengajukan '.$form.', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>';
                 break;
             case "medical":
-                $receiver = $CI->approval->approver($form);
+                $receiver = $CI->approval->approver($form, $user_nik);
                 $form = 'Rekapitulasi Rawat Inap';
                 $isi_email = get_name($user_id).' membuat rekapitulasi rawat jalan dan inap, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>';
                 break;
