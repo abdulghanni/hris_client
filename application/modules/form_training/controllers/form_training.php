@@ -227,6 +227,7 @@ class form_training extends MX_Controller {
             $this->form_training_model->update($id,$data);
             $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
             $user_training_id = getValue('user_pengaju_id', 'users_training', array('id'=>'where/'.$id));
+            $pengaju_nik = get_nik($user_training_id);
             $subject_email = get_form_no($id).'['.$approval_status_mail.']Status Pengajuan Pelatihan dari Atasan';
             $subject_email_request = get_form_no($id).'-Pengajuan Pelatihan Karyawan';
             $isi_email = 'Status pengajuan pelatihan anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_training/detail/'.$id.'>Klik Disini</a><br />';
@@ -250,7 +251,7 @@ class form_training extends MX_Controller {
                     if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), $subject_email_request, $isi_email_request);
                 }else{
                     $this->approval->request('hrd', 'training', $id, $pengaju_id, $this->detail_email($id));
-                    if(!empty(getEmail($this->approval->approver('training'))))$this->send_email(getEmail($this->approval->approver('training')), $subject_email_request, $isi_email_request);
+                    if(!empty(getEmail($this->approval->approver('training', $pengaju_nik))))$this->send_email(getEmail($this->approval->approver('training', $pengaju_nik)), $subject_email_request, $isi_email_request);
                 }
             }else{
                 $email_body = "Status pengajuan permohonan pelatihan yang diajukan oleh ".get_name($user_training_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_training/detail/'.$id.'>Klik Disini</a><br />';
