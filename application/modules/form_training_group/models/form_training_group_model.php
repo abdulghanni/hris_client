@@ -297,7 +297,7 @@ class Form_training_group_model extends CI_Model
         {
             $sess_id = $this->session->userdata('user_id');
             $sess_nik = get_nik($sess_id);
-            $is_approver = $this->approval->approver('training');
+            $is_approver = $this->approval->approver('training', $sess_nik);
             $is_admin = is_admin();
             $is_admin_legal = is_admin_legal();
             if(!empty(is_have_subordinate(get_nik($sess_id)))){

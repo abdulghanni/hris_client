@@ -298,7 +298,7 @@ class Form_exit_model extends CI_Model
             $sess_id = $this->session->userdata('user_id');
             $sess_nik = get_nik($sess_id);
             $is_admin = is_admin()||is_admin_inventaris();
-            $is_approver = $this->approval->approver('exit');
+            $is_approver = $this->approval->approver('exit', $sess_nik);
             if(!empty(is_have_subordinate(get_nik($sess_id)))){
             $sub_id = get_subordinate($sess_id);
             }else{

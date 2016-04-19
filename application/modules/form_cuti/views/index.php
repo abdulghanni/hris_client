@@ -130,7 +130,7 @@
                                   ?>
                                   <tr class="itemcuti" id="<?php echo $id_cuti; ?>">
                                     <!--td><?php echo ($user->is_app_lv1 == 0) ? '<button id="'.$user->id.'"  class="remove btn btn-danger btn-mini" type="button" title="Batalkan Pengajuan"><i class="icon-remove"></i></button>' : ''?></td-->
-                                    <td><?php echo (($user->is_app_lv1 == 0 && $user->created_by == $id_user) || is_admin()) ? '<button onclick="showModal('.$user->id.')" class="btn btn-danger btn-mini" type="button" title="Remove File"><i class="icon-remove"></i></button>' : ''?></td>
+                                    <td><?php echo (($user->is_app_lv1 == 0 && $user->created_by == $id_user) || is_admin()) ? '<button onclick="showModal('.$user->id.')" class="btn btn-danger btn-mini" type="button" title="Batalkan Pengajuan"><i class="icon-remove"></i></button>' : ''?></td>
                                     <td>
                                       <a href="<?php echo base_url('form_cuti/detail/'.$user->id)?>">
                                       <?php

@@ -297,7 +297,7 @@ class Form_pengangkatan_model extends CI_Model
         {
             $sess_id = $this->session->userdata('user_id');
             $sess_nik = get_nik($sess_id);
-            $is_approver = $this->approval->approver('pengangkatan');
+            $is_approver = $this->approval->approver('pengangkatan', $sess_nik);
             $is_admin = is_admin();
             if(!empty(is_have_subordinate(get_nik($sess_id)))){
             $sub_id = get_subordinate($sess_id);

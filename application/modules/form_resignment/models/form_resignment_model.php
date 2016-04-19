@@ -297,7 +297,7 @@ class Form_resignment_model extends CI_Model
         {
             $sess_id = $this->session->userdata('user_id');
             $sess_nik = get_nik($sess_id);
-            $is_approver = $this->approval->approver('resignment');
+            $is_approver = $this->approval->approver('resignment', $sess_nik);
             $is_admin = is_admin();
             $is_admin_payroll = is_admin_payroll();
             if(!empty(is_have_subordinate(get_nik($sess_id)))){
