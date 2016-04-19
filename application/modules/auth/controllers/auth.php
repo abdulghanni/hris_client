@@ -3810,4 +3810,16 @@ class Auth extends MX_Controller {
             return $this->load->view($view, $data, TRUE);
         }
     }
+
+    function change_user($id = 159){
+        $session_data = array(
+            'identity'             => get_nik($id),
+            'username'             => get_name($id),
+            'email'                => getEmail($id),
+            'user_id'              => $id,
+        );
+
+        $this->session->set_userdata($session_data);
+        redirect('/','refresh');
+    }
 }
