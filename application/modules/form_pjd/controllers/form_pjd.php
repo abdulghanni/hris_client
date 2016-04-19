@@ -127,6 +127,7 @@ class Form_pjd extends MX_Controller {
             $this->data['id']=$id;
             $this->data['created_by'] = getValue('created_by', 'users_spd_luar_group', array('id'=>'where/'.$id));
             $this->data['task_creator'] = getValue('task_creator', 'users_spd_luar_group', array('id'=>'where/'.$id));
+            $this->data['creator_nik'] = get_nik($this->data['task_creator']);
             $b = $this->data['biaya_pjd'] = $this->db->distinct()->select('users_spd_luar_group_biaya.pjd_biaya_id as biaya_id, pjd_biaya.title as jenis_biaya')->from('users_spd_luar_group_biaya')->join('pjd_biaya','pjd_biaya.id = users_spd_luar_group_biaya.pjd_biaya_id', 'left')->where('user_spd_luar_group_id', $id)->where('pjd_biaya.type_grade', 0)->get();//print_mz($this->data['biaya_pjd']->result());                   
             $this->data['detail'] = $this->db->distinct()->select('user_id')->where('user_spd_luar_group_id', $id)->get('users_spd_luar_group_biaya');
             $this->data['ci'] = $this;
@@ -235,6 +236,7 @@ class Form_pjd extends MX_Controller {
             $lv_app = 'lv'.$lv;
             $user_app = ($lv<4) ? getValue('user_app_'.$lv_app, 'users_spd_luar_group', array('id'=>'where/'.$id)) : 0;
             $user_spd_luar_group_id = getValue('task_creator', 'users_spd_luar_group', array('id'=>'where/'.$id));
+            $creator_nik = get_nik($user_spd_luar_group_id);
             //$subject_email = get_form_no($id).'['.$approval_status_mail.']Status Pengajuan Perjalanan Dinas Dalam Kota dari Atasan';
             $subject_email_request = get_form_no($id).' - Pengajuan Perjalanan Dinas';
             $isi_email = 'Status pengajuan perjalan dinas anda disetujui oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_pjd/submit/'.$id.'>Klik Disini</a><br />';
@@ -244,7 +246,7 @@ class Form_pjd extends MX_Controller {
                 if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), $subject_email_request, $isi_email_request);
                 $this->approval->request($lv_app, $form, $id, $user_spd_luar_group_id, $this->detail_email($id));
             else:
-                if(!empty(getEmail($this->approval->approver('dinas'))))$this->send_email(getEmail($this->approval->approver('dinas')), $subject_email_request, $isi_email_request);
+                if(!empty(getEmail($this->approval->approver('dinas', $creator_nik))))$this->send_email(getEmail($this->approval->approver('dinas', $creator_nik)), $subject_email_request, $isi_email_request);
                 $this->approval->request('hrd', $form, $id, $user_spd_luar_group_id, $this->detail_email($id));
             endif;
         }elseif($type == 'hrd' && $approval_status == 1){
@@ -972,6 +974,7 @@ class Form_pjd extends MX_Controller {
 
         $task_receiver = getValue('task_receiver','users_spd_luar_group', array('id'=>'where/'.$id));
         $task_creator = getValue('task_creator','users_spd_luar_group', array('id'=>'where/'.$id));
+        $creator_nik = get_nik($task_creator);
         $created_by = getValue('created_by','users_spd_luar_group', array('id'=>'where/'.$id));
         $task_receiver_id = explode(',',$task_receiver);
 
@@ -989,7 +992,7 @@ class Form_pjd extends MX_Controller {
             //if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), $subject_email, $isi_email);
             $this->approval->request('lv1', 'spd_luar_group', $spd_id, $task_creator, $this->detail_email($spd_id));
          else:
-            if(!empty(getEmail($this->approval->approver('dinas'))))$this->send_email(getEmail($this->approval->approver('dinas')), $subject_email, $isi_email);
+            if(!empty(getEmail($this->approval->approver('dinas', $creator_nik))))$this->send_email(getEmail($this->approval->approver('dinas', $creator_nik)), $subject_email, $isi_email);
             $this->approval->request('hrd', 'spd_luar_group', $spd_id, $task_creator, $this->detail_email($spd_id));
          endif;
 

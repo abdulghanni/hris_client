@@ -288,7 +288,7 @@ class Form_promosi extends MX_Controller {
                     if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), $subject_email_request, $isi_email_request);
                 }else{
                     $this->approval->request('hrd', 'promosi', $id, $user_promosi_id, $this->detail_email($id));
-                    if(!empty(getEmail($this->approval->approver('promosi'))))$this->send_email(getEmail($this->approval->approver('promosi')), $subject_email_request, $isi_email_request);
+                    if(!empty(getEmail($this->approval->approver('promosi', $user_id))))$this->send_email(getEmail($this->approval->approver('promosi', $user_id)), $subject_email_request, $isi_email_request);
                 }
             }elseif($type == 'hrd' && $approval_status == 1){
                 $this->send_user_notification($id, $user_promosi_id);

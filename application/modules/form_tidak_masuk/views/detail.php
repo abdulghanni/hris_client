@@ -22,7 +22,9 @@
             <div class="grid-body no-border">
             <?php 
             if($_num_rows>0){
-              foreach($form_tidak_masuk as $tidak_masuk){?>
+              foreach($form_tidak_masuk as $tidak_masuk){
+                $user_nik = get_nik($tidak_masuk->user_id);
+                ?>
               <form class="form-no-horizontal-spacing" id="form"> 
                 <div class="row column-seperation">
                   <div class="col-md-12">
@@ -101,6 +103,15 @@
                       </div>
                     </div>
 
+                    <div class="row form-row">
+                      <div class="col-md-3">
+                        <label class="form-label text-right">Attachment</label>
+                      </div>
+                      <div class="col-md-9">
+                        <a href="<?php echo base_url("uploads/izin/".$tidak_masuk->attachment)?>"><?php echo $tidak_masuk->attachment?></a>
+                      </div>
+                    </div>
+                    
                   <?php if($tidak_masuk->potong_cuti == 1) :
                     $potong = ($tidak_masuk->potong_cuti == 1) ? 'Ya' : 'Tidak';
                   ?>
@@ -140,7 +151,7 @@
                 <div class="form-actions">
                     <div class="row form-row">
                         <div class="col-md-12 text-center">
-                        <?php if($tidak_masuk->is_app_hrd == 1 && $sess_nik == $this->approval->approver('tidak')){?>
+                        <?php if($tidak_masuk->is_app_hrd == 1 && $sess_nik == $this->approval->approver('tidak', $user_nik)){?>
                             <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitModalHrd"><i class='icon-edit'> Edit Approval</i></div>
                           <?php } ?>
                         </div>
@@ -239,7 +250,7 @@
                         <div class="col-md-3">
                           <p class="wf-approve-sp">
                             <?php
-                            if($tidak_masuk->is_app_hrd == 0 && $this->approval->approver('tidak') == $sess_nik){?>
+                            if($tidak_masuk->is_app_hrd == 0 && $this->approval->approver('tidak', $user_nik) == $sess_nik){?>
                               <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitModalHrd"><i class="icon-ok"></i>Submit</div>
                               <span class="small"></span>
                               <span class="semi-bold"></span><br/>
@@ -256,7 +267,7 @@
                               <span class="small"></span><br/>
                               <span class="small"></span><br/>
                               <span class="semi-bold"></span><br/>
-                              <span class="semi-bold"><?php echo get_name($this->approval->approver('tidak'))?></span><br/>
+                              <span class="semi-bold"><?php echo get_name($this->approval->approver('tidak', $user_nik))?></span><br/>
                               <span class="small"><?php echo dateIndo($tidak_masuk->date_app_hrd)?></span><br/>
                               <span class="semi-bold">(HRD)</span>
                             <?php } ?>

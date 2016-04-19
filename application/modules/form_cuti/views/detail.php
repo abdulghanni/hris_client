@@ -317,7 +317,7 @@
                         <div class="col-md-3">
                           <p class="wf-approve-sp">
                             <?php
-                            if($user->is_app_hrd == 0 && $this->approval->approver('cuti') == $sess_nik){?>
+                            if($user->is_app_hrd == 0 && $this->approval->approver('cuti', $user_nik) == $sess_nik){?>
                               <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitcutiModalHrd"><i class="icon-ok"></i>Submit</div>
                               <span class="small"></span>
                               <span class="semi-bold"></span><br/>
@@ -334,7 +334,7 @@
                               <span class="small"></span><br/>
                               <span class="small"></span><br/>
                               <span class="semi-bold"></span><br/>
-                              <span class="semi-bold"><?php echo get_name($this->approval->approver('cuti'))?></span><br/>
+                              <span class="semi-bold"><?php echo get_name($this->approval->approver('cuti', $user_nik))?></span><br/>
                               <span class="small"><?php echo dateIndo($user->date_app_hrd)?></span><br/>
                               <span class="semi-bold">(HRD)</span>
                             <?php } ?>

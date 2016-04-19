@@ -69,48 +69,22 @@
                                 <h4><?php echo lang('search_of_subheading')?>&nbsp;<span class="semi-bold"><?php echo lang('user_subheading');?></span></h4>
                             </div>
                         </div>
-                        <?php echo form_open(site_url('auth/keywords'))?>
-
                             <div class="row">
-                                <div class="col-md-5">
+                                <div class="col-md-6">
                                     <div class="row">
-                                        <div class="col-md-3 search_label"><?php echo form_label(lang('index_fname_th'),'first_name')?></div>
-                                        <div class="col-md-9"><?php echo bs_form_input($fname_search)?></div>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <button type="submit" class="btn btn-info"><i class="icon-search"></i>&nbsp;<?php echo lang('search_button')?></button>
+                                        <div class="col-md-4 search_label">Pilih Unit Bisnis</div>
+                                        <div class="col-md-8">
+                                        <?php
+                                            $style_bu='class="form-control input-sm select2" style="width:100%" id="bu" required';
+                                            echo form_dropdown('bu',$bu,'',$style_bu);
+                                          ?>
                                         </div>
                                     </div>
-                                </div>    
+                                </div>
                             </div>
-                        <?php echo form_close()?>
                         <br/>
-                        <div <?php ( ! empty($message)) && print('class="alert alert-info text-center"'); ?> id="infoMessage"><?php echo $message;?></div>
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th width="5%" class="text-center"><?php echo anchor('auth/index/'.$fname_param.'/username/'.(($sort_order == 'asc' && $sort_by == 'username') ? 'desc' : 'asc'), 'NIK');?></th>
-                                    <th width="30%" class="text-center"><?php echo anchor('auth/index/'.$fname_param.'/email/'.(($sort_order == 'asc' && $sort_by == 'email') ? 'desc' : 'asc'), 'Nama')?></th>
-                                    <th width="28%" class="text-center">Form</th>
-                                    <th width="10%" class="text-center"><?php echo lang('index_action_th');?></th>                                  
-                                </tr>
-                            </thead>
-                            <tbody>
-                            <?php foreach ($approval as $user):?>
-                                <tr>
-                                    <td valign="middle"><?php echo $user->nik;?></td>
-                                    <td valign="middle"><span class="muted"><?php echo $user->username;?></span></td>
-                                    <td valign="middle"><span class="muted"><?php echo $user->indo;?></span></td>
-                                    <td valign="middle" class="text-center">
-                                            <button type="button" class="btn btn-info btn-small" data-toggle="modal" data-target="#editModal<?php echo $user->id?>" title="<?php echo lang('edit_button')?>"><i class="icon-edit"></i></button>
-                                    </td>
-                                </tr>
-                            <?php endforeach;?>
-                            </tbody>
-                        </table>
+                        <div id="table"></div>
+                        <!--
                         <div class="row">
                             <div class="col-md-4 page_limit">
                                 <?php echo form_open(uri_string());?>
@@ -133,6 +107,7 @@
                                 </ul>
                             </div>
                         </div>
+                        -->
                     </div>
                 </div>
             </div>
@@ -140,25 +115,22 @@
     </div>
     <!-- END PAGE -->
 </div>
-<script src="<?php echo assets_url('js/jquery-1.8.3.min.js'); ?>"></script>
-<?php foreach ($approval as $user):?>
-        <div class="modal fade" id="editModal<?php echo $user->id?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title" id="myModalLabel"><?php echo 'Edit Approval'?></h4>
                     </div>
-                        <p class="error_msg" id="MsgBad2<?php echo $user->id?>" style="background: #fff; display: none;"></p>
                     <div class="modal-body">
-                    <form class="form-no-horizontal-spacing" id="formEdit<?php echo $user->id?>">
-                        <input type="hidden" value="<?php echo $user->id?>" name="id" id="id" class="id">
+                    <form class="form-no-horizontal-spacing" id="formEdit">
+                        <input type="hidden" value="" name="id" id="id" class="id">
                         <div class="row form-row">
                             <div class="col-md-3">
                                 <?php echo 'Nama Karyawan';?>
                             </div>
                             <div class="col-md-9">
-                                <select name="nik" class="select2" id="" style="width:100%">
+                                <select name="nik" class="select2" id="nik" style="width:100%">
                                 <?php
                                     foreach ($users->result_array() as $key => $value) {
                                     $selected = ($user->user_nik === $value['nik']) ? 'selected = selected' : '';
@@ -187,31 +159,11 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="icon-remove"></i>&nbsp;<?php echo lang('close_button')?></button> 
-                        <button type="submit" class="btn btn-primary" style="margin-top: 3px;" id="btnEdit<?php echo $user->id?>"><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button> 
+                        <button type="button" class="btn btn-primary" style="margin-top: 3px;" id="btnSave" onclick="save()"><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button> 
                     </div>             
                 </div>
 
                     <?php echo form_close();?>
             </div>
         </div>
-
-        <script type="text/javascript">
-            $('#btnEdit'+<?php echo $user->id?>).click(function(){
-                var $btn = $(this).button('loading');
-                $('#formEdit'+<?php echo $user->id?>).submit(function(ev){
-                    $.ajax({
-                        type: 'POST',
-                        url: 'approval/update',
-                        data: $('#formEdit'+<?php echo $user->id?>).serialize(),
-                        success: function() {
-                             $("[data-dismiss=modal]").trigger({ type: "click" });
-                             location.reload(),
-                             $btn.button('reset')
-                        }
-                    });
-                    ev.preventDefault(); 
-                });  
-            });
-        </script>
-        <?php endforeach;?>
 

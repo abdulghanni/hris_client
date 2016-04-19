@@ -117,7 +117,7 @@ class form_tidak_masuk extends MX_Controller {
             $user_nik = $this->data['user_nik'] = get_nik($user_id);
             $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
             $sess_nik = $this->data['sess_nik'] = get_nik($sess_id);
-
+            $this->data['user_folder'] = getValue("user_id", "users_tidak_masuk", array('id'=>'where.'.$id));
             $form_tidak_masuk = $this->data['form_tidak_masuk'] = $this->form_tidak_masuk_model->where('is_deleted',0)->form_tidak_masuk_detail($id)->result();
             $this->data['_num_rows'] = $this->form_tidak_masuk_model->where('is_deleted',0)->form_tidak_masuk_detail($id)->num_rows();
             
@@ -214,6 +214,7 @@ class form_tidak_masuk extends MX_Controller {
                 if ($this->form_validation->run() == true && $this->form_tidak_masuk_model->create_($user_id,$data))
                 {
                  $tidak_masuk_id = $this->db->insert_id();
+                 $this->upload_attachment($tidak_masuk_id);
                  $user_app_lv1 = getValue('user_app_lv1', 'users_tidak_masuk', array('id'=>'where/'.$tidak_masuk_id));
                  $subject_email = get_form_no($tidak_masuk_id).'-Pengajuan Keterangan Tidak Masuk';
                  $isi_email = get_name($user_id).' mengajukan keterangan tidak masuk, untuk melihat detail silakan <a href='.base_url().'form_tidak_masuk/detail/'.$tidak_masuk_id.'>Klik Disini</a><br />';
@@ -234,6 +235,36 @@ class form_tidak_masuk extends MX_Controller {
                 }
             }
         }
+    }
+
+    function upload_attachment($id){
+        $sess_id = $this->session->userdata('user_id');
+            $user_folder = get_nik($sess_id);
+        if(!is_dir('./'.'uploads')){
+        mkdir('./'.'uploads/', 0777);
+        }
+        if(!is_dir('./uploads/izin/')){
+        mkdir('./uploads/izin/', 0777);
+        }
+        if(!is_dir('./uploads/izin/'.$user_folder)){
+        mkdir('./uploads/izin/'.$user_folder, 0777);
+        }
+
+        $config =  array(
+          'upload_path'     => './uploads/izin/'.$user_folder,
+          'allowed_types'   => '*',
+          'overwrite'       => TRUE,
+        );    
+        $this->load->library('upload', $config);
+        if (!$this->upload->do_upload('attachment')){
+            print_r($this->upload->display_errors());
+         }else{
+            $upload_data = $this->upload->data();
+            $image_name = $upload_data['file_name'];
+            $data = array('attachment'=>$image_name);
+            $this->db->where('id', $id)->update('users_tidak_masuk', $data);
+        }
+        //print_r($this->db->last_query());
     }
 
     function do_approve($id, $type)
@@ -271,7 +302,7 @@ class form_tidak_masuk extends MX_Controller {
                 if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), $subject_email_request, $isi_email_request);
                 $this->approval->request($lv_app, 'tidak_masuk', $id, $user_tidak_masuk_id, $this->detail_email($id));
             else:
-                if(!empty(getEmail($this->approval->approver('tidak'))))$this->send_email(getEmail($this->approval->approver('tidak')), $subject_email_request, $isi_email_request);
+                if(!empty(getEmail($this->approval->approver('tidak', $user_id))))$this->send_email(getEmail($this->approval->approver('tidak', $user_id)), $subject_email_request, $isi_email_request);
                 $this->approval->request('hrd', 'tidak_masuk', $id, $user_tidak_masuk_id, $this->detail_email($id));
             endif;
         }else{

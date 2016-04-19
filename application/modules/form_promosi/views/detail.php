@@ -26,6 +26,7 @@
                 echo form_open('form_promosi/add', $att);
                 if($_num_rows>0){
                   foreach($form_promosi as $row):
+                    $user_nik = get_nik($row->user_id);
                 ?>
                   <div class="row column-seperation">
                     <div class="col-md-5">
@@ -203,7 +204,7 @@
                       if($row->$is_app == 1 && get_nik($sess_id) == $row->$user_app){?>
                         <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitModalLv<?php echo $i ?>"><i class='icon-edit'> Edit Approval</i></div>
                     <?php }endfor;
-                      if($row->is_app_hrd == 1 && get_nik($sess_id) == $this->approval->approver('promosi')){?>
+                      if($row->is_app_hrd == 1 && get_nik($sess_id) == $this->approval->approver('promosi', $user_nik)){?>
                         <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitModalHrd"><i class='icon-edit'> Edit Approval</i></div>
                     <?php } ?>
                     </div>
@@ -293,7 +294,7 @@
                   <div class="col-md-3">
                     <p class="wf-approve-sp">
                     <div class="col-md-12"><span class="semi-bold">Diterima HRD</span><br/><br/></div>
-                      <?php if($row->is_app_hrd == 0 && $this->approval->approver('promosi') == $sess_nik){?>
+                      <?php if($row->is_app_hrd == 0 && $this->approval->approver('promosi', $user_nik) == $sess_nik){?>
                         <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitModalHrd"><i class="icon-ok"></i>Submit</div>
                         <span class="small"></span>
                         <span class="semi-bold"></span><br/>
@@ -313,7 +314,7 @@
                         <span class="small"></span><br/>
                         <span class="small"></span><br/>
                         <span class="semi-bold"></span><br/>
-                        <span class="semi-bold"><?php echo get_name($this->approval->approver('promosi'))?></span><br/>
+                        <span class="semi-bold"><?php echo get_name($this->approval->approver('promosi', $user_nik))?></span><br/>
                         <span class="small"><?php echo dateIndo($row->date_app_hrd)?></span><br/>
                         <span class="semi-bold">(HRD)</span>
                       <?php } ?>

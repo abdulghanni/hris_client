@@ -17,84 +17,84 @@ class Approval {
     	$CI =& get_instance();
     	$url = base_url().'form_'.$form.'/detail/'.$id;
         $user_app = getValue('user_app_'.$lv, 'users_'.$form, array('id'=>'where/'.$id));
-
+        $user_nik = get_nik($user_id);
     	switch ($form) {
             case "cuti":
-                $receiver = $CI->approval->approver($form);
+                $receiver = $CI->approval->approver($form, $user_nik);
                 $form = 'Permohonan Cuti';
                 $isi_email = get_name($user_id).' mengajukan '.$form.', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>';
                 break;
             case "absen":
-                $receiver = $CI->approval->approver($form);
+                $receiver = $CI->approval->approver($form, $user_nik);
                 $form = 'Keterangan Tidak Absen';
                 $isi_email = get_name($user_id).' mengajukan '.$form.', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>';
                 break;
             case "tidak_masuk":
-                $receiver = $CI->approval->approver('tidak');
+                $receiver = $CI->approval->approver('tidak', $user_nik);
                 $form = 'Izin Tidak Masuk';
                 $isi_email = get_name($user_id).' membuat '.$form.', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>';
                 break;
             case "spd_dalam":
-                $receiver = $CI->approval->approver('dinas');
+                $receiver = $CI->approval->approver('dinas', $user_nik);
                 $url = base_url().'form_'.$form.'/submit/'.$id;
                 $form = 'Perjalanan Dinas Dalam Kota';
                 $isi_email = get_name($user_id).' membuat surat perintah perjalanan dinas dalam kota, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>';
                 break;
             case "spd_luar":
-                $receiver = $CI->approval->approver('dinas');
+                $receiver = $CI->approval->approver('dinas', $user_nik);
                 $url = base_url().'form_'.$form.'/submit/'.$id;
                 $form = 'Perjalanan Dinas Luar Kota';
                 $isi_email = get_name($user_id).' membuat surat perintah perjalanan dinas luar kota, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>';
                 break;
             case "spd_dalam_group":
-                $receiver = $CI->approval->approver('dinas');
+                $receiver = $CI->approval->approver('dinas', $user_nik);
                 $url = base_url().'form_'.$form.'/submit/'.$id;
                 $form = 'Perjalanan Dinas Dalam Kota(Group)';
                 $isi_email = get_name($user_id).' membuat surat perintah perjalanan dinas dalam kota(Group), untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>';
                 break;
             case "spd_luar_group":
-                $receiver = $CI->approval->approver('dinas');
+                $receiver = $CI->approval->approver('dinas', $user_nik);
                 $url = base_url().'form_pjd/submit/'.$id;
                 $form = 'Perjalanan Dinas';
                 $isi_email = get_name($user_id).' membuat surat perintah Perjalanan Dinas, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>';
                 break;
             case "promosi":
-                $receiver = $CI->approval->approver($form);
+                $receiver = $CI->approval->approver($form, $user_nik);
                 $pengaju_id = getValue('created_by', 'users_'.$form, array('id'=>'where/'.$id));
             	$form = 'Promosi Karyawan';
                 $isi_email = get_name($pengaju_id).' mengajukan Promosi untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>';
             	$user_id = $pengaju_id;
                 break;
             case "demotion":
-                $receiver = $CI->approval->approver('demosi');
+                $receiver = $CI->approval->approver('demosi', $user_nik);
                 $pengaju_id = getValue('created_by', 'users_'.$form, array('id'=>'where/'.$id));
                 $form = 'Demosi Karyawan';
                 $isi_email = get_name($pengaju_id).' mengajukan Demosi karyawan untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>';
                 $user_id = $pengaju_id;
                 break;
             case "rolling":
-                $receiver = $CI->approval->approver($form);
+                $receiver = $CI->approval->approver($form, $user_nik);
                 $pengaju_id = getValue('created_by', 'users_'.$form, array('id'=>'where/'.$id));
                 $form = 'Mutasi Karyawan';
                 $isi_email = get_name($pengaju_id).' mengajukan mutasi karyawan untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>';
                 $user_id = $pengaju_id;
                 break;
             case "kontrak":
-                $receiver = $CI->approval->approver($form);
+                $receiver = $CI->approval->approver($form, $user_nik);
                 $pengaju_id = getValue('created_by', 'users_'.$form, array('id'=>'where/'.$id));
                 $form = 'Perpanjangan Kontrak Karyawan';
                 $isi_email = get_name($pengaju_id).' mengajukan perpanjangan kontrak karyawan untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>';
                 $user_id = $pengaju_id;
                 break;
             case "pengangkatan":
-                $receiver = $CI->approval->approver($form);
+                $receiver = $CI->approval->approver($form, $user_nik);
                 $pengaju_id = getValue('created_by', 'users_'.$form, array('id'=>'where/'.$id));
                 $form = 'Pengangkatan Status Karyawan';
                 $isi_email = get_name($pengaju_id).' mengajukan Pengangkatan Status karyawan untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>';
                 $user_id = $pengaju_id;
                 break;
             case "recruitment":
-                $receiver = $CI->approval->approver($form);
+                $receiver = $CI->approval->approver($form, $user_nik);
                 $form = 'Permintaan SDM Baru';
                 $isi_email = get_name($user_id).' mengajukan '.$form.', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>';
                 break;
@@ -481,11 +481,14 @@ class Approval {
             break;
         }
     }
-
-    public function approver($form)
+    // USER YANG DIPILIH UNTUK APPROVE DIBAGIAN HRD
+    public function approver($form, $user_nik = null)
     {
+        $bu = get_user_buid($user_nik);//lastq();
+        //print_mz($bu);
         $form_type_id = getValue('id', 'form_type', array('title'=>'like/'.$form));
-        $approver = getValue('user_nik', 'users_approval', array('form_type_id'=>'where/'.$form_type_id));
+        $filter = array('form_type_id'=>'where/'.$form_type_id, 'bu'=>'where/'.$bu);
+        $approver = getValue('user_nik', 'users_approval', $filter);
 
         return $approver;
     }

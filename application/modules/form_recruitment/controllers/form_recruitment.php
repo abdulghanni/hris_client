@@ -302,7 +302,7 @@ class Form_recruitment extends MX_Controller {
                     if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app),  $subject_email_request , $isi_email_request);
                     $this->approval->request($lv_app, 'recruitment', $id, $user_recruitment_id, $this->detail_email($id));
                 else:
-                    if(!empty(getEmail($this->approval->approver('recruitment'))))$this->send_email(getEmail($this->approval->approver('recruitment')),  $subject_email_request , $isi_email_request);
+                    if(!empty(getEmail($this->approval->approver('recruitment', $user_id))))$this->send_email(getEmail($this->approval->approver('recruitment', $user_id)),  $subject_email_request , $isi_email_request);
                     $this->approval->request('hrd', 'recruitment', $id, $user_recruitment_id, $this->detail_email($id));
                 endif;
             }else{

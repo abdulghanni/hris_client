@@ -204,7 +204,7 @@ class Form_cuti extends MX_Controller {
                     if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), $subject_email, $isi_email);
                  }else{
                     $this->approval->request('hrd', 'cuti', $cuti_id, $user_id, $this->detail_email($cuti_id));
-                    if(!empty(getEmail($this->approval->approver('cuti'))))$this->send_email(getEmail($this->approval->approver('cuti')), $subject_email, $isi_email);
+                    if(!empty(getEmail($this->approval->approver('cuti', $user_nik))))$this->send_email(getEmail($this->approval->approver('cuti', $user_nik)), $subject_email, $isi_email);
                  }
 
                  if($this->input->post('insert') == 1)
@@ -280,7 +280,6 @@ class Form_cuti extends MX_Controller {
                 $this->approval->update_approve('cuti', $id, $approval_status, $this->detail_email($id));
                 if(!empty(getEmail($user_cuti_id)))$this->send_email(getEmail($user_cuti_id), get_form_no($id).'-['.$approval_status_mail.']'.'Perubahan Status Pengajuan Permohonan Cuti dari Atasan', $isi_email);
             }
-
             if($type !== 'hrd' && $approval_status == 1){
                 $lv = substr($type, -1)+1;
                 $lv_app = 'lv'.$lv;
@@ -290,7 +289,7 @@ class Form_cuti extends MX_Controller {
                     if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), $subject_email_request, $isi_email_request);
                 }else{
                     $this->approval->request('hrd', 'cuti', $id, $user_cuti_id, $this->detail_email($id));
-                    if(!empty(getEmail($this->approval->approver('cuti'))))$this->send_email(getEmail($this->approval->approver('cuti')), $subject_email_request, $isi_email_request);
+                    if(!empty(getEmail($this->approval->approver('cuti', $user_id))))$this->send_email(getEmail($this->approval->approver('cuti', $user_id)), $subject_email_request, $isi_email_request);
                 }
             }else{
                 $email_body = "Status pengajuan permohonan cuti yang diajukan oleh ".get_name($user_cuti_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_cuti/detail/'.$id.'>Klik Disini</a><br />';

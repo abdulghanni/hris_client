@@ -262,7 +262,7 @@ class form_absen extends MX_Controller {
             if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), $subject_email_request, $isi_email_request);
             $this->approval->request($lv_app, 'absen', $id, $user_absen_id, $this->detail_email($id));
         else:
-            if(!empty(getEmail($this->approval->approver('absen'))))$this->send_email(getEmail($this->approval->approver('absen')), $subject_email_request, $isi_email_request);
+            if(!empty(getEmail($this->approval->approver('absen', $user_id))))$this->send_email(getEmail($this->approval->approver('absen', $user_id)), $subject_email_request, $isi_email_request);
             $this->approval->request('hrd', 'absen', $id, $user_absen_id, $this->detail_email($id));
         endif;
         }

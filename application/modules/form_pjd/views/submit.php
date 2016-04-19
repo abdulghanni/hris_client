@@ -425,7 +425,7 @@
                         <div class="col-md-3">
                           <p class="wf-approve-sp">
                             <?php 
-                            if($td->is_app_hrd == 0 && $this->approval->approver('dinas') == $sess_nik){?>
+                            if($td->is_app_hrd == 0 && $this->approval->approver('dinas', $creator_nik) == $sess_nik){?>
                               <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitModalHrd" <?= $hide ?>><i class="icon-ok"></i>Submit</div>
                               <span class="small"></span>
                               <span class="semi-bold"></span><br/>

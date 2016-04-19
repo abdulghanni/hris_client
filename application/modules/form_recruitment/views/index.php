@@ -104,7 +104,7 @@
                                     }
 
                                      //Approval HRD
-                                    if($this->approval->approver('recruitment') == $sess_nik && $row->is_app_hrd == 0){
+                                    if($this->approval->approver('recruitment', get_nik($row->user_id)) == $sess_nik && $row->is_app_hrd == 0){
                                       $txt_app_hrd = "<a href='".site_url('form_recruitment/detail/'.$row->id)."''>
                                                       <button type='button' class='btn btn-info btn-small' title='Make Approval'><i class='icon-edit'></i></button>
                                                       </a>";

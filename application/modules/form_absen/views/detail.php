@@ -22,7 +22,9 @@
             <div class="grid-body no-border">
             <?php 
             if($_num_rows>0){
-              foreach($form_absen as $absen){?>
+              foreach($form_absen as $absen){
+                $user_nik = get_nik($absen->user_id);
+                ?>
               <form class="form-no-horizontal-spacing" id="formAbsen"> 
                 <div class="row column-seperation">
                   <div class="col-md-12">    
@@ -187,7 +189,7 @@
                         <div class="col-md-3">
                           <p class="wf-approve-sp">
                             <?php
-                            if($absen->is_app_hrd == 0 && $this->approval->approver('absen') == $sess_nik){?>
+                            if($absen->is_app_hrd == 0 && $this->approval->approver('absen', $user_nik) == $sess_nik){?>
                               <button id="btn_app_hrd" class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok"></i>Submit</button>
                               <span class="small"></span>
                               <span class="semi-bold"></span><br/>
@@ -204,7 +206,7 @@
                               <span class="small"></span><br/>
                               <span class="small"></span><br/>
                               <span class="semi-bold"></span><br/>
-                              <span class="semi-bold"><?php echo get_name($this->approval->approver('absen'))?></span><br/>
+                              <span class="semi-bold"><?php echo get_name($this->approval->approver('absen', $user_nik))?></span><br/>
                               <span class="small"><?php echo dateIndo($absen->date_app_hrd)?></span><br/>
                               <span class="semi-bold">(HRD)</span>
                             <?php } ?>

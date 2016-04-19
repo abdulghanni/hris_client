@@ -252,6 +252,7 @@ class Form_medical extends MX_Controller {
         }
         $this->data['id'] = $id;
         $this->data['user_id'] =$user_id = getValue('user_id', 'users_medical', array('id'=>'where/'.$id));
+        $this->data['user_nik'] = get_nik($user_id);
         $this->data['sess_id'] = $sess_id= $this->session->userdata('user_id');
         $this->data['sess_nik'] = get_nik($sess_id);
         $this->data['is_app_hrd'] = getValue('is_app_hrd', 'users_medical', array('id'=>'where/'.$id));
@@ -397,7 +398,7 @@ class Form_medical extends MX_Controller {
                 if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), $subject_email_request, $isi_email_request);
                 $this->approval->request($lv_app, 'medical', $id, $user_medical_id, $this->detail_email($id));
             else:
-                if(!empty(getEmail($this->approval->approver('medical'))))$this->send_email(getEmail($this->approval->approver('medical')), $subject_email_request, $isi_email_request);
+                if(!empty(getEmail($this->approval->approver('medical', $user_id))))$this->send_email(getEmail($this->approval->approver('medical', $user_id)), $subject_email_request, $isi_email_request);
                 $this->approval->request('hrd', 'medical', $id, $user_medical_id, $this->detail_email($id));
             endif;
         }

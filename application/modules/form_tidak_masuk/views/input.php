@@ -21,7 +21,7 @@
               <!--<form class="form-no-horizontal-spacing" id="formaddtidak_masuk" action="<?php echo site_url('form_tidak_masuk/add')?>">--> 
               <?php 
                 $att = array('class' => 'form-no-horizontal-spacing', 'id' => 'formadd');
-                echo form_open('form_tidak_masuk/add', $att)?>;
+                echo form_open_multipart('form_tidak_masuk/add', $att)?>;
                 <div class="row column-seperation">
                   <div class="col-md-12">    
                     <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
@@ -124,9 +124,19 @@
                         <label class="form-label text-right">Keterangan</label>
                       </div>
                       <div class="col-md-9">
-                        <input name="keterangan" id="keterangan" type="text"  class="form-control" placeholder="Isi Keterangan Disini...." value="" required>
+                        <input name="keterangan" id="keterangan" type="text" class="form-control" placeholder="Isi Keterangan Disini...." value="" required>
                       </div>
                     </div>
+
+                    <div class="row form-row">
+                      <div class="col-md-3">
+                        <label class="form-label text-right">Attachment</label>
+                      </div>
+                      <div class="col-md-9">
+                        <input name="attachment" id="attachment" type="file"  value="">
+                      </div>
+                    </div>
+
                     <!--
                     <?php if(is_admin()){?>
                     <div class="row form-row">

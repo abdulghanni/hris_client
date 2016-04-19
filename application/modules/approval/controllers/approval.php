@@ -85,11 +85,21 @@ class Approval extends MX_Controller {
 
         $this->data['users'] = getAll('users', array('active'=>'where/1', 'username'=>'order/asc'), array('!=id'=>'1'));
         $this->data['form_type'] = getAll('form_type', array('is_deleted'=>'where/0'));
-
+        $this->get_bu();
             $this->_render_page('approval/index', $this->data);
         }
     }
 
+    function get_table(){
+        $this->data['bu'] = substr($this->input->post('id'),0,2);//print_mz($this->data['bu']);
+        $this->data['form'] = GetAllSelect('form_type', 'id, indo', array('is_deleted'=>'where/0'))->result();
+        $this->load->view('approval/table', $this->data);
+    }
+
+    function get_modal($bu, $form_id){
+        $data = getValue('user_nik', 'users_approval', array('bu'=>'where/'.$bu, 'form_type_id'=>'where/'.$form_id));
+        echo $data;
+    }
     function keywords(){
         if (!$this->ion_auth->logged_in())
         {
@@ -123,13 +133,18 @@ class Approval extends MX_Controller {
             //return show_error('You must be an administrator to view this page.');
             return show_error('You must be an administrator to view this page.');
         }else{
-            $id = $this->input->post('id');
+            $bu = $this->input->post('id');
+            $form = $this->input->post('form_type_id');
             $data = array(
                 'user_nik' => $this->input->post('nik'),
-                'form_type_id' =>$this->input->post('form_type_id')
+                'form_type_id' => $form,
+                'bu'=> $bu
                 );
+            $num = getAll('users_approval', array('form_type_id'=>'where/'.$form, 'bu'=>'where/'.$bu))->num_rows();
+            if($num>0)$this->db->where('bu',$bu)->where('form_type_id', $form)->update('users_approval', $data);
+            else $this->db->insert('users_approval', $data);
 
-            $this->db->where('id',$id)->update('users_approval', $data);
+            echo json_encode(array('status'=>true));
         }
     }
 
@@ -169,6 +184,26 @@ class Approval extends MX_Controller {
         else
         {
             return $this->load->view($view, $data, TRUE);
+        }
+    }
+
+    function get_bu()
+    {
+        $url = get_api_key().'users/bu/format/json';
+        $headers = get_headers($url);
+        $response = substr($headers[0], 9, 3);
+        if ($response != "404") {
+            $getbu = file_get_contents($url);
+            $bu = json_decode($getbu, true);
+            foreach ($bu as $row)
+        {
+            if($row['NUM'] != null){
+            $result[substr($row['NUM'], 0, 2)]= ucwords(strtolower($row['DESCRIPTION']));
+            }
+        }
+            return $this->data['bu'] = $result;
+        } else {
+            return $this->data['bu'] = '';
         }
     }
 }
