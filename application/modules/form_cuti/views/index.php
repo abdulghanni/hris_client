@@ -37,7 +37,8 @@
                                       </div>
                                   </div>    
                               </div>
-                          <?php echo form_close()?>     
+                          <?php echo form_close()?>   
+                          <div class="table-responsive">     
                           <table class="table table-striped table-flip-scroll cf">
                               <thead>
                                 <tr>
@@ -131,7 +132,7 @@
                                     <!--td><?php echo ($user->is_app_lv1 == 0) ? '<button id="'.$user->id.'"  class="remove btn btn-danger btn-mini" type="button" title="Batalkan Pengajuan"><i class="icon-remove"></i></button>' : ''?></td-->
                                     <td><?php echo (($user->is_app_lv1 == 0 && $user->created_by == $id_user) || is_admin()) ? '<button onclick="showModal('.$user->id.')" class="btn btn-danger btn-mini" type="button" title="Remove File"><i class="icon-remove"></i></button>' : ''?></td>
                                     <td>
-                                      <a href="#" id="viewcuti-<?php echo $id_cuti; ?>">
+                                      <a href="<?php echo base_url('form_cuti/detail/'.$user->id)?>">
                                       <?php
                                         $nik = get_nik($user->user_id);
                                         $bu = get_user_buid($nik);
@@ -172,6 +173,7 @@
                                        <a href="<?php echo site_url('form_cuti/form_cuti_pdf/'.$user->id)?>"  target="_blank"><i class="icon-print"></i></a>
                                     </td>
                                   </tr>
+                                  <!--
                                   <tr id="cutidetail-<?php echo $id_cuti; ?>" style="display:none">
                                     <td class="detail" colspan="6">
                                       <div class="row">
@@ -263,10 +265,12 @@
                                     </div>
                                   </td>
                                 </tr>
+                                -->
                                 <?php endforeach; ?>
                                 <?php } ?> 
                               </tbody>
                           </table>
+                          </div>
                   </div>
                   <?php if($_num_rows>0):?>
                   <div class="row">

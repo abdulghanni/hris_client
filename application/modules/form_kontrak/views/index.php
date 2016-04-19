@@ -43,7 +43,8 @@
                                     </div>
                                 </div>    
                             </div>
-                        <?php echo form_close()?>    
+                        <?php echo form_close()?> 
+                        <div class="table-responsive">      
                           <table class="table table-striped table-flip-scroll cf">
                               <thead>
                                 <tr>
@@ -127,7 +128,7 @@
                               		<?php 
                               			$lama_id = getValue('lama_kontrak', 'users_kontrak', array('id'=>'where/'.$user->id));
 							            $lama = getValue('title', 'lama_kontrak', array('id'=>'where/'.$lama_id));
-							        ?>
+							             ?>
                                     <td><?php echo $lama?></td>
                                     <td class="text-center">
                                       <?php echo $txt_app_lv1;?>
@@ -148,6 +149,7 @@
                                 <?php endforeach;}?>
                               </tbody>
                           </table>
+                          </div>
 
                           <?php if($_num_rows>0):?>
                           <div class="row">

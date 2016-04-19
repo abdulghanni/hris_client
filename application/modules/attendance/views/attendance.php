@@ -167,6 +167,7 @@
                                 <h4>Detail&nbsp;<span class="semi-bold"><?php echo lang('att_subheading');?></span></h4>
                             </div>
                         </div>
+                        <div class="table-responsive">   
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
@@ -220,6 +221,7 @@
 						                	?>
                             </tbody>
                         </table>
+                        </div>
                         <div class="row">
                             <div class="col-md-4 page_limit">
                                 <?php echo form_open(uri_string());?>

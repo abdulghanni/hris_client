@@ -45,6 +45,7 @@
                         <?php } ?>
                         <br/>
                         <div <?php ( ! empty($message)) && print('class="alert alert-info text-center"'); ?> id="infoMessage"><?php echo $message;?></div>
+                        <div class="table-responsive">   
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
@@ -73,6 +74,7 @@
                             <?php endforeach;?>
                             </tbody>
                         </table>
+                        </div>
                         <div class="row">
                             <div class="col-md-4 page_limit">
                                 <?php echo form_open(uri_string());?>

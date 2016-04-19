@@ -24,6 +24,7 @@
                                 <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#addModal"><i class="icon-plus"></i>&nbsp;<?php echo lang('add_button');?></button>
                             </div>
                         </div>
+                        <div class="table-responsive">
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
@@ -47,6 +48,7 @@
         					<?php endforeach;?>
                             </tbody>
                         </table>
+                        </div>
                     </div>
                 </div>
             </div>

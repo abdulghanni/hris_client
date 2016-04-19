@@ -22,7 +22,8 @@
         <!-- tabcertificate -->
         <div class="tab-pane active" id="tabsent">
           
-                                    <div id="email-list">                 
+                                    <div id="email-list">   
+                         <div class="table-responsive">                            
                         <table class="table table-striped table-fixed-layout table-hover" id="emails" > 
                           <thead>
                           <tr>
@@ -79,6 +80,7 @@
                           
                           </tbody>
                         </table>
+                        </div>
 
                         <div class="row">
                           <div class="col-md-4 page_limit">

@@ -43,6 +43,7 @@
                                   </div>    
                               </div>
                           <?php echo form_close()?>  
+                          <div class="table-responsive">   
                           <table class="table table-striped table-flip-scroll cf">
                               <thead>
                                 <tr>
@@ -172,6 +173,7 @@
                               </tbody>
                               <?php endforeach;}?>
                           </table>
+                          </div>
 
                           <?php if($_num_rows>0):?>
                           <div class="row">
