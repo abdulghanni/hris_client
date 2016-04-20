@@ -296,9 +296,10 @@ class Recruitment_model extends CI_Model
         else
         {
             $admin = is_admin();
-            $is_approver = $this->approval->approver('recruitment', $sess_nik);
             $sess_id = $this->session->userdata('user_id');
             $sess_nik = get_nik($sess_id);
+            
+            $is_approver = $this->approval->approver('recruitment', $sess_nik);
 
             if(!empty(is_have_subordinate(get_nik($sess_id)))){
             $sub_id = get_subordinate($sess_id);
