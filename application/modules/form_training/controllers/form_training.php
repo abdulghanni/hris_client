@@ -80,6 +80,7 @@ class form_training extends MX_Controller {
                 'value' => $this->form_validation->set_value('title'),
             );
             $this->data['form_id'] = getValue('form_id', 'form_id', array('form_name'=>'like/training'));
+            $this->data['form'] = 'training';
             $this->_render_page('form_training/index', $this->data);
         }
     }

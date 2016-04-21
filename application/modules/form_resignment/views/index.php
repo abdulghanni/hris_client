@@ -45,6 +45,7 @@
                           <table class="table table-striped table-flip-scroll cf">
                               <thead>
                                 <tr>
+                                  <th width="1%"></th>
                                   <th width="17%">No</th>
                                   <th width="15%">NIK</th>
                                   <th width="25%">Nama</th>
@@ -111,7 +112,10 @@
                                       $txt_app_hrd =  "<a href='".site_url('form_resignment/detail/'.$user->id)."''>$approval_status_hrd</a>";
                                     }
                                   ?>
+                                  <input type="hidden" id="form-name" value="<?php echo $form ?>">
                                   <tr>
+                                    <td><?php echo (($user->is_app_lv1 == 0 && $user->created_by == $sess_id) || is_admin()) ? '<button onclick="showModal('.$user->id.')" class="btn btn-danger btn-mini" type="button" title="Batalkan Pengajuan"><i class="icon-remove"></i></button>' : ''?>
+                                       </td>
                                     <td>
                                       <a href="<?php echo site_url('form_resignment/detail/'.$user->id)?>">
                                         <?php
@@ -122,6 +126,7 @@
                                       ?>
                                       </a>
                                     </td>
+                                    <input type="hidden" id="form-no<?=$user->id?>" value="<?php echo $form_id.'/'.$bu.'/'.$date.'/'.$user->id?>">
                                     <td>
                                       <a href="<?php echo site_url('form_resignment/detail/'.$user->id)?>"><?php echo get_nik($user->user_id)?></a>
                                     </td>
@@ -181,3 +186,29 @@
     
   </div>  
   <!-- END PAGE --> 
+
+  
+  <!--Delete Modal-->
+<div class="modal fade" id="modal_form" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Apakah anda yakin ingin membatalkan pengauan ini ?</h4>
+        </div>
+      <?php echo form_open('auth/delete_course/',array("id"=>"form"))?>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="display:none"><span aria-hidden="true">&times;</span></button>
+        <input type="hidden" name="id" value="">
+        <input type="hidden" name="form" value="">
+        <input type="hidden" name="form-no" value="">
+      <div class="modal-body">
+        <p>Apakah anda yakin ingin membatalkan pengauan ini ?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="icon-ban-circle"></i>&nbsp;<?php echo lang('cancel_button')?></button> 
+        <button id="remove" type="button" class="btn btn-danger lnkBlkWhtArw" style="margin-top: 3px;"><i class="icon-warning-sign"></i>&nbsp;<?php echo lang('delete_button')?></button>
+      </div>
+        <?php echo form_close()?>
+    </div>
+  </div>
+</div>

@@ -75,9 +75,12 @@
                 </td>
                 <?php if(is_admin() || is_admin_cabang()){?>
                 <td valign="middle" halign="middle"><?php if($row->is_request_activation == 1){?><h2 class="label label-success"><a href="<?php echo site_url('email/activate/'.$row->id)?>">inactive</h2><?php } ?></td>
-                <?php } ?>
-                <td valign="large"><a href="<?php echo site_url('email/detail/'.$row->id)?>"><?php echo get_name($row->sender_id) ?></a></td>
-                <td valign="large" class="tablefull"><span class="muted"><a href="<?php echo site_url('email/detail/'.$row->id)?>"><?php $subject = ($row->is_read == 0) ? '<b>'.$row->subject.'</b>' : $row->subject; echo word_limiter($subject.' - '.$row->email_body, 15)?></a></span></td>
+                <?php } 
+                  $link = ($row->is_request_activation == 1) ? "#" : site_url('email/detail/'.$row->id);
+                  $link = site_url('email/detail/'.$row->id);
+                ?>
+                <td valign="large"><a href="<?php echo $link ?>"><?php echo get_name($row->sender_id) ?></a></td>
+                <td valign="large" class="tablefull"><span class="muted"><a href="<?php echo $link?>"><?php $subject = ($row->is_read == 0) ? '<b>'.$row->subject.'</b>' : $row->subject; echo word_limiter($subject.' - '.$row->email_body, 15)?></a></span></td>
                 <td class=""><span class="muted"><?php  $now = date('Y-m-d',strtotime('now'));
 
                   if (date('Y-m-d', strtotime($row->sent_on)) == $now)

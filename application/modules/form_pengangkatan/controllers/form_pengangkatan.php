@@ -77,7 +77,7 @@ class Form_pengangkatan extends MX_Controller {
                 'value' => $this->form_validation->set_value('title'),
             );
             $this->data['form_id'] = getValue('form_id', 'form_id', array('form_name'=>'like/pengangkatan'));
-
+            $this->data['form'] = 'pengangkatan';
             $this->_render_page('form_pengangkatan/index', $this->data);
         }
     }

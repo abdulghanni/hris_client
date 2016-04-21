@@ -77,7 +77,7 @@ class Form_kontrak extends MX_Controller {
                 'value' => $this->form_validation->set_value('title'),
             );
             $this->data['form_id'] = getValue('form_id', 'form_id', array('form_name'=>'like/kontrak'));
-
+            $this->data['form'] = 'kontrak';
             $this->_render_page('form_kontrak/index', $this->data);
         }
     }

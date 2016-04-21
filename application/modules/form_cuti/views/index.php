@@ -128,6 +128,7 @@
                                   // user pengganti name
                                   $user_pengganti = $user->name;
                                   ?>
+                                  <input type="hidden" id="form-name" value="<?php echo $form ?>">
                                   <tr class="itemcuti" id="<?php echo $id_cuti; ?>">
                                     <!--td><?php echo ($user->is_app_lv1 == 0) ? '<button id="'.$user->id.'"  class="remove btn btn-danger btn-mini" type="button" title="Batalkan Pengajuan"><i class="icon-remove"></i></button>' : ''?></td-->
                                     <td><?php echo (($user->is_app_lv1 == 0 && $user->created_by == $id_user) || is_admin()) ? '<button onclick="showModal('.$user->id.')" class="btn btn-danger btn-mini" type="button" title="Batalkan Pengajuan"><i class="icon-remove"></i></button>' : ''?></td>
@@ -140,6 +141,7 @@
                                         echo $form_id.'/'.$bu.'/'.$date.'/'.$user->id;
                                       ?>
                                       </a>
+                                      <input type="hidden" id="form-no<?=$user->id?>" value="<?=$form_id.'/'.$bu.'/'.$date.'/'.$user->id?>">
                                     </td> 
                                      <td>
                                       <?php echo $nik ?>
@@ -315,13 +317,15 @@
     <div class="modal-content">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="myModalLabel">Apakah anda yakin ingin membatalkan pengauan ini ?</h4>
+            <h4 class="modal-title" id="myModalLabel">Apakah anda yakin ingin membatalkan pengajuan ini ?</h4>
         </div>
       <?php echo form_open('auth/delete_course/',array("id"=>"form"))?>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="display:none"><span aria-hidden="true">&times;</span></button>
         <input type="hidden" name="id" value="">
+        <input type="hidden" name="form" value="">
+        <input type="hidden" name="form-no" value="">
       <div class="modal-body">
-        <p>Apakah anda yakin ingin membatalkan pengauan ini ?</p>
+        <p>Apakah anda yakin ingin membatalkan pengajuan ini ?</p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="icon-ban-circle"></i>&nbsp;<?php echo lang('cancel_button')?></button> 

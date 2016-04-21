@@ -78,6 +78,7 @@ class Form_recruitment extends MX_Controller {
             'value' => $this->form_validation->set_value('title'),
         );
         $this->data['form_id'] = getValue('form_id', 'form_id', array('form_name'=>'like/recruitment'));
+        $this->data['form'] = 'recruitment';
         $this->_render_page('form_recruitment/index');
     }
 

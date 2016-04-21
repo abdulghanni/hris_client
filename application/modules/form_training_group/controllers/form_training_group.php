@@ -79,6 +79,7 @@ class form_training_group extends MX_Controller {
                 'value' => $this->form_validation->set_value('title'),
             );
             $this->data['form_id'] = getValue('form_id', 'form_id', array('form_name'=>'like/training-group'));
+            $this->data['form'] = 'training_group';
             $this->_render_page('form_training_group/index', $this->data);
         }
     }

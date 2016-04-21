@@ -89,6 +89,7 @@ class Form_cuti extends MX_Controller {
                 'value' => $this->form_validation->set_value('title'),
             );
             $this->data['form_id'] = getValue('form_id', 'form_id', array('form_name'=>'like/cuti'));
+             $this->data['form'] = 'cuti';
             $this->_render_page('form_cuti/index', $this->data);
         }
     }

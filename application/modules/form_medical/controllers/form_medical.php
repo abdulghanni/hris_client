@@ -84,6 +84,7 @@ class Form_medical extends MX_Controller {
                 'value' => $this->form_validation->set_value('title'),
             );
             $this->data['form_id'] = getValue('form_id', 'form_id', array('form_name'=>'like/medical'));
+            $this->data['form'] = 'medical';
             $this->_render_page('form_medical/index', $this->data);
         }
     }

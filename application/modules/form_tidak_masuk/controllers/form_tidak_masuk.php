@@ -82,7 +82,7 @@ class form_tidak_masuk extends MX_Controller {
             );
 
             $this->data['form_id'] = getValue('form_id', 'form_id', array('form_name'=>'like/tidak_masuk'));
-
+            $this->data['form'] = 'tidak_masuk';
 
             $this->_render_page('form_tidak_masuk/index', $this->data);
         }

@@ -177,7 +177,14 @@ class Email extends MX_Controller {
             );
         $this->db->where('id', $id)->update('email', $data);
         $this->data['email'] = $this->email_model->email_detail($id)->result();
-        $this->_render_page('email/detail', $this->data);
+        $r = getValue('email_body', 'email', array('id'=>'where/'.$id));
+        //$match='';
+        preg_match('#\bhttps?://[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/))#', $r, $match);
+        //echo strstr($r, "href");
+        //print_mz($match[0]);
+        if(!empty($match))redirect($match[0],'refresh');
+        else $this->_render_page('email/detail', $this->data);
+        
     }
 
     function deactivate($id = NULL)

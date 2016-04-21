@@ -47,6 +47,7 @@
                         <table class="table table-striped table-flip-scroll cf">
                             <thead>
                               <tr>
+                                <th width="1%"></th>
                                 <th width="20%">No.</th>
                                 <th width="70%">Kegiatan</th>
                                 <th width="10%" class="text-center">appr. atasan langsung</th>
@@ -136,7 +137,10 @@
                                 $btn_rep = ($report_num>0)?'<i class="icon-paste"></i> View Report':(($report_num < 1 && in_array(get_nik($sess_id), $receiver_submit))?'<i class="icon-paste"></i> Create Report':'<i class="icon-paste"></i> Report');
                                 }
                                ?>
+                               <input type="hidden" id="form-name" value="<?php echo $form ?>">
                                 <tr>
+                                <td><?php echo (($spd->is_app_lv1 == 0 && $spd->created_by == $sess_id) || is_admin()) ? '<button onclick="showModal('.$spd->id.')" class="btn btn-danger btn-mini" type="button" title="Batalkan Pengajuan"><i class="icon-remove"></i></button>' : ''?>
+                                     </td>
                                 <td>
                                   <?php
                                       $nik = $spd->task_creator;
@@ -145,6 +149,7 @@
                                       echo $form_id.'/'.$bu.'/'.$date.'/'.$spd->id
                                     ?>
                                 </td>
+                                <input type="hidden" id="form-no<?=$spd->id?>" value="<?php echo $form_id.'/'.$bu.'/'.$date.'/'.$spd->id?>">
                                   <td>
                                     <a href="<?php echo base_url() ?>form_pjd/submit/<?php echo $spd->id ?>"><h4><?php echo $spd->title ?></h4>
                                       <div class="small-text-custom">
@@ -236,3 +241,29 @@
   
 </div>  
 <!-- END PAGE -->
+
+
+  <!--Delete Modal-->
+<div class="modal fade" id="modal_form" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Apakah anda yakin ingin membatalkan pengajuan ini ?</h4>
+        </div>
+      <?php echo form_open('auth/delete_course/',array("id"=>"form"))?>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="display:none"><span aria-hidden="true">&times;</span></button>
+        <input type="hidden" name="id" value="">
+        <input type="hidden" name="form" value="">
+        <input type="hidden" name="form-no" value="">
+      <div class="modal-body">
+        <p>Apakah anda yakin ingin membatalkan pengajuan ini ?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="icon-ban-circle"></i>&nbsp;<?php echo lang('cancel_button')?></button> 
+        <button id="remove" type="button" class="btn btn-danger lnkBlkWhtArw" style="margin-top: 3px;"><i class="icon-warning-sign"></i>&nbsp;<?php echo lang('delete_button')?></button>
+      </div>
+        <?php echo form_close()?>
+    </div>
+  </div>
+</div>

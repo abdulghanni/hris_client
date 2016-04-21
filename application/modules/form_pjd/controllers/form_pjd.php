@@ -80,6 +80,7 @@ class Form_pjd extends MX_Controller {
                 'value' => $this->form_validation->set_value('title'),
             );
             $this->data['form_id'] = getValue('form_id', 'form_id', array('form_name'=>'like/pjd'));
+            $this->data['form'] = 'spd_luar_group';
             $this->_render_page('form_pjd/index', $this->data);
         }
     }

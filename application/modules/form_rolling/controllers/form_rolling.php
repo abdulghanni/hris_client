@@ -81,6 +81,7 @@ class Form_rolling extends MX_Controller {
                 'value' => $this->form_validation->set_value('title'),
             );
             $this->data['form_id'] = getValue('form_id', 'form_id', array('form_name'=>'like/rolling'));
+            $this->data['form'] = 'rolling';
             $this->_render_page('form_rolling/index', $this->data);
         }
     }

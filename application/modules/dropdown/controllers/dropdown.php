@@ -468,14 +468,25 @@ class Dropdown extends MX_Controller {
 
     function remove(){
       $sess_id = $this->session->userdata('user_id');
-      $form = 'cuti';
+      $form = $this->input->post('form');
       $id = $this->input->post('id');
+      $form_no = $this->input->post('form-no');
       $user_app_lv1 = getValue('user_app_lv1', 'users_'.$form, array('id'=>'where/'.$id));
       $subject_email = "Pembatalan Pengajuan $form";
-      $isi_email = get_name($sess_id).' membatalkan pengajuan '.$form;
+      $isi_email = get_name($sess_id).' membatalkan pengajuan '.$form.' dengan no '.$form_no;
       $this->db->where('id', $id)->update('users_'.$form, array('is_deleted'=>1));
       if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), $subject_email, $isi_email);
-      echo json_encode(array('status'=>true));
 
+      $data = array(
+                    'sender_id' => get_nik($sess_id),
+                    'receiver_id' => get_nik($user_app_lv1),
+                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                    'subject' => $subject_email,
+                    'email_body' => $isi_email,
+                    'is_read' => 0,
+                );
+            $this->db->insert('email', $data);
+
+      echo json_encode(array('status'=>true));
     }
 }

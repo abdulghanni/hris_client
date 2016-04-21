@@ -80,6 +80,7 @@ class Form_resignment extends MX_Controller {
                 'value' => $this->form_validation->set_value('title'),
             );
             $this->data['form_id'] = getValue('form_id', 'form_id', array('form_name'=>'like/resign'));
+            $this->data['form'] = 'resignment';
             $this->_render_page('form_resignment/index', $this->data);
         }
     }

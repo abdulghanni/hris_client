@@ -77,6 +77,7 @@ class Form_promosi extends MX_Controller {
                 'value' => $this->form_validation->set_value('title'),
             );
             $this->data['form_id'] = getValue('form_id', 'form_id', array('form_name'=>'like/promosi'));
+            $this->data['form'] = 'promosi';
             $this->_render_page('form_promosi/index', $this->data);
         }
     }
