@@ -1,18 +1,4 @@
- 
-  <!-- BEGIN PAGE -->
-  <div class="page-content"> 
-    <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
-    <div id="portlet-config" class="modal hide">
-      <div class="modal-header">
-        <button data-dismiss="modal" class="close" type="button"></button>
-        <h3>Widget Settings</h3>
-      </div>
-      <div class="modal-body"> Widget settings form goes here </div>
-    </div>
-    <div class="clearfix"></div>
-
-  <div class="content" id="content">    
-    <div class="tabbable tabs-top">
+<div class="tabbable tabs-top">
       <ul class="nav nav-tabs" id="tab-1">
         <li class="active"><a href="<?php echo site_url('email')?>">Inbox</a></li>
         <li><a href="<?php echo site_url('email/sent')?>">Sent</a></li>
@@ -43,6 +29,11 @@
                 </div>
             <?php echo form_close()?>
             <br/>    
+
+            <div class="alert alert-info text-center">
+                <button class="close" data-dismiss="alert"></button>
+                User Activated 
+            </div>
             <div class="table-responsive">     
             <table class="table table-fixed-layout table-hover" id="emails" > 
               <thead>
@@ -135,16 +126,3 @@
         </div>
       </div>
     </div>
-
-    <div class="clearfix"></div>
-                <div class="admin-bar" id="quick-access" style="z-index:100;display:">
-                  <div class="admin-bar-inner">
-                    <button id="delBtn" class="btn btn-danger  btn-add" type="button"><i class="icon-trash"></i>Delete</button>
-                    <button class="btn btn-white  btn-cancel" type="button">Cancel</button>
-                  </div>
-                </div> 
-      <!-- END PAGE --> 
-    </div>
-  </div>
-
-    

@@ -103,8 +103,6 @@ $(document).ready(function() {
                 this.checked = false; //deselect all checkboxes with class "checkbox1"                      
                    });
                 }
-
-
 	//Accordians
 	$('.panel-group').collapse({
 		toggle: false
@@ -114,3 +112,33 @@ $(document).ready(function() {
 	
 
 });
+
+function activate(id)
+				{
+				    $('#btnActive').text('Activating...'); //change button text
+				    $('#btnActive').attr('disabled',true); //set button disable 
+				    var url = "email/load_body/"+id;
+				    // ajax adding data to database
+				    $.ajax({
+				        url : url,
+				        type: "POST",
+				        data: $('#form').serialize(),
+				        dataType: "html",
+				        success: function(data)
+				        {
+				            $("#content").html(data);
+				            $(".msg").show('slow').fadeIn().delay(3000).fadeOut("slow");
+				            $('#btnActivate').text('Activate'); //change button text
+				            $('#btnActivate').attr('disabled',false); //set button enable 
+
+
+				        },
+				        error: function (jqXHR, textStatus, errorThrown)
+				        {
+				            alert('Proses Aktifasi Gagal');
+				            $('#btnActivate').text('save'); //change button text
+				            $('#btnActivate').attr('disabled',false); //set button enable 
+
+				        }
+				    });
+				}

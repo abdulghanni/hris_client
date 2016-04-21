@@ -202,19 +202,13 @@ class Email extends MX_Controller {
      //activate the user
     function activate($id, $code=false)
     {
-        //print_mz($this->session->userdata('last_link'));
-        if ($code !== false)
-        {
-            
-            $user_nik = getValue('sender_id','email', array('id'=>'where/'.$id));
-            $user_id = get_id($user_nik);
-            $activation = $this->ion_auth->activate($user_id, $code);
-        }
-        else if ($this->ion_auth->is_admin() || is_admin_cabang())
+        if ($this->ion_auth->is_admin() || is_admin_cabang())
         {
             $user_nik = getValue('sender_id','email', array('id'=>'where/'.$id));
             $user_id = get_id($user_nik);
             $activation = $this->ion_auth->activate($user_id);
+        }else{
+            die("Silakan login sebagai administrator untuk mengaktifkan user");
         }
 
         if ($activation)
@@ -230,7 +224,8 @@ class Email extends MX_Controller {
             //redirect them to the auth page
             $this->session->set_flashdata('message', $this->ion_auth->messages());
             //redirect($this->session->userdata('last_link'), 'refresh');
-            redirect('email', 'refresh');
+            //redirect('email', 'refresh');
+            return true;
         }
         else
         {
@@ -238,7 +233,8 @@ class Email extends MX_Controller {
             //die('fail');
             //redirect them to the forgot password page
             $this->session->set_flashdata('message', $this->ion_auth->errors());
-            redirect('email', 'refresh');
+            //redirect('email', 'refresh');
+            return false;
         }
     }
 
@@ -354,5 +350,67 @@ class Email extends MX_Controller {
 
             }endfor;
         endfor;
+    }
+
+    function load_body($id, $name = "fn:",$subject = "em:", $sort_by = "id", $sort_order = "asc", $offset = 0){
+        $this->activate($id);
+        $this->data['title'] = "Email Masuk";
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+        else
+        {
+        //set the flash data error message if there is one
+        $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
+
+        //set sort order
+        $this->data['sort_order'] = $sort_order;
+        
+        //set sort by
+        $this->data['sort_by'] = $sort_by;
+       
+        //set filter by title
+        $this->data['name_param'] = $name; 
+        $exp_name = explode(":",$name);
+        $name_re = str_replace("_", " ", $exp_name[1]);
+        $name_post = (strlen($name_re) > 0) ? array('users.username'=>$name_re) : array() ;
+
+        //set filter by title
+        $this->data['subject_param'] = $subject; 
+        $exp_subject = explode(":",$subject);
+        $subject_re = str_replace("_", " ", $exp_subject[1]);
+        $subject_post = (strlen($subject_re) > 0) ? array('email.subject'=>$subject_re) : array() ;
+        
+        //set default limit in var $config['list_limit'] at application/config/ion_auth.php 
+        $this->data['limit'] = $limit = (strlen($this->input->post('limit')) > 0) ? $this->input->post('limit') : 25 ;
+
+        $this->data['offset'] = 6;
+
+        //list of filterize all email  
+        $this->data['email_all'] = $this->email_model->like($name_post)->like($subject_post)->where('is_deleted',0)->email()->result();
+        
+        $this->data['num_rows_all'] = $this->email_model->like($name_post)->like($subject_post)->where('is_deleted',0)->email()->num_rows();
+        
+        $this->data['email'] = $this->email_model->like($name_post)->like($subject_post)->where('receiver_id', (!empty($nik)) ? $nik : $this->session->userdata('user_id'))->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->email()->result();
+        //print_mz($this->data['email']);
+        //list of filterize limit email for pagination  d();
+        $this->data['_num_rows'] = $this->email_model->like($name_post)->like($subject_post)->where('is_deleted',0)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->email()->num_rows();
+
+         //config pagination
+         $config['base_url'] = base_url().'email/index/fn:'.$exp_name[1].'/em:'.$exp_subject[1].'/'.$sort_by.'/'.$sort_order.'/';
+         $config['total_rows'] = $this->data['num_rows_all'];
+         $config['per_page'] = 25;
+         $config['uri_segment'] = $this->config->item('uri_segment_pager', 'ion_auth');
+
+        //inisialisasi config
+         $this->pagination->initialize($config);
+
+        //create pagination
+        $this->data['halaman'] = $this->pagination->create_links();
+
+        $this->load->view('email/body', $this->data);
+        }
     }
 }
