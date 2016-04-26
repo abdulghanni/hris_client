@@ -487,7 +487,8 @@ class Form_recruitment extends MX_Controller {
             }else{
             $form_recruitment = $this->data['form_recruitment'] = $this->recruitment_model->recruitment($id);
             }
-
+            preg_match_all("/(\n)/", getValue('job_desc', 'users_recruitment_kemampuan', array('id'=>'where/'.$id)), $matches);
+            $this->data['trow'] = $trow = count($matches[0]) + 1;
         $this->data['recruitment'] = $this->recruitment_model->recruitment($id)->result();
         $this->data['status'] = getAll('recruitment_status', array('is_deleted' => 'where/0'));
         $this->data['urgensi'] = getAll('recruitment_urgensi', array('is_deleted' => 'where/0'));
