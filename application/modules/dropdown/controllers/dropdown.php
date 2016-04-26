@@ -43,6 +43,17 @@ class Dropdown extends MX_Controller {
         }
     }
 
+     public function get_emp_pos_group()
+    {
+        $id = $this->input->post('id');
+        if($id == '0'){
+            echo '-';
+        }else{
+            $id = get_nik($id);
+            echo get_pos_group($id);
+        }
+    }
+
     public function get_emp_stat()
     {
         $id = $this->input->post('id');

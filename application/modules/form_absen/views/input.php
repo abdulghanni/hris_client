@@ -75,6 +75,7 @@
                         <input name="organization" id="organization" type="text"  class="form-control" placeholder="Organization" value="<?php echo (!empty(get_user_organization($sess_nik)))?get_user_organization($sess_nik):'-';?>" disabled="disabled">
                       </div>
                     </div>
+                    <input name="position-group" id="position-group" type="hidden"  class="form-control" placeholder="" value="" disabled="disabled">
                     <div class="row form-row">
                       <div class="col-md-3">
                         <label class="form-label text-right">Keterangan</label>
@@ -116,44 +117,45 @@
                       </div>
                     </div>
                     <?php } ?>
-
+                    
+                    <div id="atasan">
                     <div class="row form-row">
                       <div class="col-md-3">
                         <label class="bold form-label text-right"><?php echo 'Approval' ?></label>
                       </div>
                     </div>
+                      <div class="row form-row">
+                        <div class="col-md-3">
+                          <label class="form-label text-right"><?php echo 'Atasan Langsung' ?></label>
+                        </div>
+                        <div class="col-md-9">
+                          <?php
+                            $style_up='class="select2" style="width:100%" id="atasan1"';
+                                echo form_dropdown('atasan1',array('0'=>'- Pilih Atasan Langsung -'),'',$style_up);
+                          ?>
+                        </div>
+                      </div>
 
-                    <div class="row form-row">
-                      <div class="col-md-3">
-                        <label class="form-label text-right"><?php echo 'Atasan Langsung' ?></label>
+                     <div class="row form-row">
+                        <div class="col-md-3">
+                          <label class="form-label text-right"><?php echo 'Atasan Tidak Langsung' ?></label>
+                        </div>
+                        <div class="col-md-9">
+                          <select name="atasan2" id="atasan2" class="select2" style="width:100%">
+                              <option value="0">- Pilih Atasan Tidak Langsung -</option>
+                          </select>
+                        </div>
                       </div>
-                      <div class="col-md-9">
-                        <?php
-                          $style_up='class="select2" style="width:100%" id="atasan1"';
-                              echo form_dropdown('atasan1',array('0'=>'- Pilih Atasan Langsung -'),'',$style_up);
-                        ?>
-                      </div>
-                    </div>
 
-                   <div class="row form-row">
-                      <div class="col-md-3">
-                        <label class="form-label text-right"><?php echo 'Atasan Tidak Langsung' ?></label>
-                      </div>
-                      <div class="col-md-9">
-                        <select name="atasan2" id="atasan2" class="select2" style="width:100%">
-                            <option value="0">- Pilih Atasan Tidak Langsung -</option>
-                        </select>
-                      </div>
-                    </div>
-
-                    <div class="row form-row">
-                      <div class="col-md-3">
-                        <label class="form-label text-right"><?php echo 'Atasan Lainnya' ?></label>
-                      </div>
-                      <div class="col-md-9">
-                        <select name="atasan3" id="atasan3" class="select2" style="width:100%">
-                            <option value="0">- Pilih Atasan Lainnya -</option>
-                        </select>
+                      <div class="row form-row">
+                        <div class="col-md-3">
+                          <label class="form-label text-right"><?php echo 'Atasan Lainnya' ?></label>
+                        </div>
+                        <div class="col-md-9">
+                          <select name="atasan3" id="atasan3" class="select2" style="width:100%">
+                              <option value="0">- Pilih Atasan Lainnya -</option>
+                          </select>
+                        </div>
                       </div>
                     </div>
                   </div>

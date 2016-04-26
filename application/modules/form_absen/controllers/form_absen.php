@@ -169,6 +169,7 @@ class form_absen extends MX_Controller {
             else
             {
                 $user_id= $this->input->post('emp');
+                $user_nik= get_nik($user_id);
                 $sess_id = $this->session->userdata('user_id');
                 $data = array(
                     'id_comp_session' => 1,
@@ -217,7 +218,7 @@ class form_absen extends MX_Controller {
                      if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), $subject_email, $isi_email);
                      $this->approval->request('lv1', 'absen', $absen_id, $user_id, $this->detail_email($absen_id));
                  else:
-                     if(!empty(getEmail($this->approval->approver('absen'))))$this->send_email(getEmail($this->approval->approver('absen')), $subject_email, $isi_email);
+                     if(!empty(getEmail($this->approval->approver('absen', $user_nik))))$this->send_email(getEmail($this->approval->approver('absen', $user_nik)), $subject_email, $isi_email);
                      $this->approval->request('hrd', 'absen', $absen_id, $user_id, $this->detail_email($absen_id));
                  endif;
 

@@ -9,12 +9,14 @@ $(document).ready(function() {
                 getAtasan1(empId);
                 getAtasan3(empId);
                 getEmpOrg(empId);
+                getEmpPosGroup(empId);
                 break;
             case 'form_tidak_masuk':
                 getAtasan1(empId);
                 getAtasan3(empId);
                 getEmpOrg(empId);
                 getEmpPos(empId);
+                getEmpPosGroup(empId);
                 break;
             case 'form_cuti':
                 getAtasan1(empId);
@@ -239,6 +241,21 @@ $(document).ready(function() {
             data: {id : empId},
             success: function(data) {
                 $('#position').val(data);
+            }
+        });
+    }
+
+    function getEmpPosGroup(empId)
+    {
+        $.ajax({
+            type: 'POST',
+            url: baseurl+'dropdown/get_emp_pos_group/',
+            data: {id : empId},
+            success: function(data) {
+                $('#position-group').val(data);
+                if(data == "AMD" || "DIR"){
+                    $("#atasan").hide();
+                }
             }
         });
     }

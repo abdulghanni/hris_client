@@ -174,6 +174,7 @@ class form_tidak_masuk extends MX_Controller {
             else
             {
                 $user_id= $this->input->post('emp');
+                $user_nik= get_nik($sess_id);
                 $sess_id = $this->session->userdata('user_id');
                 $data = array(
                     'dari_tanggal' => date('Y-m-d', strtotime($this->input->post('dari_tanggal'))),
@@ -226,7 +227,7 @@ class form_tidak_masuk extends MX_Controller {
                      if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), $subject_email, $isi_email);
                      $this->approval->request('lv1', 'tidak_masuk', $tidak_masuk_id, $user_id, $this->detail_email($tidak_masuk_id));
                  else:
-                     if(!empty(getEmail($this->approval->approver('tidak'))))$this->send_email(getEmail($this->approval->approver('tidak')), $subject_email, $isi_email);
+                     if(!empty(getEmail($this->approval->approver('tidak', $user_nik))))$this->send_email(getEmail($this->approval->approver('tidak', $user_nik)), $subject_email, $isi_email);
                      $this->approval->request('hrd', 'tidak_masuk', $tidak_masuk_id, $user_id, $this->detail_email($tidak_masuk_id));
                  endif;
 
@@ -257,7 +258,7 @@ class form_tidak_masuk extends MX_Controller {
         );    
         $this->load->library('upload', $config);
         if (!$this->upload->do_upload('attachment')){
-            print_r($this->upload->display_errors());
+            //print_r($this->upload->display_errors());
          }else{
             $upload_data = $this->upload->data();
             $image_name = $upload_data['file_name'];
