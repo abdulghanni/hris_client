@@ -1201,7 +1201,7 @@
 
 			if(!empty($username&&$password))
 			{
-				return 'http://'.$username.':'.$password.'@'.$_SERVER['HTTP_HOST'].'/hris_api/';
+				return 'http://'.$username.':'.$password.'@localhost/hris_api/';
 			}else
 			{
 				return false;

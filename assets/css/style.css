@@ -7182,11 +7182,11 @@ ul.my-friends li .profile-pic{
   overflow-y: auto;
 }
 
-.email-body > p > a.klikmail {
+.email-body > p > a.klikemail {
 	-webkit-border-radius: 3px;
 	-moz-border-radius: 3px;
 	border-radius: 3px;
-	padding:10px 12px;
+	padding:5px 12px;
 	background-color: #444444;
 	color: #ffffff;
 }

@@ -405,7 +405,7 @@ class Approval {
         $sess_id = $CI->session->userdata('user_id');
         $url = base_url().'auth/edit_user_approval/'.$id;
         $user_id = getValue('user_id','users_edit_approval', array('id'=>'where/'.$id));
-        $admin = $this->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 1)->get()->result_array();
+        $admin = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 1)->get()->result_array();
         for($i=0;$i<sizeof($admin);$i++):
         $data = array(
                 'sender_id' => get_nik($user_id),
