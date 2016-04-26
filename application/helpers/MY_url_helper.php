@@ -12,7 +12,7 @@ if ( ! function_exists('assets_url'))
     function assets_url($uri = '')
     {
         $CI =& get_instance();
-        $is_pdf = $this->uri->segment(2, 0);
+        $is_pdf = $CI->uri->segment(2, 0);
         $is_pdf = substr($is_pdf, -3);
 
         if($is_pdf == "pdf"){
