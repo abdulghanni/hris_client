@@ -483,7 +483,7 @@ class Dropdown extends MX_Controller {
       $id = $this->input->post('id');
       $form_no = $this->input->post('form-no');
       $user_app_lv1 = getValue('user_app_lv1', 'users_'.$form, array('id'=>'where/'.$id));
-      $subject_email = "Pembatalan Pengajuan $form";
+      $subject_email = "$form_no-Pembatalan Pengajuan $form";
       $isi_email = get_name($sess_id).' membatalkan pengajuan '.$form.' dengan no '.$form_no;
       $this->db->where('id', $id)->update('users_'.$form, array('is_deleted'=>1));
       if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), $subject_email, $isi_email);
