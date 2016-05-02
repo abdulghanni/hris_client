@@ -81,7 +81,8 @@
                   $link = site_url('email/detail/'.$row->id);
                 ?>
                 <td valign="large"><a href="<?php echo $link ?>"><?php echo get_name($row->sender_id) ?></a></td>
-                <td valign="large" class="tablefull"><span class="muted"><a href="<?php echo $link?>"><?php $subject = ($row->is_read == 0) ? '<b>'.$row->subject.'</b>' : $row->subject; echo word_limiter($subject.' - '.$row->email_body, 15)?></a></span></td>
+                <td valign="large" class="tablefull">
+                <span class="muted"><a href="<?php echo $link?>"><?php $subject = ($row->is_read == 0) ? '<b>'.$row->subject.'</b>' : $row->subject; echo word_limiter($subject.' - '.$row->email_body, 15)?></a></span></td>
                 <td class=""><span class="muted"><?php  $now = date('Y-m-d',strtotime('now'));
 
                   if (date('Y-m-d', strtotime($row->sent_on)) == $now)

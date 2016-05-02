@@ -853,6 +853,7 @@ class Auth extends MX_Controller {
             $groups=$this->ion_auth->groups()->result_array();
         }else{
             $groups=$this->ion_auth->where("(`bu` = '$user_bu' or `admin_type_id` = '1')",null, false)->groups()->result_array();
+            $groups=$this->ion_auth->groups()->result_array();
         }
         $currentGroups = $this->ion_auth->get_users_groups($id)->result();
 

@@ -342,7 +342,7 @@ class Form_cuti_model extends CI_Model
                 $this->db->where("(users_cuti.user_id = '$sess_id' 
                                OR users_cuti.user_app_lv1 = '$sess_nik'  OR users_cuti.user_app_lv2 = '$sess_nik'  OR users_cuti.user_app_lv3 = '$sess_nik' 
                 )",null, false);
-            }elseif($is_approver !== $sess_nik && $is_admin_cabang != 1){
+            }elseif($is_approver == $sess_nik && $is_admin_cabang == 1){
                 $user = get_user_satu_bu($sess_nik);
                 $this->db->where_in("nik", $user);
             }

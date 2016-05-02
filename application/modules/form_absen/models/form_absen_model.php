@@ -297,7 +297,7 @@ class Form_absen_model extends CI_Model
         {
             $sess_id = $this->session->userdata('user_id');
             $sess_nik = get_nik($sess_id);
-            $is_approver = $this->approval->approver('absen', $sess_nik);
+            $is_approver = $this->approval->approver('absen', $sess_nik);//print_mz($is_approver);
             $is_admin = is_admin();
             $is_admin_cabang = is_admin_cabang();
             if(!empty(is_have_subordinate(get_nik($sess_id)))){

@@ -253,8 +253,10 @@ $(document).ready(function() {
             data: {id : empId},
             success: function(data) {
                 $('#position-group').val(data);
-                if(data == "AMD" || "DIR"){
+                if(data == "AMD"){
                     $("#atasan").hide();
+                }else{
+                    $("#atasan").show();
                 }
             }
         });

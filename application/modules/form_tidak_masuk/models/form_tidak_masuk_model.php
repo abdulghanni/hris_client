@@ -325,6 +325,7 @@ class Form_tidak_masuk_model extends CI_Model
                 )",null, false);
             }
             
+            $this->db->where('users_tidak_masuk.is_deleted', 0);
             $this->db->order_by('users_tidak_masuk.id', 'desc');
         }
 

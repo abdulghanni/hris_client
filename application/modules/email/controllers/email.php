@@ -183,7 +183,7 @@ class Email extends MX_Controller {
 
         if(!empty($match)){
             $uri = parse_url($match[0]);
-            $urix = base_url() . $uri['path'];
+            $urix = 'http://'.$_SERVER['HTTP_HOST']. $uri['path'];
             redirect($urix,'refresh');
         }else{
             $this->_render_page('email/detail', $this->data);

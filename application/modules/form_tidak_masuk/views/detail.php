@@ -165,7 +165,7 @@
                             $approved = assets_url('img/approved_stamp.png');
                             $rejected = assets_url('img/rejected_stamp.png');
                             $pending = assets_url('img/pending_stamp.png');
-                        if(!empty($tidak_masuk->user_app_lv2)) :
+                        if(!empty($tidak_masuk->user_app_lv1)) :
                             if(!empty($tidak_masuk->user_app_lv1) && $tidak_masuk->is_app_lv1 == 0 && get_nik($sess_id) == $tidak_masuk->user_app_lv1){?>
                               <button id="btn_app_lv1" class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok"></i>Submit</button>
                               <span class="small"></span>

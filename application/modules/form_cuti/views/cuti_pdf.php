@@ -40,7 +40,7 @@
 
 <body>
 <div align="center">
-  <p align="left"><img src="<?php echo assets_url('img/erlangga.jpg')?>"/></p>
+  <p align="left"><img src="<?php echo 'http://localhost/hris_client/assets/img/erlangga.jpg'?>"/></p>
   <p align="center" class="style6">Form Permohonan Cuti</p>
   <p class="style1">No : <?= get_form_no($id) ?></p>
 </div>

@@ -104,7 +104,7 @@
                           <p class="wf-approve-sp">
                             <?php
                             $approved = assets_url('img/approved_stamp.png');
-                            if(!empty($absen->user_app_lv2)) :
+                            if(!empty($absen->user_app_lv1)) :
                             if(!empty($absen->user_app_lv1) && $absen->is_app_lv1 == 0 && get_nik($sess_id) == $absen->user_app_lv1){?>
                               <button id="btn_app_lv1" class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok"></i>Submit</button>
                               <span class="small"></span>
