@@ -14,6 +14,7 @@ class Approval {
 
     public function request($lv, $form, $id, $user_id, $detail)
     {
+        $detail = "";
     	$CI =& get_instance();
     	$url = base_url().'form_'.$form.'/detail/'.$id;
         $user_app = getValue('user_app_'.$lv, 'users_'.$form, array('id'=>'where/'.$id));
@@ -153,6 +154,7 @@ class Approval {
 
     public function by_admin($form, $id, $created_by, $created_for, $detail)
     {
+        $detail="";
         $CI =& get_instance();
         $url = base_url().'form_'.$form.'/detail/'.$id;
         switch ($form) {
@@ -220,6 +222,7 @@ class Approval {
 
     public function approve($form, $id, $approval_status, $detail)
     {
+        $detail="";
     	$CI =& get_instance();
     	$sess_id = $CI->session->userdata('user_id');
     	$url = base_url().'form_'.$form.'/detail/'.$id;
@@ -289,6 +292,7 @@ class Approval {
 
     public function update_approve($form, $id, $approval_status, $detail)
     {
+        $detail="";
     	$CI =& get_instance();
         $sess_id = $CI->session->userdata('user_id');
         $url = base_url().'form_'.$form.'/detail/'.$id;
@@ -344,6 +348,7 @@ class Approval {
 
     public function not_approve($form, $id, $receiver_id, $approval_status, $detail)
     {
+        $detail="";
         $CI =& get_instance();
         $sess_id = $CI->session->userdata('user_id');
         $url = base_url().'form_'.$form.'/detail/'.$id;
@@ -437,6 +442,7 @@ class Approval {
 
     public function task_receiver($form, $id, $detail)
     {
+        $detail="";
         $CI =& get_instance();
         $sess_id = $CI->session->userdata('user_id');
         $url = base_url().'form_pjd/submit/'.$id;

@@ -208,4 +208,90 @@ $(document).ready(function() {
             });
         });
 
+    $(".cek:not(:checked)").each(function() {
+        $("#btnRemove").hide();
+    });
+
+    $(".cek:checkbox").click(function(){
+         $("#btnRemove").show();
+    });
+
+    $('#btnUpdateInv').click(function(){
+        $(this).hide();
+        $("#btnAdd").show();
+        $(".no").hide();
+        $(".cek").show();
+        $("#update-button").show("slow");
+        $("#atasan").show("slow");
+        $("#ttd").hide("slow");
+        $('.note').attr('disabled',false);
+    });
+
+    $("#btnRemove").on("click", function () {
+        $('table tr').has('input[name="row"]:checked').remove();
+    })
+
+    $("#btnCancel").on("click", function () {
+        $('#btnCancel').text('Canceling...'); //change button text
+        location.reload();
+    })
+
+    $("#btnSave").on("click", function () {
+        $('#btnSave').text('saving'); //change button text
+        $('#btnSave').attr('disabled',true); //set button enable
+        var exit_id = $("#exit_id").val(),
+            type = $("#type").val();
+        $.ajax({
+            url : '../inventory/add_inventory/'+exit_id+"/"+type,
+            type: "POST",
+            data: $('#formInv').serialize(),
+            dataType: "html",
+            success: function(data)
+            {
+                $("#btnUpdateInv").show();
+                $("#btnAdd").hide();
+                $(".no").show();
+                $(".cek").hide();
+                $("#update-button").hide("slow");
+                $("#atasan").hide("slow");
+                $("#ttd").show("slow");
+                $('#btnSave').text('saving'); //change button text
+                $('#btnSave').attr('disabled',true); //set button enable
+                $("#table").html(data);
+                location.reload();
+            },
+            error: function (jqXHR, textStatus, errorThrown)
+            {
+                alert('Error adding / update data');
+                $('#btnSave').text('save'); //change button text
+                $('#btnSave').attr('disabled',false); //set button enable 
+
+            }
+        });
+    })
+
 });
+
+function addRow(tableID){
+    $("#col-null").remove();
+    $("#update-button").show("slow");
+    $("#atasan").show("slow");
+    $("#ttd").hide("slow");
+    
+    var table=document.getElementById(tableID),
+        isBaru = $("#baru").val(),
+        rowCount = 1;
+    if(isBaru == 1){
+        rowCount=table.rows.length-1;
+    }else{
+        rowCount=table.rows.length;
+    }
+    $.ajax({
+            url: '../inventory/add_row/'+rowCount,
+            success: function(response){
+                $("#"+tableID).find('tbody').append(response);
+             },
+             dataType:"html"
+        });
+    
+}

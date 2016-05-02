@@ -93,6 +93,7 @@
                             </tr>
                           <?php endforeach;?>
                           </table>
+                          <button class="btn btn-primary btn-xs" type="button" style="margin-top:-75px;" onclick="addRow('table')"><i class="icon-plus"></i> Tambah Item</button><br/>
                           <div class="row form-row">
                             <div class="col-md-12">
                               <label class="bold form-label text-left"><?php echo 'Approval' ?></label>

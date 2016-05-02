@@ -53,7 +53,7 @@ class Inventory extends MX_Controller {
             
             
             //set default limit in var $config['list_limit'] at application/config/ion_auth.php 
-            $this->data['limit'] = $limit = 10;//(strlen($this->input->post('limit')) > 0) ? $this->input->post('limit') : $this->config->item('list_limit', 'ion_auth') ;
+            $this->data['limit'] = $limit = (strlen($this->input->post('limit')) > 0) ? $this->input->post('limit') : $this->config->item('list_limit', 'ion_auth') ;
 
             $this->data['offset'] = 6;
 
@@ -179,6 +179,7 @@ class Inventory extends MX_Controller {
                 $exit_id = $this->db->select('id')->order_by('id', 'asc')->get('users_exit')->last_row();
                 $this->data['exit_id']  = ($num_rows_exit>0)?$exit_id->id+1:1;
                 $this->data['is_submit'] = 0;
+                $this->data['user_app_lv1'] = "xxxx";
             }
             $this->db->insert_id();
             $q = $this->db->get('users_exit');
@@ -189,7 +190,7 @@ class Inventory extends MX_Controller {
             $this->data['type'] = $type;
             //$this->data['inventory'] = GetJoin("inventory", "users_inventory", "users_inventory.inventory_id = inventory.id",  "left", 'users_inventory.*, inventory.title as title', array('users_inventory.user_id'=>'where/'.$user_id, 'inventory.type_inventory_id'=>'where/'.$group_id));
             $this->data['inventory'] = GetAll('inventory', array('type_inventory_id'=>'where/'.$group_id));
-            $this->data['users_inventory'] = GetJoin("users_inventory", "inventory", "users_inventory.inventory_id = inventory.id",  "left", 'users_inventory.*, inventory.title as title', array('users_inventory.user_id'=>'where/'.$user_id, 'inventory.type_inventory_id'=>'where/'.$group_id));
+            $this->data['users_inventory'] = GetJoin("users_inventory", "inventory", "users_inventory.inventory_id = inventory.id",  "left", 'users_inventory.id as id, users_inventory.user_id, users_inventory.inventory_id, users_inventory.note, inventory.title as title', array('users_inventory.user_id'=>'where/'.$user_id, 'inventory.type_inventory_id'=>'where/'.$group_id, 'users_inventory.is_deleted'=>'where/0'));
             $this->_render_page('inventory/detail', $this->data);
         }
     }
@@ -290,26 +291,18 @@ class Inventory extends MX_Controller {
             }
 
         $inventory_id = $this->input->post('inventory_id');
+        $note = $this->input->post('note');
         
-        $x='';
-        $x2='';
-        for ($i=1; $i<=sizeof($inventory_id);$i++) {
-            $x .= $this->input->post('is_available_'.$i).',';
-            $x2 .= $this->input->post('note_'.$i).',';
-        }
-
-        $is_available = explode(',',$x);
-        $note = explode(',',$x2);
+        $this->db->where('user_id', $this->input->post('emp'))->update('users_inventory', array('is_deleted'=>1));
         for($i=0;$i<sizeof($inventory_id);$i++){
-            $data = array(
+            $data = array(             
                 'user_id' => $this->input->post('emp'),
                 'inventory_id' => $inventory_id[$i],
-                'is_available'=>$is_available[$i],
+                'is_available'=>1,
                 'note'=>$note[$i],
                 'created_by'=>$this->session->userdata('user_id'),
                 'created_on' => date('Y-m-d',strtotime('now')),
                 );
-
             $this->db->insert('users_inventory', $data);
             //$this->db->insert('users_inventory_exit', $data);
         }
@@ -322,7 +315,10 @@ class Inventory extends MX_Controller {
         $this->db->where('id',$exit_id)->update('users_exit', $data2);
         $user_id = $this->input->post('emp');
         $this->send_approval_request($user_id, $type);
-        redirect('inventory/detail/'.$user_id,'refresh');
+        $group_id = 2;
+        $this->data['users_inventory'] = GetJoin("users_inventory", "inventory", "users_inventory.inventory_id = inventory.id",  "left", 'users_inventory.id as id, users_inventory.user_id, users_inventory.inventory_id, users_inventory.note, inventory.title as title', array('users_inventory.user_id'=>'where/'.$this->input->post('emp'), 'inventory.type_inventory_id'=>'where/'.$group_id, 'users_inventory.is_deleted'=>'where/0'));
+        $this->load->view('inventory/table', $this->data);
+        //echo json_encode(array('status'=>true));
     }
 
     function update($user_id, $type)
@@ -575,5 +571,33 @@ class Inventory extends MX_Controller {
         {
             return $this->load->view($view, $data, TRUE);
         }
+    }
+
+    function add_row($id){
+        if(is_admin_it() || $sess_nik===$superior_it){
+            $group_id = 2;
+            $type = 'it';
+        }elseif(is_admin_hrd() ||$sess_nik===$superior_hrd){
+            $group_id = 1;
+            $type = 'hrd';
+        }elseif(is_admin_logistik() || $sess_nik===$superior_logistik){
+            $group_id = 3;
+            $type = 'logistik';
+        }elseif(is_admin_perpus() || $sess_nik===$superior_perpus){
+            $group_id = 5;
+            $type = 'perpus';
+        }elseif(is_admin_koperasi() || $sess_nik===$superior_koperasi){
+            $group_id = 4;
+            $type = 'koperasi';
+        }elseif(is_admin_keuangan() || $sess_nik===$superior_keuangan){
+            $group_id = 6;
+            $type = 'keuangan';
+        }else{
+            $group_id = 0;
+        }
+        
+        $data['id'] = $id;
+        $data['item'] = GetAllSelect('inventory','id,title', array('type_inventory_id'=>'where/'.$group_id))->result();
+        $this->load->view('inventory/item', $data);
     }
 }   
