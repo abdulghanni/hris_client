@@ -1,5 +1,20 @@
 $(document).ready(function() {	
 	$(".select2").select2();
+	//$("#multi").val(["Jim","Lucy"]).select2();
+	//$("#multi").val([1,2,3,4]).select2();
+	var emp_id = $("#emp_id").val();
+	var base_url = $("#base_url").val();
+	//tes();
+	$.ajax({
+            type: 'GET',
+            url: base_url+'auth/get_emp_group/'+emp_id,
+            dataType: "JSON",
+            success: function(data) {
+                $("#multi").val(data).select2();
+            }
+        });
+	
+
 	//Date Pickers
 	  $('.input-append.date').datepicker({
   			format: "dd-mm-yyyy",

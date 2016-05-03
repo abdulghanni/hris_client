@@ -47,6 +47,7 @@
                             <div <?php ( ! empty($message)) && print('class="alert alert-info"'); ?> id="infoMessage"><?php echo $message;?></div>
                             <?php echo form_open_multipart(uri_string(), array('id'=>'formedituser'));?>
                                 <div class="col-md-6">
+                                    <input type="hidden" id="base_url" value="<?=base_url()?>">
                                     <h4><?php echo lang('employee_information_subheading')?></h4>
                                     <div class="form-group">
                                         <!-- <div class="input-with-icon right"> -->
@@ -210,12 +211,23 @@
                                             <?php echo bs_form_input($password_confirm);?>                               
                                         </div>
                                     </div>
-
+                                    <input type="hidden" id="emp_id" value="<?= $this->uri->segment(3,0)?>">
+                                    
                                     <?php if ($this->ion_auth->is_admin()): ?>
+                                        
                                         <div class="form-group">
                                             <?php echo lang('edit_user_groups_heading');?>
                                             <div class="input-with-icon right">                                     
-                                                
+                                                <select id="multi" name="groups[]" style="width:100%" multiple>
+                                                <?php foreach ($groups as $group):?>
+                                                    <option value="<?=$group['id']?>">
+                                                    <?php 
+                                                        echo $group['name'];
+                                                    ?>
+                                                    </option>
+                                                     <?php endforeach?>
+                                                </select>
+                                                <!--
                                                 <?php foreach ($groups as $group):?>
                                                 <div class="checkbox check-success">
                                                     <?php
@@ -239,6 +251,7 @@
                                                     </div>
                                                 <?php endforeach?>
                                                 <input type="checkbox" id="checkboxuser" name="groups[]" value="2" checked="checked" style="display:none">
+                                        -->
                                             </div>
                                         </div>
                                     <?php endif ?>

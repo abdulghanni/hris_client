@@ -867,7 +867,7 @@ class Auth extends MX_Controller {
 
        if (isset($_POST) && !empty($_POST))
         {
-            $first_name = getValue( 'first_name', 'users', array('id'=>'where/'.$id));
+            $first_name = getValue('first_name', 'users', array('id'=>'where/'.$id));
             $last_name =getValue('last_name','users', array('id'=>'where/'.$id));
             $bod = getValue('bod','users', array('id'=>'where/'.$id));
             $marital_id = getValue('marital_id','users', array('id'=>'where/'.$id));
@@ -3822,5 +3822,14 @@ class Auth extends MX_Controller {
 
         $this->session->set_userdata($session_data);
         redirect('/','refresh');
+    }
+
+    function get_emp_group($id){
+        $currentGroups = $this->ion_auth->get_users_groups($id)->result();//print_mz($currentGroups);
+        $grpx = array();
+        foreach($currentGroups as $grp) {
+            $grpx[] = $grp->id;                                             
+        }
+        echo json_encode($grpx);
     }
 }
