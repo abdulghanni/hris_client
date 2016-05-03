@@ -297,7 +297,9 @@ class form_spd_luar_group_model extends CI_Model
         {
             $sess_id = $this->session->userdata('user_id');
             $sess_nik = get_nik($sess_id);
-            $admin = is_admin();
+            $admin = is_admin();$user = get_user_satu_bu_nik($sess_nik);
+            
+            $is_admin_cabang = is_admin_cabang();
             $is_approver = $this->approval->approver('dinas', $sess_nik);
             //default selects
             $this->db->select(array(
@@ -314,13 +316,14 @@ class form_spd_luar_group_model extends CI_Model
             $this->db->join('transportation', 'users_spd_luar_group.transportation_id = transportation.id');
             $this->db->join('city as city_to','users_spd_luar_group.to_city_id = city_to.id');
             $this->db->join('city as city_from','users_spd_luar_group.from_city_id = city_from.id');
-            
+            $this->db->where('users_spd_luar_group.is_deleted', 0);
             if($id != null){
                 $this->db->where('users_spd_luar_group.id', $id);
             }
             
-            //$this->db->where('users_spd_luar_group.is_deleted', 0);
-            if($is_approver !== $sess_nik && $admin != 1){
+            if($is_approver == $sess_nik || $is_admin_cabang == 1){
+                $this->db->where_in("users_spd_luar_group.task_creator", $user);
+            }elseif($is_admin!=1){
                 //$this->db->where("(users_spd_luar_group.task_receiver like '%$sess_nik%' OR users_spd_luar_group.task_creator = '$sess_nik' )",null, false);
                 $this->db->where("(users_spd_luar_group.task_receiver like '%$sess_nik%' OR users_spd_luar_group.task_creator = '$sess_nik' OR users_spd_luar_group.created_by = '$sess_id' 
                                OR users_spd_luar_group.user_app_lv1 = '$sess_nik'  OR users_spd_luar_group.user_app_lv2 = '$sess_nik'  OR users_spd_luar_group.user_app_lv3 = '$sess_nik' 

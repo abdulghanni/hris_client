@@ -14,8 +14,9 @@
 | path to your installation.
 |
 */
-//$config['base_url']	= 'http://'.$_SERVER['HTTP_HOST'].'/hris_client/';
-$config['base_url']	= 'http://10.1.1.13/hris_client/';
+//$config['base_url']	= 'http://123.231.241.12/hris_client/';
+$config['base_url']	= 'http://'.$_SERVER['HTTP_HOST'].'/hris_client/';
+//$config['base_url']	= 'http://10.1.1.13/hris_client/';
 
 /*
 |--------------------------------------------------------------------------

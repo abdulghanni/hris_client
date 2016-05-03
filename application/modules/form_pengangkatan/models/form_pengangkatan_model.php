@@ -298,7 +298,9 @@ class Form_pengangkatan_model extends CI_Model
             $sess_id = $this->session->userdata('user_id');
             $sess_nik = get_nik($sess_id);
             $is_approver = $this->approval->approver('pengangkatan', $sess_nik);
-            $is_admin = is_admin();
+            $is_admin = is_admin();$user = get_user_satu_bu($sess_nik);
+            
+            $is_admin_cabang = is_admin_cabang();
             if(!empty(is_have_subordinate(get_nik($sess_id)))){
             $sub_id = get_subordinate($sess_id);
             }else{
@@ -326,8 +328,11 @@ class Form_pengangkatan_model extends CI_Model
             $this->db->join('approval_status as status_lv2', 'users_pengangkatan.app_status_id_lv2 = status_lv2.id', 'left');
             $this->db->join('approval_status as status_lv3', 'users_pengangkatan.app_status_id_lv3 = status_lv3.id', 'left');
             $this->db->join('approval_status as status_hrd', 'users_pengangkatan.app_status_id_hrd = status_hrd.id', 'left');
+            $this->db->where('users_pengangkatan.is_deleted', 0);
             if($id != null)$this->db->where('users_pengangkatan.id', $id);
-            if($is_approver !== $sess_nik && $is_admin!=1){
+            if($is_approver == $sess_nik || $is_admin_cabang == 1){
+                $this->db->where_in("users_pengangkatan.user_id", $user);
+            }elseif($is_admin!=1){
                 //$this->db->where("(users_pengangkatan.user_id= $sess_id $sub_id $subsub_id )",null, false);
                 $this->db->where("(users_pengangkatan.user_id = $sess_id OR  users_pengangkatan.user_app_lv1 = '$sess_nik' OR users_pengangkatan.user_app_lv2 = '$sess_nik' OR users_pengangkatan.user_app_lv3 = '$sess_nik' OR users_pengangkatan.created_by = '$sess_id')",null, false);
             }

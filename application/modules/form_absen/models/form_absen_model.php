@@ -297,6 +297,7 @@ class Form_absen_model extends CI_Model
         {
             $sess_id = $this->session->userdata('user_id');
             $sess_nik = get_nik($sess_id);
+            $user = get_user_satu_bu($sess_nik);
             $is_approver = $this->approval->approver('absen', $sess_nik);//print_mz($is_approver);
             $is_admin = is_admin();
             $is_admin_cabang = is_admin_cabang();
@@ -323,14 +324,14 @@ class Form_absen_model extends CI_Model
             $this->db->join('keterangan_absen', 'users_absen.keterangan_id = keterangan_absen.id', 'LEFT');
             $this->db->join('comp_session', 'users_absen.id_comp_session = comp_session.id', 'left');
             $this->db->join('users', 'users_absen.user_id = users.id', 'left');
-			
-            if($is_approver !== $sess_nik && $is_admin!=1 ){
+			$this->db->where('users_absen.is_deleted', 0);
+			if($is_approver == $sess_nik || $is_admin_cabang == 1){
+                
+                $this->db->where_in("users_absen.user_id", $user);
+            }elseif($is_admin!=1 ){
                  $this->db->where("(users_absen.user_id = '$sess_id' 
                                OR users_absen.user_app_lv1 = '$sess_nik'  OR users_absen.user_app_lv2 = '$sess_nik'  OR users_absen.user_app_lv3 = '$sess_nik' 
                 )",null, false);
-            }elseif($is_approver !== $sess_nik && $is_admin_cabang != 1){
-                $user = get_user_satu_bu($sess_nik);
-                $this->db->where_in("nik", $user);
             }
             
             $this->db->order_by('users_absen.id', 'desc');

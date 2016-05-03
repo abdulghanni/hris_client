@@ -299,6 +299,8 @@ class Form_tidak_masuk_model extends CI_Model
             $sess_nik = get_nik($sess_id);
             $is_approver = $this->approval->approver('tidak', $sess_nik);
             $is_admin = is_admin();
+            $is_admin_cabang = is_admin_cabang();
+            $user = get_user_satu_bu($sess_nik);
             if(!empty(is_have_subordinate(get_nik($sess_id)))){
             $sub_id = get_subordinate($sess_id);
             }else{
@@ -318,8 +320,10 @@ class Form_tidak_masuk_model extends CI_Model
             ));
 
             $this->db->join('users', 'users_tidak_masuk.user_id = users.id', 'left');
-			
-            if($is_approver !== $sess_nik && $is_admin!=1 ){
+			$this->db->where('users_tidak_masuk.is_deleted', 0);
+            if($is_approver == $sess_nik || $is_admin_cabang == 1){
+                $this->db->where_in("users_tidak_masuk.user_id", $user);
+            }elseif($is_admin!=1 ){
                  $this->db->where("(users_tidak_masuk.user_id = '$sess_id' 
                                OR users_tidak_masuk.user_app_lv1 = '$sess_nik'  OR users_tidak_masuk.user_app_lv2 = '$sess_nik'  OR users_tidak_masuk.user_app_lv3 = '$sess_nik' 
                 )",null, false);
