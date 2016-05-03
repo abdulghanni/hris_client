@@ -82,7 +82,7 @@
 						                    <td>
 						                    	<?php echo ($user_att[$i]['ATTENDANCESTATUS'] === 1) ? 'PRESENCE' : (($user_att[$i]['ATTENDANCESTATUS']===2) ? 'Absence' : '' )?>
 						                    </td>
-						                    <td><?php echo $user_att[$i]['ABSENCESTATUS']?></td>
+						                    <td><?php echo get_status($user_att[$i]['ABSENCESTATUS'])?></td>
 						                    <td><?php echo ($user_att[$i]['CLOCKIN'] != 0)?date('H:i:s', $user_att[$i]['CLOCKIN']) : '-';?></td>
 						                    <td><?php echo ($user_att[$i]['CLOCKOUT'] != 0)?date('H:i:s', $user_att[$i]['CLOCKOUT']) : '-';?></td>
 						                    
@@ -148,3 +148,47 @@ $(document).ready(function() {
 	});
 });
 </script>
+
+<?php
+
+function get_status($id){
+    switch ($id) {
+        case '15':
+            return "Pulang Cepat";
+            break;
+        case '2':
+            return "Libur";
+            break;
+        case '3':
+            return "Kuliah";
+            break;
+        case '5':
+            return "Cuti";
+            break;
+        case '6':
+            return "PJD";
+            break;
+        case '8':
+            return "OFF";
+            break;
+        case '9':
+            return "Alpha";
+            break;
+        case '12':
+            return "Sakit";
+            break;
+        case '13':
+            return "Izin";
+            break;
+        case '14':
+            return "Tidak Lengkap";
+            break;
+        case '18':
+            return "Telat";
+            break;
+        
+        default:
+            return "-";
+            break;
+    }
+}
