@@ -341,7 +341,7 @@ class Recruitment_model extends CI_Model
             $this->db->order_by('users_recruitment.id', 'desc');
             if($is_approver == $sess_nik || $is_admin_cabang == 1){
                 $this->db->where_in("users_recruitment.user_id", $user);
-            }elseif($is_admin!=1){
+            }elseif($admin!=1){
                 //$this->db->where("(users_recruitment.user_id= $sess_id $sub_id $subsub_id )",null, false);
                 $this->db->where("(users_recruitment.user_id = $sess_id OR  users_recruitment.user_app_lv1 = '$sess_nik' OR users_recruitment.user_app_lv2 = '$sess_nik' OR users_recruitment.user_app_lv3 = '$sess_nik' OR users_recruitment.created_by = '$sess_id')",null, false);
             }
