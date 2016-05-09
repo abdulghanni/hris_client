@@ -67,12 +67,13 @@ th{
       <th width="15%">Hubungan</th>
       <th width="13%">Jenis Pemeriksaan</th>
       <th width="12%">Rupiah</th>
-      <th width="10%">Disetujui</th>
+      <?php if(!empty($detail_hrd))'<th width="10%">Disetujui</th>'; ?>
     </tr>
   </thead>
   <tbody>
 	<?php 
 	  if(!empty($detail_hrd)){
+      $colspan = 5;
 	     $total = $detail_hrd[0]['rupiah'];
 	      for($i=0;$i<sizeof($detail_hrd);$i++):
 	      $is_approve = ($detail_hrd[$i]['is_approve'] == 1) ? 'Ya':'Tidak';
@@ -87,11 +88,31 @@ th{
 	    <td><?php echo  'Rp. '.number_format($detail_hrd[$i]['rupiah'], 0)?></td>
 	    <td align="center"><?php echo $is_approve?></td>
 	  </tr>
-	    <?php
-	    endfor;}
+	    <?php $total = $total_medical_hrd;
+	    endfor;}else{
+        $colspan = 4;
+        $total = $detail[0]['rupiah'];
+                             $approved = assets_url('img/approved_stamp.png');
+                             $rejected = assets_url('img/rejected_stamp.png');
+                            $pending = assets_url('img/pending_stamp.png');
+                              for($i=0;$i<sizeof($detail);$i++):
+                              ?>
+                          <tr>
+                            <td><?php echo get_nik($detail[$i]['karyawan_id'])?></td>
+                            <td><?php echo get_name($detail[$i]['karyawan_id'])?></td>
+                            <td><?php echo $detail[$i]['pasien']?></td>
+                            <td><?php echo $detail[$i]['hubungan']?></td>
+                            <td><?php echo $detail[$i]['jenis']?></td>
+                            <td align="right"><?php echo  'Rp. '.number_format($detail[$i]['rupiah'], 0)?></td>
+                          </tr>
+      <?php
+        if(sizeof($detail)>1 && isset($detail[$i+1])){
+        $total = $total + $detail[$i+1]['rupiah'];
+        }
+        endfor;}
 	    ?>
 	    <tr>
-	    <td align="right" colspan="5">Total : </td><td colspan="2"><?php echo 'Rp. '.number_format($total_medical_hrd, 0)?></td>
+	    <td align="right" colspan="<?=$colspan?>">Total : </td><td colspan="2"><?php echo 'Rp. '.number_format($total, 0)?></td>
 	   </tr>
 	</tbody>
 </table>
