@@ -197,6 +197,8 @@ class Inventory extends MX_Controller {
 
     function input($user_id)
     {
+        redirect(base_url()."inventory/detail/".$user_id, 'refresh');
+        /*
         $this->data['title'] = 'Input Inventaris';
         $this->data['sess_nik'] = $sess_nik = get_nik($this->session->userdata('user_id'));
         $superior_it = getValue('user_app_lv1_it', 'users_exit', array('user_id'=>'where/'.$user_id));
@@ -262,7 +264,8 @@ class Inventory extends MX_Controller {
             $this->data['inventory'] = GetAll('inventory', array('type_inventory_id'=>'where/'.$group_id));
 
             $this->_render_page('inventory/input', $this->data);
-        }
+            
+        }*/
     }
 
     function add_inventory($exit_id, $type)
