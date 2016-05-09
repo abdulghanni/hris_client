@@ -112,7 +112,7 @@ th{
         endfor;}
 	    ?>
 	    <tr>
-	    <td align="right" colspan="<?=$colspan?>">Total : </td><td colspan="2"><?php echo 'Rp. '.number_format($total, 0)?></td>
+	    <td align="right" colspan="<?=$colspan?>">Total : </td><td align="right" colspan="2"><?php echo 'Rp. '.number_format($total, 0)?></td>
 	   </tr>
 	</tbody>
 </table>

@@ -313,7 +313,7 @@ class Auth extends MX_Controller {
         }
         $user_id = get_id($nik);
         $msg = 'Dear admin [IT/GA/Koperasi/Perpustakaan/HRD/Keuangan],<br/><p>'.get_name($nik).' telah berhasil melakukan registrasi di Web-HRIS. silakan melakukan input item inventaris karyawan yang bersangkutan.<br/>'
-               .'Silakan klik tautan berikut untuk mengarahkan ke halaman input inventaris <a class="klikemail" href="'.base_url("inventory/input/$user_id").'">Klik Disini</a></p>';
+               .'Silakan klik tautan berikut untuk mengarahkan ke halaman input inventaris <a class="klikemail" href="'.base_url("inventory/detail/$user_id").'">Klik Disini</a></p>';
         
         if(!empty($emails))$this->send_email($emails, 'Permintaan Input Data Inventaris Karyawan', $msg);
         for($i=0;$i<sizeof($admin_inventaris);$i++):
