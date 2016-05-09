@@ -251,8 +251,13 @@
                         <div class="col-md-3">
                           <p class="wf-approve-sp">
                             <?php
-                            if($tidak_masuk->is_app_hrd == 0 && $this->approval->approver('tidak', $user_nik) == $sess_nik){?>
+                            if($tidak_masuk->is_app_hrd == 0 && $this->approval->approver('tidak', $user_nik) == $sess_nik){
+                              if(cek_approval_atasan($id)):
+                              ?>
                               <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitModalHrd"><i class="icon-ok"></i>Submit</div>
+                              <?php else: ?>
+                                <label>Menunggu approval dari atasan</label>
+                              <?php endif; ?>
                               <span class="small"></span>
                               <span class="semi-bold"></span><br/>
                               <span class="small"></span><br/>

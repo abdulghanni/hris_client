@@ -190,8 +190,13 @@
                         <div class="col-md-3">
                           <p class="wf-approve-sp">
                             <?php
-                            if($absen->is_app_hrd == 0 && $this->approval->approver('absen', $user_nik) == $sess_nik){?>
+                            if($absen->is_app_hrd == 0 && $this->approval->approver('absen', $user_nik) == $sess_nik){
+                              if(cek_approval_atasan($id)):
+                              ?>
                               <button id="btn_app_hrd" class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok"></i>Submit</button>
+                              <?php else: ?>
+                                <label>Menunggu approval dari atasan</label>
+                              <?php endif; ?>
                               <span class="small"></span>
                               <span class="semi-bold"></span><br/>
                               <span class="small"></span><br/>

@@ -321,10 +321,11 @@
 	{	
 		function get_id($nik)
 		{
+			//print_mz($nik);
 			$CI =& get_instance();
 			if($nik !== 0)
 			{
-			$q = $CI->db->select('id')->from('users')->where('nik', $nik)->get()->row()->id;
+			$q = getValue('id', 'users', array('nik'=>'where/'.$nik));//$CI->db->select('id')->from('users')->where('nik', $nik)->get()->row()->id;print_mz($q);lastq();
 			
 				return $q;
 			}else{
@@ -1280,4 +1281,53 @@
 		}
 
 	}
+}
+
+function cek_approval_atasan($id){
+
+		$CI =&get_instance();
+		$uri = $CI->uri->segment(1,0);
+		if($uri == 'form_pjd')$uri='form_spd_luar_group';
+		$form = substr($uri, 5);
+
+		if ($form == 'training_group' || $form == 'training') {
+			$user_id = 'user_pengaju_id';
+		}elseif(substr($form, 0, 3) == 'spd' ){
+			$user_id = 'task_creator';
+		}else{
+			$user_id = 'user_id';
+		}
+
+	 	$app_lv1 = getValue('is_app_lv1', 'users_'.$form, array('id'=>'where/'.$id));
+        $app_lv2 = getValue('is_app_lv2', 'users_'.$form, array('id'=>'where/'.$id));
+        $app_lv3 = getValue('is_app_lv3', 'users_'.$form, array('id'=>'where/'.$id));
+
+        $user_app_lv1 = getValue('user_app_lv1', 'users_'.$form, array('id'=>'where/'.$id));
+        $user_app_lv2 = getValue('user_app_lv2', 'users_'.$form, array('id'=>'where/'.$id));
+        $user_app_lv3 = getValue('user_app_lv3', 'users_'.$form, array('id'=>'where/'.$id));
+
+        if(!empty($user_app_lv1) && empty($user_app_lv2) && empty($user_app_lv3)){
+            $total_app = '1';
+        }elseif(!empty($user_app_lv1) && !empty($user_app_lv2) && empty($user_app_lv3)){
+            $total_app = '2';
+        }elseif(!empty($user_app_lv1) && !empty($user_app_lv2) && !empty($user_app_lv3)){
+            $total_app = '3';
+        }else{
+            $total_app = '0';
+        }
+
+        switch ($total_app) {
+            case "1":
+                if($app_lv1==1){return true;}else{return false;};
+                break;
+            case "2":
+                if($app_lv1==1 && $app_lv2==1){return true;}else{return false;};
+                break;
+            case "3":
+                if($app_lv1==1 && $app_lv2==1 && $app_lv3==1){return true;}else{return false;};
+                break;
+            default:
+                return false;
+                break;
+        }
 }
