@@ -14,6 +14,8 @@
 			</div>
 			
 		   <div id="container">
+		   	<!--DARI MESIN ABSEN-->
+		   	<?php if(empty($user_att['max_date'])){?>
 		   	<div class="row spacing-bottom 2col">	
 				<div class="col-md-3 col-sm-6 spacing-bottom-sm">	
 					<div class="tiles blue added-margin">
@@ -101,6 +103,84 @@
 					</div>
 				</div>			
 			</div>
+			<?php }else{ ?>
+			<!-- dari axapta -->
+			<div class="row spacing-bottom 2col">	
+				<div class="col-md-3 col-sm-6 spacing-bottom-sm">	
+					<div class="tiles blue added-margin">
+					  	<div class="tiles-body">
+							<div class="controller">								
+								<a href="javascript:;" class="reload"></a>
+								<a href="javascript:;" class="remove"></a>		
+							</div>		
+							<div class="tiles-title">
+								KEHADIRAN (<?= date('M', strtotime($user_att['max_date']))?>)
+							</div>	
+							<div class="heading">
+								<span class="animate-number" data-value="<?php echo $user_att['hadir'];?>" data-animation-duration="1200"><?=$user_att['hadir']?></span>x				
+							</div>
+							<div class="description"><i class="icon-custom-min"></i><span class="text-white mini-description ">&nbsp;Berdasarkan data AX s/d <?= dateIndo($user_att['max_date'])?> </span>
+							</div>
+						</div>	
+					</div>
+				</div>
+				<div class="col-md-3 col-sm-6 spacing-bottom-sm">
+					<div class="tiles green added-margin">
+					 <div class="tiles-body">
+						<div class="controller">								
+							<a href="javascript:;" class="reload"></a>
+							<a href="javascript:;" class="remove"></a>									
+						</div>		
+						<div class="tiles-title">
+							KETERLAMBATAN (<?= date('M', strtotime($user_att['max_date']))?>)
+						</div>	
+						<div class="heading">
+							<span class="animate-number" data-value="<?php echo $user_att['telat'];?>" data-animation-duration="1000"><?=$user_att['telat']?></span>x	
+						</div>
+						<div class="description"><i class="icon-custom-min"></i><span class="text-white mini-description ">&nbsp;Berdasarkan data AX s/d <?= dateIndo($user_att['max_date'])?> </span></div>
+					 </div>
+					</div>
+				</div>
+				<div class="col-md-3 col-sm-6">
+					<div class="tiles red added-margin">
+					<div class="tiles-body">
+						<div class="controller">								
+								<a href="javascript:;" class="reload"></a>
+								<a href="javascript:;" class="remove"></a>										
+							</div>	
+						<div class="tiles-title">
+							TIDAK HADIR (<?= date('M', strtotime($user_att['max_date']))?>)
+						</div>	
+						<div class="heading">
+							<span class="animate-number" data-value="<?php echo $user_att['tidak_hadir'];?>" data-animation-duration="1200"><?=$user_att['tidak_hadir']?></span>x	
+						</div>
+						<div class="description"><i class="icon-custom-min"></i><span class="text-white mini-description ">&nbsp;Berdasarkan data AX s/d <?= dateIndo($user_att['max_date'])?> </span></div>
+					</div>
+					</div>
+			
+				</div> 
+				<div class="col-md-3 col-sm-6">
+					<div class="tiles purple added-margin">
+					  <div class="tiles-body">
+						<div class="controller">								
+							<a href="javascript:;" class="reload"></a>
+							<a href="javascript:;" class="remove"></a>									
+						</div>		
+						<div class="tiles-title">
+							CUTI (<?= date('Y', strtotime($user_att['max_date']))?>)
+						</div>	
+						<div class="row-fluid">
+							<div class="heading">
+								<span class="animate-number" data-value="<?php echo $user_att['cuti'];?>" data-animation-duration="1200"><?=$user_att['cuti']?></span>x
+							</div>
+						</div>
+						<div class="description"><i class="icon-custom-min"></i><span class="text-white mini-description ">&nbsp;Berdasarkan data AX tahun <?= date('Y', strtotime($user_att['max_date']))?> </span>
+						</div>
+					 </div>
+					</div>
+				</div>			
+			</div>
+			<?php } ?>
 			<div class="row">
 		   		<div <?php ( ! empty($message)) && print('class="alert alert-info text-center"'); ?> id="infoMessage"><?php echo $message;?></div>
 				<div class="col-md-12">
