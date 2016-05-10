@@ -26,12 +26,26 @@ $(document).ready(function() {
             url: 'approval/get_table',
             data: {id : id},
             success: function(data) {
+                $('#table').html('<img src="assets/img/loading.gif"> loading...');
                 $('#table').html(data);
             }
         });
     })
     .change(); 
 
+    $("#hrd-name").keyup(function(){
+        var bu = $('#bu option:selected').val(),
+            name = $("#hrd-name").val();
+        $.ajax({
+            type: 'POST',
+            url: 'approval/get_table_by_name',
+            data: {bu : bu, name:name},
+            success: function(data) {
+                $('#table').html('<img src="assets/img/loading.gif"> loading...');
+                $('#table').html(data);
+            }
+        });
+    });
 
 });
 

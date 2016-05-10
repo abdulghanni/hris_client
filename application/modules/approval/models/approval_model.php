@@ -769,6 +769,16 @@ class approval_model extends CI_Model
         return $this;
     }
 
+    function get_table($bu, $name){
+        return $this->db->Select('users_approval.id as id, nik, bu, username, indo')
+                ->from('users_approval')
+                ->join('users', 'users_approval.user_nik = users.nik', 'left')
+                ->join('form_type', 'users_approval.form_type_id = form_type.id', 'left')
+                ->where('bu', $bu)
+                ->like('username', $name)
+                ->get();
+    }
+
     
     
 }

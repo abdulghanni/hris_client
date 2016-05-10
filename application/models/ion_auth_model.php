@@ -1265,7 +1265,7 @@ class Ion_auth_model extends CI_Model
         $this->trigger_events('users');
         $is_admin_bagian = is_admin_bagian();
         $is_admin_khusus = is_admin_khusus();
-        //$user = ($is_inventory == 'inventory') ? get_user_same_bu(get_nik($sess_id)) : get_user_same_org(get_nik($sess_id));
+        $user = ($is_inventory == 'inventory') ? get_user_same_bu(get_nik($sess_id)) : get_user_same_org(get_nik($sess_id));
         if($is_inventory == 'inventory' && is_admin()==false){
             $user = get_user_same_bu($sess_nik);
         }elseif($is_admin_bagian == 1 && is_admin()==false){

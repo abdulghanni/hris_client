@@ -57,7 +57,7 @@
         </ul> -->
         <div class="page-title">
             <i class="icon-custom-left"></i>
-            <h3><?php echo lang('list_of_subheading')?>&nbsp;<span class="semi-bold"><?php echo lang('users_subheading');?></span></h3> 
+            <h3>List&nbsp;<span class="semi-bold">HRD</span></h3> 
         </div>
         <div class="row">
             <div class="col-md-12">
@@ -70,9 +70,17 @@
                             </div>
                         </div>
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-5">
                                     <div class="row">
-                                        <div class="col-md-4 search_label">Pilih Unit Bisnis</div>
+                                        <div class="col-md-4 search_label">Nama HRD</div>
+                                        <div class="col-md-8">
+                                        <input type="text" name="hrd-name" id="hrd-name" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="row">
+                                        <div class="col-md-4 search_label">Unit Bisnis</div>
                                         <div class="col-md-8">
                                         <?php
                                             $style_bu='class="form-control input-sm select2" style="width:100%" id="bu" required';

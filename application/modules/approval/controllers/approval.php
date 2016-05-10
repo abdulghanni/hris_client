@@ -96,6 +96,14 @@ class Approval extends MX_Controller {
         $this->load->view('approval/table', $this->data);
     }
 
+    function get_table_by_name(){
+        $this->load->model('approval_model', 'app');
+        $name = $this->input->post('name');
+        $this->data['bu'] = $bu = substr($this->input->post('bu'),0,2);//print_mz($this->data['bu']);
+        $this->data['form'] = $this->app->get_table($bu, $name)->result();
+        $this->load->view('approval/table_name', $this->data);
+    }
+
     function get_modal($bu, $form_id){
         $data = getValue('user_nik', 'users_approval', array('bu'=>'where/'.$bu, 'form_type_id'=>'where/'.$form_id));
         echo $data;
