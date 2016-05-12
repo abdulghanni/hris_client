@@ -28,8 +28,15 @@ class Form_cuti extends MX_Controller {
         $this->data['title'] = ucfirst($this->form_name);
         $this->data['form_name'] = $this->form_name;
        
-        permission();
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+        else
+        {
         $this->_render_page('form_cuti/index', $this->data);
+        }
     }
 
 
@@ -217,7 +224,7 @@ class Form_cuti extends MX_Controller {
         
         $this->_render_page('form_cuti/detail', $this->data);
     }
-    
+
     function form_cuti_pdf($id)
     {
         if (!$this->ion_auth->logged_in())
@@ -501,7 +508,7 @@ class Form_cuti extends MX_Controller {
         $this->update_sisa_cuti($recid, $sisa_cuti);
     }
 
-    
+
     function update_sisa_cuti($recid, $sisa_cuti)
     { 
         if (!$this->ion_auth->logged_in())
