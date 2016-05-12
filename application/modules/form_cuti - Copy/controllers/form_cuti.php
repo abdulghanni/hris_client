@@ -3,7 +3,6 @@
 class Form_cuti extends MX_Controller {
 
 	public $data;
-    var $form_name = 'cuti';
 
     function __construct()
     {
@@ -15,8 +14,11 @@ class Form_cuti extends MX_Controller {
         $this->load->helper('url');
         
         $this->load->database();
-        $this->load->model('form_cuti/form_cuti_model','cuti');
+		$this->load->model('person/person_model','person_model');
+        $this->load->model('form_cuti/form_cuti_model','form_cuti_model');
         
+        $this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
+
         $this->lang->load('auth');
         $this->load->helper('language');
 
@@ -25,72 +27,84 @@ class Form_cuti extends MX_Controller {
 
     function index($ftitle = "fn:",$sort_by = "id", $sort_order = "asc", $offset = 0)
     {  
-        $this->data['title'] = ucfirst($this->form_name);
-        $this->data['form_name'] = $this->form_name;
-       
-        permission();
-        $this->_render_page('form_cuti/index', $this->data);
+        $this->data['title'] = 'Form Cuti';
+        $sess_id= $this->session->userdata('user_id');
+        $sess_nik= get_nik($sess_id);
+
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+        else
+        {
+
+            $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
+            $sess_nik = $this->data['sess_nik'] = get_nik($sess_id);
+
+            $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
+
+            //set sort order
+            $this->data['sort_order'] = $sort_order;
+            
+            //set sort by
+            $this->data['sort_by'] = $sort_by;
+           
+            //set filter by title
+            $this->data['ftitle_param'] = $ftitle; 
+            $exp_ftitle = explode(":",$ftitle);
+            $ftitle_re = str_replace("_", " ", $exp_ftitle[1]);
+            $ftitle_post = (strlen($ftitle_re) > 0) ? array('users.username'=>$ftitle_re) : array() ;
+            
+            //set default limit in var $config['list_limit'] at application/config/ion_auth.php 
+            $this->data['limit'] = $limit = (strlen($this->input->post('limit')) > 0) ? $this->input->post('limit') : 10 ;
+
+            $this->data['offset'] = 6;
+
+            //list of filterize all form_cuti  
+            $this->data['form_cuti_all'] = $this->form_cuti_model->like($ftitle_post)->where('is_deleted',0)->form_cuti()->result();
+            
+            $this->data['num_rows_all'] = $this->form_cuti_model->like($ftitle_post)->where('is_deleted',0)->form_cuti()->num_rows();
+
+            $form_cuti = $this->data['form_cuti'] = $this->form_cuti_model->like($ftitle_post)->where('is_deleted',0)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->form_cuti()->result();//lastq();
+            $this->data['_num_rows'] = $this->form_cuti_model->like($ftitle_post)->where('is_deleted',0)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->form_cuti()->num_rows();
+            //lastq();
+
+             //config pagination
+             $config['base_url'] = base_url().'form_cuti/index/fn:'.$exp_ftitle[1].'/'.$sort_by.'/'.$sort_order.'/';
+             $config['total_rows'] = $this->data['num_rows_all'];
+             $config['per_page'] = $limit;
+             $config['uri_segment'] = 6;
+
+            //inisialisasi config
+             $this->pagination->initialize($config);
+
+            //create pagination
+            $this->data['halaman'] = $this->pagination->create_links();
+
+            $this->data['ftitle_search'] = array(
+                'name'  => 'title',
+                'id'    => 'title',
+                'type'  => 'text',
+                'value' => $this->form_validation->set_value('title'),
+            );
+            $this->data['form_id'] = getValue('form_id', 'form_id', array('form_name'=>'like/cuti'));
+             $this->data['form'] = 'cuti';
+            $this->_render_page('form_cuti/index', $this->data);
+        }
     }
 
-
-    public function ajax_list()
-    {
-        $list = $this->cuti->get_datatables();//lastq();//print_mz($list);
-        $data = array();
-        $no = $_POST['start'];
-        foreach ($list as $r) {
-            //AKSI
-           $detail = base_url()."form_cuti/detail/".$r->id; 
-           $print = base_url()."form_cuti/form_cuti_pdf/".$r->id; 
-           $delete = (($r->approval_status_id_lv1 == 0 && $r->created_by == sessId()) || is_admin()) ? '<button onclick="showModal('.$r->id.')" class="btn btn-sm btn-danger" type="button" title="Batalkan Pengajuan"><i class="icon-remove"></i></button>' : '';
-
-            //APPROVAL
-            if(!empty($r->user_app_lv1)){
-                $status1 = ($r->approval_status_id_lv1 == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($r->approval_status_id_lv1 == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($r->approval_status_id_lv1 == 3) ? "<i class='icon-exclamation-sign' style='color:orange;' title = 'Pending'></i>" : "<i class='icon-question' title = 'Menunggu Status Approval'></i>"));
-            }else{
-                $status1 = "<i class='icon-minus' style='color:black;' title = 'Tidak Butuh Approval Atasan Langsung'></i>";
-            }
-            if(!empty($r->user_app_lv2)){
-                $status2 = ($r->approval_status_id_lv2 == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($r->approval_status_id_lv2 == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($r->approval_status_id_lv2 == 3) ? "<i class='icon-exclamation-sign' style='color:orange;' title = 'Pending'></i>" : "<i class='icon-question' title = 'Menunggu Status Approval'></i>"));
-            }else{
-                $status2 = "<i class='icon-minus' style='color:black;' title = 'Tidak Butuh Approval Atasan Tidak Langsung'></i>";
-            }
-            if(!empty($r->user_app_lv3)){
-                $status3 = ($r->approval_status_id_lv3 == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($r->approval_status_id_lv3 == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($r->approval_status_id_lv3 == 3) ? "<i class='icon-exclamation-sign' style='color:orange;' title = 'Pending'></i>" : "<i class='icon-question' title = 'Menunggu Status Approval'></i>"));
-            }else{
-                $status3 = "<i class='icon-minus' style='color:black;' title = 'Tidak Butuh Approval Atasan Lainnya'></i>";
-            }
-            
-
-
-            $statushrd = ($r->approval_status_id_hrd == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($r->approval_status_id_hrd == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($r->approval_status_id_hrd == 3) ? "<i class='icon-exclamation-sign' style='color:orange;' title = 'Pending'></i>" : "<i class='icon-question' title = 'Menunggu Status Approval'></i>"));
-
-            $no++;
-            $row = array();
-            $row[] = $r->id;
-            $row[] = $r->nik;
-            $row[] = $r->username;
-            $row[] = dateIndo($r->date_mulai_cuti);
-            $row[] = $r->alasan_cuti;
-            $row[] = $r->jumlah_hari;
-            $row[] = $status1;
-            $row[] = $status2;
-            $row[] = $status3;
-            $row[] = $statushrd;
-            $row[] = "<a class='btn btn-sm btn-primary' href=$detail title='Klik icon ini untuk melihat detail'><i class='icon-info'></i></a>
-                      <a class='btn btn-sm btn-light-azure' href=$print title='Klik icon ini untuk mencetak form pengajuan'><i class='icon-print'></i></a>
-                      ".$delete;
-            $data[] = $row;
+    function keywords(){
+        if (!$this->ion_auth->logged_in())
+        {
+            redirect('auth/login', 'refresh');
         }
+        else
+        {
+            $ftitle_post = (strlen($this->input->post('title')) > 0) ? strtolower(url_title($this->input->post('title'),'_')) : "" ;
 
-        $output = array(
-                        "draw" => $_POST['draw'],
-                        "recordsTotal" => $this->cuti->count_all(),
-                        "recordsFiltered" => $this->cuti->count_filtered(),
-                        "data" => $data,
-                );
-        //output to json format
-        echo json_encode($output);
+            redirect('form_cuti/index/fn:'.$ftitle_post, 'refresh');
+        }
     }
 
     function input()
@@ -106,7 +120,7 @@ class Form_cuti extends MX_Controller {
 
             $user_id = $this->session->userdata('user_id');
             $user_nik = get_nik($user_id);
-
+            //$this->get_user_pengganti();
             $this->data['sisa_cuti'] = $this->get_sisa_cuti($user_nik);
             $u = $this->data['all_users'] = getAll('users', array('active'=>'where/1', 'username'=>'order/asc'), array('!=id'=>'1'));
             foreach ($u->result_array() as $row)
@@ -116,7 +130,10 @@ class Form_cuti extends MX_Controller {
             $this->data['users']=$result;
 
             // form cuti yang akan diambil
+            $this->data['comp_session'] = $this->form_cuti_model->render_session()->result();
             $this->data['alasan_cuti'] = $this->get_type_cuti();
+
+            //$this->data['_num_rows'] = $this->form_cuti_model->where('users.id',$user_id)->form_cuti_input()->num_rows();
 
             $this->_render_page('form_cuti/input', $this->data);
         }
@@ -149,8 +166,14 @@ class Form_cuti extends MX_Controller {
             $start_cuti = $this->input->post('start_cuti');
             $end_cuti = $this->input->post('end_cuti');
 
+            $year_now = date('Y');
+            $comp_session_now_arr = $this->form_cuti_model->where('comp_session.year',$year_now)->render_session()->result();
+            foreach ($comp_session_now_arr as $csn) {
+                $comp_session_now = $csn->id;
+            }
+
             $additional_data = array(
-                'id_comp_session'       => date('Y'),
+                'id_comp_session'       => $comp_session_now,
                 'date_mulai_cuti'       => date('Y-m-d', strtotime($this->input->post('start_cuti'))),
                 'date_selesai_cuti'     => date('Y-m-d', strtotime($this->input->post('end_cuti'))),
                 'jumlah_hari'           => $this->input->post('jml_cuti'),
@@ -167,7 +190,7 @@ class Form_cuti extends MX_Controller {
                 'created_by'            => $sess_id
             );
 
-            if ($this->form_validation->run() == true && $this->cuti->create_($user_id,$additional_data))
+            if ($this->form_validation->run() == true && $this->form_cuti_model->create_($user_id,$additional_data))
             {
                  $cuti_id = $this->db->insert_id();
                  $leave_request_id = $this->get_last_leave_request_id();
@@ -208,129 +231,15 @@ class Form_cuti extends MX_Controller {
         $this->data['id'] = $id;
         $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
         $sess_nik = $this->data['sess_nik'] = get_nik($sess_id);
-        $this->data['user_id'] = getValue('user_id', 'users_cuti', array('id'=>'where/'.$id));
-        $this->data['user_nik'] = get_nik($this->data['user_id']);
-        $this->data['form_cuti'] = $this->cuti->detail($id)->result();
-        $this->data['_num_rows'] = $this->cuti->detail($id)->num_rows();
+        $user_id = getValue('user_id', 'users_cuti', array('id'=>'where/'.$id));
+        $user_nik = get_nik($user_id);
+        $cuti_details = $this->data['form_cuti'] = $this->form_cuti_model->form_cuti_supervisor($id)->result();
+		$this->data['_num_rows'] = $this->form_cuti_model->form_cuti_supervisor($id)->num_rows();
 
         $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
         
         $this->_render_page('form_cuti/detail', $this->data);
     }
-    
-    function form_cuti_pdf($id)
-    {
-        if (!$this->ion_auth->logged_in())
-        {
-            //redirect them to the login page
-            redirect('auth/login', 'refresh');
-        }
-
-
-        $this->data['id'] = $id;
-        $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
-        $sess_nik = $this->data['sess_nik'] = get_nik($sess_id);
-        $this->data['user_id'] = getValue('user_id', 'users_cuti', array('id'=>'where/'.$id));
-        $this->data['user_nik'] = get_nik($this->data['user_id']);
-        $this->data['form_cuti'] = $this->cuti->detail($id)->result();
-        $this->data['_num_rows'] = $this->cuti->detail($id)->num_rows();
-        $title = $this->data['title'] = 'Form Cuti-'.get_name($user_id);
-
-        $this->load->library('mpdf60/mpdf');
-        $html = $this->load->view('cuti_pdf', $this->data, true); 
-        $mpdf = new mPDF();
-        $mpdf = new mPDF('A4');
-        $mpdf->WriteHTML($html);
-        $mpdf->Output($id.'-'.$title.'.pdf', 'I');
-    }
-
-    function _render_page($view, $data=null, $render=false)
-    {
-        $data = (empty($data)) ? $this->data : $data;
-        if ( ! $render)
-        {
-            $this->load->library('template');
-
-                if(in_array($view, array('form_cuti/index')))
-                {
-                    $this->template->set_layout('default');
-
-                    $this->template->add_js('jquery.sidr.min.js');
-                    $this->template->add_js('datatables.min.js');
-                    $this->template->add_js('breakpoints.js');
-                    $this->template->add_js('core.js');
-                    $this->template->add_js('select2.min.js');
-
-                    $this->template->add_js('form_index.js');
-
-                    $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
-                    $this->template->add_css('plugins/select2/select2.css');
-                    $this->template->add_css('datatables.min.css');
-                    
-                }
-                elseif(in_array($view, array('form_cuti/input')))
-                {
-
-                    $this->template->set_layout('default');
-
-                    $this->template->add_js('jquery.sidr.min.js');
-                    $this->template->add_js('breakpoints.js');
-                    $this->template->add_js('select2.min.js');
-
-                    $this->template->add_js('core.js');
-                    $this->template->add_js('purl.js');
-
-                    $this->template->add_js('respond.min.js');
-
-                    $this->template->add_js('bootstrap-datepicker.js');
-                    $this->template->add_js('jquery.validate.min.js');
-                    
-                    $this->template->add_js('jquery-validate.bootstrap-tooltip.min.js');
-                    $this->template->add_js('emp_dropdown.js');
-                    $this->template->add_js('form_cuti_input.js');
-                    
-                    $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
-                    $this->template->add_css('plugins/select2/select2.css');
-                    $this->template->add_css('datepicker.css');
-                     
-                }elseif(in_array($view, array('form_cuti/detail')))
-                {
-                    $this->template->set_layout('default');
-
-                    $this->template->add_js('jquery.sidr.min.js');
-                    $this->template->add_js('breakpoints.js');
-
-                    $this->template->add_js('core.js');
-                    $this->template->add_js('purl.js');
-
-                    $this->template->add_js('respond.min.js');
-
-                    $this->template->add_js('bootstrap-datepicker.js');
-                    $this->template->add_js('jquery.validate.min.js');
-                    $this->template->add_js('form_cuti_approval.js');
-
-                    
-                    $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
-                    $this->template->add_css('approval_img.css');
-                    $this->template->add_css('datepicker.css');
-                    
-                }
-
-
-            if ( ! empty($data['title']))
-            {
-                $this->template->set_title($data['title']);
-            }
-
-            $this->template->load_view($view, $data);
-        }
-        else
-        {
-            return $this->load->view($view, $data, TRUE);
-        }
-    }
-
-
 
     function do_approve($id, $type)
     {
@@ -432,7 +341,20 @@ class Form_cuti extends MX_Controller {
 
     function detail_email($id)
     {
-        return '';
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+        $this->data['id'] = $id;
+        $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
+        $sess_nik = $this->data['sess_nik'] = get_nik($sess_id);
+        $user_id = getValue('user_id', 'users_cuti', array('id'=>'where/'.$id));
+        $user_nik = get_nik($user_id);
+        $cuti_details = $this->data['form_cuti'] = $this->form_cuti_model->form_cuti_supervisor($id)->result();
+        $this->data['_num_rows'] = $this->form_cuti_model->form_cuti_supervisor($id)->num_rows();
+       
+        return $this->load->view('form_cuti/cuti_email', $this->data, true);
     }
 
     function cek_all_approval($id)
@@ -501,7 +423,34 @@ class Form_cuti extends MX_Controller {
         $this->update_sisa_cuti($recid, $sisa_cuti);
     }
 
-    
+    function form_cuti_pdf($id)
+    {
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+
+
+        $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
+        $user_id = getValue('user_id', 'users_cuti', array('id'=>'where/'.$id));
+        $user_nik = get_nik($user_id);
+
+        $cuti_details = $this->data['form_cuti'] = $this->form_cuti_model->form_cuti_supervisor($id)->result();
+        $this->data['_num_rows'] = $this->form_cuti_model->form_cuti_supervisor($id)->num_rows();
+
+        $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
+        $this->data['id'] = $id;
+        $title = $this->data['title'] = 'Form Cuti-'.get_name($user_id);
+
+        $this->load->library('mpdf60/mpdf');
+        $html = $this->load->view('cuti_pdf', $this->data, true); 
+        $mpdf = new mPDF();
+        $mpdf = new mPDF('A4');
+        $mpdf->WriteHTML($html);
+        $mpdf->Output($id.'-'.$title.'.pdf', 'I');
+    }
+
     function update_sisa_cuti($recid, $sisa_cuti)
     { 
         if (!$this->ion_auth->logged_in())
@@ -761,6 +710,90 @@ class Form_cuti extends MX_Controller {
             return $type_cuti;
         } else {
             return '';
+        }
+    }
+
+    function _render_page($view, $data=null, $render=false)
+    {
+        $data = (empty($data)) ? $this->data : $data;
+        if ( ! $render)
+        {
+            $this->load->library('template');
+
+                if(in_array($view, array('form_cuti/index')))
+                {
+                    $this->template->set_layout('default');
+
+                    $this->template->add_js('jquery.sidr.min.js');
+                    $this->template->add_js('breakpoints.js');
+                    $this->template->add_js('core.js');
+                    $this->template->add_js('select2.min.js');
+
+                    $this->template->add_js('form_index.js');
+
+                    $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
+                    $this->template->add_css('plugins/select2/select2.css');
+                    
+                }
+                elseif(in_array($view, array('form_cuti/input')))
+                {
+
+                    $this->template->set_layout('default');
+
+                    $this->template->add_js('jquery.sidr.min.js');
+                    $this->template->add_js('breakpoints.js');
+                    $this->template->add_js('select2.min.js');
+
+                    $this->template->add_js('core.js');
+                    $this->template->add_js('purl.js');
+
+                    $this->template->add_js('respond.min.js');
+
+                    $this->template->add_js('bootstrap-datepicker.js');
+                    $this->template->add_js('jquery.validate.min.js');
+                    
+                    $this->template->add_js('jquery-validate.bootstrap-tooltip.min.js');
+                    $this->template->add_js('emp_dropdown.js');
+                    $this->template->add_js('form_cuti_input.js');
+                    
+                    $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
+                    $this->template->add_css('plugins/select2/select2.css');
+                    $this->template->add_css('datepicker.css');
+                     
+                }elseif(in_array($view, array('form_cuti/detail')))
+                {
+                    $this->template->set_layout('default');
+
+                    $this->template->add_js('jquery.sidr.min.js');
+                    $this->template->add_js('breakpoints.js');
+
+                    $this->template->add_js('core.js');
+                    $this->template->add_js('purl.js');
+
+                    $this->template->add_js('respond.min.js');
+
+                    $this->template->add_js('bootstrap-datepicker.js');
+                    $this->template->add_js('jquery.validate.min.js');
+                    $this->template->add_js('form_cuti_approval.js');
+
+                    
+                    $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
+                    $this->template->add_css('approval_img.css');
+                    $this->template->add_css('datepicker.css');
+                    
+                }
+
+
+            if ( ! empty($data['title']))
+            {
+                $this->template->set_title($data['title']);
+            }
+
+            $this->template->load_view($view, $data);
+        }
+        else
+        {
+            return $this->load->view($view, $data, TRUE);
         }
     }
 

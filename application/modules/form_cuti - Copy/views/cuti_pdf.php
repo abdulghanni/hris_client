@@ -81,6 +81,11 @@ $rejected = assets_url('img/rejected_stamp.png');
 <p class="style7">Cuti Yang Akan Diambil </p>
 <table width="1000" height="135" border="0" style="padding-left:30px;">
   <tr>
+    <td width="275" height="40"><span class="style3">Tahun</span></td>
+    <td width="10" height="40"><div align="center">:</div></td>
+    <td width="440" height="40"><span class="style3"><?php echo $user->session_year?></span></td>
+  </tr>
+  <tr>
     <td height="40"><span class="style3">Tanggal Mulai Cuti </span></td>
     <td height="40"><div align="center">:</div></td>
     <td height="40"><span class="style3"><?php echo dateIndo($user->date_mulai_cuti).' s/d '.dateIndo($user->date_selesai_cuti)?> </span></td>

@@ -143,6 +143,22 @@
                   <div class="col-md-7">
                     <h4><?php echo lang('cuti_input_subheading') ?></h4>
                     <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
+                    <div class="row form-row">
+                      <div class="col-md-3">
+                        <label class="form-label text-right"><?php echo 'Tahun' ?></label>
+                      </div>
+                      <div class="col-md-9">
+                        <select id="tahuncuti" class="select2" style="width:100%">
+                          <?php if ($comp_session > 0) { ?>
+                              <?php foreach ($comp_session as $cs) :
+                                $selected = ($cs->year == date('Y'))?'selected="selected"':'';
+                               ?>
+                                <option value="<?php echo $cs->year; ?>" <?php echo $selected?>><?php echo $cs->year; ?></option>
+                              <?php endforeach; ?>                      
+                          <?php } ?>
+                        </select>
+                      </div>
+                    </div>
                     <div class="row form-row"><div class="col-md-9 pull-right" style="margin: 10px 0px 20px 0px;" ><i class="icon-warning-sign" style="color:red ;text-shadow: 1px 1px 1px #ccc;font-size: 1em;"> Pengajuan permohonan cuti dilakukan 2(dua) minggu sebelumnya</i>
                         
                       </div>

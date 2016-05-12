@@ -1,5 +1,9 @@
 <?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
 	
+	function sessId(){
+		$CI =& get_instance();
+		return $CI->session->userdata('user_id');
+	}
 	//TO CHECK IS USER ADMIN IN ION AUTH LIBRARY
 	if (!function_exists('is_admin'))
 	{	

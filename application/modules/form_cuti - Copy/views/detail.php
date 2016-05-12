@@ -30,7 +30,7 @@
                       foreach ($form_cuti as $user) :
                       $cur_sess = date('Y');
                       // convert date time
-                      $user_nik = get_nik($user_id);
+                      $user_nik = get_nik($user->user_id);
                       $submission_date = dateIndo($user->created_on);
                       $date_start_cuti = dateIndo($user->date_mulai_cuti);
                       $date_end_cuti = dateIndo($user->date_selesai_cuti);
@@ -105,6 +105,14 @@
 
                     <div class="col-md-7">
                       <h4>Cuti yang akan diambil</h4>
+                      <div class="row form-row">
+                        <div class="col-md-4">
+                          <label class="form-label text-right">Tahun</label>
+                        </div>
+                        <div class="col-md-8">
+                          <input name="tahuncuti" id="tahuncuti" type="text"  class="form-control" placeholder="Nama" value="<?php echo $user->session_year; ?>" disabled="disabled">
+                        </div>
+                      </div>
                       <div class="row form-row">
                         <div class="col-md-4">
                           <label class="form-label text-right">Tgl. mulai cuti</label>
