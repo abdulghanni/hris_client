@@ -1450,12 +1450,15 @@ class Auth extends MX_Controller {
     {
     $pos_group = get_pos_group(get_nik($id));
       $url = get_api_key().'users/superior/EMPLID/'.get_nik($id).'/format/json';
+      $url_grade = get_api_key().'users/superior_by_grade/EMPLID/'.get_nik($id).'/format/json';
       $url_atasan_satu_bu = get_api_key().'users/atasan_satu_bu/EMPLID/'.get_nik($id).'/format/json';
       $url_atasan_bypos = get_api_key().'users/atasan_by_posgroup/EMPLID/'.get_nik($id).'/format/json';
       $headers = get_headers($url);
+      $headers_grade = get_headers($url_grade);
       $headers2 = get_headers($url_atasan_satu_bu);
       $headers3 = get_headers($url_atasan_bypos);
       $response = substr($headers[0], 9, 3);
+      $response_grade = substr($headers_grade[0], 9, 3);
       $response2 = substr($headers2[0], 9, 3);
       $response3 = substr($headers3[0], 9, 3);
       //$url_atasan_satu_bu = get_api_key().'users/atasan_satu_bu/EMPLID/'.get_nik($id).'/format/json';
