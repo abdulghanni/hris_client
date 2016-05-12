@@ -364,7 +364,7 @@ class Form_cuti extends MX_Controller {
             $is_app = getValue('is_app_'.$type, 'users_cuti', array('id'=>'where/'.$id));
             $approval_status = $this->input->post('app_status_'.$type);
             $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
-            $this->form_cuti_model->update($id,$data);
+            $this->cuti->update($id,$data);
             $user_cuti_id = getValue('user_id', 'users_cuti', array('id'=>'where/'.$id));
 
             $subject_email = get_form_no($id).'-['.$approval_status_mail.']Status Pengajuan Permohonan Cuti dari Atasan';
