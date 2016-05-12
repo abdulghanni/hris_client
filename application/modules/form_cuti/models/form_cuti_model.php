@@ -126,6 +126,7 @@ class Form_cuti_model extends CI_Model {
                                OR users_cuti.user_app_lv1 = '$sess_nik'  OR users_cuti.user_app_lv2 = '$sess_nik'  OR users_cuti.user_app_lv3 = '$sess_nik' 
                 )",null, false);
             }
+        $this->db->where('users_cuti.is_deleted', 0);
         $this->db->from($this->table);
         return $this->db->count_all_results();
     }
