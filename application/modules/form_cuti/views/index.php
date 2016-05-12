@@ -136,12 +136,13 @@
                                       <a href="<?php echo base_url('form_cuti/detail/'.$user->id)?>">
                                       <?php
                                         $nik = get_nik($user->user_id);
-                                        $bu = get_user_buid($nik);
+                                        //$bu = get_user_buid($nik);
                                         $date = date('m', strtotime($user->created_on)).'/'.date('Y', strtotime($user->created_on));
                                         echo $form_id.'/'.$bu.'/'.$date.'/'.$user->id;
+                                        echo $user->id;
                                       ?>
                                       </a>
-                                      <input type="hidden" id="form-no<?=$user->id?>" value="<?=$form_id.'/'.$bu.'/'.$date.'/'.$user->id?>">
+                                      <!--input type="hidden" id="form-no<?=$user->id?>" value="<?=$form_id.'/'.$bu.'/'.$date.'/'.$user->id?>"-->
                                     </td> 
                                      <td>
                                       <?php echo $nik ?>
