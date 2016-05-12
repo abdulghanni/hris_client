@@ -1448,7 +1448,7 @@ class Auth extends MX_Controller {
 
     function get_superior($id)
     {
-        $pos_group = get_pos_group(get_nik($id));
+    $pos_group = get_pos_group(get_nik($id));
       $url = get_api_key().'users/superior/EMPLID/'.get_nik($id).'/format/json';
       $url_atasan_satu_bu = get_api_key().'users/atasan_satu_bu/EMPLID/'.get_nik($id).'/format/json';
       $url_atasan_bypos = get_api_key().'users/atasan_by_posgroup/EMPLID/'.get_nik($id).'/format/json';
@@ -1459,7 +1459,11 @@ class Auth extends MX_Controller {
       $response2 = substr($headers2[0], 9, 3);
       $response3 = substr($headers3[0], 9, 3);
       //$url_atasan_satu_bu = get_api_key().'users/atasan_satu_bu/EMPLID/'.get_nik($id).'/format/json';
-      if($pos_group == 'AMD' || $pos_group == 'DIR' || $pos_group == 'KACAB' || $pos_group == 'MGR' || $pos_group == 'ASM'  || $pos_group == 'KADEP'):
+      if(get_nik($id) == "P1048" || "P0740"):
+              $get_atasan_grade = file_get_contents($url_grade);
+              $atasan_grade = json_decode($get_atasan_grade, true);
+              return $this->data['user_atasan'] = $atasan_grade;
+      elseif($pos_group == 'AMD' || $pos_group == 'DIR' || $pos_group == 'KACAB' || $pos_group == 'MGR' || $pos_group == 'ASM'  || $pos_group == 'KADEP'):
           if ($response != "404") {
               $get_atasan = file_get_contents($url);
               $atasan = json_decode($get_atasan, true);
