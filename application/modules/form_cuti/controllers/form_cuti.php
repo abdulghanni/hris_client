@@ -35,6 +35,7 @@ class Form_cuti extends MX_Controller {
         }
         else
         {
+        $this->data['form'] = 'cuti';
         $this->_render_page('form_cuti/index', $this->data);
         }
     }

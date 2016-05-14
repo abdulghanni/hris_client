@@ -35,6 +35,8 @@ $(document).ready(function() {
     });
 	
 	$("#remove").click(function(){
+    $('#remove').text('Deleting...'); //change button text
+    $('#remove').attr('disabled',true); //set button disable 
         $.ajax({
             type: 'POST',
             url: 'dropdown/remove/',

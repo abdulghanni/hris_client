@@ -50,40 +50,28 @@
 </div>
 <!-- END CONTAINER -->
 
-<!-- Bootstrap modal -->
-<div class="modal fade" id="modal_form" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title"></h3>
-            </div>
-            <div class="modal-body form">
-                <form action="#" id="form" class="form-horizontal">
-                    <input id="group_id" type="hidden" value="" name="id"/> 
-                    <div class="form-body">
-                        <div class="form-group">
-                            <label class="control-label col-md-4">Name</label>
-                            <div class="col-md-8">
-                                <input name="title" placeholder="Name" class="form-control" type="text">
-                                <span class="help-block"></span>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-md-4">Value</label>
-                            <div class="col-md-8">
-                                <input name="value" placeholder="Code" class="form-control" type="text">
-                                <span class="help-block"></span>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" id="btnSave" onclick="save()" class="btn btn-primary">Save</button>
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-<!-- End Bootstrap modal -->
+ <!--Delete Modal-->
+<div class="modal fade" id="modal_form" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Apakah anda yakin ingin membatalkan pengajuan ini ?</h4>
+        </div>
+      <?php echo form_open('auth/delete_course/',array("id"=>"form"))?>
+        <input type="hidden" id="form-name" value="<?php echo $form ?>">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="display:none"><span aria-hidden="true">&times;</span></button>
+        <input type="hidden" name="id" value="">
+        <input type="hidden" name="form" value="">
+        <input type="hidden" name="form-no" value="">
+      <div class="modal-body">
+        <p>Apakah anda yakin ingin membatalkan pengajuan ini ?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="icon-ban-circle"></i>&nbsp;<?php echo lang('cancel_button')?></button> 
+        <button id="remove" type="button" class="btn btn-danger lnkBlkWhtArw" style="margin-top: 3px;"><i class="icon-warning-sign"></i>&nbsp;<?php echo lang('delete_button')?></button>
+      </div>
+        <?php echo form_close()?>
+    </div>
+  </div>
+</div>
