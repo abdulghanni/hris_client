@@ -75,9 +75,9 @@ class Form_cuti extends MX_Controller {
 
             $no++;
             $row = array();
-            $row[] = $r->id;
-            $row[] = $r->nik;
-            $row[] = $r->username;
+            $row[] = "<a href=$detail>".$r->id.'</a>';
+            $row[] = "<a href=$detail>".$r->nik.'</a>';
+            $row[] = "<a href=$detail>".$r->username.'</a>';
             $row[] = dateIndo($r->date_mulai_cuti);
             $row[] = $r->alasan_cuti;
             $row[] = $r->jumlah_hari;
