@@ -108,7 +108,7 @@
                         <label class="form-label text-right">Attachment</label>
                       </div>
                       <div class="col-md-9">
-                        <a href="<?php echo base_url("uploads/izin/".$user_nik."/".$tidak_masuk->attachment)?>"><?php echo $tidak_masuk->attachment?></a>
+                        <a href="<?php echo base_url("uploads/izin/".$user_nik."/".$tidak_masuk->attachment)?>" target="_blank"><?php echo $tidak_masuk->attachment?></a>
                       </div>
                     </div>
                     

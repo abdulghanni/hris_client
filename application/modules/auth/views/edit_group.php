@@ -76,10 +76,12 @@
 
                                     <p>
                                         <label>Bussiness Unit :</label><br />
-                                        <?php
-                                            $style_bu='class="form-control select2" style="width:50%" id="bu"';
-                                            echo form_dropdown('bu',$bu,'',$style_bu);
-                                          ?>
+                                        <select name="bu" id="bu" class="form-control" style="width:50%">
+                                            <?php foreach($bu as $k=>$v){
+                                                $selected = ($c_bu == substr($v['NUM'], 0 ,2)) ? 'selected="selected"':'';
+                                                echo '<option value='.$v['NUM'].' '.$selected.'>'.$v['DESCRIPTION'].'</option>';
+                                            }?>
+                                        </select>
                                       </p><br />
                                 </div>
                                 <div class="form-actions-register">  

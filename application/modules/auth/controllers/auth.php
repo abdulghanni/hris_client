@@ -35,7 +35,7 @@ class Auth extends MX_Controller {
         }
         elseif (!$this->ion_auth->is_admin()) //remove this elseif if you want to enable this for non-admins
         {
-			$id = $this->session->userdata('user_id');
+            $id = $this->session->userdata('user_id');
             //redirect them to the home page because they must be an administrator to view this
             //return show_error('You must be an administrator to view this page.');
             redirect('person/detail/'.$id);
@@ -212,7 +212,7 @@ class Auth extends MX_Controller {
                                     );
                         $this->db->where('nik', $nik);
                         $this->db->update('users', $mch);
-							/*if( $this->send_email_notification($data['EMPLID'])){
+                            /*if( $this->send_email_notification($data['EMPLID'])){
                                 $this->session->set_flashdata('message', 'Account is inactive');
                                 redirect("auth/login", 'refresh');
                             }else{
@@ -252,18 +252,18 @@ class Auth extends MX_Controller {
                 'placeholder' => 'Password',
                 'required'=> 'required',
             );
-			
+            
             $this->_render_page('auth/login', $this->data);
         }
     }
-	
-	function cekNik($array, $key, $val) {
+    
+    function cekNik($array, $key, $val) {
     foreach ($array as $item)
         if (isset($item[$key]) && $item[$key] == $val)
             return true;
     return false;
     }
-	
+    
     function send_email_activation($nik)
     {
         $user_bu = get_user_buid($nik);
@@ -920,7 +920,7 @@ class Auth extends MX_Controller {
             }*/
             // Config for image upload
             $user_folder = $user->id.$user->first_name;
-			if(!is_dir('./'.'uploads')){
+            if(!is_dir('./'.'uploads')){
             mkdir('./'.'uploads', 0777);
             }
             if(!is_dir('./uploads/'.$user_folder)){
@@ -1004,7 +1004,7 @@ class Auth extends MX_Controller {
             $image_name = $upload_data['file_name'];
             $data = array(
                             'photo'     =>$image_name,
-							'superior_id' => $this->input->post('superior_id'),
+                            'superior_id' => $this->input->post('superior_id'),
                             //'email' => $this->input->post('email'),
                          );
             }
@@ -1609,8 +1609,8 @@ class Auth extends MX_Controller {
         $q_active_inactive = GetAll('active_inactive', $f_active_inactive);
         $this->data['q_active_inactive'] = $q_active_inactive;
         $this->data['active_inactive'] = ($q_active_inactive->num_rows() > 0 ) ? $q_active_inactive : array();
-		
-		$f_atasan = array("is_deleted" => 0);
+        
+        $f_atasan = array("is_deleted" => 0);
         $q_atasan = GetAll('users', $f_active_inactive);
         $this->data['q_atasan'] = $q_atasan;
         $this->data['atasan'] = ($q_atasan->num_rows() > 0 ) ? $q_atasan : array();
@@ -3551,6 +3551,20 @@ class Auth extends MX_Controller {
             }
     }
 
+    function get_bu_edit()
+    {
+            $url = get_api_key().'users/bu/format/json';
+            $headers = get_headers($url);
+            $response = substr($headers[0], 9, 3);
+            if ($response != "404") {
+                $getbu = file_get_contents($url);
+                $bu = json_decode($getbu, true);
+                return $bu;
+            } else {
+                return $this->data['bu'] = '';
+            }
+    }
+
     //edit a group
     function edit_group($id)
     {
@@ -3615,7 +3629,8 @@ class Auth extends MX_Controller {
             'value' => $this->form_validation->set_value('group_description', $group->description),
         );
 
-        $this->get_bu();
+        $this->data['bu'] = $this->get_bu_edit();
+        $this->data['c_bu'] = getValue('bu', 'groups', array('id'=>'where/'.$id));
         $this->data['admin_type'] = getAll('admin_type', array('is_deleted'=>'where/0'));
         $this->data['admin_type_id'] = $group->admin_type_id;
 
@@ -3786,7 +3801,7 @@ class Auth extends MX_Controller {
                 {
                     $this->template->set_layout('default');
 
-					$this->template->add_js('select2.min.js');
+                    $this->template->add_js('select2.min.js');
                     //$this->template->add_js('main.js');
                     $this->template->add_js('jquery-ui-1.10.1.custom.min.js');
                     $this->template->add_js('jqueryblockui.js');
