@@ -171,7 +171,7 @@
 						</div>	
 						<div class="row-fluid">
 							<div class="heading">
-								<span class="animate-number" data-value="<?php echo $user_att['cuti'];?>" data-animation-duration="1200"><?=$user_att['cuti']?></span>x
+								<span class="animate-number" data-value="<?php echo (!empty($user_att['cuti'])) ? $user_att['cuti'] : 0;?>" data-animation-duration="1200"><?= (!empty($user_att['cuti'])) ? $user_att['cuti'] : 0;?></span>x
 							</div>
 						</div>
 						<div class="description"><i class="icon-custom-min"></i><span class="text-white mini-description ">&nbsp;Berdasarkan data AX tahun <?= date('Y', strtotime($user_att['max_date']))?> </span>

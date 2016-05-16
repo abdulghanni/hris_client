@@ -131,14 +131,14 @@ window.onload = function(){fix();};
   {
         total = 0;
         $('.total_fix').each(function (index, element) {
-            var num = parseInt($(element).text().replace(",",""));
+            var num = parseInt($(element).text().replace(/,/g,""));
             total = total + num;
         });
         total_fix = total;
 
         total2 = 0;
         $('.total_tambahan').each(function (index, element) {
-            var num = parseInt($(element).text().replace(",",""));
+            var num = parseInt($(element).text().replace(/,/g,""));
             total2 = total2 + num;
         });
         total_tambahan = total2;

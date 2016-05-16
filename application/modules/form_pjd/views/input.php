@@ -237,7 +237,7 @@
                             <div class="row form-row">
                               <div class="col-md-6 text-left">
                                 <button type="button" id="btnAddBiaya" class="btn btn-primary btn-xs" onclick="addRow('dataTable')"><i class="icon-plus"></i>&nbsp;<?php echo 'Tambah Biaya';?></button>
-                                <button type="button" id="btnRemoveBiaya" class="btn btn-danger btn-xs" onclick="deleteRow('dataTable')" style="display: none;"><i class="icon-remove"></i>&nbsp;<?php echo 'Remove'?></button>
+                                <button type="button" id="btnRemoveBiaya" class="btn btn-danger btn-xs" onclick="deleteRow('dataTable')" style=""><i class="icon-remove"></i>&nbsp;<?php echo 'Hapus'?></button>
                               </div> 
                             </div>
                             <p>&nbsp;</p>

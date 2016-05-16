@@ -248,7 +248,7 @@ class Person extends MX_Controller {
 		//End Mazhters
         if(date("m-d")!==date('m-d',strtotime($user->bod)) && $user->is_birthday_reminder == 1) $this->db->query("update users set is_birthday_reminder = 0 where id = $id");
         //$url = get_api_key().'attendance/dashboard/EMPLID/'.$user->nik.'/MONTH/12'.'/YEAR/2014'.'/format/json';
-        $url = get_api_key().'attendance/dashboard/EMPLID/'.$user->nik.'/MONTH/'.date('m').'/YEAR/'.date('y').'/format/json';
+        $url = get_api_key().'attendance/dashboard/EMPLID/'.$user->nik.'/MONTH/'.date('m').'/YEAR/'.date('Y').'/format/json';
         $headers = get_headers($url);
             $response = substr($headers[0], 9, 3);
             if ($response != "404") {

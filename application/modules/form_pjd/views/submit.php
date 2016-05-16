@@ -33,6 +33,11 @@
 
                         $j = $a - $b;
                         $jml_pjd = floor($j/(60*60*24)+1);
+                        if($jml_pjd != 1){
+                          $jml_pjd = $jml_pjd-1;
+                        }else{
+                          $jml_pjd = 1;
+                        }
                         ?>
                     <div class="row form-row">
                       <div class="col-md-2">
