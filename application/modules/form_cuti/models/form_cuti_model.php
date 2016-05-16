@@ -51,7 +51,7 @@ class Form_cuti_model extends CI_Model {
             $this->db->where('users_cuti.is_deleted', 0);
 
             if($is_approver == $sess_nik || $is_admin_cabang == 1){
-                $this->db->where_in("users_cuti.user_id", $user);
+                $this->db->where_in("users_cuti.user_id", $user);//print_mz($user);
             }elseif($is_admin!=1 ){
                  $this->db->where("(users_cuti.user_id = '$sess_id' 
                                OR users_cuti.user_app_lv1 = '$sess_nik'  OR users_cuti.user_app_lv2 = '$sess_nik'  OR users_cuti.user_app_lv3 = '$sess_nik' 

@@ -178,6 +178,7 @@ class Form_cuti extends MX_Controller {
             if ($this->form_validation->run() == true && $this->cuti->create_($user_id,$additional_data))
             {
                  $cuti_id = $this->db->insert_id();
+                 $this->upload_attachment($cuti_id);
                  $leave_request_id = $this->get_last_leave_request_id();
                  $user_app_lv1 = getValue('user_app_lv1', 'users_cuti', array('id'=>'where/'.$cuti_id));
                  $subject_email = get_form_no($cuti_id).'-Pengajuan Permohonan Cuti';
@@ -202,6 +203,36 @@ class Form_cuti extends MX_Controller {
                  redirect('form_cuti', 'refresh');   
             }
         }
+    }
+
+    function upload_attachment($id){
+        $sess_id = $this->session->userdata('user_id');
+            $user_folder = get_nik($sess_id);
+        if(!is_dir('./'.'uploads')){
+        mkdir('./'.'uploads/', 0777);
+        }
+        if(!is_dir('./uploads/cuti/')){
+        mkdir('./uploads/cuti/', 0777);
+        }
+        if(!is_dir('./uploads/cuti/'.$user_folder)){
+        mkdir('./uploads/cuti/'.$user_folder, 0777);
+        }
+
+        $config =  array(
+          'upload_path'     => './uploads/cuti/'.$user_folder,
+          'allowed_types'   => '*',
+          'overwrite'       => TRUE,
+        );    
+        $this->load->library('upload', $config);
+        if (!$this->upload->do_upload('attachment')){
+            //print_r($this->upload->display_errors());
+         }else{
+            $upload_data = $this->upload->data();
+            $image_name = $upload_data['file_name'];
+            $data = array('attachment'=>$image_name);
+            $this->db->where('id', $id)->update('users_cuti', $data);
+        }
+        //print_r($this->db->last_query());
     }
 
     function detail($id)

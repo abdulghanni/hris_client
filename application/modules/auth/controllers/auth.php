@@ -832,7 +832,6 @@ class Auth extends MX_Controller {
     //edit a user
     function edit_user($id = null, $first_login = false)
     {
-
         $this->data['title'] = "Edit User";
 
         if (!$this->ion_auth->logged_in())
@@ -1168,7 +1167,8 @@ class Auth extends MX_Controller {
             $required => $required
         );
 
-        $this->get_superior($id);
+        $this->get_user_atasan($id);
+        $this->data['users'] = getAll('users', array('active'=>'where/1', 'username'=>'order/asc'), array('!=id'=>'1'))->result();
         $this->data['selected_superior'] = $this->db->where('id', $id)->get('users')->row('superior_id');
 
         $this->data['marital_id'] = $this->form_validation->set_value('email', $user->marital_id);

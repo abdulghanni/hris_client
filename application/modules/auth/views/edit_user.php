@@ -119,15 +119,19 @@
                                             <div class="input-with-icon right">                                       
                                             <i class=""></i>
                                                 <select name="superior_id" class="select2" id="superior_id" style="width:100%">
-                                                    <?php if (!empty($user_superior))  {
+                                                    <?php if (!empty($user_atasan))  {
                                                         echo '<option value="0">'.' -- Pilih Atasan -- '.'</option>';
-														foreach ($user_superior as $key => $up) {
-                                                          $selected = ($up['ID'] == $selected_superior) ? 'selected = selected' : '';
+														foreach ($user_atasan as $key => $up) {
+                                                          $selected = ($up['ID'] == $selected_superior) ? 'selected = "selected"' : '';
 														  echo '<option value="'.$up['ID'].'" '.$selected.'>'.$up['NAME'].'</option>';
 														}
-													  }else{?>
-														  <option value="0">Tidak ada karyawan dengan grade lebih tinggi</option>
-														<?php }?>
+													  }else{
+                                                        echo '<option value="0">'.' -- Pilih Atasan -- '.'</option>';
+                                                        foreach ($users as $u) {
+                                                            $selected2 = ($u->nik == $selected_superior) ? 'selected = "selected"' : '';
+                                                            echo '<option value="'.$u->nik.'" '.$selected2.'>'.$u->username.'</option>';
+                                                        }
+                                                    }?>
                                                 </select>
                                             </div>
                                         </div>

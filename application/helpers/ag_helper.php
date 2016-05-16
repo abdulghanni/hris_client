@@ -982,14 +982,14 @@
 			if(empty($user_id)){
 				return '-';
 			}else{
-            $url = get_api_key().'users/employement/EMPLID/'.$user_id.'/format/json';
+            $url = get_api_key().'users/user_bu/EMPLID/'.$user_id.'/format/json';
             $headers = get_headers($url);
             $response = substr($headers[0], 9, 3);
             if ($response != "404") 
             {
                 $getuser_info = file_get_contents($url);
                 $user_info = json_decode($getuser_info, true);
-                return substr($user_info['BUID'],0,2);
+                return $user_info;
             } else {
                 return '';
             }

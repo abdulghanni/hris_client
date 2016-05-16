@@ -168,6 +168,16 @@
                           <input name="pengganti_cuti" id="pengganti_cuti" type="text"  class="form-control" placeholder="Nama" value="<?php echo get_name($user->user_pengganti) ?>" disabled="disabled">
                         </div>
                       </div>
+                      <?php if(!empty($user->attachment)):?>
+                      <div class="row form-row">
+                        <div class="col-md-4">
+                          <label class="form-label text-right">Attachment</label>
+                        </div>
+                        <div class="col-md-8">
+                          <a href="<?php echo base_url("uploads/cuti/".$user_nik.'/'.$user->attachment)?>" target="_blank"><?php echo $user->attachment?></a>
+                        </div>
+                      </div>
+                    <?php endif;?>
                       
                       
                       <?php 

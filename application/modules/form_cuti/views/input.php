@@ -21,7 +21,7 @@
             <div class="grid-body no-border">
               <?php
                 $att = array('class' => 'form-no-horizontal-spacing', 'id' => 'formadd');
-                echo form_open('form_cuti/add', $att);
+                echo form_open_multipart('form_cuti/add', $att);
                ?>
                 <div class="row column-seperation">
                   <div class="col-md-5">
@@ -227,6 +227,14 @@
                           $style_up='class="select2" style="width:100%" id="user_pengganti"';
                               echo form_dropdown('user_pengganti',array('0'=>'- Pilih User -'),'',$style_up);
                         ?>
+                      </div>
+                    </div>
+                    <div class="row form-row">
+                      <div class="col-md-3">
+                        <label class="form-label text-right">Attachment</label>
+                      </div>
+                      <div class="col-md-9">
+                        <input name="attachment" id="attachment" type="file"  value="">
                       </div>
                     </div>
                   </div>
