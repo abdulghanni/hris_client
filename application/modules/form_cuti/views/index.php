@@ -1,3 +1,4 @@
+<input type="hidden" id="form_name" value="<?=$form_name?>">
 <!-- BEGIN PAGE CONTAINER-->
   <div class="page-content">
     <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->

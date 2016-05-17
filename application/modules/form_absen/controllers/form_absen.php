@@ -3,6 +3,7 @@
 class form_absen extends MX_Controller {
 
 	public $data;
+    var $form_name = 'absen';
     function __construct()
     {
         parent::__construct();
@@ -10,10 +11,9 @@ class form_absen extends MX_Controller {
         $this->load->library('form_validation');
         $this->load->library('rest');
         $this->load->library('approval');
-        $this->load->helper('url');
         
         $this->load->database();
-        $this->load->model('form_absen/form_absen_model','form_absen_model');
+        $this->load->model('form_absen/form_absen_model','main');
         
         $this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
 
@@ -32,60 +32,69 @@ class form_absen extends MX_Controller {
         }
         else
         {
-            $sess_id= $this->data['sess_id'] = $this->session->userdata('user_id');
-            $this->data['sess_nik'] = $sess_nik = get_nik($sess_id);
-
-
-			//set sort order
-            $this->data['sort_order'] = $sort_order;
-            
-            //set sort by
-            $this->data['sort_by'] = $sort_by;
-           
-            //set filter by title
-            $this->data['ftitle_param'] = $ftitle; 
-            $exp_ftitle = explode(":",$ftitle);
-            $ftitle_re = str_replace("_", " ", $exp_ftitle[1]);
-            $ftitle_post = (strlen($ftitle_re) > 0) ? array('users.username'=>$ftitle_re) : array() ;
-            
-            //set default limit in var $config['list_limit'] at application/config/ion_auth.php 
-            $this->data['limit'] = $limit = (strlen($this->input->post('limit')) > 0) ? $this->input->post('limit') : 10 ;
-
-            $this->data['offset'] = 6;
-
-            //list of filterize all form_absen  
-            $this->data['form_absen_all'] = $this->form_absen_model->like($ftitle_post)->where('is_deleted',0)->form_absen()->result();
-            
-            $this->data['num_rows_all'] = $this->form_absen_model->like($ftitle_post)->where('is_deleted',0)->form_absen()->num_rows();
-
-            $form_absen = $this->data['form_absen'] = $this->form_absen_model->like($ftitle_post)->where('is_deleted',0)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->form_absen()->result();
-            $this->data['_num_rows'] = $this->form_absen_model->like($ftitle_post)->where('is_deleted',0)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->form_absen()->num_rows();
-            
-
-             //config pagination
-             $config['base_url'] = base_url().'form_absen/index/fn:'.$exp_ftitle[1].'/'.$sort_by.'/'.$sort_order.'/';
-             $config['total_rows'] = $this->data['num_rows_all'];
-             $config['per_page'] = $limit;
-             $config['uri_segment'] = 6;
-
-            //inisialisasi config
-             $this->pagination->initialize($config);
-
-            //create pagination
-            $this->data['halaman'] = $this->pagination->create_links();
-
-            $this->data['ftitle_search'] = array(
-                'name'  => 'title',
-                'id'    => 'title',
-                'type'  => 'text',
-                'value' => $this->form_validation->set_value('title'),
-            );
-
             $this->data['form_id'] = getValue('form_id', 'form_id', array('form_name'=>'like/absen'));
             $this->data['form'] = 'absen';
-
+            $this->data['form_name'] = $this->form_name;
             $this->_render_page('form_absen/index', $this->data);
         }
+    }
+
+    public function ajax_list()
+    {
+        $list = $this->main->get_datatables();//lastq();
+        //print_mz($list);
+        $data = array();
+        $no = $_POST['start'];
+        foreach ($list as $r) {
+            //AKSI
+           $detail = base_url()."form_$this->form_name/detail/".$r->id; 
+           $print = base_url()."form_$this->form_name/form_$this->form_name"."_pdf/".$r->id; 
+           $delete = (($r->approval_status_id_lv1 == 0 && $r->created_by == sessId()) || is_admin()) ? '<button onclick="showModal('.$r->id.')" class="btn btn-sm btn-danger" type="button" title="Batalkan Pengajuan"><i class="icon-remove"></i></button>' : '';
+
+            //APPROVAL
+            if(!empty($r->user_app_lv1)){
+                $status1 = ($r->approval_status_id_lv1 == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($r->approval_status_id_lv1 == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($r->approval_status_id_lv1 == 3) ? "<i class='icon-exclamation-sign' style='color:orange;' title = 'Pending'></i>" : "<i class='icon-question' title = 'Menunggu Status Approval'></i>"));
+            }else{
+                $status1 = "<i class='icon-minus' style='color:black;' title = 'Tidak Butuh Approval Atasan Langsung'></i>";
+            }
+            if(!empty($r->user_app_lv2)){
+                $status2 = ($r->approval_status_id_lv2 == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($r->approval_status_id_lv2 == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($r->approval_status_id_lv2 == 3) ? "<i class='icon-exclamation-sign' style='color:orange;' title = 'Pending'></i>" : "<i class='icon-question' title = 'Menunggu Status Approval'></i>"));
+            }else{
+                $status2 = "<i class='icon-minus' style='color:black;' title = 'Tidak Butuh Approval Atasan Tidak Langsung'></i>";
+            }
+            if(!empty($r->user_app_lv3)){
+                $status3 = ($r->approval_status_id_lv3 == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($r->approval_status_id_lv3 == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($r->approval_status_id_lv3 == 3) ? "<i class='icon-exclamation-sign' style='color:orange;' title = 'Pending'></i>" : "<i class='icon-question' title = 'Menunggu Status Approval'></i>"));
+            }else{
+                $status3 = "<i class='icon-minus' style='color:black;' title = 'Tidak Butuh Approval Atasan Lainnya'></i>";
+            }
+            
+            $statushrd = ($r->approval_status_id_hrd == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($r->approval_status_id_hrd == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($r->approval_status_id_hrd == 3) ? "<i class='icon-exclamation-sign' style='color:orange;' title = 'Pending'></i>" : "<i class='icon-question' title = 'Menunggu Status Approval'></i>"));
+
+            $no++;
+            $row = array();
+            $row[] = "<a href=$detail>".$r->id.'</a>';
+            $row[] = "<a href=$detail>".$r->nik.'</a>';
+            $row[] = "<a href=$detail>".$r->username.'</a>';
+            $row[] = dateIndo($r->date_tidak_hadir);
+            $row[] = $r->keterangan;
+            $row[] = $status1;
+            $row[] = $status2;
+            $row[] = $status3;
+            $row[] = $statushrd;
+            $row[] = "<a class='btn btn-sm btn-primary' href=$detail title='Klik icon ini untuk melihat detail'><i class='icon-info'></i></a>
+                      <a class='btn btn-sm btn-light-azure' target='_blank' href=$print title='Klik icon ini untuk mencetak form pengajuan'><i class='icon-print'></i></a>
+                      ".$delete;
+            $data[] = $row;
+        }
+
+        $output = array(
+                        "draw" => $_POST['draw'],
+                        "recordsTotal" => $this->main->count_all(),
+                        "recordsFiltered" => $this->main->count_filtered(),
+                        "data" => $data,
+                );
+        //output to json format
+        echo json_encode($output);
     }
 
     function keywords(){
@@ -117,10 +126,9 @@ class form_absen extends MX_Controller {
             $this->data['user_nik'] = get_nik($user_id);
             $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
             $sess_nik = $this->data['sess_nik'] = get_nik($sess_id);
-            //$this->data['comp_session'] = $this->form_absen_model->render_session()->result();
-            $form_absen = $this->data['form_absen'] = $this->form_absen_model->where('is_deleted',0)->form_absen_detail($id)->result();
-            $this->data['_num_rows'] = $this->form_absen_model->where('is_deleted',0)->form_absen_detail($id)->num_rows();
-            
+            $this->data['form_absen'] = $this->main->detail($id)->result();
+            $this->data['_num_rows'] = $this->main->detail($id)->num_rows();
+            $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
             $this->_render_page('form_absen/detail', $this->data);
         }
     }
@@ -204,7 +212,7 @@ class form_absen extends MX_Controller {
                     $this->db->insert('attendance', $data2);
                 }
 
-                if ($this->form_validation->run() == true && $this->form_absen_model->create_($user_id,$data))
+                if ($this->form_validation->run() == true && $this->main->create_($user_id,$data))
                 {
                  $absen_id = $this->db->insert_id();
                  $user_app_lv1 = getValue('user_app_lv1', 'users_absen', array('id'=>'where/'.$absen_id));
@@ -229,88 +237,39 @@ class form_absen extends MX_Controller {
         }
     }
 
-    function do_approve($id, $type)
-    {
-        if(!$this->ion_auth->logged_in())
-        {
-            redirect('auth/login', 'refresh');
-        }
-
-        $user_id = get_nik($this->session->userdata('user_id'));
-        $date_now = date('Y-m-d');
-
-        $data = array(
-        'is_app_'.$type => 1,
-        'user_app_'.$type => $user_id, 
-        'date_app_'.$type => $date_now,
-        );
-        
-        $this->form_absen_model->update($id,$data);
-        $user_absen_id = getValue('user_id', 'users_absen', array('id'=>'where/'.$id));
-        $approval_status = 1;
-        $this->approval->approve('absen', $id, $approval_status, $this->detail_email($id));
-        $subject_email = get_form_no($id).'-[APPROVED]Status Pengajuan Keterangan Tidak Absen dari Atasan';
-        $subject_email_request = get_form_no($id).'-Pengajuan Keterangan Tidak Absen';
-        $isi_email = 'Status pengajuan keterangan tidak absen anda disetujui oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_absen/detail/'.$id.'>Klik Disini</a><br />';
-        $isi_email_request = get_name($user_absen_id).' mengajukan keterangan tidak absen absen, untuk melihat detail silakan <a href='.base_url().'form_absen/detail/'.$id.'>Klik Disini</a><br />';
-        if(!empty(getEmail($user_absen_id)))$this->send_email(getEmail($user_absen_id), $subject_email, $isi_email);
-                
-        if($type !== 'hrd'){
-        $lv = substr($type, -1)+1;
-        $lv_app= 'lv'.$lv;
-        $user_app = ($lv<4) ? getValue('user_app_'.$lv_app, 'users_absen', array('id'=>'where/'.$id)) : 0;
-        if(!empty($user_app)):
-            if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), $subject_email_request, $isi_email_request);
-            $this->approval->request($lv_app, 'absen', $id, $user_absen_id, $this->detail_email($id));
-        else:
-            if(!empty(getEmail($this->approval->approver('absen', $user_id))))$this->send_email(getEmail($this->approval->approver('absen', $user_id)), $subject_email_request, $isi_email_request);
-            $this->approval->request('hrd', 'absen', $id, $user_absen_id, $this->detail_email($id));
-        endif;
-        }
-    }
+    
 
     function detail_email($id)
     {
-        if (!$this->ion_auth->logged_in())
-        {
-            //redirect them to the login page
-            redirect('auth/login', 'refresh');
-        }
-
-        $user_id= getValue('user_id', 'users_absen', array('id'=>'where/'.$id));
-        $this->data['id'] = $id;
-        $this->data['user_nik'] = get_nik($user_id);
-        $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
-        $sess_nik = $this->data['sess_nik'] = get_nik($sess_id);
-        $form_absen = $this->data['form_absen'] = $this->form_absen_model->where('is_deleted',0)->form_absen_detail($id)->result();
-        $this->data['_num_rows'] = $this->form_absen_model->where('is_deleted',0)->form_absen_detail($id)->num_rows();
-    
-        return $this->load->view('form_absen/absen_mail', $this->data, TRUE);
+        return true;
     }
 
     function form_absen_pdf($id)
     {
+        $this->data['title'] = 'Detail - Keterangan Tidak Absen';
         if (!$this->ion_auth->logged_in())
         {
+            $this->session->set_userdata('last_link', $this->uri->uri_string());
             //redirect them to the login page
             redirect('auth/login', 'refresh');
         }
-        
-        $user_id= getValue('user_id', 'users_absen', array('id'=>'where/'.$id));
-        $this->data['user_nik'] = $sess_nik = get_nik($user_id);
-        $this->data['sess_id'] = $this->session->userdata('user_id');
-        
-        $form_absen = $this->data['form_absen'] = $this->form_absen_model->where('is_deleted',0)->form_absen_detail($id)->result();
-        $this->data['_num_rows'] = $this->form_absen_model->where('is_deleted',0)->form_absen_detail($id)->num_rows();
-
-        $this->data['id'] = $id;
-        $title = $this->data['title'] = 'Form Keterangan Tidak Absen-'.get_name($user_id);
-        $this->load->library('mpdf60/mpdf');
-        $html = $this->load->view('absen_pdf', $this->data, true); 
-        $mpdf = new mPDF();
-        $mpdf = new mPDF('A4');
-        $mpdf->WriteHTML($html);
-        $mpdf->Output($id.'-'.$title.'.pdf', 'I');
+        else
+        {
+            $this->data['id'] = $id;
+            $user_id= getValue('user_id', 'users_absen', array('id'=>'where/'.$id));
+            $this->data['user_nik'] = get_nik($user_id);
+            $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
+            $sess_nik = $this->data['sess_nik'] = get_nik($sess_id);
+            $this->data['form_absen'] = $this->main->detail($id)->result();
+            $this->data['_num_rows'] = $this->main->detail($id)->num_rows();
+            $title = $this->data['title'] = 'Form Keterangan Tidak Absen-'.get_name($user_id);
+            $this->load->library('mpdf60/mpdf');
+            $html = $this->load->view('absen_pdf', $this->data, true); 
+            $mpdf = new mPDF();
+            $mpdf = new mPDF('A4');
+            $mpdf->WriteHTML($html);
+            $mpdf->Output($id.'-'.$title.'.pdf', 'I');
+        }
     }
 
     function get_sisa_absen($user_id = null)
@@ -364,14 +323,17 @@ class form_absen extends MX_Controller {
                     $this->template->set_layout('default');
 
                     $this->template->add_js('jquery.sidr.min.js');
+                    $this->template->add_js('datatables.min.js');
                     $this->template->add_js('breakpoints.js');
                     $this->template->add_js('core.js');
                     $this->template->add_js('select2.min.js');
 
                     $this->template->add_js('form_index.js');
+                    $this->template->add_js('form_datatable_index.js');
 
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                     $this->template->add_css('plugins/select2/select2.css');
+                    $this->template->add_css('datatables.min.css');
                     
                 }
                 elseif(in_array($view, array('form_absen/input',)))
@@ -429,6 +391,97 @@ class form_absen extends MX_Controller {
         else
         {
             return $this->load->view($view, $data, TRUE);
+        }
+    }
+
+    function do_approve($id, $type)
+    {
+        if(!$this->ion_auth->logged_in())
+        {
+            redirect('auth/login', 'refresh');
+        }
+        else
+        {
+            $user_id = get_nik($this->session->userdata('user_id'));
+            $date_now = date('Y-m-d');
+
+            $data = array(
+            'is_app_'.$type => 1, 
+            'approval_status_id_'.$type => $this->input->post('app_status_'.$type),
+            'user_app_'.$type => $user_id, 
+            'date_app_'.$type => $date_now,
+            'note_'.$type => $this->input->post('note_'.$type)
+            );
+            $approval_status = $this->input->post('app_status_'.$type);
+            $this->main->update($id,$data);
+            $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
+            $user_absen_id = getValue('user_id', 'users_absen', array('id'=>'where/'.$id));
+            $subject_email = get_form_no($id).'['.$approval_status_mail.']Status Pengajuan Permohonan Permintaan SDM dari Atasan';
+            $subject_email_request = get_form_no($id).'Pengajuan Permintaan SDM';
+            $isi_email = 'Status pengajuan permintaan SDM anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_absen/detail/'.$id.'>Klik Disini</a><br />';
+            $isi_email_request = get_name($user_absen_id).' mengajukan Permohonan permintaan SDM, untuk melihat detail silakan <a href='.base_url().'form_absen/detail/'.$id.'>Klik Disini</a><br />';
+            $is_app = getValue('is_app_'.$type, 'users_absen', array('id'=>'where/'.$id));
+           if($is_app==0){
+                $this->approval->approve('absen', $id, $approval_status, $this->detail_email($id));
+                if(!empty(getEmail($user_absen_id)))$this->send_email(getEmail($user_absen_id), $subject_email, $isi_email);
+            }else{
+                $this->approval->update_approve('absen', $id, $approval_status, $this->detail_email($id));
+                if(!empty(getEmail($user_absen_id)))$this->send_email(getEmail($user_absen_id), get_form_no($id).'['.$approval_status_mail.']Perubahan Status Pengajuan Permohonan Permintaan SDM dari Atasan', $isi_email);
+            }
+            if($type !== 'hrd' && $approval_status == 1){
+                $lv = substr($type, -1)+1;
+                $lv_app = 'lv'.$lv;
+                $user_app = ($lv<4) ? getValue('user_app_'.$lv_app, 'users_absen', array('id'=>'where/'.$id)):0;
+                if(!empty($user_app)):
+                    if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app),  $subject_email_request , $isi_email_request);
+                    $this->approval->request($lv_app, 'absen', $id, $user_absen_id, $this->detail_email($id));
+                else:
+                    if(!empty(getEmail($this->approval->approver('absen', $user_id))))$this->send_email(getEmail($this->approval->approver('absen', $user_id)),  $subject_email_request , $isi_email_request);
+                    $this->approval->request('hrd', 'absen', $id, $user_absen_id, $this->detail_email($id));
+                endif;
+            }else{
+                $email_body = "Status pengajuan permohonan absen yang diajukan oleh ".get_name($user_absen_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_absen/detail/'.$id.'>Klik Disini</a><br />';
+                switch($type){
+                    case 'lv1':
+                        //$this->approval->not_approve('absen', $id, )
+                    break;
+
+                    case 'lv2':
+                        $receiver_id = getValue('user_app_lv1', 'users_absen', array('id'=>'where/'.$id));
+                        $this->approval->not_approve('absen', $id, $receiver_id, $approval_status ,$this->detail_email($id));
+                        //if(!empty(getEmail($receiver_id)))$this->send_email(getEmail($receiver_id), 'Status Pengajuan Permohonan absen Dari Atasan', $email_body);
+                    break;
+
+                    case 'lv3':
+                        $receiver_lv2 = getValue('user_app_lv2', 'users_absen', array('id'=>'where/'.$id));
+                        $this->approval->not_approve('absen', $id, $receiver_lv2, $approval_status ,$this->detail_email($id));
+                        //if(!empty(getEmail($receiver_lv2)))$this->send_email(getEmail($receiver_lv2), 'Status Pengajuan Permohonan absen Dari Atasan', $email_body);
+
+                        $receiver_lv1 = getValue('user_app_lv1', 'users_absen', array('id'=>'where/'.$id));
+                        $this->approval->not_approve('absen', $id, $receiver_lv1, $approval_status ,$this->detail_email($id));
+                        //if(!empty(getEmail($receiver_lv1)))$this->send_email(getEmail($receiver_lv1), 'Status Pengajuan Permohonan absen Dari Atasan', $email_body);
+                    break;
+
+                    case 'hrd':
+                        $receiver_lv3 = getValue('user_app_lv3', 'users_absen', array('id'=>'where/'.$id));
+                        if(!empty($receiver_lv3)):
+                            $this->approval->not_approve('absen', $id, $receiver_lv3, $approval_status ,$this->detail_email($id));
+                            //if(!empty(getEmail($receiver_lv3)))$this->send_email(getEmail($receiver_lv3), 'Status Pengajuan Permohonan absen Dari Atasan', $email_body);
+                        endif;
+                        $receiver_lv2 = getValue('user_app_lv2', 'users_absen', array('id'=>'where/'.$id));
+                        if(!empty($receiver_lv2)):
+                            $this->approval->not_approve('absen', $id, $receiver_lv2, $approval_status ,$this->detail_email($id));
+                            //if(!empty(getEmail($receiver_lv2)))$this->send_email(getEmail($receiver_lv2), 'Status Pengajuan Permohonan absen Dari Atasan', $email_body);
+                        endif;
+                        $receiver_lv1 = getValue('user_app_lv1', 'users_absen', array('id'=>'where/'.$id));
+                        if(!empty($receiver_lv1)):
+                            $this->approval->not_approve('absen', $id, $receiver_lv1, $approval_status ,$this->detail_email($id));
+                            //if(!empty(getEmail($receiver_lv1)))$this->send_email(getEmail($receiver_lv1), 'Status Pengajuan Permohonan absen Dari Atasan', $email_body);
+                        endif;
+                    break;
+                }
+            }
+               redirect('form_absen/detail/'.$id, 'refresh');
         }
     }
 }

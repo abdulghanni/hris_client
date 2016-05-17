@@ -1,16 +1,9 @@
 var save_method; //for save method string
 var table;
+var form = $("#form_name").val();
 $(document).ready(function() {
 	$(".select2").select2();
-    $('#limit').select2();
-	$("tr.itemcuti").each(function() {
-	        var iditemcuti = $(this).attr('id');
-	        $('#viewcuti-' + iditemcuti).click(function (e){
-	            e.preventDefault();
-	            $('#cutidetail-' + iditemcuti).toggle();
-	        });
-	    });
-
+	
 	table = $('#table').DataTable({ 
 
         "processing": true, //Feature control the processing indicator.
@@ -19,7 +12,7 @@ $(document).ready(function() {
 
         // Load data for the table's content from an Ajax source
         "ajax": {
-            "url": "form_cuti/ajax_list",
+            "url": "form_"+form+"/ajax_list",
             "type": "POST"
         },
 

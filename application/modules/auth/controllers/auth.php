@@ -11,7 +11,6 @@ class Auth extends MX_Controller {
         $this->load->library('form_validation');
         $this->load->library('approval');
         $this->load->library('rest');
-        $this->load->helper('url');
         
         $this->load->database();
         $this->load->model('person/person_model','person_model');
@@ -27,7 +26,6 @@ class Auth extends MX_Controller {
     //redirect if needed, otherwise display the user list
     function index($fname = "fn:",$email = "em:",$sort_by = "id", $sort_order = "asc", $offset = 0)
     { 
-        
         if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page

@@ -287,7 +287,7 @@ class Form_recruitment extends MX_Controller {
             $subject_email_request = get_form_no($id).'Pengajuan Permintaan SDM';
             $isi_email = 'Status pengajuan permintaan SDM anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_recruitment/detail/'.$id.'>Klik Disini</a><br />';
             $isi_email_request = get_name($user_recruitment_id).' mengajukan Permohonan permintaan SDM, untuk melihat detail silakan <a href='.base_url().'form_recruitment/detail/'.$id.'>Klik Disini</a><br />';
-            
+            $is_app = getValue('is_app_'.$type, 'users_recruitment', array('id'=>'where/'.$id));
            if($is_app==0){
                 $this->approval->approve('recruitment', $id, $approval_status, $this->detail_email($id));
                 if(!empty(getEmail($user_recruitment_id)))$this->send_email(getEmail($user_recruitment_id), $subject_email, $isi_email);

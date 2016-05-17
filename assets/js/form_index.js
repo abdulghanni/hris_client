@@ -1,6 +1,8 @@
 var save_method; //for save method string
 var table;
 $(document).ready(function() {
+	
+    $('#limit').select2();
 	$("#remove").click(function(){
     $('#remove').text('Deleting...'); //change button text
     $('#remove').attr('disabled',true); //set button disable 

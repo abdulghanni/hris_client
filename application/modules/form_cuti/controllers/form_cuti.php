@@ -12,15 +12,12 @@ class Form_cuti extends MX_Controller {
         $this->load->library('form_validation');
         $this->load->library('rest');
         $this->load->library('approval');
-        $this->load->helper('url');
         
         $this->load->database();
         $this->load->model('form_cuti/form_cuti_model','cuti');
         
         $this->lang->load('auth');
         $this->load->helper('language');
-
-        
     }
 
     function index($ftitle = "fn:",$sort_by = "id", $sort_order = "asc", $offset = 0)
@@ -301,7 +298,7 @@ class Form_cuti extends MX_Controller {
                     $this->template->add_js('select2.min.js');
 
                     $this->template->add_js('form_index.js');
-                    $this->template->add_js('form_cuti_index.js');
+                    $this->template->add_js('form_datatable_index.js');
 
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                     $this->template->add_css('plugins/select2/select2.css');

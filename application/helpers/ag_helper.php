@@ -1040,14 +1040,14 @@
 		function get_grade($user_id)
 		{
 			$CI =&get_instance();
-            $url = get_api_key().'users/employement/EMPLID/'.$user_id.'/format/json';
+            $url = get_api_key().'users/user_grade/EMPLID/'.$user_id.'/format/json';
             $headers = get_headers($url);
             $response = substr($headers[0], 9, 3);
             if ($response != "404") 
             {
                 $getuser_info = file_get_contents($url);
                 $user_info = json_decode($getuser_info, true);
-                return $user_info['GRADE'];
+                return $user_info;
             } else {
                 return '-';
             }
