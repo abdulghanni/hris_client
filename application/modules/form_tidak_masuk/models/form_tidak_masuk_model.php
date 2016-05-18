@@ -17,12 +17,14 @@ class Form_tidak_masuk_model extends CI_Model {
 
     private function _get_datatables_query()
     {
+            if(!is_admin()){
             $sess_id = $this->session->userdata('user_id');
             $sess_nik = get_nik($sess_id);
-            $is_approver = $this->approval->approver('tidak_masuk', $sess_nik);//print_mz($is_approver);
             $is_admin = is_admin();
+            $is_approver = $this->approval->approver('tidak', $sess_nik);//print_mz($is_approver);
             $is_admin_cabang = is_admin_cabang();
-            $user = get_user_satu_bu($sess_nik);
+            if($is_approver == $sess_nik || $is_admin_cabang == 1)$user = get_user_satu_bu($sess_nik);
+            }
 
         $this->db->select(array(
                 'users_tidak_masuk'.'.id as id',
@@ -46,7 +48,7 @@ class Form_tidak_masuk_model extends CI_Model {
             $this->db->join($this->join2, $this->join2.'.id ='.$this->table.'.alasan_tidak_masuk_id', 'left');
             
             $this->db->where($this->table.'.is_deleted', 0);
-
+            if($is_admin!=1):
             if($is_approver == $sess_nik || $is_admin_cabang == 1){
                 $this->db->where_in($this->table.'.user_id', $user);//print_mz($user);
             }elseif($is_admin!=1 ){
@@ -54,7 +56,7 @@ class Form_tidak_masuk_model extends CI_Model {
                                OR users_tidak_masuk.user_app_lv1 = '$sess_nik'  OR users_tidak_masuk.user_app_lv2 = '$sess_nik'  OR users_tidak_masuk.user_app_lv3 = '$sess_nik' 
                 )",null, false);
             }
-
+            endif;
 
         $i = 0;
     
@@ -108,19 +110,24 @@ class Form_tidak_masuk_model extends CI_Model {
 
     public function count_all()
     {
-        $sess_id = $this->session->userdata('user_id');
+        if(!is_admin()){
+            $sess_id = $this->session->userdata('user_id');
             $sess_nik = get_nik($sess_id);
-            $is_approver = $this->approval->approver('tidak_masuk', $sess_nik);//print_mz($is_approver);
             $is_admin = is_admin();
+            $is_approver = $this->approval->approver('tidak', $sess_nik);//print_mz($is_approver);
             $is_admin_cabang = is_admin_cabang();
-            $user = get_user_satu_bu($sess_nik);
-        if($is_approver == $sess_nik || $is_admin_cabang == 1){
-                $this->db->where_in("users_tidak_masuk.user_id", $user);
+            if($is_approver == $sess_nik || $is_admin_cabang == 1)$user = get_user_satu_bu($sess_nik);
+            }
+            
+        if($is_admin!=1):
+            if($is_approver == $sess_nik || $is_admin_cabang == 1){
+                $this->db->where_in($this->table.'.user_id', $user);//print_mz($user);
             }elseif($is_admin!=1 ){
                  $this->db->where("(users_tidak_masuk.user_id = '$sess_id' 
                                OR users_tidak_masuk.user_app_lv1 = '$sess_nik'  OR users_tidak_masuk.user_app_lv2 = '$sess_nik'  OR users_tidak_masuk.user_app_lv3 = '$sess_nik' 
                 )",null, false);
             }
+            endif;
         $this->db->where('users_tidak_masuk.is_deleted', 0);
         $this->db->from($this->table);
         return $this->db->count_all_results();
