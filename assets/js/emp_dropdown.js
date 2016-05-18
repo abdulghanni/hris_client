@@ -113,6 +113,10 @@ $(document).ready(function() {
                 getAtasan1(empId);
                 getAtasan3(empId);
                 break;
+            case 'form_recruitment':
+            getAtasan1(empId);
+            getAtasan3(empId);
+            break;
         }
     })
     .change();

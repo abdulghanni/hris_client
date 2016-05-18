@@ -561,7 +561,7 @@ class Form_recruitment extends MX_Controller {
                     $this->template->add_js('jquery.validate.min.js');
                     $this->template->add_js('jquery-validate.bootstrap-tooltip.min.js');
                     $this->template->add_js('bootstrap-datepicker.js');
-                    //$this->template->add_js('emp_dropdown.js');
+                    $this->template->add_js('emp_dropdown.js');
                     $this->template->add_js('form_recruitment.js');
                     
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
