@@ -3,17 +3,15 @@
 class Inventory extends MX_Controller {
 
   public $data;
-
+  var $form_name = 'inventory';
     function __construct()
     {
         parent::__construct();
         $this->load->library('authentication', NULL, 'ion_auth');
-        $this->load->library('form_validation');
-        $this->load->helper('url');
-        $this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
 
         $this->load->database();
-        $this->load->model('auth/auth_model','auth_model');
+
+        $this->load->model('inventory/inventory_model','main');
         $this->lang->load('auth');
         $this->load->helper('language');
         
@@ -36,48 +34,16 @@ class Inventory extends MX_Controller {
         }
         else
         {
-            //set the flash data error message if there is one
-            $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
+            $this->data['title'] = ucfirst($this->form_name);
+            $this->data['form_name'] = $this->form_name;
 
-            //set sort order
-            $this->data['sort_order'] = $sort_order;
-            
-            //set sort by
-            $this->data['sort_by'] = $sort_by;
-           
-            //set filter by first name
-            $this->data['fname_param'] = $fname; 
-            $exp_fname = explode(":",$fname);
-            $fname_re = str_replace("_", " ", $exp_fname[1]);
-            $fname_post = (strlen($fname_re) > 0) ? array('users.username'=>$fname_re) : array() ;
-            
-            
-            //set default limit in var $config['list_limit'] at application/config/ion_auth.php 
-            $this->data['limit'] = $limit = (strlen($this->input->post('limit')) > 0) ? $this->input->post('limit') : $this->config->item('list_limit', 'ion_auth') ;
+            $this->_render_page('inventory/index', $this->data);
+        }
+    }
 
-            $this->data['offset'] = 6;
-
-            //list of filterize all users  
-            $this->data['users_all'] = $this->ion_auth->like($fname_post)->where('id !=', 1)->users()->result();
-            
-            //num rows of filterize all users
-            $this->data['num_rows_all'] = $this->ion_auth->like($fname_post)->where('id !=', 1)->users()->num_rows();
-
-            //list of filterize limit users for pagination  
-            $this->data['users'] = $this->ion_auth->like($fname_post)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->where('id !=', 1)->users()->result();
-
-            $this->data['users_num_rows'] = $this->ion_auth->like($fname_post)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->where('id !=', 1)->users()->num_rows();
-
-             //config pagination
-             $config['base_url'] = base_url().'inventory/index/fn:'.$exp_fname[1].'/'.$sort_by.'/'.$sort_order.'/';
-             $config['total_rows'] = $this->data['num_rows_all'];
-             $config['per_page'] = $limit;
-             $config['uri_segment'] = 6;
-
-            //inisialisasi config
-             $this->pagination->initialize($config);
-             
-             if(is_admin_it()){
+    public function ajax_list()
+    {
+         if(is_admin_it()){
                 $this->data['type'] = $type = 'it';
             }elseif(is_admin_hrd()){
                 $this->data['type'] = $type = 'hrd';
@@ -93,19 +59,36 @@ class Inventory extends MX_Controller {
                 $this->data['type'] = $type = '';
             }
 
-             //$this->data['is_submit'] = getValue('is_submit_'.$type,'users_exit');
+        $list = $this->main->get_datatables();//lastq();//print_mz($list);
+        $data = array();
+        $no = $_POST['start'];
+        foreach ($list as $r) {
+            //AKSI
+            $is_submit = getValue('is_submit_'.$type,'users_exit', array('user_id'=>'where/'.$r->id));
+                                        $submit = ($is_submit == 1) ? '<i class="icon-ok-sign"></i>' : "<i class='icon-remove-sign'></i>";
+           $detail = base_url()."inventory/detail/".$r->id;
 
-            //create pagination
-            $this->data['halaman'] = $this->pagination->create_links();
+            $no++;
+            $row = array();
+            $row[] = "<a href=$detail target='_blank'>".$r->nik.'</a>';
+            $row[] = "<a href=$detail target='_blank'>".$r->username.'</a>';
+            $row[] = "<a href=$detail target='_blank'>".get_user_position($r->nik).'</a>';
+            $row[] = "<a href=$detail target='_blank'>
+                                          <button type='button' class='btn btn-info btn-small' title='Lihat Inventaris'><i class='icon-briefcase'></i></button>
+                                      </a>";
 
-            $this->data['fname_search'] = array(
-                'name'  => 'first_name',
-                'id'    => 'first_name',
-                'type'  => 'text',
-                'value' => $this->form_validation->set_value('first_name'),
-            );
-            $this->_render_page('inventory/index', $this->data);
+            $row[] = "<a href=$detail target='_blank'>".$submit.'</a>';
+            $data[] = $row;
         }
+
+        $output = array(
+                        "draw" => $_POST['draw'],
+                        "recordsTotal" => $this->main->count_all(),
+                        "recordsFiltered" => $this->main->count_filtered(),
+                        "data" => $data,
+                );
+        //output to json format
+        echo json_encode($output);
     }
 
     function keywords(){
@@ -529,14 +512,16 @@ class Inventory extends MX_Controller {
                     $this->template->set_layout('default');
 
                     $this->template->add_js('jquery.sidr.min.js');
+                    $this->template->add_js('datatables.min.js');
                     $this->template->add_js('breakpoints.js');
                     $this->template->add_js('core.js');
                     $this->template->add_js('select2.min.js');
 
-                    $this->template->add_js('form_index.js');
+                    $this->template->add_js('form_datatable_index.js');
 
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                     $this->template->add_css('plugins/select2/select2.css');
+                    $this->template->add_css('datatables.min.css');
                     
                 }
                 elseif(in_array($view, array('inventory/input', 'inventory/detail')))

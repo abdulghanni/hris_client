@@ -1,84 +1,80 @@
-<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
 
-class form_exit_model extends CI_Model
-{
+class Inventory_model extends CI_Model {
+
+    var $table = 'users';
+    var $column = array('nik', 'username'); //set column field database for order and search
+    var $order = array('id' => 'asc'); // default order 
+
     public function __construct()
     {
         parent::__construct();
         $this->load->database();
     }
 
-    function form_exit($id = null)
+    private function _get_datatables_query()
     {
         $sess_id = $this->session->userdata('user_id');
-            
-        if(!empty(is_have_subordinate(get_nik($sess_id)))){
-        $sub_id = get_subordinate($sess_id);
-        }else{
-            $sub_id = '';
+        $sess_nik = get_nik($sess_id);
+        $user = get_user_satu_bu($sess_nik);
+        $this->db->select('id,username,nik');
+        $this->db->where_in("id", $user);
+        $this->db->from($this->table);
+
+        $i = 0;
+    
+        foreach ($this->column as $item) // loop column 
+        {
+            if($_POST['search']['value'])
+            {
+                if($item == 'nik'){
+                    $item = $this->table.'.nik';
+                }elseif($item == 'username'){
+                    $item = $this->table.'.username';
+                }
+
+                ($i===0) ? $this->db->like($item, $_POST['search']['value']) : $this->db->or_like($item, $_POST['search']['value']);
+            }
+                
+            $column[$i] = $item;
+            $i++;
         }
-
-        $admin = $this->ion_auth->is_admin()||$this->ion_auth->is_admin_bagian();
-
-        //$this->db->select('users_exit.id as id, users_exit.user_id, exit_type.title as exit_type, users_exit.date_exit, users_exit.created_on as date_created, users_exit.is_app,users_exit.user_app, users_exit.date_app,users_exit.note_app, users_exit.is_app_mgr, users_exit.user_app_mgr, users_exit.date_app_mgr, users_exit.is_app_koperasi, users_exit.user_app_koperasi, users_exit.date_app_koperasi,users_exit.is_app_perpus, users_exit.user_app_perpus, users_exit.date_app_perpus,users_exit.is_app_hrd, users_exit.user_app_hrd, users_exit.date_app_hrd, users_exit_inventaris.*, users_exit_rekomendasi.*');
-        $this->db->select('users_exit.*, exit_type.title as exit_type');
-        $this->db->from('users_exit');
-        $this->db->join('users', 'users.id = users_exit.user_id', 'LEFT');
-        $this->db->join('exit_type', 'users_exit.exit_type_id = exit_type.id', 'LEFT');
         
-
-        $this->db->where('users_exit.is_deleted', 0);
-        if($admin!=1){
-        $this->db->where("(users_exit.user_id= $sess_id $sub_id)",null, false);
+        if(isset($_POST['order'])) // here order processing
+        {
+            $this->db->order_by($column[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+        } 
+        else if(isset($this->order))
+        {
+            $order = $this->order;
+            $this->db->order_by(key($order), $order[key($order)]);
         }
-        if($id!=null){
-            $this->db->where('users_exit.id', $id);
-        }
-
-        $this->db->where('is_purposed', 1);
-        //$this->db->where('users_exit.user_id', $sess_id);
-        $this->db->order_by('users_exit.id', 'desc');
-        $q = $this->db->get();
-
-        return $q;
-
     }
 
-    function form_exit_detail($id, $user_id)
+    function get_datatables()
     {
-        $this->db->select('users_exit.*,users_exit.id as id,users_inventory.*, users_exit_rekomendasi.*, exit_type.title as exit_type');
-        $this->db->from('users_exit');
-        $this->db->join('users', 'users.id = users_exit.user_id', 'LEFT');
-        $this->db->join('exit_type', 'users_exit.exit_type_id = exit_type.id', 'LEFT');                                                                                                                                                                                                                                                                                                                                                                              
-        $this->db->join('users_exit_rekomendasi', 'users_exit.user_exit_rekomendasi_id = users_exit_rekomendasi.user_exit_id', 'LEFT');                                                                                                                                                                                                                                                                                                                                                                               
-        $this->db->join('users_inventory', 'users_exit.id = users_inventory.user_exit_id', 'LEFT');                                                                                                                                                                                                                                                                                                                                                                               
-        
-        $this->db->where('users_inventory.user_exit_id', $id)->where('users_exit.user_id', $user_id);
-
-        
-
-        $this->db->where('users_exit.is_deleted', 0);
-        
-        $q = $this->db->get();
-
-        return $q;
-
+        $this->_get_datatables_query();
+        if($_POST['length'] != -1)
+        $this->db->limit($_POST['length'], $_POST['start']);
+        $query = $this->db->get();
+        return $query->result();
     }
 
-    function add($data1, $data2, $data3)
+    function count_filtered()
     {
-        $this->db->insert('users_exit', $data1);
-        $this->db->insert('users_exit_inventaris', $data2);
-        $this->db->insert('users_exit_rekomendasi', $data3);
-        return true;
+        $this->_get_datatables_query();
+        $query = $this->db->get();
+        return $query->num_rows();
     }
 
-    function update($id, $data)
+    public function count_all()
     {
-        $this->db->where('id', $id);
-        $this->db->update('users_exit', $data);
-
-        return TRUE;
+        $sess_id = $this->session->userdata('user_id');
+        $sess_nik = get_nik($sess_id);
+        $user = get_user_satu_bu($sess_nik);
+        $this->db->where_in("id", $user);
+        $this->db->from($this->table);
+        return $this->db->count_all_results();
     }
-
 }
