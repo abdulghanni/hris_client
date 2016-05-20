@@ -19,7 +19,21 @@
             </div>
 
             <div class="grid-body ">
-            <a href="<?=base_url('form_'.$form_name.'/input')?>"><button type="button" class="btn btn-primary" title="Klik disini untuk membuat pengajuan baru"><i class="icon-plus"></i> Buat Pengajuan Baru</button><br/><br/></a>
+            <div class="row">
+              <div class="col-md-7">
+              <a href="<?=base_url('form_'.$form_name.'/input')?>"><button type="button" class="btn btn-primary" title="Klik disini untuk membuat pengajuan baru"><i class="icon-plus"></i> Buat Pengajuan Baru</button><br/><br/></a>
+              </div>
+              <div class="col-md-5">
+                <select class="form-control select2" id="opt">
+                  <option value="1">Tampilkan Pengajuan Yang Belum Selesai</option>
+                  <option value="2">Tampilkan Pengajuan Yang Sudah Selesai</option>
+                  <option value="3">Tampilkan Semua Pengajuan</option>
+                </select>
+              </div>
+            </div>
+            <br/>
+            <div class="row">
+            <div class="col-md-12">
               <div class="table-responsive">
                 <table class="table table-bordered table-hover table-full-width " id="table" style="width: 100%;">
                     <thead>
@@ -43,6 +57,8 @@
                     <tbody>
                     </tbody>
                 </table>
+            </div>
+            </div>
             </div>
             </div>
           </div>

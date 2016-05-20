@@ -15,7 +15,7 @@ class Form_absen_model extends CI_Model {
         $this->load->database();
     }
 
-    private function _get_datatables_query()
+    private function _get_datatables_query($f)
     {
             if(!is_admin()){
             $sess_id = $this->session->userdata('user_id');
@@ -48,6 +48,13 @@ class Form_absen_model extends CI_Model {
             $this->db->join($this->join2, $this->join2.'.id ='.$this->table.'.keterangan_id', 'left');
             
             $this->db->where($this->table.'.is_deleted', 0);
+            if($f == 1){
+                $this->db->where('is_app_hrd', 0);
+            }elseif($f == 2){
+                $this->db->where('is_app_hrd', 1);
+            }else{
+                
+            }
             if($is_admin!=1):
             if($is_approver == $sess_nik || $is_admin_cabang == 1){
                 $this->db->where_in($this->table.'.user_id', $user);//print_mz($user);
@@ -93,23 +100,23 @@ class Form_absen_model extends CI_Model {
         }
     }
 
-    function get_datatables()
+    function get_datatables($f)
     {
-        $this->_get_datatables_query();
+        $this->_get_datatables_query($f);
         if($_POST['length'] != -1)
         $this->db->limit($_POST['length'], $_POST['start']);
         $query = $this->db->get();
         return $query->result();
     }
 
-    function count_filtered()
+    function count_filtered($f)
     {
-        $this->_get_datatables_query();
+        $this->_get_datatables_query($f);
         $query = $this->db->get();
         return $query->num_rows();
     }
 
-    public function count_all()
+    public function count_all($f)
     {
         if(!is_admin()){
             $sess_id = $this->session->userdata('user_id');
@@ -130,6 +137,13 @@ class Form_absen_model extends CI_Model {
             }
             endif;
         $this->db->where('users_absen.is_deleted', 0);
+        if($f == 1){
+            $this->db->where('is_app_hrd', 0);
+        }elseif($f == 2){
+            $this->db->where('is_app_hrd', 1);
+        }else{
+            
+        }
         $this->db->from($this->table);
         return $this->db->count_all_results();
     }

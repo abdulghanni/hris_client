@@ -19,29 +19,45 @@
             </div>
 
             <div class="grid-body ">
-            <a href="<?=base_url('form_'.$form_name.'/input')?>"><button type="button" class="btn btn-primary" title="Klik disini untuk membuat pengajuan baru"><i class="icon-plus"></i> Buat Pengajuan Baru</button><br/><br/></a>
-              <div class="table-responsive">
-                <table class="table table-bordered table-hover table-full-width " id="table" style="width: 100%;">
-                    <thead>
-                         <tr>
-                          <th rowspan="2" scope="col" width="5%" class="text-center">No</th>
-                          <th rowspan="2" scope="col" width="5%">NIK</th>
-                          <th rowspan="2" scope="col" width="15%">Nama</th>
-                          <th rowspan="2" scope="col" width="10%">Tanggal Tidak Masuk</th>
-                          <th rowspan="2" scope="col" width="10%">Keterangan</th>
-                          <th colspan="4" scope="col" width="16%" class="text-center">Approval Atasan</th>
-                          <th rowspan="2" scope="col" width="12%">Aksi</th>
-                        </tr>
-                        <tr>
-                          <th scope="col" class="text-center" width="4%">Langsung</th>
-                          <th scope="col" class="text-center" width="4%">Tidak Langsung</th>
-                          <th scope="col" class="text-center" width="4%">Lainnya</th>
-                          <th scope="col" class="text-center" width="4%">HRD</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
+            <div class="row">
+              <div class="col-md-7">
+              <a href="<?=base_url('form_'.$form_name.'/input')?>"><button type="button" class="btn btn-primary" title="Klik disini untuk membuat pengajuan baru"><i class="icon-plus"></i> Buat Pengajuan Baru</button><br/><br/></a>
+              </div>
+              <div class="col-md-5">
+                <select class="form-control select2" id="opt">
+                  <option value="1">Tampilkan Pengajuan Yang Belum Selesai</option>
+                  <option value="2">Tampilkan Pengajuan Yang Sudah Selesai</option>
+                  <option value="3">Tampilkan Semua Pengajuan</option>
+                </select>
+              </div>
+            </div>
+            <br/>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="table-responsive">
+                  <table class="table table-bordered table-hover table-full-width " id="table" style="width: 100%;">
+                      <thead>
+                           <tr>
+                            <th rowspan="2" scope="col" width="5%" class="text-center">No</th>
+                            <th rowspan="2" scope="col" width="5%">NIK</th>
+                            <th rowspan="2" scope="col" width="15%">Nama</th>
+                            <th rowspan="2" scope="col" width="10%">Tanggal Tidak Masuk</th>
+                            <th rowspan="2" scope="col" width="10%">Keterangan</th>
+                            <th colspan="4" scope="col" width="16%" class="text-center">Approval Atasan</th>
+                            <th rowspan="2" scope="col" width="12%">Aksi</th>
+                          </tr>
+                          <tr>
+                            <th scope="col" class="text-center" width="4%">Langsung</th>
+                            <th scope="col" class="text-center" width="4%">Tidak Langsung</th>
+                            <th scope="col" class="text-center" width="4%">Lainnya</th>
+                            <th scope="col" class="text-center" width="4%">HRD</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                      </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
             </div>
           </div>

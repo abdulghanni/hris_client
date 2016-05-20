@@ -20,7 +20,7 @@ class Form_cuti extends MX_Controller {
         $this->load->helper('language');
     }
 
-    function index($ftitle = "fn:",$sort_by = "id", $sort_order = "asc", $offset = 0)
+    function index()
     {  
         $this->data['title'] = ucfirst($this->form_name);
         $this->data['form_name'] = $this->form_name;
@@ -38,9 +38,9 @@ class Form_cuti extends MX_Controller {
     }
 
 
-    public function ajax_list()
+    public function ajax_list($f)
     {
-        $list = $this->cuti->get_datatables();//lastq();//print_mz($list);
+        $list = $this->cuti->get_datatables($f);//lastq();//print_mz($list);
         $data = array();
         $no = $_POST['start'];
         foreach ($list as $r) {
@@ -90,8 +90,8 @@ class Form_cuti extends MX_Controller {
 
         $output = array(
                         "draw" => $_POST['draw'],
-                        "recordsTotal" => $this->cuti->count_all(),
-                        "recordsFiltered" => $this->cuti->count_filtered(),
+                        "recordsTotal" => $this->cuti->count_all($f),
+                        "recordsFiltered" => $this->cuti->count_filtered($f),
                         "data" => $data,
                 );
         //output to json format

@@ -42,9 +42,9 @@ class form_tidak_masuk extends MX_Controller {
         }
     }
 
-    public function ajax_list()
+    public function ajax_list($f)
     {
-        $list = $this->main->get_datatables();//lastq();
+        $list = $this->main->get_datatables($f);//lastq();
         //print_mz($list);
         $data = array();
         $no = $_POST['start'];
@@ -92,8 +92,8 @@ class form_tidak_masuk extends MX_Controller {
 
         $output = array(
                         "draw" => $_POST['draw'],
-                        "recordsTotal" => $this->main->count_all(),
-                        "recordsFiltered" => $this->main->count_filtered(),
+                        "recordsTotal" => $this->main->count_all($f),
+                        "recordsFiltered" => $this->main->count_filtered($f),
                         "data" => $data,
                 );
         //output to json format
