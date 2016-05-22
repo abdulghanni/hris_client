@@ -16,6 +16,7 @@
         <link rel="icon" type="image/png" href="<?php echo base_url()?>favicon.ico">
         <!-- Bootstrap core CSS -->
         <link href="<?php echo assets_url('css/bootstrap.min.css'); ?>" rel="stylesheet" >
+        <link href="<?php echo assets_url('css/bootstrap-theme.css'); ?>" rel="stylesheet" >
         <link href="<?php echo assets_url('css/plugins/font-awesome/css/font-awesome.css'); ?>" rel="stylesheet" >
         <!-- Custom styles -->
         <?php echo $css; ?>
@@ -23,6 +24,7 @@
         <link rel="stylesheet" href="<?php echo assets_url('css/responsive.css'); ?>">
         <link rel="stylesheet" href="<?php echo assets_url('css/animate.min.css'); ?>">
         <link rel="stylesheet" href="<?php echo assets_url('css/custom-icon-set.css'); ?>" type="text/css"/>
+        <link rel="stylesheet" href="<?php echo assets_url('css/jquery.sidr.light.css'); ?>" type="text/css"/>
         
         <!-- / -->
 
@@ -40,6 +42,8 @@
         <script src="<?php echo assets_url('js/jquery-1.8.3.min.js'); ?>"></script>
         <script src="<?php echo assets_url('js/jquery-ui-1.10.1.custom.min.js'); ?>"></script>
         <script src="<?php echo assets_url('js/bootstrap.min.js'); ?>"></script>
+        <script src="<?php echo assets_url('js/breakpoints.js'); ?>"></script>
+        <script src="<?php echo assets_url('js/jquery.unveil.min.js'); ?>"></script>
         
         <!-- Extra javascript -->
         <?php echo $js; ?>

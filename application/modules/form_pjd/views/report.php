@@ -98,14 +98,17 @@
                         </div>
                       </div>
                     <?php endfor; ?>
-                      <div class="row form-row">
+                      <?php for($i=0;$i<sizeof($kendaraan);$i++):
+                              ?>
+                        <div class="row form-row">
                         <div class="col-md-3">
                           <label class="form-label text-left">Kendaraan</label>
                         </div>
                         <div class="col-md-9">
-                          <input name="title" id="title" type="text"  class="form-control" placeholder="Kendaraan" value="<?php echo $td->transportation_nm; ?>" disabled>
+                          <input name="title" id="title" type="text"  class="form-control" placeholder="Kota Tujuan" value="<?php echo 1+$i.'. '.getValue('title','transportation', array('id'=>'where/'.$kendaraan[$i])) ?>" disabled>
                         </div>
                       </div>
+                    <?php endfor; ?>
                       <div class="row form-row">
                         <div class="col-md-3">
                           <label class="form-label text-left">Tgl. Berangkat</label>

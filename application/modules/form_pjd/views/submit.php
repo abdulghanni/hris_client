@@ -33,11 +33,11 @@
 
                         $j = $a - $b;
                         $jml_pjd = floor($j/(60*60*24)+1);
-                        if($jml_pjd != 1){
+                        /*if($jml_pjd != 1){
                           $jml_pjd = $jml_pjd-1;
                         }else{
                           $jml_pjd = 1;
-                        }
+                        }*/
                         ?>
                     <div class="row form-row">
                       <div class="col-md-2">
@@ -146,14 +146,17 @@
                         </div>
                       </div>
                     <?php endfor; ?>
-                      <div class="row form-row">
+                      <?php for($i=0;$i<sizeof($kendaraan);$i++):
+                              ?>
+                        <div class="row form-row">
                         <div class="col-md-2">
                           <label class="form-label text-left">Kendaraan</label>
                         </div>
                         <div class="col-md-5">
-                          <input name="title" id="title" type="text"  class="form-control" placeholder="Kendaraan" value="<?php echo $td->transportation_nm; ?>" disabled>
+                          <input name="title" id="title" type="text"  class="form-control" placeholder="Kota Tujuan" value="<?php echo 1+$i.'. '.getValue('title','transportation', array('id'=>'where/'.$kendaraan[$i])) ?>" disabled>
                         </div>
                       </div>
+                    <?php endfor; ?>
                       <div class="row form-row">
                         <div class="col-md-2">
                           <label class="form-label text-left">Tgl. Berangkat</label>
@@ -184,7 +187,7 @@
                           <th width="1%">Gol</th>
                           <th width="10%" class="text-center">Uang Makan/<?php echo $jml_pjd.' Hari'?></th>
                           <th width="10%" class="text-center">Uang Saku/<?php echo $jml_pjd.' Hari'?></th>
-                          <th width="10%" class="text-center">Hotel/<?php echo $jml_pjd.' Hari'?></th>
+                          <th width="10%" class="text-center">Hotel/<?php $j = $jml_pjd-1; echo ($jml_pjd>1) ? "$j malam" : '';?></th>
                           <?php 
                             $total_fix = 0;
                             $total_lain = 0;
@@ -205,14 +208,24 @@
                             <?php echo get_grade($key->user_id)?>
                           </td>
                           <?php $i = 0;
-                              $c = $ci->db->select('users_spd_luar_group_biaya.jumlah_biaya')->from('users_spd_luar_group_biaya')->join('pjd_biaya','pjd_biaya.id = users_spd_luar_group_biaya.pjd_biaya_id', 'left')->where('user_spd_luar_group_id', $id)->where('user_id', $key->user_id)->where('pjd_biaya.type_grade != ', 0)->get();
+                              $c = $ci->db->select('users_spd_luar_group_biaya.jumlah_biaya,users_spd_luar_group_biaya.pjd_biaya_id')->from('users_spd_luar_group_biaya')->join('pjd_biaya','pjd_biaya.id = users_spd_luar_group_biaya.pjd_biaya_id', 'left')->where('user_spd_luar_group_id', $id)->where('user_id', $key->user_id)->where('pjd_biaya.type_grade != ', 0)->get();
                               foreach ($c->result() as $c) {
-                              $total_fix += $c->jumlah_biaya*$jml_pjd;
+                                if($c->pjd_biaya_id%3 == 0){
+                                  $total_fix += $c->jumlah_biaya*($jml_pjd-1);
+                                }else{
+                                 $total_fix += $c->jumlah_biaya*$jml_pjd;
+                                }
                           ?>
                           <td align="right">
 
-                          <?php $i++ ?>
-                            <span class="fix<?php echo $i ?>"><?php echo number_format($c->jumlah_biaya*$jml_pjd, 0)?></span>
+                          <?php $i++ ;
+                            if($c->pjd_biaya_id%3 == 0){
+                                  $b_fix = $c->jumlah_biaya*($jml_pjd-1);
+                                }else{
+                                 $b_fix = $c->jumlah_biaya*$jml_pjd;
+                                }
+                          ?>
+                            <span class="fix<?php echo $i ?>"><?php echo number_format($b_fix, 0)?></span>
                           </td>
                           <?php }
                             $j = 0;

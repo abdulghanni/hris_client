@@ -3,17 +3,16 @@
 class Form_recruitment extends MX_Controller {
 
   public $data;
-
+  var $form_name = 'recruitment';
     function __construct()
     {
         parent::__construct();
         $this->load->library('authentication', NULL, 'ion_auth');
         $this->load->library('form_validation');
         $this->load->library('approval');
-        $this->load->helper('url');
         
         $this->load->database();
-        $this->load->model('recruitment_model');
+        $this->load->model('form_recruitment/recruitment_model', 'main');
     
         $this->lang->load('auth');
         $this->load->helper('language');
@@ -23,76 +22,78 @@ class Form_recruitment extends MX_Controller {
 
     function index($ftitle = "fn:",$sort_by = "users_recruitment.id", $sort_order = "asc", $offset = 0)
     {
-        $this->data['title'] = 'Form Permintaan SDM Baru';
+        $this->data['title'] = ucfirst($this->form_name);
+        $this->data['form_name'] = $this->form_name;
+       
         if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page
             redirect('auth/login', 'refresh');
         }
-        $this->data['sess_id'] = $sess_id = $this->session->userdata('user_id');
-        $this->data['sess_nik'] = get_nik($sess_id);
-        //$admin = cek_subordinate(is_have_subordinate($this->data['session_id']),'id', 30);print_mz(lq());
-        //set sort order
-        $this->data['sort_order'] = $sort_order;
-        
-        //set sort by
-        $this->data['sort_by'] = $sort_by;
-       
-        //set filter by title
-        $this->data['ftitle_param'] = $ftitle; 
-        $exp_ftitle = explode(":",$ftitle);
-        $ftitle_re = str_replace("_", " ", $exp_ftitle[1]);
-        $ftitle_post = (strlen($ftitle_re) > 0) ? array('users.username'=>$ftitle_re) : array() ;
-        
-        //set default limit in var $config['list_limit'] at application/config/ion_auth.php 
-        $this->data['limit'] = $limit = (strlen($this->input->post('limit')) > 0) ? $this->input->post('limit') : 10 ;
-
-        $this->data['offset'] = 6;
-
-        //list of filterize all recruitment  
-        $this->data['recruitment_all'] = $this->recruitment_model->like($ftitle_post)->where('is_deleted',0)->recruitment()->result();
-        
-        $this->data['num_rows_all'] = $this->recruitment_model->like($ftitle_post)->where('is_deleted',0)->recruitment()->num_rows();
-        
-        $this->data['recruitment'] = $this->recruitment_model->like($ftitle_post)->where('is_deleted',0)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->recruitment()->result();
-        //print_mz($this->data['recruitment']);
-        //list of filterize limit recruitment for pagination  d();
-        $this->data['_num_rows'] = $this->recruitment_model->like($ftitle_post)->where('is_deleted',0)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->recruitment()->num_rows();
-
-         //config pagination
-         $config['base_url'] = base_url().'recruitment/index/fn:'.$exp_ftitle[1].'/'.$sort_by.'/'.$sort_order.'/';
-         $config['total_rows'] = $this->data['num_rows_all'];
-         $config['per_page'] = $limit;
-         $config['uri_segment'] = 6;
-
-        //inisialisasi config
-         $this->pagination->initialize($config);
-
-        //create pagination
-        $this->data['halaman'] = $this->pagination->create_links();
-
-        $this->data['ftitle_search'] = array(
-            'name'  => 'title',
-            'id'    => 'title',
-            'type'  => 'text',
-            'value' => $this->form_validation->set_value('title'),
-        );
-        $this->data['form_id'] = getValue('form_id', 'form_id', array('form_name'=>'like/recruitment'));
-        $this->data['form'] = 'recruitment';
-        $this->_render_page('form_recruitment/index');
-    }
-
-    function keywords(){
-        if (!$this->ion_auth->logged_in())
-        {
-            redirect('auth/login', 'refresh');
-        }
         else
         {
-            $ftitle_post = (strlen($this->input->post('title')) > 0) ? strtolower(url_title($this->input->post('title'),'_')) : "" ;
-
-            redirect('form_recruitment/index/fn:'.$ftitle_post, 'refresh');
+        $this->data['form'] = 'recruitment';
+        $this->_render_page('form_recruitment/index', $this->data);
         }
+    }
+
+    public function ajax_list($f)
+    {
+        $list = $this->main->get_datatables($f);//lastq();//print_mz($list);
+        $data = array();
+        $no = $_POST['start'];
+        foreach ($list as $r) {
+            //AKSI
+           $detail = base_url()."form_recruitment/detail/".$r->id; 
+           $print = base_url()."form_recruitment/form_recruitment_pdf/".$r->id; 
+           $delete = (($r->approval_status_id_lv1 == 0 && $r->created_by == sessId()) || is_admin()) ? '<button onclick="showModal('.$r->id.')" class="btn btn-sm btn-danger" type="button" title="Batalkan Pengajuan"><i class="icon-remove"></i></button>' : '';
+
+            //APPROVAL
+            if(!empty($r->user_app_lv1)){
+                $status1 = ($r->approval_status_id_lv1 == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($r->approval_status_id_lv1 == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($r->approval_status_id_lv1 == 3) ? "<i class='icon-exclamation-sign' style='color:orange;' title = 'Pending'></i>" : "<i class='icon-question' title = 'Menunggu Status Approval'></i>"));
+            }else{
+                $status1 = "<i class='icon-minus' style='color:black;' title = 'Tidak Butuh Approval Atasan Langsung'></i>";
+            }
+            if(!empty($r->user_app_lv2)){
+                $status2 = ($r->approval_status_id_lv2 == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($r->approval_status_id_lv2 == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($r->approval_status_id_lv2 == 3) ? "<i class='icon-exclamation-sign' style='color:orange;' title = 'Pending'></i>" : "<i class='icon-question' title = 'Menunggu Status Approval'></i>"));
+            }else{
+                $status2 = "<i class='icon-minus' style='color:black;' title = 'Tidak Butuh Approval Atasan Tidak Langsung'></i>";
+            }
+            if(!empty($r->user_app_lv3)){
+                $status3 = ($r->approval_status_id_lv3 == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($r->approval_status_id_lv3 == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($r->approval_status_id_lv3 == 3) ? "<i class='icon-exclamation-sign' style='color:orange;' title = 'Pending'></i>" : "<i class='icon-question' title = 'Menunggu Status Approval'></i>"));
+            }else{
+                $status3 = "<i class='icon-minus' style='color:black;' title = 'Tidak Butuh Approval Atasan Lainnya'></i>";
+            }
+            
+
+
+            $statushrd = ($r->approval_status_id_hrd == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($r->approval_status_id_hrd == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($r->approval_status_id_hrd == 3) ? "<i class='icon-exclamation-sign' style='color:orange;' title = 'Pending'></i>" : "<i class='icon-question' title = 'Menunggu Status Approval'></i>"));
+
+            $no++;
+            $row = array();
+            $row[] = "<a href=$detail>".$r->id.'</a>';
+            $row[] = "<a href=$detail>".$r->nik.'</a>';
+            $row[] = "<a href=$detail>".$r->username.'</a>';
+            $row[] = get_position_name($r->position_id);
+            $row[] = word_limiter($r->job_desc, 5);
+            $row[] = $status1;
+            $row[] = $status2;
+            $row[] = $status3;
+            $row[] = $statushrd;
+            $row[] = "<a class='btn btn-sm btn-primary' href=$detail title='Klik icon ini untuk melihat detail'><i class='icon-info'></i></a>
+                      <a class='btn btn-sm btn-light-azure' href=$print title='Klik icon ini untuk mencetak form pengajuan'><i class='icon-print'></i></a>
+                      ".$delete;
+            $data[] = $row;
+        }
+
+        $output = array(
+                        "draw" => $_POST['draw'],
+                        "recordsTotal" => $this->main->count_all($f),
+                        "recordsFiltered" => $this->main->count_filtered($f),
+                        "data" => $data,
+                );
+        //output to json format
+        echo json_encode($output);
     }
 
     function input()
@@ -531,15 +532,18 @@ class Form_recruitment extends MX_Controller {
                 {
                     $this->template->set_layout('default');
 
-                    $this->template->add_js('jquery.sidr.min.js');
+                     $this->template->add_js('jquery.sidr.min.js');
+                    $this->template->add_js('datatables.min.js');
                     $this->template->add_js('breakpoints.js');
                     $this->template->add_js('core.js');
                     $this->template->add_js('select2.min.js');
 
                     $this->template->add_js('form_index.js');
+                    $this->template->add_js('form_datatable_index.js');
 
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                     $this->template->add_css('plugins/select2/select2.css');
+                    $this->template->add_css('datatables.min.css');
                     
                 }
                 elseif(in_array($view, array('form_recruitment/input',

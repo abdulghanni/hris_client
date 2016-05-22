@@ -22,6 +22,17 @@ $(document).ready(function() {
      });
   });
 
+  $('#btnTambahKendaraan').on('click', function(){
+    $(document).find("select.select2").select2();
+    $.ajax({
+         url:"form_pjd/get_kendaraan/",
+         success: function(response){
+         $("#kendaraanLain").append(response);
+         },
+         dataType:"html"
+     });
+  });
+
   $('#toCabang').on('change', function(){
      var bu = $('#toCabang').val();
      $.ajax({

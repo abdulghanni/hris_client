@@ -196,7 +196,7 @@
                             <label class="form-label text-right">Kendaraan</label>
                           </div>
                           <div class="col-md-9">
-                            <select id="vehicle" name="vehicle" class="select2" style="width:100%">
+                            <select id="vehicle" name="vehicle[]" class="select2" style="width:100%">
                               <?php if ($tl_num_rows > 0) {
                               foreach ($transportation_list as $tl) :
                               ?>    
@@ -206,6 +206,13 @@
                             </select>
                           </div>
                         </div>
+                        <div id="kendaraanLain"></div>
+                        <div class="row form-row">
+                          <div class="col-md-3"></div>
+                          <div class="col-md-9">
+                            <button type="button" class="btn-primary" id="btnTambahKendaraan" style="">Tambah Kendaraan</button>
+                          </div>
+                        </div><br/>
                         <div class="row form-row">
                           <div class="col-md-3">
                             <label class="form-label text-right">Tgl. Berangkat</label>

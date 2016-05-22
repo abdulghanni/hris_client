@@ -187,7 +187,7 @@ if ($td_num_rows > 0) {
         ?>
   
 <?php endforeach;}?>
-<table width="1000" height="128" border-style:solid border="1" class="tg">
+<table width="800" height="128" border-style:solid border="1" class="tg">
                       <thead>
                         <tr>
                           <th width="15%">Nama</th>
@@ -198,10 +198,10 @@ if ($td_num_rows > 0) {
                           <?php 
                             $total_fix = 0;
                             $total_lain = 0;
-                            foreach($biaya_pjd->result() as $b):
+                            //foreach($biaya_pjd->result() as $b):
                           ?>
-                          <th width="10%" class="text-center"><?php echo $b->jenis_biaya?></th>
-                        <?php endforeach; ?> 
+                          <th width="10%" class="text-center"><?php echo 'Lain-lain'//$b->jenis_biaya?></th>
+                        <?php //endforeach; ?> 
                         </tr>
                       </thead>
                       <tbody>
@@ -215,28 +215,36 @@ if ($td_num_rows > 0) {
                             <?php echo get_grade($key->user_id)?>
                           </td>
                           <?php $i = 0;
-                              $c = $ci->db->select('users_spd_luar_group_biaya.jumlah_biaya')->from('users_spd_luar_group_biaya')->join('pjd_biaya','pjd_biaya.id = users_spd_luar_group_biaya.pjd_biaya_id', 'left')->where('user_spd_luar_group_id', $id)->where('user_id', $key->user_id)->where('pjd_biaya.type_grade != ', 0)->get();
+                              $c = $ci->db->select('users_spd_luar_group_biaya.jumlah_biaya,pjd_biaya_id')->from('users_spd_luar_group_biaya')->join('pjd_biaya','pjd_biaya.id = users_spd_luar_group_biaya.pjd_biaya_id', 'left')->where('user_spd_luar_group_id', $id)->where('user_id', $key->user_id)->where('pjd_biaya.type_grade != ', 0)->get();
                               foreach ($c->result() as $c) {
+                                if($c->pjd_biaya_id%3 == 0){
+                              $total_fix += $c->jumlah_biaya*($jml_pjd-1);
+                              $jf = $c->jumlah_biaya*($jml_pjd-1);
+                            }else{
                               $total_fix += $c->jumlah_biaya*$jml_pjd;
+                              $jf = $c->jumlah_biaya*$jml_pjd;
+                            }
                           ?>
                           <td align="right">
 
                           <?php 
                             $i++ ;
                             ?>
-                            <span class="fix<?php echo $i ?>"><?php echo number_format($c->jumlah_biaya*$jml_pjd, 0)?></span>
+                            <span class="fix<?php echo $i ?>"><?php echo number_format($jf, 0)?></span>
                             
                             
                           </td>
                           <?php }
                             $j = 0;
                             $b = $ci->db->select('users_spd_luar_group_biaya.jumlah_biaya')->from('users_spd_luar_group_biaya')->join('pjd_biaya','pjd_biaya.id = users_spd_luar_group_biaya.pjd_biaya_id', 'left')->where('user_spd_luar_group_id', $id)->where('user_id', $key->user_id)->where('pjd_biaya.type_grade', 0)->get();
+                            $b_sum = $ci->db->select_sum('users_spd_luar_group_biaya.jumlah_biaya')->from('users_spd_luar_group_biaya')->join('pjd_biaya','pjd_biaya.id = users_spd_luar_group_biaya.pjd_biaya_id', 'left')->where('user_spd_luar_group_id', $id)->where('user_id', $key->user_id)->where('pjd_biaya.type_grade', 0)->get()->row_array();
                               foreach ($b->result() as $b) {
                                 $total_lain += $b->jumlah_biaya;
+                              }
                           ?>
-                          <?php $j++ ?>
-                          <td align="right"><span class="tambahan<?php echo $j ?>"><?php echo number_format($b->jumlah_biaya, 0)?></span></td>
-                            <?php } ?>
+                          <?php //$j++ ?>
+                          <td align="right"><span class="tambahan<?php echo $j ?>"><?php echo number_format($b_sum['jumlah_biaya'], 0)?></span></td>
+                            <?php //} ?>
                         </tr>
                       <?php 
                       endforeach ?>
@@ -247,12 +255,12 @@ if ($td_num_rows > 0) {
                           <td id="totalfix3" class="total_fix" align="right"><?= $hotel?></td>
                           <?php foreach($biaya_pjd->result() as $b):;
                             $biaya_tambahan = $this->db->select("(SELECT SUM(jumlah_biaya) FROM users_spd_luar_group_biaya WHERE user_spd_luar_group_id=$id and pjd_biaya_id = $b->biaya_id) AS uang_makan", FALSE)->get()->row_array();
-                            $tambahan = $biaya_tambahan['uang_makan'];?>
-                            <td  class="total_tambahan" align="right"><?= number_format($tambahan, 0) ?></td>
-                          <?php endforeach ?>
+                            $tambahan = $biaya_tambahan['uang_makan'];print_r($tambahan);?><?php endforeach ?>
+                            <td  class="total_tambahan" align="right"><?= number_format($total_lain, 0) ?></td>
+                          
                         </tr>
                       <tr>
-                        <td align="right" colspan="<?php $cs=5+sizeof($biaya_pjd->result());echo $cs;?>"><b>Total : Rp. <?php echo number_format($total_fix+$total_lain,0)?></b></td>
+                        <td align="right" colspan="<?php $cs=5+1/*sizeof($biaya_pjd->result())*/;echo $cs;?>"><b>Total : Rp. <?php echo number_format($total_fix+$total_lain,0)?></b></td>
                       </tr>
                       </tbody>
                     </table>

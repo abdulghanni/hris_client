@@ -118,6 +118,8 @@ class Form_pjd extends MX_Controller {
             $receiver = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('task_receiver');
             $kota = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('location_id');
             $this->data['kota'] = $p = explode(",", $kota);
+            $kendaraan = getValue('transportation_id', 'users_spd_luar_group', array('id'=>'where/'.$id));
+            $this->data['kendaraan'] = $p = explode(",", $kendaraan);
             $creator = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('task_creator');
             $user_submit = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('user_submit');
             $this->data['biaya_pjd_group'] = getAll('users_spd_luar_group_biaya', array('user_spd_luar_group_id'=>'where/'.$id));
@@ -143,7 +145,7 @@ class Form_pjd extends MX_Controller {
         $biaya_fix_2 = $this->db->select("(SELECT SUM(jumlah_biaya) FROM users_spd_luar_group_biaya WHERE user_spd_luar_group_id=$id and (pjd_biaya_id = 2 or pjd_biaya_id=5 or pjd_biaya_id=8 or pjd_biaya_id=11 or pjd_biaya_id=14 or pjd_biaya_id=20 or pjd_biaya_id=17)) AS uang_saku", FALSE)->get()->row_array();
         $this->data['uang_saku'] = number_format($biaya_fix_2['uang_saku']*$jml_pjd);
         $biaya_fix_3 = $this->db->select("(SELECT SUM(jumlah_biaya) FROM users_spd_luar_group_biaya WHERE user_spd_luar_group_id=$id and (pjd_biaya_id = 3 or pjd_biaya_id=6 or pjd_biaya_id=9 or pjd_biaya_id=12 or pjd_biaya_id=15 or pjd_biaya_id=21 or pjd_biaya_id=18)) AS hotel", FALSE)->get()->row_array();
-        $this->data['hotel'] = number_format($biaya_fix_3['hotel']*$jml_pjd);
+        $this->data['hotel'] = number_format($biaya_fix_3['hotel']*($jml_pjd-1));
             
             $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
 
@@ -340,7 +342,7 @@ class Form_pjd extends MX_Controller {
         $this->form_validation->set_rules('date_spd_end', 'Tanggal Berangkat', 'trim|required');
         $this->form_validation->set_rules('city_to', 'Kota Tujuan', 'trim|required');
         $this->form_validation->set_rules('city_from', 'Kota Asal', 'trim|required');
-        $this->form_validation->set_rules('vehicle', 'Kendaraan', 'trim|required');
+        //$this->form_validation->set_rules('vehicle', 'Kendaraan', 'trim|required');
         
         if($this->form_validation->run() == FALSE)
         {
@@ -362,7 +364,7 @@ class Form_pjd extends MX_Controller {
                 'from_city_id'          => $this->input->post('city_from'),
                 'to_city_id'            => $this->input->post('city_to'),
                 'location_id'            => implode(',', $this->input->post('kota')),
-                'transportation_id'     => $this->input->post('vehicle'),
+                'transportation_id'     => implode(',', $this->input->post('vehicle')),
                 'user_app_lv1'          => $this->input->post('atasan1'),
                 'user_app_lv2'          => $this->input->post('atasan2'),
                 'user_app_lv3'          => $this->input->post('atasan3'),
@@ -522,6 +524,8 @@ class Form_pjd extends MX_Controller {
             $user_submit = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('user_submit');
             $this->data['receiver'] = $p = explode(",", $receiver);
             $this->data['kota'] = $p = explode(",", $kota);
+            $kendaraan = getValue('transportation_id', 'users_spd_luar_group', array('id'=>'where/'.$id));
+            $this->data['kendaraan'] = $p = explode(",", $kendaraan);
             $this->data['receiver_submit'] = explode(",", $user_submit);
 
             $this->data['sess_id'] = $this->session->userdata('user_id');
@@ -588,6 +592,8 @@ class Form_pjd extends MX_Controller {
 
            $kota = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('location_id');
             $this->data['kota'] = $p = explode(",", $kota);
+           $kendaraan = getValue('transportation_id', 'users_spd_luar_group', array('id'=>'where/'.$id));
+            $this->data['kendaraan'] = $p = explode(",", $kendaraan);
             $report = $this->data['report'] = $this->form_spd_luar_group_model->where('users_spd_luar_report_group.user_spd_luar_group_id', $id)->form_spd_luar_report_group($report_id, $user_id)->result();
             $n_report = $this->data['n_report'] = $this->form_spd_luar_group_model->where('users_spd_luar_report_group.user_spd_luar_group_id', $id)->form_spd_luar_report_group($report_id, $user_id)->num_rows();
 
@@ -1092,6 +1098,19 @@ class Form_pjd extends MX_Controller {
             $this->load->view('dropdown_kota',$data);
         }
 
+        function get_kendaraan()
+        {
+            $k = GetAllSelect('transportation', 'id,title')->result_array();
+            foreach ($k as $r)
+            {
+            $result['']= '- Pilih Kendaraan -';
+            $result[$r['id']]= ucwords(strtolower($r['title']));
+            }
+
+            $data['result']=$result;
+            $this->load->view('dropdown_kendaraan',$data);
+        }
+
         function get_kota_lain($bu)
         {
             $url = get_api_key().'users/location_by_bu/BU/'.$bu.'/format/json';
@@ -1183,7 +1202,7 @@ class Form_pjd extends MX_Controller {
         
         $receiver = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('task_receiver');
         $receiver_size = explode(',', $receiver);$receiver_size = sizeof($receiver_size); 
-        $this->data['biaya_single'] = getJoin('users_spd_luar_group_biaya','pjd_biaya','users_spd_luar_group_biaya.pjd_biaya_id = pjd_biaya.id','left', 'users_spd_luar_group_biaya.*, pjd_biaya.title as jenis_biaya, pjd_biaya.type_grade as type', array('user_spd_luar_group_id'=>'where/'.$id, 'user_id'=>'where/'.$receiver, 'pjd_biaya_id'=>'order/asc'));
+        $this->data['biaya_single'] = getJoin('users_spd_luar_group_biaya','pjd_biaya','users_spd_luar_group_biaya.pjd_biaya_id = pjd_biaya.id','left', 'users_spd_luar_group_biaya.*, pjd_biaya.title as jenis_biaya, pjd_biaya.type_grade as type', array('user_spd_luar_group_id'=>'where/'.$id, 'user_id'=>'where/'.$receiver, 'pjd_biaya_id'=>'order/asc'));;
         
         $creator = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('task_creator');
         $user_submit = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('user_submit');
@@ -1213,10 +1232,10 @@ class Form_pjd extends MX_Controller {
         $biaya_fix_2 = $this->db->select("(SELECT SUM(jumlah_biaya) FROM users_spd_luar_group_biaya WHERE user_spd_luar_group_id=$id and (pjd_biaya_id = 2 or pjd_biaya_id=5 or pjd_biaya_id=8 or pjd_biaya_id=11 or pjd_biaya_id=14 or pjd_biaya_id=20 or pjd_biaya_id=17)) AS uang_saku", FALSE)->get()->row_array();
         $this->data['uang_saku'] = number_format($biaya_fix_2['uang_saku']*$jml_pjd);
         $biaya_fix_3 = $this->db->select("(SELECT SUM(jumlah_biaya) FROM users_spd_luar_group_biaya WHERE user_spd_luar_group_id=$id and (pjd_biaya_id = 3 or pjd_biaya_id=6 or pjd_biaya_id=9 or pjd_biaya_id=12 or pjd_biaya_id=15 or pjd_biaya_id=21 or pjd_biaya_id=18)) AS hotel", FALSE)->get()->row_array();
-        $this->data['hotel'] = number_format($biaya_fix_3['hotel']*$jml_pjd);
+        $this->data['hotel'] = number_format($biaya_fix_3['hotel']*($jml_pjd-1));
         $this->load->library('mpdf60/mpdf');
         $html = ($receiver_size > 1) ? $this->load->view('spd_luar_group_pdf', $this->data, true) : $this->load->view('pjd_pdf', $this->data, true) ; 
-        $orientation = ($receiver_size>1) ? 'L' : 'P';
+        $orientation = ($receiver_size>1) ? 'P' : 'P';
         $this->mpdf = new mPDF();
         $this->mpdf->AddPage($orientation, // L - landscape, P - portrait
             '', '', '', '',
