@@ -30,6 +30,14 @@
                   <div class="col-md-12">
                     <div class="row form-row">
                       <div class="col-md-3">
+                        <label class="form-label text-right">NIK</label>
+                      </div>
+                      <div class="col-md-9">
+                        <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama" value="<?php echo $user_nik?>" disabled="disabled">
+                      </div>
+                    </div>
+                    <div class="row form-row">
+                      <div class="col-md-3">
                         <label class="form-label text-right">Nama</label>
                       </div>
                       <div class="col-md-9">
