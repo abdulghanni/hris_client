@@ -194,19 +194,31 @@ class recruitment_model extends CI_Model {
     }
 
     function detail($id){
-        $this->db->select(array(
-                'users_recruitment'.'.id as id',
-                'users_recruitment'.'.*',
-                'alasan_recruitment'.'.title as alasan_recruitment',
-               'users'.'.username',
-               'users'.'.nik',
+        //default selects
+            $this->db->select(array(
+            'users_recruitment'.'.*',
+            'users_recruitment'.'.id as id',
+            'users_recruitment'.'.created_on as date_created',
+            'kualifikasi'.'.*', 'kemampuan'.'.*',
+            'status.title as status', 'urgensi.title as urgensi',
+            'jurusan.title as jurusan', 'ipk.title as ipk','toefl.title as toefl',
+            'brevet.title as brevet'
             ));
-
-            $this->db->from('users_recruitment');
-
-            $this->db->join('alasan_recruitment', 'users_recruitment.alasan_recruitment_id = alasan_recruitment.HRSLEAVETYPEID', 'left');
-            $this->db->join('users', 'users_recruitment.user_id = users.id', 'left');
             
+            $this->db->from('users_recruitment');
+            $this->db->join($this->join1, 'users_recruitment.user_id = users.id', 'left');
+            $this->db->join($this->join2, 'users_recruitment.id = users_recruitment_kemampuan.user_recruitment_id', 'left');
+            
+            //$this->db->join('users', 'users_recruitment.user_id = users.id', 'left');
+            $this->db->join('users_recruitment_kualifikasi as kualifikasi', 'users_recruitment.id = kualifikasi.user_recruitment_id', 'left');
+            $this->db->join('users_recruitment_kemampuan as kemampuan', 'users_recruitment.id = kemampuan.user_recruitment_id', 'left');
+            $this->db->join('recruitment_status as status', 'users_recruitment.status_id = status.id', 'left');
+            $this->db->join('recruitment_urgensi as urgensi', 'users_recruitment.urgensi_id = urgensi.id', 'left');
+            $this->db->join('recruitment_jurusan as jurusan', 'kualifikasi.jurusan = jurusan.id', 'left');
+            $this->db->join('recruitment_brevet as brevet', 'kemampuan.brevet_id = brevet.id', 'left');
+            $this->db->join('ipk as ipk', 'kualifikasi.ipk = ipk.id', 'left');
+            $this->db->join('toefl as toefl', 'kualifikasi.toefl = toefl.id', 'left');
+           
             $this->db->where('users_recruitment.is_deleted', 0);
             $this->db->where('users_recruitment.id', $id);
 

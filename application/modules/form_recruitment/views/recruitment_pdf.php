@@ -31,7 +31,7 @@
   <p align="center" class="style6">Formulir Permintaan SDM Baru</p>
   <p class="style7">No : <?= get_form_no($id) ?></p>
 </div>
-<?php foreach($form_recruitment->result() as $row):
+<?php foreach($recruitment as $row):
 $approved = assets_url('img/approved_stamp.png');
 $rejected = assets_url('img/rejected_stamp.png');
 $signed = assets_url('img/signed.png');?>

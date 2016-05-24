@@ -45,7 +45,7 @@ class Form_recruitment extends MX_Controller {
         foreach ($list as $r) {
             //AKSI
            $detail = base_url()."form_recruitment/detail/".$r->id; 
-           $print = base_url()."form_recruitment/form_recruitment_pdf/".$r->id; 
+           $print = base_url()."form_recruitment/recruitment_pdf/".$r->id; 
            $delete = (($r->approval_status_id_lv1 == 0 && $r->created_by == sessId()) || is_admin()) ? '<button onclick="showModal('.$r->id.')" class="btn btn-sm btn-danger" type="button" title="Batalkan Pengajuan"><i class="icon-remove"></i></button>' : '';
 
             //APPROVAL
@@ -80,8 +80,8 @@ class Form_recruitment extends MX_Controller {
             $row[] = $status2;
             $row[] = $status3;
             $row[] = $statushrd;
-            $row[] = "<a class='btn btn-sm btn-primary' href=$detail title='Klik icon ini untuk melihat detail'><i class='icon-info'></i></a>
-                      <a class='btn btn-sm btn-light-azure' href=$print title='Klik icon ini untuk mencetak form pengajuan'><i class='icon-print'></i></a>
+            $row[] = "<a class='btn btn-sm btn-primary' target='_blank' href=$detail title='Klik icon ini untuk melihat detail'><i class='icon-info'></i></a>
+                      <a class='btn btn-sm btn-light-azure' target='_blank' href=$print title='Klik icon ini untuk mencetak form pengajuan'><i class='icon-print'></i></a>
                       ".$delete;
             $data[] = $row;
         }
@@ -247,17 +247,17 @@ class Form_recruitment extends MX_Controller {
         $this->data['id'] = $id;
         $sess_id= $this->data['sess_id'] = $this->session->userdata('user_id');
         $this->data['sess_nik'] = $sess_nik = get_nik($sess_id);
-        $this->data['recruitment'] = $this->recruitment_model->recruitment($id)->result();
-        $this->data['_num_rows'] = $this->recruitment_model->recruitment($id)->num_rows();
+        $this->data['recruitment'] = $this->main->detail($id)->result();
+        $this->data['_num_rows'] = $this->main->detail($id)->num_rows();
         $this->data['status'] = getAll('recruitment_status', array('is_deleted' => 'where/0'));
         $this->data['urgensi'] = getAll('recruitment_urgensi', array('is_deleted' => 'where/0'));
         $jk = explode(',', getAll('users_recruitment_kualifikasi', array('id' => 'where/'.$id))->row('jenis_kelamin_id'));
         $pendidikan = explode(',', getAll('users_recruitment_kualifikasi', array('id' => 'where/'.$id))->row('pendidikan_id'));
         $komputer = explode(',', getAll('users_recruitment_kemampuan', array('id' => 'where/'.$id))->row('komputer'));
-        $this->data['jenis_kelamin'] = $this->recruitment_model->get_jk($jk);
-        $this->data['pendidikan'] = $this->recruitment_model->get_pendidikan($pendidikan);
-        $this->data['komputer'] = $this->recruitment_model->get_komputer($komputer);
-        $this->data['position_pengaju'] = $this->get_user_position($this->recruitment_model->recruitment($id)->row_array()['user_id']);
+        $this->data['jenis_kelamin'] = getAll('jenis_kelamin');
+        $this->data['pendidikan'] = getAll('recruitment_pendidikan');
+        $this->data['komputer'] = getAll('recruitment_pendidikan');
+        $this->data['position_pengaju'] = $this->get_user_position(getValue('user_id', 'users_recruitment', array('id'=>'where/'.$id)));
         $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
         $this->_render_page('form_recruitment/detail', $this->data);
     }
@@ -469,40 +469,29 @@ class Form_recruitment extends MX_Controller {
 
     function recruitment_pdf($id)
     {
-        $sess_id = $this->session->userdata('user_id');
-        $user_id = $this->db->select('user_id')->from('users_recruitment')->where('id', $id)->get()->row('user_id');
-
+        $this->data['title'] = 'Detail Permintaan SDM Baru';
         if (!$this->ion_auth->logged_in())
         {
+            $this->session->set_userdata('last_link', $this->uri->uri_string());
             //redirect them to the login page
             redirect('auth/login', 'refresh');
         }
-        else
-        {
-             //$this->get_user_info($user_id);
-            
-            //$this->data['comp_session'] = $this->recruitment_model->render_session()->result();
-            
-            if(is_admin()){
-                $form_recruitment = $this->data['form_recruitment'] = $this->recruitment_model->recruitment($id);
-            }else{
-            $form_recruitment = $this->data['form_recruitment'] = $this->recruitment_model->recruitment($id);
-            }
-            preg_match_all("/(\n)/", getValue('job_desc', 'users_recruitment_kemampuan', array('id'=>'where/'.$id)), $matches);
-            $this->data['trow'] = $trow = count($matches[0]) + 1;
-        $this->data['recruitment'] = $this->recruitment_model->recruitment($id)->result();
+        $this->data['id'] = $id;
+        $sess_id= $this->data['sess_id'] = $this->session->userdata('user_id');
+        $this->data['sess_nik'] = $sess_nik = get_nik($sess_id);
+        $this->data['recruitment'] = $this->main->detail($id)->result();
+        $this->data['_num_rows'] = $this->main->detail($id)->num_rows();
         $this->data['status'] = getAll('recruitment_status', array('is_deleted' => 'where/0'));
         $this->data['urgensi'] = getAll('recruitment_urgensi', array('is_deleted' => 'where/0'));
         $jk = explode(',', getAll('users_recruitment_kualifikasi', array('id' => 'where/'.$id))->row('jenis_kelamin_id'));
         $pendidikan = explode(',', getAll('users_recruitment_kualifikasi', array('id' => 'where/'.$id))->row('pendidikan_id'));
         $komputer = explode(',', getAll('users_recruitment_kemampuan', array('id' => 'where/'.$id))->row('komputer'));
-        $this->data['jenis_kelamin'] = $this->recruitment_model->get_jk($jk);
-        $this->data['pendidikan'] = $this->recruitment_model->get_pendidikan($pendidikan);
-        $this->data['komputer'] = $this->recruitment_model->get_komputer($komputer);
-
-        $this->data['position_pengaju'] = $this->get_user_position(getAll('users_recruitment', array('id' => 'where/'.$id))->row_array()['user_id']);
-        //print_mz(getAll('users_recruitment', array('id' => 'where/'.$id))->row_array()['user_id']);
-        $this->data['id'] = $id;
+        $this->data['jenis_kelamin'] = getAll('jenis_kelamin');
+        $this->data['pendidikan'] = getAll('recruitment_pendidikan');
+        $this->data['komputer'] = getAll('recruitment_pendidikan');
+        $this->data['position_pengaju'] = $this->get_user_position(getValue('user_id', 'users_recruitment', array('id'=>'where/'.$id)));
+        $user_id =getValue('user_id', 'users_recruitment', array('id'=>'where/'.$id));
+        $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
         $title = $this->data['title'] = 'Form Permintaan SDM Baru-'.get_name($user_id);
         $this->load->library('mpdf60/mpdf');
         $html = $this->load->view('recruitment_pdf', $this->data, true); 
@@ -518,7 +507,6 @@ class Form_recruitment extends MX_Controller {
             10); // margin footer
         $mpdf->WriteHTML($html);
         $mpdf->Output($id.'-'.$title.'.pdf', 'I');
-        }
     }
 
     function _render_page($view, $data=null, $render=false)
