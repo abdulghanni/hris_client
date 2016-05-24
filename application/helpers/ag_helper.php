@@ -1331,7 +1331,7 @@ function cek_approval_atasan($id){
                 if($app_lv1==1 && $app_lv2==1 && $app_lv3==1){return true;}else{return false;};
                 break;
             default:
-                return false;
+                return true;
                 break;
         }
 }
