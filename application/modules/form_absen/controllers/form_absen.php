@@ -416,17 +416,17 @@ class form_absen extends MX_Controller {
             $this->main->update($id,$data);
             $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
             $user_absen_id = getValue('user_id', 'users_absen', array('id'=>'where/'.$id));
-            $subject_email = get_form_no($id).'['.$approval_status_mail.']Status Pengajuan Permohonan Permintaan SDM dari Atasan';
-            $subject_email_request = get_form_no($id).'Pengajuan Permintaan SDM';
-            $isi_email = 'Status pengajuan permintaan SDM anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_absen/detail/'.$id.'>Klik Disini</a><br />';
-            $isi_email_request = get_name($user_absen_id).' mengajukan Permohonan permintaan SDM, untuk melihat detail silakan <a href='.base_url().'form_absen/detail/'.$id.'>Klik Disini</a><br />';
+            $subject_email = get_form_no($id).'['.$approval_status_mail.']Status Pengajuan Ketarangan Tidak Absen dari Atasan';
+            $subject_email_request = get_form_no($id).'Pengajuan Ketarangan Tidak Absen';
+            $isi_email = 'Status pengajuan Ketarangan Tidak Absen anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_absen/detail/'.$id.'>Klik Disini</a><br />';
+            $isi_email_request = get_name($user_absen_id).' mengajukan Ketarangan Tidak Absen, untuk melihat detail silakan <a href='.base_url().'form_absen/detail/'.$id.'>Klik Disini</a><br />';
             $is_app = getValue('is_app_'.$type, 'users_absen', array('id'=>'where/'.$id));
            if($is_app==0){
                 $this->approval->approve('absen', $id, $approval_status, $this->detail_email($id));
                 if(!empty(getEmail($user_absen_id)))$this->send_email(getEmail($user_absen_id), $subject_email, $isi_email);
             }else{
                 $this->approval->update_approve('absen', $id, $approval_status, $this->detail_email($id));
-                if(!empty(getEmail($user_absen_id)))$this->send_email(getEmail($user_absen_id), get_form_no($id).'['.$approval_status_mail.']Perubahan Status Pengajuan Permohonan Permintaan SDM dari Atasan', $isi_email);
+                if(!empty(getEmail($user_absen_id)))$this->send_email(getEmail($user_absen_id), get_form_no($id).'['.$approval_status_mail.']Perubahan Status Pengajuan Ketarangan Tidak Absen dari Atasan', $isi_email);
             }
             if($type !== 'hrd' && $approval_status == 1){
                 $lv = substr($type, -1)+1;
