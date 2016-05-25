@@ -355,22 +355,7 @@ class Form_recruitment extends MX_Controller {
 
     function detail_email($id)
     {
-        $this->data['id'] = $id;
-        $sess_id= $this->data['sess_id'] = $this->session->userdata('user_id');
-        $this->data['sess_nik'] = $sess_nik = get_nik($sess_id);
-        $this->data['recruitment'] = $this->recruitment_model->recruitment($id)->result();
-        $this->data['_num_rows'] = $this->recruitment_model->recruitment($id)->num_rows();
-        $this->data['status'] = getAll('recruitment_status', array('is_deleted' => 'where/0'));
-        $this->data['urgensi'] = getAll('recruitment_urgensi', array('is_deleted' => 'where/0'));
-        $jk = explode(',', getAll('users_recruitment_kualifikasi', array('id' => 'where/'.$id))->row('jenis_kelamin_id'));
-        $pendidikan = explode(',', getAll('users_recruitment_kualifikasi', array('id' => 'where/'.$id))->row('pendidikan_id'));
-        $komputer = explode(',', getAll('users_recruitment_kemampuan', array('id' => 'where/'.$id))->row('komputer'));
-        $this->data['jenis_kelamin'] = $this->recruitment_model->get_jk($jk);
-        $this->data['pendidikan'] = $this->recruitment_model->get_pendidikan($pendidikan);
-        $this->data['komputer'] = $this->recruitment_model->get_komputer($komputer);
-        //$this->data['position_pengaju'] = $this->get_user_position($this->recruitment_model->recruitment($id)->row_array()['user_id']);
-        $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
-        return $this->load->view('form_recruitment/recruitment_mail', $this->data, TRUE);
+       return '';
     }
 
     function get_bu()
