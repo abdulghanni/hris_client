@@ -17,9 +17,9 @@ class Inventory_model extends CI_Model {
     {
         $sess_id = $this->session->userdata('user_id');
         $sess_nik = get_nik($sess_id);
-        $user = get_user_satu_bu($sess_nik);
-        $this->db->select('id,username,nik');
-        $this->db->where_in("id", $user);
+        //$user = get_user_satu_bu_nik($sess_nik);
+        //$this->db->select('id,username,nik');
+        //$this->db->where_in("nik", $user);
         $this->db->from($this->table);
 
         $i = 0;
@@ -72,8 +72,8 @@ class Inventory_model extends CI_Model {
     {
         $sess_id = $this->session->userdata('user_id');
         $sess_nik = get_nik($sess_id);
-        $user = get_user_satu_bu($sess_nik);
-        $this->db->where_in("id", $user);
+       // $user = get_user_satu_bu($sess_nik);
+        //$this->db->where_in("id", $user);
         $this->db->from($this->table);
         return $this->db->count_all_results();
     }
