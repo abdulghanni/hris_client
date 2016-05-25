@@ -37,7 +37,6 @@ class Form_cuti extends MX_Controller {
         }
     }
 
-
     public function ajax_list($f)
     {
         $list = $this->cuti->get_datatables($f);//lastq();//print_mz($list);
@@ -830,6 +829,14 @@ class Form_cuti extends MX_Controller {
         echo json_encode($libur);
     }
 
+    
+
+    function get_num_leave($id){
+        $n = getValue('jumlah_hari', 'cuti_jumlah_plafon', array('alasan_cuti_id'=>'where/'.$id));
+
+        echo json_encode($n);
+    }
+
     public function get_holiday()
     {
         $url = get_api_key().'users/holiday/format/json';
@@ -847,7 +854,7 @@ class Form_cuti extends MX_Controller {
              return $libur;
             }
 
-}
+    }
 
 /* End of file form_cuti.php */
 /* Location: ./application/modules/form_cuti/controllers/form_cuti.php */
