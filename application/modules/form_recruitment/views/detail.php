@@ -297,7 +297,7 @@
                       <img class=approval-img src="<?=assets_url('img/signed.png');?>">
                       <span class="small"></span><br/>
                       <span class="semi-bold"><?php echo get_name($row->user_id)?></span><br/>
-                      <span class="small"><?php echo dateIndo($row->created_on)?></span><br/>
+                      <span class="small"><?php echo dateIndo($row->date_created)?></span><br/>
                       <span class="semi-bold">(<?php echo get_user_position(get_nik($row->user_id))?>)</span>
                     </p>
                   </div>

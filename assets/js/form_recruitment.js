@@ -92,7 +92,7 @@ $(document).ready(function() {
             ev.preventDefault(); 
         });  
     });
-
+/*
    $('#jumlah').keydown(function(event) {
         // Allow only backspace and delete
         if ( event.keyCode == 46 || event.keyCode == 8 ) {
@@ -105,7 +105,7 @@ $(document).ready(function() {
             }   
         }
     });
-   
+   */
    $("#atasan1").change(function() {
             var empId = $(this).val();
             getAtasan2(empId);
