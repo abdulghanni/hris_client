@@ -137,7 +137,7 @@
                           <label class="form-label text-left">Toefl</label>
                         </div>
                         <div class="col-md-8">
-                          <input type="text" class="form-control" name="date_promosi" value="<?php echo $row->nilai_toefl?>" disabled="disabled">
+                          <input type="text" class="form-control" name="date_promosi" value="<?php echo getValue('title', 'toefl', array('id'=>'where/'.$row->toefl))?>" disabled="disabled">
                         </div>
                       </div>
                     <?php endif;?>
