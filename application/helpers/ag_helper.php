@@ -1335,3 +1335,10 @@ function cek_approval_atasan($id){
                 break;
         }
 }
+
+function is_hrd_pusat($nik, $form_type){
+	$f = array('user_nik'=>'where/'.$nik, 'form_type_id'=>'where/'.$form_type, 'bu'=>'where/50');
+	$x = GetAllSelect('users_approval', 'id', $f)->num_rows();
+	if($x > 0)return true;
+	else return false;
+}
