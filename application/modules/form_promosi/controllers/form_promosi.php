@@ -10,7 +10,6 @@ class Form_promosi extends MX_Controller {
         $this->load->library('authentication', NULL, 'ion_auth');
         $this->load->library('form_validation');
         $this->load->library('approval');
-        $this->load->helper('url');
         
         $this->load->database();
         $this->load->model('form_promosi/form_promosi_model','main');

@@ -43,7 +43,7 @@
                           <th rowspan="2" scope="col" width="15%">Nama Pemohon</th>
                           <th rowspan="2" scope="col" width="15%">Jabatan Lama</th>
                           <th rowspan="2" scope="col" width="15%">Jabatan Baru</th>
-                          <th rowspan="2" scope="col" width="6%">Tanggal Pengangkatan</th>
+                          <th rowspan="2" scope="col" width="6%">Tanggal Promosi</th>
                           <th rowspan="2" scope="col" width="6%">Tanggal Pengajuan</th>
                           <th colspan="4" scope="col" width="12%" class="text-center">Approval Atasan</th>
                           <th rowspan="2" scope="col" width="12%">Aksi</th>
