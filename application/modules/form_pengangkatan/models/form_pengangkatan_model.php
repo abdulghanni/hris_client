@@ -21,9 +21,12 @@ class Form_pengangkatan_model extends CI_Model {
         if(!is_admin()){
             $sess_id = $this->session->userdata('user_id');
             $sess_nik = get_nik($sess_id);
+            $is_hrd_pusat = is_hrd_pusat($sess_nik, 6);//print_mz($is_hrd_pusat);
             $is_approver = $this->approval->approver('pengangkatan', $sess_nik);//print_mz($is_approver);
             $is_admin_cabang = is_admin_cabang();
-            if($is_approver == $sess_nik || $is_admin_cabang == 1)$user = get_user_satu_bu($sess_nik);
+            if($is_hrd_pusat != 1){
+                if($is_approver == $sess_nik || $is_admin_cabang == 1)$user = get_user_satu_bu($sess_nik);
+            }
         }
         $this->db->select(array(
                 'users_pengangkatan'.'.id as id',
@@ -58,7 +61,7 @@ class Form_pengangkatan_model extends CI_Model {
             }else{
                 
             }
-            if($is_admin!=1):
+            if($is_admin!=1 && $is_hrd_pusat != 1):
             if($is_approver == $sess_nik || $is_admin_cabang == 1){
                 $this->db->where_in("users_pengangkatan.user_id", $user);//print_mz($user);
             }elseif($is_admin!=1 ){
@@ -127,12 +130,15 @@ class Form_pengangkatan_model extends CI_Model {
         if(!is_admin()){
             $sess_id = $this->session->userdata('user_id');
             $sess_nik = get_nik($sess_id);
+            $is_hrd_pusat = is_hrd_pusat($sess_nik, 6);//print_mz($is_hrd_pusat);
             $is_approver = $this->approval->approver('pengangkatan', $sess_nik);//print_mz($is_approver);
             $is_admin_cabang = is_admin_cabang();
-            if($is_approver == $sess_nik || $is_admin_cabang == 1)$user = get_user_satu_bu($sess_nik);
+            if($is_hrd_pusat != 1){
+                if($is_approver == $sess_nik || $is_admin_cabang == 1)$user = get_user_satu_bu($sess_nik);
             }
+        }
             
-        if($is_admin!=1):
+        if($is_admin!=1 && $is_hrd_pusat != 1):
             if($is_approver == $sess_nik || $is_admin_cabang == 1){
                 $this->db->where_in("users_pengangkatan.user_id", $user);//print_mz($user);
             }elseif($is_admin!=1 ){
