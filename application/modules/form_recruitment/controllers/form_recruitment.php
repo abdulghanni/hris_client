@@ -281,7 +281,7 @@ class Form_recruitment extends MX_Controller {
             'note_'.$type => $this->input->post('note_'.$type)
             );
             $approval_status = $this->input->post('app_status_'.$type);
-            $this->recruitment_model->update($id,$data);
+            $this->main->update($id,$data);
             $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
             $user_recruitment_id = getValue('user_id', 'users_recruitment', array('id'=>'where/'.$id));
             $subject_email = get_form_no($id).'['.$approval_status_mail.']Status Pengajuan Permohonan Permintaan SDM dari Atasan';
