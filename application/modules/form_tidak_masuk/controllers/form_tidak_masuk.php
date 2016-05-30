@@ -80,6 +80,7 @@ class form_tidak_masuk extends MX_Controller {
             $row[] = "<a href=$detail>".$r->username.'</a>';
             $row[] = dateIndo($r->dari_tanggal);
             $row[] = $r->alasan;
+            $row[] = dateIndo($r->created_on);
             $row[] = $status1;
             $row[] = $status2;
             $row[] = $status3;

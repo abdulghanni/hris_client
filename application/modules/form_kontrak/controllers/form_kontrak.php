@@ -74,6 +74,7 @@ class Form_kontrak extends MX_Controller {
             $row[] = "<a href=$detail>".$r->karyawan.' - '.$r->nik_karyawan.'</a>';
             $row[] = "<a href=$detail>".$r->pengaju.' - '.$r->nik_pengaju.'</a>';
             $row[] = $r->lama_kontrak;
+            $row[] = dateIndo($r->created_on);
             $row[] = $status1;
             $row[] = $status2;
             $row[] = $status3;

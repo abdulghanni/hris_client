@@ -76,6 +76,7 @@ class Form_recruitment extends MX_Controller {
             $row[] = "<a href=$detail>".$r->username.'</a>';
             $row[] = get_position_name($r->position_id);
             $row[] = word_limiter($r->job_desc, 5);
+            $row[] = dateIndo($r->created_on);
             $row[] = $status1;
             $row[] = $status2;
             $row[] = $status3;

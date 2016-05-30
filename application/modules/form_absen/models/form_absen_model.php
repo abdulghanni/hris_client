@@ -6,7 +6,7 @@ class Form_absen_model extends CI_Model {
     var $table = 'users_absen';
     var $join1  = 'users';
     var $join2  = 'keterangan_absen';
-    var $column = array('users_absen.id', 'nik', 'username','date_tidak_hadir', 'keterangan'); //set column field database for order and search
+    var $column = array('users_absen.id', 'nik', 'username','date_tidak_hadir', 'keterangan', 'created_on'); //set column field database for order and search
     var $order = array('id' => 'desc'); // default order 
 
     public function __construct()
@@ -31,6 +31,7 @@ class Form_absen_model extends CI_Model {
                 'users_absen'.'.date_tidak_hadir',
                 'keterangan_absen'.'.title as keterangan',
                 'users_absen'.'.created_by',
+                'users_absen'.'.created_on',
                 'users_absen'.'.approval_status_id_lv1',
                 'users_absen'.'.approval_status_id_lv2',
                 'users_absen'.'.approval_status_id_lv3',
@@ -78,6 +79,8 @@ class Form_absen_model extends CI_Model {
                     $item = $this->join1.'.username';
                 }elseif($item == 'date_tidak_hadir'){
                     $item = $this->table.'.date_tidak_hadir';
+                }elseif($item == 'created_on'){
+                    $item = $this->table.'.created_on';
                 }elseif($item == 'keterangan'){
                     $item = $this->join2.'.title';
                 }

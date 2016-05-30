@@ -77,6 +77,7 @@ class form_absen extends MX_Controller {
             $row[] = "<a href=$detail>".$r->username.'</a>';
             $row[] = dateIndo($r->date_tidak_hadir);
             $row[] = $r->keterangan;
+            $row[] = dateIndo($r->created_on);
             $row[] = $status1;
             $row[] = $status2;
             $row[] = $status3;

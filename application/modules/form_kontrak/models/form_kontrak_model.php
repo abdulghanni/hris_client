@@ -6,7 +6,7 @@ class Form_kontrak_model extends CI_Model {
     var $table = 'users_kontrak';
     var $join1  = 'users';
     var $join2  = 'lama_kontrak';
-    var $column = array('users_kontrak.id', 'nik_karyawan','karyawan', 'nik_pengaju', 'pengaju', 'lama_kontrak'); //set column field database for order and search
+    var $column = array('users_kontrak.id', 'nik_karyawan','karyawan', 'nik_pengaju', 'pengaju', 'lama_kontrak', 'created_on'); //set column field database for order and search
     var $order = array('id' => 'desc'); // default order 
 
     public function __construct()
@@ -35,6 +35,7 @@ class Form_kontrak_model extends CI_Model {
                 'users_kontrak'.'.user_app_lv2',
                 'users_kontrak'.'.user_app_lv3',
                 'users_kontrak'.'.created_by',
+                $this->table.'.created_on',
                 'lama_kontrak'.'.title as lama_kontrak',
                 'users'.'.nik as nik_karyawan',
                 'users'.'.username as karyawan',
@@ -82,6 +83,8 @@ class Form_kontrak_model extends CI_Model {
                     $item = 'pengaju'.'.nik';
                 }elseif($item == 'lama_kontrak'){
                     $item = $this->join2.'.title';
+                }elseif($item == 'created_on'){
+                    $item = $this->table.'.created_on';
                 }
 
                 ($i===0) ? $this->db->like($item, $_POST['search']['value']) : $this->db->or_like($item, $_POST['search']['value']);

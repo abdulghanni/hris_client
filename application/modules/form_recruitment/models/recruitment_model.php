@@ -6,7 +6,7 @@ class recruitment_model extends CI_Model {
     var $table = 'users_recruitment';
     var $join1  = 'users';
     var $join2  = 'users_recruitment_kemampuan';
-    var $column = array('users_recruitment.id', 'nik', 'username','position_id', 'job_desc'); //set column field database for order and search
+    var $column = array('users_recruitment.id', 'nik', 'username','position_id', 'job_desc', 'created_on'); //set column field database for order and search
     var $order = array('id' => 'desc'); // default order 
 
     public function __construct()
@@ -29,6 +29,7 @@ class recruitment_model extends CI_Model {
                 'users_recruitment'.'.id as id',
                 'users_recruitment'.'.position_id',
                 'users_recruitment'.'.created_by',
+                $this->table.'.created_on',
                 'users_recruitment_kemampuan'.'.job_desc',
                 'users_recruitment'.'.approval_status_id_lv1',
                 'users_recruitment'.'.approval_status_id_lv2',
@@ -80,6 +81,8 @@ class recruitment_model extends CI_Model {
                    $item = $this->join2.'.job_desc';
                 }elseif($item == 'position_id'){
                     $item = $this->table.'.position_id';
+                }elseif($item == 'created_on'){
+                    $item = $this->table.'.created_on';
                 }
 
                 ($i===0) ? $this->db->like($item, $_POST['search']['value']) : $this->db->or_like($item, $_POST['search']['value']);

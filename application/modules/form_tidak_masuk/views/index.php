@@ -43,6 +43,7 @@
                             <th rowspan="2" scope="col" width="15%">Nama</th>
                             <th rowspan="2" scope="col" width="10%">Tanggal Tidak Masuk</th>
                             <th rowspan="2" scope="col" width="10%">Keterangan</th>
+                          <th rowspan="2" scope="col" width="10%">Tanggal Pengajuan</th>
                             <th colspan="4" scope="col" width="16%" class="text-center">Approval Atasan</th>
                             <th rowspan="2" scope="col" width="12%">Aksi</th>
                           </tr>

@@ -6,7 +6,7 @@ class Form_tidak_masuk_model extends CI_Model {
     var $table = 'users_tidak_masuk';
     var $join1  = 'users';
     var $join2  = 'alasan_tidak_masuk';
-    var $column = array('users_tidak_masuk.id', 'nik', 'username','dari_tanggal', 'alasan'); //set column field database for order and search
+    var $column = array('users_tidak_masuk.id', 'nik', 'username','dari_tanggal', 'alasan', 'created_on'); //set column field database for order and search
     var $order = array('id' => 'desc'); // default order 
 
     public function __construct()
@@ -31,6 +31,7 @@ class Form_tidak_masuk_model extends CI_Model {
                 'users_tidak_masuk'.'.dari_tanggal',
                 'alasan_tidak_masuk'.'.title as alasan',
                 'users_tidak_masuk'.'.created_by',
+                $this->table.'.created_on',
                 'users_tidak_masuk'.'.is_app_lv1',
                 'users_tidak_masuk'.'.is_app_lv2',
                 'users_tidak_masuk'.'.is_app_lv3',
@@ -79,6 +80,8 @@ class Form_tidak_masuk_model extends CI_Model {
                     $item = $this->table.'.dari_tanggal';
                 }elseif($item == 'alasan'){
                     $item = $this->join2.'.title';
+                }elseif($item == 'created_on'){
+                    $item = $this->table.'.created_on';
                 }
 
                 ($i===0) ? $this->db->like($item, $_POST['search']['value']) : $this->db->or_like($item, $_POST['search']['value']);

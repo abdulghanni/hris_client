@@ -44,6 +44,7 @@
                           <th rowspan="2" scope="col" width="10%">Tanggal Cuti</th>
                           <th rowspan="2" scope="col" width="10%">Alasan Cuti</th>
                           <th rowspan="2" scope="col" width="5%">Jml Hari</th>
+                          <th rowspan="2" scope="col" width="10%">Tanggal Pengajuan</th>
                           <th colspan="4" scope="col" width="16%" class="text-center">Approval Atasan</th>
                           <th rowspan="2" scope="col" width="12%">Aksi</th>
                         </tr>

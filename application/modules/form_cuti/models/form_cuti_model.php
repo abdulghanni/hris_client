@@ -6,7 +6,7 @@ class Form_cuti_model extends CI_Model {
     var $table = 'users_cuti';
     var $join1  = 'users';
     var $join2  = 'alasan_cuti';
-    var $column = array('users_cuti.id', 'nik', 'username','date_mulai_cuti', 'alasan_cuti', 'jumlah_hari'); //set column field database for order and search
+    var $column = array('users_cuti.id', 'nik', 'username','date_mulai_cuti', 'alasan_cuti', 'jumlah_hari', 'created_on'); //set column field database for order and search
     var $order = array('id' => 'desc'); // default order 
 
     public function __construct()
@@ -21,7 +21,7 @@ class Form_cuti_model extends CI_Model {
         if(!is_admin()){
             $sess_id = $this->session->userdata('user_id');
             $sess_nik = get_nik($sess_id);
-            $is_hrd_pusat = is_hrd_pusat($sess_nik, 1);//print_mz($is_hrd_pusat);
+            $is_hrd_pusat = is_hrd_pusat($sess_nik, 5);//print_mz($is_hrd_pusat);
             $is_approver = $this->approval->approver('cuti', $sess_nik);
             $is_admin_cabang = is_admin_cabang();
             if($is_hrd_pusat != 1){
@@ -33,6 +33,7 @@ class Form_cuti_model extends CI_Model {
                 'users_cuti'.'.date_mulai_cuti',
                 'users_cuti'.'.jumlah_hari',
                 'users_cuti'.'.created_by',
+                $this->table.'.created_on',
                 'users_cuti'.'.approval_status_id_lv1',
                 'users_cuti'.'.approval_status_id_lv2',
                 'users_cuti'.'.approval_status_id_lv3',
@@ -86,6 +87,8 @@ class Form_cuti_model extends CI_Model {
                     $item = $this->table.'.jumlah_hari';
                 }elseif($item == 'alasan_cuti'){
                     $item = $this->join2.'.title';
+                }elseif($item == 'created_on'){
+                    $item = $this->table.'.created_on';
                 }
 
                 ($i===0) ? $this->db->like($item, $_POST['search']['value']) : $this->db->or_like($item, $_POST['search']['value']);

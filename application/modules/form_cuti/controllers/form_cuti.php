@@ -32,7 +32,6 @@ class Form_cuti extends MX_Controller {
         }
         else
         {
-        $this->data['form'] = 'cuti';
         $this->_render_page('form_cuti/index', $this->data);
         }
     }
@@ -44,8 +43,8 @@ class Form_cuti extends MX_Controller {
         $no = $_POST['start'];
         foreach ($list as $r) {
             //AKSI
-           $detail = base_url()."form_cuti/detail/".$r->id; 
-           $print = base_url()."form_cuti/form_cuti_pdf/".$r->id; 
+           $detail = base_url()."form_".$this->form_name."/detail/".$r->id; 
+           $print = base_url()."form_".$this->form_name."/form_".$this->form_name."_pdf/".$r->id; 
            $delete = (($r->approval_status_id_lv1 == 0 && $r->created_by == sessId()) || is_admin()) ? '<button onclick="showModal('.$r->id.')" class="btn btn-sm btn-danger" type="button" title="Batalkan Pengajuan"><i class="icon-remove"></i></button>' : '';
 
             //APPROVAL
@@ -77,6 +76,7 @@ class Form_cuti extends MX_Controller {
             $row[] = dateIndo($r->date_mulai_cuti);
             $row[] = $r->alasan_cuti;
             $row[] = $r->jumlah_hari;
+            $row[] = dateIndo($r->created_on);
             $row[] = $status1;
             $row[] = $status2;
             $row[] = $status3;

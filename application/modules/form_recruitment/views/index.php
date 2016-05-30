@@ -43,6 +43,7 @@
                           <th rowspan="2" scope="col" width="10%">Nama</th>
                           <th rowspan="2" scope="col" width="15%">Posisi yang dibutuhkan</th>
                           <th rowspan="2" scope="col" width="10%">Job Desc</th>
+                          <th rowspan="2" scope="col" width="10%">Tanggal Pengajuan</th>
                           <th colspan="4" scope="col" width="16%" class="text-center">Approval Atasan</th>
                           <th rowspan="2" scope="col" width="12%">Aksi</th>
                         </tr>
