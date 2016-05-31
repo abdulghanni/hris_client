@@ -103,7 +103,7 @@
                       </div>
                       <div class="row form-row">
                         <div class="col-md-4">
-                          <label class="form-label text-left">Tgl. Perpanjangan</label>
+                          <label class="form-label text-left">Tgl. Pengangkatan</label>
                         </div>
                         <div class="col-md-8">
                           <input name="form3LastName" id="form3LastName" type="text"  class="form-control " placeholder="Nama" value="<?php echo $row->date_pengangkatan?>"  disabled="disabled" >
@@ -111,7 +111,7 @@
                       </div>
                       <div class="row form-row">
                         <div class="col-md-4">
-                          <label class="form-label text-left">Alasan Perpanjangan</label>
+                          <label class="form-label text-left">Alasan Pengangkatan</label>
                         </div>
                         <div class="col-md-8">
                           <textarea name="alasan" id="alasan" class="form-control" placeholder="" disabled><?php echo $row->alasan ?></textarea>
