@@ -51,7 +51,6 @@ th{
   <p align="center" class="style6">REKAPITULASI RAWAT JALAN</p>
   <p style="font-size:10px;">No : <?= get_form_no($id)?></p>
 </div>
-
 <table width="1200" height="128" border="0" class="style4">
 <tr><td height="20"></td></tr>
 <tr><td>Bagian : <?php echo $bagian?></td></tr>
@@ -67,7 +66,7 @@ th{
       <th width="15%">Hubungan</th>
       <th width="13%">Jenis Pemeriksaan</th>
       <th width="12%">Rupiah</th>
-      <?php if(!empty($detail_hrd))'<th width="10%">Disetujui</th>'; ?>
+      <?php echo (!empty($detail_hrd)) ? '<th width="10%">Disetujui</th>' : '' ?>
     </tr>
   </thead>
   <tbody>

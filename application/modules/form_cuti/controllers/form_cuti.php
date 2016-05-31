@@ -24,7 +24,7 @@ class Form_cuti extends MX_Controller {
     {  
         $this->data['title'] = ucfirst($this->form_name);
         $this->data['form_name'] = $this->form_name;
-       
+        $this->data['form'] = $this->form_name;
         if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page

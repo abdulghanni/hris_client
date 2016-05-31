@@ -98,7 +98,7 @@
 
                   <?php if($is_app_hrd!=0){?>
                   <hr/>
-                    <?php if($this->approval->approver('medical', get_nik($row->user_id)) == $sess_nik){?>
+                    <?php if($this->approval->approver('medical', get_nik(getValue('user_id', 'users_medical', array('id'=>'where/'.$id)))) == $sess_nik){?>
                     <div class="row form-row">
                       <div class="col-md-12">
                           <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#submitMedicalModalHrd"><i class="icon-edit"></i>&nbsp;Update Data Rekapitulasi</button>
