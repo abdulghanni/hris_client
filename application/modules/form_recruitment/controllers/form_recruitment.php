@@ -301,9 +301,13 @@ class Form_recruitment extends MX_Controller {
                 $lv = substr($type, -1)+1;
                 $lv_app = 'lv'.$lv;
                 $user_app = ($lv<4) ? getValue('user_app_'.$lv_app, 'users_recruitment', array('id'=>'where/'.$id)):0;
+                $user_app_lv3 = getValue('user_app_lv3', 'users_recruitment', array('id'=>'where/'.$id));
                 if(!empty($user_app)):
                     if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app),  $subject_email_request , $isi_email_request);
                     $this->approval->request($lv_app, 'recruitment', $id, $user_recruitment_id, $this->detail_email($id));
+                elseif(empty($user_app) && !empty($user_app_lv3) && $type == 'lv1'):
+                    if(!empty(getEmail($user_app_lv3)))$this->send_email(getEmail($user_app_lv3), $subject_email_request, $isi_email_request);
+                    $this->approval->request('lv3', 'recruitment', $id, $user_recruitment_id, $this->detail_email($id));
                 else:
                     if(!empty(getEmail($this->approval->approver('recruitment', $user_id))))$this->send_email(getEmail($this->approval->approver('recruitment', $user_id)),  $subject_email_request , $isi_email_request);
                     $this->approval->request('hrd', 'recruitment', $id, $user_recruitment_id, $this->detail_email($id));
