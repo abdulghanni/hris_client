@@ -491,7 +491,8 @@ class form_tidak_masuk extends MX_Controller {
         $IDLEAVEREQUEST = 'CT'.$leaveid;
         $RECVERSION = $leave_request_id[0]['RECVERSION']+1;
         $RECID = $leave_request_id[0]['RECID']+1;
-        $remarks = str_replace(' ', '-', $data['remarks']);
+        $char = array('"', '<', '>', '#', '%', '{', '}', '|', '^', '~','(',')', '[', ']', '`',',', ' ');
+        $remarks = str_replace($char, '-', $data['remarks']);
         $phone = (!empty(getValue('phone', 'users', array('nik'=>'where/'.$user_id))))?str_replace(' ', '-', getValue('phone', 'users', array('nik'=>'where/'.$user_id))):'-';
         $method = 'post';
         $params =  array();
@@ -528,10 +529,12 @@ class form_tidak_masuk extends MX_Controller {
 
         if(isset($result->status) && $result->status == 'success')  
         {  
+           //return $this->rest->debug();
             return true;
         }     
         else  
         {  
+            //return $this->rest->debug();
             return false;
             //return $this->rest->debug();
         }
