@@ -13,13 +13,16 @@ $('button[data-loading-text]').click(function () {
     var uri4 = url.segment(2)+'/do_approve/'+url.segment(4)+'/hrd';
 
     $('#btn_app_lv1').click(function(){
-        $('#form').submit(function(ev){
+        var $btn = $(this).button('loading');
+        $('#formAppLv1').submit(function(ev){
             $.ajax({
                 type: 'POST',
                 url: baseurl+uri1,
-                data: $('#form').serialize(),
+                data: $('#formAppLv1').serialize(),
                 success: function() {
-                     location.reload()
+                     $("[data-dismiss=modal]").trigger({ type: "click" });
+                     location.reload(),
+                     $btn.button('reset')
                 }
             });
             ev.preventDefault(); 
@@ -27,13 +30,16 @@ $('button[data-loading-text]').click(function () {
     });
 
     $('#btn_app_lv2').click(function(){
-        $('#form').submit(function(ev){
+        var $btn = $(this).button('loading');
+        $('#formAppLv2').submit(function(ev){
             $.ajax({
                 type: 'POST',
                 url: baseurl+uri2,
-                data: $('#form').serialize(),
+                data: $('#formAppLv2').serialize(),
                 success: function() {
-                     location.reload()
+                     $("[data-dismiss=modal]").trigger({ type: "click" });
+                     location.reload(),
+                     $btn.button('reset')
                 }
             });
             ev.preventDefault(); 
@@ -41,13 +47,16 @@ $('button[data-loading-text]').click(function () {
     });
 
     $('#btn_app_lv3').click(function(){
-        $('#form').submit(function(ev){
+        var $btn = $(this).button('loading');
+        $('#formAppLv3').submit(function(ev){
             $.ajax({
                 type: 'POST',
                 url: baseurl+uri3,
-                data: $('#form').serialize(),
+                data: $('#formAppLv3').serialize(),
                 success: function() {
-                     location.reload()
+                    $("[data-dismiss=modal]").trigger({ type: "click" });
+                    location.reload(),
+                    $btn.button('reset')
                 }
             });
             ev.preventDefault(); 

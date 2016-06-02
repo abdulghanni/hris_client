@@ -143,7 +143,21 @@
                     </div>
 
                   <?php endif; ?>
-
+                  <?php 
+                      for($i=1;$i<4;$i++):
+                      $note_lv = 'note_lv'.$i;
+                      $user_lv = 'user_app_lv'.$i;
+                      if(!empty($tidak_masuk->$note_lv)){?>
+                      <div class="row form-row">
+                        <div class="col-md-3">
+                          <label class="form-label text-right">Note (<?php echo strtok(get_name($tidak_masuk->$user_lv), " ")?>):</label>
+                        </div>
+                        <div class="col-md-9">
+                          <textarea name="notes_spv" class="form-control" disabled="disabled"><?php echo $tidak_masuk->$note_lv ?></textarea>
+                        </div>
+                      </div>
+                      <?php } ?>
+                    <?php endfor;?>
                   <?php if(!empty($tidak_masuk->note_hrd)):?>
                     <div class="row form-row">
                         <div class="col-md-3">
@@ -157,139 +171,172 @@
                   </div>
                 </div>
                 <div class="form-actions">
-                    <div class="row form-row">
-                        <div class="col-md-12 text-center">
-                        <?php if($tidak_masuk->is_app_hrd == 1 && $sess_nik == $this->approval->approver('tidak', $user_nik)){?>
-                            <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitModalHrd"><i class='icon-edit'> Edit Approval</i></div>
-                          <?php } ?>
-                        </div>
+                  <div class="row form-row">
+                    <div class="col-md-12 text-center">
+                      <?php  
+                      for($i=1;$i<4;$i++):
+                        $is_app = 'is_app_lv'.$i;
+                        $user_app = 'user_app_lv'.$i;
+                        if($tidak_masuk->$is_app == 1 && get_nik($sess_id) == $tidak_masuk->$user_app){?>
+                          <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitModalLv<?php echo $i ?>"><i class='icon-edit'> Edit Approval</i></div>
+                      <?php }endfor;
+                      if($tidak_masuk->is_app_hrd == 1 && get_nik($sess_id) == $this->approval->approver('absen', $user_nik)){?>
+                        <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitModalHrd"><i class='icon-edit'> Edit Approval</i></div>
+                      <?php } ?>
                     </div>
-
-                      <div class="col-md-12 text-center"><div class="col-md-12 text-center"><span class="semi-bold">Mengetahui,</span><br/><br/><br/></div>
-                      <div class="row wf-cuti">
-                        <div class="col-md-3">
-                          <p class="wf-approve-sp">
-                            <?php
-                            $approved = assets_url('img/approved_stamp.png');
-                            $rejected = assets_url('img/rejected_stamp.png');
-                            $pending = assets_url('img/pending_stamp.png');
-                        if(!empty($tidak_masuk->user_app_lv1)) :
-                            if(!empty($tidak_masuk->user_app_lv1) && $tidak_masuk->is_app_lv1 == 0 && get_nik($sess_id) == $tidak_masuk->user_app_lv1){?>
-                              <button id="btn_app_lv1" class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok"></i>Submit</button>
-                              <span class="small"></span>
-                              <span class="semi-bold"></span><br/>
-                              <span class="small"></span><br/>
-                              <span class="semi-bold"></span><br/>
-                              <span class="semi-bold">(Atasan Langsung)</span>
-                            <?php }elseif(!empty($tidak_masuk->user_app_lv1) && $tidak_masuk->is_app_lv1 == 1){
-                              echo "<img class=approval_img_md src=$approved>"?>
-                              <span class="small"></span><br/>
-                              <span class="semi-bold"><?php echo get_name($tidak_masuk->user_app_lv1)?></span><br/>
-                              <span class="small"><?php echo dateIndo($tidak_masuk->date_app_lv1)?></span><br/>
-                              <span class="semi-bold">(Atasan Langsung)</span>
-                            <?php }else{?>
-                              <span class="small"></span><br/>
-                              <span class="small"></span><br/>
-                              <span class="semi-bold"></span><br/>
-                              <span class="semi-bold"><?php echo get_name($tidak_masuk->user_app_lv1)?></span><br/>
-                              <span class="small"><?php echo dateIndo($tidak_masuk->date_app_lv1)?></span><br/>
-                              <span class="semi-bold">(Atasan Langsung)</span>
-                            <?php } endif; ?>
-                          </p>
-                        </div>
-
-                        <div class="col-md-3">
-                        <?php if(!empty($tidak_masuk->user_app_lv2)) : ?>
-                          <p class="wf-approve-sp">
-                            <?php
-                            if(!empty($tidak_masuk->user_app_lv2) && $tidak_masuk->is_app_lv2 == 0 && get_nik($sess_id) == $tidak_masuk->user_app_lv2){?>
-                              <button id="btn_app_lv2" class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok"></i>Submit</button>
-                              <span class="small"></span>
-                              <span class="semi-bold"></span><br/>
-                              <span class="small"></span><br/>
-                              <span class="semi-bold"></span><br/>
-                              <span class="semi-bold">(Atasan Tidak Langsung)</span>
-                            <?php }elseif(!empty($tidak_masuk->user_app_lv2) && $tidak_masuk->is_app_lv2 == 1){
-                              echo "<img class=approval_img_md src=$approved>"?>
-                              <span class="small"></span><br/>
-                              <span class="semi-bold"><?php echo get_name($tidak_masuk->user_app_lv2)?></span><br/>
-                              <span class="small"><?php echo dateIndo($tidak_masuk->date_app_lv2)?></span><br/>
-                              <span class="semi-bold">(Atasan Tidak Langsung)</span>
-                            <?php }else{?>
-                              <span class="small"></span><br/>
-                              <span class="small"></span><br/>
-                              <span class="semi-bold"></span><br/>
-                              <span class="semi-bold"><?php echo get_name($tidak_masuk->user_app_lv2)?></span><br/>
-                              <span class="small"><?php echo dateIndo($tidak_masuk->date_app_lv2)?></span><br/>
-                              <span class="semi-bold">(Atasan Tidak Langsung)</span>
-                            <?php } ?>
-                          </p>
-                        <?php endif; ?>
-                        </div>
-                          
-                        <div class="col-md-3">
-                        <?php if(!empty($tidak_masuk->user_app_lv3)) : ?>
-                          <p class="wf-approve-sp">
-                            <?php
-                            if(!empty($tidak_masuk->user_app_lv3) && $tidak_masuk->is_app_lv3 == 0 && get_nik($sess_id) == $tidak_masuk->user_app_lv3){?>
-                              <button id="btn_app_lv3" class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok"></i>Submit</button>
-                              <span class="small"></span>
-                              <span class="semi-bold"></span><br/>
-                              <span class="small"></span><br/>
-                              <span class="semi-bold"></span><br/>
-                              <span class="semi-bold">(<?php echo get_user_position($tidak_masuk->user_app_lv3)?>)</span>
-                            <?php }elseif(!empty($tidak_masuk->user_app_lv3) && $tidak_masuk->is_app_lv3 == 1){
-                              echo "<img class=approval_img_md src=$approved>"?>
-                              <span class="small"></span><br/>
-                              <span class="semi-bold"><?php echo get_name($tidak_masuk->user_app_lv3)?></span><br/>
-                              <span class="small"><?php echo dateIndo($tidak_masuk->date_app_lv3)?></span><br/>
-                              <span class="semi-bold">(<?php echo get_user_position($tidak_masuk->user_app_lv3)?>)</span>
-                            <?php }else{?>
-                              <span class="small"></span><br/>
-                              <span class="small"></span><br/>
-                              <span class="semi-bold"></span><br/>
-                              <span class="semi-bold"><?php echo get_name($tidak_masuk->user_app_lv3)?></span><br/>
-                              <span class="small"><?php echo dateIndo($tidak_masuk->date_app_lv3)?></span><br/>
-                              <span class="semi-bold">(<?php echo get_user_position($tidak_masuk->user_app_lv3)?>)</span>
-                            <?php } ?>
-                          </p>
-                        <?php endif; ?>
-                        </div>
-                          
-                        <div class="col-md-3">
-                          <p class="wf-approve-sp">
-                            <?php
-                            if($tidak_masuk->is_app_hrd == 0 && $this->approval->approver('tidak', $user_nik) == $sess_nik){
-                              if(cek_approval_atasan($id)):
-                              ?>
-                              <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitModalHrd"><i class="icon-ok"></i>Submit</div>
-                              <?php else: ?>
-                                <label>Menunggu approval dari atasan</label>
-                              <?php endif; ?>
-                              <span class="small"></span>
-                              <span class="semi-bold"></span><br/>
-                              <span class="small"></span><br/>
-                              <span class="semi-bold"></span><br/>
-                              <span class="semi-bold">(HRD)</span>
-                            <?php }elseif($tidak_masuk->is_app_hrd == 1){
-                              echo ($tidak_masuk->app_status_id_hrd == 1)?"<img class=approval-img src=$approved>": (($tidak_masuk->app_status_id_hrd == 2) ? "<img class=approval-img src=$rejected>"  : (($tidak_masuk->app_status_id_hrd == 3) ? "<img class=approval-img src=$pending>" : "<span class='small'></span><br/>"));?>
-                              <span class="small"></span><br/>
-                              <span class="semi-bold"><?php echo get_name($tidak_masuk->user_app_hrd)?></span><br/>
-                              <span class="small"><?php echo dateIndo($tidak_masuk->date_app_hrd)?></span><br/>
-                              <span class="semi-bold">(HRD)</span>
-                            <?php }else{?>
-                              <span class="small"></span><br/>
-                              <span class="small"></span><br/>
-                              <span class="semi-bold"></span><br/>
-                              <span class="semi-bold"><?php echo get_name($this->approval->approver('tidak', $user_nik))?></span><br/>
-                              <span class="small"><?php echo dateIndo($tidak_masuk->date_app_hrd)?></span><br/>
-                              <span class="semi-bold">(HRD)</span>
-                            <?php } ?>
-                          </p>
-                        </div>
-                      </div>
-                    </div> 
                   </div>
+
+                  <div class="row wf-cuti">
+                    <div class="col-md-12 text-center">
+                      <div class="col-md-3">
+                        <p class="wf-approve-sp">
+                        <div class="col-md-12"><span class="semi-bold">Pemohon,</span><br/><br/></div>
+                          <img class=approval-img src="<?=assets_url('img/signed.png');?>">
+                          <span class="small"></span><br/>
+                          <span class="semi-bold"><?php echo get_name($tidak_masuk->user_id)?></span><br/>
+                          <span class="small"><?php echo dateIndo($tidak_masuk->created_on)?></span><br/>
+                          <span class="semi-bold">(<?php echo get_user_position(get_nik($tidak_masuk->user_id))?>)</span>
+                        </p>
+                      </div>
+
+                      <div class="col-md-3">
+                        <p class="wf-approve-sp">
+                        <div class="col-md-12"><span class="semi-bold">Mengetahui / Menyetujui,</span><br/><br/></div>
+                          <?php 
+                          $approved = assets_url('img/approved_stamp.png');
+                          $rejected = assets_url('img/rejected_stamp.png');
+                           $pending = assets_url('img/pending_stamp.png');
+                          if(!empty($tidak_masuk->user_app_lv1) && $tidak_masuk->is_app_lv1 == 0 && get_nik($sess_id) == $tidak_masuk->user_app_lv1){?>
+                          <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitModalLv1"><i class="icon-ok"></i>Submit</div>
+                          <span class="small"></span>
+                            <span class="semi-bold"></span><br/>
+                            <span class="small"></span><br/>
+                            <span class="semi-bold"></span>
+                            <span class="semi-bold">(<?php echo get_user_position($tidak_masuk->user_app_lv1)?>)</span>
+                          <?php }elseif(!empty($tidak_masuk->user_app_lv1) && $tidak_masuk->is_app_lv1 == 1){
+                           echo ($tidak_masuk->app_status_id_lv1 == 1)?"<img class=approval-img src=$approved>": (($tidak_masuk->app_status_id_lv1 == 2) ? "<img class=approval-img src=$rejected>"  : (($tidak_masuk->app_status_id_lv1 == 3) ? "<img class=approval-img src=$pending>" : "<span class='small'></span><br/>"));?>
+                          <span class="small"></span><br/>
+                            <span class="semi-bold"><?php echo get_name($tidak_masuk->user_app_lv1)?></span><br/>
+                            <span class="small"><?php echo dateIndo($tidak_masuk->date_app_lv1)?></span><br/>
+                            <span class="semi-bold">(<?php echo get_user_position($tidak_masuk->user_app_lv1)?>)</span>
+                          <?php }else{?>
+                            <span class="small"></span><br/>
+                            <span class="small"></span><br/>
+                            <span class="semi-bold"></span><br/>
+                            <span class="small"></span><br/>
+                            <span class="small"></span><br/>
+                            <span class="semi-bold"><?php echo get_name($tidak_masuk->user_app_lv1)?></span><br/>
+                            <span class="small"><?php echo dateIndo($tidak_masuk->date_app_lv1)?></span><br/>
+                            <span class="semi-bold">(<?php echo get_user_position($tidak_masuk->user_app_lv1)?>)</span>
+                          <?php } ?>
+                        </p>
+                      </div>
+                      
+                      <div class="col-md-3">
+                      <?php if(!empty($tidak_masuk->user_app_lv2)):?>
+                        <p class="wf-approve-sp">
+                        <div class="col-md-12"><span class="semi-bold">Mengetahui / Menyetujui,</span><br/><br/></div>
+                        <?php
+                         if(!empty($tidak_masuk->user_app_lv2) && $tidak_masuk->is_app_lv2 == 0 && get_nik($sess_id) == $tidak_masuk->user_app_lv2){?>
+                            <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitModalLv2"><i class="icon-ok"></i>Submit</div>
+                            <span class="small"></span>
+                            <span class="semi-bold"></span><br/>
+                            <span class="small"></span><br/>
+                            <span class="semi-bold"></span><br/>
+                            <span class="semi-bold">(Atasan Tidak Langsung)</span>
+                          <?php }elseif(!empty($tidak_masuk->user_app_lv2) && $tidak_masuk->is_app_lv2 == 1){
+                            echo ($tidak_masuk->app_status_id_lv2 == 1)?"<img class=approval-img src=$approved>": (($tidak_masuk->app_status_id_lv2 == 2) ? "<img class=approval-img src=$rejected>"  : (($tidak_masuk->app_status_id_lv2 == 3) ? "<img class=approval-img src=$pending>" : "<span class='small'></span><br/>"));?>
+                          <span class="small"></span><br/>
+                            <span class="semi-bold"><?php echo get_name($tidak_masuk->user_app_lv2)?></span><br/>
+                            <span class="small"><?php echo dateIndo($tidak_masuk->date_app_lv2)?></span><br/>
+                            <span class="semi-bold">(<?php echo get_user_position($tidak_masuk->user_app_lv2)?>)</span>
+                          <?php }else{?>
+                            <span class="small"></span><br/>
+                            <span class="small"></span><br/>
+                            <span class="semi-bold"></span><br/>
+                            <span class="small"></span><br/>
+                            <span class="small"></span><br/>
+                            <span class="semi-bold"><?php echo get_name($tidak_masuk->user_app_lv2)?></span><br/>
+                            <span class="small"><?php echo dateIndo($tidak_masuk->date_app_lv2)?></span><br/>
+                            <span class="semi-bold">(<?php echo get_user_position($tidak_masuk->user_app_lv2)?>)</span>
+                          <?php } ?>
+                        </p>
+                      <?php endif;?>
+                      </div>
+                      
+                      <div class="col-md-3">
+                        <p class="wf-approve-sp">
+                        <div class="col-md-12"><span class="semi-bold">Diterima HRD</span><br/><br/></div>
+                          <?php if($tidak_masuk->is_app_hrd == 0 && $this->approval->approver('absen', $user_nik) == $sess_nik){
+                              if(cek_approval_atasan($id)):
+                                  ?>
+                                  <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitModalHrd"><i class="icon-ok"></i>Submit</div>
+                                  <?php else: ?>
+                                    <label>Menunggu approval dari atasan</label>
+                                  <?php endif; ?>
+                            <span class="small"></span>
+                            <span class="semi-bold"></span><br/>
+                            <span class="small"></span><br/>
+                            <span class="semi-bold"></span><br/>
+                            <span class="semi-bold">(HRD)</span>
+                          <?php }elseif($tidak_masuk->is_app_hrd == 1){
+                            echo ($tidak_masuk->app_status_id_hrd == 1)?"<img class=approval-img src=$approved>": (($tidak_masuk->app_status_id_hrd == 2) ? "<img class=approval-img src=$rejected>"  : (($tidak_masuk->app_status_id_hrd == 3) ? "<img class=approval-img src=$pending>" : "<span class='small'></span><br/>"));?>
+                          <span class="small"></span><br/>
+                            <span class="semi-bold"><?php echo get_name($tidak_masuk->user_app_hrd)?></span><br/>
+                            <span class="small"><?php echo dateIndo($tidak_masuk->date_app_hrd)?></span><br/>
+                            <span class="semi-bold">(HRD)</span>
+                          <?php }else{?>
+                            <span class="small"></span><br/>
+                            <span class="small"></span><br/>
+                            <span class="semi-bold"></span><br/>
+                            <span class="small"></span><br/>
+                            <span class="small"></span><br/>
+                            <span class="semi-bold"><?php echo get_name($this->approval->approver('absen', $user_nik))?></span><br/>
+                            <span class="small"><?php echo dateIndo($tidak_masuk->date_app_hrd)?></span><br/>
+                            <span class="semi-bold">(HRD)</span>
+                          <?php } ?>
+                        </p>
+                      </div>
+                    </div>
+                  </div> 
+                  <br/>
+                  <?php if(!empty($tidak_masuk->user_app_lv3)){?>
+                  <div class="col-md-12 text-xenter">
+                    <div class="col-md-12 text-center">
+                      <p class="wf-approve-sp">
+                      <div class="col-md-12"><span class="semi-bold">Mengetahui / Menyetujui,</span><br/><br/></div>
+                        <?php 
+                        $approved = assets_url('img/approved_stamp.png');
+                        $rejected = assets_url('img/rejected_stamp.png');
+                        if(!empty($tidak_masuk->user_app_lv3) && $tidak_masuk->is_app_lv3 == 0 && get_nik($sess_id) == $tidak_masuk->user_app_lv3){?>
+                          <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitModallv3"><i class="icon-ok"></i>Submit</div>
+                          <span class="small"></span>
+                          <span class="semi-bold"></span><br/>
+                          <span class="small"></span><br/>
+                          <span class="semi-bold"></span><br/>
+                          <span class="semi-bold">(<?php echo get_user_position($tidak_masuk->user_app_lv3)?>)</span>
+                        <?php }elseif(!empty($tidak_masuk->user_app_lv3) && $tidak_masuk->is_app_lv3 == 1){
+                          echo ($tidak_masuk->app_status_id_lv3 == 1)?"<img class=approval-img src=$approved>": (($tidak_masuk->app_status_id_lv3 == 2) ? "<img class=approval-img src=$rejected>"  : (($tidak_masuk->app_status_id_lv3 == 3) ? "<img class=approval-img src=$pending>" : "<span class='small'></span><br/>"));?>
+                          <span class="small"></span><br/>
+                          <span class="semi-bold"><?php echo get_name($tidak_masuk->user_app_lv3)?></span><br/>
+                          <span class="small"><?php echo dateIndo($tidak_masuk->date_app_lv3)?></span><br/>
+                          <span class="semi-bold">(<?php echo get_user_position($tidak_masuk->user_app_lv3)?>)</span>
+                        <?php }else{?>
+                            <span class="small"></span><br/>
+                            <span class="small"></span><br/>
+                            <span class="semi-bold"></span><br/>
+                            <span class="small"></span><br/>
+                            <span class="small"></span><br/>
+                            <span class="semi-bold"></span><br/>
+                            <span class="semi-bold"><?php echo get_name($tidak_masuk->user_app_lv3)?></span><br/>
+                            <span class="small"><?php echo dateIndo($tidak_masuk->date_app_lv3)?></span><br/>
+                            <span class="semi-bold">(<?php echo get_user_position($tidak_masuk->user_app_lv3)?>)</span>
+                        <?php } ?>
+                      </p>
+                    </div>
+                  </div>
+                  <?php } ?>
+                </div>
               </form>
             </div>
           </div>
@@ -301,6 +348,157 @@
     
   </div>  
   <!-- END PAGE --> 
+
+
+<!--approval absen Modal Lv1 -->
+<div class="modal fade" id="submitModalLv1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" id="modaldialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Approval Form - Atasan Langsung</h4>
+      </div>
+      <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
+      <div class="modal-body">
+        <form class="form-no-horizontal-spacing"  id="formAppLv1">
+            <div class="row form-row">
+              <div class="col-md-12">
+                <label class="form-label text-left">Status Approval </label>
+              </div>
+              <div class="col-md-12">
+                <div class="radio">
+                  <?php 
+                  if($approval_status->num_rows() > 0){
+                    foreach($approval_status->result() as $app){
+                      $checked = ($app->id <> 0 && $app->id == $tidak_masuk->app_status_id_lv1) ? 'checked = "checked"' : '';
+                      ?>
+                  <input id="app_status_lv1<?php echo $app->id?>" type="radio" name="app_status_lv1" value="<?php echo $app->id?>" <?php echo $checked?>>
+                  <label for="app_status_lv1<?php echo $app->id?>"><?php echo $app->title?></label>
+                  <?php }}else{?>
+                  <input id="app_status" type="radio" name="app_status_lv1" value="0">
+                  <label for="app_status">No Data</label>
+                    <?php } ?>
+                </div>
+              </div>
+            </div>
+            <div class="row form-row">
+              <div class="col-md-12">
+                <label class="form-label text-left">Note (Atasan Langsung) : </label>
+              </div>
+              <div class="col-md-12">
+                <textarea name="note_lv1" class="custom-txtarea-form" placeholder="Note Atasan Langsung isi disini"><?php echo $tidak_masuk->note_lv1?></textarea>
+              </div>
+            </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="icon-remove"></i>&nbsp;<?php echo lang('close_button')?></button> 
+        <button id="btn_app_lv1"  class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
+      </div>
+        <?php echo form_close()?>
+    </div>
+  </div>
+</div>
+<!--end approve modal lv1--> 
+
+<!--approval absen Modal Lv2 -->
+<div class="modal fade" id="submitModalLv2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" id="modaldialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Approval Form - Atasan Tidak Langsung</h4>
+      </div>
+      <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
+      <div class="modal-body">
+        <form class="form-no-horizontal-spacing"  id="formAppLv2">
+            <div class="row form-row">
+              <div class="col-md-12">
+                <label class="form-label text-left">Status Approval </label>
+              </div>
+              <div class="col-md-12">
+                <div class="radio">
+                  <?php 
+                  if($approval_status->num_rows() > 0){
+                    foreach($approval_status->result() as $app){
+                      $checked = ($app->id <> 0 && $app->id == $tidak_masuk->app_status_id_lv2) ? 'checked = "checked"' : '';
+                      ?>
+                  <input id="app_status_lv2<?php echo $app->id?>" type="radio" name="app_status_lv2" value="<?php echo $app->id?>" <?php echo $checked?>>
+                  <label for="app_status_lv2<?php echo $app->id?>"><?php echo $app->title?></label>
+                  <?php }}else{?>
+                  <input id="app_status" type="radio" name="app_status_lv2" value="0">
+                  <label for="app_status">No Data</label>
+                    <?php } ?>
+                </div>
+              </div>
+            </div>
+            <div class="row form-row">
+              <div class="col-md-12">
+                <label class="form-label text-left">Note (Atasan Tidak Langsung) : </label>
+              </div>
+              <div class="col-md-12">
+                <textarea name="note_lv2" class="custom-txtarea-form" placeholder="Note Atasan Tidak Langsung isi disini"><?php echo $tidak_masuk->note_lv2?></textarea>
+              </div>
+            </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="icon-remove"></i>&nbsp;<?php echo lang('close_button')?></button> 
+        <button id="btn_app_lv2"  class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
+      </div>
+        <?php echo form_close()?>
+    </div>
+  </div>
+</div>
+<!--end approve modal Lv2--> 
+
+<!--approval absen Modal Lv3 -->
+<div class="modal fade" id="submitModalLv3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" id="modaldialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Approval Form - Atasan Lainnya</h4>
+      </div>
+      <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
+      <div class="modal-body">
+        <form class="form-no-horizontal-spacing"  id="formAppLv3">
+            <div class="row form-row">
+              <div class="col-md-12">
+                <label class="form-label text-left">Status Approval </label>
+              </div>
+              <div class="col-md-12">
+                <div class="radio">
+                  <?php 
+                  if($approval_status->num_rows() > 0){
+                    foreach($approval_status->result() as $app){
+                      $checked = ($app->id <> 0 && $app->id == $tidak_masuk->app_status_id_lv3) ? 'checked = "checked"' : '';
+                      ?>
+                  <input id="app_status_lv3<?php echo $app->id?>" type="radio" name="app_status_lv3" value="<?php echo $app->id?>" <?php echo $checked?>>
+                  <label for="app_status_lv3<?php echo $app->id?>"><?php echo $app->title?></label>
+                  <?php }}else{?>
+                  <input id="app_status" type="radio" name="app_status_lv3" value="0">
+                  <label for="app_status">No Data</label>
+                    <?php } ?>
+                </div>
+              </div>
+            </div>
+            <div class="row form-row">
+              <div class="col-md-12">
+                <label class="form-label text-left">Note (Atasan) : </label>
+              </div>
+              <div class="col-md-12">
+                <textarea name="note_lv3" class="custom-txtarea-form" placeholder="Note atasan isi disini"><?php echo $tidak_masuk->note_lv3?></textarea>
+              </div>
+            </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="icon-remove"></i>&nbsp;<?php echo lang('close_button')?></button> 
+        <button id="btn_app_lv3"  class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
+      </div>
+        <?php echo form_close()?>
+    </div>
+  </div>
+</div>
+<!--end approve modal Lv3--> 
 
   <!--approval cuti Modal HRD -->
 <div class="modal fade" id="submitModalHrd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

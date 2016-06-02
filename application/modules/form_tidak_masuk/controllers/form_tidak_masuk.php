@@ -281,16 +281,18 @@ class form_tidak_masuk extends MX_Controller {
         
         if($type !== 'hrd'){
             $data = array(
-            'is_app_'.$type => 1,
+            'is_app_'.$type => 1, 
+            'app_status_id_'.$type => $this->input->post('app_status_'.$type),
             'user_app_'.$type => $user_id, 
             'date_app_'.$type => $date_now,
+            'note_'.$type => $this->input->post('note_'.$type)
             );
             
             $this->main->update($id,$data);
             $user_tidak_masuk_id = getValue('user_id', 'users_tidak_masuk', array('id'=>'where/'.$id));
-            $approval_status = 1;
+            $approval_status = $this->input->post('app_status_'.$type);
             $this->approval->approve('tidak_masuk', $id, $approval_status, $this->detail_email($id));
-            $subject_email = get_form_no($id).'-[APPROVED]Status Pengajuan Keterangan Tidak Masuk dari Atasan';
+            $subject_email = get_form_no($id).'['.$approval_status_mail.']Status Pengajuan Keterangan Tidak Masuk dari Atasan';
             $subject_email_request = get_form_no($id).'-Pengajuan Keterangan Tidak Masuk';
             $isi_email = 'Status pengajuan keterangan tidak Masuk anda disetujui oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_tidak_masuk/detail/'.$id.'>Klik Disini</a><br />';
             $isi_email_request = get_name($user_tidak_masuk_id).' mengajukan keterangan tidak Masuk, untuk melihat detail silakan <a href='.base_url().'form_tidak_masuk/detail/'.$id.'>Klik Disini</a><br />';
