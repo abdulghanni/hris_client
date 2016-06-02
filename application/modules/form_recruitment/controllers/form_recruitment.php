@@ -565,4 +565,15 @@ class Form_recruitment extends MX_Controller {
             return $this->load->view($view, $data, TRUE);
         }
     }
+
+    function add_jurusan(){
+        $data = array(
+                'title'=> $this->input->post('nama-jurusan'),
+                'created_by'=> sessId(),
+                'created_on'=> date('Y-m-d',strtotime('now')),
+            );
+        $this->db->insert('recruitment_jurusan', $data);
+        $this->data['jurusan'] = getAll('recruitment_jurusan', array('is_deleted' => 'where/0'));
+        $this->load->view('form_recruitment/jurusan', $this->data);
+    }
 }   

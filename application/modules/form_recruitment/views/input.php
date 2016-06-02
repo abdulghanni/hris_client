@@ -141,6 +141,7 @@
                             <option value="<?php echo $row->id?>"><?php echo $row->title?></option>
                           <?php endforeach;}?>
                         </select>
+                        <button type="button" class="btn btn-small btn-primary"data-toggle="modal" data-target="#modalJurusan" title="Klik tombol ini untuk menambah daftar jurusan" id="btnJurusan"><i class="icon-plus"> Tambah Jurusan</i></button>
                       </div>
                       <div class="col-md-1">
                         <label class="form-label text-right">IPK(Min)</label>
@@ -359,6 +360,36 @@
 		
 	</div>  
 	<!-- END PAGE -->
+
+  <!--approval recruitment Modal Lv1 -->
+<div class="modal fade" id="modalJurusan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" id="modaldialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Tambah List Jurusan Pendidikan</h4>
+      </div>
+      <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
+      <div class="modal-body">
+        <form class="form-no-horizontal-spacing"  id="formAddJurusan">
+            <div class="row form-row">
+              <div class="col-md-3">
+                <label class="form-label text-left">Nama Jurusan </label>
+              </div>
+              <div class="col-md-9">
+                <input type="text" name="nama-jurusan" class="form-control">
+              </div>
+            </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="icon-remove"></i>&nbsp;<?php echo lang('close_button')?></button> 
+        <button id="btnAddJurusan" type="button" class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
+      </div>
+        <?php echo form_close()?>
+    </div>
+  </div>
+</div>
+<!--end approve modal lv1--> 
 
   <script type="text/javascript">
 

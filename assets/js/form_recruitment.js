@@ -18,6 +18,7 @@ $(document).ready(function() {
     var uri2 = url.segment(2)+'/do_approve/'+url.segment(4)+'/lv2';
     var uri3 = url.segment(2)+'/do_approve/'+url.segment(4)+'/lv3';
     var uri4 = url.segment(2)+'/do_approve/'+url.segment(4)+'/hrd';
+    var uriJurusan = url.segment(2)+'/add_jurusan/';
             
     //approval script
 
@@ -91,6 +92,21 @@ $(document).ready(function() {
             });
             ev.preventDefault(); 
         });  
+    });
+
+    $('#btnAddJurusan').click(function(){
+        var $btn = $(this).button('loading');
+            $.ajax({
+                url : baseurl+uriJurusan,
+                type: "POST",
+                data: $('#formAddJurusan').serialize(),
+                success: function(data)
+                {
+                    $("[data-dismiss=modal]").trigger({ type: "click" });
+                    $("#jurusan").html(data);
+                    $btn.button('reset');
+                }
+            });
     });
 /*
    $('#jumlah').keydown(function(event) {
