@@ -583,9 +583,10 @@ class Form_cuti extends MX_Controller {
         $IDLEAVEREQUEST = 'CT'.$leaveid;
         $RECVERSION = $leave_request_id[0]['RECVERSION']+1;
         $RECID = $leave_request_id[0]['RECID']+1;
-        $remarks = str_replace(' ', '-', $data['remarks']);
-        $alamat_cuti = str_replace(' ', '-', $data['alamat_cuti']);
-        $phone = str_replace(' ', '-', $data['contact']);
+        $char = array('"', '<', '>', '#', '%', '{', '}', '|', '^', '~','(',')', '[', ']', '`',',', ' ');
+        $remarks = str_replace($char, '-', $data['remarks']);
+        $alamat_cuti = str_replace($char, '-', $data['alamat_cuti']);
+        $phone = str_replace($char, '-', $data['contact']);
         $method = 'post';
         $params =  array();
         $uri = get_api_key().'users/leave_request/'.
