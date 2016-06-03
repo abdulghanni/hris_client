@@ -785,6 +785,76 @@ class Form_cuti extends MX_Controller {
         }
     }
 
+    function insert_manual_leave_request()
+    {
+        $cuti_id = array('71', '56', '55', '7');
+        foreach ($cuti_id as $key => $value) {
+            //echo $value;
+            $data = GetAll('users_cuti', array('id'=>'where/'.$value))->row_array();//lastq();
+          
+        $leave_request_id = $this->get_last_leave_request_id();
+        $user_id = get_nik($data['user_id']);
+        $leaveid = substr($leave_request_id[0]['IDLEAVEREQUEST'],2)+1;
+        $leaveid = sprintf('%06d', $leaveid);
+        $IDLEAVEREQUEST = 'CT'.$leaveid;
+        $RECVERSION = $leave_request_id[0]['RECVERSION']+1;
+        $RECID = $leave_request_id[0]['RECID']+1;
+        $char = array('"', '<', '>', '#', '%', '{', '}', '|', '^', '~','(',')', '[', ']', '`',',', ' ');
+        $remarks = str_replace($char, '-', $data['remarks']);
+        $alamat_cuti = str_replace($char, '-', $data['alamat_cuti']);
+        $phone = str_replace($char, '-', $data['contact']);
+        $method = 'post';
+        $params =  array();
+        $uri = get_api_key().'users/leave_request/'.
+               'EMPLID/'.$user_id.
+               '/HRSLEAVETYPEID/'.$data['alasan_cuti_id'].
+               '/REMARKS/'.$remarks.
+               '/CONTACTPHONE/'.$phone.
+               '/TOTALLEAVEDAYS/'.$data['jumlah_hari'].
+               '/LEAVEDATETO/'.$data['date_selesai_cuti'].
+               '/LEAVEDATEFROM/'.$data['date_mulai_cuti'].
+               '/REQUESTDATE/'.$data['created_on'].
+               '/IDLEAVEREQUEST/'.$IDLEAVEREQUEST.
+               '/STATUSFLAG/'.'3'.
+               '/IDPERSONSUBSTITUTE/'.$data['user_pengganti'].
+               '/TRAVELLINGLOCATION/'.$alamat_cuti.
+               '/MODIFIEDDATETIME/'.$data['created_on'].
+               '/MODIFIEDBY/'.$data['created_by'].
+               '/CREATEDDATETIME/'.$data['created_on'].
+               '/CREATEDBY/'.$data['created_by'].
+               '/DATAAREAID/'.get_user_dataareaid($user_id).
+               '/RECVERSION/'.$RECVERSION.
+               '/RECID/'.$RECID.
+               '/BRANCHID/'.get_user_branchid($user_id).
+               '/DIMENSION/'.get_user_buid($user_id).
+               '/DIMENSION2_/'.get_user_dimension2_($user_id).
+               '/HRSLOCATIONID/'.get_user_locationid($user_id).
+               '/HRSEMPLGROUPID/'.get_user_emplgroupid($user_id)
+               ;
+
+        $this->rest->format('application/json');
+
+        $result = $this->rest->{$method}($uri, $params);
+
+        if(isset($result->status) && $result->status == 'success')  
+        {  
+            echo '<pre>';
+            print_r($this->rest->debug());
+            //return true;
+            echo '</pre>';
+        }     
+        else  
+        {  
+            echo '<pre>';
+            print_r($this->rest->debug());
+            //return true;
+            echo '</pre>';
+        }
+
+        }
+        die();
+    }
+
     function get_type_cuti()
     {
         if (!$this->ion_auth->logged_in())
