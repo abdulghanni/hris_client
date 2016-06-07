@@ -152,13 +152,18 @@ class Form_cuti extends MX_Controller {
             $sess_id = $this->session->userdata('user_id');
             $start_cuti = $this->input->post('start_cuti');
             $end_cuti = $this->input->post('end_cuti');
+            $jumlah_hari = $this->input->post('jml_cuti');
+            $plafon_cuti = $this->input->post('num_leave');
+            $potong_cuti = $jumlah_hari - $plafon_cuti;
+            $potong_cuti = ($potong_cuti>0) ? $potong_cuti : 0;
 
             $additional_data = array(
                 'id_comp_session'       => date('Y'),
                 'date_mulai_cuti'       => date('Y-m-d', strtotime($this->input->post('start_cuti'))),
                 'date_selesai_cuti'     => date('Y-m-d', strtotime($this->input->post('end_cuti'))),
-                'jumlah_hari'           => $this->input->post('jml_cuti'),
+                'jumlah_hari'           => $jumlah_hari,
                 'sisa_cuti'             => $this->input->post('sisa_cuti'),
+                'potong_cuti'           => $potong_cuti,
                 'alasan_cuti_id'        => $this->input->post('alasan_cuti'),
                 'remarks'               => $this->input->post('remarks'),
                 'user_pengganti'        => $this->input->post('user_pengganti'),
@@ -536,8 +541,12 @@ class Form_cuti extends MX_Controller {
 
         $jml_hari_cuti = getValue('jumlah_hari','users_cuti', array('id' => 'where/'.$id));
         $recid = $this->get_sisa_cuti($user_nik)['recid'];
-        $sisa_cuti = $this->get_sisa_cuti($user_nik)['sisa_cuti'] - $jml_hari_cuti;
-
+        $potong_cuti = getValue('potong_cuti','users_cuti', array('id' => 'where/'.$id));
+        if($id < 154){
+            $sisa_cuti = $this->get_sisa_cuti($user_nik)['sisa_cuti'] - $jml_hari_cuti;
+        }else{
+            $sisa_cuti = $this->get_sisa_cuti($user_nik)['sisa_cuti'] - $potong_cuti;
+        }
         $this->update_sisa_cuti($recid, $sisa_cuti);
     }
 

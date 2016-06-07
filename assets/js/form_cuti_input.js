@@ -123,6 +123,26 @@ ToEndDate.setDate(ToEndDate.getDate()+365);
             $("#datepicker_end").val($("#datepicker_start").val());
         }        
     });
+
+    $('#alasan_cuti').change(function(){      
+        var id = $(this).val();  
+        if(id != ''){
+            $.ajax({
+              url : "get_num_leave/"+id,
+              type: "GET",
+              dataType: "JSON",
+              success: function(json)
+              {
+                if(id != 'CTT'){
+                $("#num_leave").show();
+                }else{
+                  $("#num_leave").hide();
+                }                
+                $("#num_leave_text").val(json);                
+              }
+          });
+        }        
+    });
 });
 
 

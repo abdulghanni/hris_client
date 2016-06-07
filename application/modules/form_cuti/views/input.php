@@ -193,7 +193,14 @@
                         </select> 
                       </div>
                     </div>
-                    
+                    <div class="row form-row" id="num_leave" style="display:none">
+                      <div class="col-md-3">
+                        <label class="form-label text-right"><?php echo 'Jumlah cuti yang diberikan' ?></label>
+                      </div>
+                      <div class="col-md-2">
+                        <input name="num_leave" id="num_leave_text" type="text"  class="form-control" placeholder="-" readonly="readonly">
+                      </div>
+                    </div>
                     <div class="row form-row">
                       <div class="col-md-3">
                         <label class="form-label text-right"><?php echo 'Remarks' ?></label>
