@@ -84,6 +84,7 @@ $(document).ready(function() {
             case 'form_promosi':
             case 'form_demotion':
             case 'form_rolling':
+            case 'form_phk':
                 getEmpBu(empId);
                 getEmpOrg(empId);
                 getEmpPos(empId);

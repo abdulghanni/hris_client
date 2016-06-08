@@ -73,6 +73,13 @@ class Approval {
                 $isi_email = get_name($pengaju_id).' mengajukan Demosi karyawan untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>';
                 $user_id = $pengaju_id;
                 break;
+            case "phk":
+                $receiver = $CI->approval->approver('phk', $user_nik);
+                $pengaju_id = getValue('created_by', 'users_'.$form, array('id'=>'where/'.$id));
+                $form = 'PHK Karyawan';
+                $isi_email = get_name($pengaju_id).' mengajukan PHK karyawan untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>';
+                $user_id = $pengaju_id;
+                break;
             case "rolling":
                 $receiver = $CI->approval->approver($form, $user_nik);
                 $pengaju_id = getValue('created_by', 'users_'.$form, array('id'=>'where/'.$id));

@@ -44,7 +44,7 @@
 <div align="center">
   <p align="left"><img src="<?php echo assets_url('img/erlangga.jpg')?>"/></p>
 </div>
-<?php foreach($form_demotion as $row):
+<?php foreach($form_phk as $row):
 $user_nik = get_nik($row->user_id);
 $pengaju_nik = get_nik($row->created_by);
 $signed = assets_url('img/signed.png');
@@ -61,55 +61,36 @@ $rejected = assets_url('img/rejected_stamp.png');?>
   </div>
 
   <div style="clear: both; margin: 0pt; padding: 0pt; "></div>
-  Perihal : Pengajuan Demosi Karyawan <?= get_nik($row->user_id).' '.get_name($row->user_id)?><br/><br/>
+  Perihal : Pengajuan PHK Karyawan <?= get_nik($row->user_id).' '.get_name($row->user_id)?><br/><br/>
   Kepada Yth.,<br/>
   Departemen HRD<br/>
   Di Tempat<br/>
 
   <p>Dengan hormat,</p>
-  <p>Sesuai evaluasi kinerja karyawan terlampir, bersama ini kami sampaikan permohonan proses Demosi karyawan atas nama <?= get_name($row->user_id).' ('.get_nik($row->user_id).')' ?> dengan data sebagai berikut:</p>
+  <p>Sesuai evaluasi kinerja karyawan terlampir, bersama ini kami sampaikan permohonan proses PHK karyawan atas nama <?= get_name($row->user_id).' ('.get_nik($row->user_id).')' ?> dengan data sebagai berikut:</p>
 </div>
 
   <table width="800" height="128" border-style:solid border="1" class="tg">
     <thead>
       <tr>
-        <th width="20%"></th>
-        <th width="40%">Baru</th>
-        <th width="40%">Lama</th>
+        <th width="40%"></th>
+        <th width="60%"></th>
       </tr>
       <tr>
         <td><span class="style3">NIK</span></td>
         <td><div align="center"><?= get_nik($row->user_id) ?></div></td>
-        <td><span class="style3"></span></td>
       </tr>
       <tr>
         <td><span class="style3">Nama</span></td>
         <td><div align="center"><?= get_name($row->user_id) ?></div></td>
-        <td><span class="style3"></span></td>
       </tr>
       <tr>
-        <td><span class="style3">Unit Bisnis</span></td>
-        <td><span class="style3"><?php echo get_bu_name(substr($row->new_bu,0,2))?></span></td>
-        <td><div align="center"><?php echo get_bu_name(substr($row->old_bu,0,2))?></div></td>
+        <td><span class="style3">Tanggal PHK </span></td>
+        <td><div align="center"><?php echo dateIndo($row->date_phk)?></div></td>
       </tr>
       <tr>
-        <td><span class="style3">Dept/Bagian</span></td>
-        <td><span class="style3"><?php echo get_organization_name($row->new_org)?> </span></td>
-        <td><div align="center"><?php echo get_organization_name($row->old_org)?></div></td>
-      </tr>
-      <tr>
-        <td><span class="style3">Jabatan </span></td>
-        <td><span class="style3"><?php echo get_position_name($row->new_pos)?></span></td>
-        <td><div align="center"><?php echo get_position_name($row->old_pos)?></div></td>
-      </tr>
-      <tr>
-        <td><span class="style3">Tanggal Demosi </span></td>
-        <td><div align="center"><?php echo dateIndo($row->date_demotion)?></div></td>
-        <td><span class="style3"></span></td>
-      </tr>
-      <tr>
-        <td height="100"><span class="style3">Alasan Demosi</span></td>
-        <td colspan="2"><span class="style3"><?php echo $row->alasan?></span></td>
+        <td><span class="style3">Alasan PHK </span></td>
+        <td><div align="center"><?php echo $row->alasan?></div></td>
       </tr>
 </table>
 <div class="style4">
