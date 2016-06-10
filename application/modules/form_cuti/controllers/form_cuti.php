@@ -38,7 +38,7 @@ class Form_cuti extends MX_Controller {
 
     public function ajax_list($f)
     {
-        $list = $this->cuti->get_datatables($f);//lastq();//print_mz($list);
+        $list = $this->cuti->get_datatables($f);
         $data = array();
         $no = $_POST['start'];
         foreach ($list as $r) {
@@ -516,13 +516,13 @@ class Form_cuti extends MX_Controller {
 
     function update_attendance($id)
     {   
-        
-        $user_nik = get_nik(getValue('user_id','users_cuti', array('id' => 'where/'.$id)));
+        $f = array('id' => 'where/'.$id);
+        $user_nik = get_nik(getValue('user_id','users_cuti', $f));
         // Start date
-         $date = getValue('date_mulai_cuti','users_cuti', array('id' => 'where/'.$id));
+         $date = getValue('date_mulai_cuti','users_cuti', $f);
          // End date
-         $end_date = getValue('date_selesai_cuti','users_cuti', array('id' => 'where/'.$id));
-         
+         $end_date = getValue('date_selesai_cuti','users_cuti', $f);
+         $status_id = getValue('approval_status_id_hrd','users_cuti', $f);
          while (strtotime($date) <= strtotime($end_date)) {
          $data = array(
                         'nik'       => get_mchid($user_nik),
@@ -548,8 +548,46 @@ class Form_cuti extends MX_Controller {
             $sisa_cuti = $this->get_sisa_cuti($user_nik)['sisa_cuti'] - $potong_cuti;
         }
         $this->update_sisa_cuti($recid, $sisa_cuti);
+        if($status_id == 1){
+            $status_id = 3;
+        }elseif($status_id == 2){
+            $status_id = 1;
+        }elseif($status_id == 3){
+            $status_id = 2;
+        }else{
+            $status_id = 0;
+        }
+        $this->update_status_flag($user_nik, $date, $end_date, $status_id);
     }
 
+    function update_status_flag($nik, $date, $end_date, $status_id)
+    { 
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+     
+        $method = 'post';
+        $params =  array();
+        $uri = get_api_key().'users/update_flag_cuti/nik/'.$nik.'/date/'.$date.'/end_date/'.$end_date.'/status_id/'.$status_id;
+
+        $this->rest->format('application/json');
+
+        $result = $this->rest->{$method}($uri, $params);
+
+
+        if(isset($result->status) && $result->status == 'success')  
+        {  
+            //return $this->rest->debug();
+            return TRUE;
+        }     
+        else  
+        {  
+            //return $this->rest->debug();
+            return FALSE;
+        }
+    }
 
     function update_sisa_cuti($recid, $sisa_cuti)
     { 
@@ -608,7 +646,7 @@ class Form_cuti extends MX_Controller {
                '/LEAVEDATEFROM/'.$data['date_mulai_cuti'].
                '/REQUESTDATE/'.$data['created_on'].
                '/IDLEAVEREQUEST/'.$IDLEAVEREQUEST.
-               '/STATUSFLAG/'.'3'.
+               '/STATUSFLAG/'.'0'.
                '/IDPERSONSUBSTITUTE/'.$data['user_pengganti'].
                '/TRAVELLINGLOCATION/'.$alamat_cuti.
                '/MODIFIEDDATETIME/'.$data['created_on'].
