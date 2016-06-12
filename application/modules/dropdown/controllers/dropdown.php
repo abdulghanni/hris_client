@@ -507,4 +507,9 @@ class Dropdown extends MX_Controller {
 
       echo json_encode(array('status'=>true));
     }
+
+    function status($id){
+      $this->session->set_userdata('status', $id);
+      return true;
+    }
 }

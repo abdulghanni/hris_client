@@ -101,7 +101,7 @@ class form_tidak_masuk extends MX_Controller {
         echo json_encode($output);
     }
 
-    function detail($id)
+    function detail($id, $lv = null)
     {
         $this->data['title'] = 'Detail - Keterangan Tidak Masuk';
         if (!$this->ion_auth->logged_in())
@@ -118,7 +118,7 @@ class form_tidak_masuk extends MX_Controller {
             $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
             $sess_nik = $this->data['sess_nik'] = get_nik($sess_id);
             $this->data['user_folder'] = getValue("user_id", "users_tidak_masuk", array('id'=>'where.'.$id));
-            $form_tidak_masuk = $this->data['form_tidak_masuk'] = $this->main->detail($id)->result();
+            $form_tidak_masuk = $this->data['tidak_masuk'] = $this->main->detail($id)->row();
             $this->data['_num_rows'] = $this->main->detail($id)->num_rows();
             
             $alasan = getValue('alasan_tidak_masuk_id', 'users_tidak_masuk', array('id'=>'where/'.$id));
@@ -128,7 +128,17 @@ class form_tidak_masuk extends MX_Controller {
             $tipe_cuti = getValue('type_cuti_id', 'users_tidak_masuk', array('id'=>'where/'.$id));
             $this->data['tipe_cuti'] = getValue('title', 'alasan_cuti', array('HRSLEAVETYPEID'=>'where/'.$tipe_cuti));
             $this->data['sisa_cuti'] = $this->get_sisa_cuti($user_nik);
-            $this->_render_page('form_tidak_masuk/detail', $this->data);
+
+            $this->data['approved'] = assets_url('img/approved_stamp.png');
+            $this->data['rejected'] = assets_url('img/rejected_stamp.png');
+            $this->data['pending'] = assets_url('img/pending_stamp.png');
+            if($lv != null){
+                $app = $this->load->view('form_tidak_masuk/'.$lv, $this->data, true);
+                $note = $this->load->view('form_tidak_masuk/note', $this->data, true);
+                echo json_encode(array('app'=>$app, 'note'=>$note));
+            }else{
+                $this->_render_page('form_tidak_masuk/detail', $this->data);
+            }
         }
     }
 
@@ -291,6 +301,7 @@ class form_tidak_masuk extends MX_Controller {
             $this->main->update($id,$data);
             $user_tidak_masuk_id = getValue('user_id', 'users_tidak_masuk', array('id'=>'where/'.$id));
             $approval_status = $this->input->post('app_status_'.$type);
+            $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
             $this->approval->approve('tidak_masuk', $id, $approval_status, $this->detail_email($id));
             $subject_email = get_form_no($id).'['.$approval_status_mail.']Status Pengajuan Keterangan Tidak Masuk dari Atasan';
             $subject_email_request = get_form_no($id).'-Pengajuan Keterangan Tidak Masuk';
@@ -363,6 +374,8 @@ class form_tidak_masuk extends MX_Controller {
                 if(!empty(getEmail($user_tidak_masuk_id)))$this->send_email(getEmail($user_tidak_masuk_id), get_form_no($id).'-['.$approval_status_mail.']'.'Perubahan Status Pengajuan Permohonan tidak_masuk dari Atasan', $isi_email);
             }
         }
+
+        return true;
     }
 
     function detail_email($id)

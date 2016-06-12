@@ -20,9 +20,9 @@ $('button[data-loading-text]').click(function () {
                 url: baseurl+uri1,
                 data: $('#formAppLv1').serialize(),
                 success: function() {
-                     $("[data-dismiss=modal]").trigger({ type: "click" });
-                     location.reload(),
-                     $btn.button('reset')
+                    reload_status('lv1');
+                    $("[data-dismiss=modal]").trigger({ type: "click" });
+                    $btn.button('reset');   
                 }
             });
             ev.preventDefault(); 
@@ -37,9 +37,9 @@ $('button[data-loading-text]').click(function () {
                 url: baseurl+uri2,
                 data: $('#formAppLv2').serialize(),
                 success: function() {
-                     $("[data-dismiss=modal]").trigger({ type: "click" });
-                     location.reload(),
-                     $btn.button('reset')
+                     reload_status('lv2');
+                    $("[data-dismiss=modal]").trigger({ type: "click" });
+                    $btn.button('reset');  
                 }
             });
             ev.preventDefault(); 
@@ -54,9 +54,9 @@ $('button[data-loading-text]').click(function () {
                 url: baseurl+uri3,
                 data: $('#formAppLv3').serialize(),
                 success: function() {
+                    reload_status('lv3');
                     $("[data-dismiss=modal]").trigger({ type: "click" });
-                    location.reload(),
-                    $btn.button('reset')
+                    $btn.button('reset');  
                 }
             });
             ev.preventDefault(); 
@@ -71,12 +71,28 @@ $('button[data-loading-text]').click(function () {
                 url: baseurl+uri4,
                 data: $('#formAppHrd').serialize(),
                 success: function() {
+                    reload_status('hrd');
                     $("[data-dismiss=modal]").trigger({ type: "click" });
-                    location.reload(),
-                    $btn.button('reset')
+                    $btn.button('reset');  
                 }
             });
             ev.preventDefault(); 
         });  
     });
+
+    function reload_status(lv)
+    {
+        uri = url.segment(2)+'/detail/'+url.segment(4)+'/'+lv;
+        $('#'+lv).html('<img src="/hris_client/assets/img/loading.gif"> loading...');
+        $('#note').html('<img src="/hris_client/assets/img/loading.gif"> loading...');
+        $.ajax({
+            type: 'POST',
+            url: baseurl+uri,
+            dataType: "JSON",
+            success: function(data) {
+                $('#'+lv).html(data.app);
+                $('#note').html(data.note);
+            }
+        });
+    }
 });

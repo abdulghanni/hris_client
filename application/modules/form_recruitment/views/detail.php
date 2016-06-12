@@ -25,7 +25,6 @@
                 $att = array('class' => 'form-no-horizontal-spacing', 'id' => 'formaddrecruitment');
                 echo form_open('form_recruitment/add', $att);
                 if($_num_rows>0){
-                foreach($recruitment as $row):
                   $user_nik = get_nik($row->user_id);
                 ?>
                 <div class="row column-seperation">
@@ -242,7 +241,7 @@
                         <textarea name="note_pengaju" id="text-editor" placeholder="Enter text ..." class="form-control" rows="10" disabled="disabled"><?php echo $row->note_pengaju?></textarea>
                       </div>
                     </div>
-
+                    <div id="note">
                     <?php 
                       for($i=1;$i<6;$i++):
                       $note_lv = 'note_lv'.$i;
@@ -268,7 +267,7 @@
                         </div>
                       </div>
                       <?php } ?>
-
+                      </div>
                   </div>
                 </div>
                 <div class="form-actions">
@@ -302,7 +301,7 @@
                     </p>
                   </div>
 
-                  <div class="col-md-3">
+                  <div class="col-md-3" id="lv1">
                     <p class="wf-approve-sp">
                     <div class="col-md-12"><span class="semi-bold">Mengetahui / Menyetujui,</span><br/><br/></div>
                       <?php 
@@ -335,7 +334,7 @@
                     </p>
                   </div>
                     
-                  <div class="col-md-3">
+                  <div class="col-md-3" id="lv2">
                   <?php if(!empty($row->user_app_lv2)):?>
                     <p class="wf-approve-sp">
                     <div class="col-md-12"><span class="semi-bold">Mengetahui / Menyetujui,</span><br/><br/></div>
@@ -367,7 +366,7 @@
                   <?php endif;?>
                   </div>
                     
-                  <div class="col-md-3">
+                  <div class="col-md-3" id="hrd">
                     <p class="wf-approve-sp">
                     <div class="col-md-12"><span class="semi-bold">Diterima HRD</span><br/><br/></div>
                       <?php if($row->is_app_hrd == 0 && $this->approval->approver('recruitment', $user_nik) == $sess_nik){
@@ -406,7 +405,7 @@
 
               <br/>
               <?php if(!empty($row->user_app_lv3)){?>
-              <div class="col-md-12 text-xenter">
+              <div class="col-md-12 text-xenter" id="lv3">
                 <div class="col-md-12 text-center">
                   <p class="wf-approve-sp">
                   <div class="col-md-12"><span class="semi-bold">Mengetahui / Menyetujui,</span><br/><br/></div>
@@ -414,7 +413,7 @@
                     $approved = assets_url('img/approved_stamp.png');
                     $rejected = assets_url('img/rejected_stamp.png');
                     if(!empty($row->user_app_lv3) && $row->is_app_lv3 == 0 && get_nik($sess_id) == $row->user_app_lv3){?>
-                      <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitModallv3"><i class="icon-ok"></i>Submit</div>
+                      <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitModalLv3"><i class="icon-ok"></i>Submit</div>
                       <span class="small"></span>
                       <span class="semi-bold"></span><br/>
                       <span class="small"></span><br/>
@@ -658,7 +657,6 @@
     </div>
   </div>
 </div>
-<!--end approve modal Lv2--> 
+<!--end approve modal HRD--> 
 
-<?php endforeach; ?>
 <?php } ?>

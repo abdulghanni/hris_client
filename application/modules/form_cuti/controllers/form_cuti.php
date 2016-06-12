@@ -236,7 +236,7 @@ class Form_cuti extends MX_Controller {
         //print_r($this->db->last_query());
     }
 
-    function detail($id)
+    function detail($id, $lv = null)
     {
         $this->data['title'] = 'Detail - Cuti';
         if (!$this->ion_auth->logged_in())
@@ -250,12 +250,20 @@ class Form_cuti extends MX_Controller {
         $sess_nik = $this->data['sess_nik'] = get_nik($sess_id);
         $this->data['user_id'] = getValue('user_id', 'users_cuti', array('id'=>'where/'.$id));
         $this->data['user_nik'] = get_nik($this->data['user_id']);
-        $this->data['form_cuti'] = $this->cuti->detail($id)->result();
+        $this->data['user'] = $this->cuti->detail($id)->row();
         $this->data['_num_rows'] = $this->cuti->detail($id)->num_rows();
 
         $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
-        
-        $this->_render_page('form_cuti/detail', $this->data);
+        $this->data['approved'] = assets_url('img/approved_stamp.png');
+        $this->data['rejected'] = assets_url('img/rejected_stamp.png');
+        $this->data['pending'] = assets_url('img/pending_stamp.png');
+        if($lv != null){
+            $app = $this->load->view('form_cuti/'.$lv, $this->data, true);
+            $note = $this->load->view('form_cuti/note', $this->data, true);
+            echo json_encode(array('app'=>$app, 'note'=>$note));
+        }else{
+            $this->_render_page('form_cuti/detail', $this->data);
+        }
     }
 
     function form_cuti_pdf($id)

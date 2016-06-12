@@ -3,10 +3,26 @@ var table;
 var form = $("#form_name").val();
 $(document).ready(function() {
 	$(".select2").select2();
-    var opt_id = $('#opt option:selected').val();
+    //var opt_id = $('#opt option:selected').val();
+    var opt_id = $('#status').val();
 	 $("#opt").change(function() {
         var id = $(this).val();
-        if(opt_id!=id)location.reload();
+        //alert(opt_id);
+        if(opt_id!=id){
+            $.ajax({
+                url : 'dropdown/status/'+id,
+                type: "POST",
+                success: function(data)
+                {  
+                    location.reload(); 
+                },
+                error: function (jqXHR, textStatus, errorThrown)
+                {
+                    alert('Terjadi Kesalahan, Silakan Refresh Halaman Ini');
+                    $btn.button('reset');
+                }
+            });
+        }
     })
     .change();
 

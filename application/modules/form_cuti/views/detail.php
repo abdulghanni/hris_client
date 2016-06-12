@@ -27,7 +27,6 @@
                     <div class="col-md-5">
                       <h4>Informasi karyawan</h4>
                       <?php if ($_num_rows > 0) {
-                      foreach ($form_cuti as $user) :
                       $cur_sess = date('Y');
                       // convert date time
                       $user_nik = get_nik($user_id);
@@ -179,7 +178,7 @@
                       </div>
                     <?php endif;?>
                       
-                      
+                      <div id="note">
                       <?php 
                       for($i=1;$i<4;$i++):
                       $note_lv = 'note_app_lv'.$i;
@@ -206,7 +205,7 @@
                         </div>
                       </div>
                       <?php } ?>
-
+                      </div>
 
                     </div>
                   </div>
@@ -228,12 +227,9 @@
 
                       <div class="col-md-12 text-center"><div class="col-md-12 text-center"><span class="semi-bold">Mengetahui,</span><br/><br/><br/></div>
                       <div class="row wf-cuti">
-                        <div class="col-md-3">
+                        <div class="col-md-3" id="lv1">
                           <p class="wf-approve-sp">
                             <?php
-                            $approved = assets_url('img/approved_stamp.png');
-                            $rejected = assets_url('img/rejected_stamp.png');
-                            $pending = assets_url('img/pending_stamp.png');
                             if(!empty($user->user_app_lv1) && $user->is_app_lv1 == 0 && get_nik($sess_id) == $user->user_app_lv1){?>
                               <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitcutiModalLv1"><i class="icon-ok"></i>Submit</div>
                               <span class="small"></span>
@@ -258,7 +254,7 @@
                           </p>
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-3" id="lv2">
                           <?php if(!empty($user->user_app_lv2)) : ?>
                           <p class="wf-approve-sp">
                             <?php
@@ -287,7 +283,7 @@
                         <?php endif; ?>
                         </div>
                           
-                        <div class="col-md-3">
+                        <div class="col-md-3" id="lv3">
                         <?php if(!empty($user->user_app_lv3)) : ?>
                           <p class="wf-approve-sp">
                             <?php
@@ -316,7 +312,7 @@
                         <?php endif; ?>
                         </div>
                           
-                        <div class="col-md-3">
+                        <div class="col-md-3" id="hrd">
                           <p class="wf-approve-sp">
                             <?php
                             if($user->is_app_hrd == 0 && $this->approval->approver('cuti', $user_nik) == $sess_nik){
@@ -679,6 +675,4 @@
 <!--end approve modal HRD--> 
 
 
-
-<?php endforeach; ?>
 <?php } ?>

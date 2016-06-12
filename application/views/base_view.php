@@ -36,6 +36,7 @@
         <![endif]-->
     </head>
     <body class="bg-login">
+    <input type="hidden" id="status" value="<?=$this->session->userdata('status')?>">
         <?php echo $body; ?>
         <!-- / -->
 

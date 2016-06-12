@@ -22,7 +22,6 @@
             <div class="grid-body no-border">
             <?php 
             if($_num_rows>0){
-              foreach($form_tidak_masuk as $tidak_masuk){
                 $user_nik = get_nik($tidak_masuk->user_id);
                 ?>
               <form class="form-no-horizontal-spacing" id="form"> 
@@ -118,11 +117,10 @@
                       <div class="col-md-9">
                         <a href="<?php echo base_url("uploads/izin/".$user_nik."/".$tidak_masuk->attachment)?>" target="_blank"><?php echo $tidak_masuk->attachment?></a>
                       </div>
-                    </div>
-                    
-                  <?php if($tidak_masuk->potong_cuti == 1) :
-                    $potong = ($tidak_masuk->potong_cuti == 1) ? 'Ya' : 'Tidak';
-                  ?>
+                    </div> 
+                    <?php if($tidak_masuk->potong_cuti == 1) :
+                      $potong = ($tidak_masuk->potong_cuti == 1) ? 'Ya' : 'Tidak';
+                    ?>
 
                     <div class="row form-row">
                       <div class="col-md-3">
@@ -143,6 +141,7 @@
                     </div>
 
                   <?php endif; ?>
+                  <div id="note">
                   <?php 
                       for($i=1;$i<4;$i++):
                       $note_lv = 'note_lv'.$i;
@@ -168,6 +167,7 @@
                         </div>
                       </div>
                   <?php endif; ?>
+                  </div>
                   </div>
                 </div>
                 <div class="form-actions">
@@ -199,13 +199,10 @@
                         </p>
                       </div>
 
-                      <div class="col-md-3">
+                      <div class="col-md-3" id="lv1">
                         <p class="wf-approve-sp">
                         <div class="col-md-12"><span class="semi-bold">Mengetahui / Menyetujui,</span><br/><br/></div>
                           <?php 
-                          $approved = assets_url('img/approved_stamp.png');
-                          $rejected = assets_url('img/rejected_stamp.png');
-                           $pending = assets_url('img/pending_stamp.png');
                           if(!empty($tidak_masuk->user_app_lv1) && $tidak_masuk->is_app_lv1 == 0 && get_nik($sess_id) == $tidak_masuk->user_app_lv1){?>
                           <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitModalLv1"><i class="icon-ok"></i>Submit</div>
                           <span class="small"></span>
@@ -232,7 +229,7 @@
                         </p>
                       </div>
                       
-                      <div class="col-md-3">
+                      <div class="col-md-3" id="lv2">
                       <?php if(!empty($tidak_masuk->user_app_lv2)):?>
                         <p class="wf-approve-sp">
                         <div class="col-md-12"><span class="semi-bold">Mengetahui / Menyetujui,</span><br/><br/></div>
@@ -264,7 +261,7 @@
                       <?php endif;?>
                       </div>
                       
-                      <div class="col-md-3">
+                      <div class="col-md-3" id="hrd">
                         <p class="wf-approve-sp">
                         <div class="col-md-12"><span class="semi-bold">Diterima HRD</span><br/><br/></div>
                           <?php if($tidak_masuk->is_app_hrd == 0 && $this->approval->approver('absen', $user_nik) == $sess_nik){
@@ -301,7 +298,7 @@
                   </div> 
                   <br/>
                   <?php if(!empty($tidak_masuk->user_app_lv3)){?>
-                  <div class="col-md-12 text-xenter">
+                  <div class="col-md-12 text-xenter"  id="lv3">
                     <div class="col-md-12 text-center">
                       <p class="wf-approve-sp">
                       <div class="col-md-12"><span class="semi-bold">Mengetahui / Menyetujui,</span><br/><br/></div>
@@ -309,7 +306,7 @@
                         $approved = assets_url('img/approved_stamp.png');
                         $rejected = assets_url('img/rejected_stamp.png');
                         if(!empty($tidak_masuk->user_app_lv3) && $tidak_masuk->is_app_lv3 == 0 && get_nik($sess_id) == $tidak_masuk->user_app_lv3){?>
-                          <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitModallv3"><i class="icon-ok"></i>Submit</div>
+                          <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitModalLv3"><i class="icon-ok"></i>Submit</div>
                           <span class="small"></span>
                           <span class="semi-bold"></span><br/>
                           <span class="small"></span><br/>
@@ -392,7 +389,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="icon-remove"></i>&nbsp;<?php echo lang('close_button')?></button> 
-        <button id="btn_app_lv1"  class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
+        <button type="button" id="btn_app_lv1" class="btn btn-success btn-cons"><i class="icon-ok-sign"></i>&nbsp;Save</button>
       </div>
         <?php echo form_close()?>
     </div>
@@ -584,4 +581,4 @@
 <!--end approve modal HRD--> 
 
 
-              <?php }}?>
+              <?php }?>

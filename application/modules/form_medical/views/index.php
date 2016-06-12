@@ -27,9 +27,9 @@
               </div>
               <div class="col-md-5">
                 <select class="form-control select2" id="opt">
-                  <option value="1">Tampilkan Pengajuan Yang Belum Selesai</option>
-                  <option value="2">Tampilkan Pengajuan Yang Sudah Selesai</option>
-                  <option value="3">Tampilkan Semua Pengajuan</option>
+                  <option value="1" <?=($this->session->userdata('status') == 1) ? 'selected="selected"' : ''?>>Tampilkan Pengajuan Yang Belum Selesai</option>
+                  <option value="2" <?=($this->session->userdata('status') == 2) ? 'selected="selected"' : ''?>>Tampilkan Pengajuan Yang Sudah Selesai</option>
+                  <option value="3" <?=($this->session->userdata('status') == 3) ? 'selected="selected"' : ''?>>Tampilkan Semua Pengajuan</option>
                 </select>
               </div>
             </div>

@@ -236,7 +236,7 @@ class Form_recruitment extends MX_Controller {
             } 
     }
     
-    function detail($id)
+    function detail($id, $lv=null)
     { 
         $this->data['title'] = 'Detail Permintaan SDM Baru';
         if (!$this->ion_auth->logged_in())
@@ -248,7 +248,7 @@ class Form_recruitment extends MX_Controller {
         $this->data['id'] = $id;
         $sess_id= $this->data['sess_id'] = $this->session->userdata('user_id');
         $this->data['sess_nik'] = $sess_nik = get_nik($sess_id);
-        $this->data['recruitment'] = $this->main->detail($id)->result();
+        $this->data['row'] = $this->main->detail($id)->row();
         $this->data['_num_rows'] = $this->main->detail($id)->num_rows();
         $this->data['status'] = getAll('recruitment_status', array('is_deleted' => 'where/0'));
         $this->data['urgensi'] = getAll('recruitment_urgensi', array('is_deleted' => 'where/0'));
@@ -260,7 +260,16 @@ class Form_recruitment extends MX_Controller {
         $this->data['komputer'] = getAll('recruitment_pendidikan');
         $this->data['position_pengaju'] = $this->get_user_position(getValue('user_id', 'users_recruitment', array('id'=>'where/'.$id)));
         $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
-        $this->_render_page('form_recruitment/detail', $this->data);
+         $this->data['approved'] = assets_url('img/approved_stamp.png');
+        $this->data['rejected'] = assets_url('img/rejected_stamp.png');
+        $this->data['pending'] = assets_url('img/pending_stamp.png');
+        if($lv != null){
+            $app = $this->load->view('form_recruitment/'.$lv, $this->data, true);
+            $note = $this->load->view('form_recruitment/note', $this->data, true);
+            echo json_encode(array('app'=>$app, 'note'=>$note));
+        }else{
+            $this->_render_page('form_recruitment/detail', $this->data);
+        }
     }
     
     function do_approve($id, $type)

@@ -111,7 +111,7 @@ class form_absen extends MX_Controller {
         }
     }
 
-    function detail($id)
+    function detail($id, $lv = null)
     {
         $this->data['title'] = 'Detail - Keterangan Tidak Absen';
         if (!$this->ion_auth->logged_in())
@@ -127,10 +127,19 @@ class form_absen extends MX_Controller {
             $this->data['user_nik'] = get_nik($user_id);
             $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
             $sess_nik = $this->data['sess_nik'] = get_nik($sess_id);
-            $this->data['form_absen'] = $this->main->detail($id)->result();
+            $this->data['row'] = $this->main->detail($id)->row();
             $this->data['_num_rows'] = $this->main->detail($id)->num_rows();
             $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
-            $this->_render_page('form_absen/detail', $this->data);
+            $this->data['approved'] = assets_url('img/approved_stamp.png');
+            $this->data['rejected'] = assets_url('img/rejected_stamp.png');
+            $this->data['pending'] = assets_url('img/pending_stamp.png');
+            if($lv != null){
+                $app = $this->load->view('form_absen/'.$lv, $this->data, true);
+                $note = $this->load->view('form_absen/note', $this->data, true);
+                echo json_encode(array('app'=>$app, 'note'=>$note));
+            }else{
+                $this->_render_page('form_absen/detail', $this->data);
+            }
         }
     }
 
