@@ -217,26 +217,28 @@ class attendance extends MX_Controller {
 		$temp=$temp_key="";
 		$absen=array();
 		//LEFT join untuk yg di cron karena mencatat ALPA, klo disini INNER join
-		$sql = GetJoin("users", "tadat", "users.mchID=tadat.mchID AND DAY(tgl)='".$tglz."' AND MONTH(tgl)='".$blnz."' AND YEAR(tgl)='".$thnz."'", "inner", "users.mchID as nik_emp, tadat.*", array("nik_emp"=> "order/asc", "tgl"=> "order/asc"));
+		$sql = GetJoin("users", "tadat", "users.mchID=tadat.mchID AND DAY(tgl)='".$tglz."' AND MONTH(tgl)='".$blnz."' AND YEAR(tgl)='".$thnz."'", "inner", "users.nik as nik_emp, tadat.*", array("nik_emp"=> "order/asc", "tgl"=> "order/asc"));
 		//lastq();
 		foreach($sql->result_array() as $r) {
 			$cardno=$r['nik_emp'];
-			if($temp != $cardno)
+			/*if($temp != $cardno)
 			{
 				if($temp) $absen[$temp_key]['keluar'] = $last_data;
 				$absen[$cardno]['masuk'] = substr($r['tgl'],11);
 				$temp = $cardno;
 				$temp_key=$cardno;
 			}
-			$last_data= substr($r['tgl'],11);
+			$last_data= substr($r['tgl'],11);*/
+			if($r['shf']=="C") $absen[$cardno]['masuk'] = substr($r['tgl'],11);
+			else $absen[$cardno]['keluar'] = substr($r['tgl'],11);
 		}
 		if($temp) $absen[$cardno]['keluar'] = $last_data;
 		
 		//print_mz($absen);
 		foreach($absen as $id_nik=> $r)
 		{
-			$masuk=$r['masuk'];
-			$keluar=$r['keluar'];
+			$masuk=isset($r['masuk']) ? $r['masuk'] : "-";
+			$keluar=isset($r['keluar']) ? $r['keluar'] : "-";
 			if($masuk==$keluar) $keluar="";
 			$cek_hadir = GetValue("id", "attendance", array("nik"=> "where/".$id_nik, "tanggal"=> "where/".$tglz, "bulan"=> "where/".$blnz, "tahun"=> "where/".$thnz));
 			if(!$cek_hadir) {
@@ -250,6 +252,8 @@ class attendance extends MX_Controller {
 					//if(($jadwal) == "NS" && $jam_menit >= 901) $telat=1;
 					//else 
 					if($jam_menit >= 901) $telat=1;
+				} else if($keluar) {
+					$jh=1;
 				} else {
 					$alpa=1;
 				}
