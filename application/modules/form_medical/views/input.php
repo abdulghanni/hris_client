@@ -76,7 +76,7 @@
                                   </div>
                                 </div>
                                 <?php }else{?>
-                                <input type="hidden" name="pengaju" value="<?php echo $sess_id?>" />
+                                <input type="hidden" id="emp" name="pengaju" value="<?php echo sessId()?>" />
                                 <?php } ?>
                                 <br/>
                                 <div class="col-md-12">

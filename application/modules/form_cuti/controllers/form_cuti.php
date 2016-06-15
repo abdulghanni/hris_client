@@ -657,9 +657,9 @@ class Form_cuti extends MX_Controller {
                '/STATUSFLAG/'.'0'.
                '/IDPERSONSUBSTITUTE/'.$data['user_pengganti'].
                '/TRAVELLINGLOCATION/'.$alamat_cuti.
-               '/MODIFIEDDATETIME/'.$data['created_on'].
+               '/MODIFIEDDATETIME/'.date('Y-m-d', strtotime($data['created_on'])).
                '/MODIFIEDBY/'.$data['created_by'].
-               '/CREATEDDATETIME/'.$data['created_on'].
+               '/CREATEDDATETIME/'.date('Y-m-d', strtotime($data['created_on'])).
                '/CREATEDBY/'.$data['created_by'].
                '/DATAAREAID/'.get_user_dataareaid($user_id).
                '/RECVERSION/'.$RECVERSION.
@@ -842,7 +842,7 @@ class Form_cuti extends MX_Controller {
 
     function insert_manual_leave_request()
     {
-        $cuti_id = array('71', '56', '55', '7');
+        $cuti_id = array('184');
         foreach ($cuti_id as $key => $value) {
             //echo $value;
             $data = GetAll('users_cuti', array('id'=>'where/'.$value))->row_array();//lastq();
@@ -853,7 +853,7 @@ class Form_cuti extends MX_Controller {
         $leaveid = sprintf('%06d', $leaveid);
         $IDLEAVEREQUEST = 'CT'.$leaveid;
         $RECVERSION = $leave_request_id[0]['RECVERSION']+1;
-        $RECID = $leave_request_id[0]['RECID']+1;
+        $RECID = $leave_request_id[0]['RECID']+1;//print_mz($RECID);
         $char = array('"', '<', '>', '#', '%', '{', '}', '|', '^', '~','(',')', '[', ']', '`',',', ' ');
         $remarks = str_replace($char, '-', $data['remarks']);
         $alamat_cuti = str_replace($char, '-', $data['alamat_cuti']);
@@ -868,14 +868,14 @@ class Form_cuti extends MX_Controller {
                '/TOTALLEAVEDAYS/'.$data['jumlah_hari'].
                '/LEAVEDATETO/'.$data['date_selesai_cuti'].
                '/LEAVEDATEFROM/'.$data['date_mulai_cuti'].
-               '/REQUESTDATE/'.$data['created_on'].
+               '/REQUESTDATE/'.date('Y-m-d', strtotime($data['created_on'])).
                '/IDLEAVEREQUEST/'.$IDLEAVEREQUEST.
                '/STATUSFLAG/'.'3'.
                '/IDPERSONSUBSTITUTE/'.$data['user_pengganti'].
                '/TRAVELLINGLOCATION/'.$alamat_cuti.
-               '/MODIFIEDDATETIME/'.$data['created_on'].
+               '/MODIFIEDDATETIME/'.date('Y-m-d', strtotime($data['created_on'])).
                '/MODIFIEDBY/'.$data['created_by'].
-               '/CREATEDDATETIME/'.$data['created_on'].
+               '/CREATEDDATETIME/'.date('Y-m-d', strtotime($data['created_on'])).
                '/CREATEDBY/'.$data['created_by'].
                '/DATAAREAID/'.get_user_dataareaid($user_id).
                '/RECVERSION/'.$RECVERSION.
