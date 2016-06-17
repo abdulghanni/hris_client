@@ -195,8 +195,10 @@ $signed = assets_url('img/signed.png');?>
     <td class="tg-031e"><?php echo dateIndo($row->date_created)?></td>
     <?php for($i=1;$i<=4;$i++):
       $x = "date_app_lv".$i;
+      $y = "user_app_lv".$i;
       $r = ($i==4)?$row->date_app_hrd:$row->$x;
-      if(!empty($r)):?>
+      $rx = ($i==4)?$row->user_app_hrd:$row->$y;
+      if(!empty($rx)):?>
     <td class="tg-031e">Tanggal</td>
     <td class="tg-031e"><?php echo dateIndo($r)?></td>
     <?php endif;
