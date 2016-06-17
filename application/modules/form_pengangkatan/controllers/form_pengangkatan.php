@@ -272,10 +272,17 @@ class Form_pengangkatan extends MX_Controller {
                 $lv = substr($type, -1)+1;
                 $lv_app = 'lv'.$lv;
                 $user_app = ($lv<4) ? getValue('user_app_'.$lv_app, 'users_pengangkatan', array('id'=>'where/'.$id)):0;
+                $user_app_lv3 = getValue('user_app_lv3', 'users_tidak_masuk', array('id'=>'where/'.$id));
                if(!empty($user_app)){
                     $this->approval->request($lv_app, 'pengangkatan', $id, $user_pengangkatan_id, $this->detail_email($id));
                     if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), $subject_email_request, $isi_email_request);
-                }else{
+                }elseif(empty($user_app) && !empty($user_app_lv3) && $type == 'lv1'){
+                    if(!empty(getEmail($user_app_lv3)))$this->send_email(getEmail($user_app_lv3), $subject_email_request, $isi_email_request);
+                    $this->approval->request('lv3', 'pengangkatan', $id, $user_pengangkatan_id, $this->detail_email($id));
+                }elseif(empty($user_app) && empty($user_app_lv3) && $type == 'lv1'){
+                    $this->approval->request('hrd', 'pengangkatan', $id, $user_pengangkatan_id, $this->detail_email($id));
+                    if(!empty(getEmail($this->approval->approver('pengangkatan', $user_id))))$this->send_email(getEmail($this->approval->approver('pengangkatan', $user_id)), $subject_email_request, $isi_email_request);
+                }elseif($type == 'lv3'){
                     $this->approval->request('hrd', 'pengangkatan', $id, $user_pengangkatan_id, $this->detail_email($id));
                     if(!empty(getEmail($this->approval->approver('pengangkatan', $user_id))))$this->send_email(getEmail($this->approval->approver('pengangkatan', $user_id)), $subject_email_request, $isi_email_request);
                 }

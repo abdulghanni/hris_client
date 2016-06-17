@@ -317,7 +317,10 @@ class Form_recruitment extends MX_Controller {
                 elseif(empty($user_app) && !empty($user_app_lv3) && $type == 'lv1'):
                     if(!empty(getEmail($user_app_lv3)))$this->send_email(getEmail($user_app_lv3), $subject_email_request, $isi_email_request);
                     $this->approval->request('lv3', 'recruitment', $id, $user_recruitment_id, $this->detail_email($id));
-                else:
+                elseif(empty($user_app) && empty($user_app_lv3) && $type == 'lv1'):
+                    if(!empty(getEmail($this->approval->approver('recruitment', $user_id))))$this->send_email(getEmail($this->approval->approver('recruitment', $user_id)),  $subject_email_request , $isi_email_request);
+                    $this->approval->request('hrd', 'recruitment', $id, $user_recruitment_id, $this->detail_email($id));
+                elseif($type == 'lv3'):
                     if(!empty(getEmail($this->approval->approver('recruitment', $user_id))))$this->send_email(getEmail($this->approval->approver('recruitment', $user_id)),  $subject_email_request , $isi_email_request);
                     $this->approval->request('hrd', 'recruitment', $id, $user_recruitment_id, $this->detail_email($id));
                 endif;

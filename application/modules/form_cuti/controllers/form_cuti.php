@@ -430,9 +430,12 @@ class Form_cuti extends MX_Controller {
                     $this->approval->request($lv_app, 'cuti', $id, $user_cuti_id, $this->detail_email($id));
                     if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), $subject_email_request, $isi_email_request);
                 }elseif(empty($user_app) && !empty($user_app_lv3) && $type == 'lv1'){
-                if(!empty(getEmail($user_app_lv3)))$this->send_email(getEmail($user_app_lv3), $subject_email_request, $isi_email_request);
-                $this->approval->request('lv3', 'cuti', $id, $user_cuti_id, $this->detail_email($id));
-                }else{
+                    if(!empty(getEmail($user_app_lv3)))$this->send_email(getEmail($user_app_lv3), $subject_email_request, $isi_email_request);
+                    $this->approval->request('lv3', 'cuti', $id, $user_cuti_id, $this->detail_email($id));
+                }elseif(empty($user_app) && empty($user_app_lv3) && $type == 'lv1'){
+                    $this->approval->request('hrd', 'cuti', $id, $user_cuti_id, $this->detail_email($id));
+                    if(!empty(getEmail($this->approval->approver('cuti', $user_id))))$this->send_email(getEmail($this->approval->approver('cuti', $user_id)), $subject_email_request, $isi_email_request);
+                }elseif($type == 'lv3'){
                     $this->approval->request('hrd', 'cuti', $id, $user_cuti_id, $this->detail_email($id));
                     if(!empty(getEmail($this->approval->approver('cuti', $user_id))))$this->send_email(getEmail($this->approval->approver('cuti', $user_id)), $subject_email_request, $isi_email_request);
                 }
