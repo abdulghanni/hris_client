@@ -500,4 +500,6 @@
   </div>
 </div>
 <!--end approve modal Hrd--> 
-<?php endforeach;} ?>
+<?php endforeach;}else{
+  echo '<div class="col-md-12 text-center">Pengajuan Ini Telah Di Batalkan Oleh Pengaju</div>';
+  } ?>
