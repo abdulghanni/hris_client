@@ -675,4 +675,8 @@
 <!--end approve modal HRD--> 
 
 
+<?php }else{ ?>
+
+  <div class="col-md-12 text-center">Pengajuan Ini Telah Di Batalkan Oleh Pengaju</div>
+
 <?php } ?>
