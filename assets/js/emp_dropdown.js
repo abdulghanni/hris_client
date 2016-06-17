@@ -203,7 +203,7 @@ $(document).ready(function() {
     .change(); 
     $("#atasan1").change(function() {
                 var empId = $(this).val();
-                getAtasan2(empId);
+                if(empId != 0)getAtasan2(empId);
             })
             .change();
     /*
@@ -530,7 +530,7 @@ $(document).ready(function() {
             url: baseurl+'dropdown/get_atasan/'+empId,
             data: {id : empId},
             success: function(data) {
-                $('#atasan1').html(data);
+                if(empId!=0)$('#atasan1').html(data);
             }
         });
     }
@@ -542,7 +542,7 @@ $(document).ready(function() {
             url: baseurl+'dropdown/get_atasan2/'+empId,
             data: {id : empId},
             success: function(data) {
-                $('#atasan2').html(data);
+                 if(empId!=0)$('#atasan2').html(data);
             }
         });
     }

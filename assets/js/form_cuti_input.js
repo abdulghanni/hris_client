@@ -143,7 +143,6 @@ ToEndDate.setDate(ToEndDate.getDate()+365);
           });
         }        
     });
-});
 
 
   $( "#formadd" ).validate({
@@ -169,6 +168,8 @@ ToEndDate.setDate(ToEndDate.getDate()+365);
           sisa_cuti : "Sisa Cuti anda 0",
       }
   });
+
+});
 
     /*   
     $(document).ready(function(){

@@ -102,7 +102,7 @@
                       <div class="col-md-9">
                         <?php
                           $style_up='class="select2" style="width:100%" id="atasan1"';
-                              echo form_dropdown('atasan1',array('0'=>'- Pilih Atasan Langsung -'),'',$style_up);
+                              echo form_dropdown('atasan1',array('0'=>'- Pilih Atasan Langsung -'),'0',$style_up);
                         ?>
                       </div>
                     </div>
@@ -117,7 +117,7 @@
                             echo form_dropdown('atasan2',array('0'=>'- Pilih Atasan Tidak Langsung -'),'',$style_up);
                         }else{?>
                         <select name="atasan2" id="atasan2" class="select2" style="width:100%">
-                              <option value="0">- Pilih Atasan Tidak Langsung -</option> 
+                              <option value="0" selected="selected">- Pilih Atasan Tidak Langsung -</option> 
                         </select>
                         <?php }?>
                       </div>

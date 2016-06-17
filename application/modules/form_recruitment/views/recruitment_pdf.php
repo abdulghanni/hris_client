@@ -157,48 +157,63 @@ $signed = assets_url('img/signed.png');?>
   <table class="tg" width="1000px" align="center">
   <tr>
     <td class="tg-031e" colspan="2" align="center">Pemohon</td>
-    <td class="tg-031e" colspan="4" align="center">Mengetahui/Menyetujui</td>
+    <?php for($i=1;$i<=3;$i++):
+      $x = "user_app_lv".$i;
+      $r = ($i==4)?$row->user_app_hrd:$row->$x;
+      if(!empty($r)):?>
+    <td class="tg-031e" colspan="2" align="center">Menyetujui</td>
+    <?php endif;
+          endfor; ?>
     <td class="tg-031e" colspan="2" align="center">Diterima HRD</td>
   </tr>
   <tr>
     <td class="tg-031e">Nama</td>
     <td class="tg-031e" width="200"><?php echo get_name($row->user_id)?></td>
-    <td class="tg-031e">Nama</td>
-    <td class="tg-031e" width="200"><?php echo get_name($row->user_app_lv1)?></td>
-    <td class="tg-031e">Nama</td>
-    <td class="tg-031e" width="200"><?php echo get_name($row->user_app_lv2)?></td>
-    <td class="tg-031e">Nama</td>
-    <td class="tg-031e" width="200"><?php echo get_name($row->user_app_hrd)?></td>
+    <?php for($i=1;$i<=4;$i++):
+      $x = "user_app_lv".$i;
+      $r = ($i==4)?$row->user_app_hrd:$row->$x;
+      if(!empty($r)):?>
+        <td class="tg-031e">Nama</td>
+        <td class="tg-031e" width="200"><?php echo get_name($r)?></td>
+      <?php endif;
+            endfor; ?>
   </tr>
   <tr>
     <td class="tg-031e">Jabatan</td>
     <td class="tg-031e"><?php echo $position_pengaju?></td>
+     <?php for($i=1;$i<=4;$i++):
+      $x = "user_app_lv".$i;
+      $r = ($i==4)?$row->user_app_hrd:$row->$x;
+      if(!empty($r)):?>
     <td class="tg-031e">Jabatan</td>
-    <td class="tg-031e"><?php echo get_user_position($row->user_app_lv1) ?></td>
-    <td class="tg-031e">Jabatan</td>
-    <td class="tg-031e"><?php if(!empty($row->user_app_lv2))echo get_user_position($row->user_app_lv2) ?></td>
-    <td class="tg-031e">Jabatan</td>
-    <td class="tg-031e">HRD Database</td>
+    <td class="tg-031e"><?php echo ($i==4) ? "HRD" : get_user_position($r); ?></td>
+    <?php endif;
+          endfor; ?>
   </tr>
   <tr>
     <td class="tg-031e">Tanggal</td>
     <td class="tg-031e"><?php echo dateIndo($row->date_created)?></td>
+    <?php for($i=1;$i<=4;$i++):
+      $x = "date_app_lv".$i;
+      $r = ($i==4)?$row->date_app_hrd:$row->$x;
+      if(!empty($r)):?>
     <td class="tg-031e">Tanggal</td>
-    <td class="tg-031e"><?php echo dateIndo($row->date_app_lv1)?></td>
-    <td class="tg-031e">Tanggal</td>
-    <td class="tg-031e"><?php echo dateIndo($row->date_app_lv2)?></td>
-    <td class="tg-031e">Tanggal</td>
-    <td class="tg-031e"><?php echo dateIndo($row->date_app_hrd)?></td>
+    <td class="tg-031e"><?php echo dateIndo($r)?></td>
+    <?php endif;
+          endfor; ?>
   </tr>
   <tr>
     <td class="tg-031e">Tanda Tangan</td>
     <td class="tg-031e" align="center"><img class='approval-img-md' src=<?=$signed?>></td>
+     <?php for($i=1;$i<=4;$i++):
+      $x = "approval_status_id_lv".$i;
+      $r = ($i==4)?$row->approval_status_id_hrd:$row->$x;
+      if(!empty($r)):?>
     <td class="tg-031e">Tanda Tangan</td>
-    <td class="tg-031e" align="center"><?php echo ($row->approval_status_id_lv1 == 1)?"<img class=approval-img-md src=$approved>":(($row->approval_status_id_lv1 == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
-    <td class="tg-031e">Tanda Tangan</td>
-    <td class="tg-031e" align="center"><?php echo ($row->approval_status_id_lv2 == 1)?"<img class=approval-img-md src=$approved>":(($row->approval_status_id_lv2 == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
-    <td class="tg-031e">Tanda Tangan</td>
-    <td class="tg-031e" align="center"><?php echo ($row->approval_status_id_hrd == 1)?"<img class=approval-img-md src=$approved>":(($row->approval_status_id_hrd == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
+    <td class="tg-031e" align="center"><?php echo ($r == 1)?"<img class=approval-img-md src=$approved>":(($r == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?>
+    </td>
+     <?php endif;
+          endfor; ?>
   </tr>
 </table>
 <?php endforeach;?>
