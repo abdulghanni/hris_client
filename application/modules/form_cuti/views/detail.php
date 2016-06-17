@@ -25,8 +25,10 @@
                 <form class="form-no-horizontal-spacing" id=""> 
                   <div class="row column-seperation">
                     <div class="col-md-5">
+
+                      <?php if ($_num_rows > 0) {?>
                       <h4>Informasi karyawan</h4>
-                      <?php if ($_num_rows > 0) {
+                      <?php 
                       $cur_sess = date('Y');
                       // convert date time
                       $user_nik = get_nik($user_id);
