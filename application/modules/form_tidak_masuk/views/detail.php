@@ -368,8 +368,9 @@
                   if($approval_status->num_rows() > 0){
                     foreach($approval_status->result() as $app){
                       $checked = ($app->id <> 0 && $app->id == $tidak_masuk->app_status_id_lv1) ? 'checked = "checked"' : '';
+                      $checked2 = ($app->id == 1) ? 'checked = "checked"' : '';
                       ?>
-                  <input id="app_status_lv1<?php echo $app->id?>" type="radio" name="app_status_lv1" value="<?php echo $app->id?>" <?php echo $checked?>>
+                  <input id="app_status_lv1<?php echo $app->id?>" type="radio" name="app_status_lv1" value="<?php echo $app->id?>" <?php echo (!empty($checked))?$checked:$checked2;?>>
                   <label for="app_status_lv1<?php echo $app->id?>"><?php echo $app->title?></label>
                   <?php }}else{?>
                   <input id="app_status" type="radio" name="app_status_lv1" value="0">
@@ -418,8 +419,9 @@
                   if($approval_status->num_rows() > 0){
                     foreach($approval_status->result() as $app){
                       $checked = ($app->id <> 0 && $app->id == $tidak_masuk->app_status_id_lv2) ? 'checked = "checked"' : '';
+                      $checked2 = ($app->id == 1) ? 'checked = "checked"' : '';
                       ?>
-                  <input id="app_status_lv2<?php echo $app->id?>" type="radio" name="app_status_lv2" value="<?php echo $app->id?>" <?php echo $checked?>>
+                  <input id="app_status_lv2<?php echo $app->id?>" type="radio" name="app_status_lv2" value="<?php echo $app->id?>" <?php echo (!empty($checked))?$checked:$checked2;?>>
                   <label for="app_status_lv2<?php echo $app->id?>"><?php echo $app->title?></label>
                   <?php }}else{?>
                   <input id="app_status" type="radio" name="app_status_lv2" value="0">
@@ -468,8 +470,9 @@
                   if($approval_status->num_rows() > 0){
                     foreach($approval_status->result() as $app){
                       $checked = ($app->id <> 0 && $app->id == $tidak_masuk->app_status_id_lv3) ? 'checked = "checked"' : '';
+                      $checked2 = ($app->id == 1) ? 'checked = "checked"' : '';
                       ?>
-                  <input id="app_status_lv3<?php echo $app->id?>" type="radio" name="app_status_lv3" value="<?php echo $app->id?>" <?php echo $checked?>>
+                  <input id="app_status_lv3<?php echo $app->id?>" type="radio" name="app_status_lv3" value="<?php echo $app->id?>" <?php echo (!empty($checked))?$checked:$checked2;?>>
                   <label for="app_status_lv3<?php echo $app->id?>"><?php echo $app->title?></label>
                   <?php }}else{?>
                   <input id="app_status" type="radio" name="app_status_lv3" value="0">

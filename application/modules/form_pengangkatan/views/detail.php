@@ -16,15 +16,16 @@
           <div class="col-md-12">
             <div class="grid simple">
               <div class="grid-title no-border">
+
                 <h4>Form Pengajuan <span class="semi-bold"><a href="<?php echo site_url('form_pengangkatan')?>">Pengangkatan Status Karyawan</a></span></h4>
               <a href="<?php echo site_url('form_pengangkatan/form_pengangkatan_pdf/'.$id)?>" target="_blank"><button class="btn btn-primary pull-right"><i class="icon-print"> Cetak</i></button></a><br/>
               No : <?= get_form_no($id) ?>
               </div>
               <div class="grid-body no-border">
                 <?php
+                if($_num_rows>0){ 
                 $att = array('class' => 'form-no-horizontal-spacing', 'id' => '');
                 echo form_open('form_pengangkatan/add', $att);
-                if($_num_rows>0){
                   foreach($form_pengangkatan as $row):
                     $user_nik = get_nik($row->id);
                 ?>
@@ -527,4 +528,6 @@
 
 
 
-<?php endforeach;} ?>
+<?php endforeach;}else{
+  echo '<div class="col-md-12 text-center">Pengajuan Ini Telah Di Batalkan Oleh Pengaju</div>';
+  } ?>
