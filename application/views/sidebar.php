@@ -83,6 +83,7 @@
           <?php if(is_admin()):?><li > <a href="<?php echo site_url('form_template')?>">Form Template</a> </li><?php endif?>
           <?php if(is_admin()):?><li ><a href="<?php echo site_url('auth/list_group')?>"> Group</a> </li><?php endif?>
           <?php if(is_admin()):?><li ><a href="<?php echo site_url('inventory_type')?>"> Inventaris</a> </li><?php endif?>
+          <?php if(is_admin()):?><li ><a href="<?php echo site_url('notif_tambahan')?>"> Notifikasi Tambahan</a> </li><?php endif?>
           <?php if(is_admin()):?><li > <a href="<?php echo site_url('pengumuman')?>">Pengumuman</a> </li><?php endif?>
           <!--<?php if(is_admin()):?><li > <a href="<?php echo site_url('position')?>">Position</a> </li><?php endif?>-->
         </ul>

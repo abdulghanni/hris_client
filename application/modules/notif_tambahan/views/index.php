@@ -57,7 +57,7 @@
         </ul> -->
         <div class="page-title">
             <i class="icon-custom-left"></i>
-            <h3>List&nbsp;<span class="semi-bold">HRD</span></h3> 
+            <h3>List&nbsp;<span class="semi-bold">Notifikasi Tambahan</span></h3> 
         </div>
         <div class="row">
             <div class="col-md-12">
@@ -66,7 +66,7 @@
                         <br/>
                         <div class="row">
                             <div class="col-md-6">
-                                <h4><?php echo lang('search_of_subheading')?>&nbsp;<span class="semi-bold"><?php echo lang('user_subheading');?></span></h4>
+                                <h6>Berikut list karyawan yang mendapatkan notifikasi ketika HRD melakukan approval pada pengajuan</h6>
                             </div>
                         </div>
                             <div class="row">

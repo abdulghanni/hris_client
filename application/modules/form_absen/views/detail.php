@@ -22,7 +22,7 @@
             <div class="grid-body no-border">
             <?php 
             if($_num_rows>0){
-                $row_nik = get_nik($row->user_id);
+                $user_nik = get_nik($row->user_id);
                 ?>
               <form class="form-no-horizontal-spacing" id="formAbsen"> 
                 <div class="row column-seperation">
@@ -66,7 +66,7 @@
                         <label class="form-label text-right">Dept/Bagian</label>
                       </div>
                       <div class="col-md-9">
-                        <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama" value="<?php echo get_user_organization($row_nik)?>" disabled="disabled">
+                        <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama" value="<?php echo get_user_organization($user_nik)?>" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
