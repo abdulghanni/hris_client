@@ -1097,7 +1097,7 @@ class Auth extends MX_Controller {
             'name'  => 'bod',
             'id'    => 'bod',
             'type'  => 'text',
-            'value' => $this->form_validation->set_value('bod', $user->bod),
+            'value' => $this->form_validation->set_value('bod', date('d-m-Y',strtotime($user->bod))),
         );
 
         $this->data['first_name'] = array(
