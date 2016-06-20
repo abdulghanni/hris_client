@@ -288,6 +288,7 @@ class Form_pengangkatan extends MX_Controller {
                 }
             }elseif($type == 'hrd' && $approval_status == 1){
                 $this->send_user_notification($id, $user_pengangkatan_id);
+                $this->send_notif_tambahan($id, $user_pengangkatan_id);
             }else{
                 $email_body = "Status pengajuan Perpanjangan pengangkatan yang diajukan oleh ".get_name($user_pengangkatan_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_pengangkatan/detail/'.$id.'>Klik Disini</a><br />';
                 $form = 'pengangkatan';
@@ -363,6 +364,27 @@ class Form_pengangkatan extends MX_Controller {
                 'is_read' => 0,
             );
         $this->db->insert('email', $data4);
+    }
+
+    function send_notif_tambahan($id, $user_id)
+    {
+        $url = base_url().'form_pengangkatan/detail/'.$id;
+        $receiver = getValue('user_nik', 'users_notif_tambahan', array('form_type_id'=>'where/14'));
+        $subject_email = 'Pengajuan pengangkatan Karyawan';
+        $isi_email = 'HRD telah menyetujui pengangkatan untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />';
+        //Notif to karyawan
+        if(!empty($receiver)){
+            $data4 = array(
+                    'sender_id' => get_nik(sessId()),
+                    'receiver_id' => $receiver,
+                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                    'subject' => $subject_email,
+                    'email_body' => $isi_email,
+                    'is_read' => 0,
+                );
+            $this->db->insert('email', $data4);
+            if(!empty(getEmail($receiver)))$this->send_email(getEmail($receiver), $subject_email, $isi_email);
+        }
     }
     
     function detail_email($id)

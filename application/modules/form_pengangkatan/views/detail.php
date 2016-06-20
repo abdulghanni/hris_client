@@ -27,7 +27,7 @@
                 $att = array('class' => 'form-no-horizontal-spacing', 'id' => '');
                 echo form_open('form_pengangkatan/add', $att);
                   foreach($form_pengangkatan as $row):
-                    $user_nik = get_nik($row->id);
+                    $user_nik = get_nik($row->user_id);
                 ?>
                   <div class="row column-seperation">
                     <div class="col-md-5">
