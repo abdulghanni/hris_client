@@ -15,8 +15,19 @@
       <!-- END LOGO --> 
       <ul class="nav pull-right notifcation-center">    
         <li class="dropdown" id="header_task_bar"> 
-          <a href="<?php echo base_url()?>" class="dropdown-toggle active" data-toggle=""> <div class="iconset top-home"></div> </a> 
-        </li> 
+          <a data-toggle="dropdown" class="dropdown-toggle  pull-right " href="#" id="header_task_bar">
+            <div class="iconset top-home"></div>
+          </a>
+            <ul class="dropdown-menu  pull-right" role="menu" aria-labelledby="user-options">
+              <li><a href="<?php echo base_url()?>"><i class="icon-fixed-width icon-home"></i> Halaman Depan</a></li>
+              <li><a href="<?php echo site_url('auth/edit_user/'.$this->session->userdata('user_id'))?>"><i class="icon-fixed-width icon-pencil"></i> Edit Profile</a></li>
+              <li><a href="<?php echo site_url('email')?>"><i class="icon-fixed-width icon-envelope"></i> Mail  <span class="badge badge-important animated bounceIn"><?php echo $email_unread; ?></span></a></li>
+              <li><a href="<?php echo site_url('user_guide')?>"><i class="icon-fixed-width icon-question"></i> Panduan  </a></li>
+              
+              <li class="divider"></li>
+              <li><a href="<?php echo site_url('auth/logout')?>"><i class="icon-fixed-width icon-signout"></i> Sign Out</a></li>
+            </ul>
+          </li>
         <li class="dropdown" id="header_inbox_bar" > 
           <a href="<?php echo site_url('email')?>" class="dropdown-toggle" > <div class="iconset top-messages"></div>  <span class="badge" id="msgs-badge"><?php echo $email_unread; ?></span></a>
         </li>
