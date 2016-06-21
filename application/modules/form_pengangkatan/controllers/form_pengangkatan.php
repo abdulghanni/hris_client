@@ -285,6 +285,9 @@ class Form_pengangkatan extends MX_Controller {
                 }elseif($type == 'lv3'){
                     $this->approval->request('hrd', 'pengangkatan', $id, $user_pengangkatan_id, $this->detail_email($id));
                     if(!empty(getEmail($this->approval->approver('pengangkatan', $user_id))))$this->send_email(getEmail($this->approval->approver('pengangkatan', $user_id)), $subject_email_request, $isi_email_request);
+                } elseif(empty($user_app_lv3) && $type == 'lv2'){
+                    $this->approval->request('hrd', 'tidak_masuk', $id, $user_tidak_masuk_id, $this->detail_email($id));
+                    if(!empty(getEmail($this->approval->approver('tidak_masuk', $user_id))))$this->send_email(getEmail($this->approval->approver('tidak_masuk', $user_id)), $subject_email_request, $isi_email_request);
                 }
             }elseif($type == 'hrd' && $approval_status == 1){
                 $this->send_user_notification($id, $user_pengangkatan_id);

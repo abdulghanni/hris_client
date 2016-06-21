@@ -438,6 +438,9 @@ class Form_cuti extends MX_Controller {
                 }elseif($type == 'lv3'){
                     $this->approval->request('hrd', 'cuti', $id, $user_cuti_id, $this->detail_email($id));
                     if(!empty(getEmail($this->approval->approver('cuti', $user_id))))$this->send_email(getEmail($this->approval->approver('cuti', $user_id)), $subject_email_request, $isi_email_request);
+                }elseif(empty($user_app_lv3) && $type == 'lv2'){
+                    $this->approval->request('hrd', 'cuti', $id, $user_cuti_id, $this->detail_email($id));
+                    if(!empty(getEmail($this->approval->approver('cuti', $user_id))))$this->send_email(getEmail($this->approval->approver('cuti', $user_id)), $subject_email_request, $isi_email_request);
                 }
             }else{
                 $email_body = "Status pengajuan permohonan cuti yang diajukan oleh ".get_name($user_cuti_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_cuti/detail/'.$id.'>Klik Disini</a><br />';

@@ -455,6 +455,9 @@ class form_absen extends MX_Controller {
                 elseif($type == 'lv3'):
                     if(!empty(getEmail($this->approval->approver('absen', $user_id))))$this->send_email(getEmail($this->approval->approver('absen', $user_id)),  $subject_email_request , $isi_email_request);
                     $this->approval->request('hrd', 'absen', $id, $user_absen_id, $this->detail_email($id));
+                elseif(empty($user_app_lv3) && $type == 'lv2'):
+                    $this->approval->request('hrd', 'absen', $id, $user_absen_id, $this->detail_email($id));
+                    if(!empty(getEmail($this->approval->approver('absen', $user_id))))$this->send_email(getEmail($this->approval->approver('absen', $user_id)), $subject_email_request, $isi_email_request);
                 endif;
             }else{
                 $email_body = "Status pengajuan permohonan absen yang diajukan oleh ".get_name($user_absen_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_absen/detail/'.$id.'>Klik Disini</a><br />';

@@ -32,8 +32,6 @@ class form_tidak_masuk extends MX_Controller {
         }
         else
         {
-            $this->data['form_id'] = getValue('form_id', 'form_id', array('form_name'=>'like/absen'));
-            $this->data['form'] = 'absen';
             $this->data['form_name'] = $this->form_name;
             $this->data['form_id'] = getValue('form_id', 'form_id', array('form_name'=>'like/tidak_masuk'));
             $this->data['form'] = $this->form_name;
@@ -325,6 +323,9 @@ class form_tidak_masuk extends MX_Controller {
             elseif($type == 'lv3'):
                 if(!empty(getEmail($this->approval->approver('tidak', $user_id))))$this->send_email(getEmail($this->approval->approver('tidak', $user_id)), $subject_email_request, $isi_email_request);
                 $this->approval->request('hrd', 'tidak_masuk', $id, $user_tidak_masuk_id, $this->detail_email($id));
+            elseif(empty($user_app_lv3) && $type == 'lv2'):
+                    $this->approval->request('hrd', 'tidak_masuk', $id, $user_tidak_masuk_id, $this->detail_email($id));
+                    if(!empty(getEmail($this->approval->approver('tidak_masuk', $user_id))))$this->send_email(getEmail($this->approval->approver('tidak_masuk', $user_id)), $subject_email_request, $isi_email_request);
             endif;
         }else{
             $potong_cuti = $this->input->post('potong_cuti');
