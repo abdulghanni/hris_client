@@ -588,4 +588,33 @@ class Inventory extends MX_Controller {
         $data['item'] = GetAllSelect('inventory','id,title', array('type_inventory_id'=>'where/'.$group_id))->result();
         $this->load->view('inventory/item', $data);
     }
+
+    function cetak($user_id)
+    {
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+        elseif ($user_id != $this->session->userdata('user_id') && !$this->ion_auth->is_admin()) //remove this elseif if you want to enable this for non-admins
+        {
+            //redirect them to the home page because they must be an administrator to view this
+            //return show_error('You must be an administrator to view this page.');
+            return show_error('You can not view this page.');
+        }
+        else
+        {   
+            $this->data['users_inventory'] = GetJoin("users_inventory", "inventory", "users_inventory.inventory_id = inventory.id",  "left", 'users_inventory.id as id, users_inventory.user_id, users_inventory.inventory_id, users_inventory.note, inventory.title as title', array('users_inventory.user_id'=>'where/'.$user_id,'users_inventory.is_deleted'=>'where/0'));
+            $this->data['user_nik'] = get_nik($user_id);
+            $title = $this->data['title'] = 'Inventory-'.get_name($user_id);
+
+            $this->load->library('mpdf60/mpdf');
+            $html = $this->load->view('pdf', $this->data, true); 
+            $mpdf = new mPDF();
+            $mpdf = new mPDF('A4');
+            $mpdf->WriteHTML($html);
+            $mpdf->Output($user_id.'-'.$title.'.pdf', 'I');
+        }
+    }
+
 }   

@@ -138,7 +138,7 @@
 
                      <div class="row form-row">
                         <div class="col-md-3">
-                          <label class="form-label text-right"><?php echo 'Atasan Tidak Langsung' ?></label>
+                          <label class="form-label text-right"><?php echo 'Atasan Tidak Langsung (Optional)' ?></label>
                         </div>
                         <div class="col-md-9">
                           <select name="atasan2" id="atasan2" class="select2" style="width:100%">
@@ -149,7 +149,7 @@
 
                       <div class="row form-row">
                         <div class="col-md-3">
-                          <label class="form-label text-right"><?php echo 'Atasan Lainnya' ?></label>
+                          <label class="form-label text-right"><?php echo 'Atasan Lainnya (Optional)' ?></label>
                         </div>
                         <div class="col-md-9">
                           <select name="atasan3" id="atasan3" class="select2" style="width:100%">

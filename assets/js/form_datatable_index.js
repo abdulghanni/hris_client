@@ -6,6 +6,10 @@ $(document).ready(function() {
     //var opt_id = $('#opt option:selected').val();
     var opt_id = $('#status').val();
 	 $("#opt").change(function() {
+        if(opt_id == ''){
+            opt_id = 1;
+        }
+
         var id = $(this).val();
         //alert(opt_id);
         if(opt_id!=id){
