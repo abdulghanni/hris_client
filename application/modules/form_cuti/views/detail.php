@@ -260,8 +260,12 @@
                           <?php if(!empty($user->user_app_lv2)) : ?>
                           <p class="wf-approve-sp">
                             <?php
-                            if(!empty($user->user_app_lv2) && $user->is_app_lv2 == 0 && get_nik($sess_id) == $user->user_app_lv2){?>
-                              <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitcutiModalLv2"><i class="icon-ok"></i>Submit</div>
+                            if(!empty($user->user_app_lv2) && $user->is_app_lv2 == 0 && get_nik($sess_id) == $user->user_app_lv2){
+                              if($user->is_app_lv1 == 1):?>
+                                <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitcutiModalLv2"><i class="icon-ok"></i>Submit</div>
+                              <?php else:
+                                echo '<label>Menunggu approval dari atasan langsung</label>';
+                              endif;?>
                               <span class="small"></span>
                               <span class="semi-bold"></span><br/>
                               <span class="small"></span><br/>
@@ -289,8 +293,14 @@
                         <?php if(!empty($user->user_app_lv3)) : ?>
                           <p class="wf-approve-sp">
                             <?php
-                            if(!empty($user->user_app_lv3) && $user->is_app_lv3 == 0 && get_nik($sess_id) == $user->user_app_lv3){?>
+                            $cek_lv2 = (empty($user->user_app_lv2)) ? 0 : 1;
+                            if(!empty($user->user_app_lv3) && $user->is_app_lv3 == 0 && get_nik($sess_id) == $user->user_app_lv3){
+                              if($user->is_app_lv1 == 1 && $user->is_app_lv2 == $cek_lv2):?>
                               <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitcutiModalLv3"><i class="icon-ok"></i>Submit</div>
+                              <?php else:
+                              echo '<label>Menunggu approval dari atasan sebelumnya</label>';
+                              endif;
+                              ?>
                               <span class="small"></span>
                               <span class="semi-bold"></span><br/>
                               <span class="small"></span><br/>
