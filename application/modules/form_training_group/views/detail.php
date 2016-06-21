@@ -834,6 +834,6 @@
 </div>
 <!--end approve modal Lv2--> 
 <?php endforeach; ?>
-<?php else{
+<?php }else{
   echo '<div class="col-md-12 text-center">Pengajuan Ini Telah Di Batalkan Oleh Pengaju</div>';
   } ?>
