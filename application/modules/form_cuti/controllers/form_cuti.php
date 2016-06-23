@@ -465,28 +465,28 @@ class Form_cuti extends MX_Controller {
                         if(!empty(getEmail($receiver_lv1)))$this->send_email(getEmail($receiver_lv1), $subject_email, $email_body);
                     break;
 
-                    case 'hrd':
-                        $receiver_lv3 = getValue('user_app_lv3', 'users_cuti', array('id'=>'where/'.$id));
-                        if(!empty($receiver_lv3)):
-                            $this->approval->not_approve('cuti', $id, $receiver_lv3, $approval_status ,$this->detail_email($id));
-                            if(!empty(getEmail($receiver_lv3)))$this->send_email(getEmail($receiver_lv3), $subject_email, $email_body);
-                        endif;
-                        $receiver_lv2 = getValue('user_app_lv2', 'users_cuti', array('id'=>'where/'.$id));
-                        if(!empty($receiver_lv2)):
-                            $this->approval->not_approve('cuti', $id, $receiver_lv2, $approval_status ,$this->detail_email($id));
-                            if(!empty(getEmail($receiver_lv2)))$this->send_email(getEmail($receiver_lv2), $subject_email, $email_body);
-                        endif;
-                        $receiver_lv1 = getValue('user_app_lv1', 'users_cuti', array('id'=>'where/'.$id));
-                        if(!empty($receiver_lv1)):
-                            $this->approval->not_approve('cuti', $id, $receiver_lv1, $approval_status ,$this->detail_email($id));
-                        if(!empty(getEmail($receiver_lv1)))$this->send_email(getEmail($receiver_lv1), $subject_email, $email_body);
-                        endif;
-                    break;
+                    // case 'hrd':
+                    //     $receiver_lv3 = getValue('user_app_lv3', 'users_cuti', array('id'=>'where/'.$id));
+                    //     if(!empty($receiver_lv3)):
+                    //         $this->approval->not_approve('cuti', $id, $receiver_lv3, $approval_status ,$this->detail_email($id));
+                    //         if(!empty(getEmail($receiver_lv3)))$this->send_email(getEmail($receiver_lv3), $subject_email, $email_body);
+                    //     endif;
+                    //     $receiver_lv2 = getValue('user_app_lv2', 'users_cuti', array('id'=>'where/'.$id));
+                    //     if(!empty($receiver_lv2)):
+                    //         $this->approval->not_approve('cuti', $id, $receiver_lv2, $approval_status ,$this->detail_email($id));
+                    //         if(!empty(getEmail($receiver_lv2)))$this->send_email(getEmail($receiver_lv2), $subject_email, $email_body);
+                    //     endif;
+                    //     $receiver_lv1 = getValue('user_app_lv1', 'users_cuti', array('id'=>'where/'.$id));
+                    //     if(!empty($receiver_lv1)):
+                    //         $this->approval->not_approve('cuti', $id, $receiver_lv1, $approval_status ,$this->detail_email($id));
+                    //     if(!empty(getEmail($receiver_lv1)))$this->send_email(getEmail($receiver_lv1), $subject_email, $email_body);
+                    //     endif;
+                    // break;
                 }
             }
 
             if($type == 'hrd' && $approval_status == 1){
-                $this->send_notif_tambahan($id);
+                //$this->send_notif_tambahan($id);
             }
             
             $this->cek_all_approval($id);
