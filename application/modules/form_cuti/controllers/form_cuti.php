@@ -2,7 +2,7 @@
 
 class Form_cuti extends MX_Controller {
 
-	public $data;
+    public $data;
     var $form_name = 'cuti';
 
     function __construct()
@@ -665,9 +665,12 @@ class Form_cuti extends MX_Controller {
         }
 
         $user_id = get_nik($user_id);
-        $leaveid = substr($leave_request_id[0]['IDLEAVEREQUEST'],2)+1;
+        //$leaveid = substr($leave_request_id[0]['IDLEAVEREQUEST'],2)+1;
+        $leaveid = $this->getLeaveNumberSequence();
+        $NEXTREC = $leaveid + 1;
         $leaveid = sprintf('%06d', $leaveid);
         $IDLEAVEREQUEST = 'CT'.$leaveid;
+        print_mz($IDLEAVEREQUEST);
         $RECVERSION = $leave_request_id[0]['RECVERSION']+1;
         $RECID = $leave_request_id[0]['RECID']+1;
         $char = array('"', '<', '>', '#', '%', '{', '}', '|', '^', '~','(',')', '[', ']', '`',',', ' ');
@@ -709,6 +712,7 @@ class Form_cuti extends MX_Controller {
 
         if(isset($result->status) && $result->status == 'success')  
         {  
+            $this->update_leave_number_sequence($NEXTREC);
             return true;
         }     
         else  
@@ -726,7 +730,9 @@ class Form_cuti extends MX_Controller {
         }
 
         $leave_entitlement_id = $this->get_last_leave_entitlement_id();
-        $leaveid = substr($leave_entitlement_id[0]['IDLEAVEENTITLEMENT'],5)+1;
+        //$leaveid = substr($leave_entitlement_id[0]['IDLEAVEENTITLEMENT'],5)+1;
+        $leaveid = $this->getEntitlementNumberSequence();
+        $NEXTREC = $leaveid +1;
         $leaveid = sprintf('%06d', $leaveid);
         $IDLEAVEENTITLEMENT = 'LVEN_'.$leaveid;
         $RECVERSION = $leave_entitlement_id[0]['RECVERSION']+1;
@@ -785,6 +791,7 @@ class Form_cuti extends MX_Controller {
         if(isset($result->status) && $result->status == 'success')  
         {  
             //print_mz($this->rest->debug());
+            $this->update_entitlement_number_sequence($NEXTREC);
             return true;
         }     
         else  
@@ -793,6 +800,50 @@ class Form_cuti extends MX_Controller {
             return false;
         }
 
+    }
+
+    function update_leave_number_sequence($NEXTREC){
+        $method = 'post';
+        $params =  array();
+        $uri = get_api_key().'users/update_leave_number_sequence/'.
+               'NEXTREC/'.$NEXTREC;
+
+        $this->rest->format('application/json');
+
+        $result = $this->rest->{$method}($uri, $params);
+
+        if(isset($result->status) && $result->status == 'success')  
+        {  
+            //print_mz($this->rest->debug());
+            return true;
+        }     
+        else  
+        {  
+            //print_mz($this->rest->debug());
+            return false;
+        }
+    }
+
+    function update_entitlement_number_sequence($NEXTREC){
+        $method = 'post';
+        $params =  array();
+        $uri = get_api_key().'users/update_entitlement_number_sequence/'.
+               'NEXTREC/'.$NEXTREC;
+
+        $this->rest->format('application/json');
+
+        $result = $this->rest->{$method}($uri, $params);
+
+        if(isset($result->status) && $result->status == 'success')  
+        {  
+            //print_mz($this->rest->debug());
+            return true;
+        }     
+        else  
+        {  
+            //print_mz($this->rest->debug());
+            return false;
+        }
     }
 
     function get_sisa_cuti($user_nik)
@@ -841,6 +892,44 @@ class Form_cuti extends MX_Controller {
         }
 
         $url = get_api_key().'users/last_leave_request_id/format/json';
+        $headers = get_headers($url);
+        $response = substr($headers[0], 9, 3);
+        if ($response != "404") {
+            $getleave_request_id = file_get_contents($url);
+            $leave_request_id = json_decode($getleave_request_id, true);
+            return $leave_request_id;
+        } else {
+            return '';
+        }
+    }
+
+    function getLeaveNumberSequence()
+    {
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+        $url = get_api_key().'users/last_leave_number_sequence/format/json';
+        $headers = get_headers($url);
+        $response = substr($headers[0], 9, 3);
+        if ($response != "404") {
+            $getleave_request_id = file_get_contents($url);
+            $leave_request_id = json_decode($getleave_request_id, true);
+            return $leave_request_id;
+        } else {
+            return '';
+        }
+    }
+
+    function getEntitlementNumberSequence()
+    {
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+        $url = get_api_key().'users/last_entitlement_number_sequence/format/json';
         $headers = get_headers($url);
         $response = substr($headers[0], 9, 3);
         if ($response != "404") {
