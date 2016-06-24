@@ -251,7 +251,11 @@ class Email extends MX_Controller {
 
     public function delete(){
             $ids = ( explode( ',', $this->input->get_post('ids') ));
-            $data = array('is_deleted' => 1);
+            $data = array(
+                'is_deleted' => 1,
+                'deleted_by'=> sessId(),
+                'deleted_on'=>dateNow(),
+                );
             $this->email_model->delete($ids, $data);
         }
 
