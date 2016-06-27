@@ -369,7 +369,33 @@ class Form_recruitment extends MX_Controller {
                     break;
                 }
             }
+
+            if($type == 'hrd' && $approval_status == 1){
+                $this->send_notif_tambahan($id);
+            }
                redirect('form_recruitment/approval/'.$id, 'refresh');
+        }
+    }
+
+    function send_notif_tambahan($id)
+    {
+        $url = base_url().'form_recruitment/detail/'.$id;
+        $user_id = getValue('user_id', 'users_recruitment', array('id'=>'where/'.$id));
+        $receiver = getValue('user_nik', 'users_notif_tambahan', array('form_type_id'=>'where/9'));
+        $subject_email = 'Permintaan SDM Baru';
+        $isi_email = 'HRD telah menyetujui pengajuan Permintaan SDM Baru oleh '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />';
+        //Notif to karyawan
+        if(!empty($receiver)){
+            $data4 = array(
+                    'sender_id' => get_nik(sessId()),
+                    'receiver_id' => $receiver,
+                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                    'subject' => $subject_email,
+                    'email_body' => $isi_email,
+                    'is_read' => 0,
+                );
+            $this->db->insert('email', $data4);
+            if(!empty(getEmail($receiver)))$this->send_email(getEmail($receiver), $subject_email, $isi_email);
         }
     }
 

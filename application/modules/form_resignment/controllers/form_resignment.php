@@ -380,9 +380,36 @@ class Form_resignment extends MX_Controller {
                     $this->approval->request('hrd', 'resignment', $id, $user_resignment_id, $this->detail_email($id));
                  endif;
             }
+
+            if($type == 'hrd' && $approval_status == 1){
+                $this->send_notif_tambahan($id);
+            }
             redirect('form_resignment/detail/'.$id, 'refresh');
         }
     }
+
+    function send_notif_tambahan($id)
+    {
+        $url = base_url().'form_resignment/detail/'.$id;
+        $user_id = getValue('user_id', 'users_resignment', array('id'=>'where/'.$id));
+        $receiver = getValue('user_nik', 'users_notif_tambahan', array('form_type_id'=>'where/10'));
+        $subject_email = 'Pengunduran Diri';
+        $isi_email = 'HRD telah menyetujui pengajuan Pengunduran Diri oleh '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />';
+        //Notif to karyawan
+        if(!empty($receiver)){
+            $data4 = array(
+                    'sender_id' => get_nik(sessId()),
+                    'receiver_id' => $receiver,
+                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                    'subject' => $subject_email,
+                    'email_body' => $isi_email,
+                    'is_read' => 0,
+                );
+            $this->db->insert('email', $data4);
+            if(!empty(getEmail($receiver)))$this->send_email(getEmail($receiver), $subject_email, $isi_email);
+        }
+    }
+
 
     function kirim_undangan($id)
     {
