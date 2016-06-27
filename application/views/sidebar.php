@@ -52,7 +52,7 @@
           <li > <a href="<?php echo site_url('form_training_group')?>">Pelatihan</a> </li>
           <li > <a href="<?php echo site_url('form_resignment')?>">Pengunduran Diri</a> </li>
           <li > <a href="<?php echo site_url('form_phk')?>">PHK</a> </li>
-          <?php if(is_spv($nik)||is_admin()||is_admin_bagian()):?><li > <a href="<?php echo site_url('form_exit')?>">Rekomendasi Karyawan Keluar</a> </li>  <?php endif?>
+          <li > <a href="<?php echo site_url('form_exit')?>">Rekomendasi Karyawan Keluar</a> </li>  
           <li > <a href="<?php echo site_url('form_template')?>">Form Template</a> </li>        
            </ul>
       </li>
