@@ -11,19 +11,19 @@ class form_tidak_masuk extends MX_Controller {
         $this->load->library('form_validation');
         $this->load->library('rest');
         $this->load->library('approval');
-        
+
         $this->load->database();
         $this->load->model('form_tidak_masuk/form_tidak_masuk_model','main');
-        
+
         $this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
 
         $this->lang->load('auth');
         $this->load->helper('language');
-        
+
     }
 
     function index($ftitle = "fn:",$sort_by = "id", $sort_order = "asc", $offset = 0)
-    {   
+    {
         $this->data['title'] = 'Form Tidak Masuk';
         if (!$this->ion_auth->logged_in())
         {
@@ -48,8 +48,8 @@ class form_tidak_masuk extends MX_Controller {
         $no = $_POST['start'];
         foreach ($list as $r) {
             //AKSI
-           $detail = base_url()."form_$this->form_name/detail/".$r->id; 
-           $print = base_url()."form_$this->form_name/form_$this->form_name"."_pdf/".$r->id; 
+           $detail = base_url()."form_$this->form_name/detail/".$r->id;
+           $print = base_url()."form_$this->form_name/form_$this->form_name"."_pdf/".$r->id;
            $delete = (($r->is_app_lv1 == 0 && $r->created_by == sessId()) || is_admin()) ? '<button onclick="showModal('.$r->id.')" class="btn btn-sm btn-danger" type="button" title="Batalkan Pengajuan"><i class="icon-remove"></i></button>' : '';
 
             //APPROVAL
@@ -68,7 +68,7 @@ class form_tidak_masuk extends MX_Controller {
             }else{
                 $status3 = "<i class='icon-minus' style='color:black;' title = 'Tidak Butuh Approval Atasan Lainnya'></i>";
             }
-            
+
             $statushrd = ($r->is_app_hrd == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($r->is_app_hrd == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($r->is_app_hrd == 3) ? "<i class='icon-exclamation-sign' style='color:orange;' title = 'Pending'></i>" : "<i class='icon-question' title = 'Menunggu Status Approval'></i>"));
 
             $no++;
@@ -118,7 +118,7 @@ class form_tidak_masuk extends MX_Controller {
             $this->data['user_folder'] = getValue("user_id", "users_tidak_masuk", array('id'=>'where.'.$id));
             $form_tidak_masuk = $this->data['tidak_masuk'] = $this->main->detail($id)->row();
             $this->data['_num_rows'] = $this->main->detail($id)->num_rows();
-            
+
             $alasan = getValue('alasan_tidak_masuk_id', 'users_tidak_masuk', array('id'=>'where/'.$id));
             $this->data['alasan'] = getValue('title', 'alasan_tidak_masuk', array('id'=>'where/'.$alasan));
             $this->data['alasan_cuti'] = $this->get_type_cuti();
@@ -150,7 +150,7 @@ class form_tidak_masuk extends MX_Controller {
         }
         else
         {
-            $this->data['sess_id'] = $sess_id = $this->session->userdata('user_id'); 
+            $this->data['sess_id'] = $sess_id = $this->session->userdata('user_id');
             $sess_nik = $this->data['sess_nik'] = get_nik($sess_id);
             $this->data['sisa_cuti'] = $this->get_sisa_cuti($sess_nik);
 			$form_tidak_masuk = $this->data['form_tidak_masuk'] = getAll('users_tidak_masuk');
@@ -159,7 +159,7 @@ class form_tidak_masuk extends MX_Controller {
 
             $this->data['alasan'] = getAll('alasan_tidak_masuk', array('is_deleted'=>'where/0'));
             $this->data['all_users'] = getAll('users', array('active'=>'where/1', 'username'=>'order/asc'), array('!=id'=>'1'));
-            
+
             $this->_render_page('form_tidak_masuk/input', $this->data);
         }
     }
@@ -240,7 +240,7 @@ class form_tidak_masuk extends MX_Controller {
                  endif;
 
                   redirect('form_tidak_masuk', 'refresh');
-                 //echo json_encode(array('st' =>1));     
+                 //echo json_encode(array('st' =>1));
                 }
             }
         }
@@ -263,7 +263,7 @@ class form_tidak_masuk extends MX_Controller {
           'upload_path'     => './uploads/izin/'.$user_folder,
           'allowed_types'   => '*',
           'overwrite'       => TRUE,
-        );    
+        );
         $this->load->library('upload', $config);
         if (!$this->upload->do_upload('attachment')){
             //print_r($this->upload->display_errors());
@@ -286,16 +286,16 @@ class form_tidak_masuk extends MX_Controller {
         $user_id = get_nik($this->session->userdata('user_id'));
         $date_now = date('Y-m-d');
 
-        
+
         if($type !== 'hrd'){
             $data = array(
-            'is_app_'.$type => 1, 
+            'is_app_'.$type => 1,
             'app_status_id_'.$type => $this->input->post('app_status_'.$type),
-            'user_app_'.$type => $user_id, 
+            'user_app_'.$type => $user_id,
             'date_app_'.$type => $date_now,
             'note_'.$type => $this->input->post('note_'.$type)
             );
-            
+
             $this->main->update($id,$data);
             $user_tidak_masuk_id = getValue('user_id', 'users_tidak_masuk', array('id'=>'where/'.$id));
             $approval_status = $this->input->post('app_status_'.$type);
@@ -306,7 +306,7 @@ class form_tidak_masuk extends MX_Controller {
             $isi_email = 'Status pengajuan keterangan tidak Masuk anda disetujui oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_tidak_masuk/detail/'.$id.'>Klik Disini</a><br />';
             $isi_email_request = get_name($user_tidak_masuk_id).' mengajukan keterangan tidak Masuk, untuk melihat detail silakan <a href='.base_url().'form_tidak_masuk/detail/'.$id.'>Klik Disini</a><br />';
             if(!empty(getEmail($user_tidak_masuk_id)))$this->send_email(getEmail($user_tidak_masuk_id), $subject_email, $isi_email);
-                
+
             $lv = substr($type, -1)+1;
             $lv_app= 'lv'.$lv;
             $user_app = ($lv<4) ? getValue('user_app_'.$lv_app, 'users_tidak_masuk', array('id'=>'where/'.$id)) : 0;
@@ -334,8 +334,8 @@ class form_tidak_masuk extends MX_Controller {
             'potong_cuti'           => $potong_cuti,
             'type_cuti_id'           => $tipe_cuti,
             'is_app_'.$type => 1,
-            'app_status_id_'.$type => $this->input->post('app_status_'.$type), 
-            'user_app_'.$type => $user_id, 
+            'app_status_id_'.$type => $this->input->post('app_status_'.$type),
+            'user_app_'.$type => $user_id,
             'date_app_'.$type => $date_now,
             'note_'.$type => $this->input->post('note_'.$type)
             );
@@ -348,7 +348,7 @@ class form_tidak_masuk extends MX_Controller {
 
             $subject_email = get_form_no($id).'-['.$approval_status_mail.']Status Pengajuan Izin Tidak Masuk dari HRD';
             $isi_email = 'Status pengajuan tidak_masuk anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_tidak_masuk/detail/'.$id.'>Klik Disini</a><br />';
-           
+
             $user_nik = get_nik($user_tidak_masuk_id);
             if($potong_cuti == 1){
                 if($this->input->post('insert') == 1)$this->insert_sisa_cuti($user_nik, $tipe_cuti);
@@ -394,11 +394,11 @@ class form_tidak_masuk extends MX_Controller {
             //redirect them to the login page
             redirect('auth/login', 'refresh');
         }
-        
+
         $user_id= getValue('user_id', 'users_tidak_masuk', array('id'=>'where/'.$id));
         $this->data['user_nik'] = $sess_nik = get_nik($user_id);
         $this->data['sess_id'] = $this->session->userdata('user_id');
-        
+
         $form_tidak_masuk = $this->data['form_tidak_masuk'] = $this->main->detail($id)->result();
         $this->data['_num_rows'] = $this->main->detail($id)->num_rows();
 
@@ -408,7 +408,7 @@ class form_tidak_masuk extends MX_Controller {
         $this->data['id'] = $id;
         $title = $this->data['title'] = 'Form Keterangan Tidak Masuk-'.get_name($user_id);
         $this->load->library('mpdf60/mpdf');
-        $html = $this->load->view('tidak_masuk_pdf', $this->data, true); 
+        $html = $this->load->view('tidak_masuk_pdf', $this->data, true);
         $mpdf = new mPDF();
         $mpdf = new mPDF('A4');
         $mpdf->WriteHTML($html);
@@ -416,7 +416,7 @@ class form_tidak_masuk extends MX_Controller {
     }
 
     function get_sisa_cuti($user_nik)
-    {   
+    {
         if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page
@@ -473,13 +473,13 @@ class form_tidak_masuk extends MX_Controller {
     }
 
     function update_sisa_cuti($recid, $sisa_cuti)
-    { 
+    {
         if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page
             redirect('auth/login', 'refresh');
         }
-     
+
         $method = 'post';
         $params =  array();
         $uri = get_api_key().'users/sisa_cuti/RECID/'.$recid.'/ENTITLEMENT/'.$sisa_cuti;
@@ -489,13 +489,51 @@ class form_tidak_masuk extends MX_Controller {
         $result = $this->rest->{$method}($uri, $params);
 
 
-        if(isset($result->status) && $result->status == 'success')  
-        {  
+        if(isset($result->status) && $result->status == 'success')
+        {
             return TRUE;
-        }     
-        else  
-        {  
+        }
+        else
+        {
             return FALSE;
+        }
+    }
+
+		function getLeaveNumberSequence()
+    {
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+        $url = get_api_key().'users/last_leave_number_sequence/format/json';
+        $headers = get_headers($url);
+        $response = substr($headers[0], 9, 3);
+        if ($response != "404") {
+            $getleave_request_id = file_get_contents($url);
+            $leave_request_id = json_decode($getleave_request_id, true);
+            return $leave_request_id;
+        } else {
+            return '';
+        }
+    }
+
+		function getEntitlementNumberSequence()
+    {
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+        $url = get_api_key().'users/last_entitlement_number_sequence/format/json';
+        $headers = get_headers($url);
+        $response = substr($headers[0], 9, 3);
+        if ($response != "404") {
+            $getleave_request_id = file_get_contents($url);
+            $leave_request_id = json_decode($getleave_request_id, true);
+            return $leave_request_id;
+        } else {
+            return '';
         }
     }
 
@@ -507,7 +545,9 @@ class form_tidak_masuk extends MX_Controller {
             redirect('auth/login', 'refresh');
         }
         $sess_nik = get_nik($this->session->userdata('user_id'));
-        $leaveid = substr($leave_request_id[0]['IDLEAVEREQUEST'],2)+1;
+        // $leaveid = substr($leave_request_id[0]['IDLEAVEREQUEST'],2)+1;
+				$leaveid = $this->getLeaveNumberSequence();
+        $NEXTREC = $leaveid + 1;
         $leaveid = sprintf('%06d', $leaveid);
         $IDLEAVEREQUEST = 'CT'.$leaveid;
         $RECVERSION = $leave_request_id[0]['RECVERSION']+1;
@@ -548,21 +588,44 @@ class form_tidak_masuk extends MX_Controller {
 
         $result = $this->rest->{$method}($uri, $params);
 
-        if(isset($result->status) && $result->status == 'success')  
-        {  
+        if(isset($result->status) && $result->status == 'success')
+        {
            //return $this->rest->debug();
+					 $this->update_leave_number_sequence($NEXTREC);
             return true;
-        }     
-        else  
-        {  
+        }
+        else
+        {
             //return $this->rest->debug();
             return false;
             //return $this->rest->debug();
         }
     }
 
+		function update_leave_number_sequence($NEXTREC){
+        $method = 'post';
+        $params =  array();
+        $uri = get_api_key().'users/update_leave_number_sequence/'.
+               'NEXTREC/'.$NEXTREC;
+
+        $this->rest->format('application/json');
+
+        $result = $this->rest->{$method}($uri, $params);
+
+        if(isset($result->status) && $result->status == 'success')
+        {
+            //print_mz($this->rest->debug());
+            return true;
+        }
+        else
+        {
+            //print_mz($this->rest->debug());
+            return false;
+        }
+    }
+
     function insert_sisa_cuti($user_nik, $alasan_cuti)
-    {   
+    {
         if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page
@@ -570,8 +633,10 @@ class form_tidak_masuk extends MX_Controller {
         }
 
         $leave_entitlement_id = $this->get_last_leave_entitlement_id();
-        $leaveid = substr($leave_entitlement_id[0]['IDLEAVEENTITLEMENT'],5)+1;
-        $leaveid = sprintf('%06d', $leaveid);
+        // $leaveid = substr($leave_entitlement_id[0]['IDLEAVEENTITLEMENT'],5)+1;
+				$leaveid = $this->getEntitlementNumberSequence();
+				$NEXTREC = $leaveid +1;
+				$leaveid = sprintf('%06d', $leaveid);
         $IDLEAVEENTITLEMENT = 'LVEN_'.$leaveid;
         $RECVERSION = $leave_entitlement_id[0]['RECVERSION']+1;
         $RECID = $leave_entitlement_id[0]['RECID']+1;
@@ -626,17 +691,40 @@ class form_tidak_masuk extends MX_Controller {
 
         $result = $this->rest->{$method}($uri, $params);
 
-        if(isset($result->status) && $result->status == 'success')  
-        {  
+        if(isset($result->status) && $result->status == 'success')
+        {
             //print_mz($this->rest->debug());
+						$this->update_entitlement_number_sequence($NEXTREC);
             return true;
-        }     
-        else  
-        {  
+        }
+        else
+        {
             //print_mz($this->rest->debug());
             return false;
         }
 
+    }
+
+		function update_entitlement_number_sequence($NEXTREC){
+        $method = 'post';
+        $params =  array();
+        $uri = get_api_key().'users/update_entitlement_number_sequence/'.
+               'NEXTREC/'.$NEXTREC;
+
+        $this->rest->format('application/json');
+
+        $result = $this->rest->{$method}($uri, $params);
+
+        if(isset($result->status) && $result->status == 'success')
+        {
+            //print_mz($this->rest->debug());
+            return true;
+        }
+        else
+        {
+            //print_mz($this->rest->debug());
+            return false;
+        }
     }
 
     function insert_attendancedata($id)
@@ -680,15 +768,15 @@ class form_tidak_masuk extends MX_Controller {
 
             $result = $this->rest->{$method}($uri, $params);
 
-            if(isset($result->status) && $result->status == 'success')  
-            {  
+            if(isset($result->status) && $result->status == 'success')
+            {
                 //echo "<pre>";
                 //print_r($this->rest->debug());
                 //echo "</pre>";
                 return true;
-           }     
-            else  
-           {  
+           }
+            else
+           {
                  //echo "<pre>";
                 ///print_r($this->rest->debug());
                 //echo "</pre>";
@@ -781,7 +869,7 @@ class form_tidak_masuk extends MX_Controller {
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                     $this->template->add_css('plugins/select2/select2.css');
                     $this->template->add_css('datatables.min.css');
-                    
+
                 }
                 elseif(in_array($view, array('form_tidak_masuk/input',)))
                 {
@@ -803,12 +891,12 @@ class form_tidak_masuk extends MX_Controller {
                     $this->template->add_js('bootstrap-datepicker.js');
                     $this->template->add_js('emp_dropdown.js');
                     $this->template->add_js('form_tidak_masuk_input.js');
-                    
+
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                     $this->template->add_css('plugins/select2/select2.css');
                     $this->template->add_css('datepicker.css');
-                    
-                     
+
+
                 }elseif(in_array($view, array('form_tidak_masuk/detail')))
                 {
                     $this->template->set_layout('default');
@@ -821,11 +909,11 @@ class form_tidak_masuk extends MX_Controller {
                     $this->template->add_js('purl.js');
                     $this->template->add_js('form_tidak_masuk.js');
 
-                    
+
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                     $this->template->add_css('plugins/select2/select2.css');
                     $this->template->add_css('approval_img.css');
-                    
+
                 }
 
 

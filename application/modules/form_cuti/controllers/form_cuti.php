@@ -12,16 +12,16 @@ class Form_cuti extends MX_Controller {
         $this->load->library('form_validation');
         $this->load->library('rest');
         $this->load->library('approval');
-        
+
         $this->load->database();
         $this->load->model('form_cuti/form_cuti_model','cuti');
-        
+
         $this->lang->load('auth');
         $this->load->helper('language');
     }
 
     function index()
-    {  
+    {
         $this->data['title'] = ucfirst($this->form_name);
         $this->data['form_name'] = $this->form_name;
         $this->data['form'] = $this->form_name;
@@ -43,8 +43,8 @@ class Form_cuti extends MX_Controller {
         $no = $_POST['start'];
         foreach ($list as $r) {
             //AKSI
-           $detail = base_url()."form_".$this->form_name."/detail/".$r->id; 
-           $print = base_url()."form_".$this->form_name."/form_".$this->form_name."_pdf/".$r->id; 
+           $detail = base_url()."form_".$this->form_name."/detail/".$r->id;
+           $print = base_url()."form_".$this->form_name."/form_".$this->form_name."_pdf/".$r->id;
            $delete = (($r->approval_status_id_lv1 == 0 && $r->created_by == sessId()) || is_admin()) ? '<button onclick="showModal('.$r->id.')" class="btn btn-sm btn-danger" type="button" title="Batalkan Pengajuan"><i class="icon-remove"></i></button>' : '';
 
             //APPROVAL
@@ -63,7 +63,7 @@ class Form_cuti extends MX_Controller {
             }else{
                 $status3 = "<i class='icon-minus' style='color:black;' title = 'Tidak Butuh Approval Atasan Lainnya'></i>";
             }
-            
+
 
 
             $statushrd = ($r->approval_status_id_hrd == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($r->approval_status_id_hrd == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($r->approval_status_id_hrd == 3) ? "<i class='icon-exclamation-sign' style='color:orange;' title = 'Pending'></i>" : "<i class='icon-question' title = 'Menunggu Status Approval'></i>"));
@@ -139,11 +139,11 @@ class Form_cuti extends MX_Controller {
         $this->form_validation->set_rules('alasan_cuti', 'Alasan Cuti', 'trim|required');
         $this->form_validation->set_rules('user_pengganti', 'User Pengganti', 'trim|required');
         $this->form_validation->set_rules('alamat', 'Alamat Cuti', 'trim|required');
-        
+
         if($this->form_validation->run() == FALSE)
         {
             //echo json_encode(array('st'=>0, 'errors'=>validation_errors('<div class="alert alert-danger" role="alert">', '</div>')));
-            redirect('form_cuti/input', 'refresh'); 
+            redirect('form_cuti/input', 'refresh');
         }
         else
         {
@@ -201,7 +201,7 @@ class Form_cuti extends MX_Controller {
                  }
 
                  $this->insert_leave_request($user_id, $additional_data, $leave_request_id);
-                 redirect('form_cuti', 'refresh');   
+                 redirect('form_cuti', 'refresh');
             }
         }
     }
@@ -223,7 +223,7 @@ class Form_cuti extends MX_Controller {
           'upload_path'     => './uploads/cuti/'.$user_folder,
           'allowed_types'   => '*',
           'overwrite'       => TRUE,
-        );    
+        );
         $this->load->library('upload', $config);
         if (!$this->upload->do_upload('attachment')){
             //print_r($this->upload->display_errors());
@@ -285,7 +285,7 @@ class Form_cuti extends MX_Controller {
         $title = $this->data['title'] = 'Form Cuti-'.get_name($user_id);
 
         $this->load->library('mpdf60/mpdf');
-        $html = $this->load->view('cuti_pdf', $this->data, true); 
+        $html = $this->load->view('cuti_pdf', $this->data, true);
         $mpdf = new mPDF();
         $mpdf = new mPDF('A4');
         $mpdf->WriteHTML($html);
@@ -315,7 +315,7 @@ class Form_cuti extends MX_Controller {
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                     $this->template->add_css('plugins/select2/select2.css');
                     $this->template->add_css('datatables.min.css');
-                    
+
                 }
                 elseif(in_array($view, array('form_cuti/input')))
                 {
@@ -333,15 +333,15 @@ class Form_cuti extends MX_Controller {
 
                     $this->template->add_js('bootstrap-datepicker.js');
                     $this->template->add_js('jquery.validate.min.js');
-                    
+
                     $this->template->add_js('jquery-validate.bootstrap-tooltip.min.js');
                     $this->template->add_js('emp_dropdown.js');
                     $this->template->add_js('form_cuti_input.js');
-                    
+
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                     $this->template->add_css('plugins/select2/select2.css');
                     $this->template->add_css('datepicker.css');
-                     
+
                 }elseif(in_array($view, array('form_cuti/detail')))
                 {
                     $this->template->set_layout('default');
@@ -358,11 +358,11 @@ class Form_cuti extends MX_Controller {
                     $this->template->add_js('jquery.validate.min.js');
                     $this->template->add_js('form_cuti_approval.js');
 
-                    
+
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                     $this->template->add_css('approval_img.css');
                     $this->template->add_css('datepicker.css');
-                    
+
                 }
 
 
@@ -397,8 +397,8 @@ class Form_cuti extends MX_Controller {
             'date_selesai_cuti'     => date('Y-m-d', strtotime($this->input->post('end_cuti'))),
             'jumlah_hari'           => $this->input->post('jml_hari'),
             'is_app_'.$type => 1,
-            'approval_status_id_'.$type => $this->input->post('app_status_'.$type), 
-            'user_app_'.$type => $user_id, 
+            'approval_status_id_'.$type => $this->input->post('app_status_'.$type),
+            'user_app_'.$type => $user_id,
             'date_app_'.$type => $date_now,
             'note_app_'.$type => $this->input->post('note_'.$type)
             );
@@ -413,7 +413,7 @@ class Form_cuti extends MX_Controller {
             $subject_email_request = get_form_no($id).'Pengajuan Permohonan Cuti';
             $isi_email = 'Status pengajuan cuti anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_cuti/detail/'.$id.'>Klik Disini</a><br />';
             $isi_email_request = get_name($user_cuti_id).' mengajukan Permohonan Cuti, untuk melihat detail silakan <a href='.base_url().'form_cuti/detail/'.$id.'>Klik Disini</a><br />';
-            
+
             if($is_app==0){
                 $this->approval->approve('cuti', $id, $approval_status, $this->detail_email($id));
                 if(!empty(getEmail($user_cuti_id)))$this->send_email(getEmail($user_cuti_id), $subject_email , $isi_email);
@@ -488,7 +488,7 @@ class Form_cuti extends MX_Controller {
             if($type == 'hrd' && $approval_status == 1){
                 //$this->send_notif_tambahan($id);
             }
-            
+
             $this->cek_all_approval($id);
         }
     }
@@ -555,7 +555,7 @@ class Form_cuti extends MX_Controller {
     }
 
     function update_attendance($id)
-    {   
+    {
         $f = array('id' => 'where/'.$id);
         $user_nik = get_nik(getValue('user_id','users_cuti', $f));
         // Start date
@@ -575,7 +575,7 @@ class Form_cuti extends MX_Controller {
                         'create_user_id' => $this->session->userdata('user_id'),
                     );
          $this->db->insert('attendance', $data);
-         
+
          $date = date ("Y-m-d", strtotime("+1 day", strtotime($date)));
          }
 
@@ -601,13 +601,13 @@ class Form_cuti extends MX_Controller {
     }
 
     function update_status_flag($nik, $date, $end_date, $status_id)
-    { 
+    {
         if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page
             redirect('auth/login', 'refresh');
         }
-     
+
         $method = 'post';
         $params =  array();
         $uri = get_api_key().'users/update_flag_cuti/nik/'.$nik.'/date/'.$date.'/end_date/'.$end_date.'/status_id/'.$status_id;
@@ -617,26 +617,26 @@ class Form_cuti extends MX_Controller {
         $result = $this->rest->{$method}($uri, $params);
 
 
-        if(isset($result->status) && $result->status == 'success')  
-        {  
+        if(isset($result->status) && $result->status == 'success')
+        {
             //return $this->rest->debug();
             return TRUE;
-        }     
-        else  
-        {  
+        }
+        else
+        {
             //return $this->rest->debug();
             return FALSE;
         }
     }
 
     function update_sisa_cuti($recid, $sisa_cuti)
-    { 
+    {
         if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page
             redirect('auth/login', 'refresh');
         }
-     
+
         $method = 'post';
         $params =  array();
         $uri = get_api_key().'users/sisa_cuti/RECID/'.$recid.'/ENTITLEMENT/'.$sisa_cuti;
@@ -646,12 +646,12 @@ class Form_cuti extends MX_Controller {
         $result = $this->rest->{$method}($uri, $params);
 
 
-        if(isset($result->status) && $result->status == 'success')  
-        {  
+        if(isset($result->status) && $result->status == 'success')
+        {
             return TRUE;
-        }     
-        else  
-        {  
+        }
+        else
+        {
             return FALSE;
         }
     }
@@ -670,7 +670,6 @@ class Form_cuti extends MX_Controller {
         $NEXTREC = $leaveid + 1;
         $leaveid = sprintf('%06d', $leaveid);
         $IDLEAVEREQUEST = 'CT'.$leaveid;
-        print_mz($IDLEAVEREQUEST);
         $RECVERSION = $leave_request_id[0]['RECVERSION']+1;
         $RECID = $leave_request_id[0]['RECID']+1;
         $char = array('"', '<', '>', '#', '%', '{', '}', '|', '^', '~','(',')', '[', ']', '`',',', ' ');
@@ -710,19 +709,19 @@ class Form_cuti extends MX_Controller {
 
         $result = $this->rest->{$method}($uri, $params);
 
-        if(isset($result->status) && $result->status == 'success')  
-        {  
+        if(isset($result->status) && $result->status == 'success')
+        {
             $this->update_leave_number_sequence($NEXTREC);
             return true;
-        }     
-        else  
-        {  
+        }
+        else
+        {
             return false;
         }
     }
 
     function insert_sisa_cuti($user_nik, $alasan_cuti)
-    {   
+    {
         if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page
@@ -788,14 +787,14 @@ class Form_cuti extends MX_Controller {
 
         $result = $this->rest->{$method}($uri, $params);
 
-        if(isset($result->status) && $result->status == 'success')  
-        {  
+        if(isset($result->status) && $result->status == 'success')
+        {
             //print_mz($this->rest->debug());
             $this->update_entitlement_number_sequence($NEXTREC);
             return true;
-        }     
-        else  
-        {  
+        }
+        else
+        {
             //print_mz($this->rest->debug());
             return false;
         }
@@ -812,13 +811,13 @@ class Form_cuti extends MX_Controller {
 
         $result = $this->rest->{$method}($uri, $params);
 
-        if(isset($result->status) && $result->status == 'success')  
-        {  
+        if(isset($result->status) && $result->status == 'success')
+        {
             //print_mz($this->rest->debug());
             return true;
-        }     
-        else  
-        {  
+        }
+        else
+        {
             //print_mz($this->rest->debug());
             return false;
         }
@@ -834,20 +833,20 @@ class Form_cuti extends MX_Controller {
 
         $result = $this->rest->{$method}($uri, $params);
 
-        if(isset($result->status) && $result->status == 'success')  
-        {  
+        if(isset($result->status) && $result->status == 'success')
+        {
             //print_mz($this->rest->debug());
             return true;
-        }     
-        else  
-        {  
+        }
+        else
+        {
             //print_mz($this->rest->debug());
             return false;
         }
     }
 
     function get_sisa_cuti($user_nik)
-    {   
+    {
         if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page
@@ -967,7 +966,7 @@ class Form_cuti extends MX_Controller {
         foreach ($cuti_id as $key => $value) {
             //echo $value;
             $data = GetAll('users_cuti', array('id'=>'where/'.$value))->row_array();//lastq();
-          
+
         $leave_request_id = $this->get_last_leave_request_id();
         $user_id = get_nik($data['user_id']);
         $leaveid = substr($leave_request_id[0]['IDLEAVEREQUEST'],2)+1;
@@ -1012,15 +1011,15 @@ class Form_cuti extends MX_Controller {
 
         $result = $this->rest->{$method}($uri, $params);
 
-        if(isset($result->status) && $result->status == 'success')  
-        {  
+        if(isset($result->status) && $result->status == 'success')
+        {
             echo '<pre>';
             print_r($this->rest->debug());
             //return true;
             echo '</pre>';
-        }     
-        else  
-        {  
+        }
+        else
+        {
             echo '<pre>';
             print_r($this->rest->debug());
             //return true;
@@ -1052,23 +1051,23 @@ class Form_cuti extends MX_Controller {
     }
 
     function get_libur($tglawal,$tglakhir,$delimiter) {
-         
+
         $tgl_awal = $tgl_akhir = $minggu = $sabtu = $koreksi = $libur = 0;
         $liburnasional = $this->get_holiday();
-        
+
     //  memecah tanggal untuk mendapatkan hari, bulan dan tahun
         $pecah_tglawal = explode($delimiter, $tglawal);
         $pecah_tglakhir = explode($delimiter, $tglakhir);
-        
+
     //    mengubah Gregorian date menjadi Julian Day Count
         $tgl_awal = gregoriantojd($pecah_tglawal[1], $pecah_tglawal[0], $pecah_tglawal[2]);
         $tgl_akhir = gregoriantojd($pecah_tglakhir[1], $pecah_tglakhir[0], $pecah_tglakhir[2]);
-     
+
     //    mengubah ke unix timestamp
         $jmldetik = 24*3600;
         $a = strtotime($tglawal);
         $b = strtotime($tglakhir);
-    //    menghitung jumlah libur nasional 
+    //    menghitung jumlah libur nasional
         for($i=$a; $i<$b; $i+=$jmldetik){
             for($j=0;$j<sizeof($liburnasional);$j++) {
                 if($liburnasional[$j]==date("Y-m-d",$i)){
@@ -1080,7 +1079,7 @@ class Form_cuti extends MX_Controller {
         echo json_encode($libur);
     }
 
-    
+
 
     function get_num_leave($id){
         $n = getValue('jumlah_hari', 'cuti_jumlah_plafon', array('alasan_cuti_id'=>'where/'.$id));
@@ -1099,7 +1098,7 @@ class Form_cuti extends MX_Controller {
             //print_mz($holiday);
             foreach ($holiday as $key => $value) {
                 $libur[] = date('Y-m-d', strtotime($value['HOLIDAYDATE']));
-    
+
              }
 
              return $libur;
