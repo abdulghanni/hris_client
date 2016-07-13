@@ -7,7 +7,7 @@ class Form_cuti_model extends CI_Model {
     var $join1  = 'users';
     var $join2  = 'alasan_cuti';
     var $column = array('users_cuti.id', 'nik', 'username','date_mulai_cuti', 'alasan_cuti', 'jumlah_hari', 'created_on'); //set column field database for order and search
-    var $order = array('id' => 'desc'); // default order 
+    var $order = array('id' => 'desc'); // default order
 
     public function __construct()
     {
@@ -21,7 +21,7 @@ class Form_cuti_model extends CI_Model {
         if(!is_admin()){
             $sess_id = $this->session->userdata('user_id');
             $sess_nik = get_nik($sess_id);
-            $is_hrd_pusat = is_hrd_pusat($sess_nik, 5);//print_mz($is_hrd_pusat);
+            $is_hrd_pusat = is_hrd_pusat($sess_nik, 1);//print_mz($is_hrd_pusat);
             $is_approver = $this->approval->approver('cuti', $sess_nik);
             $is_admin_cabang = is_admin_cabang();
             if($is_hrd_pusat != 1){
@@ -51,29 +51,29 @@ class Form_cuti_model extends CI_Model {
 
             $this->db->join($this->join1, 'users_cuti.user_id = users.id', 'left');
             $this->db->join($this->join2, 'users_cuti.alasan_cuti_id = alasan_cuti.HRSLEAVETYPEID', 'left');
-            
+
             $this->db->where('users_cuti.is_deleted', 0);
             if($f == 1){
                 $this->db->where('is_app_hrd', 0);
             }elseif($f == 2){
                 $this->db->where('is_app_hrd', 1);
             }else{
-                
+
             }
             if($is_admin!=1 && $is_hrd_pusat != 1):
             if($is_approver == $sess_nik || $is_admin_cabang == 1){
                 $this->db->where_in("users_cuti.user_id", $user);//print_mz($user);
             }elseif($is_admin!=1 ){
-                 $this->db->where("(users_cuti.user_id = '$sess_id' 
-                               OR users_cuti.user_app_lv1 = '$sess_nik'  OR users_cuti.user_app_lv2 = '$sess_nik'  OR users_cuti.user_app_lv3 = '$sess_nik' 
+                 $this->db->where("(users_cuti.user_id = '$sess_id'
+                               OR users_cuti.user_app_lv1 = '$sess_nik'  OR users_cuti.user_app_lv2 = '$sess_nik'  OR users_cuti.user_app_lv3 = '$sess_nik'
                 )",null, false);
             }
             endif;
 
 
         $i = 0;
-    
-        foreach ($this->column as $item) // loop column 
+
+        foreach ($this->column as $item) // loop column
         {
             if($_POST['search']['value'])
             {
@@ -93,15 +93,15 @@ class Form_cuti_model extends CI_Model {
 
                 ($i===0) ? $this->db->like($item, $_POST['search']['value']) : $this->db->or_like($item, $_POST['search']['value']);
             }
-                
+
             $column[$i] = $item;
             $i++;
         }
-        
+
         if(isset($_POST['order'])) // here order processing
         {
             $this->db->order_by($column[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
-        } 
+        }
         else if(isset($this->order))
         {
             $order = $this->order;
@@ -138,13 +138,13 @@ class Form_cuti_model extends CI_Model {
                 if($is_approver == $sess_nik || $is_admin_cabang == 1)$user = get_user_satu_bu($sess_nik);
             }
         }
-            
+
         if($is_admin!=1 && $is_hrd_pusat != 1):
             if($is_approver == $sess_nik || $is_admin_cabang == 1){
                 $this->db->where_in("users_cuti.user_id", $user);//print_mz($user);
             }elseif($is_admin!=1 ){
-                 $this->db->where("(users_cuti.user_id = '$sess_id' 
-                               OR users_cuti.user_app_lv1 = '$sess_nik'  OR users_cuti.user_app_lv2 = '$sess_nik'  OR users_cuti.user_app_lv3 = '$sess_nik' 
+                 $this->db->where("(users_cuti.user_id = '$sess_id'
+                               OR users_cuti.user_app_lv1 = '$sess_nik'  OR users_cuti.user_app_lv2 = '$sess_nik'  OR users_cuti.user_app_lv3 = '$sess_nik'
                 )",null, false);
             }
             endif;
@@ -154,7 +154,7 @@ class Form_cuti_model extends CI_Model {
         }elseif($f == 2){
             $this->db->where('is_app_hrd', 1);
         }else{
-            
+
         }
         $this->db->from($this->table);
         return $this->db->count_all_results();
@@ -218,7 +218,7 @@ class Form_cuti_model extends CI_Model {
 
             $this->db->join('alasan_cuti', 'users_cuti.alasan_cuti_id = alasan_cuti.HRSLEAVETYPEID', 'left');
             $this->db->join('users', 'users_cuti.user_id = users.id', 'left');
-            
+
             $this->db->where('users_cuti.is_deleted', 0);
             $this->db->where('users_cuti.id', $id);
 
