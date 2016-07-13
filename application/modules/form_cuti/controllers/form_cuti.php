@@ -672,7 +672,7 @@ class Form_cuti extends MX_Controller {
         $IDLEAVEREQUEST = 'CT'.$leaveid;
         $RECVERSION = $leave_request_id[0]['RECVERSION']+1;
         $RECID = $leave_request_id[0]['RECID']+1;
-        $char = array('"', '<', '>', '#', '%', '{', '}', '|', '^', '~','(',')', '[', ']', '`',',', ' ','&');
+        $char = array('"', '<', '>', '#', '%', '{', '}', '|', '^', '~','(',')', '[', ']', '`',',', ' ','&', '.', '/');
         $remarks = str_replace($char, '-', $data['remarks']);
         $alamat_cuti = str_replace($char, '-', $data['alamat_cuti']);
         $phone = str_replace($char, '-', $data['contact']);
@@ -976,7 +976,7 @@ class Form_cuti extends MX_Controller {
         $IDLEAVEREQUEST = 'CT'.$leaveid;
         $RECVERSION = $leave_request_id[0]['RECVERSION']+1;
         $RECID = $leave_request_id[0]['RECID']+1;//print_mz($RECID);
-        $char = array('"', '<', '>', '#', '%', '{', '}', '|', '^', '~','(',')', '[', ']', '`',',', ' ','&');
+        $char = array('"', '<', '>', '#', '%', '{', '}', '|', '^', '~','(',')', '[', ']', '`',',', ' ','&', '.', '/');
         $remarks = str_replace($char, '-', $data['remarks']);
         $alamat_cuti = str_replace($char, '-', $data['alamat_cuti']);
         $phone = str_replace($char, '-', $data['contact']);
