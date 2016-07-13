@@ -11,7 +11,7 @@ class Form_kontrak extends MX_Controller {
         $this->load->library('authentication', NULL, 'ion_auth');
         $this->load->library('form_validation');
         $this->load->library('approval');
-        
+
         $this->load->database();
         $this->load->model('form_kontrak/form_kontrak_model','main');
 
@@ -23,7 +23,7 @@ class Form_kontrak extends MX_Controller {
     {
         $this->data['title'] = ucfirst($this->form_name);
         $this->data['form_name'] = $this->form_name;
-       
+
         if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page
@@ -43,8 +43,8 @@ class Form_kontrak extends MX_Controller {
         $no = $_POST['start'];
         foreach ($list as $r) {
             //AKSI
-           $detail = base_url()."form_".$this->form_name."/detail/".$r->id; 
-           $print = base_url()."form_".$this->form_name."/form_".$this->form_name."_pdf/".$r->id; 
+           $detail = base_url()."form_".$this->form_name."/detail/".$r->id;
+           $print = base_url()."form_".$this->form_name."/form_".$this->form_name."_pdf/".$r->id;
            $delete = (($r->app_status_id_lv1 == 0 && $r->created_by == sessId()) || is_admin()) ? '<button onclick="showModal('.$r->id.')" class="btn btn-sm btn-danger" type="button" title="Batalkan Pengajuan"><i class="icon-remove"></i></button>' : '';
 
             //APPROVAL
@@ -63,7 +63,7 @@ class Form_kontrak extends MX_Controller {
             }else{
                 $status3 = "<i class='icon-minus' style='color:black;' title = 'Tidak Butuh Approval Atasan Lainnya'></i>";
             }
-            
+
 
 
             $statushrd = ($r->app_status_id_hrd == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($r->app_status_id_hrd == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($r->app_status_id_hrd == 3) ? "<i class='icon-exclamation-sign' style='color:orange;' title = 'Pending'></i>" : "<i class='icon-question' title = 'Menunggu Status Approval'></i>"));
@@ -162,7 +162,7 @@ class Form_kontrak extends MX_Controller {
         }else{
             //$this->form_validation->set_rules('alasan', 'Alasan kontrak', 'trim|required');
             $this->form_validation->set_rules('date_kontrak', 'Tanggal kontrak', 'trim|required');
-            
+
             if($this->form_validation->run() == FALSE)
             {
                 //echo json_encode(array('st'=>0, 'errors'=>validation_errors('<div class="alert alert-danger" role="alert">', '</div>')));
@@ -242,7 +242,7 @@ class Form_kontrak extends MX_Controller {
             return true;
         }
     }
-    
+
     function do_approve($id, $type)
     {
         if(!$this->ion_auth->logged_in())
@@ -255,9 +255,9 @@ class Form_kontrak extends MX_Controller {
             $date_now = date('Y-m-d');
 
             $data = array(
-            'is_app_'.$type => 1, 
+            'is_app_'.$type => 1,
             'app_status_id_'.$type => $this->input->post('app_status_'.$type),
-            'user_app_'.$type => $user_id, 
+            'user_app_'.$type => $user_id,
             'date_app_'.$type => $date_now,
             'note_'.$type => $this->input->post('note_'.$type)
             );
@@ -267,14 +267,14 @@ class Form_kontrak extends MX_Controller {
             $approval_status = $this->input->post('app_status_'.$type);
 
             $this->main->update($id,$data);
-           
+
             $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
             $user_kontrak_id = getValue('user_id', 'users_kontrak', array('id'=>'where/'.$id));
             $subject_email = get_form_no($id).'['.$approval_status_mail.']Status Pengajuan Perpanjangan Kontrak dari Atasan';
             $subject_email_request = get_form_no($id).'-Pengajuan kontrak Karyawan';
             $isi_email = 'Status pengajuan kontrak anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_kontrak/detail/'.$id.'>Klik Disini</a><br />';
             $isi_email_request = get_name($user_kontrak_id).' mengajukan Perpanjangan Kontrak, untuk melihat detail silakan <a href='.base_url().'form_kontrak/detail/'.$id.'>Klik Disini</a><br />';
-            
+
             $user_kontrak_id = getValue('user_id', 'users_kontrak', array('id'=>'where/'.$id));
             if($is_app==0){
                 $this->approval->approve('kontrak', $id, $approval_status, $this->detail_email($id));
@@ -375,7 +375,7 @@ class Form_kontrak extends MX_Controller {
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data4);
-            if(!empty(getEmail($receiver)))$this->send_email(getEmail($receiver), $subject_email, $isi_email);
+            //if(!empty(getEmail($receiver)))$this->send_email(getEmail($receiver), $subject_email, $isi_email);
         }
     }
 
@@ -395,7 +395,7 @@ class Form_kontrak extends MX_Controller {
             );
         $this->db->insert('email', $data4);
     }
-    
+
     function detail_email($id)
     {
         return '';
@@ -407,8 +407,8 @@ class Form_kontrak extends MX_Controller {
         {
             //redirect them to the login page
             redirect('auth/login', 'refresh');
-        }  
-        
+        }
+
          $this->data['id'] = $id;
         $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
         $this->data['sess_nik'] = get_nik($sess_id);
@@ -424,7 +424,7 @@ class Form_kontrak extends MX_Controller {
         $this->data['attachment'] = explode(",",$attachment);
         $this->_render_page('form_kontrak/detail', $this->data);
         $this->load->library('mpdf60/mpdf');
-        $html = $this->load->view('kontrak_pdf', $this->data, true); 
+        $html = $this->load->view('kontrak_pdf', $this->data, true);
         $this->mpdf = new mPDF();
         $this->mpdf->AddPage('P', // L - landscape, P - portrait
             '', '', '', '',
@@ -440,13 +440,13 @@ class Form_kontrak extends MX_Controller {
 
     function get_lama_kontrak($user_id = null){
         if($user_id==null):$user_id = $this->input->post('id');$echo = 1;else:$echo = 0;endif;
-        
+
         if($user_id==0){ echo '-';}else{
             $user_id = get_nik($user_id);
             $url = get_api_key().'kontrak/list/EMPLID/'.$user_id.'/format/json';
             $headers = get_headers($url);
             $response = substr($headers[0], 9, 3);
-            if ($response != "404") 
+            if ($response != "404")
             {
                 $getuser_info = file_get_contents($url);
                 $user_info = json_decode($getuser_info, true);
@@ -464,13 +464,13 @@ class Form_kontrak extends MX_Controller {
 
     function get_mulai_kontrak($user_id = null){
         if($user_id==null):$user_id = $this->input->post('id');$echo = 1;else:$echo = 0;endif;
-        
+
         if($user_id==0){ echo '-';}else{
             $user_id = get_nik($user_id);
             $url = get_api_key().'kontrak/list/EMPLID/'.$user_id.'/format/json';
             $headers = get_headers($url);
             $response = substr($headers[0], 9, 3);
-            if ($response != "404") 
+            if ($response != "404")
             {
                 $getuser_info = file_get_contents($url);
                 $user_info = json_decode($getuser_info, true);
@@ -488,13 +488,13 @@ class Form_kontrak extends MX_Controller {
 
     function get_akhir_kontrak($user_id = null){
         if($user_id==null):$user_id = $this->input->post('id');$echo = 1;else:$echo = 0;endif;
-        
+
         if($user_id==0){ echo '-';}else{
             $user_id = get_nik($user_id);
             $url = get_api_key().'kontrak/list/EMPLID/'.$user_id.'/format/json';
             $headers = get_headers($url);
             $response = substr($headers[0], 9, 3);
-            if ($response != "404") 
+            if ($response != "404")
             {
                 $getuser_info = file_get_contents($url);
                 $user_info = json_decode($getuser_info, true);
@@ -533,7 +533,7 @@ class Form_kontrak extends MX_Controller {
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                     $this->template->add_css('plugins/select2/select2.css');
                     $this->template->add_css('datatables.min.css');
-                    
+
                 }
                 elseif(in_array($view, array('form_kontrak/input',
                                              'form_kontrak/detail',)))
@@ -556,12 +556,12 @@ class Form_kontrak extends MX_Controller {
                     $this->template->add_js('bootstrap-datepicker.js');
                     $this->template->add_js('emp_dropdown.js');
                     $this->template->add_js('form_kontrak.js');
-                    
+
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                     $this->template->add_css('plugins/select2/select2.css');
                     $this->template->add_css('datepicker.css');
                     $this->template->add_css('approval_img.css');
-                     
+
                 }
 
 
@@ -577,4 +577,4 @@ class Form_kontrak extends MX_Controller {
             return $this->load->view($view, $data, TRUE);
         }
     }
-}   
+}
