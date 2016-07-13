@@ -969,7 +969,9 @@ class Form_cuti extends MX_Controller {
 
         $leave_request_id = $this->get_last_leave_request_id();
         $user_id = get_nik($data['user_id']);
-        $leaveid = substr($leave_request_id[0]['IDLEAVEREQUEST'],2)+1;
+        //$leaveid = substr($leave_request_id[0]['IDLEAVEREQUEST'],2)+1;
+        $leaveid = $this->getLeaveNumberSequence();
+        $NEXTREC = $leaveid + 1;
         $leaveid = sprintf('%06d', $leaveid);
         $IDLEAVEREQUEST = 'CT'.$leaveid;
         $RECVERSION = $leave_request_id[0]['RECVERSION']+1;
@@ -1013,6 +1015,7 @@ class Form_cuti extends MX_Controller {
 
         if(isset($result->status) && $result->status == 'success')
         {
+            $this->update_leave_number_sequence($NEXTREC);
             echo '<pre>';
             print_r($this->rest->debug());
             //return true;
