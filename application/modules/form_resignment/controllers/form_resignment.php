@@ -3,7 +3,7 @@
 class Form_resignment extends MX_Controller {
 
   public $data;
-
+  var $form_name = 'resignment';
     function __construct()
     {
         parent::__construct();
@@ -13,7 +13,7 @@ class Form_resignment extends MX_Controller {
         $this->load->library('approval');
         
         $this->load->database();
-        $this->load->model('form_resignment/form_resignment_model','form_resignment_model');
+        $this->load->model('form_resignment/form_resignment_model','main');
     
         $this->lang->load('auth');
         $this->load->helper('language');
@@ -33,56 +33,68 @@ class Form_resignment extends MX_Controller {
         {
             $sess_id= $this->data['sess_id'] = $this->session->userdata('user_id');
             $this->data['sess_nik'] = $sess_nik = get_nik($sess_id);
-
-
-            //set sort order
-            $this->data['sort_order'] = $sort_order;
-            
-            //set sort by
-            $this->data['sort_by'] = $sort_by;
-           
-            //set filter by title
-            $this->data['ftitle_param'] = $ftitle; 
-            $exp_ftitle = explode(":",$ftitle);
-            $ftitle_re = str_replace("_", " ", $exp_ftitle[1]);
-            $ftitle_post = (strlen($ftitle_re) > 0) ? array('users.username'=>$ftitle_re) : array() ;
-            
-            //set default limit in var $config['list_limit'] at application/config/ion_auth.php 
-            $this->data['limit'] = $limit = (strlen($this->input->post('limit')) > 0) ? $this->input->post('limit') : 10 ;
-
-            $this->data['offset'] = 6;
-
-            //list of filterize all form_resignment  
-            $this->data['form_resignment_all'] = $this->form_resignment_model->like($ftitle_post)->where('is_deleted',0)->form_resignment()->result();
-            
-            $this->data['num_rows_all'] = $this->form_resignment_model->like($ftitle_post)->where('is_deleted',0)->form_resignment()->num_rows();
-
-            $form_resignment = $this->data['form_resignment'] = $this->form_resignment_model->like($ftitle_post)->where('is_deleted',0)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->form_resignment()->result();
-            $this->data['_num_rows'] = $this->form_resignment_model->like($ftitle_post)->where('is_deleted',0)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->form_resignment()->num_rows();
-            
-
-             //config pagination
-             $config['base_url'] = base_url().'form_resignment/index/fn:'.$exp_ftitle[1].'/'.$sort_by.'/'.$sort_order.'/';
-             $config['total_rows'] = $this->data['num_rows_all'];
-             $config['per_page'] = $limit;
-             $config['uri_segment'] = 6;
-
-            //inisialisasi config
-             $this->pagination->initialize($config);
-
-            //create pagination
-            $this->data['halaman'] = $this->pagination->create_links();
-
-            $this->data['ftitle_search'] = array(
-                'name'  => 'title',
-                'id'    => 'title',
-                'type'  => 'text',
-                'value' => $this->form_validation->set_value('title'),
-            );
             $this->data['form_id'] = getValue('form_id', 'form_id', array('form_name'=>'like/resign'));
+            $this->data['form_name'] = 'resignment';
             $this->data['form'] = 'resignment';
             $this->_render_page('form_resignment/index', $this->data);
         }
+    }
+
+    function ajax_list($f){
+        $list = $this->main->get_datatables($f);//lastq();
+        //print_mz($list);
+        $data = array();
+        $no = $_POST['start'];
+        foreach ($list as $r) {
+            //AKSI
+           $detail = base_url()."form_$this->form_name/detail/".$r->id; 
+           $print = base_url()."form_$this->form_name/form_$this->form_name"."_pdf/".$r->id; 
+           $delete = (($r->app_status_id_lv1 == 0 && $r->created_by == sessId()) || is_admin()) ? '<button onclick="showModal('.$r->id.')" class="btn btn-sm btn-danger" type="button" title="Batalkan Pengajuan"><i class="icon-remove"></i></button>' : '';
+
+            //APPROVAL
+            if(!empty($r->user_app_lv1)){
+                $status1 = ($r->app_status_id_lv1 == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($r->app_status_id_lv1 == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($r->app_status_id_lv1 == 3) ? "<i class='icon-exclamation-sign' style='color:orange;' title = 'Pending'></i>" : "<i class='icon-question' title = 'Menunggu Status Approval'></i>"));
+            }else{
+                $status1 = "<i class='icon-minus' style='color:black;' title = 'Tidak Butuh Approval Atasan Langsung'></i>";
+            }
+            if(!empty($r->user_app_lv2)){
+                $status2 = ($r->app_status_id_lv2 == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($r->app_status_id_lv2 == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($r->app_status_id_lv2 == 3) ? "<i class='icon-exclamation-sign' style='color:orange;' title = 'Pending'></i>" : "<i class='icon-question' title = 'Menunggu Status Approval'></i>"));
+            }else{
+                $status2 = "<i class='icon-minus' style='color:black;' title = 'Tidak Butuh Approval Atasan Tidak Langsung'></i>";
+            }
+            if(!empty($r->user_app_lv3)){
+                $status3 = ($r->app_status_id_lv3 == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($r->app_status_id_lv3 == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($r->app_status_id_lv3 == 3) ? "<i class='icon-exclamation-sign' style='color:orange;' title = 'Pending'></i>" : "<i class='icon-question' title = 'Menunggu Status Approval'></i>"));
+            }else{
+                $status3 = "<i class='icon-minus' style='color:black;' title = 'Tidak Butuh Approval Atasan Lainnya'></i>";
+            }
+            
+            $statushrd = ($r->app_status_id_hrd == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($r->app_status_id_hrd == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($r->app_status_id_hrd == 3) ? "<i class='icon-exclamation-sign' style='color:orange;' title = 'Pending'></i>" : "<i class='icon-question' title = 'Menunggu Status Approval'></i>"));
+
+            $no++;
+            $row = array();
+            $row[] = "<a href=$detail>".$r->id.'</a>';
+            $row[] = "<a href=$detail>".$r->nik.'</a>';
+            $row[] = "<a href=$detail>".$r->username.'</a>';
+            $row[] = dateIndo($r->date_resign);
+            $row[] = dateIndo($r->created_on);
+            $row[] = $status1;
+            $row[] = $status2;
+            $row[] = $status3;
+            $row[] = $statushrd;
+            $row[] = "<a class='btn btn-sm btn-primary' href=$detail title='Klik icon ini untuk melihat detail'><i class='icon-info'></i></a>
+                      <a class='btn btn-sm btn-light-azure' target='_blank' href=$print title='Klik icon ini untuk mencetak form pengajuan'><i class='icon-print'></i></a>
+                      ".$delete;
+            $data[] = $row;
+        }
+
+        $output = array(
+                        "draw" => $_POST['draw'],
+                        "recordsTotal" => $this->main->count_all($f),
+                        "recordsFiltered" => $this->main->count_filtered($f),
+                        "data" => $data,
+                );
+        //output to json format
+        echo json_encode($output);
     }
 
     function keywords(){
@@ -149,7 +161,7 @@ class Form_resignment extends MX_Controller {
                     'created_by'            => $sess_id,
                     );
 
-                if ($this->form_validation->run() == true && $this->form_resignment_model->create_($user_id, $data))
+                if ($this->form_validation->run() == true && $this->main->create_($user_id, $data))
                     {
                      $resignment_id = $this->db->insert_id();
                      $subject_email = get_form_no($resignment_id).'-Pengajuan Permohonan Pengunduran Diri';
@@ -207,11 +219,11 @@ class Form_resignment extends MX_Controller {
         $sess_nik = $this->data['sess_nik'] = get_nik($sess_id);
         $user_id = getValue('user_id', 'users_resignment', array('id'=>'where/'.$id));
         $user_nik = $this->data['user_nik'] = get_nik($user_id);
-        $form_resignment = $this->data['form_resignment'] = $this->form_resignment_model->form_resignment($id)->result();
-        $this->data['_num_rows'] = $this->form_resignment_model->form_resignment($id)->num_rows();
+        $form_resignment = $this->data['form_resignment'] = $this->main->detail($id)->result();
+        $this->data['_num_rows'] = $this->main->detail($id)->num_rows();
         $this->data['alasan_resign'] = getAll('alasan_resign', array('is_deleted'=>'where/0'));
         $alasan = explode(',', getValue('alasan_resign_id', 'users_resignment_wawancara', array('user_resignment_id' => 'where/'.$id)));
-        $this->data['alasan'] = $this->form_resignment_model->get_alasan($alasan);
+        $this->data['alasan'] = $this->main->get_alasan($alasan);
         $buid = get_user_buid($user_nik);
         $this->data['hrd_list'] = $this->get_hrd($buid);
         $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
@@ -258,7 +270,7 @@ class Form_resignment extends MX_Controller {
                     'created_by'            => $this->session->userdata('user_id'),
                     );
 
-                    if ($this->form_validation->run() == true && $this->form_resignment_model->create_($user_id, $data))
+                    if ($this->form_validation->run() == true && $this->main->create_($user_id, $data))
                     {
                      $resignment_id = $this->db->insert_id();
                      $user_app_lv1 = getValue('user_app_lv1', 'users_resignment', array('id'=>'where/'.$resignment_id));
@@ -342,7 +354,7 @@ class Form_resignment extends MX_Controller {
                         }
                     endif;
                 }
-                $this->form_resignment_model->update($id,$data2);
+                $this->main->update($id,$data2);
             else:
                 $data = array(
                 'is_app_'.$type => 1, 
@@ -351,7 +363,7 @@ class Form_resignment extends MX_Controller {
                 'date_app_'.$type => $date_now,
                 'note_'.$type => $this->input->post('note_'.$type),
                 );
-                $this->form_resignment_model->update($id,$data);
+                $this->main->update($id,$data);
             endif;
 
             $approval_status = $this->input->post('app_status_'.$type);
@@ -458,11 +470,11 @@ class Form_resignment extends MX_Controller {
         $sess_nik = $this->data['sess_nik'] = get_nik($sess_id);
         $user_id = getValue('user_id', 'users_resignment', array('id'=>'where/'.$id));
         $this->data['user_nik'] = get_nik($user_id);
-        $form_resignment = $this->data['form_resignment'] = $this->form_resignment_model->form_resignment($id)->result();
-        $this->data['_num_rows'] = $this->form_resignment_model->form_resignment($id)->num_rows();
+        $form_resignment = $this->data['form_resignment'] = $this->main->detail($id)->result();
+        $this->data['_num_rows'] = $this->main->detail($id)->num_rows();
         $this->data['alasan_resign'] = getAll('alasan_resign', array('is_deleted'=>'where/0'));
         $alasan = explode(',', getValue('alasan_resign_id', 'users_resignment_wawancara', array('user_resignment_id' => 'where/'.$id)));
-        $this->data['alasan'] = $this->form_resignment_model->get_alasan($alasan);
+        $this->data['alasan'] = $this->main->get_alasan($alasan);
 
         return $this->load->view('form_resignment/resignment_mail', $this->data, TRUE);
     }
@@ -519,8 +531,8 @@ class Form_resignment extends MX_Controller {
         $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
         $user_id = getValue('user_id', 'users_resignment', array('id'=>'where/'.$id));
         $this->data['user_nik'] = get_nik($user_id);
-        $form_resignment = $this->data['form_resignment'] = $this->form_resignment_model->form_resignment($id)->result();
-        $this->data['_num_rows'] = $this->form_resignment_model->form_resignment($id)->num_rows();
+        $form_resignment = $this->data['form_resignment'] = $this->main->detail($id)->result();
+        $this->data['_num_rows'] = $this->main->detail($id)->num_rows();
 
         $this->data['id'] = $id;
         $title = $this->data['title'] = 'Form Karyawan Keluar-'.get_name($user_id);
@@ -560,14 +572,17 @@ class Form_resignment extends MX_Controller {
                     $this->template->set_layout('default');
 
                     $this->template->add_js('jquery.sidr.min.js');
+                    $this->template->add_js('datatables.min.js');
                     $this->template->add_js('breakpoints.js');
                     $this->template->add_js('core.js');
                     $this->template->add_js('select2.min.js');
 
                     $this->template->add_js('form_index.js');
+                    $this->template->add_js('form_datatable_index.js');
 
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                     $this->template->add_css('plugins/select2/select2.css');
+                    $this->template->add_css('datatables.min.css');
                     
                 }
                 elseif(in_array($view, array('form_resignment/input',
