@@ -552,7 +552,7 @@ class form_tidak_masuk extends MX_Controller {
         $IDLEAVEREQUEST = 'CT'.$leaveid;
         $RECVERSION = $leave_request_id[0]['RECVERSION']+1;
         $RECID = $leave_request_id[0]['RECID']+1;
-        $char = array('"', '<', '>', '#', '%', '{', '}', '|', '^', '~','(',')', '[', ']', '`',',', ' ','&', '.', '/', "'");
+        $char = array('"', '<', '>', '#', '%', '{', '}', '|', '^', '~','(',')', '[', ']', '`',',', ' ','&', '.', '/', "'", ';');
         $remarks = str_replace($char, '-', $data['remarks']);
         $phone = (!empty(getValue('phone', 'users', array('nik'=>'where/'.$user_id))))?str_replace(' ', '-', getValue('phone', 'users', array('nik'=>'where/'.$user_id))):'-';
         $method = 'post';
@@ -951,7 +951,7 @@ class form_tidak_masuk extends MX_Controller {
 		        $IDLEAVEREQUEST = 'CT'.$leaveid;
 		        $RECVERSION = $leave_request_id[0]['RECVERSION']+1;
 		        $RECID = $leave_request_id[0]['RECID']+1;
-		        $char = array('"', '<', '>', '#', '%', '{', '}', '|', '^', '~','(',')', '[', ']', '`',',', ' ','&', '.', '/', "'");
+		        $char = array('"', '<', '>', '#', '%', '{', '}', '|', '^', '~','(',')', '[', ']', '`',',', ' ','&', '.', '/', "'", ';');
 		        $remarks = str_replace($char, '-', $data['keterangan']);
 						$dataareaid = (!empty(get_user_dataareaid($user_id))) ? get_user_dataareaid($user_id) : 'erl';
 		        $phone = (!empty(getValue('phone', 'users', array('nik'=>'where/'.$user_id))))?str_replace(' ', '-', getValue('phone', 'users', array('nik'=>'where/'.$user_id))):'-';
