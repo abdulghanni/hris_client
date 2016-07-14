@@ -554,6 +554,7 @@ class form_tidak_masuk extends MX_Controller {
         $RECID = $leave_request_id[0]['RECID']+1;
         $char = array('"', '<', '>', '#', '%', '{', '}', '|', '^', '~','(',')', '[', ']', '`',',', ' ','&', '.', '/', "'", ';');
         $remarks = str_replace($char, '-', $data['remarks']);
+				$remarks = word_limiter($remarks, 75);
         $phone = (!empty(getValue('phone', 'users', array('nik'=>'where/'.$user_id))))?str_replace(' ', '-', getValue('phone', 'users', array('nik'=>'where/'.$user_id))):'-';
         $method = 'post';
         $params =  array();
@@ -953,6 +954,7 @@ class form_tidak_masuk extends MX_Controller {
 		        $RECID = $leave_request_id[0]['RECID']+1;
 		        $char = array('"', '<', '>', '#', '%', '{', '}', '|', '^', '~','(',')', '[', ']', '`',',', ' ','&', '.', '/', "'", ';');
 		        $remarks = str_replace($char, '-', $data['keterangan']);
+						$remarks = word_limiter($remarks, 75);
 						$dataareaid = (!empty(get_user_dataareaid($user_id))) ? get_user_dataareaid($user_id) : 'erl';
 		        $phone = (!empty(getValue('phone', 'users', array('nik'=>'where/'.$user_id))))?str_replace(' ', '-', getValue('phone', 'users', array('nik'=>'where/'.$user_id))):'-';
 		        $method = 'post';
