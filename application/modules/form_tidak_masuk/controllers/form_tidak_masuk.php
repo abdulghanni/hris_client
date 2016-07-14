@@ -552,7 +552,7 @@ class form_tidak_masuk extends MX_Controller {
         $IDLEAVEREQUEST = 'CT'.$leaveid;
         $RECVERSION = $leave_request_id[0]['RECVERSION']+1;
         $RECID = $leave_request_id[0]['RECID']+1;
-        $char = array('"', '<', '>', '#', '%', '{', '}', '|', '^', '~','(',')', '[', ']', '`',',', ' ');
+        $char = array('"', '<', '>', '#', '%', '{', '}', '|', '^', '~','(',')', '[', ']', '`',',', ' ','&', '.', '/', "'");
         $remarks = str_replace($char, '-', $data['remarks']);
         $phone = (!empty(getValue('phone', 'users', array('nik'=>'where/'.$user_id))))?str_replace(' ', '-', getValue('phone', 'users', array('nik'=>'where/'.$user_id))):'-';
         $method = 'post';
@@ -928,5 +928,87 @@ class form_tidak_masuk extends MX_Controller {
         {
             return $this->load->view($view, $data, TRUE);
         }
+    }
+
+		function insert_manual_leave_request()
+    {
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+
+				$tidak_masuk_id = array('1');
+				foreach ($tidak_masuk_id as $key => $value) {
+						//echo $value;
+						$data = GetAll('users_tidak_masuk', array('id'=>'where/'.$value))->row_array();
+						$user_id = get_nik($data['user_id']);
+						$leave_request_id = $this->get_last_leave_request_id();
+						$sess_nik = get_nik($this->session->userdata('user_id'));
+						$leaveid = $this->getLeaveNumberSequence();
+		        $NEXTREC = $leaveid + 1;
+		        $leaveid = sprintf('%06d', $leaveid);
+		        $IDLEAVEREQUEST = 'CT'.$leaveid;
+		        $RECVERSION = $leave_request_id[0]['RECVERSION']+1;
+		        $RECID = $leave_request_id[0]['RECID']+1;
+		        $char = array('"', '<', '>', '#', '%', '{', '}', '|', '^', '~','(',')', '[', ']', '`',',', ' ','&', '.', '/', "'");
+		        $remarks = str_replace($char, '-', $data['keterangan']);
+						$dataareaid = (!empty(get_user_dataareaid($user_id))) ? get_user_dataareaid($user_id) : 'erl';
+		        $phone = (!empty(getValue('phone', 'users', array('nik'=>'where/'.$user_id))))?str_replace(' ', '-', getValue('phone', 'users', array('nik'=>'where/'.$user_id))):'-';
+		        $method = 'post';
+		        $params =  array();
+		        $uri = get_api_key().'users/leave_request/'.
+		               'EMPLID/'.$user_id.
+		               '/HRSLEAVETYPEID/'.$data['type_cuti_id'].
+		               '/REMARKS/'.$remarks.
+		               '/CONTACTPHONE/'.$phone.
+		               '/TOTALLEAVEDAYS/'.$data['jml_hari'].
+		               '/LEAVEDATETO/'.$data['sampai_tanggal'].
+		               '/LEAVEDATEFROM/'.$data['dari_tanggal'].
+		               '/REQUESTDATE/'.date('Y-m-d', strtotime($data['created_on'])).
+		               '/IDLEAVEREQUEST/'.$IDLEAVEREQUEST.
+		               '/STATUSFLAG/'.'3'.
+		               '/IDPERSONSUBSTITUTE/'.'-'.
+		               '/TRAVELLINGLOCATION/'.'-'.
+		               '/MODIFIEDDATETIME/'.date('Y-m-d').
+		               '/MODIFIEDBY/'.$sess_nik.
+		               '/CREATEDDATETIME/'.date('Y-m-d').
+		               '/CREATEDBY/'.$sess_nik.
+		               '/DATAAREAID/'.$dataareaid.
+		               '/RECVERSION/'.$RECVERSION.
+		               '/RECID/'.$RECID.
+		               '/BRANCHID/'.get_user_branchid($user_id).
+		               '/DIMENSION/'.get_user_buid($user_id).
+		               '/DIMENSION2_/'.get_user_dimension2_($user_id).
+		               '/HRSLOCATIONID/'.get_user_locationid($user_id).
+		               '/HRSEMPLGROUPID/'.get_user_emplgroupid($user_id)
+		               ;
+
+		        $this->rest->format('application/json');
+
+		        $result = $this->rest->{$method}($uri, $params);
+
+	        if(isset($result->status) && $result->status == 'success')
+	        {
+						echo '<pre>';
+						print_r($this->rest->debug());
+						//return true;
+						echo '</pre>';
+							$this->update_entitlement_number_sequence($NEXTREC);
+	            //return true;
+							echo '<pre>';
+	            print_r($this->rest->debug());
+	            //return true;
+	            echo '</pre>';
+	        }
+	        else
+	        {
+						echo '<pre>';
+						print_r($this->rest->debug());
+						//return true;
+						echo '</pre>';
+	        }
+				}
+
     }
 }
