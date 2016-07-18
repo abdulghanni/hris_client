@@ -257,7 +257,7 @@ class Form_recruitment extends MX_Controller {
         $komputer = explode(',', getAll('users_recruitment_kemampuan', array('id' => 'where/'.$id))->row('komputer'));
         $this->data['jenis_kelamin'] = getAll('jenis_kelamin');
         $this->data['pendidikan'] = getAll('recruitment_pendidikan');
-        $this->data['komputer'] = getAll('recruitment_pendidikan');
+        $this->data['komputer'] = getAll('recruitment_komputer');
         $this->data['position_pengaju'] = $this->get_user_position(getValue('user_id', 'users_recruitment', array('id'=>'where/'.$id)));
         $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
          $this->data['approved'] = assets_url('img/approved_stamp.png');

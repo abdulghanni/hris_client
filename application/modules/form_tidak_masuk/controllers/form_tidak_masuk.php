@@ -939,7 +939,7 @@ class form_tidak_masuk extends MX_Controller {
             redirect('auth/login', 'refresh');
         }
 
-				$tidak_masuk_id = array('1');
+				$tidak_masuk_id = array('570');
 				foreach ($tidak_masuk_id as $key => $value) {
 						//echo $value;
 						$data = GetAll('users_tidak_masuk', array('id'=>'where/'.$value))->row_array();
@@ -954,7 +954,7 @@ class form_tidak_masuk extends MX_Controller {
 		        $RECID = $leave_request_id[0]['RECID']+1;
 		        $char = array('"', '<', '>', '#', '%', '{', '}', '|', '^', '~','(',')', '[', ']', '`',',', ' ','&', '.', '/', "'", ';');
 		        $remarks = str_replace($char, '-', $data['keterangan']);
-						$remarks = word_limiter($remarks, 75);
+						$remarks = substr($remarks,0,75);
 						$dataareaid = (!empty(get_user_dataareaid($user_id))) ? get_user_dataareaid($user_id) : 'erl';
 		        $phone = (!empty(getValue('phone', 'users', array('nik'=>'where/'.$user_id))))?str_replace(' ', '-', getValue('phone', 'users', array('nik'=>'where/'.$user_id))):'-';
 		        $method = 'post';
@@ -996,7 +996,7 @@ class form_tidak_masuk extends MX_Controller {
 						print_r($this->rest->debug());
 						//return true;
 						echo '</pre>';
-							$this->update_entitlement_number_sequence($NEXTREC);
+							$this->update_leave_number_sequence($NEXTREC);
 	            //return true;
 							echo '<pre>';
 	            print_r($this->rest->debug());

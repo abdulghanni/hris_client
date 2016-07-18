@@ -178,7 +178,7 @@
                     </div>
                     <div class="row form-row">
                       <div class="col-md-3">
-                        <label class="form-label text-right"><?php echo lang('reason') ?></label>
+                        <label class="form-label text-right">Tipe Cuti</label>
                       </div>
                       <div class="col-md-9">
                         <select name="alasan_cuti" id="alasan_cuti" class="select2" style="width:100%">
@@ -203,7 +203,7 @@
                     </div>
                     <div class="row form-row">
                       <div class="col-md-3">
-                        <label class="form-label text-right"><?php echo 'Remarks' ?></label>
+                        <label class="form-label text-right"><?php echo lang('reason')?></label>
                       </div>
                       <div class="col-md-9">
                         <input name="remarks" id="remarks" type="text"  class="form-control" placeholder="-" required>
