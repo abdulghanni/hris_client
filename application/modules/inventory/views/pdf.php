@@ -27,7 +27,7 @@
 </head>
 <body>
 <div align="center">
-  <p align="left"><img src="<?php echo assets_url('img/erlangga.jpg')?>"/></p>
+  <p align="left"><img src="<?php echo 'http://localhost/hris_client/assets/img/erlangga.jpg' ?>"/></p>
   <p align="center" class="style6">Daftar Inventaris Karyawan</p>
 </div>
 <table width="1000" height="135" border="0" align="center">

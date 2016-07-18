@@ -157,6 +157,8 @@ class Form_cuti extends MX_Controller {
             $potong_cuti = $jumlah_hari - $plafon_cuti;
             $potong_cuti = ($potong_cuti>0) ? $potong_cuti : 0;
 
+            $filter = array('date_mulai_cuti'=>'where/'.date('Y-m-d', strtotime($this->input->post('start_cuti'))), 'date_selesai_cuti'=>'where/'.date('Y-m-d', strtotime($this->input->post('end_cuti'))), 'user_id'=>'where/'.$user_id, 'alasan_cuti_id' => 'where/'.$this->input->post('alasan_cuti'), 'remarks' => 'where/'.$this->input->post('remarks'));
+            $num_rows = getAll('users_cuti', $filter)->num_rows();
             $additional_data = array(
                 'id_comp_session'       => date('Y'),
                 'date_mulai_cuti'       => date('Y-m-d', strtotime($this->input->post('start_cuti'))),
@@ -173,35 +175,42 @@ class Form_cuti extends MX_Controller {
                 'user_app_lv2'          => $this->input->post('atasan2'),
                 'user_app_lv3'          => $this->input->post('atasan3'),
                 'created_on'            => date('Y-m-d',strtotime('now')),
-                'created_by'            => $sess_id
+                'created_by'            => $sess_id,
+                'is_deleted'            => 0
             );
 
-            if ($this->form_validation->run() == true && $this->cuti->create_($user_id,$additional_data))
+            if ($this->form_validation->run() == true)
             {
-                 $cuti_id = $this->db->insert_id();
-                 $this->upload_attachment($cuti_id);
-                 $leave_request_id = $this->get_last_leave_request_id();
-                 $user_app_lv1 = getValue('user_app_lv1', 'users_cuti', array('id'=>'where/'.$cuti_id));
-                 $subject_email = get_form_no($cuti_id).'-Pengajuan Permohonan Cuti';
-                 $isi_email = get_name($user_id).' mengajukan Permohonan Cuti, untuk melihat detail silakan <a href='.base_url().'form_cuti/detail/'.$cuti_id.'>Klik Disini</a><br />';
-                 if($user_id!==$sess_id):
-                    $this->approval->by_admin('cuti', $cuti_id, $sess_id, $user_id, $this->detail_email($cuti_id));
-                 endif;
-                 if(!empty($user_app_lv1)){
-                    $this->approval->request('lv1', 'cuti', $cuti_id, $user_id, $this->detail_email($cuti_id));
-                    if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), $subject_email, $isi_email);
-                 }else{
-                    $this->approval->request('hrd', 'cuti', $cuti_id, $user_id, $this->detail_email($cuti_id));
-                    if(!empty(getEmail($this->approval->approver('cuti', $user_nik))))$this->send_email(getEmail($this->approval->approver('cuti', $user_nik)), $subject_email, $isi_email);
-                 }
+                if($num_rows < 1):
+                     $this->cuti->create_($user_id,$additional_data);
+                     $cuti_id = $this->db->insert_id();
+                     $this->upload_attachment($cuti_id);
+                     $leave_request_id = $this->get_last_leave_request_id();
+                     $user_app_lv1 = getValue('user_app_lv1', 'users_cuti', array('id'=>'where/'.$cuti_id));
+                     $subject_email = get_form_no($cuti_id).'-Pengajuan Permohonan Cuti';
+                     $isi_email = get_name($user_id).' mengajukan Permohonan Cuti, untuk melihat detail silakan <a href='.base_url().'form_cuti/detail/'.$cuti_id.'>Klik Disini</a><br />';
+                     if($user_id!==$sess_id):
+                        $this->approval->by_admin('cuti', $cuti_id, $sess_id, $user_id, $this->detail_email($cuti_id));
+                     endif;
+                     if(!empty($user_app_lv1)){
+                        $this->approval->request('lv1', 'cuti', $cuti_id, $user_id, $this->detail_email($cuti_id));
+                        if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), $subject_email, $isi_email);
+                     }else{
+                        $this->approval->request('hrd', 'cuti', $cuti_id, $user_id, $this->detail_email($cuti_id));
+                        if(!empty(getEmail($this->approval->approver('cuti', $user_nik))))$this->send_email(getEmail($this->approval->approver('cuti', $user_nik)), $subject_email, $isi_email);
+                     }
 
-                 if($this->input->post('insert') == 1)
-                 {
-                    $this->insert_sisa_cuti($user_nik, $this->input->post('alasan_cuti'));
-                 }
+                     if($this->input->post('insert') == 1)
+                     {
+                        $this->insert_sisa_cuti($user_nik, $this->input->post('alasan_cuti'));
+                     }
 
-                 $this->insert_leave_request($user_id, $additional_data, $leave_request_id);
-                 redirect('form_cuti', 'refresh');
+                     $this->insert_leave_request($user_id, $additional_data, $leave_request_id);
+                else:
+                    $id = getValue('id', 'users_cuti', $filter);
+                    $this->db->where('id', $id)->update('users_cuti', array('is_deleted'=>0));
+                endif;
+                redirect('form_cuti', 'refresh');
             }
         }
     }
