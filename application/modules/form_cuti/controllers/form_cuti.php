@@ -683,7 +683,9 @@ class Form_cuti extends MX_Controller {
         $RECID = $leave_request_id[0]['RECID']+1;
         $char = array('"', '<', '>', '#', '%', '{', '}', '|', '^', '~','(',')', '[', ']', '`',',', ' ','&', '.', '/', "'", ';');
         $remarks = str_replace($char, '-', $data['remarks']);
+        $remarks = substr($remarks,0,75);
         $alamat_cuti = str_replace($char, '-', $data['alamat_cuti']);
+        $alamat_cuti = substr($remarks,0,60);
         $phone = str_replace($char, '-', $data['contact']);
         $method = 'post';
         $params =  array();
@@ -989,7 +991,7 @@ class Form_cuti extends MX_Controller {
         $remarks = str_replace($char, '-', $data['remarks']);
         $remarks = substr($remarks,0,75);
         $alamat_cuti = str_replace($char, '-', $data['alamat_cuti']);
-        $remarks = substr($remarks,0,60);
+        $alamat_cuti = substr($remarks,0,60);
         $phone = str_replace($char, '-', $data['contact']);
         $method = 'post';
         $params =  array();
