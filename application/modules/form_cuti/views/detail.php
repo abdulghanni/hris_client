@@ -130,7 +130,7 @@
                       </div>
                       <div class="row form-row">
                         <div class="col-md-4">
-                          <label class="form-label text-right">Alasan</label>
+                          <label class="form-label text-right">Tipe Cuti</label>
                         </div>
                         <div class="col-md-8">
                           <input name="alasan" id="alasan" type="text"  class="form-control" placeholder="alasan" value="<?php echo $user->alasan_cuti?>" disabled>
@@ -138,7 +138,7 @@
                       </div>
                      <div class="row form-row">
                         <div class="col-md-4">
-                          <label class="form-label text-right"><?php echo 'Remarks' ?></label>
+                          <label class="form-label text-right"><?php echo 'Alasan' ?></label>
                         </div>
                         <div class="col-md-8">
                           <input name="remarks" id="remarks" type="text"  class="form-control" placeholder="remarks" value="<?php echo $user->remarks?>" disabled>
