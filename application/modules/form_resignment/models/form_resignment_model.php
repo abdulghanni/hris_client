@@ -20,7 +20,7 @@ class Form_resignment_model extends CI_Model {
         if(!is_admin()){
             $sess_id = $this->session->userdata('user_id');
             $sess_nik = get_nik($sess_id);
-            $is_hrd_pusat = is_hrd_pusat($sess_nik, 1);
+            $is_hrd_pusat = is_hrd_pusat($sess_nik, 10);
             $is_approver = $this->approval->approver('resignment', $sess_nik);//print_mz($is_approver);
             $is_admin_cabang = is_admin_cabang();
             if($is_hrd_pusat != 1){
@@ -58,7 +58,6 @@ class Form_resignment_model extends CI_Model {
             }
             if($is_admin!=1 && $is_hrd_pusat != 1):
             if($is_approver == $sess_nik || $is_admin_cabang == 1){
-              die('dss');
                 $this->db->where_in($this->table.'.user_id', $user);//print_mz($user);
             }elseif($is_admin!=1 ){
                  $this->db->where("(users_resignment.user_id = '$sess_id'
