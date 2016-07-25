@@ -54,6 +54,8 @@ class Form_cuti_model extends CI_Model {
 
             $this->db->where('users_cuti.is_deleted', 0);
             if($f == 1){
+
+            $this->db->where('date_selesai_cuti >=', date('Y-m-d'));
                 $this->db->where('is_app_hrd', 0);
             }elseif($f == 2){
                 $this->db->where('is_app_hrd', 1);
@@ -69,6 +71,7 @@ class Form_cuti_model extends CI_Model {
                 )",null, false);
             }
             endif;
+
 
 
         $i = 0;
