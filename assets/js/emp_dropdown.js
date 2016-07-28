@@ -98,6 +98,7 @@ $(document).ready(function() {
                 break;
             case 'form_kontrak':
             case 'form_pengangkatan':
+            case 'form_pemutusan':
                 getEmpBu(empId);
                 getEmpOrg(empId);
                 getEmpPos(empId);

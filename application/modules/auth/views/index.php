@@ -11,16 +11,15 @@
       </div>
       <div class="modal-body">
      <?= form_open('auth/submit', array('id'=>'frm'))?> 
-                                    <div class="row form-row">
-                                      <div class="col-md-3">
-                                        <?php echo lang('register_nik_label', 'nik');?>
-                                      </div>
-                                      <div class="col-md-9">
-                                        <input type="text" class="form-control" name="nik" value=""> 
-                                        <input type="text" class="form-control" name="name" value="">          
-                                      </div>
-                                    </div>
-                                    
+        <div class="row form-row">
+          <div class="col-md-3">
+            <?php echo lang('register_nik_label', 'nik');?>
+          </div>
+          <div class="col-md-9">
+            <input type="text" class="form-control" name="nik" value=""> 
+            <input type="text" class="form-control" name="name" value="">          
+          </div>
+        </div>                         
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

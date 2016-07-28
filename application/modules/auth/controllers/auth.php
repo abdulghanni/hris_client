@@ -3411,7 +3411,7 @@ class Auth extends MX_Controller {
             $fname_post = (strlen($fname_re) > 0) ? array('groups.name'=>$fname_re) : array() ;
             
             //set default limit in var $config['list_limit'] at application/config/ion_auth.php 
-            $this->data['limit'] = $limit = (strlen($this->input->post('limit')) > 0) ? $this->input->post('limit') : 25 ;
+            $this->data['limit'] = $limit = (strlen($this->input->post('limit')) > 0) ? $this->input->post('limit') : 50 ;
 
             $this->data['offset'] = 6;
 
@@ -3488,6 +3488,7 @@ class Auth extends MX_Controller {
             $additional_data = array(
                 'bu' => $this->input->post('bu'),
                 'admin_type_id' => $this->input->post('admin_type_id'),
+                'type_inventory_id' => $this->input->post('type_inventory_id'),
             );
             $new_group_id = $this->ion_auth->create_group($this->input->post('group_name'), $this->input->post('description'), $additional_data);
 
@@ -3523,6 +3524,7 @@ class Auth extends MX_Controller {
 
             $this->get_bu();
             $this->data['admin_type'] = getAll('admin_type', array('is_deleted'=>'where/0'));
+            $this->data['type_inventory'] = getAll('type_inventory', array('is_deleted'=>'where/0'));
 
             $this->_render_page('auth/create_group', $this->data);
         }
@@ -3579,7 +3581,7 @@ class Auth extends MX_Controller {
             redirect('auth', 'refresh');
         }
 
-        $group = $this->ion_auth->group($id)->row();
+        $group = $this->ion_auth->group($id)->row();//print_mz($group);
 
         //validate form input
         $this->form_validation->set_rules('group_name', $this->lang->line('edit_group_validation_name_label'), 'required|xss_clean');
@@ -3593,6 +3595,7 @@ class Auth extends MX_Controller {
                 $additional_data = array(
                     'bu' => $this->input->post('bu'),
                     'admin_type_id' => $this->input->post('admin_type_id'),
+                    'type_inventory_id' => $this->input->post('type_inventory_id'),
                 );
                 $group_update = $this->ion_auth->update_group($id, $_POST['group_name'], $_POST['group_description'], $additional_data);
 
@@ -3630,7 +3633,9 @@ class Auth extends MX_Controller {
         $this->data['bu'] = $this->get_bu_edit();
         $this->data['c_bu'] = getValue('bu', 'groups', array('id'=>'where/'.$id));
         $this->data['admin_type'] = getAll('admin_type', array('is_deleted'=>'where/0'));
+        $this->data['type_inventory'] = getAll('type_inventory', array('is_deleted'=>'where/0'));
         $this->data['admin_type_id'] = $group->admin_type_id;
+        $this->data['type_inventory_id'] = $group->type_inventory_id;
 
         $this->_render_page('auth/edit_group', $this->data);
     }
@@ -3702,8 +3707,7 @@ class Auth extends MX_Controller {
 
                     $this->template->add_css('main.css');
                 }
-                elseif(in_array($view, array(
-                                             'auth/create_group',
+                elseif(in_array($view, array('auth/create_group',
                                              'auth/edit_group')))
                 {
                     $this->template->set_layout('default');

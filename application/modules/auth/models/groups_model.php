@@ -300,10 +300,12 @@ class groups_model extends CI_Model
             $this->db->select(array(
                 $this->tables['groups'].'.*',
                 $this->tables['groups'].'.id as id',
-                'admin_type.title as admin_type'
+                'admin_type.title as admin_type',
+                'type_inventory.title as type_inventory'
             ));
 
             $this->db->join('admin_type', 'admin_type.id = groups.admin_type_id', 'LEFT');
+            $this->db->join('type_inventory', 'type_inventory.id = groups.type_inventory_id', 'LEFT');
         }
 
         $this->trigger_events('extra_where');

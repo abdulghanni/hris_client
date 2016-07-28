@@ -64,9 +64,19 @@
 
     <p>
         <label>Tipe Administrator :</label><br />
-        <select class="select2" name="admin_type_id" style="width:50%">
+        <select id="admin_type_id" class="select2" name="admin_type_id" style="width:50%">
         <?php if($admin_type->num_rows()>0):
             foreach ($admin_type->result() as $type) {?>
+        <option value="<?php echo $type->id?>"><?php echo $type->title?></option>
+        <?php }endif; ?>
+        </select>
+    </p><br />
+
+    <p id="type_inventaris" style="display:none;">
+        <label>Tipe Inventaris :</label><br />
+        <select class="select2" name="type_inventory_id" style="width:50%;">
+        <?php if($type_inventory->num_rows()>0):
+            foreach ($type_inventory->result() as $type) {?>
         <option value="<?php echo $type->id?>"><?php echo $type->title?></option>
         <?php }endif; ?>
         </select>

@@ -37,6 +37,7 @@
           <li > <a href="<?php echo site_url('form_rolling')?>">Mutasi</a> </li>    
           <li > <a href="<?php echo site_url('form_pengangkatan')?>">Pengangkatan</a> </li>    
           <li > <a href="<?php echo site_url('form_kontrak')?>">Perpanjangan Kontrak</a> </li>    
+          <li > <a href="<?php echo site_url('form_pemutusan')?>">Pemutusan Kontrak</a> </li>    
           <li > <a href="<?php echo site_url('form_cuti')?>">Cuti</a> </li>
           <!--
           <li > <a href="<?php echo site_url('form_spd_dalam') ?>">Perjalanan dinas - dalam kota</a> </li>  

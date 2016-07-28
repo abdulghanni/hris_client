@@ -461,22 +461,7 @@ class Form_resignment extends MX_Controller {
 
     function detail_email($id)
     {
-        if(!$this->ion_auth->logged_in())
-        {
-            redirect('auth/login', 'refresh');
-        }
-        $this->data['id'] = $id;
-       $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
-        $sess_nik = $this->data['sess_nik'] = get_nik($sess_id);
-        $user_id = getValue('user_id', 'users_resignment', array('id'=>'where/'.$id));
-        $this->data['user_nik'] = get_nik($user_id);
-        $form_resignment = $this->data['form_resignment'] = $this->main->detail($id)->result();
-        $this->data['_num_rows'] = $this->main->detail($id)->num_rows();
-        $this->data['alasan_resign'] = getAll('alasan_resign', array('is_deleted'=>'where/0'));
-        $alasan = explode(',', getValue('alasan_resign_id', 'users_resignment_wawancara', array('user_resignment_id' => 'where/'.$id)));
-        $this->data['alasan'] = $this->main->get_alasan($alasan);
-
-        return $this->load->view('form_resignment/resignment_mail', $this->data, TRUE);
+        return true;
     }
 
     public function get_hrd($buid)

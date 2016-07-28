@@ -82,7 +82,9 @@
                                     <td valign="middle"><?php echo $user->description;?></td>
                                     <!-- <td valign="middle"><span class="muted"><?php echo $user->last_name;?></span></td> -->
                                     <td valign="middle"><span class="muted"><?php echo get_bu_name($user->bu);?></span></td>
-                                    <td valign="middle"><span class="muted"><?php echo $user->admin_type;?></span></td>
+                                    <td valign="middle"><span class="muted"><?php 
+                                        $type_inventory = ($user->type_inventory_id != 0) ? "($user->type_inventory)" : '';
+                                        echo $user->admin_type.$type_inventory;?></span></td>
                                     <td valign="middle">
                                         <a href="<?php echo site_url('auth/edit_group/'.$user->id)?>"><button type="button" class="btn btn-info btn-small"   title="<?php echo lang('edit_button')?>"><i class="icon-edit"></i></button></a>
                                         <button class='btn btn-danger btn-small' type="button" value="Delete" data-toggle="modal" data-target="#deleteGroupModal<?php echo $user->id?>" title="<?php echo lang('delete_button')?>"><i class="icon-warning-sign"></i></button>

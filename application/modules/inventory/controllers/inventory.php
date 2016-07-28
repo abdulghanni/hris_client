@@ -173,7 +173,13 @@ class Inventory extends MX_Controller {
             $this->data['type'] = $type;
             //$this->data['inventory'] = GetJoin("inventory", "users_inventory", "users_inventory.inventory_id = inventory.id",  "left", 'users_inventory.*, inventory.title as title', array('users_inventory.user_id'=>'where/'.$user_id, 'inventory.type_inventory_id'=>'where/'.$group_id));
             $this->data['inventory'] = GetAll('inventory', array('type_inventory_id'=>'where/'.$group_id));
-            $this->data['users_inventory'] = GetJoin("users_inventory", "inventory", "users_inventory.inventory_id = inventory.id",  "left", 'users_inventory.id as id, users_inventory.user_id, users_inventory.inventory_id, users_inventory.note, inventory.title as title', array('users_inventory.user_id'=>'where/'.$user_id, 'inventory.type_inventory_id'=>'where/'.$group_id, 'users_inventory.is_deleted'=>'where/0'));
+            $inv_group = $this->main->getUserInvGroup();//print_mz($group_id->result());
+            $group_id = array();
+            foreach($inv_group->result() as $r=>$v){
+                $group_id[] = $v->type_inventory_id;
+            }
+            // $this->data['users_inventory'] = GetJoin("users_inventory", "inventory", "users_inventory.inventory_id = inventory.id",  "left", 'users_inventory.id as id, users_inventory.user_id, users_inventory.inventory_id, users_inventory.note, inventory.title as title', array('users_inventory.user_id'=>'where/'.$user_id, 'inventory.type_inventory_id'=>'where/1'.$group_id, 'users_inventory.is_deleted'=>'where/0'));
+            $this->data['users_inventory'] = $this->main->getInvList($user_id, $group_id);
             $this->_render_page('inventory/detail', $this->data);
         }
     }
@@ -561,31 +567,36 @@ class Inventory extends MX_Controller {
         }
     }
 
-    function add_row($id){
-        if(is_admin_it() || $sess_nik===$superior_it){
-            $group_id = 2;
-            $type = 'it';
-        }elseif(is_admin_hrd() ||$sess_nik===$superior_hrd){
-            $group_id = 1;
-            $type = 'hrd';
-        }elseif(is_admin_logistik() || $sess_nik===$superior_logistik){
-            $group_id = 3;
-            $type = 'logistik';
-        }elseif(is_admin_perpus() || $sess_nik===$superior_perpus){
-            $group_id = 5;
-            $type = 'perpus';
-        }elseif(is_admin_koperasi() || $sess_nik===$superior_koperasi){
-            $group_id = 4;
-            $type = 'koperasi';
-        }elseif(is_admin_keuangan() || $sess_nik===$superior_keuangan){
-            $group_id = 6;
-            $type = 'keuangan';
-        }else{
-            $group_id = 0;
+    function add_row($id = null){
+        // if(is_admin_it() || $sess_nik===$superior_it){
+        //     $group_id = 2;
+        //     $type = 'it';
+        // }elseif(is_admin_hrd() ||$sess_nik===$superior_hrd){
+        //     $group_id = 1;
+        //     $type = 'hrd';
+        // }elseif(is_admin_logistik() || $sess_nik===$superior_logistik){
+        //     $group_id = 3;
+        //     $type = 'logistik';
+        // }elseif(is_admin_perpus() || $sess_nik===$superior_perpus){
+        //     $group_id = 5;
+        //     $type = 'perpus';
+        // }elseif(is_admin_koperasi() || $sess_nik===$superior_koperasi){
+        //     $group_id = 4;
+        //     $type = 'koperasi';
+        // }elseif(is_admin_keuangan() || $sess_nik===$superior_keuangan){
+        //     $group_id = 6;
+        //     $type = 'keuangan';
+        // }else{
+        //     $group_id = 0;
+        // }
+        $inv_group = $this->main->getUserInvGroup();//print_mz($group_id->result());
+        $group_id = array();
+        foreach($inv_group->result() as $r=>$v){
+            $group_id[] = $v->type_inventory_id;
         }
-        
         $data['id'] = $id;
-        $data['item'] = GetAllSelect('inventory','id,title', array('type_inventory_id'=>'where/'.$group_id))->result();
+        // $data['item'] = GetAllSelect('inventory','id,title', '', array('type_inventory_id'=>'where/'.$group_id))->result();
+        $data['item'] = GetAllSelect('inventory','id,title', array(), array('type_inventory_id'=>$group_id))->result();
         $this->load->view('inventory/item', $data);
     }
 

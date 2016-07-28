@@ -94,6 +94,13 @@ class Approval {
                 $isi_email = get_name($pengaju_id).' mengajukan perpanjangan kontrak karyawan untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>';
                 $user_id = $pengaju_id;
                 break;
+            case "pemutusan":
+                $receiver = $CI->approval->approver($form, $user_nik);
+                $pengaju_id = getValue('created_by', 'users_'.$form, array('id'=>'where/'.$id));
+                $form = 'Pemutusan Kontrak Karyawan';
+                $isi_email = get_name($pengaju_id).' mengajukan Pemutusan kontrak karyawan untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>';
+                $user_id = $pengaju_id;
+                break;
             case "pengangkatan":
                 $receiver = $CI->approval->approver($form, $user_nik);
                 $pengaju_id = getValue('created_by', 'users_'.$form, array('id'=>'where/'.$id));
@@ -498,6 +505,7 @@ class Approval {
     public function approver($form, $user_nik = null)
     {
         $bu = get_user_buid($user_nik);//lastq();
+        if($bu == 0)$bu=50;
         //print_mz($bu);
         $form_type_id = getValue('id', 'form_type', array('title'=>'like/'.$form));
         $filter = array('form_type_id'=>'where/'.$form_type_id, 'bu'=>'where/'.$bu);
