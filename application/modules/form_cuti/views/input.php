@@ -194,6 +194,11 @@
                       </div>
                     </div>
                     <div class="row form-row" id="num_leave" style="display:none">
+                      <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
+                    <div class="row form-row"><div class="col-md-9 pull-right" style="margin: 10px 0px 20px 0px;" ><i class="icon-warning-sign" style="color:red ;text-shadow: 1px 1px 1px #ccc;font-size: 1em;"> Jika jumlah hari melebihi jumlah cuti yang diberikan, maka akan memotong sisa cuti tahunan</i>
+                        
+                      </div>
+                    </div>
                       <div class="col-md-3">
                         <label class="form-label text-right"><?php echo 'Jumlah cuti yang diberikan' ?></label>
                       </div>
