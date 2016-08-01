@@ -224,7 +224,7 @@ class Email extends MX_Controller {
             $this->delete_activation_mail($id);
             $user_id = getValue('sender_id', 'email', array('id'=>'where/'.$id));
             $isi_email = 'Akun anda di Web-HRIS Erlangga telah diaktifkan, silakan lakukan login untuk mulai mengakses Web-HRIS Erlangga';
-            //if(!empty(getEmail($user_id)))$this->send_email(getEmail($user_id), 'Status Aktivasi Akun', $isi_email);
+            if(!empty(getEmail($user_id)))$this->send_email(getEmail($user_id), 'Status Aktivasi Akun', $isi_email);
             //redirect them to the auth page
             $this->session->set_flashdata('message', $this->ion_auth->messages());
             //redirect($this->session->userdata('last_link'), 'refresh');

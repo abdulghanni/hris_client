@@ -939,7 +939,7 @@ class form_tidak_masuk extends MX_Controller {
             redirect('auth/login', 'refresh');
         }
 
-				$tidak_masuk_id = array('570');
+				$tidak_masuk_id = array('328');
 				foreach ($tidak_masuk_id as $key => $value) {
 						//echo $value;
 						$data = GetAll('users_tidak_masuk', array('id'=>'where/'.$value))->row_array();
@@ -992,7 +992,7 @@ class form_tidak_masuk extends MX_Controller {
 
 	        if(isset($result->status) && $result->status == 'success')
 	        {
-						echo '<pre>';
+						echo '<pre>'.$data['id'];
 						print_r($this->rest->debug());
 						//return true;
 						echo '</pre>';

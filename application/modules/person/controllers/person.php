@@ -191,7 +191,7 @@ class Person extends MX_Controller {
 			$this->data['ikatan_dinas'] = $ikatan_dinas;
 		}
 
-        //Tab Inventaris
+  //       //Tab Inventaris
 
         $this->data['users_inventory'] = GetJoin("users_inventory", "inventory", "users_inventory.inventory_id = inventory.id",  "left", 'users_inventory.id as id, users_inventory.user_id, users_inventory.inventory_id, users_inventory.note, inventory.title as title', array('users_inventory.user_id'=>'where/'.$id,'users_inventory.is_deleted'=>'where/0'));
 

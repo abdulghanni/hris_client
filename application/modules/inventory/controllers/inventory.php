@@ -43,22 +43,22 @@ class Inventory extends MX_Controller {
 
     public function ajax_list()
     {
-         if(is_admin_it()){
-                $this->data['type'] = $type = 'it';
-            }elseif(is_admin_hrd()){
-                $this->data['type'] = $type = 'hrd';
-            }elseif(is_admin_logistik()){
-                $this->data['type'] = $type = 'logistik';
-            }elseif(is_admin_perpus()){
-                $this->data['type'] = $type = 'perpus';
-            }elseif(is_admin_koperasi()){
-                $this->data['type'] = $type = 'koperasi';
-            }elseif(is_admin_keuangan()){
-                $this->data['type'] = $type = 'keuangan';
-            }else{
-                $this->data['type'] = $type = '';
-            }
-
+         // if(is_admin_it()){
+         //        $this->data['type'] = $type = 'it';
+         //    }elseif(is_admin_hrd()){
+         //        $this->data['type'] = $type = 'hrd';
+         //    }elseif(is_admin_logistik()){
+         //        $this->data['type'] = $type = 'logistik';
+         //    }elseif(is_admin_perpus()){
+         //        $this->data['type'] = $type = 'perpus';
+         //    }elseif(is_admin_koperasi()){
+         //        $this->data['type'] = $type = 'koperasi';
+         //    }elseif(is_admin_keuangan()){
+         //        $this->data['type'] = $type = 'keuangan';
+         //    }else{
+         //        $this->data['type'] = $type = '';
+         //    }
+         $type = 'it';
         $list = $this->main->get_datatables();//lastq();//print_mz($list);
         $data = array();
         $no = $_POST['start'];
@@ -102,6 +102,86 @@ class Inventory extends MX_Controller {
             $fname_post = (strlen($this->input->post('first_name')) > 0) ? strtolower(url_title($this->input->post('first_name'),'_')) : "" ;
 
             redirect('inventory/index/fn:'.$fname_post, 'refresh');
+        }
+    }
+
+    function detail_test($user_id)
+    {  
+        $this->data['title'] = 'Inventaris Karyawan';
+        $this->data['sess_nik'] = $sess_nik = get_nik($this->session->userdata('user_id'));
+        $superior_it = getValue('user_app_lv1_it', 'users_exit', array('user_id'=>'where/'.$user_id));
+        $superior_hrd = getValue('user_app_lv1_hrd', 'users_exit', array('user_id'=>'where/'.$user_id));
+        $superior_logistik = getValue('user_app_lv1_logistik', 'users_exit', array('user_id'=>'where/'.$user_id));
+        $superior_koperasi = getValue('user_app_lv1_koperasi', 'users_exit', array('user_id'=>'where/'.$user_id));
+        $superior_perpus = getValue('user_app_lv1_perpus', 'users_exit', array('user_id'=>'where/'.$user_id));
+        $superior_keuangan = getValue('user_app_lv1_keuangan', 'users_exit', array('user_id'=>'where/'.$user_id));
+
+        if (!$this->ion_auth->logged_in())
+        {
+            $this->session->set_userdata('last_link', $this->uri->uri_string());
+            redirect('auth/login', 'refresh');
+        
+        }elseif(is_admin_inventaris() || $sess_nik==$superior_hrd || $sess_nik==$superior_it || $sess_nik==$superior_logistik || $sess_nik==$superior_koperasi || $sess_nik==$superior_perpus){
+          //  die($sess_nik.'=='.$superior_it);
+            // if(is_admin_it() || $sess_nik===$superior_it){
+            //     $group_id = 2;
+            //     $type = 'it';
+            // }elseif(is_admin_hrd() ||$sess_nik===$superior_hrd){
+            //     $group_id = 1;
+            //     $type = 'hrd';
+            // }elseif(is_admin_logistik() || $sess_nik===$superior_logistik){
+            //     $group_id = 3;
+            //     $type = 'logistik';
+            // }elseif(is_admin_perpus() || $sess_nik===$superior_perpus){
+            //     $group_id = 5;
+            //     $type = 'perpus';
+            // }elseif(is_admin_koperasi() || $sess_nik===$superior_koperasi){
+            //     $group_id = 4;
+            //     $type = 'koperasi';
+            // }elseif(is_admin_keuangan() || $sess_nik===$superior_keuangan){
+            //     $group_id = 6;
+            //     $type = 'keuangan';
+            // }else{
+            //     $group_id = 0;
+            // }
+            $type = 'it';
+            $inv_group = $this->main->getUserInvGroup();//print_mz($group_id->result());
+            $group_id = array();
+            foreach($inv_group->result() as $r=>$v){
+                $group_id[] = $v->type_inventory_id;
+            }
+            $num_rows = getAll('users_exit', array('user_id'=>'where/'.$user_id))->num_rows();
+            $num_rows_exit = getAll('users_exit')->num_rows();
+            // if($num_rows>0){
+            //    $exit_id = getValue('id', 'users_exit', array('user_id'=>'where/'.$user_id));
+            //    $this->data['is_submit'] = getValue('is_submit_'.$type,'users_exit', array('id'=>'where/'.$exit_id));
+            //    $this->data['user_submit'] = getValue('user_submit_'.$type,'users_exit', array('id'=>'where/'.$exit_id));
+            //    $this->data['date_submit'] = getValue('date_submit_'.$type,'users_exit', array('id'=>'where/'.$exit_id));
+            //    $this->data['user_edit'] = getValue('user_edit_'.$type,'users_exit', array('id'=>'where/'.$exit_id));
+            //    $this->data['date_edit'] = getValue('date_edit_'.$type,'users_exit', array('id'=>'where/'.$exit_id));
+            //    $this->data['is_app_lv1'] = getValue('is_app_lv1_'.$type,'users_exit', array('id'=>'where/'.$exit_id));
+            //    $this->data['user_app_lv1'] = getValue('user_app_lv1_'.$type,'users_exit', array('id'=>'where/'.$exit_id));
+            //    $this->data['date_app_lv1'] = getValue('date_app_lv1_'.$type,'users_exit', array('id'=>'where/'.$exit_id));
+            //    $this->data['exit_id']  = getValue('id', 'users_exit', array('user_id'=>'where/'.$user_id));
+            // }else{
+            //     $exit_id = $this->db->select('id')->order_by('id', 'asc')->get('users_exit')->last_row();
+            //     $this->data['exit_id']  = ($num_rows_exit>0)?$exit_id->id+1:1;
+            //     $this->data['is_submit'] = 0;
+            //     $this->data['user_app_lv1'] = "xxxx";
+            // }
+            //$this->db->insert_id();
+            $q = $this->db->get('users_exit');
+            
+            $this->data['user_id'] = $user_id;
+            $this->data['user_nik'] = get_nik($user_id);
+            //$this->get_user_atasan();
+            $this->data['type'] = $type;
+            //$this->data['inventory'] = GetJoin("inventory", "users_inventory", "users_inventory.inventory_id = inventory.id",  "left", 'users_inventory.*, inventory.title as title', array('users_inventory.user_id'=>'where/'.$user_id, 'inventory.type_inventory_id'=>'where/'.$group_id));
+            $this->data['inventory'] = GetAll('inventory', array('type_inventory_id'=>'where/'.$group_id));
+            
+            // $this->data['users_inventory'] = GetJoin("users_inventory", "inventory", "users_inventory.inventory_id = inventory.id",  "left", 'users_inventory.id as id, users_inventory.user_id, users_inventory.inventory_id, users_inventory.note, inventory.title as title', array('users_inventory.user_id'=>'where/'.$user_id, 'inventory.type_inventory_id'=>'where/1'.$group_id, 'users_inventory.is_deleted'=>'where/0'));
+            $this->data['users_inventory'] = $this->main->getInvList($user_id, $group_id);
+            $this->_render_page('inventory/detail', $this->data);
         }
     }
 
@@ -164,12 +244,12 @@ class Inventory extends MX_Controller {
                 $this->data['is_submit'] = 0;
                 $this->data['user_app_lv1'] = "xxxx";
             }
-            $this->db->insert_id();
+            //$this->db->insert_id();
             $q = $this->db->get('users_exit');
             
             $this->data['user_id'] = $user_id;
             $this->data['user_nik'] = get_nik($user_id);
-            $this->get_user_atasan();
+            //$this->get_user_atasan();
             $this->data['type'] = $type;
             //$this->data['inventory'] = GetJoin("inventory", "users_inventory", "users_inventory.inventory_id = inventory.id",  "left", 'users_inventory.*, inventory.title as title', array('users_inventory.user_id'=>'where/'.$user_id, 'inventory.type_inventory_id'=>'where/'.$group_id));
             $this->data['inventory'] = GetAll('inventory', array('type_inventory_id'=>'where/'.$group_id));

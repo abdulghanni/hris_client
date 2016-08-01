@@ -174,15 +174,17 @@ class Auth extends MX_Controller {
                 else:
                     if(!is_admin()&&$first_login == 1)redirect('auth/edit_user/'.$user_id.'/'.$first_login,'refresh');
                     $this->session->set_flashdata('message', $this->ion_auth->messages());
-                    redirect('/', 'refresh');
+                    redirect('/');
                 endif;
             }
 
-            $jsondata = file_get_contents(get_api_key().'users/lists/format/json');
+            //$jsondata = file_get_contents(get_api_key().'users/lists/format/json');
+            $jsondata = file_get_contents(get_api_key().'users/lists2/EMPLID/'.$nik.'/format/json');
              //convert json object to php associative array
              $data = json_decode($jsondata, true);
-             
-            if ($this->cekNik($data, 'EMPLID', $nik) == TRUE && $this->input->post('password') == 'password' && is_registered($nik) == false)
+             // print_mz($data);
+            // if ($this->cekNik($data, 'EMPLID', $nik) == TRUE && $this->input->post('password') == 'password' && is_registered($nik) == false)
+            if ($data == 1 && $this->input->post('password') == 'password' && is_registered($nik) == false)
             {
               $getdata = file_get_contents(get_api_key().'users/list/EMPLID/'.$nik.'/format/json');
               $data = json_decode($getdata, true);
@@ -217,7 +219,7 @@ class Auth extends MX_Controller {
                                 $this->session->set_flashdata('message', 'Activation Is Inactive');
                                 
                             }*/
-                            $this->send_email_activation($data['EMPLID']);
+                            // $this->send_email_activation($data['EMPLID']);
                             $this->session->set_flashdata('message', 'Your Account Is Waiting Approval From HR Admin');
                             redirect("auth/login", 'refresh');
                     }else{
@@ -262,7 +264,7 @@ class Auth extends MX_Controller {
     return false;
     }
     
-    function send_email_activation($nik)
+    function send_email_activation_lambat($nik)
     {
         $user_bu = get_user_buid($nik);
         $admin = $this->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 1)->get()->result_array();
@@ -298,6 +300,55 @@ class Auth extends MX_Controller {
             $isi_email = 'Karyawan atas nama '.get_name($nik).' dengan Nik '.$nik.' meminta pengaktifan akun di Web-HRIS Erlangga, silakan klik tautan berikut untuk melakukan aktivasi<br/>'.'<a href='.base_url().'email/detail/'.$email_id.'>'.base_url().'email/detail/'.$email_id.'</a>';
             if(!empty(getEmail($admin_cabang[$i]['user_id'])))$this->send_email(getEmail($admin_cabang[$i]['user_id']), 'Permintaan Aktivasi Akun', $isi_email);
         endfor;
+    }
+
+    function send_email_activation($nik)
+    {
+        $user_bu = get_user_buid($nik);
+        $admin = $this->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 1)->get()->result_array();//lastq();
+        //print_mz($admin);
+        $email = array();
+        foreach ($admin as $key => $value) {
+            $email[] = getEmail($value['user_id']);
+        }
+
+        for($i=1;$i<sizeof($admin);$i++):
+            $data = array(
+                    'sender_id' => $nik,
+                    'receiver_id' => get_nik($admin[$i]['user_id']),
+                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                    'subject' => 'Permintaan Aktivasi Akun',
+                    'email_body' =>'Karyawan dengan Nik '.$nik.' meminta pengaktifan akun, silakan klik button "activate" untuk mengaktifkan akun',
+                    'is_request_activation' => 1,
+                    'is_read' => 0,
+                );
+            $this->db->insert('email', $data);
+            $email_id = $this->db->insert_id();
+            $isi_email = 'Karyawan atas nama '.get_name($nik).' dengan Nik '.$nik.' meminta pengaktifan akun di Web-HRIS Erlangga, silakan klik tautan berikut untuk melakukan aktivasi<br/>'.'<a href='.base_url().'email/detail/'.$email_id.'>'.base_url().'email/detail/'.$email_id.'</a>';
+            //if(!empty(getEmail($admin[$i]['user_id'])))
+        endfor;
+        $this->send_email( $email, 'Permintaan Aktivasi Akun', $isi_email);
+    
+        $admin_cabang = $this->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 5)->where('groups.bu', $user_bu)->get()->result_array();//print_mz($admin_cabang);
+        $email2 = array();
+        foreach ($admin_cabang as $key => $value) {
+            $email2[] = getEmail($value['user_id']);
+        }
+        for($i=0;$i<sizeof($admin_cabang);$i++):
+            $data = array(
+                    'sender_id' => $nik,
+                    'receiver_id' => get_nik($admin_cabang[$i]['user_id']),
+                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                    'subject' => 'Permintaan Aktivasi Akun',
+                    'email_body' =>'Karyawan dengan Nik '.$nik.' meminta pengaktifan akun, silakan klik button "activate" untuk mengaktifkan akun',
+                    'is_request_activation' => 1,
+                    'is_read' => 0,
+                );
+            $this->db->insert('email', $data);
+            $email_id = $this->db->insert_id();
+            $isi_email = 'Karyawan atas nama '.get_name($nik).' dengan Nik '.$nik.' meminta pengaktifan akun di Web-HRIS Erlangga, silakan klik tautan berikut untuk melakukan aktivasi<br/>'.'<a href='.base_url().'email/detail/'.$email_id.'>'.base_url().'email/detail/'.$email_id.'</a>';
+        endfor;
+        $this->send_email($email2, 'Permintaan Aktivasi Akun', $isi_email);
     }
 
     function send_email_inventory($nik)

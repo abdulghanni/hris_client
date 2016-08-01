@@ -119,8 +119,7 @@ class Form_kontrak extends MX_Controller {
             $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
             $this->data['all_users'] = getAll('users', array('active'=>'where/1', 'username'=>'order/asc'), array('!=id'=>'1'));
             $this->data['lama'] = getAll('lama_kontrak', array('is_deleted' => 'where/0'));
-            //$this->get_user_atasan();
-            $this->get_user_atasan();
+            // $this->get_user_atasan();
 
             $this->data['subordinate'] = getAll('users', array('superior_id'=>'where/'.get_nik($sess_id)));
             $this->_render_page('form_kontrak/input', $this->data);

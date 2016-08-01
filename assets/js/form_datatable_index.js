@@ -31,7 +31,9 @@ $(document).ready(function() {
     .change();
 
     table = $('#table').DataTable({ 
-
+            oLanguage: {
+                sProcessing: "<img src='assets/images/loading_spinner.gif'>"
+            },
             "processing": true, //Feature control the processing indicator.
             "serverSide": true, //Feature control DataTables' server-side processing mode.
             "order": [], //Initial no order.
@@ -56,6 +58,9 @@ $(document).ready(function() {
 
     table_inv = $('#table_inv').DataTable({ 
 
+        oLanguage: {
+            sProcessing: "<img src='assets/images/loading_spinner.gif'>"
+        },
         "processing": true, //Feature control the processing indicator.
         "serverSide": true, //Feature control DataTables' server-side processing mode.
         "order": [], //Initial no order.
