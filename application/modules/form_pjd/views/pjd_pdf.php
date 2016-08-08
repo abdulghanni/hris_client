@@ -175,13 +175,13 @@ if ($td_num_rows > 0) {
   </div>
 
   <div style="clear: both; margin: 0pt; padding: 0pt; "></div>
-  Perihal : Pengajuan Dana PJD ke <?=get_bu_name($td->to_city_id)?><br/><br/>
+  Perihal : Pengajuan Dana PJD ke <?php $city = get_bu_name($td->to_city_id); echo ($city == "PUSAT") ? 'Jakarta' : $city;?><br/><br/>
   Kepada Yth.,<br/>
   Departemen Keuangan<br/>
   Di Tempat<br/>
 
   <p>Dengan hormat,</p>
-  <p>Sehubungan dengan adanya kegiatan dalam rangka <?=$td->title?> di <?=get_bu_name($td->to_city_id)?>, bersama ini kami mengajukan perjalanan dinas sebagai berikut:</p>
+  <p>Sehubungan dengan kegiatan <?=$td->title?> di <?=get_bu_name($td->to_city_id)?>, maka kami mengajukan perjalanan dinas sebagai berikut:</p>
   <div style="padding-left:15px;">
     <p>I.  &nbsp;Cabang/Depo yang dikunjungi&emsp;: <?=get_bu_name($td->to_city_id)?></p>
     <p>II. Tanggal kunjungan&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;: <?= dateIndo($td->date_spd_start).' s/d '.dateIndo($td->date_spd_end)?> (<?=$jml_pjd?> Hari)</p>
