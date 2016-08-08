@@ -98,6 +98,14 @@ $rejected = assets_url('img/rejected_stamp.png');?>
         <td><span class="style3">Tanggal Mulai Bekerja </span></td>
         <td><div align="center"><?php echo dateIndo(get_user_sen_date($user_nik))?></div></td>
       </tr>
+      <tr>
+        <td><span class="style3">Nama Pewawancara </span></td>
+        <td><div align="center"><?php $nama_pewawancara = (strlen($row->nama_pewawancara)!=5) ? $row->nama_pewawancara : get_name($row->nama_pewawancara);echo $nama_pewawancara?></div></td>
+      </tr>
+      <tr>
+        <td><span class="style3">Tanggal Wawancara </span></td>
+        <td><div align="center"><?php echo dateIndo($row->date_invitation)?></div></td>
+      </tr>
 </table>
 <div class="style4">
 <p>Terhitung tanggal <?= dateIndo($row->date_resign) ?> mengajukan pengunduran diri dengan alasan <?= $row->alasan ?>, 
