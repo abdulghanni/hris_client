@@ -8,25 +8,25 @@ html{
   font-size: 100%;
   height:100%;
   font-family: Calibri, Candara, Segoe, 'Segoe UI', Optima, Arial, sans-serif; 
-  font-size: 10px;
+  font-size: 8px;
 }
 
 .tg  {border-collapse:collapse;border-spacing:0;}
-.tg td{ height:40px;font-family: Calibri, Candara, Segoe, 'Segoe UI', Optima, Arial, sans-serif;font-size:14px;padding:12px 16px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
-.tg th{height:40px; font-family: Calibri, Candara, Segoe, 'Segoe UI', Optima, Arial, sans-serif;font-size:14px;font-weight:normal;padding:12px 16px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+.tg td{ height:40px;font-family: Calibri, Candara, Segoe, 'Segoe UI', Optima, Arial, sans-serif;font-size:14px;padding:8px 10px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+.tg th{height:40px; font-family: Calibri, Candara, Segoe, 'Segoe UI', Optima, Arial, sans-serif;font-size:14px;font-weight:normal;padding:8px 10px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
 
 .nama{
-  font-size: 14px;
+  font-size: 12px;
   font-family: Calibri, Candara, Segoe, 'Segoe UI', Optima, Arial, sans-serif;
 }
 
 .position{
-  font-size: 13px;
+  font-size: 11px;
   font-family: Calibri, Candara, Segoe, 'Segoe UI', Optima, Arial, sans-serif;
 }
 
 .tanggal{
-  font-size: 12px;
+  font-size: 10px;
   font-family: Calibri, Candara, Segoe, 'Segoe UI', Optima, Arial, sans-serif;
 }
 .style3 {
@@ -34,7 +34,7 @@ html{
   font-family: Calibri, Candara, Segoe, 'Segoe UI', Optima, Arial, sans-serif;
 }
 .style4 {
-  font-size: 16px;
+  font-size: 12px;
   font-family: Calibri, Candara, Segoe, 'Segoe UI', Optima, Arial, sans-serif;
 }
 .style6 {
@@ -60,7 +60,7 @@ html{
   float:left;
   width:100%;
   position:relative;
-  font-size: 15px;
+  font-size: 12px;
   font-family: Calibri, Candara, Segoe, 'Segoe UI', Optima, Arial, sans-serif;
 }
 #col1 {
@@ -99,10 +99,10 @@ html{
 
 #atasan3 {
   float:left;
-  width:30%;
+  width:20%;
   text-align: center;
   position:relative;
-  left:77%;
+  left:50%;
   overflow:hidden;
 }
 
@@ -156,12 +156,12 @@ if ($td_num_rows > 0) {
   </div>
 
 
-  <div style="float: right; width: 28%;">
+  <div style="float: right; width: 40%;">
   <?= $location.', '.dateIndo($td->created_on)?>
   </div>
 
   <div style="clear: both; margin: 0pt; padding: 0pt; "></div>
-  Perihal : Pengajuan Dana PJD ke <?=get_bu_name($td->to_city_id)?><br/><br/>
+  Perihal : Pengajuan Dana PJD ke <?php $city = get_bu_name($td->to_city_id); echo ($city == "PUSAT") ? 'Jakarta' : $city;?><br/><br/>
   Kepada Yth.,<br/>
   Departemen Keuangan<br/>
   Di Tempat<br/>
@@ -270,7 +270,7 @@ if ($td_num_rows > 0) {
   foreach ($task_detail as $td):
 ?>
 <div class="style4">
-<p>Demikian surat pengajuan ini kami sampaikan, atas perhatian dan kerjasamanya kami ucapkan terima kasih.</p>
+Demikian surat pengajuan ini kami sampaikan, atas perhatian dan kerjasamanya kami ucapkan terima kasih.
 </div>
 <br/>
 

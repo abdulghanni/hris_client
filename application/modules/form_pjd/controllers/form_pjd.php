@@ -1218,7 +1218,7 @@ class Form_pjd extends MX_Controller {
         $this->data['form_id'] = 'PJD';
         $this->data['bu'] = get_user_buid($creator);
         $loc_id = get_user_locationid($creator);
-        $this->data['location'] = get_user_location($loc_id);
+        $this->data['location'] = (get_user_location($loc_id) == "PUSAT") ? "Jakarta" : get_user_location($loc_id);
         $date = getValue('created_on','users_spd_luar_group', array('id'=>'where/'.$id));
         $this->data['m'] = date('m', strtotime($date));
         $this->data['y'] = date('Y', strtotime($date));
