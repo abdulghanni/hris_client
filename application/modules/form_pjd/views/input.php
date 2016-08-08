@@ -101,6 +101,24 @@
                         </select>
                       </div>
                     </div> 
+
+                    <div class="row form-row">
+                      <div class="col-md-3">
+                        <label class="form-label text-right"><?php echo 'Diajukan Kepada' ?></label>
+                      </div>
+                      <div class="col-md-9">
+                        <input type="text" name="diajukan_ke" class="form-control" required="required">
+                      </div>
+                    </div> 
+
+                    <div class="row form-row">
+                      <div class="col-md-3">
+                        <label class="form-label text-right"><?php echo 'Jabatan' ?></label>
+                      </div>
+                      <div class="col-md-9">
+                        <input type="text" name="jabatan" class="form-control" required="required">
+                      </div>
+                    </div> 
                     
                   </div>
                   <div class="col-md-7">

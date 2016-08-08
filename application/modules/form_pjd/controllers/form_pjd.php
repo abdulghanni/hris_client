@@ -365,6 +365,8 @@ class Form_pjd extends MX_Controller {
                 'to_city_id'            => $this->input->post('city_to'),
                 'location_id'            => implode(',', $this->input->post('kota')),
                 'transportation_id'     => implode(',', $this->input->post('vehicle')),
+                'diajukan_ke'           => $this->input->post('diajukan_ke'),
+                'jabatan'               => $this->input->post('jabatan'),
                 'user_app_lv1'          => $this->input->post('atasan1'),
                 'user_app_lv2'          => $this->input->post('atasan2'),
                 'user_app_lv3'          => $this->input->post('atasan3'),

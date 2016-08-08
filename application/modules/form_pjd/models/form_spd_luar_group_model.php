@@ -309,6 +309,8 @@ class form_spd_luar_group_model extends CI_Model
                 $this->tables['transportation'].'.title as transportation_nm',
                 'city_to.title as city_to',
                 'city_from.title as city_from',
+                'diajukan_ke',
+                'jabatan',
             ));
 
             $this->db->join('users', 'users_spd_luar_group.task_receiver = users.nik', 'left');

@@ -177,7 +177,8 @@ if ($td_num_rows > 0) {
   <div style="clear: both; margin: 0pt; padding: 0pt; "></div>
   Perihal : Pengajuan Dana PJD ke <?php $city = get_bu_name($td->to_city_id); echo ($city == "PUSAT") ? 'Jakarta' : $city;?><br/><br/>
   Kepada Yth.,<br/>
-  Departemen Keuangan<br/>
+  <?= (!empty($td->diajukan_ke)) ? $td->diajukan_ke : "Departemen Keuangan";?><br/>
+  <?= (!empty($td->jabatan)) ? $td->jabatan."<br/>" : "";?>
   Di Tempat<br/>
 
   <p>Dengan hormat,</p>
