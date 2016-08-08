@@ -91,7 +91,7 @@
       </li>  
       <?php } ?>  
       <?php if (is_admin()):?>
-      <li class=""> <a href="javascript:;"> <i class="icon-group"></i> <span class="title">Kompetensi</span> <span class="arrow "></span> </a>
+     <!--  <li class=""> <a href="javascript:;"> <i class="icon-group"></i> <span class="title">Kompetensi</span> <span class="arrow "></span> </a>
         <ul class="sub-menu">
           <li > <a href="<?php echo site_url('competency_assessment')?>">Kompetensi Assessment</a></li>
           <li > <a href="<?php echo site_url('competency_behaviour')?>">Kompetensi Behaviour</a></li>
@@ -99,7 +99,7 @@
           <li > <a href="<?php echo site_url('competency_group')?>">Kompetensi Group</a></li>
           <li > <a href="<?php echo site_url('competency_level')?>">Kompetensi Level</a></li>
         </ul>
-      </li>  
+      </li>   -->
     <?php endif;?>
     </ul>
     <a href="#" class="scrollup">Scroll</a>

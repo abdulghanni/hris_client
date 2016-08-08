@@ -414,7 +414,7 @@
                     $approved = assets_url('img/approved_stamp.png');
                     $rejected = assets_url('img/rejected_stamp.png');
                     if(!empty($row->user_app_lv3) && $row->is_app_lv3 == 0 && get_nik($sess_id) == $row->user_app_lv3){?>
-                      <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitModallv3"><i class="icon-ok"></i>Submit</div>
+                      <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitModalLv3"><i class="icon-ok"></i>Submit</div>
                       <span class="small"></span>
                       <span class="semi-bold"></span><br/>
                       <span class="small"></span><br/>

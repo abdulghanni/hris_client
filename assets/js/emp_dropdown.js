@@ -275,7 +275,7 @@ $(document).ready(function() {
             url: baseurl+'dropdown/get_emp_stat/',
             data: {id : empId},
             success: function(data) {
-                $('#status').val(data);
+                $('#statuss').val(data);
             }
         });
     }

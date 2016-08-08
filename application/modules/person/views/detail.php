@@ -30,9 +30,12 @@
 						<div class="heading">
 						<span class="animate-number" data-value="<?php echo $persen_hadir;?>" data-animation-duration="1200">0</span>%
 												
-						</div>
+						</div><!-- 
 						<div class="progress transparent progress-small no-radius">
 							<div class="progress-bar progress-bar-white animate-progress-bar" data-percentage="<?php echo $persen_hadir;?>%"></div>
+						</div>	 -->	
+						<div class="progress transparent progress-small no-radius">
+							<div class="progress-bar progress-bar-white animate-progress-bar" data-percentage="<?php echo '0';?>%"></div>
 						</div>					
 						<!--<div class="description"><i class="icon-custom-up"></i><span class="text-white mini-description ">&nbsp; 4% lebih tinggi <span class="blend">dari rata-rata</span></span></div>--->
 						</div>	
@@ -90,11 +93,16 @@
 							CUTI
 						</div>	
 						<div class="row-fluid">
-							<div class="heading">
+							<!-- <div class="heading">
 								<span class="animate-number" data-value="<?php echo $rekap_hadir['cuti'];?>" data-animation-duration="1200">0</span> Kali
+							</div> -->
+							<div class="heading">
+								<span class="animate-number" data-value="<?php echo '0';?>" data-animation-duration="1200">0</span> Kali
 							</div>
 							<div class="progress transparent progress-white progress-small no-radius">
-								<div class="progress-bar progress-bar-white animate-progress-bar" data-percentage="<?php echo $rekap_hadir['cuti'];?>%"></div>
+								<!-- <div class="progress-bar progress-bar-white animate-progress-bar" data-percentage="<?php echo $rekap_hadir['cuti'];?>%"></div>
+							</div> -->
+							<div class="progress-bar progress-bar-white animate-progress-bar" data-percentage="<?php echo '0';?>%"></div>
 							</div>
 						</div>
 						<!--<div class="description"><i class="icon-male"></i><span class="text-white mini-description ">&nbsp; Mengajukan Cuti </span></div>	-->

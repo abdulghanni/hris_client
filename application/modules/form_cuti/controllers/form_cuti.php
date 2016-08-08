@@ -973,7 +973,7 @@ class Form_cuti extends MX_Controller {
 
     function insert_manual_leave_request()
     {
-        $cuti_id = array('184');
+        $cuti_id = array('477');
         foreach ($cuti_id as $key => $value) {
             //echo $value;
             $data = GetAll('users_cuti', array('id'=>'where/'.$value))->row_array();//lastq();
@@ -991,7 +991,7 @@ class Form_cuti extends MX_Controller {
         $remarks = str_replace($char, '-', $data['remarks']);
         $remarks = substr($remarks,0,75);
         $alamat_cuti = str_replace($char, '-', $data['alamat_cuti']);
-        $alamat_cuti = substr($remarks,0,60);
+        $alamat_cuti = substr($alamat_cuti,0,60);
         $phone = str_replace($char, '-', $data['contact']);
         $method = 'post';
         $params =  array();
@@ -1009,9 +1009,9 @@ class Form_cuti extends MX_Controller {
                '/IDPERSONSUBSTITUTE/'.$data['user_pengganti'].
                '/TRAVELLINGLOCATION/'.$alamat_cuti.
                '/MODIFIEDDATETIME/'.date('Y-m-d', strtotime($data['created_on'])).
-               '/MODIFIEDBY/'.$data['created_by'].
+               '/MODIFIEDBY/'.get_nik(sessId()).
                '/CREATEDDATETIME/'.date('Y-m-d', strtotime($data['created_on'])).
-               '/CREATEDBY/'.$data['created_by'].
+               '/CREATEDBY/'.get_nik(sessId()).
                '/DATAAREAID/'.get_user_dataareaid($user_id).
                '/RECVERSION/'.$RECVERSION.
                '/RECID/'.$RECID.
@@ -1028,6 +1028,12 @@ class Form_cuti extends MX_Controller {
 
         if(isset($result->status) && $result->status == 'success')
         {
+            echo $value;
+            echo $data['user_id'];
+             echo '<pre>';
+            print_r($this->rest->debug());
+            //return true;
+            echo '</pre>';
             $this->update_leave_number_sequence($NEXTREC);
             echo '<pre>';
             print_r($this->rest->debug());

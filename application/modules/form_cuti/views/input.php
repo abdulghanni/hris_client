@@ -149,35 +149,6 @@
                     </div>
                     <div class="row form-row">
                       <div class="col-md-3">
-                        <label class="form-label text-right"><?php echo lang('start_cuti_date') ?></label>
-                      </div>
-                      <div class="col-md-3">
-                        <div id="datepicker_start" class="input-append date success no-padding">
-                          <input type="text" class="form-control" name="start_cuti" required>
-                          <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span> 
-                        </div>
-                      </div>
-                      <div class="col-md-2">
-                        <label class="form-label text-center">s/d</label>
-                      </div>
-                      <div class="col-md-3">
-                        <div id="datepicker_end" class="input-append date success no-padding">
-                          <input type="text" class="form-control" name="end_cuti" required>
-                          <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span> 
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row form-row">
-                      <div class="col-md-3">
-                        <label class="form-label text-right"><?php echo lang('count_day') ?></label>
-                      </div>
-                      <div class="col-md-2">
-                        <input id="jml_hari" type="text"  class="form-control" placeholder="-"disabled="disabled">
-                        <input type="hidden" name="jml_cuti" id="jml_cuti" value="">
-                      </div>
-                    </div>
-                    <div class="row form-row">
-                      <div class="col-md-3">
                         <label class="form-label text-right">Tipe Cuti</label>
                       </div>
                       <div class="col-md-9">
@@ -206,6 +177,36 @@
                         <input name="num_leave" id="num_leave_text" type="text"  class="form-control" placeholder="-" readonly="readonly">
                       </div>
                     </div>
+                    <div class="row form-row">
+                      <div class="col-md-3">
+                        <label class="form-label text-right"><?php echo lang('start_cuti_date') ?></label>
+                      </div>
+                      <div class="col-md-3">
+                        <div id="datepicker_start" class="input-append date success no-padding">
+                          <input type="text" class="form-control" name="start_cuti" required>
+                          <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span> 
+                        </div>
+                      </div>
+                      <div class="col-md-2">
+                        <label class="form-label text-center">s/d</label>
+                      </div>
+                      <div class="col-md-3">
+                        <div id="datepicker_end" class="input-append date success no-padding">
+                          <input type="text" class="form-control" name="end_cuti" required>
+                          <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span> 
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row form-row">
+                      <div class="col-md-3">
+                        <label class="form-label text-right"><?php echo lang('count_day') ?></label>
+                      </div>
+                      <div class="col-md-2">
+                        <input id="jml_hari" type="text"  class="form-control" placeholder="-"disabled="disabled">
+                        <input type="hidden" name="jml_cuti" id="jml_cuti" value="">
+                      </div>
+                    </div>
+                    
                     <div class="row form-row">
                       <div class="col-md-3">
                         <label class="form-label text-right"><?php echo lang('reason')?></label>

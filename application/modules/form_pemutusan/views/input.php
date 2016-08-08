@@ -88,7 +88,7 @@
                           <label class="form-label text-left">Status</label>
                         </div>
                         <div class="col-md-8">
-                          <input id="status" class="form-control "  value=""  disabled="disabled">
+                          <input id="statuss" class="form-control "  value=""  disabled="disabled">
                           <input name="old_status" id="status_id" type="hidden"  class="form-control " value="">
                         </div>
                       </div>
