@@ -1,11 +1,11 @@
-
-
-var url = $.url();
-var baseurl = url.attr('protocol')+'://'+url.attr('host')+'/'+url.segment(1)+'/';
-var uri1 = url.segment(2)+'/do_approve/'+url.segment(4)+'/lv1';
-var uri2 = url.segment(2)+'/do_approve/'+url.segment(4)+'/lv2';
-var uri3 = url.segment(2)+'/do_approve/'+url.segment(4)+'/lv3';
-var uri4 = url.segment(2)+'/do_approve/'+url.segment(4)+'/hrd';
+var base_url    = $("#base_url").val(),
+        form        = $("#form").val(),       
+        id          = $("#id").val(),       
+        uri1        = base_url+form+'/do_approve/'+id+'/lv1';
+        uri2        = base_url+form+'/do_approve/'+id+'/lv2';
+        uri3        = base_url+form+'/do_approve/'+id+'/lv3';
+        uri4      = base_url+form+'/do_approve/'+id+'/hrd';
+    
 $(document).ready(function() {              
 $(".select2").select2();
 //approval absen
@@ -16,7 +16,7 @@ $(".select2").select2();
     $('#btn_app_lv1').click(function(){
         var $btn = $(this).button('loading');
         $.ajax({
-            url : baseurl+uri1,
+            url : uri1,
             type: "POST",
             data: $('#formAppLv1').serialize(),
             success: function(data)
@@ -35,12 +35,12 @@ $(".select2").select2();
 
     function reload_status(lv)
     {
-        uri = url.segment(2)+'/detail/'+url.segment(4)+'/'+lv;
+         uri = base_url+form+'/detail/'+id+'/'+lv;
         $('#'+lv).html('<img src="/hris_client/assets/img/loading.gif"> loading...');
         $('#note').html('<img src="/hris_client/assets/img/loading.gif"> loading...');
         $.ajax({
             type: 'POST',
-            url: baseurl+uri,
+            url: uri,
             dataType: "JSON",
             success: function(data) {
                 $('#'+lv).html(data.app);
@@ -53,7 +53,7 @@ $(".select2").select2();
         $('#formAppLv2').submit(function(ev){
             $.ajax({
                 type: 'POST',
-                url: baseurl+uri2,
+                url: uri2,
                 data: $('#formAppLv2').serialize(),
                 success: function() {
                      $("[data-dismiss=modal]").trigger({ type: "click" });
@@ -70,7 +70,7 @@ $(".select2").select2();
         $('#formAppLv3').submit(function(ev){
             $.ajax({
                 type: 'POST',
-                url: baseurl+uri3,
+                url: uri3,
                 data: $('#formAppLv3').serialize(),
                 success: function() {
                     $("[data-dismiss=modal]").trigger({ type: "click" });
@@ -87,7 +87,7 @@ $(".select2").select2();
         $('#formAppHrd').submit(function(ev){
             $.ajax({
                 type: 'POST',
-                url: baseurl+uri4,
+                url: uri4,
                 data: $('#formAppHrd').serialize(),
                 success: function() {
                     $("[data-dismiss=modal]").trigger({ type: "click" });
@@ -104,7 +104,7 @@ function approve1()
     {
         $('#btnApp').text('saving...'); //change button text
         $('#btnApp').attr('disabled',true); //set button disable 
-        var url = baseurl+uri1;
+        var url = uri1;
         // ajax adding data to database
         $.ajax({
             url : url,
@@ -137,17 +137,6 @@ function approve1()
                 $('#btnApp').text('save'); //change button text
                 $('#btnApp').attr('disabled',false); //set button enable 
 
-            }
-        });
-    }
-
-    function reload_status()
-    {
-        $.ajax({
-            type: 'POST',
-            url: baseurl+uri5,
-            success: function(data) {
-                $('#lv1').html(data);
             }
         });
     }

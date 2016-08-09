@@ -25,7 +25,6 @@
                 $att = array('class' => 'form-no-horizontal-spacing', 'id' => '');
                 echo form_open('form_resignment/add', $att);
                 if($_num_rows>0){
-                  foreach($form_resignment as $row):
                     $user_nik = get_nik($row->user_id);
                 ?>
                   <div class="row column-seperation">
@@ -168,7 +167,7 @@
                       </div>
 
                     <?php }endif; ?>
-
+                    <div id="note">
                       <?php 
                       for($i=1;$i<4;$i++):
                       $note_lv = 'note_lv'.$i;
@@ -183,7 +182,7 @@
                         </div>
                       </div>
                       <?php } ?>
-                    <?php endfor;?>
+                      <?php endfor;?>
                       <?php if(!empty($row->note_hrd)){?>
                       <div class="row form-row">
                         <div class="col-md-4">
@@ -194,9 +193,9 @@
                         </div>
                       </div>
                       <?php } ?>
-                      
                     </div>
                   </div>
+                </div>
 
                   <?php if($row->is_app_hrd>0):?>
                   <br/><hr/>
@@ -305,7 +304,7 @@
                     </p>
                   </div>
 
-                  <div class="col-md-3">
+                  <div class="col-md-3" id="lv1">
                     <p class="wf-approve-sp">
                     <div class="col-md-12"><span class="semi-bold">Mengetahui / Menyetujui,</span><br/><br/></div>
                       <?php 
@@ -338,7 +337,7 @@
                     </p>
                   </div>
                     
-                  <div class="col-md-3">
+                  <div class="col-md-3" id="lv2">
                   <?php if(!empty($row->user_app_lv2)):?>
                     <p class="wf-approve-sp">
                     <div class="col-md-12"><span class="semi-bold">Mengetahui / Menyetujui,</span><br/><br/></div>
@@ -370,7 +369,7 @@
                   <?php endif; ?>
                   </div>
                     
-                  <div class="col-md-3">
+                  <div class="col-md-3" id="hrd">
                     <p class="wf-approve-sp">
                     <div class="col-md-12"><span class="semi-bold">Diterima HRD</span><br/><br/></div>
                       <?php 
@@ -406,7 +405,7 @@
 
               <br/>
               <?php if(!empty($row->user_app_lv3)){?>
-              <div class="col-md-12 text-xenter">
+              <div class="col-md-12 text-xenter" id="lv3">
                 <div class="col-md-12 text-center">
                   <p class="wf-approve-sp">
                   <div class="col-md-12"><span class="semi-bold">Mengetahui / Menyetujui,</span><br/><br/></div>
@@ -810,6 +809,6 @@
 
 
 
-<?php endforeach;}else{
+<?php }else{
   echo '<div class="col-md-12 text-center">Pengajuan Ini Telah Di Batalkan Oleh Pengaju</div>';
   } ?>

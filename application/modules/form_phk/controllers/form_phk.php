@@ -113,7 +113,7 @@ class Form_phk extends MX_Controller {
         }
     }
 
-    function detail($id)
+    function detail($id, $lv = null)
     {
         $this->data['title'] = "Detail - Form phk";
         if (!$this->ion_auth->logged_in())
@@ -127,7 +127,7 @@ class Form_phk extends MX_Controller {
             $sess_nik = $this->data['sess_nik'] = get_nik($sess_id);
             $user_id = getValue('user_id', 'users_phk', array('id'=>'where/'.$id));
             $this->data['user_nik'] = get_nik($user_id);
-            $form_phk = $this->data['form_phk'] = $this->main->detail($id)->result();
+            $this->data['row'] = $this->main->detail($id)->row();
             $this->data['_num_rows'] = $this->main->detail($id)->num_rows();
             $this->data['user_id'] =$user_id = getValue('created_by', 'users_phk', array('id'=>'where/'.$id));
             $first_name = getValue('first_name', 'users', array('id'=>'where/'.$user_id));
@@ -135,7 +135,17 @@ class Form_phk extends MX_Controller {
             $attachment = getValue('attachment', 'users_phk', array('id' => 'where/'.$id));
             $this->data['attachment'] = explode(",",$attachment);
             $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
-            $this->_render_page('form_phk/detail', $this->data);
+            
+            $this->data['approved'] = assets_url('img/approved_stamp.png');
+            $this->data['rejected'] = assets_url('img/rejected_stamp.png');
+            $this->data['pending'] = assets_url('img/pending_stamp.png');
+            if($lv != null){
+                $app = $this->load->view('form_'.$this->form_name.'/'.$lv, $this->data, true);
+                $note = $this->load->view('form_'.$this->form_name.'/note', $this->data, true);
+                echo json_encode(array('app'=>$app, 'note'=>$note));
+            }else{
+                $this->_render_page('form_'.$this->form_name.'/detail', $this->data);
+            }
         }
     }
 
@@ -680,7 +690,6 @@ class Form_phk extends MX_Controller {
                     $this->template->add_js('select2.min.js');
 
                     $this->template->add_js('core.js');
-                    $this->template->add_js('purl.js');
                     
                     $this->template->add_js('respond.min.js');
 

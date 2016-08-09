@@ -25,7 +25,6 @@
                 $att = array('class' => 'form-no-horizontal-spacing', 'id' => '');
                 echo form_open('form_kontrak/add', $att);
                 if($_num_rows>0){
-                  foreach($form_kontrak as $row):
                     $user_nik = get_nik($row->user_id);
                 ?>
                   <div class="row column-seperation">
@@ -34,7 +33,6 @@
                       <div class="row form-row">
                         <div class="col-md-4">
                           <label class="form-label text-left">NIK</label>
-                          
                         </div>
                         <div class="col-md-8">
                           <input name="nik" type="text"  class="form-control " placeholder="Nama" value="<?php echo get_nik($row->user_id)?>"  disabled="disabled">
@@ -118,7 +116,7 @@
                       
                       
                     </div>
-                   <div class="col-md-6">
+                    <div class="col-md-6">
                       <h4>Perpanjangan Kontrak Yang Diajukan</h4>
                       <div class="row form-row">
                         <div class="col-md-4">
@@ -160,34 +158,34 @@
                       </div>
                     <?php endif ?>
 
+                    <div id="note">
+                      <?php 
+                      for($i=1;$i<4;$i++):
+                        $note_lv = 'note_lv'.$i;
+                        $user_lv = 'user_app_lv'.$i;
+                        if(!empty($row->$note_lv)){?>
+                        <div class="row form-row">
+                          <div class="col-md-4">
+                            <label class="form-label text-left">Note (<?php echo strtok(get_name($row->$user_lv), " ")?>):</label>
+                          </div>
+                          <div class="col-md-8">
+                            <textarea name="notes_spv" class="form-control" disabled="disabled"><?php echo $row->$note_lv ?></textarea>
+                          </div>
+                        </div>
+                        <?php } ?>
+                      <?php endfor;?>
 
-                    <?php 
-                    for($i=1;$i<4;$i++):
-                      $note_lv = 'note_lv'.$i;
-                      $user_lv = 'user_app_lv'.$i;
-                      if(!empty($row->$note_lv)){?>
-                      <div class="row form-row">
-                        <div class="col-md-4">
-                          <label class="form-label text-left">Note (<?php echo strtok(get_name($row->$user_lv), " ")?>):</label>
+                      <?php if(!empty($row->note_hrd)){?>
+                        <div class="row form-row">
+                          <div class="col-md-4">
+                            <label class="form-label text-left">Note (HRD): </label>
+                          </div>
+                          <div class="col-md-8">
+                            <textarea name="notes_spv" class="form-control" disabled="disabled"><?php echo $row->note_hrd ?></textarea>
+                          </div>
                         </div>
-                        <div class="col-md-8">
-                          <textarea name="notes_spv" class="form-control" disabled="disabled"><?php echo $row->$note_lv ?></textarea>
-                        </div>
-                      </div>
-                      <?php } ?>
-                    <?php endfor;?>
-
-                    <?php if(!empty($row->note_hrd)){?>
-                      <div class="row form-row">
-                        <div class="col-md-4">
-                          <label class="form-label text-left">Note (HRD): </label>
-                        </div>
-                        <div class="col-md-8">
-                          <textarea name="notes_spv" class="form-control" disabled="disabled"><?php echo $row->note_hrd ?></textarea>
-                        </div>
-                      </div>
-                    <?php } ?>
-                      
+                      <?php } ?> 
+                    </div>
                   </div>
                 </div>
                 <div class="form-actions">
@@ -221,7 +219,7 @@
                     </p>
                   </div>
 
-                  <div class="col-md-3">
+                  <div class="col-md-3" id="lv1">
                     <p class="wf-approve-sp">
                     <div class="col-md-12"><span class="semi-bold">Mengetahui / Menyetujui,</span><br/><br/></div>
                       <?php 
@@ -255,7 +253,7 @@
                     </p>
                   </div>
                     
-                  <div class="col-md-3">
+                  <div class="col-md-3" id="lv2">
                   <?php if(!empty($row->user_app_lv2)): ?>
                     <p class="wf-approve-sp">
                     <div class="col-md-12"><span class="semi-bold">Mengetahui / Menyetujui,</span><br/><br/></div>
@@ -288,7 +286,7 @@
                   <?php endif; ?>
                   </div>
                     
-                  <div class="col-md-3">
+                  <div class="col-md-3" id="hrd">
                     <p class="wf-approve-sp">
                     <div class="col-md-12"><span class="semi-bold">Diterima HRD</span><br/><br/></div>
                       <?php if($row->is_app_hrd == 0 && $this->approval->approver('kontrak', $user_nik) == $sess_nik){?>
@@ -360,7 +358,7 @@
               </div>
 
               <?php if(!empty($row->user_app_lv3)){?>
-              <div class="col-md-3 text-xenter">
+              <div class="col-md-3 text-xenter" id="lv3">
                 <div class="col-md-12 text-center">
                   <p class="wf-approve-sp">
                   <div class="col-md-12"><span class="semi-bold">Mengetahui / Menyetujui,</span><br/><br/></div>
@@ -556,6 +554,6 @@
 
 
 
-<?php endforeach;}else{
+<?php }else{
   echo '<div class="col-md-12 text-center">Pengajuan Ini Telah Di Batalkan Oleh Pengaju</div>';
   } ?>

@@ -12,13 +12,14 @@ $(document).ready(function() {
       }
   });
 
-	var url = $.url();
-    var baseurl = url.attr('protocol')+'://'+url.attr('host')+'/'+url.segment(1)+'/';
-    var uri1 = url.segment(2)+'/do_approve/'+url.segment(4)+'/lv1';
-    var uri2 = url.segment(2)+'/do_approve/'+url.segment(4)+'/lv2';
-    var uri3 = url.segment(2)+'/do_approve/'+url.segment(4)+'/lv3';
-    var uri4 = url.segment(2)+'/do_approve/'+url.segment(4)+'/hrd';
-    var uriJurusan = url.segment(2)+'/add_jurusan/';
+	var base_url    = $("#base_url").val(),
+        form        = $("#form").val(),       
+        id          = $("#id").val(),       
+        uri1        = base_url+form+'/do_approve/'+id+'/lv1';
+        uri2        = base_url+form+'/do_approve/'+id+'/lv2';
+        uri3        = base_url+form+'/do_approve/'+id+'/lv3';
+        uri4        = base_url+form+'/do_approve/'+id+'/hrd';
+    var uriJurusan  = base_url+form+'/add_jurusan/';
             
     //approval script
 
@@ -31,7 +32,7 @@ $(document).ready(function() {
         $('#formAppLv1').submit(function(ev){
             $.ajax({
                 type: 'POST',
-                url: baseurl+uri1,
+                url: uri1,
                 data: $('#formAppLv1').serialize(),
                 success: function() {
                     reload_status('lv1');
@@ -48,7 +49,7 @@ $(document).ready(function() {
         $('#formAppLv2').submit(function(ev){
             $.ajax({
                 type: 'POST',
-                url: baseurl+uri2,
+                url: uri2,
                 data: $('#formAppLv2').serialize(),
                 success: function() {
                       reload_status('lv2');
@@ -65,7 +66,7 @@ $(document).ready(function() {
         $('#formAppLv3').submit(function(ev){
             $.ajax({
                 type: 'POST',
-                url: baseurl+uri3,
+                url: uri3,
                 data: $('#formAppLv3').serialize(),
                 success: function() {
                      reload_status('lv3');
@@ -82,7 +83,7 @@ $(document).ready(function() {
         $('#formAppHrd').submit(function(ev){
             $.ajax({
                 type: 'POST',
-                url: baseurl+uri4,
+                url: uri4,
                 data: $('#formAppHrd').serialize(),
                 success: function() {
                      reload_status('hrd');
@@ -97,7 +98,7 @@ $(document).ready(function() {
     $('#btnAddJurusan').click(function(){
         var $btn = $(this).button('loading');
             $.ajax({
-                url : baseurl+uriJurusan,
+                url : uriJurusan,
                 type: "POST",
                 data: $('#formAddJurusan').serialize(),
                 success: function(data)
@@ -111,12 +112,12 @@ $(document).ready(function() {
 
     function reload_status(lv)
     {
-        uri = url.segment(2)+'/detail/'+url.segment(4)+'/'+lv;
+        uri = base_url+form+'/detail/'+id+'/'+lv;
         $('#'+lv).html('<img src="/hris_client/assets/img/loading.gif"> loading...');
         $('#note').html('<img src="/hris_client/assets/img/loading.gif"> loading...');
         $.ajax({
             type: 'POST',
-            url: baseurl+uri,
+            url: uri,
             dataType: "JSON",
             success: function(data) {
                 $('#'+lv).html(data.app);
@@ -150,7 +151,7 @@ $(document).ready(function() {
     {
      $.ajax({
             type: 'POST',
-            url: baseurl+'dropdown/get_atasan2/'+empId,
+            url: 'dropdown/get_atasan2/'+empId,
             data: {id : empId},
             success: function(data) {
                 $('#atasan2').html(data);
@@ -162,7 +163,7 @@ $(document).ready(function() {
     {
      $.ajax({
             type: 'POST',
-            url: baseurl+'dropdown/get_atasan3/'+empId,
+            url: 'dropdown/get_atasan3/'+empId,
             data: {id : empId},
             success: function(data) {
                 $('#atasan3').html(data);

@@ -125,7 +125,7 @@ class Form_Pemutusan extends MX_Controller {
         }
     }
 
-    function detail($id)
+    function detail($id, $lv = null)
     {
         $this->data['title'] = "Detail - Form pemutusan";
         if (!$this->ion_auth->logged_in())
@@ -137,7 +137,7 @@ class Form_Pemutusan extends MX_Controller {
            $this->data['id'] = $id;
             $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
             $this->data['sess_nik'] = get_nik($sess_id);
-            $form_pemutusan = $this->data['form_pemutusan'] = $this->main->detail($id)->result();
+            $this->data['row'] = $this->main->detail($id)->row();
             $this->data['_num_rows'] = $this->main->detail($id)->num_rows();
             $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
             $this->data['user_id'] =$user_id = getValue('created_by', 'users_pemutusan', array('id'=>'where/'.$id));
@@ -145,7 +145,17 @@ class Form_Pemutusan extends MX_Controller {
             $this->data['user_folder'] = $user_id.$first_name.'/sdm/';
             $attachment = getValue('attachment', 'users_pemutusan', array('id' => 'where/'.$id));
             $this->data['attachment'] = explode(",",$attachment);
-            $this->_render_page('form_pemutusan/detail', $this->data);
+            
+            $this->data['approved'] = assets_url('img/approved_stamp.png');
+            $this->data['rejected'] = assets_url('img/rejected_stamp.png');
+            $this->data['pending'] = assets_url('img/pending_stamp.png');
+            if($lv != null){
+                $app = $this->load->view('form_'.$this->form_name.'/'.$lv, $this->data, true);
+                $note = $this->load->view('form_'.$this->form_name.'/note', $this->data, true);
+                echo json_encode(array('app'=>$app, 'note'=>$note));
+            }else{
+                $this->_render_page('form_'.$this->form_name.'/detail', $this->data);
+            }
         }
     }
 
@@ -539,7 +549,6 @@ class Form_Pemutusan extends MX_Controller {
                     $this->template->add_js('select2.min.js');
 
                     $this->template->add_js('core.js');
-                    $this->template->add_js('purl.js');
 
                     $this->template->add_js('respond.min.js');
 

@@ -110,7 +110,7 @@ class Form_pengangkatan extends MX_Controller {
         }
     }
 
-    function detail($id)
+    function detail($id, $lv = null)
     {
         $this->data['title'] = "Detail - Form Pengangkatan";
         if (!$this->ion_auth->logged_in())
@@ -122,7 +122,7 @@ class Form_pengangkatan extends MX_Controller {
             $this->data['id'] = $id;
             $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
             $this->data['sess_nik'] = get_nik($sess_id);
-            $form_pengangkatan = $this->data['form_pengangkatan'] = $this->main->detail($id)->result();
+            $this->data['row'] = $this->main->detail($id)->row();
             $this->data['_num_rows'] = $this->main->detail($id)->num_rows();
             $this->data['user_id'] =$user_id = getValue('created_by', 'users_pengangkatan', array('id'=>'where/'.$id));
             $first_name = getValue('first_name', 'users', array('id'=>'where/'.$user_id));
@@ -133,7 +133,16 @@ class Form_pengangkatan extends MX_Controller {
             $this->data['status'] = getValue('title', 'empl_status', array('id'=>'where/'.$status_id));
 
             $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
-            $this->_render_page('form_pengangkatan/detail', $this->data);
+            $this->data['approved'] = assets_url('img/approved_stamp.png');
+            $this->data['rejected'] = assets_url('img/rejected_stamp.png');
+            $this->data['pending'] = assets_url('img/pending_stamp.png');
+            if($lv != null){
+                $app = $this->load->view('form_'.$this->form_name.'/'.$lv, $this->data, true);
+                $note = $this->load->view('form_'.$this->form_name.'/note', $this->data, true);
+                echo json_encode(array('app'=>$app, 'note'=>$note));
+            }else{
+                $this->_render_page('form_'.$this->form_name.'/detail', $this->data);
+            }
         }
     }
 
@@ -466,8 +475,6 @@ class Form_pengangkatan extends MX_Controller {
                     $this->template->add_js('select2.min.js');
 
                     $this->template->add_js('core.js');
-                    $this->template->add_js('purl.js');
-
                     $this->template->add_js('respond.min.js');
 
                     $this->template->add_js('jquery.bootstrap.wizard.min.js');

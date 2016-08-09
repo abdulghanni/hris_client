@@ -24,7 +24,6 @@
             <div class="grid-body no-border">
             <?php
               if($_num_rows>0){
-                foreach($form_training_group as $user):
                 $peserta = getAll('users_training_group', array('id'=>'where/'.$user->id))->row('user_peserta_id');
                 $p = explode(",", $peserta);
                 $disabled = 'disabled="disabled"';
@@ -833,7 +832,6 @@
   </div>
 </div>
 <!--end approve modal Lv2--> 
-<?php endforeach; ?>
 <?php }else{
   echo '<div class="col-md-12 text-center">Pengajuan Ini Telah Di Batalkan Oleh Pengaju</div>';
   } ?>

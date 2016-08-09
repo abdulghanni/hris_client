@@ -1,6 +1,4 @@
 $(document).ready(function() {
-    //$("div#myId").dropzone({ url: "/file/post" });
-    
     $('.input-append.date')
         .datepicker({todayHighlight: true})
         .on('changeDate', function(ev){
@@ -21,15 +19,15 @@ $(document).ready(function() {
     });
 
     //approval script
-
-    var url = $.url();
-    var baseurl = url.attr('protocol')+'://'+url.attr('host')+'/'+url.segment(1)+'/';
-    var uri1 = url.segment(2)+'/do_approve/'+url.segment(4)+'/lv1';
-    var uri2 = url.segment(2)+'/do_approve/'+url.segment(4)+'/lv2';
-    var uri3 = url.segment(2)+'/do_approve/'+url.segment(4)+'/lv3';
-    var uri4 = url.segment(2)+'/do_approve/'+url.segment(4)+'/lv4';
-    var uri5 = url.segment(2)+'/do_approve/'+url.segment(4)+'/lv5';
-    var urihrd = url.segment(2)+'/do_approve/'+url.segment(4)+'/hrd';
+    var base_url    = $("#base_url").val(),
+        form        = $("#form").val(),       
+        id          = $("#id").val(),       
+        uri1        = base_url+form+'/do_approve/'+id+'/lv1';
+        uri2        = base_url+form+'/do_approve/'+id+'/lv2';
+        uri3        = base_url+form+'/do_approve/'+id+'/lv3';
+        uri4        = base_url+form+'/do_approve/'+id+'/lv4';
+        uri5        = base_url+form+'/do_approve/'+id+'/lv5';
+        urihrd      = base_url+form+'/do_approve/'+id+'/hrd';
     
     $('button[data-loading-text]').click(function () {
     $(this).button('loading');
@@ -40,12 +38,12 @@ $(document).ready(function() {
         $('#formAppLv1').submit(function(ev){
             $.ajax({
                 type: 'POST',
-                url: baseurl+uri1,
+                url: uri1,
                 data: $('#formAppLv1').serialize(),
                 success: function() {
-                     $("[data-dismiss=modal]").trigger({ type: "click" });
-                     location.reload(),
-                     $btn.button('reset')
+                      reload_status('lv1');
+                    $("[data-dismiss=modal]").trigger({ type: "click" });
+                    $btn.button('reset');   
                 }
             });
             ev.preventDefault(); 
@@ -57,12 +55,12 @@ $(document).ready(function() {
         $('#formAppLv2').submit(function(ev){
             $.ajax({
                 type: 'POST',
-                url: baseurl+uri2,
+                url: uri2,
                 data: $('#formAppLv2').serialize(),
                 success: function() {
-                     $("[data-dismiss=modal]").trigger({ type: "click" });
-                     location.reload(),
-                     $btn.button('reset')
+                      reload_status('lv2');
+                    $("[data-dismiss=modal]").trigger({ type: "click" });
+                    $btn.button('reset');   
                 }
             });
             ev.preventDefault(); 
@@ -74,12 +72,12 @@ $(document).ready(function() {
         $('#formAppLv3').submit(function(ev){
             $.ajax({
                 type: 'POST',
-                url: baseurl+uri3,
+                url: uri3,
                 data: $('#formAppLv3').serialize(),
                 success: function() {
+                     reload_status('lv3');
                     $("[data-dismiss=modal]").trigger({ type: "click" });
-                    location.reload(),
-                    $btn.button('reset')
+                    $btn.button('reset');   
                 }
             });
             ev.preventDefault(); 
@@ -91,12 +89,12 @@ $(document).ready(function() {
         $('#formAppLv4').submit(function(ev){
             $.ajax({
                 type: 'POST',
-                url: baseurl+uri4,
+                url: uri4,
                 data: $('#formAppLv4').serialize(),
                 success: function() {
-                     $("[data-dismiss=modal]").trigger({ type: "click" });
-                     location.reload(),
-                     $btn.button('reset')
+                      reload_status('lv4');
+                    $("[data-dismiss=modal]").trigger({ type: "click" });
+                    $btn.button('reset');   
                 }
             });
             ev.preventDefault(); 
@@ -108,12 +106,12 @@ $(document).ready(function() {
         $('#formAppLv5').submit(function(ev){
             $.ajax({
                 type: 'POST',
-                url: baseurl+uri5,
+                url: uri5,
                 data: $('#formAppLv5').serialize(),
                 success: function() {
-                     $("[data-dismiss=modal]").trigger({ type: "click" });
-                     location.reload(),
-                     $btn.button('reset')
+                      reload_status('lv5');
+                    $("[data-dismiss=modal]").trigger({ type: "click" });
+                    $btn.button('reset');   
                 }
             });
             ev.preventDefault(); 
@@ -125,18 +123,34 @@ $(document).ready(function() {
         $('#formAppHrd').submit(function(ev){
             $.ajax({
                 type: 'POST',
-                url: baseurl+urihrd,
+                url: urihrd,
                 data: $('#formAppHrd').serialize(),
                 success: function() {
+                     reload_status('hrd');
                     $("[data-dismiss=modal]").trigger({ type: "click" });
-                    location.reload(),
-                    $btn.button('reset')
+                    $btn.button('reset');   
                 }
             });
             ev.preventDefault(); 
         });  
     });
-     
+    
+    
+    function reload_status(lv)
+    {
+        uri = base_url+form+'/detail/'+id+'/'+lv;
+        $('#'+lv).html('<img src="/hris_client/assets/img/loading.gif"> loading...');
+        $('#note').html('<img src="/hris_client/assets/img/loading.gif"> loading...');
+        $.ajax({
+            type: 'POST',
+            url: uri,
+            dataType: "JSON",
+            success: function(data) {
+                $('#'+lv).html(data.app);
+                $('#note').html(data.note);
+            }
+        });
+    }   
 
     $( "#formadd" ).validate({
         rules: {

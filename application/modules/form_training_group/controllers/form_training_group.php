@@ -98,7 +98,7 @@ class form_training_group extends MX_Controller {
         echo json_encode($output);
     }
 
-    function detail($id)
+    function detail($id, $lv = null)
     {
         $this->data['title'] = 'Detail Training';
         if (!$this->ion_auth->logged_in())
@@ -115,7 +115,7 @@ class form_training_group extends MX_Controller {
             $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
             $this->data['sess_nik'] = get_nik($sess_id);
 
-            $form_training_group = $this->data['form_training_group'] = $this->main->detail($id)->result();
+            $this->data['user'] = $this->main->detail($id)->row();
             $this->data['_num_rows'] = $this->main->detail($id)->num_rows();
 
             $this->data['training_type'] = GetAll('training_type', array('is_deleted' => 'where/0'));
@@ -128,7 +128,16 @@ class form_training_group extends MX_Controller {
             $this->data['ikatan'] = $this->get_tipe_ikatan_dinas();
             $this->data['vendor'] = $this->get_vendor();
 
-            $this->_render_page('form_training_group/detail', $this->data);
+            $this->data['approved'] = assets_url('img/approved_stamp.png');
+            $this->data['rejected'] = assets_url('img/rejected_stamp.png');
+            $this->data['pending'] = assets_url('img/pending_stamp.png');
+            if($lv != null){
+                $app = $this->load->view('form_'.$this->form_name.'/'.$lv, $this->data, true);
+                $note = $this->load->view('form_'.$this->form_name.'/note', $this->data, true);
+                echo json_encode(array('app'=>$app, 'note'=>$note));
+            }else{
+                $this->_render_page('form_'.$this->form_name.'/detail', $this->data);
+            }
         }
     }
 
@@ -589,7 +598,6 @@ function get_penerima_tugas()
                     $this->template->add_js('select2.min.js');
 
                     $this->template->add_js('core.js');
-                    $this->template->add_js('purl.js');
                     $this->template->add_js('jquery.maskMoney.js');
 
                     $this->template->add_js('respond.min.js');

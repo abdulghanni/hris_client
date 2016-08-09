@@ -5,19 +5,19 @@ $('button[data-loading-text]').click(function () {
     $(this).button('loading');
     });
 
-    var url = $.url();
-    var baseurl = url.attr('protocol')+'://'+url.attr('host')+'/'+url.segment(1)+'/';
-    var uri1 = url.segment(2)+'/do_approve/'+url.segment(4)+'/lv1';
-    var uri2 = url.segment(2)+'/do_approve/'+url.segment(4)+'/lv2';
-    var uri3 = url.segment(2)+'/do_approve/'+url.segment(4)+'/lv3';
-    var uri4 = url.segment(2)+'/do_approve/'+url.segment(4)+'/hrd';
-
+    var base_url    = $("#base_url").val(),
+        form        = $("#form").val(),       
+        id          = $("#id").val(),       
+        uri1        = base_url+form+'/do_approve/'+id+'/lv1';
+        uri2        = base_url+form+'/do_approve/'+id+'/lv2';
+        uri3        = base_url+form+'/do_approve/'+id+'/lv3';
+        uri4        = base_url+form+'/do_approve/'+id+'/hrd';
     $('#btn_app_lv1').click(function(){
         var $btn = $(this).button('loading');
         $('#formAppLv1').submit(function(ev){
             $.ajax({
                 type: 'POST',
-                url: baseurl+uri1,
+                url: uri1,
                 data: $('#formAppLv1').serialize(),
                 success: function() {
                     reload_status('lv1');
@@ -34,7 +34,7 @@ $('button[data-loading-text]').click(function () {
         $('#formAppLv2').submit(function(ev){
             $.ajax({
                 type: 'POST',
-                url: baseurl+uri2,
+                url: uri2,
                 data: $('#formAppLv2').serialize(),
                 success: function() {
                      reload_status('lv2');
@@ -51,7 +51,7 @@ $('button[data-loading-text]').click(function () {
         $('#formAppLv3').submit(function(ev){
             $.ajax({
                 type: 'POST',
-                url: baseurl+uri3,
+                url: uri3,
                 data: $('#formAppLv3').serialize(),
                 success: function() {
                     reload_status('lv3');
@@ -68,7 +68,7 @@ $('button[data-loading-text]').click(function () {
         $('#formAppHrd').submit(function(ev){
             $.ajax({
                 type: 'POST',
-                url: baseurl+uri4,
+                url: uri4,
                 data: $('#formAppHrd').serialize(),
                 success: function() {
                     reload_status('hrd');
@@ -82,12 +82,12 @@ $('button[data-loading-text]').click(function () {
 
     function reload_status(lv)
     {
-        uri = url.segment(2)+'/detail/'+url.segment(4)+'/'+lv;
+        uri = base_url+form+'/detail/'+id+'/'+lv;
         $('#'+lv).html('<img src="/hris_client/assets/img/loading.gif"> loading...');
         $('#note').html('<img src="/hris_client/assets/img/loading.gif"> loading...');
         $.ajax({
             type: 'POST',
-            url: baseurl+uri,
+            url: uri,
             dataType: "JSON",
             success: function(data) {
                 $('#'+lv).html(data.app);

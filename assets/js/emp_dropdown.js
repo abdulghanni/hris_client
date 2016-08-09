@@ -1,9 +1,9 @@
 $(document).ready(function() {
-    var url = $.url();
-    var baseurl = url.attr('protocol')+'://'+url.attr('host')+'/'+url.segment(1)+'/';
+    var baseurl = $("#base_url").val(),
+        form    = $("#form").val();
     $("#emp").change(function() {
         var empId = $(this).val();
-        switch (url.segment(2)) 
+        switch (form) 
         {
             case 'form_absen':
                 getAtasan1(empId);

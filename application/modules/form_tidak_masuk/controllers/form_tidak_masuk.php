@@ -882,7 +882,6 @@ class form_tidak_masuk extends MX_Controller {
                     $this->template->add_js('select2.min.js');
 
                     $this->template->add_js('core.js');
-                    $this->template->add_js('purl.js');
 
                     $this->template->add_js('respond.min.js');
 
@@ -907,7 +906,6 @@ class form_tidak_masuk extends MX_Controller {
                     $this->template->add_js('select2.min.js');
 
                     $this->template->add_js('core.js');
-                    $this->template->add_js('purl.js');
                     $this->template->add_js('form_tidak_masuk.js');
 
 
