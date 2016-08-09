@@ -37,6 +37,9 @@
     </head>
     <body class="bg-login">
     <input type="hidden" id="status" value="<?=$this->session->userdata('status')?>">
+    <input type="hidden" id="base_url" value="<?php echo base_url()?>">
+    <input type="hidden" id="form" value="<?php echo $this->uri->segment(1)?>">
+    <input type="hidden" id="id" value="<?php echo $this->uri->segment(3)?>">
         <?php echo $body; ?>
         <!-- / -->
 
