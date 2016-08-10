@@ -219,7 +219,7 @@ class Auth extends MX_Controller {
                                 $this->session->set_flashdata('message', 'Activation Is Inactive');
                                 
                             }*/
-                            // $this->send_email_activation($data['EMPLID']);
+                            $this->send_email_activation($data['EMPLID']);
                             $this->session->set_flashdata('message', 'Your Account Is Waiting Approval From HR Admin');
                             redirect("auth/login", 'refresh');
                     }else{

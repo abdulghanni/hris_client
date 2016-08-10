@@ -41,7 +41,8 @@ $(document).ready(function() {
                 success: function() {
                      reload_status('lv1');
                     $("[data-dismiss=modal]").trigger({ type: "click" });
-                    $btn.button('reset');   
+                    $btn.button('reset'); 
+                    send_notif('lv1');  
                 }
             });
             ev.preventDefault(); 
@@ -111,6 +112,22 @@ $(document).ready(function() {
             success: function(data) {
                 $('#'+lv).html(data.app);
                 $('#note').html(data.note);
+            }
+        });
+    }   
+
+    function send_notif(lv)
+    {
+        uri = base_url+form+'/send_notif/'+id+'/'+lv;
+        $.ajax({
+            type: 'POST',
+            url: uri,
+            // dataType: "JSON",
+            success: function() {
+                console.log('y');
+            },
+            error: function(){
+                console.log('e');
             }
         });
     }   

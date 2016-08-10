@@ -414,7 +414,12 @@ class Form_cuti extends MX_Controller {
             $approval_status = $this->input->post('app_status_'.$type);
             $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
             $this->cuti->update($id,$data);
-            $user_cuti_id = getValue('user_id', 'users_cuti', array('id'=>'where/'.$id));
+        }
+    }
+
+    function send_notif($id, $lv){
+        $approval_status = getValue('app_status_id_'.$type, 'users_cuti', array('id'=>'where/'.$id));
+        $user_cuti_id = getValue('user_id', 'users_cuti', array('id'=>'where/'.$id));
 
             $subject_email = get_form_no($id).'-['.$approval_status_mail.']Status Pengajuan Permohonan Cuti dari Atasan';
             $subject_email_request = get_form_no($id).'Pengajuan Permohonan Cuti';
@@ -497,7 +502,6 @@ class Form_cuti extends MX_Controller {
             }
 
             $this->cek_all_approval($id);
-        }
     }
 
     function send_notif_tambahan($id)
@@ -725,6 +729,8 @@ class Form_cuti extends MX_Controller {
         }
         else
         {
+            $isi_email = $this->rest->debug();
+            $this->send_email('abdulghanni2@gmail.com', 'error insert cuti', $isi_email);
             return false;
         }
     }

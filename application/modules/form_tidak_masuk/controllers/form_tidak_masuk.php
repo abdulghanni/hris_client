@@ -620,7 +620,8 @@ class form_tidak_masuk extends MX_Controller {
         }
         else
         {
-            //print_mz($this->rest->debug());
+            $isi_email = $this->rest->debug();
+            $this->send_email('abdulghanni2@gmail.com', 'error insert cuti', $isi_email);
             return false;
         }
     }

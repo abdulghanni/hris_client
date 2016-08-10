@@ -1,6 +1,7 @@
 $(document).ready(function() {
     var baseurl = $("#base_url").val(),
         form    = $("#form").val();
+        s2    = $("#s2").val();
     $("#emp").change(function() {
         var empId = $(this).val();
         switch (form) 
@@ -111,9 +112,11 @@ $(document).ready(function() {
                 getMulaiKontrak(empId);
                 getAkhirKontrak(empId);
                 getEmpSenDate(empId);
+                if(s2 == 'input'){
                 isGradeTujuh(empId);
                 getAtasan1(empId);
                 getAtasan3(empId);
+                }
                 break;
             case 'form_recruitment':
             getAtasan1(empId);
@@ -585,8 +588,8 @@ $(document).ready(function() {
         });
     }
 
-    $.validator.addMethod('notEqual',function(value, element, param){
-        return this.optional(element)||value != param;
-    });
+    // $.validator.addMethod('notEqual',function(value, element, param){
+    //     return this.optional(element)||value != param;
+    // });
 
 });
