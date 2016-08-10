@@ -137,7 +137,7 @@ $(document).ready(function() {
         $('#formAppHrd').submit(function(ev){
             $.ajax({
                 type: 'POST',
-                url: uri4,
+                url: urihrd,
                 data: $('#formAppHrd').serialize(),
                 success: function() {
                     reload_status('hrd');
