@@ -119,7 +119,7 @@ class Form_medical extends MX_Controller {
 
         $this->data['sess_id'] = $this->session->userdata('user_id');
         $this->data['all_users'] = getAll('users', array('active'=>'where/1', 'username'=>'order/asc'), array('!=id'=>'1'));
-        $this->get_user_atasan();
+        //$this->get_user_atasan();
         $this->get_user_same_org();
         $this->_render_page('form_medical/input', $this->data);
         }

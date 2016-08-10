@@ -102,6 +102,10 @@
       </li>   -->
     <?php endif;?>
     </ul>
+    <div class="row">
+            <div class="col-md-12">
+    <p style="font-size:10px;padding-left:20px;">Page rendered in <?= $this->benchmark->elapsed_time()?> Seconds</p></div>
+        </div>
     <a href="#" class="scrollup">Scroll</a>
     <div class="clearfix"></div>
     <!-- END SIDEBAR MENU --> 

@@ -6,7 +6,7 @@ class recruitment_model extends CI_Model {
     var $table = 'users_recruitment';
     var $join1  = 'users';
     var $join2  = 'users_recruitment_kemampuan';
-    var $column = array('users_recruitment.id', 'nik', 'username','position_id', 'job_desc', 'created_on'); //set column field database for order and search
+    var $column = array('users_recruitment.id', 'nik', 'username','position_id', 'created_on'); //set column field database for order and search
     var $order = array('id' => 'desc'); // default order 
 
     public function __construct()
@@ -21,16 +21,19 @@ class recruitment_model extends CI_Model {
             if(!is_admin()){
             $sess_id = $this->session->userdata('user_id');
             $sess_nik = get_nik($sess_id);
-            $is_approver = $this->approval->approver('recruitment', $sess_nik);//print_mz($is_approver);
+            $is_hrd_pusat = is_hrd_pusat($sess_nik, 1);
+            $is_approver = $this->approval->approver('recruitment', $sess_nik);
             $is_admin_cabang = is_admin_cabang();
-            if($is_approver == $sess_nik || $is_admin_cabang == 1)$user = get_user_satu_bu($sess_nik);
+            if($is_hrd_pusat != 1){
+                if($is_approver == $sess_nik || $is_admin_cabang == 1)$user = get_user_satu_bu($sess_nik);
             }
+        }
         $this->db->select(array(
                 'users_recruitment'.'.id as id',
                 'users_recruitment'.'.position_id',
                 'users_recruitment'.'.created_by',
                 $this->table.'.created_on',
-                'users_recruitment_kemampuan'.'.job_desc',
+                // 'users_recruitment_kemampuan'.'.job_desc',
                 'users_recruitment'.'.approval_status_id_lv1',
                 'users_recruitment'.'.approval_status_id_lv2',
                 'users_recruitment'.'.approval_status_id_lv3',
@@ -45,8 +48,8 @@ class recruitment_model extends CI_Model {
             $this->db->from('users_recruitment');
 
 
-            $this->db->join($this->join1, 'users_recruitment.user_id = users.id', 'left');
-            $this->db->join($this->join2, 'users_recruitment.id = users_recruitment_kemampuan.user_recruitment_id', 'left');
+             $this->db->join($this->join1, 'users_recruitment.user_id = users.id', 'left');
+            // $this->db->join($this->join2, 'users_recruitment.id = users_recruitment_kemampuan.user_recruitment_id', 'left');
             
             $this->db->where('users_recruitment.is_deleted', 0);
             if($f == 1){
@@ -56,16 +59,16 @@ class recruitment_model extends CI_Model {
             }else{
                 
             }
-            if($is_admin!=1):
-            if($is_approver == $sess_nik || $is_admin_cabang == 1){
-                $this->db->where_in("users_recruitment.user_id", $user);//print_mz($user);
-            }elseif($is_admin!=1 ){
-                 $this->db->where("(users_recruitment.user_id = '$sess_id' 
-                               OR users_recruitment.user_app_lv1 = '$sess_nik'  OR users_recruitment.user_app_lv2 = '$sess_nik'  OR users_recruitment.user_app_lv3 = '$sess_nik' 
-                )",null, false);
-            }
+            if($is_admin!=1 && $is_hrd_pusat != 1):
+                if($is_approver == $sess_nik || $is_admin_cabang == 1){
+                    $this->db->where_in("users_recruitment.user_id", $user);//print_mz($user);
+                }elseif($is_admin!=1 ){
+                     $this->db->where("(users_recruitment.user_id = '$sess_id'
+                                   OR users_recruitment.user_app_lv1 = '$sess_nik'  OR users_recruitment.user_app_lv2 = '$sess_nik'  OR users_recruitment.user_app_lv3 = '$sess_nik'
+                    )",null, false);
+                }
             endif;
-
+            // $this->db->where('users_recruitment.id', '39');
 
         $i = 0;
     
@@ -125,17 +128,20 @@ class recruitment_model extends CI_Model {
         if(!is_admin()){
             $sess_id = $this->session->userdata('user_id');
             $sess_nik = get_nik($sess_id);
+            $is_hrd_pusat = is_hrd_pusat($sess_nik, 1);
             $is_approver = $this->approval->approver('recruitment', $sess_nik);//print_mz($is_approver);
             $is_admin_cabang = is_admin_cabang();
-            if($is_approver == $sess_nik || $is_admin_cabang == 1)$user = get_user_satu_bu($sess_nik);
+            if($is_hrd_pusat != 1){
+                if($is_approver == $sess_nik || $is_admin_cabang == 1)$user = get_user_satu_bu($sess_nik);
             }
-            
-        if($is_admin!=1):
+        }
+
+        if($is_admin!=1 && $is_hrd_pusat != 1):
             if($is_approver == $sess_nik || $is_admin_cabang == 1){
                 $this->db->where_in("users_recruitment.user_id", $user);//print_mz($user);
             }elseif($is_admin!=1 ){
-                 $this->db->where("(users_recruitment.user_id = '$sess_id' 
-                               OR users_recruitment.user_app_lv1 = '$sess_nik'  OR users_recruitment.user_app_lv2 = '$sess_nik'  OR users_recruitment.user_app_lv3 = '$sess_nik' 
+                 $this->db->where("(users_recruitment.user_id = '$sess_id'
+                               OR users_recruitment.user_app_lv1 = '$sess_nik'  OR users_recruitment.user_app_lv2 = '$sess_nik'  OR users_recruitment.user_app_lv3 = '$sess_nik'
                 )",null, false);
             }
             endif;
@@ -145,7 +151,7 @@ class recruitment_model extends CI_Model {
         }elseif($f == 2){
             $this->db->where('is_app_hrd', 1);
         }else{
-            
+
         }
         $this->db->from($this->table);
         return $this->db->count_all_results();

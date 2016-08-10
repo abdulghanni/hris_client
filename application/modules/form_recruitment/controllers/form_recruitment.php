@@ -75,7 +75,7 @@ class Form_recruitment extends MX_Controller {
             $row[] = "<a href=$detail>".$r->nik.'</a>';
             $row[] = "<a href=$detail>".$r->username.'</a>';
             $row[] = get_position_name($r->position_id);
-            $row[] = word_limiter($r->job_desc, 5);
+            // $row[] = word_limiter($r->job_desc, 5);
             $row[] = dateIndo($r->created_on);
             $row[] = $status1;
             $row[] = $status2;
@@ -109,6 +109,7 @@ class Form_recruitment extends MX_Controller {
         }elseif(!is_spv($nik)&&!is_admin()&&!is_admin_bagian()){
             return show_error('You must be an administrator to view this page.');
         }else{
+
         $this->data['jurusan'] = getAll('recruitment_jurusan', array('is_deleted' => 'where/0'));
         $this->data['ipk'] = getAll('ipk', array('is_deleted' => 'where/0'));
         $this->data['toefl'] = getAll('toefl', array('is_deleted' => 'where/0'));
@@ -121,7 +122,7 @@ class Form_recruitment extends MX_Controller {
         $this->data['sess_id'] = $this->session->userdata('user_id');
         $this->data['all_users'] = getAll('users', array('active'=>'where/1', 'username'=>'order/asc'), array('!=id'=>'1'));
         $this->get_bu();
-        $this->get_user_atasan();
+        //$this->get_user_atasan();
 
         $this->_render_page('form_recruitment/input', $this->data);
         }

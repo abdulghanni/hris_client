@@ -158,7 +158,7 @@ class form_training_group extends MX_Controller {
         $this->data['users'] =  getAll('users', array('active'=>'where/1', 'username'=>'order/asc'), array('!=id'=>'1'))->result_array();
         $this->get_penerima_tugas();
         $this->get_penerima_tugas_satu_bu();
-        $this->get_user_atasan();
+        // $this->get_user_atasan();
 
         $this->_render_page('form_training_group/input', $this->data);
     }
