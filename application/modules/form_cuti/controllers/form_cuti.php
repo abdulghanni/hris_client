@@ -418,7 +418,7 @@ class Form_cuti extends MX_Controller {
     }
 
     function send_notif($id, $type){
-        $approval_status = getValue('app_status_id_'.$type, 'users_cuti', array('id'=>'where/'.$id));
+        $approval_status = getValue('approval_status_id_'.$type, 'users_cuti', array('id'=>'where/'.$id));
         $user_cuti_id = getValue('user_id', 'users_cuti', array('id'=>'where/'.$id));
 
             $subject_email = get_form_no($id).'-['.$approval_status_mail.']Status Pengajuan Permohonan Cuti dari Atasan';
