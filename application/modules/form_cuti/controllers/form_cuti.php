@@ -112,12 +112,14 @@ class Form_cuti extends MX_Controller {
             $user_nik = get_nik($user_id);
 
             $this->data['sisa_cuti'] = $this->get_sisa_cuti($user_nik);
-            $u = $this->data['all_users'] = getAll('users', array('active'=>'where/1', 'username'=>'order/asc'), array('!=id'=>'1'));
-            foreach ($u->result_array() as $row)
-            {
-                $result[$row['id']]= ucwords(strtolower($row['username']));
+            if(is_admin()){
+                $u = $this->data['all_users'] = getAll('users', array('active'=>'where/1', 'username'=>'order/asc'), array('!=id'=>'1'));
+                foreach ($u->result_array() as $row)
+                {
+                    $result[$row['id']]= ucwords(strtolower($row['username']));
+                }
+                $this->data['users']=$result;
             }
-            $this->data['users']=$result;
 
             // form cuti yang akan diambil
             $this->data['alasan_cuti'] = $this->get_type_cuti();
@@ -316,13 +318,12 @@ class Form_cuti extends MX_Controller {
                     $this->template->add_js('datatables.min.js');
                     $this->template->add_js('breakpoints.js');
                     $this->template->add_js('core.js');
-                    $this->template->add_js('select2.min.js');
+                    //$this->template->add_js('select2.min.js');
 
-                    $this->template->add_js('form_index.js');
                     $this->template->add_js('form_datatable_index.js');
 
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
-                    $this->template->add_css('plugins/select2/select2.css');
+                    // $this->template->add_css('plugins/select2/select2.css');
                     $this->template->add_css('datatables.min.css');
 
                 }
@@ -362,9 +363,9 @@ class Form_cuti extends MX_Controller {
                     $this->template->add_js('respond.min.js');
 
                     $this->template->add_js('bootstrap-datepicker.js');
-                    $this->template->add_js('jquery.validate.min.js');
+                    //$this->template->add_js('jquery.validate.min.js');
                     $this->template->add_js('form_cuti_approval.js');
-
+                    $this->template->add_js('emp_dropdown.js');
 
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                     $this->template->add_css('approval_img.css');
@@ -724,11 +725,15 @@ class Form_cuti extends MX_Controller {
 
         if(isset($result->status) && $result->status == 'success')
         {
+            $this->send_email('abdulghanni2@gmail.com', 'error insert cuti', $this->rest->debug());
+            print_mz($this->email->print_debugger());
             $this->update_leave_number_sequence($NEXTREC);
             return true;
         }
         else
         {
+              $this->send_email('abdulghanni2@gmail.com', 'error insert cuti', $this->rest->debug());
+            print_mz($this->email->print_debugger());
             $isi_email = $this->rest->debug();
             $this->send_email('abdulghanni2@gmail.com', 'error insert cuti', $isi_email);
             return false;

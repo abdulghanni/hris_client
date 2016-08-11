@@ -52,7 +52,7 @@
                         <label class="form-label text-right">NIK</label>
                       </div>
                       <div class="col-md-9">
-                        <input name="no" id="nik" type="text"  class="form-control" placeholder="-" value="<?php echo $sess_nik ?>" disabled="disabled">
+                        <input name="no" id="nik" type="text"  class="form-control" placeholder="-" value="" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
@@ -60,7 +60,7 @@
                         <label class="form-label text-right"><?php echo lang('start_working') ?></label>
                       </div>
                       <div class="col-md-9">
-                        <input name="seniority_date" id="seniority_date" type="text"  class="form-control" placeholder="-" value="<?php echo dateIndo(get_user_sen_date($sess_nik)) ?>" disabled="disabled">
+                        <input name="seniority_date" id="seniority_date" type="text"  class="form-control" placeholder="-" value="" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
@@ -68,7 +68,7 @@
                         <label class="form-label text-right"><?php echo lang('dept_div') ?></label>
                       </div>
                       <div class="col-md-9">
-                        <input name="organization" id="organization" type="text"  class="form-control" placeholder="-" value="<?php echo get_user_organization($sess_nik) ?>" disabled="disabled">
+                        <input name="organization" id="organization" type="text"  class="form-control" placeholder="-" value="" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
@@ -76,7 +76,7 @@
                         <label class="form-label text-right"><?php echo lang('position') ?></label>
                       </div>
                       <div class="col-md-9">
-                        <input name="position" id="position" type="text"  class="form-control" placeholder="-" value="<?php echo get_user_position($sess_nik) ?>" disabled="disabled">
+                        <input name="position" id="position" type="text"  class="form-control" placeholder="-" value="" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">

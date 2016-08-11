@@ -24,7 +24,7 @@
               <a href="<?=base_url('form_'.$form_name.'/input')?>"><button type="button" class="btn btn-primary" title="Klik disini untuk membuat pengajuan baru"><i class="icon-plus"></i> Buat Pengajuan Baru</button><br/><br/></a>
               </div>
               <div class="col-md-5">
-                <select class="form-control select2" id="opt">
+                <select class="form-control" id="opt">
                   <option value="1" <?=($this->session->userdata('status') == 1) ? 'selected="selected"' : ''?>>Tampilkan Pengajuan Yang Belum Selesai</option>
                   <option value="2" <?=($this->session->userdata('status') == 2) ? 'selected="selected"' : ''?>>Tampilkan Pengajuan Yang Sudah Selesai</option>
                   <option value="3" <?=($this->session->userdata('status') == 3) ? 'selected="selected"' : ''?>>Tampilkan Semua Pengajuan</option>

@@ -60,6 +60,7 @@
                       </div>
                       <div class="col-md-8">
                         <input name="nik" id="nik" type="text"  class="form-control" placeholder="NIK" value="<?php echo $user_nik; ?>" disabled="disabled">
+                        <input type="hidden" name="emp" id="emp" value="<?php echo $user->user_id?>">
                       </div>
                     </div>          
                     <div class="row form-row">
@@ -75,7 +76,7 @@
                         <label class="form-label text-right"><?php echo lang('dept_div') ?></label>
                       </div>
                       <div class="col-md-8">
-                        <input name="organization" id="organization" type="text"  class="form-control" placeholder="Organization" value="<?php echo get_user_organization($user_nik); ?>" disabled="disabled">
+                        <input name="organization" id="organization" type="text"  class="form-control" placeholder="Organization" value="" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
@@ -83,7 +84,7 @@
                         <label class="form-label text-right"><?php echo lang('position') ?></label>
                       </div>
                       <div class="col-md-8">
-                        <input name="position" id="position" type="text"  class="form-control" placeholder="Jabatan" value="<?php echo get_user_position($user_nik); ?>" disabled="disabled">
+                        <input name="position" id="position" type="text"  class="form-control" placeholder="Jabatan" value="" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">

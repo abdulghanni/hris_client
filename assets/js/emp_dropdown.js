@@ -13,21 +13,26 @@ $(document).ready(function() {
                 getEmpPosGroup(empId);
                 break;
             case 'form_tidak_masuk':
-                getAtasan1(empId);
-                getAtasan3(empId);
+                if(s2 == "input"){
+                    getAtasan1(empId);
+                    getAtasan3(empId);
+                    getSisaCuti(empId);
+                }
                 getEmpOrg(empId);
                 getEmpPos(empId);
                 getEmpPosGroup(empId);
                 break;
             case 'form_cuti':
-                getAtasan1(empId);
-                getAtasan3(empId);
+                if(s2 == 'input'){
+                    getAtasan1(empId);
+                    getAtasan3(empId);
+                    getSisaCuti(empId);
+                    getPenggantiCuti(empId);
+                }
                 getEmpOrg(empId);
                 getEmpNik(empId);
                 getEmpPos(empId);
                 getEmpSenDate(empId);
-                getSisaCuti(empId);
-                getPenggantiCuti(empId);
             break;
             case 'form_training':
                 getAtasan1(empId);
@@ -588,8 +593,8 @@ $(document).ready(function() {
         });
     }
 
-    // $.validator.addMethod('notEqual',function(value, element, param){
-    //     return this.optional(element)||value != param;
-    // });
+    $.validator.addMethod('notEqual',function(value, element, param){
+        return this.optional(element)||value != param;
+    });
 
 });
