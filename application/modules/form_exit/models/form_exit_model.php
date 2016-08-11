@@ -65,7 +65,7 @@ class Form_exit_model extends CI_Model {
                 $this->db->where_in($this->table.'.user_id', $user);//print_mz($user);
             }elseif($is_admin!=1 ){
                  $this->db->where("(users_exit.user_id = '$sess_id'
-                               OR users_exit.user_app_lv1 = '$sess_nik'  OR users_exit.user_app_lv2 = '$sess_nik'  OR users_exit.user_app_lv3 = '$sess_nik'
+                               OR users_exit.user_exit_rekomendasi_id = '$sess_id' OR users_exit.created_by = '$sess_id' OR users_exit.user_app_lv1 = '$sess_nik'  OR users_exit.user_app_lv2 = '$sess_nik'  OR users_exit.user_app_lv3 = '$sess_nik'
                 )",null, false);
             }
             endif;
