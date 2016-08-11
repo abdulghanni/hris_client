@@ -16,7 +16,7 @@
           <div class="col-md-12">
             <div class="grid simple">
               <div class="grid-title no-border">
-                <h4>Input Pengajuan <span class="semi-bold"><a href="<?php echo site_url('form_pengangkatan')?>">Perpanjangan pengangkatan</a></span></h4>
+                <h4>Input Pengajuan <span class="semi-bold"><a href="<?php echo site_url('form_pengangkatan')?>"> Pengangkatan</a></span></h4>
               </div>
               <div class="grid-body no-border">
                 <?php
