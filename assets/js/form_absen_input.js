@@ -16,5 +16,9 @@ $(document).ready(function() {
 	    messages: {
 	          atasan1 : "Silakan Pilih Atasan"
 	    }
-  });
+  	});
+
+    $.validator.addMethod('notEqual',function(value, element, param){
+        return this.optional(element)||value != param;
+    });
 });

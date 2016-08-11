@@ -254,13 +254,18 @@ class Form_pengangkatan extends MX_Controller {
             'date_app_'.$type => $date_now,
             'note_'.$type => $this->input->post('note_'.$type)
             );
-            $approval_status = $this->input->post('app_status_'.$type);
-
-            $is_app = getValue('is_app_'.$type, 'users_pengangkatan', array('id'=>'where/'.$id));
-            $approval_status = $this->input->post('app_status_'.$type);
-
             $this->main->update($id,$data);
-           
+
+            redirect('form_pengangkatan/detail/'.$id, 'refresh');
+        }
+    }
+
+    function send_notif($id, $type)
+    {
+        $user_id = sessNik();
+        $is_app = getValue('is_app_'.$type, 'users_pengangkatan', array('id'=>'where/'.$id));
+            $approval_status = getValue('app_status_id_'.$type, 'users_pengangkatan', array('id'=>'where/'.$id));
+
             $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
             $user_pengangkatan_id = getValue('user_id', 'users_pengangkatan', array('id'=>'where/'.$id));
             $subject_email = get_form_no($id).'['.$approval_status_mail.']Status Pengajuan Perpanjangan pengangkatan dari Atasan';
@@ -356,9 +361,6 @@ class Form_pengangkatan extends MX_Controller {
                 break;
                 }
             }
-
-            redirect('form_pengangkatan/detail/'.$id, 'refresh');
-        }
     }
 
     function send_user_notification($id, $user_id)
@@ -454,18 +456,14 @@ class Form_pengangkatan extends MX_Controller {
                     $this->template->add_js('datatables.min.js');
                     $this->template->add_js('breakpoints.js');
                     $this->template->add_js('core.js');
-                    $this->template->add_js('select2.min.js');
 
-                    $this->template->add_js('form_index.js');
                     $this->template->add_js('form_datatable_index.js');
 
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
-                    $this->template->add_css('plugins/select2/select2.css');
                     $this->template->add_css('datatables.min.css');
                     
                 }
-                elseif(in_array($view, array('form_pengangkatan/input',
-                                             'form_pengangkatan/detail',)))
+                elseif(in_array($view, array('form_pengangkatan/input')))
                 {
 
                     $this->template->set_layout('default');
@@ -487,6 +485,23 @@ class Form_pengangkatan extends MX_Controller {
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                     $this->template->add_css('plugins/select2/select2.css');
                     $this->template->add_css('datepicker.css');
+                     
+                }elseif(in_array($view, array('form_pengangkatan/detail',)))
+                {
+
+                    $this->template->set_layout('default');
+
+                    $this->template->add_js('jquery.sidr.min.js');
+                    $this->template->add_js('breakpoints.js');
+
+                    $this->template->add_js('core.js');
+                    $this->template->add_js('respond.min.js');
+
+                    $this->template->add_js('jquery.bootstrap.wizard.min.js');
+                    $this->template->add_js('emp_dropdown.js');
+                    $this->template->add_js('form_approval.js');
+                    
+                    $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                     $this->template->add_css('approval_img.css');
                      
                 }

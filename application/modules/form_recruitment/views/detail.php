@@ -459,17 +459,17 @@
 
 
 
-<!--approval recruitment Modal Lv1 -->
-<div class="modal fade" id="submitModalLv1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<?php for($i=1;$i<4;$i++):?>
+  <!--approval  Modal atasan -->
+<div class="modal fade" id="<?php echo 'submitModalLv'.$i?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog" id="modaldialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Approval Form recruitment - Atasan Langsung</h4>
+        <h4 class="modal-title" id="myModalLabel">Approval Form Atasan</h4>
       </div>
-      <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
       <div class="modal-body">
-        <form class="form-no-horizontal-spacing"  id="formAppLv1">
+        <form class="form-no-horizontal-spacing"  id="<?php echo 'formApplv'.$i?>">
             <div class="row form-row">
               <div class="col-md-12">
                 <label class="form-label text-left">Status Approval </label>
@@ -479,12 +479,15 @@
                   <?php 
                   if($approval_status->num_rows() > 0){
                     foreach($approval_status->result() as $app){
-                      $checked = ($app->id <> 0 && $app->id == $row->approval_status_id_lv1) ? 'checked = "checked"' : '';$checked2 = ($app->id == 1) ? 'checked = "checked"' : '';
+                      $x = 'approval_status_id_lv'.$i;
+                      $y = 'note_lv'.$i;
+                      $checked = ($app->id <> 0 && $app->id == $row->$x) ? 'checked = "checked"' : '';
+                      $checked2 = ($app->id == 1) ? 'checked = "checked"' : '';
                       ?>
-                  <input id="app_status_lv1<?php echo $app->id?>" type="radio" name="app_status_lv1" value="<?php echo $app->id?>" <?php echo (!empty($checked))?$checked:$checked2;?>>
-                  <label for="app_status_lv1<?php echo $app->id?>"><?php echo $app->title?></label>
+                  <input id="app_status_lv<?php echo $i.'-'.$app->id?>" type="radio" name="<?php echo 'app_status_lv'.$i?>" value="<?php echo $app->id?>" <?php echo (!empty($checked))?$checked:$checked2;?>>
+                  <label for="app_status_lv<?php echo $i.'-'.$app->id?>"><?php echo $app->title?></label>
                   <?php }}else{?>
-                  <input id="app_status" type="radio" name="app_status_lv1" value="0">
+                  <input id="app_status" type="radio" name="<?php echo 'app_status_lv'.$i?>" value="0">
                   <label for="app_status">No Data</label>
                     <?php } ?>
                 </div>
@@ -492,122 +495,23 @@
             </div>
             <div class="row form-row">
               <div class="col-md-12">
-                <label class="form-label text-left">Note (Atasan Langsung) : </label>
+                <label class="form-label text-left">Note : </label>
               </div>
               <div class="col-md-12">
-                <textarea name="note_lv1" class="custom-txtarea-form" placeholder="Note Atasan Langsung isi disini"><?php echo $row->note_lv1?></textarea>
+                <textarea name="<?php echo 'note_lv'.$i?>" class="form-control" placeholder="Isi note disini...."><?php echo $row->$y?></textarea>
               </div>
             </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="icon-remove"></i>&nbsp;<?php echo lang('close_button')?></button> 
-        <button id="btn_app_lv1"  class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
+         <button id="btnApplv<?=$i?>" onclick="approve('lv<?=$i?>')" type="button" class="btn btn-success btn-cons"><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
       </div>
         <?php echo form_close()?>
     </div>
   </div>
 </div>
-<!--end approve modal lv1--> 
-
-<!--approval recruitment Modal Lv2 -->
-<div class="modal fade" id="submitModalLv2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog" id="modaldialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Approval Form recruitment - Atasan Tidak Langsung</h4>
-      </div>
-      <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
-      <div class="modal-body">
-        <form class="form-no-horizontal-spacing"  id="formAppLv2">
-            <div class="row form-row">
-              <div class="col-md-12">
-                <label class="form-label text-left">Status Approval </label>
-              </div>
-              <div class="col-md-12">
-                <div class="radio">
-                  <?php 
-                  if($approval_status->num_rows() > 0){
-                    foreach($approval_status->result() as $app){
-                      $checked = ($app->id <> 0 && $app->id == $row->approval_status_id_lv2) ? 'checked = "checked"' : '';$checked2 = ($app->id == 1) ? 'checked = "checked"' : '';
-                      ?>
-                  <input id="app_status_lv2<?php echo $app->id?>" type="radio" name="app_status_lv2" value="<?php echo $app->id?>" <?php echo (!empty($checked))?$checked:$checked2;?>>
-                  <label for="app_status_lv2<?php echo $app->id?>"><?php echo $app->title?></label>
-                  <?php }}else{?>
-                  <input id="app_status" type="radio" name="app_status_lv2" value="0">
-                  <label for="app_status">No Data</label>
-                    <?php } ?>
-                </div>
-              </div>
-            </div>
-            <div class="row form-row">
-              <div class="col-md-12">
-                <label class="form-label text-left">Note (Atasan Tidak Langsung) : </label>
-              </div>
-              <div class="col-md-12">
-                <textarea name="note_lv2" class="custom-txtarea-form" placeholder="Note Atasan Tidak Langsung isi disini"><?php echo $row->note_lv2?></textarea>
-              </div>
-            </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="icon-remove"></i>&nbsp;<?php echo lang('close_button')?></button> 
-        <button id="btn_app_lv2"  class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
-      </div>
-        <?php echo form_close()?>
-    </div>
-  </div>
-</div>
-<!--end approve modal Lv2--> 
-
-<!--approval recruitment Modal Lv3 -->
-<div class="modal fade" id="submitModalLv3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog" id="modaldialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Approval Form recruitment - Atasan Lainnya</h4>
-      </div>
-      <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
-      <div class="modal-body">
-        <form class="form-no-horizontal-spacing"  id="formAppLv3">
-            <div class="row form-row">
-              <div class="col-md-12">
-                <label class="form-label text-left">Status Approval </label>
-              </div>
-              <div class="col-md-12">
-                <div class="radio">
-                  <?php 
-                  if($approval_status->num_rows() > 0){
-                    foreach($approval_status->result() as $app){
-                      $checked = ($app->id <> 0 && $app->id == $row->approval_status_id_lv3) ? 'checked = "checked"' : '';$checked2 = ($app->id == 1) ? 'checked = "checked"' : '';
-                      ?>
-                  <input id="app_status_lv3<?php echo $app->id?>" type="radio" name="app_status_lv3" value="<?php echo $app->id?>" <?php echo (!empty($checked))?$checked:$checked2;?>>
-                  <label for="app_status_lv3<?php echo $app->id?>"><?php echo $app->title?></label>
-                  <?php }}else{?>
-                  <input id="app_status" type="radio" name="app_status_lv3" value="0">
-                  <label for="app_status">No Data</label>
-                    <?php } ?>
-                </div>
-              </div>
-            </div>
-            <div class="row form-row">
-              <div class="col-md-12">
-                <label class="form-label text-left">Note (Atasan) : </label>
-              </div>
-              <div class="col-md-12">
-                <textarea name="note_lv3" class="custom-txtarea-form" placeholder="Note atasan isi disini"><?php echo $row->note_lv3?></textarea>
-              </div>
-            </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="icon-remove"></i>&nbsp;<?php echo lang('close_button')?></button> 
-        <button id="btn_app_lv3"  class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
-      </div>
-        <?php echo form_close()?>
-    </div>
-  </div>
-</div>
-<!--end approve modal Lv3--> 
+<!--end approve modal-->
+<?php endfor;?>
 
 <!--approval recruitment Modal HRD -->
 <div class="modal fade" id="submitModalHrd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -619,7 +523,7 @@
       </div>
       <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
       <div class="modal-body">
-        <form class="form-no-horizontal-spacing"  id="formAppHrd">
+        <form class="form-no-horizontal-spacing"  id="formApphrd">
             <div class="row form-row">
               <div class="col-md-12">
                 <label class="form-label text-left">Status Approval </label>
@@ -651,7 +555,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="icon-remove"></i>&nbsp;<?php echo lang('close_button')?></button> 
-        <button id="btn_app_hrd"  class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
+        <button id="btnApphrd" onclick="approve('hrd')" type="button" class="btn btn-success btn-cons"><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
       </div>
         <?php echo form_close()?>
     </div>

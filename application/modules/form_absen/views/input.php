@@ -72,7 +72,7 @@
                         <label class="form-label text-right">Dept/Bagian</label>
                       </div>
                       <div class="col-md-9">
-                        <input name="organization" id="organization" type="text"  class="form-control" placeholder="Organization" value="<?php echo (!empty(get_user_organization($sess_nik)))?get_user_organization($sess_nik):'-';?>" disabled="disabled">
+                        <input name="organization" id="organization" type="text"  class="form-control" placeholder="Organization" value="" disabled="disabled">
                       </div>
                     </div>
                     <input name="position-group" id="position-group" type="hidden"  class="form-control" placeholder="" value="" disabled="disabled">

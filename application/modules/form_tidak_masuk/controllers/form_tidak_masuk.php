@@ -314,8 +314,9 @@ class form_tidak_masuk extends MX_Controller {
 
     function send_notif($id, $type){
         if($type != 'hrd'){
+             $user_id = sessNik();
             $user_tidak_masuk_id = getValue('user_id', 'users_tidak_masuk', array('id'=>'where/'.$id));
-            $approval_status =  $approval_status = getValue('app_status_id_'.$type, 'users_tidak_masuk', array('id'=>'where/'.$id));
+            $approval_status = getValue('app_status_id_'.$type, 'users_tidak_masuk', array('id'=>'where/'.$id));
             $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
             $this->approval->approve('tidak_masuk', $id, $approval_status, $this->detail_email($id));
             $subject_email = get_form_no($id).'['.$approval_status_mail.']Status Pengajuan Keterangan Tidak Masuk dari Atasan';
@@ -345,6 +346,7 @@ class form_tidak_masuk extends MX_Controller {
                     if(!empty(getEmail($this->approval->approver('tidak_masuk', $user_id))))$this->send_email(getEmail($this->approval->approver('tidak_masuk', $user_id)), $subject_email_request, $isi_email_request);
             endif;
         }else{
+             $user_id = sessNik();
             $is_app = getValue('is_app_'.$type, 'users_tidak_masuk', array('id'=>'where/'.$id));
             $approval_status =  $approval_status = getValue('app_status_id_'.$type, 'users_tidak_masuk', array('id'=>'where/'.$id));
             $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));

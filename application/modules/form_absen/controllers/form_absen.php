@@ -126,7 +126,7 @@ class form_absen extends MX_Controller {
             $user_id= getValue('user_id', 'users_absen', array('id'=>'where/'.$id));
             $this->data['user_nik'] = get_nik($user_id);
             $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
-            $sess_nik = $this->data['sess_nik'] = get_nik($sess_id);
+            $sess_nik = $this->data['sess_nik'] = sessNik();
             $this->data['row'] = $this->main->detail($id)->row();
             $this->data['_num_rows'] = $this->main->detail($id)->num_rows();
             $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
@@ -161,7 +161,7 @@ class form_absen extends MX_Controller {
             $this->data['absen_id'] = ($form_absen->num_rows()>0)?$absen_id->id+1:1;
 
             $this->data['keterangan_absen'] = getAll('keterangan_absen', array('is_deleted'=>'where/0'));
-            $this->data['all_users'] = getAll('users', array('active'=>'where/1', 'username'=>'order/asc'), array('!=id'=>'1'));
+            if(is_admin())$this->data['all_users'] = getAll('users', array('active'=>'where/1', 'username'=>'order/asc'), array('!=id'=>'1'));
             
             $this->_render_page('form_absen/input', $this->data);
         }
@@ -336,13 +336,10 @@ class form_absen extends MX_Controller {
                     $this->template->add_js('datatables.min.js');
                     $this->template->add_js('breakpoints.js');
                     $this->template->add_js('core.js');
-                    $this->template->add_js('select2.min.js');
 
-                    $this->template->add_js('form_index.js');
                     $this->template->add_js('form_datatable_index.js');
 
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
-                    $this->template->add_css('plugins/select2/select2.css');
                     $this->template->add_css('datatables.min.css');
                     
                 }
@@ -377,10 +374,10 @@ class form_absen extends MX_Controller {
 
                     $this->template->add_js('jquery.sidr.min.js');
                     $this->template->add_js('breakpoints.js');
-                    $this->template->add_js('select2.min.js');
 
                     $this->template->add_js('core.js');
-                    $this->template->add_js('form_absen.js');
+                    $this->template->add_js('form_approval.js');
+                    $this->template->add_js('emp_dropdown.js');
 
                     
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
@@ -420,91 +417,96 @@ class form_absen extends MX_Controller {
             'date_app_'.$type => $date_now,
             'note_'.$type => $this->input->post('note_'.$type)
             );
-            $approval_status = $this->input->post('app_status_'.$type);
             $this->main->update($id,$data);
-            $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
-            $user_absen_id = getValue('user_id', 'users_absen', array('id'=>'where/'.$id));
-            $subject_email = get_form_no($id).'['.$approval_status_mail.']Status Pengajuan Ketarangan Tidak Absen dari Atasan';
-            $subject_email_request = get_form_no($id).'Pengajuan Ketarangan Tidak Absen';
-            $isi_email = 'Status pengajuan Ketarangan Tidak Absen anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_absen/detail/'.$id.'>Klik Disini</a><br />';
-            $isi_email_request = get_name($user_absen_id).' mengajukan Ketarangan Tidak Absen, untuk melihat detail silakan <a href='.base_url().'form_absen/detail/'.$id.'>Klik Disini</a><br />';
-            $is_app = getValue('is_app_'.$type, 'users_absen', array('id'=>'where/'.$id));
-           if($is_app==0){
-                $this->approval->approve('absen', $id, $approval_status, $this->detail_email($id));
-                if(!empty(getEmail($user_absen_id)))$this->send_email(getEmail($user_absen_id), $subject_email, $isi_email);
-            }else{
-                $this->approval->update_approve('absen', $id, $approval_status, $this->detail_email($id));
-                if(!empty(getEmail($user_absen_id)))$this->send_email(getEmail($user_absen_id), get_form_no($id).'['.$approval_status_mail.']Perubahan Status Pengajuan Ketarangan Tidak Absen dari Atasan', $isi_email);
-            }
-            if($type !== 'hrd' && $approval_status == 1){
-                $lv = substr($type, -1)+1;
-                $lv_app = 'lv'.$lv;
-                $user_app = ($lv<4) ? getValue('user_app_'.$lv_app, 'users_absen', array('id'=>'where/'.$id)):0;
-                $user_app_lv3 = getValue('user_app_lv3', 'users_absen', array('id'=>'where/'.$id));
-                if(!empty($user_app)):
-                    if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app),  $subject_email_request , $isi_email_request);
-                    $this->approval->request($lv_app, 'absen', $id, $user_absen_id, $this->detail_email($id));
-                elseif(empty($user_app) && !empty($user_app_lv3) && $type == 'lv1'):
-                    if(!empty(getEmail($user_app_lv3)))$this->send_email(getEmail($user_app_lv3), $subject_email_request, $isi_email_request);
-                    $this->approval->request('lv3', 'absen', $id, $user_absen_id, $this->detail_email($id));
-                elseif(empty($user_app) && empty($user_app_lv3) && $type == 'lv1'):
-                    if(!empty(getEmail($this->approval->approver('absen', $user_id))))$this->send_email(getEmail($this->approval->approver('absen', $user_id)),  $subject_email_request , $isi_email_request);
-                    $this->approval->request('hrd', 'absen', $id, $user_absen_id, $this->detail_email($id));
-                elseif($type == 'lv3'):
-                    if(!empty(getEmail($this->approval->approver('absen', $user_id))))$this->send_email(getEmail($this->approval->approver('absen', $user_id)),  $subject_email_request , $isi_email_request);
-                    $this->approval->request('hrd', 'absen', $id, $user_absen_id, $this->detail_email($id));
-                elseif(empty($user_app_lv3) && $type == 'lv2'):
-                    $this->approval->request('hrd', 'absen', $id, $user_absen_id, $this->detail_email($id));
-                    if(!empty(getEmail($this->approval->approver('absen', $user_id))))$this->send_email(getEmail($this->approval->approver('absen', $user_id)), $subject_email_request, $isi_email_request);
-                endif;
-            }else{
-                $email_body = "Status pengajuan permohonan absen yang diajukan oleh ".get_name($user_absen_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_absen/detail/'.$id.'>Klik Disini</a><br />';
-                switch($type){
-                    case 'lv1':
-                        //$this->approval->not_approve('absen', $id, )
-                    break;
 
-                    case 'lv2':
-                        $receiver_id = getValue('user_app_lv1', 'users_absen', array('id'=>'where/'.$id));
-                        $this->approval->not_approve('absen', $id, $receiver_id, $approval_status ,$this->detail_email($id));
-                        //if(!empty(getEmail($receiver_id)))$this->send_email(getEmail($receiver_id), 'Status Pengajuan Permohonan absen Dari Atasan', $email_body);
-                    break;
+            redirect('form_absen/detail/'.$id, 'refresh');
+        }
+    }
 
-                    case 'lv3':
-                        $receiver_lv2 = getValue('user_app_lv2', 'users_absen', array('id'=>'where/'.$id));
+    function send_notif($id, $type)
+    {
+        $user_id = sessNik();
+        $approval_status = getValue('approval_status_id_'.$type, 'users_absen', array('id'=>'where/'.$id));
+        $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
+        $user_absen_id = getValue('user_id', 'users_absen', array('id'=>'where/'.$id));
+        $subject_email = get_form_no($id).'['.$approval_status_mail.']Status Pengajuan Ketarangan Tidak Absen dari Atasan';
+        $subject_email_request = get_form_no($id).'Pengajuan Ketarangan Tidak Absen';
+        $isi_email = 'Status pengajuan Ketarangan Tidak Absen anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_absen/detail/'.$id.'>Klik Disini</a><br />';
+        $isi_email_request = get_name($user_absen_id).' mengajukan Ketarangan Tidak Absen, untuk melihat detail silakan <a href='.base_url().'form_absen/detail/'.$id.'>Klik Disini</a><br />';
+        $is_app = getValue('is_app_'.$type, 'users_absen', array('id'=>'where/'.$id));
+       if($is_app==0){
+            $this->approval->approve('absen', $id, $approval_status, $this->detail_email($id));
+            if(!empty(getEmail($user_absen_id)))$this->send_email(getEmail($user_absen_id), $subject_email, $isi_email);
+        }else{
+            $this->approval->update_approve('absen', $id, $approval_status, $this->detail_email($id));
+            if(!empty(getEmail($user_absen_id)))$this->send_email(getEmail($user_absen_id), get_form_no($id).'['.$approval_status_mail.']Perubahan Status Pengajuan Ketarangan Tidak Absen dari Atasan', $isi_email);
+        }
+        if($type !== 'hrd' && $approval_status == 1){
+            $lv = substr($type, -1)+1;
+            $lv_app = 'lv'.$lv;
+            $user_app = ($lv<4) ? getValue('user_app_'.$lv_app, 'users_absen', array('id'=>'where/'.$id)):0;
+            $user_app_lv3 = getValue('user_app_lv3', 'users_absen', array('id'=>'where/'.$id));
+            if(!empty($user_app)):
+                if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app),  $subject_email_request , $isi_email_request);
+                $this->approval->request($lv_app, 'absen', $id, $user_absen_id, $this->detail_email($id));
+            elseif(empty($user_app) && !empty($user_app_lv3) && $type == 'lv1'):
+                if(!empty(getEmail($user_app_lv3)))$this->send_email(getEmail($user_app_lv3), $subject_email_request, $isi_email_request);
+                $this->approval->request('lv3', 'absen', $id, $user_absen_id, $this->detail_email($id));
+            elseif(empty($user_app) && empty($user_app_lv3) && $type == 'lv1'):
+                if(!empty(getEmail($this->approval->approver('absen', $user_id))))$this->send_email(getEmail($this->approval->approver('absen', $user_id)),  $subject_email_request , $isi_email_request);
+                $this->approval->request('hrd', 'absen', $id, $user_absen_id, $this->detail_email($id));
+            elseif($type == 'lv3'):
+                if(!empty(getEmail($this->approval->approver('absen', $user_id))))$this->send_email(getEmail($this->approval->approver('absen', $user_id)),  $subject_email_request , $isi_email_request);
+                $this->approval->request('hrd', 'absen', $id, $user_absen_id, $this->detail_email($id));
+            elseif(empty($user_app_lv3) && $type == 'lv2'):
+                $this->approval->request('hrd', 'absen', $id, $user_absen_id, $this->detail_email($id));
+                if(!empty(getEmail($this->approval->approver('absen', $user_id))))$this->send_email(getEmail($this->approval->approver('absen', $user_id)), $subject_email_request, $isi_email_request);
+            endif;
+        }else{
+            $email_body = "Status pengajuan permohonan absen yang diajukan oleh ".get_name($user_absen_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_absen/detail/'.$id.'>Klik Disini</a><br />';
+            switch($type){
+                case 'lv1':
+                    //$this->approval->not_approve('absen', $id, )
+                break;
+
+                case 'lv2':
+                    $receiver_id = getValue('user_app_lv1', 'users_absen', array('id'=>'where/'.$id));
+                    $this->approval->not_approve('absen', $id, $receiver_id, $approval_status ,$this->detail_email($id));
+                    //if(!empty(getEmail($receiver_id)))$this->send_email(getEmail($receiver_id), 'Status Pengajuan Permohonan absen Dari Atasan', $email_body);
+                break;
+
+                case 'lv3':
+                    $receiver_lv2 = getValue('user_app_lv2', 'users_absen', array('id'=>'where/'.$id));
+                    $this->approval->not_approve('absen', $id, $receiver_lv2, $approval_status ,$this->detail_email($id));
+                    //if(!empty(getEmail($receiver_lv2)))$this->send_email(getEmail($receiver_lv2), 'Status Pengajuan Permohonan absen Dari Atasan', $email_body);
+
+                    $receiver_lv1 = getValue('user_app_lv1', 'users_absen', array('id'=>'where/'.$id));
+                    $this->approval->not_approve('absen', $id, $receiver_lv1, $approval_status ,$this->detail_email($id));
+                    //if(!empty(getEmail($receiver_lv1)))$this->send_email(getEmail($receiver_lv1), 'Status Pengajuan Permohonan absen Dari Atasan', $email_body);
+                break;
+
+                case 'hrd':
+                    $receiver_lv3 = getValue('user_app_lv3', 'users_absen', array('id'=>'where/'.$id));
+                    if(!empty($receiver_lv3)):
+                        $this->approval->not_approve('absen', $id, $receiver_lv3, $approval_status ,$this->detail_email($id));
+                        //if(!empty(getEmail($receiver_lv3)))$this->send_email(getEmail($receiver_lv3), 'Status Pengajuan Permohonan absen Dari Atasan', $email_body);
+                    endif;
+                    $receiver_lv2 = getValue('user_app_lv2', 'users_absen', array('id'=>'where/'.$id));
+                    if(!empty($receiver_lv2)):
                         $this->approval->not_approve('absen', $id, $receiver_lv2, $approval_status ,$this->detail_email($id));
                         //if(!empty(getEmail($receiver_lv2)))$this->send_email(getEmail($receiver_lv2), 'Status Pengajuan Permohonan absen Dari Atasan', $email_body);
-
-                        $receiver_lv1 = getValue('user_app_lv1', 'users_absen', array('id'=>'where/'.$id));
+                    endif;
+                    $receiver_lv1 = getValue('user_app_lv1', 'users_absen', array('id'=>'where/'.$id));
+                    if(!empty($receiver_lv1)):
                         $this->approval->not_approve('absen', $id, $receiver_lv1, $approval_status ,$this->detail_email($id));
                         //if(!empty(getEmail($receiver_lv1)))$this->send_email(getEmail($receiver_lv1), 'Status Pengajuan Permohonan absen Dari Atasan', $email_body);
-                    break;
-
-                    case 'hrd':
-                        $receiver_lv3 = getValue('user_app_lv3', 'users_absen', array('id'=>'where/'.$id));
-                        if(!empty($receiver_lv3)):
-                            $this->approval->not_approve('absen', $id, $receiver_lv3, $approval_status ,$this->detail_email($id));
-                            //if(!empty(getEmail($receiver_lv3)))$this->send_email(getEmail($receiver_lv3), 'Status Pengajuan Permohonan absen Dari Atasan', $email_body);
-                        endif;
-                        $receiver_lv2 = getValue('user_app_lv2', 'users_absen', array('id'=>'where/'.$id));
-                        if(!empty($receiver_lv2)):
-                            $this->approval->not_approve('absen', $id, $receiver_lv2, $approval_status ,$this->detail_email($id));
-                            //if(!empty(getEmail($receiver_lv2)))$this->send_email(getEmail($receiver_lv2), 'Status Pengajuan Permohonan absen Dari Atasan', $email_body);
-                        endif;
-                        $receiver_lv1 = getValue('user_app_lv1', 'users_absen', array('id'=>'where/'.$id));
-                        if(!empty($receiver_lv1)):
-                            $this->approval->not_approve('absen', $id, $receiver_lv1, $approval_status ,$this->detail_email($id));
-                            //if(!empty(getEmail($receiver_lv1)))$this->send_email(getEmail($receiver_lv1), 'Status Pengajuan Permohonan absen Dari Atasan', $email_body);
-                        endif;
-                    break;
-                }
+                    endif;
+                break;
             }
+        }
 
-            if($type == 'hrd' && $approval_status == 1){
-                $this->send_notif_tambahan($id);
-            }
-
-               redirect('form_absen/detail/'.$id, 'refresh');
+        if($type == 'hrd' && $approval_status == 1){
+            $this->send_notif_tambahan($id);
         }
     }
 

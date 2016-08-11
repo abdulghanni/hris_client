@@ -100,6 +100,7 @@
 
     function send_notif(lv)
     {
+        alert('d');
         uri = base_url+form+'/send_notif/'+id+'/'+lv;
         $.ajax({
             type: 'POST',

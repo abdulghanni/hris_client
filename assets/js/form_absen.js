@@ -23,6 +23,7 @@ $('button[data-loading-text]').click(function () {
                     reload_status('lv1');
                     $("[data-dismiss=modal]").trigger({ type: "click" });
                     $btn.button('reset');   
+                    send_notif('lv1');     
                 }
             });
             ev.preventDefault(); 
@@ -39,7 +40,8 @@ $('button[data-loading-text]').click(function () {
                 success: function() {
                      reload_status('lv2');
                     $("[data-dismiss=modal]").trigger({ type: "click" });
-                    $btn.button('reset');  
+                    $btn.button('reset');   
+                    send_notif('lv2');    
                 }
             });
             ev.preventDefault(); 
@@ -56,7 +58,8 @@ $('button[data-loading-text]').click(function () {
                 success: function() {
                     reload_status('lv3');
                     $("[data-dismiss=modal]").trigger({ type: "click" });
-                    $btn.button('reset');  
+                    $btn.button('reset');     
+                    send_notif('lv3');  
                 }
             });
             ev.preventDefault(); 
@@ -73,7 +76,8 @@ $('button[data-loading-text]').click(function () {
                 success: function() {
                     reload_status('hrd');
                     $("[data-dismiss=modal]").trigger({ type: "click" });
-                    $btn.button('reset');  
+                    $btn.button('reset');    
+                    send_notif('hrd');   
                 }
             });
             ev.preventDefault(); 
@@ -95,4 +99,20 @@ $('button[data-loading-text]').click(function () {
             }
         });
     }
+
+    function send_notif(lv)
+    {
+        uri = base_url+form+'/send_notif/'+id+'/'+lv;
+        $.ajax({
+            type: 'POST',
+            url: uri,
+            // dataType: "JSON",
+            success: function() {
+                console.log('y');
+            },
+            error: function(){
+                console.log('e');
+            }
+        });
+    }   
 });

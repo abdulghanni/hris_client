@@ -7,10 +7,12 @@ $(document).ready(function() {
         switch (form) 
         {
             case 'form_absen':
-                getAtasan1(empId);
-                getAtasan3(empId);
+                if(s2 == "input"){
+                    getAtasan1(empId);
+                    getAtasan3(empId);
+                    getEmpPosGroup(empId);
+                }
                 getEmpOrg(empId);
-                getEmpPosGroup(empId);
                 break;
             case 'form_tidak_masuk':
                 if(s2 == "input"){
@@ -594,8 +596,8 @@ $(document).ready(function() {
         });
     }
 
-    $.validator.addMethod('notEqual',function(value, element, param){
-        return this.optional(element)||value != param;
-    });
+    // $.validator.addMethod('notEqual',function(value, element, param){
+    //     return this.optional(element)||value != param;
+    // });
 
 });

@@ -28,6 +28,7 @@
                 echo form_open('form_pengangkatan/add', $att);
                     $user_nik = get_nik($row->user_id);
                 ?>
+                  <input type="hidden" id="emp" value="<?=$row->user_id?>">
                   <div class="row column-seperation">
                     <div class="col-md-5">
                       <h4>Informasi karyawan</h4>
@@ -53,7 +54,7 @@
                           <label class="form-label text-right">Unit Bisnis</label>
                         </div>
                         <div class="col-md-9">
-                          <input name="nik" id="form3LastName" type="text"  class="form-control " placeholder="Bussiness Unit Lama" value="<?php echo get_user_bu(get_nik($row->user_id))?>" disabled="disabled">
+                          <input name="nik" id="bu" type="text"  class="form-control " placeholder="-" value="" disabled="disabled">
                         </div>
                       </div>
                       <div class="row form-row">
@@ -61,7 +62,7 @@
                           <label class="form-label text-right">Dept/Bagian</label>
                         </div>
                         <div class="col-md-9">
-                            <input name="nik" id="form3LastName" type="text"  class="form-control " placeholder="Bussiness Unit Lama" value="<?php echo get_user_organization((get_nik($row->user_id)))?>" disabled="disabled">
+                            <input name="nik" id="organization" type="text"  class="form-control " placeholder="-" value="" disabled="disabled">
                         </div>
                       </div>
                       <div class="row form-row">
@@ -69,7 +70,7 @@
                           <label class="form-label text-right">Jabatan</label>
                         </div>
                         <div class="col-md-9">
-                          <input name="nik" id="form3LastName" type="text"  class="form-control " placeholder="Bussiness Unit Lama" value="<?php echo get_user_position((get_nik($row->user_id)))?>" disabled="disabled">
+                          <input name="nik" id="position" type="text"  class="form-control " placeholder="-" value="" disabled="disabled">
                         </div>
                       </div>
                       <div class="row form-row">
@@ -77,7 +78,7 @@
                           <label class="form-label text-right">Status</label>
                         </div>
                         <div class="col-md-9">
-                          <input name="nik" id="form3LastName" type="text"  class="form-control " placeholder="Bussiness Unit Lama" value="<?php echo get_user_status((get_nik($row->user_id)))?>" disabled="disabled">
+                          <input name="nik" id="statuss" type="text"  class="form-control " placeholder="-" value="" disabled="disabled">
                         </div>
                       </div>
                       <div class="row form-row">
@@ -85,11 +86,9 @@
                           <label class="form-label text-right">Tanggal Mulai Bekerja</label>
                         </div>
                         <div class="col-md-9">
-                          <input name="form3LastName" id="form3LastName" type="text"  class="form-control " placeholder="Nama" value="<?php echo dateIndo(get_user_sen_date(get_nik($row->user_id)))?>"  disabled="disabled" >
+                          <input name="form3LastName" id="seniority_date" type="text"  class="form-control " placeholder="-" value=""  disabled="disabled" >
                         </div>
                       </div>
-                      
-                      
                     </div>
                    <div class="col-md-7">
                       <h4>Pengangkatan Status Karyawan Yang Diajukan</h4>
@@ -430,7 +429,7 @@
         <h4 class="modal-title" id="myModalLabel">Approval Form Atasan</h4>
       </div>
       <div class="modal-body">
-        <form class="form-no-horizontal-spacing"  id="<?php echo 'formAppLv'.$i?>">
+        <form class="form-no-horizontal-spacing"  id="<?php echo 'formApplv'.$i?>">
             <div class="row form-row">
               <div class="col-md-12">
                 <label class="form-label text-left">Status Approval </label>
@@ -465,7 +464,8 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="icon-remove"></i>&nbsp;<?php echo lang('close_button')?></button> 
-        <button id="<?php echo 'btn_app_lv'.$i?>"  class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
+        <button id="btnApplv<?=$i?>" onclick="approve('lv<?=$i?>')" type="button" class="btn btn-success btn-cons"><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
+      </div>
       </div>
         <?php echo form_close()?>
     </div>
@@ -485,7 +485,7 @@
       </div>
       <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
       <div class="modal-body">
-        <form class="form-no-horizontal-spacing"  id="formAppHrd">
+        <form class="form-no-horizontal-spacing"  id="formApphrd">
             <div class="row form-row">
                 
               <div class="col-md-12">
@@ -499,7 +499,7 @@
                       $checked = ($app->id <> 0 && $app->id == $row->app_status_id_hrd) ? 'checked = "checked"' : '';
                       $checked2 = ($app->id == 1) ? 'checked = "checked"' : '';
                       ?>
-                  <input id="app_status_hrd<?php echo $app->id?>" type="radio" name="app_status_hrd" value="<?php echo $app->id?>" <?php echo $checked?>>
+                  <input id="app_status_hrd<?php echo $app->id?>" type="radio" name="app_status_hrd" value="<?php echo $app->id?>" <?php echo (!empty($checked))?$checked:$checked2;?>>
                   <label for="app_status_hrd<?php echo $app->id?>"><?php echo $app->title?></label>
                   <?php }}else{?>
                   <input id="app_status" type="radio" name="app_status_hrd" value="0">
@@ -519,7 +519,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="icon-remove"></i>&nbsp;<?php echo lang('close_button')?></button> 
-        <button id="btn_app_hrd"  class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
+        <button id="btnApphrd" onclick="approve('hrd')" type="button" class="btn btn-success btn-cons"><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
       </div>
         <?php echo form_close()?>
     </div>

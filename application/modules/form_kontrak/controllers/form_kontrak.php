@@ -284,6 +284,7 @@ class Form_kontrak extends MX_Controller {
     }
 
     function send_notif($id, $type){
+        $user_id = sessNik();
         $is_app = 0;
         $approval_status = getValue('app_status_id_'.$type, 'users_kontrak', array('id'=>'where/'.$id));
         $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
@@ -540,13 +541,10 @@ class Form_kontrak extends MX_Controller {
                     $this->template->add_js('datatables.min.js');
                     $this->template->add_js('breakpoints.js');
                     $this->template->add_js('core.js');
-                    $this->template->add_js('select2.min.js');
 
-                    $this->template->add_js('form_index.js');
                     $this->template->add_js('form_datatable_index.js');
 
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
-                    $this->template->add_css('plugins/select2/select2.css');
                     $this->template->add_css('datatables.min.css');
 
                 }elseif(in_array($view, array('form_kontrak/input')))
@@ -583,7 +581,7 @@ class Form_kontrak extends MX_Controller {
 
                     $this->template->add_js('jquery.sidr.min.js');
                     $this->template->add_js('breakpoints.js');
-                    $this->template->add_js('select2.min.js');
+                    // $this->template->add_js('select2.min.js');
 
                     $this->template->add_js('core.js');
 
@@ -594,7 +592,7 @@ class Form_kontrak extends MX_Controller {
                     // $this->template->add_js('jquery-validate.bootstrap-tooltip.min.js');
                     // $this->template->add_js('bootstrap-datepicker.js');
                     $this->template->add_js('emp_dropdown.js');
-                    $this->template->add_js('form_kontrak_detail.js');
+                    $this->template->add_js('form_approval.js');
 
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                     // $this->template->add_css('plugins/select2/select2.css');
