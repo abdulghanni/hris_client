@@ -22,9 +22,9 @@
             <div class="grid-body no-border">
             <?php 
             if($_num_rows>0){
-                $user_nik = get_nik($tidak_masuk->user_id);
                 ?>
               <form class="form-no-horizontal-spacing" id="form"> 
+                <input name="emp" id="emp" type="hidden" value="<?php echo $tidak_masuk->user_id?>">
                 <div class="row column-seperation">
                   <div class="col-md-12">
                     <div class="row form-row">
@@ -32,7 +32,7 @@
                         <label class="form-label text-right">NIK</label>
                       </div>
                       <div class="col-md-9">
-                        <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama" value="<?php echo $user_nik?>" disabled="disabled">
+                        <input name="form3LastName" id="nik" type="text"  class="form-control" placeholder="Nama" value="" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
@@ -48,7 +48,7 @@
                         <label class="form-label text-right">Bagian</label>
                       </div>
                       <div class="col-md-9">
-                        <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama" value="<?php echo get_user_organization($user_nik)?>" disabled="disabled">
+                        <input name="form3LastName" id="organization" type="text"  class="form-control" placeholder="Nama" value="" disabled="disabled">
                       </div>
                     </div>
 
@@ -57,7 +57,7 @@
                         <label class="form-label text-right">Jabatan</label>
                       </div>
                       <div class="col-md-9">
-                        <input name="position" id="position" type="text"  class="form-control" placeholder="position" value="<?php echo get_user_position($user_nik)?>" disabled="disabled">
+                        <input name="position" id="position" type="text"  class="form-control" placeholder="position" value="" disabled="disabled">
                       </div>
                     </div>
                     
@@ -177,10 +177,10 @@
                       for($i=1;$i<4;$i++):
                         $is_app = 'is_app_lv'.$i;
                         $user_app = 'user_app_lv'.$i;
-                        if($tidak_masuk->$is_app == 1 && get_nik($sess_id) == $tidak_masuk->$user_app){?>
+                        if($tidak_masuk->$is_app == 1 && sessNik() == $tidak_masuk->$user_app){?>
                           <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitModalLv<?php echo $i ?>"><i class='icon-edit'> Edit Approval</i></div>
                       <?php }endfor;
-                      if($tidak_masuk->is_app_hrd == 1 && get_nik($sess_id) == $this->approval->approver('absen', $user_nik)){?>
+                      if($tidak_masuk->is_app_hrd == 1 && sessNik() == $this->approval->approver('absen', $user_nik)){?>
                         <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitModalHrd"><i class='icon-edit'> Edit Approval</i></div>
                       <?php } ?>
                     </div>
@@ -203,7 +203,7 @@
                         <p class="wf-approve-sp">
                         <div class="col-md-12"><span class="semi-bold">Mengetahui / Menyetujui,</span><br/><br/></div>
                           <?php 
-                          if(!empty($tidak_masuk->user_app_lv1) && $tidak_masuk->is_app_lv1 == 0 && get_nik($sess_id) == $tidak_masuk->user_app_lv1){?>
+                          if(!empty($tidak_masuk->user_app_lv1) && $tidak_masuk->is_app_lv1 == 0 && sessNik() == $tidak_masuk->user_app_lv1){?>
                           <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitModalLv1"><i class="icon-ok"></i>Submit</div>
                           <span class="small"></span>
                             <span class="semi-bold"></span><br/>
@@ -234,7 +234,7 @@
                         <p class="wf-approve-sp">
                         <div class="col-md-12"><span class="semi-bold">Mengetahui / Menyetujui,</span><br/><br/></div>
                         <?php
-                         if(!empty($tidak_masuk->user_app_lv2) && $tidak_masuk->is_app_lv2 == 0 && get_nik($sess_id) == $tidak_masuk->user_app_lv2){?>
+                         if(!empty($tidak_masuk->user_app_lv2) && $tidak_masuk->is_app_lv2 == 0 && sessNik() == $tidak_masuk->user_app_lv2){?>
                             <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitModalLv2"><i class="icon-ok"></i>Submit</div>
                             <span class="small"></span>
                             <span class="semi-bold"></span><br/>
@@ -264,7 +264,7 @@
                       <div class="col-md-3" id="hrd">
                         <p class="wf-approve-sp">
                         <div class="col-md-12"><span class="semi-bold">Diterima HRD</span><br/><br/></div>
-                          <?php if($tidak_masuk->is_app_hrd == 0 && $this->approval->approver('absen', $user_nik) == $sess_nik){
+                          <?php if($tidak_masuk->is_app_hrd == 0 && $this->approval->approver('absen', $user_nik) == sessNik()){
                               if(cek_approval_atasan($id)):
                                   ?>
                                   <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitModalHrd"><i class="icon-ok"></i>Submit</div>
@@ -305,7 +305,7 @@
                         <?php 
                         $approved = assets_url('img/approved_stamp.png');
                         $rejected = assets_url('img/rejected_stamp.png');
-                        if(!empty($tidak_masuk->user_app_lv3) && $tidak_masuk->is_app_lv3 == 0 && get_nik($sess_id) == $tidak_masuk->user_app_lv3){?>
+                        if(!empty($tidak_masuk->user_app_lv3) && $tidak_masuk->is_app_lv3 == 0 && sessNik() == $tidak_masuk->user_app_lv3){?>
                           <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitModalLv3"><i class="icon-ok"></i>Submit</div>
                           <span class="small"></span>
                           <span class="semi-bold"></span><br/>
@@ -533,10 +533,10 @@
               <div class="col-md-9">
                 <select name="type_cuti_id" id="alasan_cuti" class="select2" style="width:100%">
                         <option value="0">- Pilih Alasan Cuti -</option>
-                  <?php if (!empty($alasan_cuti)) { ?>
-                      <?php for ($i=0;$i<sizeof($alasan_cuti);$i++) : ?>
-                        <option value="<?php echo $alasan_cuti[$i]['HRSLEAVETYPEID']; ?>"><?php echo $alasan_cuti[$i]['DESCRIPTION']; ?></option>
-                      <?php endfor; ?>                      
+                  <?php if ($alasan_cuti->num_rows>0) { ?>
+                      <?php foreach($alasan_cuti->result() as $a) : ?>
+                        <option value="<?php echo $a->HRSLEAVETYPEID; ?>"><?php echo $a->title; ?></option>
+                      <?php endforeach; ?>                      
                   <?php } else {?>
                         <option value="0">No Data</option>
                     <?php } ?>

@@ -102,7 +102,7 @@
                         <label class="form-label text-right"><?php echo lang('cuti_remain') ?></label>
                       </div>
                       <div class="col-md-1">
-                        <input name="sisa_cuti" id="sisa_cuti" type="text"  class="form-control" placeholder="-" value="<?php echo $sisa_cuti ['sisa_cuti']?>" readonly required>
+                        <input name="sisa_cuti" id="sisa_cuti" type="text"  class="form-control" placeholder="-" value="" readonly required>
                       </div>
                     </div>
 

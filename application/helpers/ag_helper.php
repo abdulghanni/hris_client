@@ -4,6 +4,11 @@
 		$CI =& get_instance();
 		return $CI->session->userdata('user_id');
 	}
+
+	function sessNik(){
+		$CI =& get_instance();
+		return get_nik(sessId());
+	}
 	//TO CHECK IS USER ADMIN IN ION AUTH LIBRARY
 	if (!function_exists('is_admin'))
 	{	

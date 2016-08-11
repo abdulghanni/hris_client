@@ -111,19 +111,15 @@ class form_tidak_masuk extends MX_Controller {
         else
         {
             $this->data['id'] = $id;
-            $user_id= getValue('user_id', 'users_tidak_masuk', array('id'=>'where/'.$id));
-            $user_nik = $this->data['user_nik'] = get_nik($user_id);
-            $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
-            $sess_nik = $this->data['sess_nik'] = get_nik($sess_id);
             $this->data['user_folder'] = getValue("user_id", "users_tidak_masuk", array('id'=>'where.'.$id));
             $form_tidak_masuk = $this->data['tidak_masuk'] = $this->main->detail($id)->row();
             $this->data['_num_rows'] = $this->main->detail($id)->num_rows();
-
-            $alasan = getValue('alasan_tidak_masuk_id', 'users_tidak_masuk', array('id'=>'where/'.$id));
+            $this->data['user_nik'] = $user_nik = get_nik($form_tidak_masuk->user_id);
+            $alasan = $form_tidak_masuk->alasan_tidak_masuk_id;
             $this->data['alasan'] = getValue('title', 'alasan_tidak_masuk', array('id'=>'where/'.$alasan));
-            $this->data['alasan_cuti'] = $this->get_type_cuti();
+            $this->data['alasan_cuti'] = GetAllSelect('alasan_cuti', 'HRSLEAVETYPEID, title');
             $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
-            $tipe_cuti = getValue('type_cuti_id', 'users_tidak_masuk', array('id'=>'where/'.$id));
+            $tipe_cuti = $form_tidak_masuk->type_cuti_id;
             $this->data['tipe_cuti'] = getValue('title', 'alasan_cuti', array('HRSLEAVETYPEID'=>'where/'.$tipe_cuti));
             $this->data['sisa_cuti'] = $this->get_sisa_cuti($user_nik);
 
@@ -152,13 +148,13 @@ class form_tidak_masuk extends MX_Controller {
         {
             $this->data['sess_id'] = $sess_id = $this->session->userdata('user_id');
             $sess_nik = $this->data['sess_nik'] = get_nik($sess_id);
-            $this->data['sisa_cuti'] = $this->get_sisa_cuti($sess_nik);
-			$form_tidak_masuk = $this->data['form_tidak_masuk'] = getAll('users_tidak_masuk');
-            $tidak_masuk_id = $form_tidak_masuk->last_row();
-            $this->data['tidak_masuk_id'] = ($form_tidak_masuk->num_rows()>0)?$tidak_masuk_id->id+1:1;
+            //$this->data['sisa_cuti'] = $this->get_sisa_cuti($sess_nik);
+			// $form_tidak_masuk = $this->data['form_tidak_masuk'] = getAll('users_tidak_masuk');
+   //          $tidak_masuk_id = $form_tidak_masuk->last_row();
+            //$this->data['tidak_masuk_id'] = ($form_tidak_masuk->num_rows()>0)?$tidak_masuk_id->id+1:1;
 
             $this->data['alasan'] = getAll('alasan_tidak_masuk', array('is_deleted'=>'where/0'));
-            $this->data['all_users'] = getAll('users', array('active'=>'where/1', 'username'=>'order/asc'), array('!=id'=>'1'));
+            if(is_admin())$this->data['all_users'] = getAll('users', array('active'=>'where/1', 'username'=>'order/asc'), array('!=id'=>'1'));
 
             $this->_render_page('form_tidak_masuk/input', $this->data);
         }
@@ -297,8 +293,29 @@ class form_tidak_masuk extends MX_Controller {
             );
 
             $this->main->update($id,$data);
+            
+        }else{
+            $potong_cuti = $this->input->post('potong_cuti');
+            $tipe_cuti = $this->input->post('type_cuti_id');
+            $data = array(
+            'potong_cuti'           => $potong_cuti,
+            'type_cuti_id'           => $tipe_cuti,
+            'is_app_'.$type => 1,
+            'app_status_id_'.$type => $this->input->post('app_status_'.$type),
+            'user_app_'.$type => $user_id,
+            'date_app_'.$type => $date_now,
+            'note_'.$type => $this->input->post('note_'.$type)
+            );
+            $this->main->update($id,$data);
+        }
+
+        return true;
+    }
+
+    function send_notif($id, $type){
+        if($type != 'hrd'){
             $user_tidak_masuk_id = getValue('user_id', 'users_tidak_masuk', array('id'=>'where/'.$id));
-            $approval_status = $this->input->post('app_status_'.$type);
+            $approval_status =  $approval_status = getValue('app_status_id_'.$type, 'users_tidak_masuk', array('id'=>'where/'.$id));
             $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
             $this->approval->approve('tidak_masuk', $id, $approval_status, $this->detail_email($id));
             $subject_email = get_form_no($id).'['.$approval_status_mail.']Status Pengajuan Keterangan Tidak Masuk dari Atasan';
@@ -328,22 +345,9 @@ class form_tidak_masuk extends MX_Controller {
                     if(!empty(getEmail($this->approval->approver('tidak_masuk', $user_id))))$this->send_email(getEmail($this->approval->approver('tidak_masuk', $user_id)), $subject_email_request, $isi_email_request);
             endif;
         }else{
-            $potong_cuti = $this->input->post('potong_cuti');
-            $tipe_cuti = $this->input->post('type_cuti_id');
-            $data = array(
-            'potong_cuti'           => $potong_cuti,
-            'type_cuti_id'           => $tipe_cuti,
-            'is_app_'.$type => 1,
-            'app_status_id_'.$type => $this->input->post('app_status_'.$type),
-            'user_app_'.$type => $user_id,
-            'date_app_'.$type => $date_now,
-            'note_'.$type => $this->input->post('note_'.$type)
-            );
-
             $is_app = getValue('is_app_'.$type, 'users_tidak_masuk', array('id'=>'where/'.$id));
-            $approval_status = $this->input->post('app_status_'.$type);
+            $approval_status =  $approval_status = getValue('app_status_id_'.$type, 'users_tidak_masuk', array('id'=>'where/'.$id));
             $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
-            $this->main->update($id,$data);
             $user_tidak_masuk_id = getValue('user_id', 'users_tidak_masuk', array('id'=>'where/'.$id));
 
             $subject_email = get_form_no($id).'-['.$approval_status_mail.']Status Pengajuan Izin Tidak Masuk dari HRD';
@@ -378,8 +382,6 @@ class form_tidak_masuk extends MX_Controller {
                 if(!empty(getEmail($user_tidak_masuk_id)))$this->send_email(getEmail($user_tidak_masuk_id), get_form_no($id).'-['.$approval_status_mail.']'.'Perubahan Status Pengajuan Permohonan tidak_masuk dari Atasan', $isi_email);
             }
         }
-
-        return true;
     }
 
     function detail_email($id)
@@ -863,13 +865,10 @@ class form_tidak_masuk extends MX_Controller {
                     $this->template->add_js('datatables.min.js');
                     $this->template->add_js('breakpoints.js');
                     $this->template->add_js('core.js');
-                    $this->template->add_js('select2.min.js');
 
-                    $this->template->add_js('form_index.js');
                     $this->template->add_js('form_datatable_index.js');
 
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
-                    $this->template->add_css('plugins/select2/select2.css');
                     $this->template->add_css('datatables.min.css');
 
                 }
@@ -904,14 +903,14 @@ class form_tidak_masuk extends MX_Controller {
 
                     $this->template->add_js('jquery.sidr.min.js');
                     $this->template->add_js('breakpoints.js');
-                    $this->template->add_js('select2.min.js');
+                    // $this->template->add_js('select2.min.js');
 
                     $this->template->add_js('core.js');
                     $this->template->add_js('form_tidak_masuk.js');
-
+                    $this->template->add_js('emp_dropdown.js');
 
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
-                    $this->template->add_css('plugins/select2/select2.css');
+                    // $this->template->add_css('plugins/select2/select2.css');
                     $this->template->add_css('approval_img.css');
 
                 }

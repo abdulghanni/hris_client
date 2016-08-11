@@ -17,10 +17,11 @@ $(document).ready(function() {
                     getAtasan1(empId);
                     getAtasan3(empId);
                     getSisaCuti(empId);
+                    getEmpPosGroup(empId);
                 }
                 getEmpOrg(empId);
                 getEmpPos(empId);
-                getEmpPosGroup(empId);
+                getEmpNik(empId);
                 break;
             case 'form_cuti':
                 if(s2 == 'input'){

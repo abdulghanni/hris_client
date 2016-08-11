@@ -4,10 +4,10 @@ var base_url    = $("#base_url").val(),
         uri1        = base_url+form+'/do_approve/'+id+'/lv1';
         uri2        = base_url+form+'/do_approve/'+id+'/lv2';
         uri3        = base_url+form+'/do_approve/'+id+'/lv3';
-        uri4      = base_url+form+'/do_approve/'+id+'/hrd';
+        uri4        = base_url+form+'/do_approve/'+id+'/hrd';
     
 $(document).ready(function() {              
-$(".select2").select2();
+//$(".select2").select2();
 //approval absen
     $('button[data-loading-text]').click(function () {
         $(this).button('loading');
@@ -24,6 +24,7 @@ $(".select2").select2();
                 reload_status('lv1');
                 $("[data-dismiss=modal]").trigger({ type: "click" });
                 $btn.button('reset');   
+                send_notif('lv1');  
             },
             error: function (jqXHR, textStatus, errorThrown)
             {
@@ -33,21 +34,6 @@ $(".select2").select2();
         });
     });
 
-    function reload_status(lv)
-    {
-         uri = base_url+form+'/detail/'+id+'/'+lv;
-        $('#'+lv).html('<img src="/hris_client/assets/img/loading.gif"> loading...');
-        $('#note').html('<img src="/hris_client/assets/img/loading.gif"> loading...');
-        $.ajax({
-            type: 'POST',
-            url: uri,
-            dataType: "JSON",
-            success: function(data) {
-                $('#'+lv).html(data.app);
-                $('#note').html(data.note);
-            }
-        });
-    }
     $('#btn_app_lv2').click(function(){
         var $btn = $(this).button('loading');
         $('#formAppLv2').submit(function(ev){
@@ -58,7 +44,8 @@ $(".select2").select2();
                 success: function() {
                      $("[data-dismiss=modal]").trigger({ type: "click" });
                      reload_status('lv2');
-                     $btn.button('reset')
+                     $btn.button('reset');
+                     send_notif('lv2');  
                 }
             });
             ev.preventDefault(); 
@@ -75,7 +62,8 @@ $(".select2").select2();
                 success: function() {
                     $("[data-dismiss=modal]").trigger({ type: "click" });
                      reload_status('lv3');
-                     $btn.button('reset')
+                     $btn.button('reset');
+                     send_notif('lv3');  
                 }
             });
             ev.preventDefault(); 
@@ -92,11 +80,50 @@ $(".select2").select2();
                 success: function() {
                     $("[data-dismiss=modal]").trigger({ type: "click" });
                      reload_status('hrd');
-                     $btn.button('reset')
+                     $btn.button('reset');
+                     send_notif('hrd');  
                 }
             });
             ev.preventDefault(); 
         });  
+    });
+
+
+
+    function reload_status(lv)
+    {
+         uri = base_url+form+'/detail/'+id+'/'+lv;
+        $('#'+lv).html('<img src="/hris_client/assets/img/loading.gif"> loading...');
+        $('#note').html('<img src="/hris_client/assets/img/loading.gif"> loading...');
+        $.ajax({
+            type: 'POST',
+            url: uri,
+            dataType: "JSON",
+            success: function(data) {
+                $('#'+lv).html(data.app);
+                $('#note').html(data.note);
+            }
+        });
+    }
+
+    function send_notif(lv)
+    {
+        uri = base_url+form+'/send_notif/'+id+'/'+lv;
+        $.ajax({
+            type: 'POST',
+            url: uri,
+            // dataType: "JSON",
+            success: function() {
+                console.log('y');
+            },
+            error: function(){
+                console.log('e');
+            }
+        });
+    }   
+
+    $.validator.addMethod('notEqual',function(value, element, param){
+        return this.optional(element)||value != param;
     });
 });
 
