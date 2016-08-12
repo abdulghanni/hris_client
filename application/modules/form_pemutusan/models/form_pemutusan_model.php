@@ -63,7 +63,10 @@ class Form_pemutusan_model extends CI_Model {
                 $this->db->where_in("users_pemutusan.user_id", $user);//print_mz($user);
             }elseif($is_admin!=1 ){
                  $this->db->where("(users_pemutusan.user_id = '$sess_id'
-                               OR users_pemutusan.user_app_lv1 = '$sess_nik'  OR users_pemutusan.user_app_lv2 = '$sess_nik'  OR users_pemutusan.user_app_lv3 = '$sess_nik'
+                                    OR users_pemutusan.user_app_lv1 = '$sess_nik'  
+                                    OR users_pemutusan.user_app_lv2 = '$sess_nik'  
+                                    OR users_pemutusan.user_app_lv3 = '$sess_nik'
+                                    OR Users_pemutusan.created_by = '$sess_id'
                 )",null, false);
             }
             endif;
@@ -123,20 +126,28 @@ class Form_pemutusan_model extends CI_Model {
 
     public function count_all($f)
     {
-         $is_admin = is_admin();
+        $is_admin = is_admin();
         if(!is_admin()){
             $sess_id = $this->session->userdata('user_id');
             $sess_nik = get_nik($sess_id);
-            $is_approver = $this->approval->approver('pemutusan', $sess_nik);//print_mz($is_approver);
+            $is_hrd_pusat = is_hrd_pusat($sess_nik, 13);
+            $is_approver = $this->approval->approver('pemutusan', $sess_nik);
             $is_admin_cabang = is_admin_cabang();
-            if($is_approver == $sess_nik || $is_admin_cabang == 1)$user = get_user_satu_bu($sess_nik);
+            if($is_hrd_pusat != 1){
+                if($is_approver == $sess_nik || $is_admin_cabang == 1)$user = get_user_satu_bu($sess_nik);
             }
-            
-        if($is_admin!=1):
+        }
+
+         if($is_admin!=1 && $is_hrd_pusat != 1):
             if($is_approver == $sess_nik || $is_admin_cabang == 1){
-                $this->db->where_in("users_pemutusan.user_id", $user);//print_mz($user);
+                $this->db->where_in($this->table.'.user_id', $user);//print_mz($user);
             }elseif($is_admin!=1 ){
-                  $this->db->where("(users_pemutusan.user_id = $sess_id OR  users_pemutusan.user_app_lv1 = '$sess_nik' OR users_pemutusan.user_app_lv2 = '$sess_nik' OR users_pemutusan.user_app_lv3 = '$sess_nik' OR users_pemutusan.created_by = '$sess_id')",null, false);
+                 $this->db->where("(users_pemutusan.user_id = '$sess_id'
+                                    OR users_pemutusan.user_app_lv1 = '$sess_nik'  
+                                    OR users_pemutusan.user_app_lv2 = '$sess_nik'  
+                                    OR users_pemutusan.user_app_lv3 = '$sess_nik'
+                                    OR Users_pemutusan.created_by = '$sess_id'
+                )",null, false);
             }
             endif;
         $this->db->where('users_pemutusan.is_deleted', 0);

@@ -99,13 +99,15 @@ $(document).ready(function() {
                 getEmpBu(empId);
                 getEmpOrg(empId);
                 getEmpPos(empId);
-                getEmpBuId(empId);
-                getEmpOrgId(empId);
-                getEmpPosId(empId);
                 getEmpSenDate(empId);
-                isGradeTujuh(empId);
-                getAtasan1(empId);
-                getAtasan3(empId);
+                if(s2 == 'input'){
+                    isGradeTujuh(empId);
+                    getAtasan1(empId);
+                    getAtasan3(empId);    
+                    getEmpBuId(empId);
+                    getEmpOrgId(empId);
+                    getEmpPosId(empId);
+                }
                 break;
             case 'form_kontrak':
             case 'form_pengangkatan':

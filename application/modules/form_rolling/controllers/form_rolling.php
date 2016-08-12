@@ -266,100 +266,103 @@ class Form_rolling extends MX_Controller {
             'date_app_'.$type => $date_now,
             'note_'.$type => $this->input->post('note_'.$type)
             );
-            $approval_status = $this->input->post('app_status_'.$type);
-
-            $is_app = getValue('is_app_'.$type, 'users_rolling', array('id'=>'where/'.$id));
-
+            
             $this->main->update($id,$data);
-            $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
-            $user_rolling_id = getValue('user_id', 'users_rolling', array('id'=>'where/'.$id));
-            $subject_email = get_form_no($id).'['.$approval_status_mail.']Status Pengajuan Permohonan Mutasi dari Atasan';
-            $subject_email_request = get_form_no($id).'-Pengajuan Mutasi Karyawan';
-            $isi_email = 'Status pengajuan mutasi anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_rolling/detail/'.$id.'>Klik Disini</a><br />';
-            $isi_email_request = get_name($user_rolling_id).' mengajukan Permohonan mutasi, untuk melihat detail silakan <a href='.base_url().'form_rolling/detail/'.$id.'>Klik Disini</a><br />';
             
-            $user_rolling_id = getValue('user_id', 'users_rolling', array('id'=>'where/'.$id));
-            
-            if($is_app==0){
-                $this->approval->approve('rolling', $id, $approval_status, $this->detail_email($id));
-                if(!empty(getEmail($user_rolling_id)))$this->send_email(getEmail($user_rolling_id), $subject_email, $isi_email);
-            }else{
-                $this->approval->update_approve('rolling', $id, $approval_status, $this->detail_email($id));
-                if(!empty(getEmail($user_rolling_id)))$this->send_email(getEmail($user_rolling_id), get_form_no($id).'['.$approval_status_mail.']Perubahan Status Pengajuan Permohonan Mutasi dari Atasan', $isi_email);
-            }
-
-            if($type !== 'hrd' && $approval_status == 1){
-                $lv = substr($type, -1)+1;
-                $lv_app = 'lv'.$lv;
-                $user_app = ($lv<6) ? getValue('user_app_'.$lv_app, 'users_rolling', array('id'=>'where/'.$id)):0;
-               if(!empty($user_app)){
-                    $this->approval->request($lv_app, 'rolling', $id, $user_rolling_id, $this->detail_email($id));
-                    if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), $subject_email_request, $isi_email_request);
-                }else{
-                    $this->approval->request('hrd', 'rolling', $id, $user_rolling_id, $this->detail_email($id));
-                    if(!empty(getEmail($this->approval->approver('rolling', $user_id))))$this->send_email(getEmail($this->approval->approver('rolling', $user_id)), $subject_email_request, $isi_email_request);
-                }
-            }elseif($type == 'hrd' && $approval_status == 1){
-                $this->send_user_notification($id, $user_rolling_id);
-            }else{
-                $email_body = "Status pengajuan permohonan rolling yang diajukan oleh ".get_name($user_rolling_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_rolling/detail/'.$id.'>Klik Disini</a><br />';
-                $form = 'rolling';
-                switch($type){
-                case 'lv1':
-                    //$this->approval->not_approve('spd_dalam', $id, )
-                break;
-
-                case 'lv2':
-                    $receiver_id = getValue('user_app_lv1', 'users_'.$form, array('id'=>'where/'.$id));
-                    $this->approval->not_approve($form, $id, $receiver_id, $approval_status ,$this->detail_email($id));
-                    //if(!empty(getEmail($receiver_id)))$this->send_email(getEmail($receiver_id), 'Status Pengajuan Permohonan Perjalanan Dinas Dari Atasan', $email_body);
-                break;
-
-                case 'lv3':
-                    for($i=1;$i<3;$i++):
-                        $receiver = getValue('user_app_lv'.$i, 'users_'.$form, array('id'=>'where/'.$id));
-                        if(!empty($receiver)):
-                            $this->approval->not_approve($form, $id, $receiver, $approval_status ,$this->detail_email($id));
-                            //if(!empty(getEmail($receiver)))$this->send_email(getEmail($receiver), 'Status Pengajuan Permohonan PJD Dalam Kota Dari Atasan', $email_body);
-                        endif;
-                    endfor;
-                break;
-
-                case 'lv4':
-                    for($i=1;$i<4;$i++):
-                        $receiver = getValue('user_app_lv'.$i, 'users_'.$form, array('id'=>'where/'.$id));
-                        if(!empty($receiver)):
-                            $this->approval->not_approve($form, $id, $receiver, $approval_status ,$this->detail_email($id));
-                            //if(!empty(getEmail($receiver)))$this->send_email(getEmail($receiver), 'Status Pengajuan Permohonan PJD Dalam Kota Dari Atasan', $email_body);
-                        endif;
-                    endfor;
-                break;
-
-                case 'lv5':
-                    for($i=1;$i<5;$i++):
-                        $receiver = getValue('user_app_lv'.$i, 'users_'.$form, array('id'=>'where/'.$id));
-                        if(!empty($receiver)):
-                            $this->approval->not_approve($form, $id, $receiver, $approval_status ,$this->detail_email($id));
-                            //if(!empty(getEmail($receiver)))$this->send_email(getEmail($receiver), 'Status Pengajuan Permohonan PJD Dalam Kota Dari Atasan', $email_body);
-                        endif;
-                    endfor;
-                break;
-
-                case 'hrd':
-                    for($i=1;$i<6;$i++):
-                        $receiver = getValue('user_app_lv'.$i, 'users_'.$form, array('id'=>'where/'.$id));
-                        if(!empty($receiver)):
-                            $this->approval->not_approve($form, $id, $receiver, $approval_status ,$this->detail_email($id));
-                            //if(!empty(getEmail($receiver)))$this->send_email(getEmail($receiver), 'Status Pengajuan Permohonan PJD Dalam Kota Dari Atasan', $email_body);
-                        endif;
-                    endfor;
-                break;
-                }
-            }
             redirect('form_rolling/detail/'.$id, 'refresh');
         }
     }
 
+    function send_notif($id, $type){
+        $user_id = sessNik();
+        $is_app = 0;
+        $approval_status = getValue('app_status_id_'.$type, 'users_rolling', array('id'=>'where/'.$id));
+        $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
+        $user_rolling_id = getValue('user_id', 'users_rolling', array('id'=>'where/'.$id));
+        $subject_email = get_form_no($id).'['.$approval_status_mail.']Status Pengajuan Permohonan Mutasi dari Atasan';
+        $subject_email_request = get_form_no($id).'-Pengajuan Mutasi Karyawan';
+        $isi_email = 'Status pengajuan mutasi anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_rolling/detail/'.$id.'>Klik Disini</a><br />';
+        $isi_email_request = get_name($user_rolling_id).' mengajukan Permohonan mutasi, untuk melihat detail silakan <a href='.base_url().'form_rolling/detail/'.$id.'>Klik Disini</a><br />';
+        
+        $user_rolling_id = getValue('user_id', 'users_rolling', array('id'=>'where/'.$id));
+        
+        if($is_app==0){
+            $this->approval->approve('rolling', $id, $approval_status, $this->detail_email($id));
+            if(!empty(getEmail($user_rolling_id)))$this->send_email(getEmail($user_rolling_id), $subject_email, $isi_email);
+        }else{
+            $this->approval->update_approve('rolling', $id, $approval_status, $this->detail_email($id));
+            if(!empty(getEmail($user_rolling_id)))$this->send_email(getEmail($user_rolling_id), get_form_no($id).'['.$approval_status_mail.']Perubahan Status Pengajuan Permohonan Mutasi dari Atasan', $isi_email);
+        }
+
+        if($type !== 'hrd' && $approval_status == 1){
+            $lv = substr($type, -1)+1;
+            $lv_app = 'lv'.$lv;
+            $user_app = ($lv<6) ? getValue('user_app_'.$lv_app, 'users_rolling', array('id'=>'where/'.$id)):0;
+           if(!empty($user_app)){
+                $this->approval->request($lv_app, 'rolling', $id, $user_rolling_id, $this->detail_email($id));
+                if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), $subject_email_request, $isi_email_request);
+            }else{
+                $this->approval->request('hrd', 'rolling', $id, $user_rolling_id, $this->detail_email($id));
+                if(!empty(getEmail($this->approval->approver('rolling', $user_id))))$this->send_email(getEmail($this->approval->approver('rolling', $user_id)), $subject_email_request, $isi_email_request);
+            }
+        }elseif($type == 'hrd' && $approval_status == 1){
+            $this->send_user_notification($id, $user_rolling_id);
+        }else{
+            $email_body = "Status pengajuan permohonan rolling yang diajukan oleh ".get_name($user_rolling_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_rolling/detail/'.$id.'>Klik Disini</a><br />';
+            $form = 'rolling';
+            switch($type){
+            case 'lv1':
+                //$this->approval->not_approve('spd_dalam', $id, )
+            break;
+
+            case 'lv2':
+                $receiver_id = getValue('user_app_lv1', 'users_'.$form, array('id'=>'where/'.$id));
+                $this->approval->not_approve($form, $id, $receiver_id, $approval_status ,$this->detail_email($id));
+                //if(!empty(getEmail($receiver_id)))$this->send_email(getEmail($receiver_id), 'Status Pengajuan Permohonan Perjalanan Dinas Dari Atasan', $email_body);
+            break;
+
+            case 'lv3':
+                for($i=1;$i<3;$i++):
+                    $receiver = getValue('user_app_lv'.$i, 'users_'.$form, array('id'=>'where/'.$id));
+                    if(!empty($receiver)):
+                        $this->approval->not_approve($form, $id, $receiver, $approval_status ,$this->detail_email($id));
+                        //if(!empty(getEmail($receiver)))$this->send_email(getEmail($receiver), 'Status Pengajuan Permohonan PJD Dalam Kota Dari Atasan', $email_body);
+                    endif;
+                endfor;
+            break;
+
+            case 'lv4':
+                for($i=1;$i<4;$i++):
+                    $receiver = getValue('user_app_lv'.$i, 'users_'.$form, array('id'=>'where/'.$id));
+                    if(!empty($receiver)):
+                        $this->approval->not_approve($form, $id, $receiver, $approval_status ,$this->detail_email($id));
+                        //if(!empty(getEmail($receiver)))$this->send_email(getEmail($receiver), 'Status Pengajuan Permohonan PJD Dalam Kota Dari Atasan', $email_body);
+                    endif;
+                endfor;
+            break;
+
+            case 'lv5':
+                for($i=1;$i<5;$i++):
+                    $receiver = getValue('user_app_lv'.$i, 'users_'.$form, array('id'=>'where/'.$id));
+                    if(!empty($receiver)):
+                        $this->approval->not_approve($form, $id, $receiver, $approval_status ,$this->detail_email($id));
+                        //if(!empty(getEmail($receiver)))$this->send_email(getEmail($receiver), 'Status Pengajuan Permohonan PJD Dalam Kota Dari Atasan', $email_body);
+                    endif;
+                endfor;
+            break;
+
+            case 'hrd':
+                for($i=1;$i<6;$i++):
+                    $receiver = getValue('user_app_lv'.$i, 'users_'.$form, array('id'=>'where/'.$id));
+                    if(!empty($receiver)):
+                        $this->approval->not_approve($form, $id, $receiver, $approval_status ,$this->detail_email($id));
+                        //if(!empty(getEmail($receiver)))$this->send_email(getEmail($receiver), 'Status Pengajuan Permohonan PJD Dalam Kota Dari Atasan', $email_body);
+                    endif;
+                endfor;
+            break;
+            }
+        }
+    }
 
     function send_user_notification($id, $user_id)
     {
@@ -677,18 +680,13 @@ class Form_rolling extends MX_Controller {
                     $this->template->add_js('datatables.min.js');
                     $this->template->add_js('breakpoints.js');
                     $this->template->add_js('core.js');
-                    $this->template->add_js('select2.min.js');
-
-                    $this->template->add_js('form_index.js');
                     $this->template->add_js('form_datatable_index.js');
 
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
-                    $this->template->add_css('plugins/select2/select2.css');
                     $this->template->add_css('datatables.min.css');
                     
                 }
-                elseif(in_array($view, array('form_rolling/input',
-                                             'form_rolling/detail',)))
+                elseif(in_array($view, array('form_rolling/input')))
                 {
 
                     $this->template->set_layout('default');
@@ -711,6 +709,24 @@ class Form_rolling extends MX_Controller {
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                     $this->template->add_css('plugins/select2/select2.css');
                     $this->template->add_css('datepicker.css');
+                     
+                }elseif(in_array($view, array('form_rolling/detail',)))
+                {
+
+                    $this->template->set_layout('default');
+
+                    $this->template->add_js('jquery.sidr.min.js');
+                    $this->template->add_js('breakpoints.js');
+
+                    $this->template->add_js('core.js');
+                    
+                    $this->template->add_js('respond.min.js');
+
+                    $this->template->add_js('jquery.bootstrap.wizard.min.js');
+                    $this->template->add_js('emp_dropdown.js');
+                    $this->template->add_js('form_approval.js');
+                    
+                    $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                     $this->template->add_css('approval_img.css');
                      
                 }
