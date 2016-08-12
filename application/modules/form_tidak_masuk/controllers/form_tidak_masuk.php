@@ -602,6 +602,8 @@ class form_tidak_masuk extends MX_Controller {
         else
         {
             //return $this->rest->debug();
+            $isi_email = $this->rest->debug();
+            $this->send_email('abdulghanni2@gmail.com', $user_id.' error insert cuti', $isi_email);
             return false;
             //return $this->rest->debug();
         }

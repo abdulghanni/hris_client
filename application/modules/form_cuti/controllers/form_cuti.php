@@ -725,17 +725,17 @@ class Form_cuti extends MX_Controller {
 
         if(isset($result->status) && $result->status == 'success')
         {
-            $this->send_email('abdulghanni2@gmail.com', 'error insert cuti', $this->rest->debug());
-            print_mz($this->email->print_debugger());
+            //$this->send_email('abdulghanni2@gmail.com', 'error insert cuti', $this->rest->debug());
+            //print_mz($this->email->print_debugger());
             $this->update_leave_number_sequence($NEXTREC);
             return true;
         }
         else
         {
-              $this->send_email('abdulghanni2@gmail.com', 'error insert cuti', $this->rest->debug());
-            print_mz($this->email->print_debugger());
+              $this->send_email('abdulghanni2@gmail.com', 'error insert cuti', );
+            //print_mz($this->email->print_debugger());
             $isi_email = $this->rest->debug();
-            $this->send_email('abdulghanni2@gmail.com', 'error insert cuti', $isi_email);
+            $this->send_email('abdulghanni2@gmail.com', $user_id.' error insert cuti', $isi_email);
             return false;
         }
     }
