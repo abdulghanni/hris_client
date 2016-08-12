@@ -55,8 +55,10 @@ $(document).ready(function() {
                 getEmpOrgMedical(empId);
             break;
             case 'form_resignment':
-                getAtasan1(empId);
-                getAtasan3(empId);
+                if(s2 == 'input'){
+                    getAtasan1(empId);
+                    getAtasan3(empId);
+                }
                 getEmpBu(empId);
                 getEmpOrg(empId);
                 getEmpNik(empId);

@@ -41,8 +41,7 @@ class Form_resignment extends MX_Controller {
     }
 
     function ajax_list($f){
-        $list = $this->main->get_datatables($f);//lastq();
-        //print_mz($list);
+        $list = $this->main->get_datatables($f);
         $data = array();
         $no = $_POST['start'];
         foreach ($list as $r) {
@@ -120,10 +119,10 @@ class Form_resignment extends MX_Controller {
         }
 
         $this->data['sess_id'] = $sess_id = $this->session->userdata('user_id'); 
-        $this->data['sess_nik'] = get_nik($sess_id);
+        $this->data['sess_nik'] = sessNik();
 
-        $this->data['all_users'] = getAll('users', array('active'=>'where/1', 'username'=>'order/asc'), array('!=id'=>'1'));
-        $this->get_user_atasan();
+        if(is_admin())$this->data['all_users'] = getAll('users', array('active'=>'where/1', 'username'=>'order/asc'), array('!=id'=>'1'));
+        //$this->get_user_atasan();
         $this->data['alasan_resign'] = getAll('alasan_resign', array('is_deleted'=>'where/0'));
 
         $this->data['phone'] = getValue('phone', 'users', array('id'=>'where/'.$sess_id));
@@ -307,7 +306,7 @@ class Form_resignment extends MX_Controller {
             $num_rows = getAll('users_resignment_wawancara', array('user_resignment_id'=>'where/'.$id))->num_rows();
             $user_resignment_id = getValue('user_id', 'users_resignment', array('id'=>'where/'.$id));
             $date_resignment = getValue('date_resign', 'users_resignment', array('id'=>'where/'.$id));
-            $user_exit_id_num_rows = getAll('users_exit', array('user_id'=>'where/'.$user_resignment_id))->num_rows();//print_mz($user_exit_id_num_rows);
+            $user_exit_id_num_rows = getAll('users_exit', array('user_id'=>'where/'.$user_resignment_id))->num_rows();
             
             $user_id = get_nik($this->session->userdata('user_id'));
             $date_now = date('Y-m-d');
@@ -374,8 +373,19 @@ class Form_resignment extends MX_Controller {
                 );
                 $this->main->update($id,$data);
             endif;
+            redirect('form_resignment/detail/'.$id, 'refresh');
+        }
+    }
 
-            $approval_status = $this->input->post('app_status_'.$type);
+    function send_notif($id, $type){
+            $user_id = sessNik();
+            $is_app = 0;
+            $is_app = getValue('is_app_'.$type, 'users_resignment', array('id'=>'where/'.$id));
+            $num_rows = getAll('users_resignment_wawancara', array('user_resignment_id'=>'where/'.$id))->num_rows();
+            $user_resignment_id = getValue('user_id', 'users_resignment', array('id'=>'where/'.$id));
+            $date_resignment = getValue('date_resign', 'users_resignment', array('id'=>'where/'.$id));
+            $user_exit_id_num_rows = getAll('users_exit', array('user_id'=>'where/'.$user_resignment_id))->num_rows();
+            $approval_status = getValue('app_status_id_'.$type, 'users_resignment', array('id'=>'where/'.$id));
             $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
             $subject_email = get_form_no($id).'['.$approval_status_mail.']Status Pengajuan Pengunduran Diri dari Atasan';
             $subject_email_request = get_form_no($id).'-Pengajuan Pengunduran Diri';
@@ -405,10 +415,7 @@ class Form_resignment extends MX_Controller {
             if($type == 'hrd' && $approval_status == 1){
                 $this->send_notif_tambahan($id);
             }
-            redirect('form_resignment/detail/'.$id, 'refresh');
-        }
     }
-
     function send_notif_tambahan($id)
     {
         $url = base_url().'form_resignment/detail/'.$id;
@@ -475,20 +482,18 @@ class Form_resignment extends MX_Controller {
 
     public function get_hrd($buid)
     {
-        
         if($buid == '51'){
             $buid = '50';
+        }
+        $url = get_api_key().'users/hrd_list/BUID/'.$buid.'/format/json';
+        $headers = get_headers($url);
+        $response = substr($headers[0], 9, 3);
+        if ($response != "404") {
+            $get_atasan = file_get_contents($url);
+            $hrd = json_decode($get_atasan, true);
+            return $hrd;
         }else{
-            $url = get_api_key().'users/hrd_list/BUID/'.$buid.'/format/json';
-            $headers = get_headers($url);
-            $response = substr($headers[0], 9, 3);
-            if ($response != "404") {
-                $get_atasan = file_get_contents($url);
-                $hrd = json_decode($get_atasan, true);
-                return $hrd;
-            }else{
-                return false;
-            }
+            return false;
         }
     }
 
@@ -569,18 +574,37 @@ class Form_resignment extends MX_Controller {
                     $this->template->add_js('datatables.min.js');
                     $this->template->add_js('breakpoints.js');
                     $this->template->add_js('core.js');
-                    $this->template->add_js('select2.min.js');
 
-                    $this->template->add_js('form_index.js');
                     $this->template->add_js('form_datatable_index.js');
 
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
-                    $this->template->add_css('plugins/select2/select2.css');
                     $this->template->add_css('datatables.min.css');
                     
                 }
-                elseif(in_array($view, array('form_resignment/input',
-                                             'form_resignment/detail',)))
+                elseif(in_array($view, array('form_resignment/input')))
+                {
+
+                    $this->template->set_layout('default');
+
+                    $this->template->add_js('jquery.sidr.min.js');
+                    $this->template->add_js('breakpoints.js');
+                    $this->template->add_js('select2.min.js');
+
+                    $this->template->add_js('core.js');
+
+                    $this->template->add_js('respond.min.js');
+
+                    $this->template->add_js('jquery.bootstrap.wizard.min.js');
+                    $this->template->add_js('jquery.validate.min.js');
+                    $this->template->add_js('jquery-validate.bootstrap-tooltip.min.js');
+                    $this->template->add_js('bootstrap-datepicker.js');
+                    $this->template->add_js('emp_dropdown.js');
+                    $this->template->add_js('form_resignment.js');
+                    
+                    $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
+                    $this->template->add_css('plugins/select2/select2.css');
+                    $this->template->add_css('datepicker.css');
+                }elseif(in_array($view, array('form_resignment/detail')))
                 {
 
                     $this->template->set_layout('default');
@@ -598,8 +622,9 @@ class Form_resignment extends MX_Controller {
                     $this->template->add_js('jquery-validate.bootstrap-tooltip.min.js');
                     $this->template->add_js('bootstrap-datepicker.js');
                     $this->template->add_js('bootstrap-timepicker.js');
+                    $this->template->add_js('form_resignment_detail.js');
                     $this->template->add_js('emp_dropdown.js');
-                    $this->template->add_js('form_resignment.js');
+                    $this->template->add_js('form_approval.js');
                     
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                     $this->template->add_css('plugins/select2/select2.css');

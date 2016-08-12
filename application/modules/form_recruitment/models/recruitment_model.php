@@ -17,11 +17,11 @@ class recruitment_model extends CI_Model {
 
     private function _get_datatables_query($f)
     {       
-            $is_admin = is_admin();
-            if(!is_admin()){
+        $is_admin = is_admin();
+        if(!is_admin()){
             $sess_id = $this->session->userdata('user_id');
             $sess_nik = get_nik($sess_id);
-            $is_hrd_pusat = is_hrd_pusat($sess_nik, 1);
+            $is_hrd_pusat = is_hrd_pusat($sess_nik, 9);
             $is_approver = $this->approval->approver('recruitment', $sess_nik);
             $is_admin_cabang = is_admin_cabang();
             if($is_hrd_pusat != 1){
@@ -68,7 +68,6 @@ class recruitment_model extends CI_Model {
                     )",null, false);
                 }
             endif;
-            // $this->db->where('users_recruitment.id', '39');
 
         $i = 0;
     
@@ -80,9 +79,11 @@ class recruitment_model extends CI_Model {
                     $item = $this->join1.'.nik';
                 }elseif($item == 'username'){
                     $item = $this->join1.'.username';
-                }elseif($item == 'job_desc'){
-                   $item = $this->join2.'.job_desc';
-                }elseif($item == 'position_id'){
+                }
+                // elseif($item == 'job_desc'){
+                //    $item = $this->join2.'.job_desc';
+                // }
+                elseif($item == 'position_id'){
                     $item = $this->table.'.position_id';
                 }elseif($item == 'created_on'){
                     $item = $this->table.'.created_on';
@@ -128,7 +129,7 @@ class recruitment_model extends CI_Model {
         if(!is_admin()){
             $sess_id = $this->session->userdata('user_id');
             $sess_nik = get_nik($sess_id);
-            $is_hrd_pusat = is_hrd_pusat($sess_nik, 1);
+            $is_hrd_pusat = is_hrd_pusat($sess_nik, 9);
             $is_approver = $this->approval->approver('recruitment', $sess_nik);//print_mz($is_approver);
             $is_admin_cabang = is_admin_cabang();
             if($is_hrd_pusat != 1){

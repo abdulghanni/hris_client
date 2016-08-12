@@ -51,7 +51,7 @@
                           <label class="form-label text-right">NIK</label>
                         </div>
                         <div class="col-md-9">
-                          <input name="nik" id="nik" type="text"  class="form-control " placeholder="NIK" value="<?php echo $sess_nik?>"  disabled="disabled">
+                          <input name="nik" id="nik" type="text"  class="form-control " placeholder="NIK" value=""  disabled="disabled">
                         </div>
                       </div>          
                       <div class="row form-row">
@@ -59,7 +59,7 @@
                           <label class="form-label text-right">Unit Bisnis</label>
                         </div>
                         <div class="col-md-9">
-                          <input name="bu" id="bu" class="form-control " placeholder="Unit Bisnis" value="<?php echo get_user_bu($sess_nik)?>"  disabled="disabled">
+                          <input name="bu" id="bu" class="form-control " placeholder="Unit Bisnis" value=""  disabled="disabled">
                         </div>
                       </div>
                       <div class="row form-row">
@@ -67,7 +67,7 @@
                           <label class="form-label text-right">Dept/Bagian</label>
                         </div>
                         <div class="col-md-9">
-                          <input name="org2" id="organization" class="form-control " placeholder="Dept/Bagian" value="<?php echo get_user_organization($sess_nik)?>"  disabled="disabled">
+                          <input name="org2" id="organization" class="form-control " placeholder="Dept/Bagian" value=""  disabled="disabled">
                         </div>
                       </div>
                       <div class="row form-row">
@@ -75,7 +75,7 @@
                           <label class="form-label text-right">Jabatan</label>
                         </div>
                         <div class="col-md-9">
-                          <input name="pos2" id="position" class="form-control " placeholder="Jabatan" value="<?php echo get_user_position($sess_nik)?>"  disabled="disabled">
+                          <input name="pos2" id="position" class="form-control " placeholder="Jabatan" value=""  disabled="disabled">
                         </div>
                       </div>
                       <div class="row form-row">
@@ -83,7 +83,7 @@
                           <label class="form-label text-right">Tanggal Mulai Kerja</label>
                         </div>
                         <div class="col-md-9">
-                          <input name="seniority_date" id="seniority_date" type="text"  class="form-control " placeholder="Tanggal Mulai Kerja" value="<?php echo dateIndo(get_user_sen_date($sess_nik))?>"  disabled="disabled" >
+                          <input name="seniority_date" id="seniority_date" type="text"  class="form-control " placeholder="Tanggal Mulai Kerja" value=""  disabled="disabled" >
                         </div>
                       </div>
                     </div>
