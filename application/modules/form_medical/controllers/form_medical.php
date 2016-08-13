@@ -607,19 +607,37 @@ class Form_medical extends MX_Controller {
                     $this->template->add_js('datatables.min.js');
                     $this->template->add_js('breakpoints.js');
                     $this->template->add_js('core.js');
-                    $this->template->add_js('select2.min.js');
 
-                    $this->template->add_js('form_index.js');
                     $this->template->add_js('form_datatable_index.js');
 
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
-                    $this->template->add_css('plugins/select2/select2.css');
                     $this->template->add_css('datatables.min.css');
                     
                 }
-                elseif(in_array($view, array('form_medical/input',
-                                             'form_medical/detail',
-                    )))
+                elseif(in_array($view, array('form_medical/input')))
+                {
+
+                    $this->template->set_layout('default');
+
+                    $this->template->add_js('jquery.sidr.min.js');
+                    $this->template->add_js('breakpoints.js');
+                    $this->template->add_js('select2.min.js');
+
+                    $this->template->add_js('core.js');
+                    $this->template->add_js('purl.js');
+                    $this->template->add_js('jquery.maskMoney.js');
+                    $this->template->add_js('respond.min.js');
+
+                    $this->template->add_js('jquery.bootstrap.wizard.min.js');
+                    $this->template->add_js('jquery.validate.min.js');
+                    $this->template->add_js('jquery-validate.bootstrap-tooltip.min.js');
+                    $this->template->add_js('emp_dropdown.js');
+                    $this->template->add_js('form_medical.js');
+                    
+                    $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
+                    $this->template->add_css('plugins/select2/select2.css');
+                }
+                elseif(in_array($view, array('form_medical/detail')))
                 {
 
                     $this->template->set_layout('default');

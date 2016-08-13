@@ -266,14 +266,18 @@ class Form_Pemutusan extends MX_Controller {
             'date_app_'.$type => $date_now,
             'note_'.$type => $this->input->post('note_'.$type)
             );
-            $approval_status = $this->input->post('app_status_'.$type);
-
-            $is_app = getValue('is_app_'.$type, 'users_pemutusan', array('id'=>'where/'.$id));
-            $approval_status = $this->input->post('app_status_'.$type);
-
             $this->main->update($id,$data);
 
-            $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
+            redirect('form_pemutusan/detail/'.$id, 'refresh');
+        }
+    }
+
+    function send_notif($id, $type)
+    {
+        $user_id = sessNik();
+        $is_app = 0;
+        $approval_status = getValue('app_status_id_'.$type, 'users_pemutusan', array('id'=>'where/'.$id));
+        $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
             $user_pemutusan_id = getValue('user_id', 'users_pemutusan', array('id'=>'where/'.$id));
             $subject_email = get_form_no($id).'['.$approval_status_mail.']Status Pengajuan Perpanjangan pemutusan dari Atasan';
             $subject_email_request = get_form_no($id).'-Pengajuan pemutusan Karyawan';
@@ -358,9 +362,6 @@ class Form_Pemutusan extends MX_Controller {
                 break;
                 }
             }
-
-            redirect('form_pemutusan/detail/'.$id, 'refresh');
-        }
     }
 
     function send_notif_tambahan($id, $user_id)
@@ -528,18 +529,14 @@ class Form_Pemutusan extends MX_Controller {
                     $this->template->add_js('datatables.min.js');
                     $this->template->add_js('breakpoints.js');
                     $this->template->add_js('core.js');
-                    $this->template->add_js('select2.min.js');
 
-                    $this->template->add_js('form_index.js');
                     $this->template->add_js('form_datatable_index.js');
 
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
-                    $this->template->add_css('plugins/select2/select2.css');
                     $this->template->add_css('datatables.min.css');
 
                 }
-                elseif(in_array($view, array('form_pemutusan/input',
-                                             'form_pemutusan/detail',)))
+                elseif(in_array($view, array('form_pemutusan/input')))
                 {
 
                     $this->template->set_layout('default');
@@ -562,6 +559,24 @@ class Form_Pemutusan extends MX_Controller {
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                     $this->template->add_css('plugins/select2/select2.css');
                     $this->template->add_css('datepicker.css');
+                }
+                elseif(in_array($view, array('form_pemutusan/detail',)))
+                {
+
+                    $this->template->set_layout('default');
+
+                    $this->template->add_js('jquery.sidr.min.js');
+                    $this->template->add_js('breakpoints.js');
+                    $this->template->add_js('select2.min.js');
+
+                    $this->template->add_js('core.js');
+
+                    $this->template->add_js('respond.min.js');
+
+                    $this->template->add_js('emp_dropdown.js');
+                    $this->template->add_js('form_approval.js');
+
+                    $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                     $this->template->add_css('approval_img.css');
 
                 }

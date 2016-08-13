@@ -43,8 +43,10 @@ $(document).ready(function() {
                 getSubordinate(empId);
             break;
             case 'form_training_group':
-                getAtasan1(empId);
-                getAtasan3(empId);
+                if(s2 == 'input'){
+                    getAtasan1(empId);
+                    getAtasan3(empId);
+                }
                 getEmpOrg(empId);
                 getEmpNik(empId);
                 getEmpPos(empId);

@@ -34,7 +34,8 @@
                     <form class="form-no-horizontal-spacing" id=""> 
                     <div class="row column-seperation">
                       <div class="col-md-4">
-                        <h4>Yang Mengajukan Pelatihan</h4>      
+                        <h4>Yang Mengajukan Pelatihan</h4>
+                        <input type="hidden" id="emp" value="<?=$user->user_pengaju_id?>">      
                         <div class="row form-row">
                           <div class="col-md-3">
                             <label class="form-label text-right">Nama</label>
@@ -48,7 +49,7 @@
                             <label class="form-label text-right">Dept/Bagian</label>
                           </div>
                           <div class="col-md-9">
-                            <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama" value="<?php echo get_user_organization(get_nik($user->user_pengaju_id))?>" disabled="disabled">
+                            <input name="form3LastName" id="organization" type="text"  class="form-control" placeholder="-" value="" disabled="disabled">
                           </div>
                         </div>
                         <div class="row form-row">
@@ -56,7 +57,7 @@
                             <label class="form-label text-right">Jabatan</label>
                           </div>
                           <div class="col-md-9">
-                            <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama" value="<?php echo get_user_position(get_nik($user->user_pengaju_id))?>" disabled="disabled">
+                            <input name="form3LastName" id="position" type="text"  class="form-control" placeholder="-" value="" disabled="disabled">
                           </div>
                         </div>
                       </div>
@@ -279,24 +280,25 @@
                     <?php } ?>
                   </div>
 
-                    <div class="form-actions">
+                     <div class="form-actions">
                       <div class="row form-row">
-                          <div class="col-md-12 text-center">
-                          <?php  if($user->is_app_lv1 == 1 && get_nik($sess_id) == $user->user_app_lv1){?>
-                              <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitModalLv1"><i class='icon-edit'> Edit Approval</i></div>
-                            <?php }elseif($user->is_app_lv2 == 1 && get_nik($sess_id) == $user->user_app_lv2){?>
-                              <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitModalLv2"><i class='icon-edit'> Edit Approval</i></div>
-                            <?php }elseif($user->is_app_lv3 == 1 && get_nik($sess_id) == $user->user_app_lv3){?>
-                              <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitModalLv3"><i class='icon-edit'> Edit Approval</i></div>
-                            <?php }elseif($user->is_app_hrd == 1 && $this->approval->approver('training') == $sess_nik){?>
-                              <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitModalHrd"><i class='icon-edit'> Edit Approval</i></div>
-                            <?php } ?>
-                          </div>
+                        <div class="col-md-12 text-center">
+                          <?php  
+                          for($i=1;$i<4;$i++):
+                            $is_app = 'is_app_lv'.$i;
+                            $user_app = 'user_app_lv'.$i;
+                            if($user->$is_app == 1 && get_nik($sess_id) == $user->$user_app){?>
+                              <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitModalLv<?php echo $i ?>"><i class='icon-edit'> Edit Approval</i></div>
+                          <?php }endfor;
+                          if($user->is_app_hrd == 1 && get_nik($sess_id) == $this->approval->approver('training', $user_nik)){?>
+                            <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitModalHrd"><i class='icon-edit'> Edit Approval</i></div>
+                          <?php } ?>
+                        </div>
                       </div>
 
                       <div class="col-md-12 text-center"><div class="col-md-12 text-center"><span class="semi-bold">Mengetahui,</span><br/><br/><br/></div>
                       <div class="row wf-training">
-                        <div class="col-md-3">
+                        <div class="col-md-3" id="lv1">
                           <p class="wf-approve-sp">
                             <?php
                             $approved = assets_url('img/approved_stamp.png');
@@ -329,7 +331,7 @@
                           </p>
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-3" id="lv2">
                         <?php if(!empty($user->user_app_lv2)): ?>
                           <p class="wf-approve-sp">
                             <?php
@@ -360,7 +362,7 @@
                         <?php endif; ?>
                         </div>
                           
-                        <div class="col-md-3">
+                        <div class="col-md-3" id="lv1">
                           <?php if(!empty($user->user_app_lv3)): ?>
                           <p class="wf-approve-sp">
                             <?php
@@ -391,7 +393,7 @@
                         <?php endif; ?>
                         </div>
                           
-                        <div class="col-md-3">
+                        <div class="col-md-3" id="hrd">
                           <p class="wf-approve-sp">
                             <?php
                             if($user->is_app_hrd == 0 && $this->approval->approver('training') == $sess_nik){?>
@@ -440,8 +442,7 @@
       </div>
       <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
       <div class="modal-body">
-        <!--<form class="form-no-horizontal-spacing" id="formAppHrd">-->
-        <?php $att = array('class'=>'', 'id'=>'formAppHrd');
+        <?php $att = array('class'=>'', 'id'=>'formApphrd');
         echo form_open('', $att);?>
           <div class="row form-row">
             <div class="col-md-3">
@@ -671,7 +672,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="icon-remove"></i>&nbsp;<?php echo lang('close_button')?></button> 
-        <button id="btn_app_hrd" class="btn btn-success btn-cons"><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
+        <button id="btnApphrd" onclick="approve('hrd')" type="button" class="btn btn-success btn-cons"><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
       </div>
         <?php echo form_close()?>
     </div>
@@ -680,17 +681,17 @@
 <!--end edit modal-->   
 
 
-<!--approval training Modal Lv1 -->
-<div class="modal fade" id="submitModalLv1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<?php for($i=1;$i<4;$i++):?>
+  <!--approval  Modal atasan -->
+<div class="modal fade" id="<?php echo 'submitModalLv'.$i?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog" id="modaldialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Approval Form Training</h4>
+        <h4 class="modal-title" id="myModalLabel">Approval Form Atasan</h4>
       </div>
-      <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
       <div class="modal-body">
-        <form class="form-no-horizontal-spacing"  id="formAppLv1">
+        <form class="form-no-horizontal-spacing"  id="<?php echo 'formApplv'.$i?>">
             <div class="row form-row">
               <div class="col-md-12">
                 <label class="form-label text-left">Status Approval </label>
@@ -700,13 +701,15 @@
                   <?php 
                   if($approval_status->num_rows() > 0){
                     foreach($approval_status->result() as $app){
-                      $checked = ($app->id <> 0 && $app->id == $user->approval_status_id_lv1) ? 'checked = "checked"' : '';
+                      $x = 'approval_status_id_lv'.$i;
+                      $y = 'note_app_lv'.$i;
+                      $checked = ($app->id <> 0 && $app->id == $user->$x) ? 'checked = "checked"' : '';
                       $checked2 = ($app->id == 1) ? 'checked = "checked"' : '';
                       ?>
-                  <input id="app_status_lv1<?php echo $app->id?>" type="radio" name="app_status_lv1" value="<?php echo $app->id?>" <?php echo (!empty($checked))?$checked:$checked2;?>>
-                  <label for="app_status_lv1<?php echo $app->id?>"><?php echo $app->title?></label>
+                  <input id="app_status_lv<?php echo $i.'-'.$app->id?>" type="radio" name="<?php echo 'app_status_lv'.$i?>" value="<?php echo $app->id?>" <?php echo (!empty($checked))?$checked:$checked2;?>>
+                  <label for="app_status_lv<?php echo $i.'-'.$app->id?>"><?php echo $app->title?></label>
                   <?php }}else{?>
-                  <input id="app_status" type="radio" name="app_status_lv1" value="0">
+                  <input id="app_status" type="radio" name="<?php echo 'app_status_lv'.$i?>" value="0">
                   <label for="app_status">No Data</label>
                     <?php } ?>
                 </div>
@@ -717,121 +720,21 @@
                 <label class="form-label text-left">Note : </label>
               </div>
               <div class="col-md-12">
-                <textarea name="note_lv1" class="custom-txtarea-form" placeholder="Isi Note disini......."><?php echo $user->note_app_lv1?></textarea>
+                <textarea name="<?php echo 'note_lv'.$i?>" class="form-control" placeholder="Isi note disini...."><?php echo $user->$y?></textarea>
               </div>
             </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="icon-remove"></i>&nbsp;<?php echo lang('close_button')?></button> 
-        <button id="btn_app_lv1"  class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
+         <button id="btnApplv<?=$i?>" onclick="approve('lv<?=$i?>')" type="button" class="btn btn-success btn-cons"><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
       </div>
         <?php echo form_close()?>
     </div>
   </div>
 </div>
-<!--end approve modal lv1--> 
+<!--end approve modal-->
+<?php endfor;?>
 
-<!--approval training Modal Lv2 -->
-<div class="modal fade" id="submitModalLv2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog" id="modaldialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Approval Form Training</h4>
-      </div>
-      <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
-      <div class="modal-body">
-        <form class="form-no-horizontal-spacing"  id="formAppLv2">
-            <div class="row form-row">
-              <div class="col-md-12">
-                <label class="form-label text-left">Status Approval </label>
-              </div>
-              <div class="col-md-12">
-                <div class="radio">
-                  <?php 
-                  if($approval_status->num_rows() > 0){
-                    foreach($approval_status->result() as $app){
-                      $checked = ($app->id <> 0 && $app->id == $user->approval_status_id_lv2) ? 'checked = "checked"' : '';
-                      $checked2 = ($app->id == 1) ? 'checked = "checked"' : '';
-                      ?>
-                  <input id="app_status_lv2<?php echo $app->id?>" type="radio" name="app_status_lv2" value="<?php echo $app->id?>" <?php echo (!empty($checked))?$checked:$checked2;?>>
-                  <label for="app_status_lv2<?php echo $app->id?>"><?php echo $app->title?></label>
-                  <?php }}else{?>
-                  <input id="app_status" type="radio" name="app_status_lv2" value="0">
-                  <label for="app_status">No Data</label>
-                    <?php } ?>
-                </div>
-              </div>
-            </div>
-            <div class="row form-row">
-              <div class="col-md-12">
-                <label class="form-label text-left">Note: </label>
-              </div>
-              <div class="col-md-12">
-                <textarea name="note_lv2" class="custom-txtarea-form" placeholder="Isi Note disini......."><?php echo $user->note_app_lv2?></textarea>
-              </div>
-            </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="icon-remove"></i>&nbsp;<?php echo lang('close_button')?></button> 
-        <button id="btn_app_lv2"  class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
-      </div>
-        <?php echo form_close()?>
-    </div>
-  </div>
-</div>
-<!--end approve modal Lv2--> 
-
-<!--approval training Modal Lv2 -->
-<div class="modal fade" id="submitModalLv3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog" id="modaldialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Approval Form Training</h4>
-      </div>
-      <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
-      <div class="modal-body">
-        <form class="form-no-horizontal-spacing"  id="formAppLv3">
-            <div class="row form-row">
-              <div class="col-md-12">
-                <label class="form-label text-left">Status Approval </label>
-              </div>
-              <div class="col-md-12">
-                <div class="radio">
-                  <?php 
-                  if($approval_status->num_rows() > 0){
-                    foreach($approval_status->result() as $app){
-                      $checked = ($app->id <> 0 && $app->id == $user->approval_status_id_lv3) ? 'checked = "checked"' : '';
-                      $checked2 = ($app->id == 1) ? 'checked = "checked"' : '';
-                      ?>
-                  <input id="app_status_lv3<?php echo $app->id?>" type="radio" name="app_status_lv3" value="<?php echo $app->id?>" <?php echo (!empty($checked))?$checked:$checked2;?>>
-                  <label for="app_status_lv3<?php echo $app->id?>"><?php echo $app->title?></label>
-                  <?php }}else{?>
-                  <input id="app_status" type="radio" name="app_status_lv3" value="0">
-                  <label for="app_status">No Data</label>
-                    <?php } ?>
-                </div>
-              </div>
-            </div>
-            <div class="row form-row">
-              <div class="col-md-12">
-                <label class="form-label text-left">Note : </label>
-              </div>
-              <div class="col-md-12">
-                <textarea name="note_lv3" class="custom-txtarea-form" placeholder="Isi Note disini......."><?php echo $user->note_app_lv3?></textarea>
-              </div>
-            </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="icon-remove"></i>&nbsp;<?php echo lang('close_button')?></button> 
-        <button id="btn_app_lv3"  class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
-      </div>
-        <?php echo form_close()?>
-    </div>
-  </div>
-</div>
-<!--end approve modal Lv2--> 
 <?php }else{
   echo '<div class="col-md-12 text-center">Pengajuan Ini Telah Di Batalkan Oleh Pengaju</div>';
   } ?>

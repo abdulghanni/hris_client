@@ -21,7 +21,7 @@ class Form_medical_model extends CI_Model {
         if(!is_admin()){
             $sess_id = $this->session->userdata('user_id');
             $sess_nik = get_nik($sess_id);
-            $is_hrd_pusat = is_hrd_pusat($sess_nik, 5);//print_mz($is_hrd_pusat);
+            $is_hrd_pusat = is_hrd_pusat($sess_nik, 4);//print_mz($is_hrd_pusat);
             $is_approver = $this->approval->approver('medical', $sess_nik);
             $is_admin_cabang = is_admin_cabang();
             if($is_hrd_pusat != 1){
@@ -122,7 +122,7 @@ class Form_medical_model extends CI_Model {
         if(!is_admin()){
             $sess_id = $this->session->userdata('user_id');
             $sess_nik = get_nik($sess_id);
-            $is_hrd_pusat = is_hrd_pusat($sess_nik, 1);
+            $is_hrd_pusat = is_hrd_pusat($sess_nik, 4);
             $is_approver = $this->approval->approver('medical', $sess_nik);//print_mz($is_approver);
             $is_admin_cabang = is_admin_cabang();
             if($is_hrd_pusat != 1){

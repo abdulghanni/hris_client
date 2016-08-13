@@ -125,17 +125,19 @@ class form_training_group extends MX_Controller {
             $this->data['waktu'] = GetAll('training_waktu', array('is_deleted' => 'where/0'));
             $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
 
-            $this->data['ikatan'] = $this->get_tipe_ikatan_dinas();
-            $this->data['vendor'] = $this->get_vendor();
-
             $this->data['approved'] = assets_url('img/approved_stamp.png');
             $this->data['rejected'] = assets_url('img/rejected_stamp.png');
             $this->data['pending'] = assets_url('img/pending_stamp.png');
             if($lv != null){
+                $this->data['row'] = $this->main->detail($id)->row();
                 $app = $this->load->view('form_'.$this->form_name.'/'.$lv, $this->data, true);
                 $note = $this->load->view('form_'.$this->form_name.'/note', $this->data, true);
                 echo json_encode(array('app'=>$app, 'note'=>$note));
             }else{
+
+                $this->data['ikatan'] = $this->get_tipe_ikatan_dinas();
+                $this->data['vendor'] = $this->get_vendor();
+
                 $this->_render_page('form_'.$this->form_name.'/detail', $this->data);
             }
         }
@@ -233,25 +235,54 @@ class form_training_group extends MX_Controller {
             $user_id = get_nik($this->session->userdata('user_id'));
             $date_now = date('Y-m-d');
 
-            $data = array(
-            'is_app_'.$type => 1,
-            'approval_status_id_'.$type => $this->input->post('app_status_'.$type),
-            'date_app_'.$type => $date_now,
-            'note_app_'.$type => $this->input->post('note_'.$type)
-            );
+            if($type == 'hrd'){
+                $data = array(
+            'training_type_id' => $this->input->post('training_type'),
+            'penyelenggara_id' => $this->input->post('penyelenggara'),
+            'pembiayaan_id' => $this->input->post('pembiayaan'),
+            'ikatan_dinas_id' => $this->input->post('ikatan'),
+            'waktu_id' => $this->input->post('waktu'),
+            'besar_biaya' => $this->input->post('besar_biaya'),
+            'tempat' => $this->input->post('tempat'),
+            'narasumber' => $this->input->post('narasumber'),
+            'vendor' => $this->input->post('vendor'),
+            'tanggal_mulai'=> date('Y-m-d',strtotime($this->input->post('tanggal_mulai'))),
+            'tanggal_akhir'=> date('Y-m-d',strtotime($this->input->post('tanggal_akhir'))),
+            'lama_training_bulan' => $this->input->post('lama_training_bulan'),
+            'lama_training_hari' => $this->input->post('lama_training_hari'),
+            'jam_mulai'   => $this->input->post('jam_mulai'),
+            'jam_akhir'   => $this->input->post('jam_akhir'),
+            'is_app_hrd' => 1,
+            'approval_status_id_hrd' => $this->input->post('app_status'),
+            'note_app_hrd' => $this->input->post('note_hrd'), 
+            'user_app_hrd' => $user_id, 
+            'date_app_hrd' => $date_now);
+
+             $this->main->update($id,$data);
+            }else{
+                $data = array(
+                'is_app_'.$type => 1,
+                'approval_status_id_'.$type => $this->input->post('app_status_'.$type),
+                'date_app_'.$type => $date_now,
+                'note_app_'.$type => $this->input->post('note_'.$type)
+                );
+            }
                 
-            $is_app = getValue('is_app_'.$type, 'users_training_group', array('id'=>'where/'.$id));
-            $approval_status = $this->input->post('app_status_'.$type);
-
            $this->main->update($id,$data);
+        }
+    }
 
-           $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
+    function send_notif($id, $type){
+        $user_id = sessNik();
+        $approval_status = getValue('approval_status_id_'.$type, 'users_training_group', array('id'=>'where/'.$id));
+        $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
+        $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
             $user_training_id = getValue('user_pengaju_id', 'users_training_group', array('id'=>'where/'.$id));
             $subject_email = get_form_no($id).'['.$approval_status_mail.']Status Pengajuan Pelatihan(Group) dari Atasan';
             $subject_email_request = get_form_no($id).'-Pengajuan Pelatihan(Group) Karyawan';
             $isi_email = 'Status pengajuan training anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_training_group/detail/'.$id.'>Klik Disini</a><br />';
             $isi_email_request = get_name($user_training_id).' mengajukan Permohonan training, untuk melihat detail silakan <a href='.base_url().'form_training_group/detail/'.$id.'>Klik Disini</a><br />';
-            
+            $is_app = getValue('is_app_'.$type, 'users_training_group', array('id'=>'where/'.$id));
             if($is_app==0){
                 $this->approval_mail($id, $approval_status);
                 if(!empty(getEmail($user_training_id)))$this->send_email(getEmail($user_training_id), $subject_email, $isi_email);
@@ -274,7 +305,7 @@ class form_training_group extends MX_Controller {
                     if(!empty(getEmail($this->approval->approver('training'))))$this->send_email(getEmail($this->approval->approver('training')), $subject_email_request, $isi_email_request);
                 }
             }else{
-                $email_body = "Status pengajuan permohonan Training yang diajukan oleh ".get_name($user_training_group_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_training_group/detail/'.$id.'>Klik Disini</a><br />';
+                $email_body = "Status pengajuan permohonan Training yang diajukan oleh ".get_name($user_training_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_training_group/detail/'.$id.'>Klik Disini</a><br />';
                 switch($type){
                     case 'lv1':
                         //$this->approval->not_approve('training_group', $id, )
@@ -315,7 +346,6 @@ class form_training_group extends MX_Controller {
                     break;
                 }
             }
-        }
     }
 
     function do_approve_hrd($id)
@@ -576,19 +606,37 @@ function get_penerima_tugas()
                     $this->template->add_js('datatables.min.js');
                     $this->template->add_js('breakpoints.js');
                     $this->template->add_js('core.js');
-                    $this->template->add_js('select2.min.js');
 
-                    $this->template->add_js('form_index.js');
                     $this->template->add_js('form_datatable_index.js');
 
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
-                    $this->template->add_css('plugins/select2/select2.css');
                     $this->template->add_css('datatables.min.css');
                     
                 }
-                elseif(in_array($view, array('form_training_group/input',
-                                             'form_training_group/detail'
-                    )))
+                elseif(in_array($view, array('form_training_group/input')))
+                {
+
+                    $this->template->set_layout('default');
+
+                    $this->template->add_js('jquery.sidr.min.js');
+                    $this->template->add_js('breakpoints.js');
+                    $this->template->add_js('select2.min.js');
+
+                    $this->template->add_js('core.js');
+
+                    $this->template->add_js('respond.min.js');
+
+                    $this->template->add_js('jquery.bootstrap.wizard.min.js');
+                    $this->template->add_js('jquery.validate.min.js');
+                    $this->template->add_js('jquery-validate.bootstrap-tooltip.min.js');
+                    $this->template->add_js('emp_dropdown.js');
+                    $this->template->add_js('form_training_group_input.js');
+                    
+                    $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
+                    $this->template->add_css('plugins/select2/select2.css');
+                     
+                }
+                elseif(in_array($view, array('form_training_group/detail')))
                 {
 
                     $this->template->set_layout('default');
@@ -609,6 +657,7 @@ function get_penerima_tugas()
                     $this->template->add_js('bootstrap-timepicker.js');
                     $this->template->add_js('emp_dropdown.js');
                     $this->template->add_js('form_training_group.js');
+                    $this->template->add_js('form_approval.js');
                     
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                     $this->template->add_css('plugins/select2/select2.css');
