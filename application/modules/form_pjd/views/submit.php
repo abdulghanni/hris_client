@@ -18,6 +18,7 @@
           <div class="grid simple">
             <div class="grid-title no-border">
               <h4>Form <a href="<?php echo site_url('form_pjd')?>">Perjalanan Dinas <span class="semi-bold"></span></a></h4><br/>
+              <?php if ($td_num_rows > 0) {?>
               <a href="<?php echo site_url('form_pjd/pdf/'.$id)?>" target="_blank"><button class="btn btn-primary pull-right"><i class="icon-print"> Cetak</i></button></a><br/>
               No : <?= get_form_no($id) ?>
             </div>
@@ -26,7 +27,7 @@
               <form class="form-no-horizontal-spacing" id="formSpdLuar"> <div class="row column-seperation">
                   <div class="col-md-12">
                     <h4>Admin Pembuat Tugas</h4>
-                    <?php if ($td_num_rows > 0) {
+                    <?php
                       foreach ($task_detail as $td) :
                         $a = strtotime($td->date_spd_end);
                         $b = strtotime($td->date_spd_start);
@@ -255,22 +256,22 @@
                       </tr>
                       </tbody>
                     </table>
-
-                    <?php 
-                      for($i=1;$i<4;$i++):
-                      $note_lv = 'note_lv'.$i;
-                      $user_lv = 'user_app_lv'.$i;
-                      if(!empty($td->$note_lv)){?>
-                      <div class="row form-row">
-                        <div class="col-md-3">
-                          <label class="form-label text-left">Note (<?php echo strtok(get_name($td->$user_lv), " ")?>):</label>
+                    <div id="note">
+                      <?php 
+                        for($i=1;$i<4;$i++):
+                        $note_lv = 'note_lv'.$i;
+                        $user_lv = 'user_app_lv'.$i;
+                        if(!empty($td->$note_lv)){?>
+                        <div class="row form-row">
+                          <div class="col-md-3">
+                            <label class="form-label text-left">Note (<?php echo strtok(get_name($td->$user_lv), " ")?>):</label>
+                          </div>
+                          <div class="col-md-5">
+                            <textarea name="notes_spv" class="form-control" disabled="disabled"><?php echo $td->$note_lv ?></textarea>
+                          </div>
                         </div>
-                        <div class="col-md-5">
-                          <textarea name="notes_spv" class="form-control" disabled="disabled"><?php echo $td->$note_lv ?></textarea>
-                        </div>
-                      </div>
-                      <?php } ?>
-                    <?php endfor;?>
+                        <?php } ?>
+                      <?php endfor;?>
                       <?php if(!empty($td->note_hrd)){?>
                       <div class="row form-row">
                         <div class="col-md-3">
@@ -292,9 +293,7 @@
                         </div>
                       </div>
                       <?php } ?>
-
-                      
-                </div>
+                    </div>
                 <div class="form-actions text-center">
                     <!-- <div class="col-md-12 text-center"> -->
                       <div class="row wf-spd">
@@ -336,20 +335,21 @@
                       
                       <div class="row form-row">
                         <div class="col-md-12 text-center">
-                          <?php  if($td->is_app_lv1 == 1 && get_nik($sess_id) == $td->user_app_lv1){?>
-                            <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitModalLv1"><i class='icon-edit'> Edit Approval</i></div>
-                          <?php }elseif($td->is_app_lv2 == 1 && get_nik($sess_id) == $td->user_app_lv2){?>
-                            <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitModalLv2"><i class='icon-edit'> Edit Approval</i></div>
-                          <?php }elseif($td->is_app_lv3 == 1 && get_nik($sess_id) == $td->user_app_lv3){?>
-                            <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitModalLv3"><i class='icon-edit'> Edit Approval</i></div>
-                          <?php }elseif($td->is_app_hrd == 1 && get_nik($sess_id) == $td->user_app_hrd){?>
+                        <?php  
+                        for($i=1;$i<4;$i++):
+                          $is_app = 'is_app_lv'.$i;
+                          $user_app = 'user_app_lv'.$i;
+                          if($td->$is_app == 1 && get_nik($sess_id) == $td->$user_app){?>
+                            <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitModalLv<?php echo $i ?>"><i class='icon-edit'> Edit Approval</i></div>
+                        <?php }endfor;
+                          if($td->is_app_hrd == 1 && get_nik($sess_id) == $this->approval->approver('dinas', $td->task_creator)){?>
                             <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitModalHrd"><i class='icon-edit'> Edit Approval</i></div>
-                          <?php } ?>
+                        <?php } ?>
                         </div>
                       </div>
 
                       <div class="row wf-cuti">
-                        <div class="col-md-3">
+                        <div class="col-md-3" id="lv1">
                           <p class="wf-approve-sp">
                             <?php
                             $hide = (sizeof($receiver_submit)<sizeof($receiver)) ? 'style="display:none"' : '';
@@ -382,7 +382,7 @@
                           </p>
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-3" id="lv2">
                           <p class="wf-approve-sp">
                             <?php
                             if(!empty($td->user_app_lv2) && $td->is_app_lv2 == 0 && get_nik($sess_id) == $td->user_app_lv2){?>
@@ -411,7 +411,7 @@
                           </p>
                         </div>
                           
-                        <div class="col-md-3">
+                        <div class="col-md-3" id="lv3">
                           <p class="wf-approve-sp">
                             <?php
                             if(!empty($td->user_app_lv3) && $td->is_app_lv3 == 0 && get_nik($sess_id) == $td->user_app_lv3){?>
@@ -440,7 +440,7 @@
                           </p>
                         </div>
                           
-                        <div class="col-md-3">
+                        <div class="col-md-3" id="hrd">
                           <p class="wf-approve-sp">
                             <?php 
                             if($td->is_app_hrd == 0 && $this->approval->approver('dinas', $creator_nik) == $sess_nik){?>
@@ -522,7 +522,7 @@
         <h4 class="modal-title" id="myModalLabel">Approval Form</h4>
       </div>
       <div class="modal-body">
-        <form class="form-no-horizontal-spacing"  id="<?php echo 'formAppLv'.$i?>">
+        <form class="form-no-horizontal-spacing"  id="<?php echo 'formApplv'.$i?>">
             <div class="row form-row">
               <div class="col-md-12">
                 <label class="form-label text-left">Status Approval </label>
@@ -557,7 +557,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="icon-remove"></i>&nbsp;<?php echo lang('close_button')?></button> 
-        <button id="<?php echo 'btn_app_lv'.$i?>"  class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
+         <button id="btnApplv<?=$i?>" onclick="approve('lv<?=$i?>')" type="button" class="btn btn-success btn-cons"><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
       </div>
         <?php echo form_close()?>
     </div>
@@ -575,7 +575,7 @@
         <h4 class="modal-title" id="myModalLabel">Approval Form</h4>
       </div>
       <div class="modal-body">
-        <form class="form-no-horizontal-spacing"  id="formAppHrd">
+        <form class="form-no-horizontal-spacing"  id="formApphrd">
             <div class="row form-row">
               <div class="col-md-12">
                 <label class="form-label text-left">Status Approval </label>
@@ -608,7 +608,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="icon-remove"></i>&nbsp;<?php echo lang('close_button')?></button> 
-        <button id="btn_app_hrd"  class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
+        <button id="btnApphrd" onclick="approve('hrd')" type="button" class="btn btn-success btn-cons"><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
       </div>
         <?php echo form_close()?>
     </div>
@@ -616,7 +616,7 @@
 </div>
 <!--end approve modal--> 
 
-<!--approval  Modal HRD -->
+<!--edit  Modal-->
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog" id="modaldialog">
     <div class="modal-content">
@@ -712,7 +712,9 @@
 
 
 
-<?php endforeach;} ?>
+<?php endforeach;}else{
+  echo "Pengajuan dibatalkan";
+  } ?>
 
 <!--
 <script type="text/javascript">

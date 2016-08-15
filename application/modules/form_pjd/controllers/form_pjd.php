@@ -3,17 +3,16 @@
 class Form_pjd extends MX_Controller {
 
     public $data;
-
+    var $form_name = 'pjd';
     function __construct()
     {
         parent::__construct();
         $this->load->library('authentication', NULL, 'ion_auth');
         $this->load->library('form_validation');
         $this->load->library('approval');
-        $this->load->helper('url');
         
         $this->load->database();
-        $this->load->model('form_pjd/form_spd_luar_group_model','form_spd_luar_group_model');
+        $this->load->model('form_pjd/pjd_model','main');
         
         $this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
 
@@ -23,7 +22,9 @@ class Form_pjd extends MX_Controller {
 
     function index($ftitle = "fn:",$sort_by = "id", $sort_order = "asc", $offset = 0)
     { 
-        $this->data['title'] = "Daftar Perjalanan Dinas";
+        $this->data['title'] ='Perjalanan Dinas';
+        $this->data['form_name'] = $this->form_name;
+        $this->data['form'] = $this->form_name;
         if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page
@@ -31,74 +32,108 @@ class Form_pjd extends MX_Controller {
         }
         else
         {
-            $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
-            $this->data['sess_nik'] = $sess_nik = get_nik($sess_id);
-            $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
-
-            //set sort order
-            $this->data['sort_order'] = $sort_order;
-            
-            //set sort by
-            $this->data['sort_by'] = $sort_by;
-           
-            //set filter by title
-            $this->data['ftitle_param'] = $ftitle; 
-            $exp_ftitle = explode(":",$ftitle);
-            $ftitle_re = str_replace("_", " ", $exp_ftitle[1]);
-            $ftitle_post = (strlen($ftitle_re) > 0) ? array('creator.username'=>$ftitle_re, 'users_spd_luar_group.task_receiver'=>get_nik_from_name($ftitle_re)) : array() ;
-            
-            //set default limit in var $config['list_limit'] at application/config/ion_auth.php 
-            $this->data['limit'] = $limit = (strlen($this->input->post('limit')) > 0) ? $this->input->post('limit') : 10 ;
-
-            $this->data['offset'] = 6;
-
-            //list of filterize all form_spd_luar_group  
-            $this->data['form_spd_luar_group_all'] = $this->form_spd_luar_group_model->like($ftitle_post)->form_spd_luar_group()->result();
-            
-            $this->data['num_rows_all'] = $this->form_spd_luar_group_model->like($ftitle_post)->form_spd_luar_group()->num_rows();
-
-            $form_spd_luar_group = $this->data['form_spd_luar_group'] = $this->form_spd_luar_group_model->like($ftitle_post)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->form_spd_luar_group()->result();
-            $this->data['_num_rows'] = $this->form_spd_luar_group_model->like($ftitle_post)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->form_spd_luar_group()->num_rows();
-            
-
-             //config pagination
-             $config['base_url'] = base_url().'form_pjd/index/fn:'.$exp_ftitle[1].'/'.$sort_by.'/'.$sort_order.'/';
-             $config['total_rows'] = $this->data['num_rows_all'];
-             $config['per_page'] = $limit;
-             $config['uri_segment'] = 6;
-
-            //inisialisasi config
-             $this->pagination->initialize($config);
-
-            //create pagination
-            $this->data['halaman'] = $this->pagination->create_links();
-
-            $this->data['ftitle_search'] = array(
-                'name'  => 'title',
-                'id'    => 'title',
-                'type'  => 'text',
-                'value' => $this->form_validation->set_value('title'),
-            );
-            $this->data['form_id'] = getValue('form_id', 'form_id', array('form_name'=>'like/pjd'));
-            $this->data['form'] = 'spd_luar_group';
-            $this->_render_page('form_pjd/index', $this->data);
+            $this->_render_page('form_'.$this->form_name.'/index', $this->data);
         }
     }
 
-    function keywords(){
-        if (!$this->ion_auth->logged_in())
-        {
-            redirect('auth/login', 'refresh');
-        }
-        else
-        {
-            $ftitle_post = (strlen($this->input->post('title')) > 0) ? strtolower(url_title($this->input->post('title'),'_')) : "" ;
+    public function ajax_list($f)
+    {
+        $list = $this->main->get_datatables($f);//lastq();//print_mz($list);
+        $data = array();
+        $no = $_POST['start'];
+        foreach ($list as $r) {
+            $app_lv1 = getValue('app_status_id_lv1', 'users_spd_luar_group', array('id'=>'where/'.$r->id));
+                              $app_lv2 = getValue('app_status_id_lv2', 'users_spd_luar_group', array('id'=>'where/'.$r->id));
+                              $app_lv3 = getValue('app_status_id_lv3', 'users_spd_luar_group', array('id'=>'where/'.$r->id));
+                              $app_hrd = getValue('app_status_id_hrd', 'users_spd_luar_group', array('id'=>'where/'.$r->id));
 
-            redirect('form_pjd/index/fn:'.$ftitle_post, 'refresh');
+                              $reject = ($r->is_deleted == 1) ? '<i class="icon-exclamation"></i> Cancelled' : (($app_lv1==2 || $app_lv2==2 || $app_lv2 ==2|| $app_hrd ==2) ? '<i class="icon-remove"></i> Rejected' : '<i class="icon-paste"></i> Report');
+                              $reject2 = ($app_lv1 ==2|| $app_lv2==2 || $app_lv2==2 || $app_hrd ==2 || $r->is_deleted == 1) ? 'style="background-color:red" disabled="disabled"' : '';
+            $peserta = getAll('users_spd_luar_group', array('id'=>'where/'.$r->id))->row('task_receiver');
+            $p = explode(",", $peserta);
+            $user_submit = getAll('users_spd_luar_group', array('id'=>'where/'.$r->id))->row('user_submit');
+            $receiver_submit = explode(",", $user_submit);
+            $report_num = getAll('users_spd_luar_report_group', array('user_spd_luar_group_id'=>'where/'.$r->id, 'created_by'=>'where/'.sessId()))->num_rows();
+
+            $hidden = (!in_array(sessNik(), $p)) ? 'style="display:none"' : '';
+            $btn_sub = (in_array(sessNik(), $p) && !in_array(sessNik(), $receiver_submit)) ? 'Submit' :((in_array(sessNik(), $p) && in_array(sessNik(), $receiver_submit))?'Submitted':'');
+            if(($app_lv1==2 || $app_lv2==2 || $app_lv2 ==2|| $app_hrd ==2 ||$r->is_deleted == 1)){
+              $btn_rep = $reject;
+            }else{
+            $btn_rep = ($report_num>0)?'<i class="icon-paste"></i> View Report':(($report_num < 1 && in_array(sessNik(), $receiver_submit))?'<i class="icon-paste"></i> Create Report':'<i class="icon-paste"></i> Report');
+            }
+
+            //AKSI
+           $detail = base_url()."form_".$this->form_name."/detail/".$r->id; 
+           $print = base_url()."form_".$this->form_name."/form_".$this->form_name."_pdf/".$r->id; 
+           $delete = (($r->app_status_id_lv1 == 0 && $r->created_by == sessId()) || is_admin()) ? '<button onclick="showModal('.$r->id.')" class="btn btn-sm btn-danger" type="button" title="Batalkan Pengajuan"><i class="icon-remove"></i></button>' : '';
+
+            //APPROVAL
+            if(!empty($r->user_app_lv1)){
+                $status1 = ($r->app_status_id_lv1 == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($r->app_status_id_lv1 == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($r->app_status_id_lv1 == 3) ? "<i class='icon-exclamation-sign' style='color:orange;' title = 'Pending'></i>" : "<i class='icon-question' title = 'Menunggu Status Approval'></i>"));
+            }else{
+                $status1 = "<i class='icon-minus' style='color:black;' title = 'Tidak Butuh Approval Atasan Langsung'></i>";
+            }
+            if(!empty($r->user_app_lv2)){
+                $status2 = ($r->app_status_id_lv2 == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($r->app_status_id_lv2 == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($r->app_status_id_lv2 == 3) ? "<i class='icon-exclamation-sign' style='color:orange;' title = 'Pending'></i>" : "<i class='icon-question' title = 'Menunggu Status Approval'></i>"));
+            }else{
+                $status2 = "<i class='icon-minus' style='color:black;' title = 'Tidak Butuh Approval Atasan Tidak Langsung'></i>";
+            }
+            if(!empty($r->user_app_lv3)){
+                $status3 = ($r->app_status_id_lv3 == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($r->app_status_id_lv3 == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($r->app_status_id_lv3 == 3) ? "<i class='icon-exclamation-sign' style='color:orange;' title = 'Pending'></i>" : "<i class='icon-question' title = 'Menunggu Status Approval'></i>"));
+            }else{
+                $status3 = "<i class='icon-minus' style='color:black;' title = 'Tidak Butuh Approval Atasan Lainnya'></i>";
+            }
+            
+
+
+            $statushrd = ($r->app_status_id_hrd == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($r->app_status_id_hrd == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($r->app_status_id_hrd == 3) ? "<i class='icon-exclamation-sign' style='color:orange;' title = 'Pending'></i>" : "<i class='icon-question' title = 'Menunggu Status Approval'></i>"));
+            for($i=0;$i<sizeof($p);$i++):
+                $n = get_name($p[$i]).',';
+            endfor;
+            $no++;
+            $row = array();
+            $row[] = "<a href=$detail>".$r->id.'</a>';
+            $row[] = '<a href="'.base_url().'form_pjd/submit/'.$r->id.'"><h4>'.$r->title.'</h4>
+                  <div class="small-text-custom">
+                    <span>Pemberi tugas : </span>'.get_name($r->task_creator).'<br/>
+                    <span>Penerima tugas : </span>'.$n.'<br/>
+                    <span>Tanggal : </span>'.dateIndo($r->date_spd_start).' s/d '.dateIndo($r->date_spd_end).'<br/>
+                    <span>Cabang/Depo Tujuan : </span>'.get_bu_name($r->to_city_id).'</div></a>';
+            $row[] = dateIndo($r->created_on);
+            $row[] = $status1;
+            $row[] = $status2;
+            $row[] = $status3;
+            $row[] = $statushrd;
+            $row[] = '<div class="list-actions" class="text-center">
+                      <a href="'.base_url().'form_pjd/submit/'.$r->id.'">
+                        <button class="btn btn-primary btn-cons" type="button" '.$hidden.'>
+                          <i class="icon-ok"></i>'
+                           .$btn_sub.
+                        '</button></a>
+                      <a href="'.base_url().'form_pjd/report/'.$r->id.'">
+                        <button class="btn btn-info btn-cons" type="button" '.$reject2.'> '.$btn_rep.'</button>
+                      <a href="'.base_url().'form_pjd/pdf/'.$r->id.'" target="_blank">
+                        <button class="btn btn-info btn-cons" type="button">
+                          <i class="icon-print"></i>
+                          Print
+                        </button>
+                      </a>
+                    </div>';
+            $data[] = $row;
         }
+
+        $output = array(
+                        "draw" => $_POST['draw'],
+                        "recordsTotal" => $this->main->count_all($f),
+                        "recordsFiltered" => $this->main->count_filtered($f),
+                        "data" => $data,
+                );
+        //output to json format
+        echo json_encode($output);
     }
 
-    function submit($id)
+    function submit($id, $lv=null)
     {
         $this->data['title'] = "Detail Perjalanan Dinas";
         if (!$this->ion_auth->logged_in())
@@ -111,8 +146,8 @@ class Form_pjd extends MX_Controller {
             $this->data['id'] = $id;
             $sess_id= $this->data['sess_id'] = $this->session->userdata('user_id');
             $this->data['sess_nik'] = $sess_nik = get_nik($sess_id);
-            $data_result = $this->data['task_detail'] = $this->form_spd_luar_group_model->where('users_spd_luar_group.id',$id)->form_spd_luar_group($id)->result();
-            $this->data['td_num_rows'] = $this->form_spd_luar_group_model->where('users_spd_luar_group.id',$id)->form_spd_luar_group($id)->num_rows();
+            $data_result = $this->data['task_detail'] = $this->main->detail($id)->result();
+            $this->data['td_num_rows'] = $this->main->detail($id)->num_rows();
         
             
             $receiver = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('task_receiver');
@@ -126,7 +161,7 @@ class Form_pjd extends MX_Controller {
             $this->data['biaya_tambahan'] = getAll('pjd_biaya', array('type_grade' => 'where/0'));
             $this->data['receiver'] = $p = explode(",", $receiver);
             
-            $this->data['receiver_submit'] = explode(",", $user_submit);
+            $this->data['receiver_submit'] = $receiver_submit = explode(",", $user_submit);
             $this->data['id']=$id;
             $this->data['created_by'] = getValue('created_by', 'users_spd_luar_group', array('id'=>'where/'.$id));
             $this->data['task_creator'] = getValue('task_creator', 'users_spd_luar_group', array('id'=>'where/'.$id));
@@ -147,9 +182,20 @@ class Form_pjd extends MX_Controller {
         $biaya_fix_3 = $this->db->select("(SELECT SUM(jumlah_biaya) FROM users_spd_luar_group_biaya WHERE user_spd_luar_group_id=$id and (pjd_biaya_id = 3 or pjd_biaya_id=6 or pjd_biaya_id=9 or pjd_biaya_id=12 or pjd_biaya_id=15 or pjd_biaya_id=21 or pjd_biaya_id=18)) AS hotel", FALSE)->get()->row_array();
         $this->data['hotel'] = number_format($biaya_fix_3['hotel']*($jml_pjd-1));
             
-            $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
+        $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
+        $this->data['hide'] = (sizeof($receiver_submit)<sizeof($receiver)) ? 'style="display:none"' : '';
 
+        $this->data['approved'] = assets_url('img/approved_stamp.png');
+        $this->data['rejected'] = assets_url('img/rejected_stamp.png');
+        $this->data['pending'] = assets_url('img/pending_stamp.png');
+        if($lv != null){
+            $this->data['td'] = $this->main->detail($id)->row();
+            $app = $this->load->view('form_'.$this->form_name.'/'.$lv, $this->data, true);
+            $note = $this->load->view('form_'.$this->form_name.'/note', $this->data, true);
+            echo json_encode(array('app'=>$app, 'note'=>$note));
+        }else{
             $this->_render_page('form_pjd/submit', $this->data);
+        }
         }
     }
 
@@ -175,7 +221,7 @@ class Form_pjd extends MX_Controller {
         'user_submit' => $user_submit,  
         'date_submit' => $date_now);
 
-        if($this->form_spd_luar_group_model->update($id,$additional_data)) {
+        if($this->main->update($id,$additional_data)) {
         $this->send_spd_submitted_mail($id, $creator_id);
         redirect('form_pjd/submit/'.$id,'refresh');
        }
@@ -199,7 +245,7 @@ class Form_pjd extends MX_Controller {
         'deleted_by' => $this->session->userdata('user_id'),
         'deleted_on' => $date_now);
 
-        $this->form_spd_luar_group_model->update($id,$additional_data);
+        $this->main->update($id,$additional_data);
         
         $this->send_spd_canceled_mail($id, $sender_id, $receiver_id);
         return true;
@@ -225,14 +271,15 @@ class Form_pjd extends MX_Controller {
         'note_'.$type => $this->input->post('note_'.$type)
         );
 
-        $is_app = getValue('is_app_'.$type, 'users_spd_luar_group', array('id'=>'where/'.$id));
-        $this->form_spd_luar_group_model->update($id,$data);
+        $this->main->update($id,$data);
+    }
 
-        if($is_app==0){
-            $this->approval->approve($form, $id, $approval_status, $this->detail_email($id));
-        }else{
-            $this->approval->update_approve($form, $id, $approval_status, $this->detail_email($id));
-        }
+    function send_notif($id, $type){
+        $form = 'spd_luar_group';
+        $user_id = sessNik();
+        $is_app = 0;
+        $approval_status = getValue('app_status_id_'.$type, 'users_spd_luar_group', array('id'=>'where/'.$id));
+         $is_app = 0;
 
         if($type !== 'hrd'  && $approval_status == 1){
             $lv = substr($type, -1)+1;
@@ -378,7 +425,7 @@ class Form_pjd extends MX_Controller {
             $created_by = $sess_nik;
             $biaya_tambahan_id = $this->input->post('biaya_tambahan_id');
             $biaya_tambahan = $this->input->post('jumlah_biaya_tambahan');
-            if ($this->form_validation->run() == true && $this->form_spd_luar_group_model->create_($task_receiver,$additional_data))
+            if ($this->form_validation->run() == true && $this->main->create_($task_receiver,$additional_data))
             {
                 $spd_id = $this->db->insert_id();
                 $tr = $this->input->post('peserta');
@@ -517,8 +564,8 @@ class Form_pjd extends MX_Controller {
             'id'    => 'file',
             'class'    => 'input-file-control',
             );
-            $data_result = $this->data['task_detail'] = $this->form_spd_luar_group_model->where('users_spd_luar_group.id',$id)->form_spd_luar_group($id)->result();
-            $this->data['td_num_rows'] = $this->form_spd_luar_group_model->where('users_spd_luar_group.id',$id)->form_spd_luar_group()->num_rows($id);
+            $data_result = $this->data['task_detail'] = $this->main->detail($id)->result();
+            $this->data['td_num_rows'] = $this->main->detail($id)->num_rows();
         
             $receiver = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('task_receiver');
             $kota = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('location_id');
@@ -531,13 +578,9 @@ class Form_pjd extends MX_Controller {
             $this->data['receiver_submit'] = explode(",", $user_submit);
 
             $this->data['sess_id'] = $this->session->userdata('user_id');
-            $data_result = $this->data['task_detail'] = $this->form_spd_luar_group_model->where('users_spd_luar_group.id',$id)->form_spd_luar_group($id)->result();
-            $this->data['td_num_rows'] = $this->form_spd_luar_group_model->where('users_spd_luar_group.id',$id)->form_spd_luar_group($id)->num_rows();
-            
-
            
-            $report = $this->data['report'] = $this->form_spd_luar_group_model->where('users_spd_luar_report_group.user_spd_luar_group_id', $id)->form_spd_luar_report_group($report_id, $user_id)->result();
-            $n_report = $this->data['n_report'] = $this->form_spd_luar_group_model->where('users_spd_luar_report_group.user_spd_luar_group_id', $id)->form_spd_luar_report_group($report_id, $user_id)->num_rows();
+            $report = $this->data['report'] = $this->main->report($report_id, $user_id)->result();
+            $n_report = $this->data['n_report'] = $this->main->report($report_id, $user_id)->num_rows();
 
             $receiver_id = getValue('task_receiver', 'users_spd_dalam', array('id'=>'where/'.$id));
             if($n_report==0){
@@ -586,8 +629,8 @@ class Form_pjd extends MX_Controller {
         {
 
             $this->data['sess_id'] = $this->session->userdata('user_id');
-            $data_result = $this->data['task_detail'] = $this->form_spd_luar_group_model->where('users_spd_luar_group.id',$id)->form_spd_luar_group($id)->result();
-            $this->data['td_num_rows'] = $this->form_spd_luar_group_model->where('users_spd_luar_group.id',$id)->form_spd_luar_group($id)->num_rows();
+            $data_result = $this->data['task_detail'] = $this->main->detail($id)->result();
+            $this->data['td_num_rows'] = $this->main->detail($id)->num_rows();
             
             $this->data['report_creator'] = $report_creator = getValue('created_by','users_spd_luar_report_group', array('id'=>'where/'.$report_id, 'created_by'=>'where/'.$user_id));
             $this->data['created_by'] = $this->data['user_folder'] = get_nik($report_creator);
@@ -596,8 +639,8 @@ class Form_pjd extends MX_Controller {
             $this->data['kota'] = $p = explode(",", $kota);
            $kendaraan = getValue('transportation_id', 'users_spd_luar_group', array('id'=>'where/'.$id));
             $this->data['kendaraan'] = $p = explode(",", $kendaraan);
-            $report = $this->data['report'] = $this->form_spd_luar_group_model->where('users_spd_luar_report_group.user_spd_luar_group_id', $id)->form_spd_luar_report_group($report_id, $user_id)->result();
-            $n_report = $this->data['n_report'] = $this->form_spd_luar_group_model->where('users_spd_luar_report_group.user_spd_luar_group_id', $id)->form_spd_luar_report_group($report_id, $user_id)->num_rows();
+            $report = $this->data['report'] = $this->main->report($report_id, $user_id)->result();
+            $n_report = $this->data['n_report'] = $this->main->report($report_id, $user_id)->num_rows();
 
             $receiver_id = getValue('task_receiver', 'users_spd_dalam', array('id'=>'where/'.$id));
             if($n_report==0){
@@ -676,7 +719,6 @@ class Form_pjd extends MX_Controller {
                         'when' => $this->input->post('when'),
                         'who' => $this->input->post('who'),
                         'how' => $this->input->post('how'),
-                        'date_submit'   => date('Y-m-d',strtotime('now')),
                         'created_on'    => date('Y-m-d',strtotime('now')),
                         'created_by'    => $sess_id
                     );
@@ -704,7 +746,7 @@ class Form_pjd extends MX_Controller {
                 }
 
                 $receiver_id = $this->db->where('id', $spd_id)->get('users_spd_luar_group')->row('task_creator');
-            if ($this->form_validation->run() == true && $this->form_spd_luar_group_model->create_report($spd_id,$additional_data))
+            if ($this->form_validation->run() == true && $this->main->create_report($spd_id,$additional_data))
             {
                 $this->send_spd_report_mail($spd_id, $receiver_id);
                 redirect('form_pjd/report_detail/'.$spd_id.'/'.$sess_id, 'refresh');  
@@ -759,7 +801,6 @@ class Form_pjd extends MX_Controller {
                         'who' => $this->input->post('who'),
                         'how' => $this->input->post('how'),
                         'attachment'    => '',
-                        'date_submit'   => date('Y-m-d',strtotime('now')),
                         'edited_on'    => date('Y-m-d',strtotime('now')),
                         'edited_by'    => $this->session->userdata('user_id')
                     );
@@ -787,7 +828,7 @@ class Form_pjd extends MX_Controller {
                 }
 
                 $receiver_id = $this->db->where('id', $spd_id)->get('users_spd_luar_group')->row('task_creator');
-            if ($this->form_validation->run() == true && $this->form_spd_luar_group_model->update_report($report_id,$additional_data))
+            if ($this->form_validation->run() == true && $this->main->update_report($report_id,$additional_data))
             {
                 $this->send_spd_report_mail($spd_id, $receiver_id);
                 redirect('form_pjd/report_detail/'.$spd_id.'/'.$user_id, 'refresh');  
@@ -888,53 +929,7 @@ class Form_pjd extends MX_Controller {
 
     function detail_email($id)
     {
-        if (!$this->ion_auth->logged_in())
-        {
-            //redirect them to the login page
-            redirect('auth/login', 'refresh');
-        }
-        else
-        {
-        $this->data['id'] = $id;
-            $sess_id= $this->data['sess_id'] = $this->session->userdata('user_id');
-            $this->data['sess_nik'] = $sess_nik = get_nik($sess_id);
-            $data_result = $this->data['task_detail'] = $this->form_spd_luar_group_model->where('users_spd_luar_group.id',$id)->form_spd_luar_group($id)->result();
-            $this->data['td_num_rows'] = $this->form_spd_luar_group_model->where('users_spd_luar_group.id',$id)->form_spd_luar_group($id)->num_rows();
-        
-            
-            $receiver = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('task_receiver');
-            $kota = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('location_id');
-            $creator = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('task_creator');
-            $user_submit = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('user_submit');
-            $this->data['biaya_pjd_group'] = getAll('users_spd_luar_group_biaya', array('user_spd_luar_group_id'=>'where/'.$id));
-            $this->data['biaya_tambahan'] = getAll('pjd_biaya', array('type_grade' => 'where/0'));
-            $this->data['receiver'] = $p = explode(",", $receiver);
-            $this->data['kota'] = $p = explode(",", $kota);
-            $this->data['receiver_submit'] = explode(",", $user_submit);
-            $this->data['id']=$id;
-            $this->data['created_by'] = getValue('created_by', 'users_spd_luar_group', array('id'=>'where/'.$id));
-            $this->data['task_creator'] = getValue('task_creator', 'users_spd_luar_group', array('id'=>'where/'.$id));
-            $b = $this->data['biaya_pjd'] = $this->db->distinct()->select('users_spd_luar_group_biaya.pjd_biaya_id as biaya_id, pjd_biaya.title as jenis_biaya')->from('users_spd_luar_group_biaya')->join('pjd_biaya','pjd_biaya.id = users_spd_luar_group_biaya.pjd_biaya_id', 'left')->where('user_spd_luar_group_id', $id)->where('pjd_biaya.type_grade', 0)->get();//print_mz($this->data['biaya_pjd']->result());                   
-            $this->data['detail'] = $this->db->distinct()->select('user_id')->where('user_spd_luar_group_id', $id)->get('users_spd_luar_group_biaya');
-            $this->data['ci'] = $this;
-
-            $a = strtotime(getValue('date_spd_end', 'users_spd_luar_group', array('id'=>'where/'.$id)));
-        $b = strtotime(getValue('date_spd_start', 'users_spd_luar_group', array('id'=>'where/'.$id)));
-
-        $j = $a - $b;
-        $jml_pjd = floor($j/(60*60*24)+1);
-        $biaya_fix_1 = $this->db->select("(SELECT SUM(jumlah_biaya) FROM users_spd_luar_group_biaya WHERE user_spd_luar_group_id=$id and (pjd_biaya_id = 1 or pjd_biaya_id=4 or pjd_biaya_id=7 or pjd_biaya_id=10 or pjd_biaya_id=13 or pjd_biaya_id=19 or pjd_biaya_id=16)) AS uang_makan", FALSE)->get()->row_array();
-        $this->data['uang_makan'] = number_format($biaya_fix_1['uang_makan']*$jml_pjd);
-        $biaya_fix_2 = $this->db->select("(SELECT SUM(jumlah_biaya) FROM users_spd_luar_group_biaya WHERE user_spd_luar_group_id=$id and (pjd_biaya_id = 2 or pjd_biaya_id=5 or pjd_biaya_id=8 or pjd_biaya_id=11 or pjd_biaya_id=14 or pjd_biaya_id=20 or pjd_biaya_id=17)) AS uang_saku", FALSE)->get()->row_array();
-        $this->data['uang_saku'] = number_format($biaya_fix_2['uang_saku']*$jml_pjd);
-        $biaya_fix_3 = $this->db->select("(SELECT SUM(jumlah_biaya) FROM users_spd_luar_group_biaya WHERE user_spd_luar_group_id=$id and (pjd_biaya_id = 3 or pjd_biaya_id=6 or pjd_biaya_id=9 or pjd_biaya_id=12 or pjd_biaya_id=15 or pjd_biaya_id=21 or pjd_biaya_id=18)) AS hotel", FALSE)->get()->row_array();
-        $this->data['hotel'] = number_format($biaya_fix_3['hotel']*$jml_pjd);
-            
-        $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
-
-
-            return $this->load->view('form_pjd/spd_luar_group_mail', $this->data, TRUE);
-        }
+        return '';
     } 
 
     function input_biaya($id)
@@ -1010,49 +1005,7 @@ class Form_pjd extends MX_Controller {
 
     function detail_email_report($id, $user_id)
     {
-        $report_id = getValue('id','users_spd_luar_report_group', array('user_spd_luar_group_id'=>'where/'.$id, 'created_by'=>'where/'.$user_id));
-        if (!$this->ion_auth->logged_in())
-        {
-            //redirect them to the login page
-            redirect('auth/login', 'refresh');
-        }
-        else
-        {
-
-            $this->data['sess_id'] = $this->session->userdata('user_id');
-            $data_result = $this->data['task_detail'] = $this->form_spd_luar_group_model->where('users_spd_luar_group.id',$id)->form_spd_luar_group($id)->result();
-            $this->data['td_num_rows'] = $this->form_spd_luar_group_model->where('users_spd_luar_group.id',$id)->form_spd_luar_group($id)->num_rows();
-            
-            $this->data['report_creator'] = $report_creator = getValue('created_by','users_spd_luar_report_group', array('id'=>'where/'.$report_id, 'created_by'=>'where/'.$user_id));
-            $this->data['user_folder'] = get_nik($report_creator);
-            $kota = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('location_id');
-            $this->data['kota'] = $p = explode(",", $kota);
-           
-            $report = $this->data['report'] = $this->form_spd_luar_group_model->where('users_spd_luar_report_group.user_spd_luar_group_id', $id)->form_spd_luar_report_group($report_id, $user_id)->result();
-            $n_report = $this->data['n_report'] = $this->form_spd_luar_group_model->where('users_spd_luar_report_group.user_spd_luar_group_id', $id)->form_spd_luar_report_group($report_id, $user_id)->num_rows();
-
-            if($n_report==0){
-                $this->data['is_done'] = '';
-                $this->data['tujuan'] = '';
-                $this->data['hasil'] = '';
-                $this->data['attachment'] = '-';
-                $this->data['disabled'] = '';
-
-            
-            }else{
-                foreach ($report as $key) {
-                $this->data['id_report'] = $key->id;
-                $this->data['is_done'] = $key->is_done;    
-                $this->data['tujuan'] = $key->description;
-                $this->data['hasil'] = $key->result;
-                $this->data['attachment'] = (!empty($key->attachment)) ? $key->attachment : 2 ;
-                $this->data['created_on'] = $key->created_on;
-                $this->data['created_by'] = get_nik($key->created_by);
-                $this->data['disabled'] = 'disabled='.'"disabled"';
-            }}
-
-            return $this->load->view('form_pjd/spd_luar_report_group_mail', $this->data, TRUE);
-        }
+        return '';
     }
 
     function get_biaya_pjd($id)
@@ -1198,8 +1151,8 @@ class Form_pjd extends MX_Controller {
         $this->data['title'] = $title = get_form_no($id);
         $sess_id= $this->data['sess_id'] = $this->session->userdata('user_id');
         $this->data['sess_nik'] = $sess_nik = get_nik($sess_id);
-        $data_result = $this->data['task_detail'] = $this->form_spd_luar_group_model->where('users_spd_luar_group.id',$id)->form_spd_luar_group($id)->result();
-        $this->data['td_num_rows'] = $this->form_spd_luar_group_model->where('users_spd_luar_group.id',$id)->form_spd_luar_group($id)->num_rows();
+        $data_result = $this->data['task_detail'] = $this->main->where('users_spd_luar_group.id',$id)->form_spd_luar_group($id)->result();
+        $this->data['td_num_rows'] = $this->main->where('users_spd_luar_group.id',$id)->form_spd_luar_group($id)->num_rows();
     
         
         $receiver = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('task_receiver');
@@ -1264,15 +1217,14 @@ class Form_pjd extends MX_Controller {
                     $this->template->set_layout('default');
 
                     $this->template->add_js('jquery.sidr.min.js');
+                    $this->template->add_js('datatables.min.js');
                     $this->template->add_js('breakpoints.js');
                     $this->template->add_js('core.js');
-                    $this->template->add_js('select2.min.js');
 
-                    $this->template->add_js('form_index.js');
+                    $this->template->add_js('form_datatable_index.js');
 
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
-                    $this->template->add_css('plugins/select2/select2.css');
-                    
+                    $this->template->add_css('datatables.min.css');
                 }
                 elseif(in_array($view, array('form_pjd/input',
                                              'form_pjd/input_biaya',
@@ -1306,9 +1258,7 @@ class Form_pjd extends MX_Controller {
                     $this->template->add_js('jquery.sidr.min.js');
                     $this->template->add_js('breakpoints.js');
                     $this->template->add_js('core.js');
-                    $this->template->add_js('purl.js');
 
-                    $this->template->add_js('respond.min.js');
                     $this->template->add_js('form_spd_luar.js');
                     
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');

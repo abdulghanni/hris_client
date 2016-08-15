@@ -1,23 +1,21 @@
+var base_url    = $("#base_url").val(),
+    form        = $("#form").val(),       
+    id          = $("#id").val();
+
 $(document).ready(function() {
 
     $('button[data-loading-text]').click(function () {
     $(this).button('loading');
     });
 
-    var url = $.url();
-    var baseurl = url.attr('protocol')+'://'+url.attr('host')+'/'+url.segment(1)+'/';
-    var uri1 = url.segment(2)+'/do_approve/'+url.segment(4)+'/lv1';
-    var uri2 = url.segment(2)+'/do_approve/'+url.segment(4)+'/lv2';
-    var uri3 = url.segment(2)+'/do_approve/'+url.segment(4)+'/lv3';
-    var uri4 = url.segment(2)+'/do_approve/'+url.segment(4)+'/hrd';
-    var uriSubmit = url.segment(2)+'/do_submit/'+url.segment(4);
-    var uriCancel = url.segment(2)+'/do_cancel/'+url.segment(4);
+    var uriSubmit = base_url+form+'/do_submit/'+id;
+    var uriCancel = base_url+form+'/do_cancel/'+id;
 
     $('#btn_submit').click(function(){
         $('#formSpdLuar').submit(function(ev){
             $.ajax({
                 type: 'POST',
-                url: baseurl+uriSubmit,
+                url: uriSubmit,
                 data: $('#formSpdLuar').serialize(),
                 success: function() {
                      location.reload()
@@ -32,7 +30,7 @@ $(document).ready(function() {
         $('#formcancel').submit(function(ev){
             $.ajax({
                 type: 'POST',
-                url: baseurl+uriCancel,
+                url: uriCancel,
                 data: $('#formcancel').serialize(),
                 success: function() {
                       $("[data-dismiss=modal]").trigger({ type: "click" });
@@ -43,74 +41,67 @@ $(document).ready(function() {
             ev.preventDefault(); 
         });  
     });
-
-    $('#btn_app_lv1').click(function(){
-        var $btn = $(this).button('loading');
-        $('#formAppLv1').submit(function(ev){
-            $.ajax({
-                type: 'POST',
-                url: baseurl+uri1,
-                data: $('#formAppLv1').serialize(),
-                success: function() {
-                     $("[data-dismiss=modal]").trigger({ type: "click" });
-                    location.reload(),
-                    $btn.button('reset')
-                }
-            });
-            ev.preventDefault(); 
-        });  
-    });
-
-    $('#btn_app_lv2').click(function(){
-        var $btn = $(this).button('loading');
-        $('#formAppLv2').submit(function(ev){
-            $.ajax({
-                type: 'POST',
-                url: baseurl+uri2,
-                data: $('#formAppLv2').serialize(),
-                success: function() {
-                    $("[data-dismiss=modal]").trigger({ type: "click" });
-                    location.reload(),
-                    $btn.button('reset')
-                }
-            });
-            ev.preventDefault(); 
-        });  
-    });
-
-    $('#btn_app_lv3').click(function(){
-        var $btn = $(this).button('loading');
-        $('#formAppLv3').submit(function(ev){
-            $.ajax({
-                type: 'POST',
-                url: baseurl+uri3,
-                data: $('#formAppLv3').serialize(),
-                success: function() {
-                    $("[data-dismiss=modal]").trigger({ type: "click" });
-                    location.reload(),
-                    $btn.button('reset')
-                }
-            });
-            ev.preventDefault(); 
-        });  
-    });
-
-    $('#btn_app_hrd').click(function(){
-        var $btn = $(this).button('loading');
-        $('#formAppHrd').submit(function(ev){
-            $.ajax({
-                type: 'POST',
-                url: baseurl+uri4,
-                data: $('#formAppHrd').serialize(),
-                success: function() {
-                    $("[data-dismiss=modal]").trigger({ type: "click" });
-                    location.reload(),
-                    $btn.button('reset')
-                }
-            });
-            ev.preventDefault(); 
-        });  
-    });
-
 });	
+
+function approve(lv)
+{
+    $('#btnApp'+lv).text('saving...'); //change button text
+    $('#btnApp'+lv).attr('disabled',true); //set button disable 
+    url  = base_url+form+'/do_approve/'+id+'/'+lv;
+    // ajax adding data to database
+    $.ajax({
+        url : url,
+        type: "POST",
+        data: $('#formApp'+lv).serialize(),
+        //dataType: "JSON",
+        success: function()
+        {
+            reload_status(lv);
+            $('#btnApp'+lv).text('save'); //change button text
+            $('#btnApp'+lv).attr('disabled',false); //set button enable
+            $("[data-dismiss=modal]").trigger({ type: "click" });  
+            send_notif(lv);   
+        },
+        error: function (jqXHR, textStatus, errorThrown)
+        {
+            alert('Error adding / update data');
+            $('#btnApp'+lv).text('save'); //change button text
+            $('#btnApp'+lv).attr('disabled',false); //set button enable 
+
+        }
+    });
+}
+
+
+function reload_status(lv)
+{
+    uri = base_url+form+'/submit/'+id+'/'+lv;
+    $('#'+lv).html('<img src="/hris_client/assets/img/loading.gif"> loading...');
+    $('#note').html('<img src="/hris_client/assets/img/loading.gif"> loading...');
+    $.ajax({
+        type: 'POST',
+        url: uri,
+        dataType: "JSON",
+        success: function(data) {
+            $('#'+lv).html(data.app);
+            $('#note').html(data.note);
+        }
+    });
+}
+
+function send_notif(lv)
+{
+    uri = base_url+form+'/send_notif/'+id+'/'+lv;
+    $.ajax({
+        type: 'POST',
+        url: uri,
+        // dataType: "JSON",
+        success: function() {
+            console.log('y');
+        },
+        error: function(){
+            console.log('e');
+        }
+    });
+}   
 	 
