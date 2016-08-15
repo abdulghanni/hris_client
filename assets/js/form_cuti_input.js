@@ -169,6 +169,10 @@ ToEndDate.setDate(ToEndDate.getDate()+365);
       }
   });
 
+  $.validator.addMethod('notEqual',function(value, element, param){
+        return this.optional(element)||value != param;
+    });
+    
 });
 
     /*   
