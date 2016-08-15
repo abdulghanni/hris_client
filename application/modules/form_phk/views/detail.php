@@ -29,12 +29,13 @@
                       <?php if($_num_rows>0){
                         $user_nik = get_nik($row->user_id);
                         ?>
+                        <input type="hidden" id="emp" value="<?=$row->user_id?>">
                       <div class="row form-row">
                         <div class="col-md-3">
                           <label class="form-label text-right">NIK</label>
                         </div>
                         <div class="col-md-9">
-                          <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama" value="<?php echo get_nik($row->user_id)?>" disabled="disabled">
+                          <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="-" value="<?php echo get_nik($row->user_id)?>" disabled="disabled">
                         </div>
                       </div>
                       <div class="row form-row">
@@ -42,7 +43,7 @@
                           <label class="form-label text-right">Nama</label>
                         </div>
                         <div class="col-md-9">
-                          <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama" value="<?php echo get_name($row->user_id)?>" disabled="disabled">
+                          <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="-" value="<?php echo get_name($row->user_id)?>" disabled="disabled">
                         </div>
                       </div>          
                       <div class="row form-row">
@@ -50,7 +51,7 @@
                           <label class="form-label text-right">Unit Bisnis</label>
                         </div>
                         <div class="col-md-9">
-                          <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama" value="<?php echo get_user_bu($user_nik)?>" disabled="disabled">
+                          <input name="form3LastName" id="bu" type="text"  class="form-control" placeholder="-" value="" disabled="disabled">
                         </div>
                       </div>
                       <div class="row form-row">
@@ -58,7 +59,7 @@
                           <label class="form-label text-right">Dept/Bagian</label>
                         </div>
                         <div class="col-md-9">
-                          <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama" value="<?php echo get_user_organization($user_nik)?>" disabled="disabled">
+                          <input name="form3LastName" id="organization" type="text"  class="form-control" placeholder="-" value="" disabled="disabled">
                         </div>
                       </div>
                       <div class="row form-row">
@@ -66,7 +67,7 @@
                           <label class="form-label text-right">Jabatan</label>
                         </div>
                         <div class="col-md-9">
-                          <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama" value="<?php echo get_user_position($user_nik)?>" disabled="disabled">
+                          <input name="form3LastName" id="position" type="text"  class="form-control" placeholder="-" value="" disabled="disabled">
                         </div>
                       </div>
                       <div class="row form-row">
@@ -74,7 +75,7 @@
                           <label class="form-label text-right">Tanggal Mulai Kerja</label>
                         </div>
                         <div class="col-md-9">
-                          <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama" value="<?php echo dateIndo(get_user_sen_date($user_nik))?>" disabled="disabled">
+                          <input name="form3LastName" id="seniority_date" type="text"  class="form-control" placeholder="-" value="" disabled="disabled">
                         </div>
                       </div>
                       
@@ -409,7 +410,7 @@
         <h4 class="modal-title" id="myModalLabel">Approval Form Atasan</h4>
       </div>
       <div class="modal-body">
-        <form class="form-no-horizontal-spacing"  id="<?php echo 'formAppLv'.$i?>">
+        <form class="form-no-horizontal-spacing"  id="<?php echo 'formApplv'.$i?>">
             <div class="row form-row">
               <div class="col-md-12">
                 <label class="form-label text-left">Status Approval </label>
@@ -444,7 +445,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="icon-remove"></i>&nbsp;<?php echo lang('close_button')?></button> 
-        <button id="<?php echo 'btn_app_lv'.$i?>"  class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
+         <button id="btnApplv<?=$i?>" onclick="approve('lv<?=$i?>')" type="button" class="btn btn-success btn-cons"><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
       </div>
         <?php echo form_close()?>
     </div>
@@ -464,7 +465,7 @@
       </div>
       <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
       <div class="modal-body">
-        <form class="form-no-horizontal-spacing"  id="formAppHrd">
+        <form class="form-no-horizontal-spacing"  id="formApphrd">
             <div class="row form-row">
               <div class="col-md-12">
                 <label class="form-label text-left">Status Approval </label>
@@ -497,7 +498,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="icon-remove"></i>&nbsp;<?php echo lang('close_button')?></button> 
-        <button id="btn_app_hrd"  class="btn btn-success btn-cons" data-loading-text="Loading..."><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
+         <button id="btnApphrd" onclick="approve('hrd')" type="button" class="btn btn-success btn-cons"><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
       </div>
         <?php echo form_close()?>
     </div>

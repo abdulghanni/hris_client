@@ -247,7 +247,7 @@ class Form_exit extends MX_Controller {
         $user_app_lv3 = getValue('user_app_lv3', 'users_exit', array('id'=>'where/'.$id));
         $user_app_asset = getValue('user_app_asset', 'users_exit', array('id'=>'where/'.$id));
 
-        $admin_bagian = $this->db->where('group_id',3)->or_where('group_id',4)->or_where('group_id',5)->or_where('group_id',6)->or_where('group_id',7)->get('users_groups')->result_array('user_id');
+        $admin_bagian = $this->db->where('group_id',3)->or_where('group_id',4)->or_where('group_id',5)->or_where('group_id',6)->or_where('group_id',7)->or_where('group_id',8)->get('users_groups')->result_array('user_id');
         for($i=0;$i<sizeof($admin_bagian);$i++):
             $receiver = get_nik($admin_bagian[$i]['user_id']);
             $data = array(
@@ -325,7 +325,7 @@ class Form_exit extends MX_Controller {
     }
 
   
-    function detail($id)
+    function detail($id, $lv = null)
     {  
         $this->data['title'] = 'Detail - Rekomendasi Karyawan Keluar';
         if(!$this->ion_auth->logged_in())
@@ -354,8 +354,17 @@ class Form_exit extends MX_Controller {
             $this->data['users_inventory'] = $i;
             $this->data['rekomendasi'] = getAll('users_exit_rekomendasi', array('user_exit_id'=>'where/'.$id, ))->row();
             $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
-
-            $this->_render_page('form_exit/detail', $this->data);
+            $this->data['approved'] = assets_url('img/approved_stamp.png');
+            $this->data['rejected'] = assets_url('img/rejected_stamp.png');
+            $this->data['pending'] = assets_url('img/pending_stamp.png');
+            if($lv != null){
+                $this->data['row'] = $this->main->detail($id, $user_id)->row();;
+                $app = $this->load->view('form_'.$this->form_name.'/'.$lv, $this->data, true);
+                $note = $this->load->view('form_'.$this->form_name.'/note', $this->data, true);
+                echo json_encode(array('app'=>$app, 'note'=>$note));
+            }else{
+                $this->_render_page('form_exit/detail', $this->data);
+            }
         }
     }
 
@@ -385,22 +394,22 @@ class Form_exit extends MX_Controller {
             'date_app_'.$type => $date_now,
             'note_'.$type => $this->input->post('note_'.$type)
             );
-            $approval_status = $this->input->post('app_status_'.$type);
-
-            $is_app = getValue('is_app_'.$type, 'users_exit', array('id'=>'where/'.$id));
-            $approval_status = $this->input->post('app_status_'.$type);
-
-
-            if($is_app==0){
-                $this->approval_mail($id, $approval_status);
-            }else{
-                $this->update_approval_mail($id, $approval_status);
-            }
-
 
            if ($this->main->update($id,$data)) {
                redirect('form_exit/detail/'.$id, 'refresh');
             }
+        }
+    }
+
+    function send_notif($id, $type)
+    {
+        $user_id = sessNik();
+        $is_app = 0;
+        $approval_status = getValue('app_status_id_'.$type, 'users_exit', array('id'=>'where/'.$id));
+        if($is_app==0){
+            $this->approval_mail($id, $approval_status);
+        }else{
+            $this->update_approval_mail($id, $approval_status);
         }
     }
 
@@ -472,31 +481,7 @@ class Form_exit extends MX_Controller {
 
     function detail_email($id)
     {
-        if(!$this->ion_auth->logged_in())
-        {
-            redirect('auth/login', 'refresh');
-        }
-        $this->data['id'] = $id;
-            $user_id = getValue('user_id','users_exit', array('id'=>'where/'.$id));
-            $form_exit = $this->data['form_exit'] = $this->main->detail($id, $user_id);
-            $user_id = getValue('user_id', 'users_exit', array('id'=>'where/'.$id));
-            $user_nik = get_nik($user_id);
-            $user_nik = $this->data['user_nik'] = get_nik($user_id);//print_mz(get_user_buid($user_nik));
-            $this->data['sess_id'] = $sess_id = $this->session->userdata('user_id');
-            $sess_nik = $this->data['sess_nik'] = get_nik($sess_id);
-            $this->data['is_admin_it'] = (is_admin_it() && get_user_buid($sess_nik) == get_user_buid($user_nik)) ? TRUE : FALSE;
-            $this->data['is_admin_logistik'] = (is_admin_logistik() && get_user_buid($sess_nik) == get_user_buid($user_nik)) ? TRUE : FALSE;
-            $this->data['is_admin_hrd'] = (is_admin_hrd() && get_user_buid($sess_nik) == get_user_buid($user_nik)) ? TRUE : FALSE;
-            $this->data['is_admin_koperasi'] = (is_admin_koperasi() && get_user_buid($sess_nik) == get_user_buid($user_nik)) ? TRUE : FALSE;
-            $this->data['is_admin_perpus'] = (is_admin_perpus() && get_user_buid($sess_nik) == get_user_buid($user_nik)) ? TRUE : FALSE;
-            $this->data['is_admin_keuangan'] = (is_admin_keuangan() && get_user_buid($sess_nik) == get_user_buid($user_nik)) ? TRUE : FALSE;
-            $i =$this->db->select('*')->from('users_inventory')->join('inventory', 'users_inventory.inventory_id = inventory.id', 'left')->where('users_inventory.user_id', $user_id)->get();
-           
-            $this->data['users_inventory'] = $i;
-            $this->data['rekomendasi'] = getAll('users_exit_rekomendasi', array('user_exit_id'=>'where/'.$id, ))->row();
-            $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
-
-        return $this->load->view('form_exit/exit_mail', $this->data, TRUE);
+        return true;
     }
 
     public function get_atasan()
@@ -671,9 +656,7 @@ class Form_exit extends MX_Controller {
                     $this->template->add_js('datatables.min.js');
                     $this->template->add_js('breakpoints.js');
                     $this->template->add_js('core.js');
-                    $this->template->add_js('select2.min.js');
 
-                    $this->template->add_js('form_index.js');
                     $this->template->add_js('form_datatable_index.js');
 
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
@@ -681,8 +664,7 @@ class Form_exit extends MX_Controller {
                     $this->template->add_css('datatables.min.css');
                     
                 }
-                elseif(in_array($view, array('form_exit/input',
-                                             'form_exit/detail',)))
+                elseif(in_array($view, array('form_exit/input')))
                 {
 
                     $this->template->set_layout('default');
@@ -692,7 +674,6 @@ class Form_exit extends MX_Controller {
                     $this->template->add_js('select2.min.js');
 
                     $this->template->add_js('core.js');
-                    $this->template->add_js('purl.js');
 
                     $this->template->add_js('respond.min.js');
 
@@ -706,6 +687,23 @@ class Form_exit extends MX_Controller {
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                     $this->template->add_css('plugins/select2/select2.css');
                     $this->template->add_css('datepicker.css');
+                    $this->template->add_css('approval_img.css');
+                     
+                }
+                elseif(in_array($view, array('form_exit/detail')))
+                {
+
+                    $this->template->set_layout('default');
+
+                    $this->template->add_js('jquery.sidr.min.js');
+                    $this->template->add_js('breakpoints.js');
+
+                    $this->template->add_js('core.js');
+
+                    $this->template->add_js('emp_dropdown.js');
+                    $this->template->add_js('form_approval.js');
+                    
+                    $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                     $this->template->add_css('approval_img.css');
                      
                 }

@@ -46,6 +46,7 @@
                             <input type="hidden" name="empatasan" id="empSess" value="<?php echo $sess_id ?>">
                             <?php if($subordinate->num_rows() > 0){?>
                             <select id="emp" class="select2" style="width:100%" name="emp">
+                            <option value="0">-- Pilih Karyawan --</option>
                                 <?php foreach($subordinate->result() as $row):?>
                             <option value="<?php echo $row->id?>"><?php echo get_name($row->id) ?></option>
                             <?php endforeach;?>

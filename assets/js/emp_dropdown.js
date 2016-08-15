@@ -133,8 +133,12 @@ $(document).ready(function() {
                 }
                 break;
             case 'form_recruitment':
-            getAtasan1(empId);
-            getAtasan3(empId);
+                getAtasan1(empId);
+                getAtasan3(empId);
+            case 'form_exit':
+                getEmpBu(empId);
+                getEmpOrg(empId);
+                getEmpPos(empId);
             break;
         }
     })

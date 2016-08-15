@@ -20,7 +20,7 @@ class Form_phk_model extends CI_Model {
         if(!is_admin()){
             $sess_id = $this->session->userdata('user_id');
             $sess_nik = get_nik($sess_id);
-            $is_hrd_pusat = is_hrd_pusat($sess_nik, 6);//print_mz($is_hrd_pusat);
+            $is_hrd_pusat = is_hrd_pusat($sess_nik, 15);//print_mz($is_hrd_pusat);
             $is_approver = $this->approval->approver('phk', $sess_nik);//print_mz($is_approver);
             $is_admin_cabang = is_admin_cabang();
             if($is_hrd_pusat != 1){
@@ -60,11 +60,11 @@ class Form_phk_model extends CI_Model {
                 
             }
             if($is_admin!=1 && $is_hrd_pusat != 1):
-            if($is_approver == $sess_nik || $is_admin_cabang == 1){
-                $this->db->where_in("users_phk.user_id", $user);//print_mz($user);
-            }elseif($is_admin!=1 ){
-                  $this->db->where("(users_phk.user_id = $sess_id OR  users_phk.user_app_lv1 = '$sess_nik' OR users_phk.user_app_lv2 = '$sess_nik' OR users_phk.user_app_lv3 = '$sess_nik' OR users_phk.user_app_lv4 = '$sess_nik' OR users_phk.user_app_lv5 = '$sess_nik' OR users_phk.created_by = '$sess_id')",null, false);
-            }
+                if($is_approver == $sess_nik || $is_admin_cabang == 1){
+                    $this->db->where_in("users_phk.user_id", $user);//print_mz($user);
+                }elseif($is_admin!=1 ){
+                      $this->db->where("(users_phk.user_id = $sess_id OR  users_phk.user_app_lv1 = '$sess_nik' OR users_phk.user_app_lv2 = '$sess_nik' OR users_phk.user_app_lv3 = '$sess_nik' OR users_phk.user_app_lv4 = '$sess_nik' OR users_phk.user_app_lv5 = '$sess_nik' OR users_phk.created_by = '$sess_id')",null, false);
+                }
             endif;
 
 
@@ -122,15 +122,17 @@ class Form_phk_model extends CI_Model {
 
     public function count_all($f)
     {
-        $is_admin = is_admin();
+       $is_admin = is_admin();
         if(!is_admin()){
             $sess_id = $this->session->userdata('user_id');
             $sess_nik = get_nik($sess_id);
-            $is_hrd_pusat = is_hrd_pusat($sess_nik, 6);
+            $is_hrd_pusat = is_hrd_pusat($sess_nik, 15);//print_mz($is_hrd_pusat);
             $is_approver = $this->approval->approver('phk', $sess_nik);//print_mz($is_approver);
             $is_admin_cabang = is_admin_cabang();
-            if($is_approver == $sess_nik || $is_admin_cabang == 1)$user = get_user_satu_bu($sess_nik);
+            if($is_hrd_pusat != 1){
+                if($is_approver == $sess_nik || $is_admin_cabang == 1)$user = get_user_satu_bu($sess_nik);
             }
+        }
             
          if($is_admin!=1 && $is_hrd_pusat != 1):
             if($is_approver == $sess_nik || $is_admin_cabang == 1){
@@ -138,7 +140,7 @@ class Form_phk_model extends CI_Model {
             }elseif($is_admin!=1 ){
                   $this->db->where("(users_phk.user_id = $sess_id OR  users_phk.user_app_lv1 = '$sess_nik' OR users_phk.user_app_lv2 = '$sess_nik' OR users_phk.user_app_lv3 = '$sess_nik' OR users_phk.user_app_lv4 = '$sess_nik' OR users_phk.user_app_lv5 = '$sess_nik' OR users_phk.created_by = '$sess_id')",null, false);
             }
-            endif;
+        endif;
         $this->db->where('users_phk.is_deleted', 0);
         if($f == 1){
             $this->db->where('is_app_hrd', 0);

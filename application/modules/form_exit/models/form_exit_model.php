@@ -132,20 +132,27 @@ class Form_exit_model extends CI_Model {
         if(!is_admin()){
             $sess_id = $this->session->userdata('user_id');
             $sess_nik = get_nik($sess_id);
+            $is_hrd_pusat = is_hrd_pusat($sess_nik, 8);
             $is_approver = $this->approval->approver('exit', $sess_nik);//print_mz($is_approver);
             $is_admin_cabang = is_admin_cabang();
-            if($is_approver == $sess_nik || $is_admin_cabang == 1)$user = get_user_satu_bu($sess_nik);
+            if($is_hrd_pusat != 1){
+                if($is_approver == $sess_nik || $is_admin_cabang == 1)$user = get_user_satu_bu($sess_nik);
             }
+        }
 
-         if($is_admin!=1):
-            if($is_approver == $sess_nik || $is_admin_cabang == 1){
-                $this->db->where_in($this->table.'.user_id', $user);//print_mz($user);
-            }elseif($is_admin!=1 ){
-                 $this->db->where("(users_exit.user_id = '$sess_id'
-                               OR users_exit.user_app_lv1 = '$sess_nik'  OR users_exit.user_app_lv2 = '$sess_nik'  OR users_exit.user_app_lv3 = '$sess_nik'
-                )",null, false);
-            }
-            endif;
+        if($is_admin!=1 && $is_hrd_pusat != 1):
+        if($is_approver == $sess_nik || $is_admin_cabang == 1){
+            $this->db->where_in($this->table.'.user_id', $user);//print_mz($user);
+        }elseif($is_admin!=1 ){
+             $this->db->where("(users_exit.user_id = '$sess_id'
+                                OR users_exit.user_exit_rekomendasi_id = '$sess_id' 
+                                OR users_exit.created_by = '$sess_id' 
+                                OR users_exit.user_app_lv1 = '$sess_nik'  
+                                OR users_exit.user_app_lv2 = '$sess_nik'  
+                                OR users_exit.user_app_lv3 = '$sess_nik'
+            )",null, false);
+        }
+        endif;
         $this->db->where('users_exit.is_deleted', 0);
         $this->db->where('is_purposed', 1);
         if($f == 1){
