@@ -70,7 +70,13 @@ class Person extends MX_Controller {
         else
         {
     		$this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
-            $user = $this->person_model->getUsers($id)->row();
+            
+            $this->_render_page('person/detail', $this->data);
+        }
+    }
+
+    function absen($id){
+        $user = $this->person_model->getUsers($id)->row();
             $this->data['bod'] = (!empty($user->bod)) ? $user->bod : '-';
 
             //Mazhters
@@ -111,8 +117,8 @@ class Person extends MX_Controller {
                 }else{
                 $this->data['user_att'] = '';
                 }
-            $this->_render_page('person/detail', $this->data);
-        }
+
+                $this->load->view('person/absen', $this->data);
     }
 
     function inv($id){

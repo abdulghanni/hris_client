@@ -21,11 +21,16 @@ $(document).ready(function() {
 var base_url = $("#base_url").val(),
     id2 = $("#id").val();
     load_icon = base_url+"assets/img/loading.gif"
+    loadbar_icon = base_url+"assets/img/loadbar.gif"
     loading  = '<img src='+load_icon+'> loading...';
+    loading_bar  = '<div class="row text-center"><img src='+loadbar_icon+'></div>';
 
 function loadPerson(){
         $('#tabdetail').html(loading);
+        $('#absen').html(loading_bar);
         var url = base_url+'person/personnel/'+id2;
+        var url2 = base_url+'person/absen/'+id2;
+        $('#absen').load(url2);
         $('#tabdetail').load(url);
         $("li").removeClass("active");
         $("#tabpersonnel").addClass("active");

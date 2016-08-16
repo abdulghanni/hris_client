@@ -73,14 +73,14 @@
                             <div class="row">
                                 <div class="col-md-5">
                                     <div class="row">
-                                        <div class="col-md-3 search_label"><?php echo form_label(lang('index_fname_th'),'first_name')?></div>
-                                        <div class="col-md-9"><?php echo bs_form_input($fname_search)?></div>
+                                        <div class="col-md-3 search_label"><?php echo 'NIK'?></div>
+                                        <div class="col-md-9"><?php echo bs_form_input($email_search)?></div>
                                     </div>
                                 </div>
                                 <div class="col-md-5">
                                     <div class="row">
-                                        <div class="col-md-3 search_label"><?php echo form_label(lang('index_email_th'),'email')?></div>
-                                        <div class="col-md-9"><?php echo bs_form_input($email_search)?></div>
+                                        <div class="col-md-3 search_label"><?php echo 'Nama'?></div>
+                                        <div class="col-md-9"><?php echo bs_form_input($fname_search)?></div>
                                     </div>
                                 </div>
                                 <div class="col-md-2">

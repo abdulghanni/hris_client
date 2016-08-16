@@ -63,7 +63,7 @@ class Auth extends MX_Controller {
                 $rep_email_char = array("%5Bat%5D","%5Bdot%5D");
                 $std_email_char = array("@",".");
                 
-                $email_post = array('users.email'=>str_replace($rep_email_char,$std_email_char,$exp_email[1]));
+                $email_post = array('users.nik'=>str_replace($rep_email_char,$std_email_char,$exp_email[1]));
             }else{
                 $email_post = array();
             }
