@@ -18,6 +18,7 @@ class Form_exit_model extends CI_Model {
     {
         $is_admin = is_admin();
         if(!is_admin()){
+            $is_admin_inventaris = is_admin_inventaris();
             $sess_id = $this->session->userdata('user_id');
             $sess_nik = get_nik($sess_id);
             $is_hrd_pusat = is_hrd_pusat($sess_nik, 8);
@@ -54,13 +55,13 @@ class Form_exit_model extends CI_Model {
             $this->db->where($this->table.'.is_deleted', 0);
             $this->db->where('is_purposed', 1);
             if($f == 1){
-                $this->db->where('is_app_hrd', 0);
+                //$this->db->where('is_app_hrd', 0);
             }elseif($f == 2){
-                $this->db->where('is_app_hrd', 1);
+                //$this->db->where('is_app_hrd', 1);
             }else{
 
             }
-            if($is_admin!=1 && $is_hrd_pusat != 1):
+            if($is_admin!=1 && $is_hrd_pusat != 1 & $is_admin_inventaris !=1):
             if($is_approver == $sess_nik || $is_admin_cabang == 1){
                 $this->db->where_in($this->table.'.user_id', $user);//print_mz($user);
             }elseif($is_admin!=1 ){
