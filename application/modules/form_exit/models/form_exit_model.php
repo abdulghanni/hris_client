@@ -5,8 +5,8 @@ class Form_exit_model extends CI_Model {
 
     var $table = 'users_exit';
     var $join1  = 'users';
-    var $column = array('users_exit.id', 'nik_karyawan','karyawan', 'nik_pengaju', 'pengaju', 'date_resign', 'created_on'); //set column field database for order and search
-    var $order = array('id' => 'desc'); // default order
+    var $column = array('users_exit.id', 'nik_karyawan','karyawan', 'nik_pengaju', 'pengaju', 'date_exit', 'created_on'); //set column field database for order and search
+    var $order = array('created_on' => 'desc'); // default order
 
     public function __construct()
     {
@@ -37,6 +37,7 @@ class Form_exit_model extends CI_Model {
                 'users_exit'.'.app_status_id_lv1',
                 'users_exit'.'.app_status_id_lv2',
                 'users_exit'.'.app_status_id_lv3',
+                'users_exit'.'.is_purposed',
                 // 'users_exit'.'.app_status_id_hrd',
                 'users_exit'.'.user_app_lv1',
                 'users_exit'.'.user_app_lv2',
@@ -131,6 +132,7 @@ class Form_exit_model extends CI_Model {
     {
         $is_admin = is_admin();
         if(!is_admin()){
+            $is_admin_inventaris = is_admin_inventaris();
             $sess_id = $this->session->userdata('user_id');
             $sess_nik = get_nik($sess_id);
             $is_hrd_pusat = is_hrd_pusat($sess_nik, 8);
@@ -141,25 +143,21 @@ class Form_exit_model extends CI_Model {
             }
         }
 
-        if($is_admin!=1 && $is_hrd_pusat != 1):
-        if($is_approver == $sess_nik || $is_admin_cabang == 1){
-            $this->db->where_in($this->table.'.user_id', $user);//print_mz($user);
-        }elseif($is_admin!=1 ){
-             $this->db->where("(users_exit.user_id = '$sess_id'
-                                OR users_exit.user_exit_rekomendasi_id = '$sess_id' 
-                                OR users_exit.created_by = '$sess_id' 
-                                OR users_exit.user_app_lv1 = '$sess_nik'  
-                                OR users_exit.user_app_lv2 = '$sess_nik'  
-                                OR users_exit.user_app_lv3 = '$sess_nik'
-            )",null, false);
-        }
+        if($is_admin!=1 && $is_hrd_pusat != 1 & $is_admin_inventaris !=1):
+            if($is_approver == $sess_nik || $is_admin_cabang == 1){
+                $this->db->where_in($this->table.'.user_id', $user);//print_mz($user);
+            }elseif($is_admin!=1 ){
+                 $this->db->where("(users_exit.user_id = '$sess_id'
+                               OR users_exit.user_exit_rekomendasi_id = '$sess_id' OR users_exit.created_by = '$sess_id' OR users_exit.user_app_lv1 = '$sess_nik'  OR users_exit.user_app_lv2 = '$sess_nik'  OR users_exit.user_app_lv3 = '$sess_nik'
+                )",null, false);
+            }
         endif;
         $this->db->where('users_exit.is_deleted', 0);
         $this->db->where('is_purposed', 1);
         if($f == 1){
-            $this->db->where('is_app_hrd', 0);
+            //$this->db->where('is_app_hrd', 0);
         }elseif($f == 2){
-            $this->db->where('is_app_hrd', 1);
+            //$this->db->where('is_app_hrd', 1);
         }else{
 
         }
