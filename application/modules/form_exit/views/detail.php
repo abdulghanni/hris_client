@@ -216,7 +216,7 @@
                                 <span class="semi-bold"><?php echo get_name($row->user_app_hrd)?></span><br/>
                               <span class="small"><?php echo dateIndo($row->date_app_hrd)?></span><br/>
                               <?php }elseif($row->is_app_hrd == 0 && $is_admin_hrd == 1){?>
-                              <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitModalit"><i class="icon-ok"></i>Submit</div>
+                              <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitModalhrd"><i class="icon-ok"></i>Submit</div>
                               <span class="semi-bold"></span><br/>
                               <span class="semi-bold"></span><br/>
                               <span class="small"></span>
