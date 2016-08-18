@@ -43,22 +43,22 @@ class Inventory extends MX_Controller {
 
     public function ajax_list()
     {
-         // if(is_admin_it()){
-         //        $this->data['type'] = $type = 'it';
-         //    }elseif(is_admin_hrd()){
-         //        $this->data['type'] = $type = 'hrd';
-         //    }elseif(is_admin_logistik()){
-         //        $this->data['type'] = $type = 'logistik';
-         //    }elseif(is_admin_perpus()){
-         //        $this->data['type'] = $type = 'perpus';
-         //    }elseif(is_admin_koperasi()){
-         //        $this->data['type'] = $type = 'koperasi';
-         //    }elseif(is_admin_keuangan()){
-         //        $this->data['type'] = $type = 'keuangan';
-         //    }else{
-         //        $this->data['type'] = $type = '';
-         //    }
-         $type = 'it';
+         if(is_admin_it()){
+                $this->data['type'] = $type = 'it';
+            }elseif(is_admin_hrd()){
+                $this->data['type'] = $type = 'hrd';
+            }elseif(is_admin_logistik()){
+                $this->data['type'] = $type = 'logistik';
+            }elseif(is_admin_perpus()){
+                $this->data['type'] = $type = 'perpus';
+            }elseif(is_admin_koperasi()){
+                $this->data['type'] = $type = 'koperasi';
+            }elseif(is_admin_keuangan()){
+                $this->data['type'] = $type = 'keuangan';
+            }else{
+                $this->data['type'] = $type = '';
+            }
+         // $type = 'it';
         $list = $this->main->get_datatables();//lastq();//print_mz($list);
         $data = array();
         $no = $_POST['start'];

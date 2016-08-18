@@ -684,7 +684,7 @@ class Form_cuti extends MX_Controller {
         $IDLEAVEREQUEST = 'CT'.$leaveid;
         $RECVERSION = $leave_request_id[0]['RECVERSION']+1;
         $RECID = $leave_request_id[0]['RECID']+1;
-        $char = array('"', '<', '>', '#', '%', '{', '}', '|', '^', '~','(',')', '[', ']', '`',',', ' ','&', '.', '/', "'", ';');
+        $char = array('"', '<', '>', '#', '%', '{', '}', '|', '^', '~','(',')', '[', ']', '`',',', ' ','&', '.', '/', "'", ';', '+');
         $remarks = str_replace($char, '-', $data['remarks']);
         $remarks = substr($remarks,0,75);
         $alamat_cuti = str_replace($char, '-', $data['alamat_cuti']);
@@ -981,7 +981,7 @@ class Form_cuti extends MX_Controller {
 
     function insert_manual_leave_request()
     {
-        $cuti_id = array('477');
+        $cuti_id = array('574');
         foreach ($cuti_id as $key => $value) {
             //echo $value;
             $data = GetAll('users_cuti', array('id'=>'where/'.$value))->row_array();//lastq();
@@ -995,7 +995,7 @@ class Form_cuti extends MX_Controller {
         $IDLEAVEREQUEST = 'CT'.$leaveid;
         $RECVERSION = $leave_request_id[0]['RECVERSION']+1;
         $RECID = $leave_request_id[0]['RECID']+1;//print_mz($RECID);
-        $char = array('"', '<', '>', '#', '%', '{', '}', '|', '^', '~','(',')', '[', ']', '`',',', ' ','&', '.', '/', ';');
+        $char = array('"', '<', '>', '#', '%', '{', '}', '|', '^', '~','(',')', '[', ']', '`',',', ' ','&', '.', '/', ';', '+');
         $remarks = str_replace($char, '-', $data['remarks']);
         $remarks = substr($remarks,0,75);
         $alamat_cuti = str_replace($char, '-', $data['alamat_cuti']);
