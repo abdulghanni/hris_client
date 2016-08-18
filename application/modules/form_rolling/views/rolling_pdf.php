@@ -49,7 +49,9 @@ $user_nik = get_nik($row->user_id);
 $pengaju_nik = get_nik($row->created_by);
 $signed = assets_url('img/signed.png');
 $approved = assets_url('img/approved_stamp.png');
-$rejected = assets_url('img/rejected_stamp.png');?>
+$rejected = assets_url('img/rejected_stamp.png');
+$pending = assets_url('img/pending_stamp.png');
+?>
 <div class="style4">
   <div style="float: left; width: 54%;">
   Nomor : <?php echo "$form_id/$bu/$m/$y/$row->id" ?>
@@ -129,7 +131,7 @@ $rejected = assets_url('img/rejected_stamp.png');?>
       <td width="200" align="center"><?php echo ($row->app_status_id_lv1 == 1)?"<img class=approval-img-md src=$approved>":(($row->app_status_id_lv1 == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
       <?php }?>
       <?php if(!empty($row->user_app_lv2)){?>
-      <td width="200" align="center"><?php echo ($row->app_status_id_lv2 == 1)?"<img class=approval-img-md src=$approved>":(($row->app_status_id_lv2 == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
+      <td width="200" align="center"><?php echo ($row->app_status_id_lv2 == 1)?"<img class=approval-img-md src=$approved>": (($row->app_status_id_lv2 == 2) ? "<img class=approval-img-md src=$rejected>"  : (($row->app_status_id_lv2 == 3) ? "<img class=approval-img-md src=$pending>" : "<span class='small'></span><br/>"));?></td>
       <?php }?>
       <td width="200" align="center"><?php echo ($row->app_status_id_hrd == 1)?"<img class=approval-img-md src=$approved>":(($row->app_status_id_hrd == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
     </tr>
