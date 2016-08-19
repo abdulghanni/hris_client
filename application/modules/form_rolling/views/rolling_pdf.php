@@ -128,7 +128,7 @@ $pending = assets_url('img/pending_stamp.png');
     <tr>
       <td width="200" align="center"><img class="approval-img-md" src=<?=$signed?>></td>
       <?php if(!empty($row->user_app_lv1)){?>
-      <td width="200" align="center"><?php echo ($row->app_status_id_lv1 == 1)?"<img class=approval-img-md src=$approved>":(($row->app_status_id_lv1 == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
+      <td width="200" align="center"><?php echo ($row->app_status_id_lv1 == 1)?"<img class=approval-img-md src=$approved>": (($row->app_status_id_lv1 == 2) ? "<img class=approval-img-md src=$rejected>"  : (($row->app_status_id_lv1 == 3) ? "<img class=approval-img-md src=$pending>" : "<span class='small'></span><br/>"));?</td>
       <?php }?>
       <?php if(!empty($row->user_app_lv2)){?>
       <td width="200" align="center"><?php echo ($row->app_status_id_lv2 == 1)?"<img class=approval-img-md src=$approved>": (($row->app_status_id_lv2 == 2) ? "<img class=approval-img-md src=$rejected>"  : (($row->app_status_id_lv2 == 3) ? "<img class=approval-img-md src=$pending>" : "<span class='small'></span><br/>"));?></td>
@@ -163,7 +163,7 @@ $pending = assets_url('img/pending_stamp.png');
   <tbody>
     <tr>
       <td width="275" align="center"></td>
-      <td width="275" align="center"><?php echo ($row->app_status_id_lv3 == 1)?"<img class=approval-img-md src=$approved>":(($row->app_status_id_lv3 == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
+      <td width="275" align="center"><?php echo ($row->app_status_id_lv3 == 1)?"<img class=approval-img-md src=$approved>": (($row->app_status_id_lv3 == 2) ? "<img class=approval-img-md src=$rejected>"  : (($row->app_status_id_lv3 == 3) ? "<img class=approval-img-md src=$pending>" : "<span class='small'></span><br/>"));?</td>
       <td width="275" align="center"></td>
     </tr>
     <tr>

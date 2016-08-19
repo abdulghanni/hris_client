@@ -424,6 +424,8 @@ class Approval {
         $sess_id = $CI->session->userdata('user_id');
         $url = base_url().'auth/edit_user_approval/'.$id;
         $user_id = getValue('user_id','users_edit_approval', array('id'=>'where/'.$id));
+        $user_nik = get_nik($user_id);
+        $user_bu = get_user_buid($user_nik);
         $admin = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 1)->get()->result_array();
         for($i=0;$i<sizeof($admin);$i++):
         $data = array(
@@ -435,6 +437,19 @@ class Approval {
                 'is_read' => 0,
             );
         $CI->db->insert('email', $data);
+        endfor;
+
+        $admin_cabang = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 5)->where('groups.bu', $user_bu)->get()->result_array();
+        for($i=0;$i<sizeof($admin_cabang);$i++):
+            $data = array(
+                    'sender_id' => $user_nik,
+                    'receiver_id' => get_nik($admin_cabang[$i]['user_id']),
+                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                    'subject' => 'Permintaan Aktivasi Akun',
+                    'email_body' =>get_name($user_id)." mengajukan perubahan data pribadinya, untuk detail silakan <a href=$url>Klik disini</a><br/>",
+                    'is_read' => 0,
+                );
+            $CI->db->insert('email', $data);
         endfor;
     }
 
