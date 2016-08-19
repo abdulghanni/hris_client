@@ -348,7 +348,8 @@ class Form_exit extends MX_Controller {
             $this->data['is_admin_it'] = (is_admin_it() && get_user_buid($sess_nik) == get_user_buid($user_nik)) ? TRUE : FALSE;
             $this->data['is_admin_logistik'] = (is_admin_logistik() && get_user_buid($sess_nik) == get_user_buid($user_nik)) ? TRUE : FALSE;
             $this->data['is_admin_hrd'] = (is_admin_hrd() && get_user_buid($sess_nik) == get_user_buid($user_nik)) ? TRUE : FALSE;
-            $this->data['is_admin_koperasi'] = (is_admin_koperasi() && get_user_buid($sess_nik) == get_user_buid($user_nik)) ? TRUE : FALSE;
+            // $this->data['is_admin_koperasi'] = (is_admin_koperasi() && get_user_buid($sess_nik) == get_user_buid($user_nik)) ? TRUE : FALSE;
+            $this->data['is_admin_koperasi'] = (is_admin_koperasi()) ? TRUE : FALSE;
             $this->data['is_admin_perpus'] = (is_admin_perpus() && get_user_buid($sess_nik) == get_user_buid($user_nik)) ? TRUE : FALSE;
             $this->data['is_admin_keuangan'] = (is_admin_keuangan() && get_user_buid($sess_nik) == get_user_buid($user_nik)) ? TRUE : FALSE;
             $i =$this->db->select('*')->from('users_inventory')->join('inventory', 'users_inventory.inventory_id = inventory.id', 'left')->where('users_inventory.user_id', $user_id)->get();

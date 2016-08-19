@@ -29,7 +29,7 @@ $(document).ready(function() {
 
    $("#atasan1").change(function() {
             var empId = $(this).val();
-            getAtasan2(empId);
+            if(empId!=0)getAtasan2(empId);
             //getAtasan3(empId);
         })
         .change();

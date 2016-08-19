@@ -39,7 +39,7 @@
                       </div>
                   </div>
                   <br/>
-                  <div class="row form-row">
+                  <div class="row form-row" id="org-dropdown" style="display:none">
                       <div class="col-md-2">
                         <label class="form-label text-right">Dept / Bagian</label>
                       </div>
@@ -51,7 +51,7 @@
                       </div>
                   </div>
 
-                  <div class="row form-row">
+                  <div class="row form-row" id="pos-dropdown" style="display:none">
                       <div class="col-md-2">
                         <label class="form-label text-right">Jabatan</label>
                       </div>
@@ -395,11 +395,14 @@
 
  function tampilOrg()
  {
+     $("#org-dropdown").hide();
+     $("#pos-dropdown").hide();
      orgid = document.getElementById("bu").value;
      $.ajax({
          url:"<?php echo base_url();?>form_recruitment/get_org/"+orgid+"",
          success: function(response){
          $("#org").html(response);
+         $("#org-dropdown").show();
          },
          dataType:"html"
      });
@@ -408,11 +411,13 @@
  
  function tampilPos()
  {
+     $("#pos-dropdown").hide();
      orgid = document.getElementById("org").value;
      $.ajax({
          url:"<?php echo base_url();?>form_recruitment/get_pos/"+orgid+"",
          success: function(response){
          $("#pos").html(response);
+         $("#pos-dropdown").show();
          },
          dataType:"html"
      });
