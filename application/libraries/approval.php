@@ -445,7 +445,7 @@ class Approval {
                     'sender_id' => $user_nik,
                     'receiver_id' => get_nik($admin_cabang[$i]['user_id']),
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                    'subject' => 'Permintaan Aktivasi Akun',
+                    'subject' => 'Perubahan Data Karyawan',
                     'email_body' =>get_name($user_id)." mengajukan perubahan data pribadinya, untuk detail silakan <a href=$url>Klik disini</a><br/>",
                     'is_read' => 0,
                 );

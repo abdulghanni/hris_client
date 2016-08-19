@@ -134,7 +134,7 @@
                                     <?php } ?>
                                 <div class="form-actions-register">  
 
-      <?php if($is_app == 0 && is_admin()){?>
+      <?php if(($is_app == 0 && is_admin()) || ($is_app == 0 && is_admin_cabang())){?>
                                     <div class="pull-right">
                                       <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submiteditModal"><i class="icon-ok"></i>Submit</div>
                                       <a href="<?php echo site_url('auth/index')?>">
