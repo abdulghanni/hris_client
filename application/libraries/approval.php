@@ -253,6 +253,7 @@ class Approval {
             case "demotion":
             case "rolling":
             case "kontrak":
+            case "pemutusan":
             case "pengangkatan":
                 $receiver_id = getValue('created_by', 'users_'.$form, array('id'=>'where/'.$id));
             break;
