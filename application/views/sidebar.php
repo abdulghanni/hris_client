@@ -81,6 +81,7 @@
           <?php if(is_admin()):?><li ><a href="<?php echo site_url('admin_khusus')?>"> Admin Khusus</a> </li><?php endif?>
           <?php if(is_admin()):?><li ><a href="<?php echo site_url('approval')?>"> Approval HRD</a> </li><?php endif?>
           <?php if(is_admin()):?><li ><a href="<?php echo site_url('approval_khusus')?>"> Approval Atasan Khusus</a> </li><?php endif?>
+          <?php if(is_admin()):?><li ><a href="<?php echo site_url('biaya_pjd')?>"> Biaya PJD</a> </li><?php endif?>
           <?php if(is_admin()):?><li > <a href="<?php echo site_url('form_template')?>">Form Template</a> </li><?php endif?>
           <?php if(is_admin()):?><li ><a href="<?php echo site_url('auth/list_group')?>"> Group</a> </li><?php endif?>
           <?php if(is_admin()):?><li ><a href="<?php echo site_url('inventory_type')?>"> Inventaris</a> </li><?php endif?>
