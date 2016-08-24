@@ -1017,9 +1017,9 @@ class Form_cuti extends MX_Controller {
                '/IDPERSONSUBSTITUTE/'.$data['user_pengganti'].
                '/TRAVELLINGLOCATION/'.$alamat_cuti.
                '/MODIFIEDDATETIME/'.date('Y-m-d', strtotime($data['created_on'])).
-               '/MODIFIEDBY/'.get_nik(sessId()).
+               '/MODIFIEDBY/'.'1'.
                '/CREATEDDATETIME/'.date('Y-m-d', strtotime($data['created_on'])).
-               '/CREATEDBY/'.get_nik(sessId()).
+               '/CREATEDBY/'.'1'.
                '/DATAAREAID/'.get_user_dataareaid($user_id).
                '/RECVERSION/'.$RECVERSION.
                '/RECID/'.$RECID.

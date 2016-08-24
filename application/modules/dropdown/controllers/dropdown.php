@@ -490,8 +490,8 @@ class Dropdown extends MX_Controller {
       $id = $this->input->post('id');
       $form_no = $this->input->post('form-no');
       $user_app_lv1 = getValue('user_app_lv1', 'users_'.$form, array('id'=>'where/'.$id));
-      $subject_email = "$form_no-Pembatalan Pengajuan $form";
-      $isi_email = get_name($sess_id).' membatalkan pengajuan '.$form.' dengan no '.$form_no;
+      $subject_email = "$form no $id-Pembatalan Pengajuan $form";
+      $isi_email = get_name($sess_id).' membatalkan pengajuan '.$form.' dengan no '.$id;
       $data_update = array(
                     'is_deleted'=>1,
                     'deleted_by'=>sessId(),
@@ -510,7 +510,7 @@ class Dropdown extends MX_Controller {
                 );
             $this->db->insert('email', $data);
 
-      echo json_encode(array('status'=>true));
+      //echo json_encode(array('status'=>true));
     }
 
     function status($id){

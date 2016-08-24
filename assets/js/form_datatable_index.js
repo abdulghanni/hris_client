@@ -82,19 +82,7 @@ $(document).ready(function() {
 
     });
 	
-	$("#remove").click(function(){
-    $('#remove').text('Deleting...'); //change button text
-    $('#remove').attr('disabled',true); //set button disable 
-        $.ajax({
-            type: 'POST',
-            url: 'dropdown/remove/',
-            data: $('#form').serialize(),
-        	dataType: "JSON",
-            success: function(data) {
-                location.reload();
-            }
-        });
-	})
+	
 });
 
 function showModal(id)
@@ -110,3 +98,36 @@ function showModal(id)
         $('#modal_form').modal('show'); // show bootstrap modal when complete loaded
         $('.modal-title').text('Konfirmasi Pembatalan Pengajuan'); // Set title to Bootstrap modal title
     }
+var base_url    = $("#base_url").val();
+function del()
+    {
+        $('#remove').text('Deleting...'); //change button text
+        $('#remove').attr('disabled',true); //set button disable 
+        url  = base_url+'dropdown/remove';
+        // ajax adding data to database
+        $.ajax({
+            url : url,
+            type: "POST",
+            data: $('#form-delete').serialize(),
+            //dataType: "JSON",
+            success: function()
+            {
+                reload_table();
+                $('#remove').text('Delete'); //change button text
+                $('#remove').attr('disabled',false); //set button enable
+                $("[data-dismiss=modal]").trigger({ type: "click" }); 
+            },
+            error: function (jqXHR, textStatus, errorThrown)
+            {
+                alert('Error adding / update data');
+                $('#remove').text('Delete'); //change button text
+                $('#remove').attr('disabled',false); //set button enable 
+
+            }
+        });
+    }
+
+    function reload_table()
+{
+    table.ajax.reload(null,false); //reload datatable ajax 
+}

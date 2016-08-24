@@ -1020,6 +1020,7 @@
             {
                 $getuser_info = file_get_contents($url);
                 $user_info = json_decode($getuser_info, true);
+                if($user_info == '51')$user_info = '50';
                 return $user_info;
             } else {
                 return '';
