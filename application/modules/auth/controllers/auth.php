@@ -311,8 +311,7 @@ class Auth extends MX_Controller {
         foreach ($admin as $key => $value) {
             $email[] = getEmail($value['user_id']);
         }
-
-        for($i=1;$i<sizeof($admin);$i++):
+        for($i=0;$i<sizeof($admin);$i++):
             $data = array(
                     'sender_id' => $nik,
                     'receiver_id' => get_nik($admin[$i]['user_id']),
@@ -322,7 +321,7 @@ class Auth extends MX_Controller {
                     'is_request_activation' => 1,
                     'is_read' => 0,
                 );
-            $this->db->insert('email', $data);
+            $this->db->insert('email', $data);//lastq();
             $email_id = $this->db->insert_id();
             $isi_email = 'Karyawan atas nama '.get_name($nik).' dengan Nik '.$nik.' meminta pengaktifan akun di Web-HRIS Erlangga, silakan klik tautan berikut untuk melakukan aktivasi<br/>'.'<a href='.base_url().'email/detail/'.$email_id.'>'.base_url().'email/detail/'.$email_id.'</a>';
             //if(!empty(getEmail($admin[$i]['user_id'])))
@@ -334,6 +333,7 @@ class Auth extends MX_Controller {
         foreach ($admin_cabang as $key => $value) {
             $email2[] = getEmail($value['user_id']);
         }
+        print_mz($admin_cabang);
         for($i=0;$i<sizeof($admin_cabang);$i++):
             $data = array(
                     'sender_id' => $nik,
