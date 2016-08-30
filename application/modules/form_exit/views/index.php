@@ -74,7 +74,7 @@
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <h4 class="modal-title" id="myModalLabel">Apakah anda yakin ingin membatalkan pengajuan ini ?</h4>
         </div>
-      <?php echo form_open('auth/delete_course/',array("id"=>"form"))?>
+       <form id="form-delete">
         <input type="hidden" id="form-name" value="<?php echo $form ?>">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="display:none"><span aria-hidden="true">&times;</span></button>
         <input type="hidden" name="id" value="">
@@ -85,7 +85,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="icon-ban-circle"></i>&nbsp;<?php echo lang('cancel_button')?></button> 
-        <button id="remove" type="button" class="btn btn-danger lnkBlkWhtArw" style="margin-top: 3px;"><i class="icon-warning-sign"></i>&nbsp;<?php echo lang('delete_button')?></button>
+        <button id="remove" type="button" class="btn btn-danger" style="margin-top: 3px;" onclick="del()"><i class="icon-warning-sign"></i>&nbsp;<?php echo lang('delete_button')?></button>
       </div>
         <?php echo form_close()?>
     </div>
