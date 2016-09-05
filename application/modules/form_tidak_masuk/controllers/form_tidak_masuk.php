@@ -356,6 +356,8 @@ class form_tidak_masuk extends MX_Controller {
             $isi_email = 'Status pengajuan tidak_masuk anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_tidak_masuk/detail/'.$id.'>Klik Disini</a><br />';
 
             $user_nik = get_nik($user_tidak_masuk_id);
+            $potong_cuti = getValue('potong_cuti', 'users_tidak_masuk', array('id'=>'where/'.$id));
+            $tipe_cuti = getValue('type_cuti_id', 'users_tidak_masuk', array('id'=>'where/'.$id));
             if($potong_cuti == 1){
                 if($this->input->post('insert') == 1)$this->insert_sisa_cuti($user_nik, $tipe_cuti);
                 $leave_request_id = $this->get_last_leave_request_id();
