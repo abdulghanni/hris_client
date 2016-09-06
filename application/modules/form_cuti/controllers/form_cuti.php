@@ -981,7 +981,7 @@ class Form_cuti extends MX_Controller {
 
     function insert_manual_leave_request()
     {
-        $cuti_id = array('574');
+        $cuti_id = array('301');
         foreach ($cuti_id as $key => $value) {
             //echo $value;
             $data = GetAll('users_cuti', array('id'=>'where/'.$value))->row_array();//lastq();
@@ -1115,6 +1115,51 @@ class Form_cuti extends MX_Controller {
         $n = getValue('jumlah_hari', 'cuti_jumlah_plafon', array('alasan_cuti_id'=>'where/'.$id));
 
         echo json_encode($n);
+    }
+
+    function to_csv(){
+        $select = "SELECT users_cuti.id, nik, date_mulai_cuti, jumlah_hari, remarks FROM users_cuti join users on users_cuti.user_id = users.id where approval_status_id_hrd = 1 order by users_cuti.id desc";
+
+        $export = mysql_query ( $select ) or die ( "Sql error : " . mysql_error( ) );
+
+        $fields = mysql_num_fields ( $export );
+        $data = '';
+        $header = '';
+        for ( $i = 0; $i < $fields; $i++ )
+        {
+            $header .= mysql_field_name( $export , $i ) . "\t";
+        }
+
+        while( $row = mysql_fetch_row( $export ) )
+        {
+            $line = '';
+            foreach( $row as $value )
+            {                                            
+                if ( ( !isset( $value ) ) || ( $value == "" ) )
+                {
+                    $value = "\t";
+                }
+                else
+                {
+                    $value = str_replace( '"' , '""' , $value );
+                    $value = '"' . $value . '"' . "\t";
+                }
+                $line .= $value;
+            }
+            $data .= trim( $line ) . "\n";
+        }
+        $data = str_replace( "\r" , "" , $data );
+
+        if ( $data == "" )
+        {
+            $data = "\n(0) Records Found!\n";                        
+        }
+
+        header("Content-type: application/octet-stream");
+        header("Content-Disposition: attachment; filename=users_cuti.xls");
+        header("Pragma: no-cache");
+        header("Expires: 0");
+        print "$header\n$data"; 
     }
 
     public function get_holiday()

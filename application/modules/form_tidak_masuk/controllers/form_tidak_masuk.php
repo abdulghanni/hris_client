@@ -561,7 +561,7 @@ class form_tidak_masuk extends MX_Controller {
         $char = array('"', '<', '>', '#', '%', '{', '}', '|', '^', '~','(',')', '[', ']', '`',',', ' ','&', '.', '/', "'", ';');
         $remarks = str_replace($char, '-', $data['remarks']);
 				$remarks = word_limiter($remarks, 75);
-        $phone = (!empty(getValue('phone', 'users', array('nik'=>'where/'.$user_id))))?str_replace(' ', '-', getValue('phone', 'users', array('nik'=>'where/'.$user_id))):'-';
+        $phone = (!empty(getValue('phone', 'users', array('nik'=>'where/'.$user_id))))?str_replace($char, '-', getValue('phone', 'users', array('nik'=>'where/'.$user_id))):'-';
         $method = 'post';
         $params =  array();
         $uri = get_api_key().'users/leave_request/'.
@@ -943,7 +943,10 @@ class form_tidak_masuk extends MX_Controller {
             redirect('auth/login', 'refresh');
         }
 
-				$tidak_masuk_id = array('802');
+                // $tidak_masuk_id = array(934,947,948,949,950,951,956,967,968,969,970,976,978,980,990,991,997);
+                // $tidak_masuk_id = array(1014,1020,1026,1027,1028,1029,1032,1034,1038,1039,1040,1041,1050,1053,1060,1067,1072,1073,1074,1078,1084,1088,1090,1091,1094,1095,1098);
+                // $tidak_masuk_id = array(1100,1103,1105,1110,1119,1123,1124,1126,1129,1131,1132,1136,1138,1140,1150,1154,1159,1160,1163,1164,1170,1189);
+				$tidak_masuk_id = array(1100);
 				foreach ($tidak_masuk_id as $key => $value) {
 						//echo $value;
 						$data = GetAll('users_tidak_masuk', array('id'=>'where/'.$value))->row_array();
@@ -960,7 +963,7 @@ class form_tidak_masuk extends MX_Controller {
 		        $remarks = str_replace($char, '-', $data['keterangan']);
 						$remarks = substr($remarks,0,75);
 						$dataareaid = (!empty(get_user_dataareaid($user_id))) ? get_user_dataareaid($user_id) : 'erl';
-		        $phone = (!empty(getValue('phone', 'users', array('nik'=>'where/'.$user_id))))?str_replace(' ', '-', getValue('phone', 'users', array('nik'=>'where/'.$user_id))):'-';
+		        $phone = (!empty(getValue('phone', 'users', array('nik'=>'where/'.$user_id))))?str_replace($char, '-', getValue('phone', 'users', array('nik'=>'where/'.$user_id))):'-';
 		        $method = 'post';
 		        $params =  array();
 		        $uri = get_api_key().'users/leave_request/'.
@@ -1016,5 +1019,29 @@ class form_tidak_masuk extends MX_Controller {
 	        }
 				}
 
+    }
+
+    function to_csv(){
+        $select = "SELECT users_tidak_masuk.id, nik, dari_tanggal, jml_hari, keterangan FROM users_tidak_masuk join users on users_tidak_masuk.user_id = users.id where potong_cuti = 1 order by users_tidak_masuk.id desc";
+
+        $this->load->dbutil();
+
+            $this->load->helper('file');
+
+            $this->load->helper('download');
+
+            $delimiter = ",";
+
+            $newline = "\r\n";
+
+            $filename = "hrsleaverequest.csv";
+
+            $query = "SELECT users_tidak_masuk.id, nik, dari_tanggal, jml_hari, keterangan, users_tidak_masuk.created_on FROM users_tidak_masuk join users on users_tidak_masuk.user_id = users.id where potong_cuti = 1 order by users_tidak_masuk.id desc";
+
+            $result = $this->db->query($query);
+
+            $data = $this->dbutil->csv_from_result($result, $delimiter, $newline);
+
+            force_download($filename, $data);
     }
 }

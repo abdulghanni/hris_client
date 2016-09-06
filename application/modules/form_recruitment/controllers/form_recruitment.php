@@ -538,7 +538,7 @@ class Form_recruitment extends MX_Controller {
             '', '', '', '',
             30, // margin_left
             30, // margin right
-            10, // margin top
+            0, // margin top
             10, // margin bottom
             10, // margin header
             10); // margin footer
