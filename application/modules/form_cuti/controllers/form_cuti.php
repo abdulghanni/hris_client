@@ -363,8 +363,10 @@ class Form_cuti extends MX_Controller {
                     $this->template->add_js('respond.min.js');
 
                     $this->template->add_js('bootstrap-datepicker.js');
-                    //$this->template->add_js('jquery.validate.min.js');
+                    $this->template->add_js('jquery.validate.min.js');
                     $this->template->add_js('form_cuti_approval.js');
+
+                    $this->template->add_js('form_approval.js');
                     $this->template->add_js('emp_dropdown.js');
 
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
@@ -419,90 +421,93 @@ class Form_cuti extends MX_Controller {
     }
 
     function send_notif($id, $type){
+        $user_id = sessNik();
+        $approval_status = getValue('approval_status_id_'.$type, 'users_absen', array('id'=>'where/'.$id));
+        $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
         $approval_status = getValue('approval_status_id_'.$type, 'users_cuti', array('id'=>'where/'.$id));
         $user_cuti_id = getValue('user_id', 'users_cuti', array('id'=>'where/'.$id));
 
-            $subject_email = get_form_no($id).'-['.$approval_status_mail.']Status Pengajuan Permohonan Cuti dari Atasan';
-            $subject_email_request = get_form_no($id).'Pengajuan Permohonan Cuti';
-            $isi_email = 'Status pengajuan cuti anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_cuti/detail/'.$id.'>Klik Disini</a><br />';
-            $isi_email_request = get_name($user_cuti_id).' mengajukan Permohonan Cuti, untuk melihat detail silakan <a href='.base_url().'form_cuti/detail/'.$id.'>Klik Disini</a><br />';
-
-            if($is_app==0){
-                $this->approval->approve('cuti', $id, $approval_status, $this->detail_email($id));
-                if(!empty(getEmail($user_cuti_id)))$this->send_email(getEmail($user_cuti_id), $subject_email , $isi_email);
-            }else{
-                $this->approval->update_approve('cuti', $id, $approval_status, $this->detail_email($id));
-                if(!empty(getEmail($user_cuti_id)))$this->send_email(getEmail($user_cuti_id), get_form_no($id).'-['.$approval_status_mail.']'.'Perubahan Status Pengajuan Permohonan Cuti dari Atasan', $isi_email);
+        $subject_email = get_form_no($id).'-['.$approval_status_mail.']Status Pengajuan Permohonan Cuti dari Atasan';
+        $subject_email_request = get_form_no($id).'Pengajuan Permohonan Cuti';
+        $isi_email = 'Status pengajuan cuti anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_cuti/detail/'.$id.'>Klik Disini</a><br />';
+        $isi_email_request = get_name($user_cuti_id).' mengajukan Permohonan Cuti, untuk melihat detail silakan <a href='.base_url().'form_cuti/detail/'.$id.'>Klik Disini</a><br />';
+        $is_app = 0;
+        if($is_app==0){
+            $this->approval->approve('cuti', $id, $approval_status, $this->detail_email($id));
+            if(!empty(getEmail($user_cuti_id)))$this->send_email(getEmail($user_cuti_id), $subject_email , $isi_email);
+        }else{
+            $this->approval->update_approve('cuti', $id, $approval_status, $this->detail_email($id));
+            if(!empty(getEmail($user_cuti_id)))$this->send_email(getEmail($user_cuti_id), get_form_no($id).'-['.$approval_status_mail.']'.'Perubahan Status Pengajuan Permohonan Cuti dari Atasan', $isi_email);
+        }
+        if($type !== 'hrd' && $approval_status == 1){
+            $lv = substr($type, -1)+1;
+            $lv_app = 'lv'.$lv;
+            $user_app = ($lv<4) ? getValue('user_app_'.$lv_app, 'users_cuti', array('id'=>'where/'.$id)):0;
+            $user_app_lv3 = getValue('user_app_lv3', 'users_cuti', array('id'=>'where/'.$id));
+            if(!empty($user_app)){
+                $this->approval->request($lv_app, 'cuti', $id, $user_cuti_id, $this->detail_email($id));
+                if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), $subject_email_request, $isi_email_request);
+            }elseif(empty($user_app) && !empty($user_app_lv3) && $type == 'lv1'){
+                if(!empty(getEmail($user_app_lv3)))$this->send_email(getEmail($user_app_lv3), $subject_email_request, $isi_email_request);
+                $this->approval->request('lv3', 'cuti', $id, $user_cuti_id, $this->detail_email($id));
+            }elseif(empty($user_app) && empty($user_app_lv3) && $type == 'lv1'){
+                $this->approval->request('hrd', 'cuti', $id, $user_cuti_id, $this->detail_email($id));
+                if(!empty(getEmail($this->approval->approver('cuti', $user_id))))$this->send_email(getEmail($this->approval->approver('cuti', $user_id)), $subject_email_request, $isi_email_request);
+            }elseif($type == 'lv3'){
+                $this->approval->request('hrd', 'cuti', $id, $user_cuti_id, $this->detail_email($id));
+                if(!empty(getEmail($this->approval->approver('cuti', $user_id))))$this->send_email(getEmail($this->approval->approver('cuti', $user_id)), $subject_email_request, $isi_email_request);
+            }elseif(empty($user_app_lv3) && $type == 'lv2'){
+                $this->approval->request('hrd', 'cuti', $id, $user_cuti_id, $this->detail_email($id));
+                if(!empty(getEmail($this->approval->approver('cuti', $user_id))))$this->send_email(getEmail($this->approval->approver('cuti', $user_id)), $subject_email_request, $isi_email_request);
             }
-            if($type !== 'hrd' && $approval_status == 1){
-                $lv = substr($type, -1)+1;
-                $lv_app = 'lv'.$lv;
-                $user_app = ($lv<4) ? getValue('user_app_'.$lv_app, 'users_cuti', array('id'=>'where/'.$id)):0;
-                $user_app_lv3 = getValue('user_app_lv3', 'users_cuti', array('id'=>'where/'.$id));
-                if(!empty($user_app)){
-                    $this->approval->request($lv_app, 'cuti', $id, $user_cuti_id, $this->detail_email($id));
-                    if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), $subject_email_request, $isi_email_request);
-                }elseif(empty($user_app) && !empty($user_app_lv3) && $type == 'lv1'){
-                    if(!empty(getEmail($user_app_lv3)))$this->send_email(getEmail($user_app_lv3), $subject_email_request, $isi_email_request);
-                    $this->approval->request('lv3', 'cuti', $id, $user_cuti_id, $this->detail_email($id));
-                }elseif(empty($user_app) && empty($user_app_lv3) && $type == 'lv1'){
-                    $this->approval->request('hrd', 'cuti', $id, $user_cuti_id, $this->detail_email($id));
-                    if(!empty(getEmail($this->approval->approver('cuti', $user_id))))$this->send_email(getEmail($this->approval->approver('cuti', $user_id)), $subject_email_request, $isi_email_request);
-                }elseif($type == 'lv3'){
-                    $this->approval->request('hrd', 'cuti', $id, $user_cuti_id, $this->detail_email($id));
-                    if(!empty(getEmail($this->approval->approver('cuti', $user_id))))$this->send_email(getEmail($this->approval->approver('cuti', $user_id)), $subject_email_request, $isi_email_request);
-                }elseif(empty($user_app_lv3) && $type == 'lv2'){
-                    $this->approval->request('hrd', 'cuti', $id, $user_cuti_id, $this->detail_email($id));
-                    if(!empty(getEmail($this->approval->approver('cuti', $user_id))))$this->send_email(getEmail($this->approval->approver('cuti', $user_id)), $subject_email_request, $isi_email_request);
-                }
-            }else{
-                $email_body = "Status pengajuan permohonan cuti yang diajukan oleh ".get_name($user_cuti_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_cuti/detail/'.$id.'>Klik Disini</a><br />';
-                switch($type){
-                    case 'lv1':
-                        //$this->approval->not_approve('cuti', $id, )
-                    break;
+        }else{
+            $email_body = "Status pengajuan permohonan cuti yang diajukan oleh ".get_name($user_cuti_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_cuti/detail/'.$id.'>Klik Disini</a><br />';
+            switch($type){
+                case 'lv1':
+                    //$this->approval->not_approve('cuti', $id, )
+                break;
 
-                    case 'lv2':
-                        $receiver_id = getValue('user_app_lv1', 'users_cuti', array('id'=>'where/'.$id));
-                        $this->approval->not_approve('cuti', $id, $receiver_id, $approval_status ,$this->detail_email($id));
-                        if(!empty(getEmail($receiver_id)))$this->send_email(getEmail($receiver_id), $subject_email, $email_body);
-                    break;
+                case 'lv2':
+                    $receiver_id = getValue('user_app_lv1', 'users_cuti', array('id'=>'where/'.$id));
+                    $this->approval->not_approve('cuti', $id, $receiver_id, $approval_status ,$this->detail_email($id));
+                    if(!empty(getEmail($receiver_id)))$this->send_email(getEmail($receiver_id), $subject_email, $email_body);
+                break;
 
-                    case 'lv3':
-                        $receiver_lv2 = getValue('user_app_lv2', 'users_cuti', array('id'=>'where/'.$id));
-                        $this->approval->not_approve('cuti', $id, $receiver_lv2, $approval_status ,$this->detail_email($id));
-                        if(!empty(getEmail($receiver_lv2)))$this->send_email(getEmail($receiver_lv2), $subject_email, $email_body);
+                case 'lv3':
+                    $receiver_lv2 = getValue('user_app_lv2', 'users_cuti', array('id'=>'where/'.$id));
+                    $this->approval->not_approve('cuti', $id, $receiver_lv2, $approval_status ,$this->detail_email($id));
+                    if(!empty(getEmail($receiver_lv2)))$this->send_email(getEmail($receiver_lv2), $subject_email, $email_body);
 
-                        $receiver_lv1 = getValue('user_app_lv1', 'users_cuti', array('id'=>'where/'.$id));
-                        $this->approval->not_approve('cuti', $id, $receiver_lv1, $approval_status ,$this->detail_email($id));
-                        if(!empty(getEmail($receiver_lv1)))$this->send_email(getEmail($receiver_lv1), $subject_email, $email_body);
-                    break;
+                    $receiver_lv1 = getValue('user_app_lv1', 'users_cuti', array('id'=>'where/'.$id));
+                    $this->approval->not_approve('cuti', $id, $receiver_lv1, $approval_status ,$this->detail_email($id));
+                    if(!empty(getEmail($receiver_lv1)))$this->send_email(getEmail($receiver_lv1), $subject_email, $email_body);
+                break;
 
-                    // case 'hrd':
-                    //     $receiver_lv3 = getValue('user_app_lv3', 'users_cuti', array('id'=>'where/'.$id));
-                    //     if(!empty($receiver_lv3)):
-                    //         $this->approval->not_approve('cuti', $id, $receiver_lv3, $approval_status ,$this->detail_email($id));
-                    //         if(!empty(getEmail($receiver_lv3)))$this->send_email(getEmail($receiver_lv3), $subject_email, $email_body);
-                    //     endif;
-                    //     $receiver_lv2 = getValue('user_app_lv2', 'users_cuti', array('id'=>'where/'.$id));
-                    //     if(!empty($receiver_lv2)):
-                    //         $this->approval->not_approve('cuti', $id, $receiver_lv2, $approval_status ,$this->detail_email($id));
-                    //         if(!empty(getEmail($receiver_lv2)))$this->send_email(getEmail($receiver_lv2), $subject_email, $email_body);
-                    //     endif;
-                    //     $receiver_lv1 = getValue('user_app_lv1', 'users_cuti', array('id'=>'where/'.$id));
-                    //     if(!empty($receiver_lv1)):
-                    //         $this->approval->not_approve('cuti', $id, $receiver_lv1, $approval_status ,$this->detail_email($id));
-                    //     if(!empty(getEmail($receiver_lv1)))$this->send_email(getEmail($receiver_lv1), $subject_email, $email_body);
-                    //     endif;
-                    // break;
-                }
+                // case 'hrd':
+                //     $receiver_lv3 = getValue('user_app_lv3', 'users_cuti', array('id'=>'where/'.$id));
+                //     if(!empty($receiver_lv3)):
+                //         $this->approval->not_approve('cuti', $id, $receiver_lv3, $approval_status ,$this->detail_email($id));
+                //         if(!empty(getEmail($receiver_lv3)))$this->send_email(getEmail($receiver_lv3), $subject_email, $email_body);
+                //     endif;
+                //     $receiver_lv2 = getValue('user_app_lv2', 'users_cuti', array('id'=>'where/'.$id));
+                //     if(!empty($receiver_lv2)):
+                //         $this->approval->not_approve('cuti', $id, $receiver_lv2, $approval_status ,$this->detail_email($id));
+                //         if(!empty(getEmail($receiver_lv2)))$this->send_email(getEmail($receiver_lv2), $subject_email, $email_body);
+                //     endif;
+                //     $receiver_lv1 = getValue('user_app_lv1', 'users_cuti', array('id'=>'where/'.$id));
+                //     if(!empty($receiver_lv1)):
+                //         $this->approval->not_approve('cuti', $id, $receiver_lv1, $approval_status ,$this->detail_email($id));
+                //     if(!empty(getEmail($receiver_lv1)))$this->send_email(getEmail($receiver_lv1), $subject_email, $email_body);
+                //     endif;
+                // break;
             }
+        }
 
-            if($type == 'hrd' && $approval_status == 1){
-                //$this->send_notif_tambahan($id);
-            }
+        if($type == 'hrd' && $approval_status == 1){
+            //$this->send_notif_tambahan($id);
+        }
 
-            $this->cek_all_approval($id);
+        $this->cek_all_approval($id);
     }
 
     function send_notif_tambahan($id)
