@@ -605,7 +605,7 @@ class form_tidak_masuk extends MX_Controller {
         {
             //return $this->rest->debug();
             $isi_email = $this->rest->debug();
-            $this->send_email('abdulghanni2@gmail.com', $user_id.' error insert cuti', $isi_email);
+            $this->send_email('abdulghanni2@gmail.com', $user_id.' error insert cuti diizin tidak masuk', $isi_email);
             return false;
             //return $this->rest->debug();
         }
@@ -946,7 +946,8 @@ class form_tidak_masuk extends MX_Controller {
                 // $tidak_masuk_id = array(934,947,948,949,950,951,956,967,968,969,970,976,978,980,990,991,997);
                 // $tidak_masuk_id = array(1014,1020,1026,1027,1028,1029,1032,1034,1038,1039,1040,1041,1050,1053,1060,1067,1072,1073,1074,1078,1084,1088,1090,1091,1094,1095,1098);
                 // $tidak_masuk_id = array(1100,1103,1105,1110,1119,1123,1124,1126,1129,1131,1132,1136,1138,1140,1150,1154,1159,1160,1163,1164,1170,1189);
-				$tidak_masuk_id = array(1100);
+                // $tidak_masuk_id = array(1104);
+				$tidak_masuk_id = array(993);
 				foreach ($tidak_masuk_id as $key => $value) {
 						//echo $value;
 						$data = GetAll('users_tidak_masuk', array('id'=>'where/'.$value))->row_array();
