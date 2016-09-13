@@ -353,7 +353,7 @@ class Auth extends MX_Controller {
 
     function send_email_inventory($nik)
     { 
-        $user_bu = get_user_buid($nik);
+        $user_bu = $this->get_user_bu_notif($nik);
         $admin_inventaris = $this->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 3)->where('bu', $user_bu)->get()->result_array();
         $emails = '';
         foreach ($admin_inventaris as $key => $value) {
@@ -376,6 +376,26 @@ class Auth extends MX_Controller {
             );
         $this->db->insert('email', $data);
         endfor;
+    }
+
+    function get_user_bu_notif($user_id)
+    {
+        if(empty($user_id)){
+            return '-';
+        }else{
+            $url = get_api_key().'users/user_bu/EMPLID/'.$user_id.'/format/json';
+            $headers = get_headers($url);
+            $response = substr($headers[0], 9, 3);
+            if ($response != "404") 
+            {
+                $getuser_info = file_get_contents($url);
+                $user_info = json_decode($getuser_info, true);
+                //if($user_info == '51')$user_info = '50';
+                return $user_info;
+            } else {
+                return '';
+            }
+        }
     }
 
     //log the user out
