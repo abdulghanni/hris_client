@@ -333,7 +333,7 @@ class Auth extends MX_Controller {
         foreach ($admin_cabang as $key => $value) {
             $email2[] = getEmail($value['user_id']);
         }
-        print_mz($admin_cabang);
+        //print_mz($admin_cabang);
         for($i=0;$i<sizeof($admin_cabang);$i++):
             $data = array(
                     'sender_id' => $nik,
@@ -1216,7 +1216,7 @@ class Auth extends MX_Controller {
             $required => $required
         );
 
-        $this->get_user_atasan($id);
+        // $this->get_user_atasan($id);
         $this->data['users'] = getAll('users', array('active'=>'where/1', 'username'=>'order/asc'), array('!=id'=>'1'))->result();
         $this->data['selected_superior'] = $this->db->where('id', $id)->get('users')->row('superior_id');
 
