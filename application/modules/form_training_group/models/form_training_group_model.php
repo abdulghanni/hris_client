@@ -21,7 +21,7 @@ class Form_training_group_model extends CI_Model {
             $sess_id = $this->session->userdata('user_id');
             $sess_nik = get_nik($sess_id);
             $is_hrd_pusat = is_hrd_pusat($sess_nik, 11);//print_mz($is_hrd_pusat);
-            $is_approver = $this->approval->approver('training_group', $sess_nik);
+            $is_approver = $this->approval->approver('training', $sess_nik);
             $is_admin_cabang = is_admin_cabang();
             if($is_hrd_pusat != 1){
                 if($is_approver == $sess_nik || $is_admin_cabang == 1)$user = get_user_satu_bu($sess_nik);
