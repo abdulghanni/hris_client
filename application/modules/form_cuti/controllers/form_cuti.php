@@ -695,6 +695,7 @@ class Form_cuti extends MX_Controller {
         $alamat_cuti = str_replace($char, '-', $data['alamat_cuti']);
         $alamat_cuti = substr($remarks,0,60);
         $phone = str_replace($char, '-', $data['contact']);
+        $phone = substr($phone,0,20);
         $method = 'post';
         $params =  array();
         $uri = get_api_key().'users/leave_request/'.
@@ -986,7 +987,7 @@ class Form_cuti extends MX_Controller {
 
     function insert_manual_leave_request()
     {
-        $cuti_id = array('301');
+        $cuti_id = array('667');
         foreach ($cuti_id as $key => $value) {
             //echo $value;
             $data = GetAll('users_cuti', array('id'=>'where/'.$value))->row_array();//lastq();
@@ -1018,7 +1019,7 @@ class Form_cuti extends MX_Controller {
                '/LEAVEDATEFROM/'.$data['date_mulai_cuti'].
                '/REQUESTDATE/'.date('Y-m-d', strtotime($data['created_on'])).
                '/IDLEAVEREQUEST/'.$IDLEAVEREQUEST.
-               '/STATUSFLAG/'.'3'.
+               '/STATUSFLAG/'.'0'.
                '/IDPERSONSUBSTITUTE/'.$data['user_pengganti'].
                '/TRAVELLINGLOCATION/'.$alamat_cuti.
                '/MODIFIEDDATETIME/'.date('Y-m-d', strtotime($data['created_on'])).

@@ -249,7 +249,9 @@ class Form_exit extends MX_Controller {
         $user_app_lv3 = getValue('user_app_lv3', 'users_exit', array('id'=>'where/'.$id));
         $user_app_asset = getValue('user_app_asset', 'users_exit', array('id'=>'where/'.$id));
 
-        $admin_bagian = $this->db->where('group_id',3)->or_where('group_id',4)->or_where('group_id',5)->or_where('group_id',6)->or_where('group_id',7)->or_where('group_id',8)->get('users_groups')->result_array('user_id');
+        // $admin_bagian = $this->db->where('group_id',3)->or_where('group_id',4)->or_where('group_id',5)->or_where('group_id',6)->or_where('group_id',7)->or_where('group_id',8)->get('users_groups')->result_array('user_id');
+        $user_bu = $this->get_user_bu_notif(get_nik($creator_id));
+        $admin_bagian = $this->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 3)->where('bu', $user_bu)->get()->result_array('user_id');//print_mz($admin_bagian);
         for($i=0;$i<sizeof($admin_bagian);$i++):
             $receiver = get_nik($admin_bagian[$i]['user_id']);
             $data = array(
@@ -264,7 +266,7 @@ class Form_exit extends MX_Controller {
             $isi_email = get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />';
             //if(!empty(getEmail($receiver)))$this->send_email(getEmail($receiver), 'Pengajuan Rekomendasi Karyawan Keluar', $isi_email);
         endfor;
-
+            // lastq();
         //approval to LV1
         if(!empty($user_app_lv1)){
             $data1 = array(
@@ -326,7 +328,27 @@ class Form_exit extends MX_Controller {
 
     }
 
-  
+        
+        function get_user_bu_notif($user_id)
+    {
+        if(empty($user_id)){
+            return '-';
+        }else{
+            $url = get_api_key().'users/user_bu/EMPLID/'.$user_id.'/format/json';
+            $headers = get_headers($url);
+            $response = substr($headers[0], 9, 3);
+            if ($response != "404") 
+            {
+                $getuser_info = file_get_contents($url);
+                $user_info = json_decode($getuser_info, true);
+                //if($user_info == '51')$user_info = '50';
+                return $user_info;
+            } else {
+                return '';
+            }
+        }
+    }
+
     function detail($id, $lv = null)
     {  
         $this->data['title'] = 'Detail - Rekomendasi Karyawan Keluar';

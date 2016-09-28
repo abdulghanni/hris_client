@@ -1,5 +1,5 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
-
+ini_set('memory_limit', '1024M');
 class Person extends MX_Controller {
 
     public $data;

@@ -227,15 +227,15 @@ class Form_resignment extends MX_Controller {
         $this->data['hrd_list'] = $this->get_hrd($buid);
         $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
         $this->data['approved'] = assets_url('img/approved_stamp.png');
-            $this->data['rejected'] = assets_url('img/rejected_stamp.png');
-            $this->data['pending'] = assets_url('img/pending_stamp.png');
-            if($lv != null){
-                $app = $this->load->view('form_'.$this->form_name.'/'.$lv, $this->data, true);
-                $note = $this->load->view('form_'.$this->form_name.'/note', $this->data, true);
-                echo json_encode(array('app'=>$app, 'note'=>$note));
-            }else{
-                $this->_render_page('form_'.$this->form_name.'/detail', $this->data);
-            }
+        $this->data['rejected'] = assets_url('img/rejected_stamp.png');
+        $this->data['pending'] = assets_url('img/pending_stamp.png');
+        if($lv != null){
+            $app = $this->load->view('form_'.$this->form_name.'/'.$lv, $this->data, true);
+            $note = $this->load->view('form_'.$this->form_name.'/note', $this->data, true);
+            echo json_encode(array('app'=>$app, 'note'=>$note));
+        }else{
+            $this->_render_page('form_'.$this->form_name.'/detail', $this->data);
+        }
     }
 
     function add_wawancara()
@@ -466,12 +466,23 @@ class Form_resignment extends MX_Controller {
                     'sender_id' => get_nik($sess_id),
                     'receiver_id' => get_nik($user_id),
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                    'subject' => $subject.'Undangan Wawancara Resignment',
+                    'subject' => $subject.'Undangan Wawancara Pengunduran Diri',
                     'email_body' => $isi_email.$this->detail_email($id),
                     'is_read' => 0,
                 );
         $this->db->insert('email', $data);
-       if(!empty(getEmail(get_nik($user_id))))$this->send_email(getEmail($user_id), get_form_no($id).'-Undangan Wawancara Resignment', $isi_email);
+       if(!empty(getEmail(get_nik($user_id))))$this->send_email(getEmail($user_id), get_form_no($id).'- Undangan Wawancara Resignment', $isi_email);
+        $pewawancara = get_value('nama_pewawancara', 'users_resignment', array('id'=>'where/'.$id));
+        $data = array(
+                    'sender_id' => get_nik($sess_id),
+                    'receiver_id' => $pewawancara,
+                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                    'subject' => $subject.'Undangan Melakukan Wawancara Pengunduran Diri',
+                    'email_body' => $isi_email.$this->detail_email($id),
+                    'is_read' => 0,
+                );
+        $this->db->insert('email', $data);
+       if(!empty(getEmail($pewawancara)))$this->send_email(getEmail($pewawancara), get_form_no($id).'- Undangan Melakukan Wawancara Pengunduran Diri', $isi_email);
         
     }
 

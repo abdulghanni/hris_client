@@ -370,7 +370,7 @@ class Form_pjd extends MX_Controller {
             $this->data['biaya_tambahan'] = getAll('pjd_biaya', array('type_grade' => 'where/0'));
             $this->get_penerima_tugas();
             $this->get_penerima_tugas_satu_bu();
-            $this->get_user_atasan();
+            // $this->get_user_atasan();
             $this->get_bu();
             $this->data['transportation_list'] = getAll('transportation', array('is_deleted'=>'where/0'))->result();
             $this->data['tl_num_rows'] = getAll('transportation', array('is_deleted'=>'where/0'))->num_rows();
@@ -1151,8 +1151,8 @@ class Form_pjd extends MX_Controller {
         $this->data['title'] = $title = get_form_no($id);
         $sess_id= $this->data['sess_id'] = $this->session->userdata('user_id');
         $this->data['sess_nik'] = $sess_nik = get_nik($sess_id);
-        $data_result = $this->data['task_detail'] = $this->main->where('users_spd_luar_group.id',$id)->form_spd_luar_group($id)->result();
-        $this->data['td_num_rows'] = $this->main->where('users_spd_luar_group.id',$id)->form_spd_luar_group($id)->num_rows();
+        $data_result = $this->data['task_detail'] = $this->main->detail($id)->result();
+        $this->data['td_num_rows'] = $this->main->detail($id)->num_rows();
     
         
         $receiver = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('task_receiver');
