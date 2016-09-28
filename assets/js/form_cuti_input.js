@@ -1,8 +1,8 @@
 $(document).ready(function() {
     $(".select2").select2();
     //Date Pickers
-    $("#datepicker_start").datepicker({format: "yyyy-mm-dd", todayHighlight: true})
-    $("#datepicker_end").datepicker({format: "yyyy-mm-dd", todayHighlight: true})
+    $("#datepicker_start").datepicker({format: "yyyy-mm-dd", todayHighlight: true});
+    $("#datepicker_end").datepicker({format: "yyyy-mm-dd", todayHighlight: true});
 
       $('.input-append.date')
         .datepicker({todayHighlight: true})
