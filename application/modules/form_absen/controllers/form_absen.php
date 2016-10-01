@@ -466,16 +466,22 @@ class form_absen extends MX_Controller {
             $email_body = "Status pengajuan permohonan absen yang diajukan oleh ".get_name($user_absen_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_absen/detail/'.$id.'>Klik Disini</a><br />';
             switch($type){
                 case 'lv1':
+                    $app_status = getValue('approval_status_id_lv1', 'users_absen', array('id'=>'where/'.$id));
+                    if($app_status == 2)$this->db->where('id', $id)->update('users_absen', array('is_deleted'=>1));
                     //$this->approval->not_approve('absen', $id, )
                 break;
 
                 case 'lv2':
+                    $app_status = getValue('approval_status_id_lv2', 'users_absen', array('id'=>'where/'.$id));
+                    if($app_status == 2)$this->db->where('id', $id)->update('users_absen', array('is_deleted'=>1));
                     $receiver_id = getValue('user_app_lv1', 'users_absen', array('id'=>'where/'.$id));
                     $this->approval->not_approve('absen', $id, $receiver_id, $approval_status ,$this->detail_email($id));
                     //if(!empty(getEmail($receiver_id)))$this->send_email(getEmail($receiver_id), 'Status Pengajuan Permohonan absen Dari Atasan', $email_body);
                 break;
 
                 case 'lv3':
+                    $app_status = getValue('approval_status_id_lv3', 'users_absen', array('id'=>'where/'.$id));
+                    if($app_status == 2)$this->db->where('id', $id)->update('users_absen', array('is_deleted'=>1));
                     $receiver_lv2 = getValue('user_app_lv2', 'users_absen', array('id'=>'where/'.$id));
                     $this->approval->not_approve('absen', $id, $receiver_lv2, $approval_status ,$this->detail_email($id));
                     //if(!empty(getEmail($receiver_lv2)))$this->send_email(getEmail($receiver_lv2), 'Status Pengajuan Permohonan absen Dari Atasan', $email_body);

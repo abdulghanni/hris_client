@@ -308,16 +308,22 @@ class Form_demotion extends MX_Controller {
                 $form = 'demotion';
                 switch($type){
                 case 'lv1':
+                    $app_status = getValue('app_status_id_lv1', 'users_demotion', array('id'=>'where/'.$id));
+                    if($app_status == 2)$this->db->where('id', $id)->update('users_demotion', array('is_deleted'=>1));
                     //$this->approval->not_approve('spd_dalam', $id, )
                 break;
 
                 case 'lv2':
+                    $app_status = getValue('app_status_id_lv2', 'users_demotion', array('id'=>'where/'.$id));
+                    if($app_status == 2)$this->db->where('id', $id)->update('users_demotion', array('is_deleted'=>1));
                     $receiver_id = getValue('user_app_lv1', 'users_'.$form, array('id'=>'where/'.$id));
                     $this->approval->not_approve($form, $id, $receiver_id, $approval_status ,$this->detail_email($id));
                     //if(!empty(getEmail($receiver_id)))$this->send_email(getEmail($receiver_id), 'Status Pengajuan Permohonan Perjalanan Dinas Dari Atasan', $email_body);
                 break;
 
                 case 'lv3':
+                    $app_status = getValue('app_status_id_lv3', 'users_demotion', array('id'=>'where/'.$id));
+                    if($app_status == 2)$this->db->where('id', $id)->update('users_demotion', array('is_deleted'=>1));
                     for($i=1;$i<3;$i++):
                         $receiver = getValue('user_app_lv'.$i, 'users_'.$form, array('id'=>'where/'.$id));
                         if(!empty($receiver)):
@@ -328,6 +334,8 @@ class Form_demotion extends MX_Controller {
                 break;
 
                 case 'lv4':
+                    $app_status = getValue('app_status_id_lv4', 'users_demotion', array('id'=>'where/'.$id));
+                    if($app_status == 2)$this->db->where('id', $id)->update('users_demotion', array('is_deleted'=>1));
                     for($i=1;$i<4;$i++):
                         $receiver = getValue('user_app_lv'.$i, 'users_'.$form, array('id'=>'where/'.$id));
                         if(!empty($receiver)):
@@ -338,6 +346,8 @@ class Form_demotion extends MX_Controller {
                 break;
 
                 case 'lv5':
+                    $app_status = getValue('app_status_id_lv5', 'users_demotion', array('id'=>'where/'.$id));
+                    if($app_status == 2)$this->db->where('id', $id)->update('users_demotion', array('is_deleted'=>1));
                     for($i=1;$i<5;$i++):
                         $receiver = getValue('user_app_lv'.$i, 'users_'.$form, array('id'=>'where/'.$id));
                         if(!empty($receiver)):

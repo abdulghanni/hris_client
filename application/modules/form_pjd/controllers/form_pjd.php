@@ -307,12 +307,16 @@ class Form_pjd extends MX_Controller {
             //$email_body = "Status pengajuan permohonan spd_luar_group yang diajukan oleh ".get_name($user_spd_luar_group_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_pjd/detail/'.$id.'>Klik Disini</a><br />';
             switch($type){
                 case 'lv1':
+                    $app_status = getValue('app_status_id_lv1', 'users_spd_luar_group', array('id'=>'where/'.$id));
+                    if($app_status == 2)$this->db->where('id', $id)->update('users_spd_luar_group', array('is_deleted'=>1));
                     for($j=0;$j<sizeof($task_receiver_id);$j++):
                         $this->approval->not_approve($form, $id, $task_receiver_id[$j], $approval_status ,$this->detail_email($id));
                     endfor;
                 break;
 
                 case 'lv2':
+                    $app_status = getValue('app_status_id_lv2', 'users_spd_luar_group', array('id'=>'where/'.$id));
+                    if($app_status == 2)$this->db->where('id', $id)->update('users_spd_luar_group', array('is_deleted'=>1));
                 for($j=0;$j<sizeof($task_receiver_id);$j++):
                         $this->approval->not_approve($form, $id, $task_receiver_id[$j], $approval_status ,$this->detail_email($id));
                     endfor;
@@ -322,6 +326,8 @@ class Form_pjd extends MX_Controller {
                 break;
 
                 case 'lv3':
+                    $app_status = getValue('app_status_id_lv3', 'users_spd_luar_group', array('id'=>'where/'.$id));
+                    if($app_status == 2)$this->db->where('id', $id)->update('users_spd_luar_group', array('is_deleted'=>1));
                 for($j=0;$j<sizeof($task_receiver_id);$j++):
                         $this->approval->not_approve($form, $id, $task_receiver_id[$j], $approval_status ,$this->detail_email($id));
                     endfor;

@@ -52,7 +52,7 @@ $(document).ready(function(){
 function add()
 {
   save_method = 'add';
-  $('#form')[0].reset(); // reset form on modals
+  // $('#form')[0].reset(); // reset form on modals
   $('.form-group').removeClass('has-error'); // clear error class
   $('.help-block').empty(); // clear error string
   $('#modal_form').modal('show'); // show bootstrap modal

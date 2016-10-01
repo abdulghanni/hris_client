@@ -308,16 +308,22 @@ class form_training_group extends MX_Controller {
                 $email_body = "Status pengajuan permohonan Training yang diajukan oleh ".get_name($user_training_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_training_group/detail/'.$id.'>Klik Disini</a><br />';
                 switch($type){
                     case 'lv1':
+                        $app_status = getValue('approval_status_id_lv1', 'users_training_group', array('id'=>'where/'.$id));
+                        if($app_status == 2)$this->db->where('id', $id)->update('users_training_group', array('is_deleted'=>1));
                         //$this->approval->not_approve('training_group', $id, )
                     break;
 
                     case 'lv2':
+                        $app_status = getValue('approval_status_id_lv2', 'users_training_group', array('id'=>'where/'.$id));
+                        if($app_status == 2)$this->db->where('id', $id)->update('users_training_group', array('is_deleted'=>1));
                         $receiver_id = getValue('user_app_lv1', 'users_training_group', array('id'=>'where/'.$id));
                         $this->approval->not_approve('training_group', $id, $receiver_id, $approval_status ,$this->detail_email($id));
                         //if(!empty(getEmail($receiver_id)))$this->send_email(getEmail($receiver_id), 'Status Pengajuan Permohonan Training Dari Atasan', $email_body);
                     break;
 
                     case 'lv3':
+                        $app_status = getValue('approval_status_id_lv3', 'users_training_group', array('id'=>'where/'.$id));
+                        if($app_status == 2)$this->db->where('id', $id)->update('users_training_group', array('is_deleted'=>1));
                         $receiver_lv2 = getValue('user_app_lv2', 'users_training_group', array('id'=>'where/'.$id));
                         $this->approval->not_approve('training_group', $id, $receiver_lv2, $approval_status ,$this->detail_email($id));
                         //if(!empty(getEmail($receiver_lv2)))$this->send_email(getEmail($receiver_lv2), 'Status Pengajuan Permohonan Training Dari Atasan', $email_body);
