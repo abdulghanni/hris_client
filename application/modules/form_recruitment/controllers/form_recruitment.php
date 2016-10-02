@@ -386,7 +386,7 @@ class Form_recruitment extends MX_Controller {
             }
 
             if($type == 'hrd' && $approval_status == 1){
-                $this->send_notif_tambahan($id);
+                $this->send_notif_tambahan($id, 'recruitment');
             }
     }
     function send_notif_tambahan($id)

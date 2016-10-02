@@ -70,7 +70,7 @@
                             </div>
                         </div>
                             <div class="row">
-                                <div class="col-md-5" style="display:none">
+                                <div class="col-md-5">
                                     <div class="row">
                                         <div class="col-md-4 search_label">Unit Bisnis</div>
                                         <div class="col-md-8">
@@ -131,6 +131,7 @@
                             </div>
                             <div class="col-md-9">
                                 <select name="nik" class="select2" id="nik" style="width:100%">
+                                <option value="0">-- Tidak ada karyawan yang dipilih --</option>
                                 <?php
                                     foreach ($users->result_array() as $key => $value) {
                                     $selected = ($user->user_nik === $value['nik']) ? 'selected = selected' : '';

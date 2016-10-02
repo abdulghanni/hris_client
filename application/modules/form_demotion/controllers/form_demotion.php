@@ -272,102 +272,106 @@ class Form_demotion extends MX_Controller {
     }
 
     function send_notif($id, $type){
-            $user_id = sessNik();
-            $is_app = 0;
-            $approval_status = getValue('app_status_id_'.$type, 'users_demotion', array('id'=>'where/'.$id));
-            $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
-            $user_demotion_id = getValue('user_id', 'users_demotion', array('id'=>'where/'.$id));
-            $subject_email = get_form_no($id).'['.$approval_status_mail.']Status Pengajuan Permohonan Demosi dari Atasan';
-            $subject_email_request = get_form_no($id).'-Pengajuan Demosi Karyawan';
-            $isi_email = 'Status pengajuan demotion anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_demotion/detail/'.$id.'>Klik Disini</a><br />';
-            $isi_email_request = get_name($user_demotion_id).' mengajukan Permohonan demotion, untuk melihat detail silakan <a href='.base_url().'form_demotion/detail/'.$id.'>Klik Disini</a><br />';
-            
-            if($is_app==0){
-                $this->approval->approve('demotion', $id, $approval_status, $this->detail_email($id));
-                if(!empty(getEmail($user_demotion_id)))$this->send_email(getEmail($user_demotion_id), $subject_email, $isi_email);
+        $user_id = sessNik();
+        $is_app = 0;
+        $approval_status = getValue('app_status_id_'.$type, 'users_demotion', array('id'=>'where/'.$id));
+        $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
+        $user_demotion_id = getValue('user_id', 'users_demotion', array('id'=>'where/'.$id));
+        $subject_email = get_form_no($id).'['.$approval_status_mail.']Status Pengajuan Permohonan Demosi dari Atasan';
+        $subject_email_request = get_form_no($id).'-Pengajuan Demosi Karyawan';
+        $isi_email = 'Status pengajuan demotion anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_demotion/detail/'.$id.'>Klik Disini</a><br />';
+        $isi_email_request = get_name($user_demotion_id).' mengajukan Permohonan demotion, untuk melihat detail silakan <a href='.base_url().'form_demotion/detail/'.$id.'>Klik Disini</a><br />';
+        
+        if($is_app==0){
+            $this->approval->approve('demotion', $id, $approval_status, $this->detail_email($id));
+            if(!empty(getEmail($user_demotion_id)))$this->send_email(getEmail($user_demotion_id), $subject_email, $isi_email);
+        }else{
+            $this->approval->update_approve('demotion', $id, $approval_status, $this->detail_email($id));
+            if(!empty(getEmail($user_demotion_id)))$this->send_email(getEmail($user_demotion_id), get_form_no($id).'['.$approval_status_mail.']Perubahan Status Pengajuan Permohonan Demosi dari Atasan', $isi_email);
+        }
+        if($type !== 'hrd' && $approval_status == 1)
+        {
+            $lv = substr($type, -1)+1;
+            $lv_app = 'lv'.$lv;
+            $user_app = ($lv<6) ? getValue('user_app_'.$lv_app, 'users_demotion', array('id'=>'where/'.$id)):0;
+            if(!empty($user_app)){
+                $this->approval->request($lv_app, 'demotion', $id, $user_demotion_id, $this->detail_email($id));
+                if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), $subject_email_request, $isi_email_request);
             }else{
-                $this->approval->update_approve('demotion', $id, $approval_status, $this->detail_email($id));
-                if(!empty(getEmail($user_demotion_id)))$this->send_email(getEmail($user_demotion_id), get_form_no($id).'['.$approval_status_mail.']Perubahan Status Pengajuan Permohonan Demosi dari Atasan', $isi_email);
+                $this->approval->request('hrd', 'demotion', $id, $user_demotion_id, $this->detail_email($id));
+                if(!empty(getEmail($this->approval->approver('demosi', $user_id))))$this->send_email(getEmail($this->approval->approver('demosi', $user_id)), $subject_email_request, $isi_email_request);
             }
-            if($type !== 'hrd' && $approval_status == 1)
-            {
-                $lv = substr($type, -1)+1;
-                $lv_app = 'lv'.$lv;
-                $user_app = ($lv<6) ? getValue('user_app_'.$lv_app, 'users_demotion', array('id'=>'where/'.$id)):0;
-                if(!empty($user_app)){
-                    $this->approval->request($lv_app, 'demotion', $id, $user_demotion_id, $this->detail_email($id));
-                    if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), $subject_email_request, $isi_email_request);
-                }else{
-                    $this->approval->request('hrd', 'demotion', $id, $user_demotion_id, $this->detail_email($id));
-                    if(!empty(getEmail($this->approval->approver('demosi', $user_id))))$this->send_email(getEmail($this->approval->approver('demosi', $user_id)), $subject_email_request, $isi_email_request);
-                }
-            }elseif($type == 'hrd' && $approval_status == 1){
-                $this->send_user_notification($id, $user_demotion_id);
-            }else{
-                $email_body = "Status pengajuan permohonan demotion yang diajukan oleh ".get_name($user_demotion_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_demotion/detail/'.$id.'>Klik Disini</a><br />';
-                $form = 'demotion';
-                switch($type){
-                case 'lv1':
-                    $app_status = getValue('app_status_id_lv1', 'users_demotion', array('id'=>'where/'.$id));
-                    if($app_status == 2)$this->db->where('id', $id)->update('users_demotion', array('is_deleted'=>1));
-                    //$this->approval->not_approve('spd_dalam', $id, )
-                break;
+        }elseif($type == 'hrd' && $approval_status == 1){
+            $this->send_user_notification($id, $user_demotion_id);
+        }else{
+            $email_body = "Status pengajuan permohonan demotion yang diajukan oleh ".get_name($user_demotion_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_demotion/detail/'.$id.'>Klik Disini</a><br />';
+            $form = 'demotion';
+            switch($type){
+            case 'lv1':
+                $app_status = getValue('app_status_id_lv1', 'users_demotion', array('id'=>'where/'.$id));
+                if($app_status == 2)$this->db->where('id', $id)->update('users_demotion', array('is_deleted'=>1));
+                //$this->approval->not_approve('spd_dalam', $id, )
+            break;
 
-                case 'lv2':
-                    $app_status = getValue('app_status_id_lv2', 'users_demotion', array('id'=>'where/'.$id));
-                    if($app_status == 2)$this->db->where('id', $id)->update('users_demotion', array('is_deleted'=>1));
-                    $receiver_id = getValue('user_app_lv1', 'users_'.$form, array('id'=>'where/'.$id));
-                    $this->approval->not_approve($form, $id, $receiver_id, $approval_status ,$this->detail_email($id));
-                    //if(!empty(getEmail($receiver_id)))$this->send_email(getEmail($receiver_id), 'Status Pengajuan Permohonan Perjalanan Dinas Dari Atasan', $email_body);
-                break;
+            case 'lv2':
+                $app_status = getValue('app_status_id_lv2', 'users_demotion', array('id'=>'where/'.$id));
+                if($app_status == 2)$this->db->where('id', $id)->update('users_demotion', array('is_deleted'=>1));
+                $receiver_id = getValue('user_app_lv1', 'users_'.$form, array('id'=>'where/'.$id));
+                $this->approval->not_approve($form, $id, $receiver_id, $approval_status ,$this->detail_email($id));
+                //if(!empty(getEmail($receiver_id)))$this->send_email(getEmail($receiver_id), 'Status Pengajuan Permohonan Perjalanan Dinas Dari Atasan', $email_body);
+            break;
 
-                case 'lv3':
-                    $app_status = getValue('app_status_id_lv3', 'users_demotion', array('id'=>'where/'.$id));
-                    if($app_status == 2)$this->db->where('id', $id)->update('users_demotion', array('is_deleted'=>1));
-                    for($i=1;$i<3;$i++):
-                        $receiver = getValue('user_app_lv'.$i, 'users_'.$form, array('id'=>'where/'.$id));
-                        if(!empty($receiver)):
-                            $this->approval->not_approve($form, $id, $receiver, $approval_status ,$this->detail_email($id));
-                            //if(!empty(getEmail($receiver)))$this->send_email(getEmail($receiver), 'Status Pengajuan Permohonan PJD Dalam Kota Dari Atasan', $email_body);
-                        endif;
-                    endfor;
-                break;
+            case 'lv3':
+                $app_status = getValue('app_status_id_lv3', 'users_demotion', array('id'=>'where/'.$id));
+                if($app_status == 2)$this->db->where('id', $id)->update('users_demotion', array('is_deleted'=>1));
+                for($i=1;$i<3;$i++):
+                    $receiver = getValue('user_app_lv'.$i, 'users_'.$form, array('id'=>'where/'.$id));
+                    if(!empty($receiver)):
+                        $this->approval->not_approve($form, $id, $receiver, $approval_status ,$this->detail_email($id));
+                        //if(!empty(getEmail($receiver)))$this->send_email(getEmail($receiver), 'Status Pengajuan Permohonan PJD Dalam Kota Dari Atasan', $email_body);
+                    endif;
+                endfor;
+            break;
 
-                case 'lv4':
-                    $app_status = getValue('app_status_id_lv4', 'users_demotion', array('id'=>'where/'.$id));
-                    if($app_status == 2)$this->db->where('id', $id)->update('users_demotion', array('is_deleted'=>1));
-                    for($i=1;$i<4;$i++):
-                        $receiver = getValue('user_app_lv'.$i, 'users_'.$form, array('id'=>'where/'.$id));
-                        if(!empty($receiver)):
-                            $this->approval->not_approve($form, $id, $receiver, $approval_status ,$this->detail_email($id));
-                            //if(!empty(getEmail($receiver)))$this->send_email(getEmail($receiver), 'Status Pengajuan Permohonan PJD Dalam Kota Dari Atasan', $email_body);
-                        endif;
-                    endfor;
-                break;
+            case 'lv4':
+                $app_status = getValue('app_status_id_lv4', 'users_demotion', array('id'=>'where/'.$id));
+                if($app_status == 2)$this->db->where('id', $id)->update('users_demotion', array('is_deleted'=>1));
+                for($i=1;$i<4;$i++):
+                    $receiver = getValue('user_app_lv'.$i, 'users_'.$form, array('id'=>'where/'.$id));
+                    if(!empty($receiver)):
+                        $this->approval->not_approve($form, $id, $receiver, $approval_status ,$this->detail_email($id));
+                        //if(!empty(getEmail($receiver)))$this->send_email(getEmail($receiver), 'Status Pengajuan Permohonan PJD Dalam Kota Dari Atasan', $email_body);
+                    endif;
+                endfor;
+            break;
 
-                case 'lv5':
-                    $app_status = getValue('app_status_id_lv5', 'users_demotion', array('id'=>'where/'.$id));
-                    if($app_status == 2)$this->db->where('id', $id)->update('users_demotion', array('is_deleted'=>1));
-                    for($i=1;$i<5;$i++):
-                        $receiver = getValue('user_app_lv'.$i, 'users_'.$form, array('id'=>'where/'.$id));
-                        if(!empty($receiver)):
-                            $this->approval->not_approve($form, $id, $receiver, $approval_status ,$this->detail_email($id));
-                            //if(!empty(getEmail($receiver)))$this->send_email(getEmail($receiver), 'Status Pengajuan Permohonan PJD Dalam Kota Dari Atasan', $email_body);
-                        endif;
-                    endfor;
-                break;
+            case 'lv5':
+                $app_status = getValue('app_status_id_lv5', 'users_demotion', array('id'=>'where/'.$id));
+                if($app_status == 2)$this->db->where('id', $id)->update('users_demotion', array('is_deleted'=>1));
+                for($i=1;$i<5;$i++):
+                    $receiver = getValue('user_app_lv'.$i, 'users_'.$form, array('id'=>'where/'.$id));
+                    if(!empty($receiver)):
+                        $this->approval->not_approve($form, $id, $receiver, $approval_status ,$this->detail_email($id));
+                        //if(!empty(getEmail($receiver)))$this->send_email(getEmail($receiver), 'Status Pengajuan Permohonan PJD Dalam Kota Dari Atasan', $email_body);
+                    endif;
+                endfor;
+            break;
 
-                case 'hrd':
-                    for($i=1;$i<6;$i++):
-                        $receiver = getValue('user_app_lv'.$i, 'users_'.$form, array('id'=>'where/'.$id));
-                        if(!empty($receiver)):
-                            $this->approval->not_approve($form, $id, $receiver, $approval_status ,$this->detail_email($id));
-                            //if(!empty(getEmail($receiver)))$this->send_email(getEmail($receiver), 'Status Pengajuan Permohonan PJD Dalam Kota Dari Atasan', $email_body);
-                        endif;
-                    endfor;
-                break;
-                }
+            case 'hrd':
+                for($i=1;$i<6;$i++):
+                    $receiver = getValue('user_app_lv'.$i, 'users_'.$form, array('id'=>'where/'.$id));
+                    if(!empty($receiver)):
+                        $this->approval->not_approve($form, $id, $receiver, $approval_status ,$this->detail_email($id));
+                        //if(!empty(getEmail($receiver)))$this->send_email(getEmail($receiver), 'Status Pengajuan Permohonan PJD Dalam Kota Dari Atasan', $email_body);
+                    endif;
+                endfor;
+            break;
             }
+        }
+
+        if($type == 'hrd' && $approval_status == 1){
+            $this->send_notif_tambahan($id, 'demotion');
+        }
     }
 
     function send_user_notification($id, $user_id)

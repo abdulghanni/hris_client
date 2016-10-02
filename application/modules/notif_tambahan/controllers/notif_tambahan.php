@@ -35,8 +35,9 @@ class notif_tambahan extends MX_Controller {
         else
         {
             $this->data['users'] = getAll('users', array('active'=>'where/1', 'username'=>'order/asc'), array('!=id'=>'1'));
-            $id_list = array('1','2','9', '10', '13', '14');
-            $this->data['form_type'] = $this->db->where_in('id', $id_list)->get('form_type');
+            // $id_list = array('1','2','9', '10', '13', '14');
+            // $this->data['form_type'] = $this->db->where_in('id', $id_list)->get('form_type');
+            $this->data['form_type'] = $this->db->get('form_type');
             $this->get_bu();
             $this->_render_page('notif_tambahan/index', $this->data);
         }
@@ -46,7 +47,8 @@ class notif_tambahan extends MX_Controller {
         $this->data['bu'] = substr($this->input->post('id'),0,2);//print_mz($this->data['bu']);
         //$this->data['form'] = GetAllSelect('form_type', 'id, indo', array('is_deleted'=>'where/0'))->result();
         $id_list = array('1','2','9', '10', '13', '14');
-            $this->data['form'] = $this->db->where_in('id', $id_list)->get('form_type')->result();
+            // $this->data['form'] = $this->db->where_in('id', $id_list)->get('form_type')->result();
+            $this->data['form'] = $this->db->get('form_type')->result();
         $this->load->view('notif_tambahan/table', $this->data);
     }
 

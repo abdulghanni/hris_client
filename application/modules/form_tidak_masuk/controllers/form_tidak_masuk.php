@@ -386,6 +386,10 @@ class form_tidak_masuk extends MX_Controller {
                 if(!empty(getEmail($user_tidak_masuk_id)))$this->send_email(getEmail($user_tidak_masuk_id), get_form_no($id).'-['.$approval_status_mail.']'.'Perubahan Status Pengajuan Permohonan tidak_masuk dari Atasan', $isi_email);
             }
         }
+
+        if($type == 'hrd' && $approval_status == 1){
+            $this->send_notif_tambahan($id, 'tidak_masuk');
+        }
     }
 
     function detail_email($id)

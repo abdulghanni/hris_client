@@ -372,6 +372,10 @@ class Form_rolling extends MX_Controller {
             break;
             }
         }
+
+        if($type == 'hrd' && $approval_status == 1){
+            $this->send_notif_tambahan($id, 'rolling');
+        }
     }
 
     function send_user_notification($id, $user_id)

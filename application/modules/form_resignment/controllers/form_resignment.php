@@ -378,67 +378,45 @@ class Form_resignment extends MX_Controller {
     }
 
     function send_notif($id, $type){
-            $user_id = sessNik();
-            $is_app = 0;
-            $is_app = getValue('is_app_'.$type, 'users_resignment', array('id'=>'where/'.$id));
-            $num_rows = getAll('users_resignment_wawancara', array('user_resignment_id'=>'where/'.$id))->num_rows();
-            $user_resignment_id = getValue('user_id', 'users_resignment', array('id'=>'where/'.$id));
-            $date_resignment = getValue('date_resign', 'users_resignment', array('id'=>'where/'.$id));
-            $user_exit_id_num_rows = getAll('users_exit', array('user_id'=>'where/'.$user_resignment_id))->num_rows();
-            $approval_status = getValue('app_status_id_'.$type, 'users_resignment', array('id'=>'where/'.$id));
-            $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
-            $subject_email = get_form_no($id).'['.$approval_status_mail.']Status Pengajuan Pengunduran Diri dari Atasan';
-            $subject_email_request = get_form_no($id).'-Pengajuan Pengunduran Diri';
-            $isi_email = 'Status pengajuan Pengunduran Diri anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_resignment/detail/'.$id.'>Klik Disini</a><br />';
-            $isi_email_request = get_name($user_resignment_id).' mengajukan Permohonan Pengunduran Diri, untuk melihat detail silakan <a href='.base_url().'form_resignment/detail/'.$id.'>Klik Disini</a><br />';
-            
-            if($is_app==0){
-                $this->approval->approve('resignment', $id, $approval_status, $this->detail_email($id));
-                if(!empty(getEmail($user_resignment_id)))$this->send_email(getEmail($user_resignment_id), $subject_email, $isi_email);
-            }else{
-                $this->approval->update_approve('resignment', $id, $approval_status, $this->detail_email($id));
-                if(!empty(getEmail($user_resignment_id)))$this->send_email(getEmail($user_resignment_id), get_form_no($id).'['.$approval_status_mail.']Perubahan Status Pengajuan Permohonan Pengunduran Diri dari Atasan', $isi_email);
-            }
-            if($type !== 'hrd'  && $approval_status == 1){
-                $lv = substr($type, -1)+1;
-                $lv_app = 'lv'.$lv;
-                $user_app = ($lv<4) ? getValue('user_app_'.$lv_app, 'users_resignment', array('id'=>'where/'.$id)):0;
-                if(!empty($user_app)):
-                    if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), $subject_email_request, $isi_email_request);
-                    $this->approval->request($lv_app, 'resignment', $id, $user_resignment_id, $this->detail_email($id));
-                 else:
-                    if(!empty(getEmail($this->approval->approver('resignment', $user_id))))$this->send_email(getEmail($this->approval->approver('resignment', $user_id)), $subject_email_request, $isi_email_request);
-                    $this->approval->request('hrd', 'resignment', $id, $user_resignment_id, $this->detail_email($id));
-                 endif;
-            }
+        $user_id = sessNik();
+        $is_app = 0;
+        $is_app = getValue('is_app_'.$type, 'users_resignment', array('id'=>'where/'.$id));
+        $num_rows = getAll('users_resignment_wawancara', array('user_resignment_id'=>'where/'.$id))->num_rows();
+        $user_resignment_id = getValue('user_id', 'users_resignment', array('id'=>'where/'.$id));
+        $date_resignment = getValue('date_resign', 'users_resignment', array('id'=>'where/'.$id));
+        $user_exit_id_num_rows = getAll('users_exit', array('user_id'=>'where/'.$user_resignment_id))->num_rows();
+        $approval_status = getValue('app_status_id_'.$type, 'users_resignment', array('id'=>'where/'.$id));
+        $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
+        $subject_email = get_form_no($id).'['.$approval_status_mail.']Status Pengajuan Pengunduran Diri dari Atasan';
+        $subject_email_request = get_form_no($id).'-Pengajuan Pengunduran Diri';
+        $isi_email = 'Status pengajuan Pengunduran Diri anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_resignment/detail/'.$id.'>Klik Disini</a><br />';
+        $isi_email_request = get_name($user_resignment_id).' mengajukan Permohonan Pengunduran Diri, untuk melihat detail silakan <a href='.base_url().'form_resignment/detail/'.$id.'>Klik Disini</a><br />';
+        
+        if($is_app==0){
+            $this->approval->approve('resignment', $id, $approval_status, $this->detail_email($id));
+            if(!empty(getEmail($user_resignment_id)))$this->send_email(getEmail($user_resignment_id), $subject_email, $isi_email);
+        }else{
+            $this->approval->update_approve('resignment', $id, $approval_status, $this->detail_email($id));
+            if(!empty(getEmail($user_resignment_id)))$this->send_email(getEmail($user_resignment_id), get_form_no($id).'['.$approval_status_mail.']Perubahan Status Pengajuan Permohonan Pengunduran Diri dari Atasan', $isi_email);
+        }
+        if($type !== 'hrd'  && $approval_status == 1){
+            $lv = substr($type, -1)+1;
+            $lv_app = 'lv'.$lv;
+            $user_app = ($lv<4) ? getValue('user_app_'.$lv_app, 'users_resignment', array('id'=>'where/'.$id)):0;
+            if(!empty($user_app)):
+                if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), $subject_email_request, $isi_email_request);
+                $this->approval->request($lv_app, 'resignment', $id, $user_resignment_id, $this->detail_email($id));
+             else:
+                if(!empty(getEmail($this->approval->approver('resignment', $user_id))))$this->send_email(getEmail($this->approval->approver('resignment', $user_id)), $subject_email_request, $isi_email_request);
+                $this->approval->request('hrd', 'resignment', $id, $user_resignment_id, $this->detail_email($id));
+             endif;
+        }
 
-            if($type == 'hrd' && $approval_status == 1){
-                $this->send_notif_tambahan($id);
-            }
-    }
-    function send_notif_tambahan($id)
-    {
-        $url = base_url().'form_resignment/detail/'.$id;
-        $user_id = getValue('user_id', 'users_resignment', array('id'=>'where/'.$id));
-        $receiver = getValue('user_nik', 'users_notif_tambahan', array('form_type_id'=>'where/10'));
-        $subject_email = 'Pengunduran Diri';
-        $isi_email = 'HRD telah menyetujui pengajuan Pengunduran Diri oleh '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />';
-        //Notif to karyawan
-        if(!empty($receiver)){
-            $data4 = array(
-                    'sender_id' => get_nik(sessId()),
-                    'receiver_id' => $receiver,
-                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                    'subject' => $subject_email,
-                    'email_body' => $isi_email,
-                    'is_read' => 0,
-                );
-            $this->db->insert('email', $data4);
-            if(!empty(getEmail($receiver)))$this->send_email(getEmail($receiver), $subject_email, $isi_email);
+        if($type == 'hrd' && $approval_status == 1){
+            $this->send_notif_tambahan($id, 'resignment');
         }
     }
-
-
+    
     function kirim_undangan($id)
     {
         if(!$this->ion_auth->logged_in())

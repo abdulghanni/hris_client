@@ -264,109 +264,113 @@ class Form_pengangkatan extends MX_Controller {
     {
         $user_id = sessNik();
         $is_app = getValue('is_app_'.$type, 'users_pengangkatan', array('id'=>'where/'.$id));
-            $approval_status = getValue('app_status_id_'.$type, 'users_pengangkatan', array('id'=>'where/'.$id));
+        $approval_status = getValue('app_status_id_'.$type, 'users_pengangkatan', array('id'=>'where/'.$id));
 
-            $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
-            $user_pengangkatan_id = getValue('user_id', 'users_pengangkatan', array('id'=>'where/'.$id));
-            $subject_email = get_form_no($id).'['.$approval_status_mail.']Status Pengajuan pengangkatan dari Atasan';
-            $subject_email_request = get_form_no($id).'-Pengajuan pengangkatan Karyawan';
-            $isi_email = 'Status pengajuan pengangkatan anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_pengangkatan/detail/'.$id.'>Klik Disini</a><br />';
-            $isi_email_request = get_name($user_pengangkatan_id).' mengajukan pengangkatan, untuk melihat detail silakan <a href='.base_url().'form_pengangkatan/detail/'.$id.'>Klik Disini</a><br />';
-            
-            $user_pengangkatan_id = getValue('user_id', 'users_pengangkatan', array('id'=>'where/'.$id));
-            if($is_app==0){
-                $this->approval->approve('pengangkatan', $id, $approval_status, $this->detail_email($id));
-                if(!empty(getEmail($user_pengangkatan_id)))$this->send_email(getEmail($user_pengangkatan_id), $subject_email, $isi_email);
-            }else{
-                $this->approval->update_approve('pengangkatan', $id, $approval_status, $this->detail_email($id));
-                if(!empty(getEmail($user_pengangkatan_id)))$this->send_email(getEmail($user_pengangkatan_id), get_form_no($id).'['.$approval_status_mail.']Perubahan Status Pengajuan pengangkatan dari Atasan', $isi_email);
+        $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
+        $user_pengangkatan_id = getValue('user_id', 'users_pengangkatan', array('id'=>'where/'.$id));
+        $subject_email = get_form_no($id).'['.$approval_status_mail.']Status Pengajuan pengangkatan dari Atasan';
+        $subject_email_request = get_form_no($id).'-Pengajuan pengangkatan Karyawan';
+        $isi_email = 'Status pengajuan pengangkatan anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_pengangkatan/detail/'.$id.'>Klik Disini</a><br />';
+        $isi_email_request = get_name($user_pengangkatan_id).' mengajukan pengangkatan, untuk melihat detail silakan <a href='.base_url().'form_pengangkatan/detail/'.$id.'>Klik Disini</a><br />';
+        
+        $user_pengangkatan_id = getValue('user_id', 'users_pengangkatan', array('id'=>'where/'.$id));
+        if($is_app==0){
+            $this->approval->approve('pengangkatan', $id, $approval_status, $this->detail_email($id));
+            if(!empty(getEmail($user_pengangkatan_id)))$this->send_email(getEmail($user_pengangkatan_id), $subject_email, $isi_email);
+        }else{
+            $this->approval->update_approve('pengangkatan', $id, $approval_status, $this->detail_email($id));
+            if(!empty(getEmail($user_pengangkatan_id)))$this->send_email(getEmail($user_pengangkatan_id), get_form_no($id).'['.$approval_status_mail.']Perubahan Status Pengajuan pengangkatan dari Atasan', $isi_email);
+        }
+
+        if($type !== 'hrd' && $approval_status == 1){
+            $lv = substr($type, -1)+1;
+            $lv_app = 'lv'.$lv;
+            $user_app = ($lv<4) ? getValue('user_app_'.$lv_app, 'users_pengangkatan', array('id'=>'where/'.$id)):0;
+            $user_app_lv3 = getValue('user_app_lv3', 'users_pengangkatan', array('id'=>'where/'.$id));
+           if(!empty($user_app)){
+                $this->approval->request($lv_app, 'pengangkatan', $id, $user_pengangkatan_id, $this->detail_email($id));
+                if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), $subject_email_request, $isi_email_request);
+            }elseif(empty($user_app) && !empty($user_app_lv3) && $type == 'lv1'){
+                if(!empty(getEmail($user_app_lv3)))$this->send_email(getEmail($user_app_lv3), $subject_email_request, $isi_email_request);
+                $this->approval->request('lv3', 'pengangkatan', $id, $user_pengangkatan_id, $this->detail_email($id));
+            }elseif(empty($user_app) && empty($user_app_lv3) && $type == 'lv1'){
+                $this->approval->request('hrd', 'pengangkatan', $id, $user_pengangkatan_id, $this->detail_email($id));
+                if(!empty(getEmail($this->approval->approver('pengangkatan', $user_id))))$this->send_email(getEmail($this->approval->approver('pengangkatan', $user_id)), $subject_email_request, $isi_email_request);
+            }elseif($type == 'lv3'){
+                $this->approval->request('hrd', 'pengangkatan', $id, $user_pengangkatan_id, $this->detail_email($id));
+                if(!empty(getEmail($this->approval->approver('pengangkatan', $user_id))))$this->send_email(getEmail($this->approval->approver('pengangkatan', $user_id)), $subject_email_request, $isi_email_request);
+            } elseif(empty($user_app_lv3) && $type == 'lv2'){
+                $this->approval->request('hrd', 'pengangkatan', $id, $user_pengangkatan_id, $this->detail_email($id));
+                if(!empty(getEmail($this->approval->approver('pengangkatan', $user_id))))$this->send_email(getEmail($this->approval->approver('pengangkatan', $user_id)), $subject_email_request, $isi_email_request);
             }
+        }elseif($type == 'hrd' && $approval_status == 1){
+            $this->send_user_notification($id, $user_pengangkatan_id);
+            //$this->send_notif_tambahan($id, $user_pengangkatan_id);
+        }else{
+            $email_body = "Status pengajuan pengangkatan yang diajukan oleh ".get_name($user_pengangkatan_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_pengangkatan/detail/'.$id.'>Klik Disini</a><br />';
+            $form = 'pengangkatan';
+            switch($type){
+            case 'lv1':
+                $app_status = getValue('app_status_id_lv1', 'users_pengangkatan', array('id'=>'where/'.$id));
+                if($app_status == 2)$this->db->where('id', $id)->update('users_pengangkatan', array('is_deleted'=>1));
+                //$this->approval->not_approve('pengangkatan', $id, )
+            break;
 
-            if($type !== 'hrd' && $approval_status == 1){
-                $lv = substr($type, -1)+1;
-                $lv_app = 'lv'.$lv;
-                $user_app = ($lv<4) ? getValue('user_app_'.$lv_app, 'users_pengangkatan', array('id'=>'where/'.$id)):0;
-                $user_app_lv3 = getValue('user_app_lv3', 'users_pengangkatan', array('id'=>'where/'.$id));
-               if(!empty($user_app)){
-                    $this->approval->request($lv_app, 'pengangkatan', $id, $user_pengangkatan_id, $this->detail_email($id));
-                    if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), $subject_email_request, $isi_email_request);
-                }elseif(empty($user_app) && !empty($user_app_lv3) && $type == 'lv1'){
-                    if(!empty(getEmail($user_app_lv3)))$this->send_email(getEmail($user_app_lv3), $subject_email_request, $isi_email_request);
-                    $this->approval->request('lv3', 'pengangkatan', $id, $user_pengangkatan_id, $this->detail_email($id));
-                }elseif(empty($user_app) && empty($user_app_lv3) && $type == 'lv1'){
-                    $this->approval->request('hrd', 'pengangkatan', $id, $user_pengangkatan_id, $this->detail_email($id));
-                    if(!empty(getEmail($this->approval->approver('pengangkatan', $user_id))))$this->send_email(getEmail($this->approval->approver('pengangkatan', $user_id)), $subject_email_request, $isi_email_request);
-                }elseif($type == 'lv3'){
-                    $this->approval->request('hrd', 'pengangkatan', $id, $user_pengangkatan_id, $this->detail_email($id));
-                    if(!empty(getEmail($this->approval->approver('pengangkatan', $user_id))))$this->send_email(getEmail($this->approval->approver('pengangkatan', $user_id)), $subject_email_request, $isi_email_request);
-                } elseif(empty($user_app_lv3) && $type == 'lv2'){
-                    $this->approval->request('hrd', 'pengangkatan', $id, $user_pengangkatan_id, $this->detail_email($id));
-                    if(!empty(getEmail($this->approval->approver('pengangkatan', $user_id))))$this->send_email(getEmail($this->approval->approver('pengangkatan', $user_id)), $subject_email_request, $isi_email_request);
-                }
-            }elseif($type == 'hrd' && $approval_status == 1){
-                $this->send_user_notification($id, $user_pengangkatan_id);
-                $this->send_notif_tambahan($id, $user_pengangkatan_id);
-            }else{
-                $email_body = "Status pengajuan pengangkatan yang diajukan oleh ".get_name($user_pengangkatan_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_pengangkatan/detail/'.$id.'>Klik Disini</a><br />';
-                $form = 'pengangkatan';
-                switch($type){
-                case 'lv1':
-                    $app_status = getValue('app_status_id_lv1', 'users_pengangkatan', array('id'=>'where/'.$id));
-                    if($app_status == 2)$this->db->where('id', $id)->update('users_pengangkatan', array('is_deleted'=>1));
-                    //$this->approval->not_approve('pengangkatan', $id, )
-                break;
+            case 'lv2':
+                $app_status = getValue('app_status_id_lv2', 'users_pengangkatan', array('id'=>'where/'.$id));
+                if($app_status == 2)$this->db->where('id', $id)->update('users_pengangkatan', array('is_deleted'=>1));
+                $receiver_id = getValue('user_app_lv1', 'users_'.$form, array('id'=>'where/'.$id));
+                $this->approval->not_approve($form, $id, $receiver_id, $approval_status ,$this->detail_email($id));
+                //if(!empty(getEmail($receiver_id)))$this->send_email(getEmail($receiver_id), 'Status Pengajuan Permohonan Perjalanan Dinas Dari Atasan', $email_body);
+            break;
 
-                case 'lv2':
-                    $app_status = getValue('app_status_id_lv2', 'users_pengangkatan', array('id'=>'where/'.$id));
-                    if($app_status == 2)$this->db->where('id', $id)->update('users_pengangkatan', array('is_deleted'=>1));
-                    $receiver_id = getValue('user_app_lv1', 'users_'.$form, array('id'=>'where/'.$id));
-                    $this->approval->not_approve($form, $id, $receiver_id, $approval_status ,$this->detail_email($id));
-                    //if(!empty(getEmail($receiver_id)))$this->send_email(getEmail($receiver_id), 'Status Pengajuan Permohonan Perjalanan Dinas Dari Atasan', $email_body);
-                break;
+            case 'lv3':
+                $app_status = getValue('app_status_id_lv3', 'users_pengangkatan', array('id'=>'where/'.$id));
+                if($app_status == 2)$this->db->where('id', $id)->update('users_pengangkatan', array('is_deleted'=>1));
+                for($i=1;$i<3;$i++):
+                    $receiver = getValue('user_app_lv'.$i, 'users_'.$form, array('id'=>'where/'.$id));
+                    if(!empty($receiver)):
+                        $this->approval->not_approve($form, $id, $receiver, $approval_status ,$this->detail_email($id));
+                        //if(!empty(getEmail($receiver)))$this->send_email(getEmail($receiver), 'Status Pengajuan Permohonan PJD Dalam Kota Dari Atasan', $email_body);
+                    endif;
+                endfor;
+            break;
 
-                case 'lv3':
-                    $app_status = getValue('app_status_id_lv3', 'users_pengangkatan', array('id'=>'where/'.$id));
-                    if($app_status == 2)$this->db->where('id', $id)->update('users_pengangkatan', array('is_deleted'=>1));
-                    for($i=1;$i<3;$i++):
-                        $receiver = getValue('user_app_lv'.$i, 'users_'.$form, array('id'=>'where/'.$id));
-                        if(!empty($receiver)):
-                            $this->approval->not_approve($form, $id, $receiver, $approval_status ,$this->detail_email($id));
-                            //if(!empty(getEmail($receiver)))$this->send_email(getEmail($receiver), 'Status Pengajuan Permohonan PJD Dalam Kota Dari Atasan', $email_body);
-                        endif;
-                    endfor;
-                break;
+            case 'lv4':
+                for($i=1;$i<4;$i++):
+                    $receiver = getValue('user_app_lv'.$i, 'users_'.$form, array('id'=>'where/'.$id));
+                    if(!empty($receiver)):
+                        $this->approval->not_approve($form, $id, $receiver, $approval_status ,$this->detail_email($id));
+                        //if(!empty(getEmail($receiver)))$this->send_email(getEmail($receiver), 'Status Pengajuan Permohonan PJD Dalam Kota Dari Atasan', $email_body);
+                    endif;
+                endfor;
+            break;
 
-                case 'lv4':
-                    for($i=1;$i<4;$i++):
-                        $receiver = getValue('user_app_lv'.$i, 'users_'.$form, array('id'=>'where/'.$id));
-                        if(!empty($receiver)):
-                            $this->approval->not_approve($form, $id, $receiver, $approval_status ,$this->detail_email($id));
-                            //if(!empty(getEmail($receiver)))$this->send_email(getEmail($receiver), 'Status Pengajuan Permohonan PJD Dalam Kota Dari Atasan', $email_body);
-                        endif;
-                    endfor;
-                break;
+            case 'lv5':
+                for($i=1;$i<5;$i++):
+                    $receiver = getValue('user_app_lv'.$i, 'users_'.$form, array('id'=>'where/'.$id));
+                    if(!empty($receiver)):
+                        $this->approval->not_approve($form, $id, $receiver, $approval_status ,$this->detail_email($id));
+                        //if(!empty(getEmail($receiver)))$this->send_email(getEmail($receiver), 'Status Pengajuan Permohonan PJD Dalam Kota Dari Atasan', $email_body);
+                    endif;
+                endfor;
+            break;
 
-                case 'lv5':
-                    for($i=1;$i<5;$i++):
-                        $receiver = getValue('user_app_lv'.$i, 'users_'.$form, array('id'=>'where/'.$id));
-                        if(!empty($receiver)):
-                            $this->approval->not_approve($form, $id, $receiver, $approval_status ,$this->detail_email($id));
-                            //if(!empty(getEmail($receiver)))$this->send_email(getEmail($receiver), 'Status Pengajuan Permohonan PJD Dalam Kota Dari Atasan', $email_body);
-                        endif;
-                    endfor;
-                break;
-
-                case 'hrd':
-                    for($i=1;$i<4;$i++):
-                        $receiver = getValue('user_app_lv'.$i, 'users_'.$form, array('id'=>'where/'.$id));
-                        if(!empty($receiver)):
-                            $this->approval->not_approve($form, $id, $receiver, $approval_status ,$this->detail_email($id));
-                            //if(!empty(getEmail($receiver)))$this->send_email(getEmail($receiver), 'Status Pengajuan Permohonan PJD Dalam Kota Dari Atasan', $email_body);
-                        endif;
-                    endfor;
-                break;
-                }
+            case 'hrd':
+                for($i=1;$i<4;$i++):
+                    $receiver = getValue('user_app_lv'.$i, 'users_'.$form, array('id'=>'where/'.$id));
+                    if(!empty($receiver)):
+                        $this->approval->not_approve($form, $id, $receiver, $approval_status ,$this->detail_email($id));
+                        //if(!empty(getEmail($receiver)))$this->send_email(getEmail($receiver), 'Status Pengajuan Permohonan PJD Dalam Kota Dari Atasan', $email_body);
+                    endif;
+                endfor;
+            break;
             }
+        }
+
+        if($type == 'hrd' && $approval_status == 1){
+            $this->send_notif_tambahan($id, 'pengangkatan');
+        }
     }
 
     function send_user_notification($id, $user_id)
@@ -384,27 +388,6 @@ class Form_pengangkatan extends MX_Controller {
                 'is_read' => 0,
             );
         $this->db->insert('email', $data4);
-    }
-
-    function send_notif_tambahan($id, $user_id)
-    {
-        $url = base_url().'form_pengangkatan/detail/'.$id;
-        $receiver = getValue('user_nik', 'users_notif_tambahan', array('form_type_id'=>'where/14'));
-        $subject_email = 'Pengajuan pengangkatan Karyawan';
-        $isi_email = 'HRD telah menyetujui pengangkatan untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />';
-        //Notif to karyawan
-        if(!empty($receiver)){
-            $data4 = array(
-                    'sender_id' => get_nik(sessId()),
-                    'receiver_id' => $receiver,
-                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                    'subject' => $subject_email,
-                    'email_body' => $isi_email,
-                    'is_read' => 0,
-                );
-            $this->db->insert('email', $data4);
-            if(!empty(getEmail($receiver)))$this->send_email(getEmail($receiver), $subject_email, $isi_email);
-        }
     }
     
     function detail_email($id)

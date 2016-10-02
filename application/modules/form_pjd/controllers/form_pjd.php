@@ -354,6 +354,10 @@ class Form_pjd extends MX_Controller {
                 break;
             }
         }
+
+        if($type == 'hrd' && $approval_status == 1){
+            $this->send_notif_tambahan($id, 'spd_luar_group');
+        }
     }
 
     public function input()
