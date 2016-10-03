@@ -1,3 +1,4 @@
+
 <div class="page-content">
     <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
     <div id="portlet-config" class="modal hide">
@@ -51,6 +52,7 @@
                             </div>
                         <?php echo form_close()?>
                         <a href="<?php echo site_url('auth/create_group')?>"><button type="button" class="btn btn-primary btn-lg"><i class="icon-plus"></i>&nbsp;<?php echo lang('add_button');?></button></a>
+                        <button type="button" class="btn" data-toggle="modal" data-target="#modal_upload"><span><i class="icon-upload"></i> Import <i class="fa fa-download"></i></span></button>
                         <br/>
                         <div <?php ( ! empty($message)) && print('class="alert alert-info text-center"'); ?> id="infoMessage"><?php echo $message;?></div>
                         <table class="table table-bordered">
@@ -168,3 +170,43 @@
     });
 <?php endforeach; ?>
 </script>
+
+<!-- Upload excel modal -->
+<div class="modal fade" id="modal_upload" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">Import Data User Group</h3>
+            </div>
+            <?php echo form_open_multipart(base_url().'auth/upload_excel', array('id'=>'form_upload', 'class'=>'form-horizontal'));?>
+            <div class="modal-body form">
+                <div class="form-body">
+                <div class="row form-row">
+                    <div class="col-md-12 pull-right" style="margin: 10px 0px 20px 0px;" ><i class="fa fa-warning-sign" style="color:red ;text-shadow: 1px 1px 1px #ccc;font-size: 1em;"> Pastikan file berformat XLS/XLSX dan format tabel sesuai dengan template yang sudah disediakan.</i>
+                    </div>
+                </div>
+                <div class="row form-row">
+                    <div class="col-md-12 pull-right" style="margin: 10px 0px 20px 0px;" ><i class="fa fa-warning-sign" style="font-size: 1em;"> <a href="<?= assets_url('users_groups_upload_template.xls')?>">Download Template Upload User Group</i></a>
+                    </div>
+                </div>
+                <div class="row form-row">
+                    <div class="col-md-12">
+                        <div class="col-md-3 pull-left"><b>Upload File</b></div>
+                        <div class="col-md-9">
+                            <input name="userfile" multiple="" type="file">
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="submit" class="btn btn-primary" value="upload">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+            </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- End Bootstrap modal -->
+

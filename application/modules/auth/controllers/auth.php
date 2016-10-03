@@ -3743,6 +3743,54 @@ class Auth extends MX_Controller {
         }
     }
 
+    public function upload_excel(){
+        $config['upload_path'] = './uploads/';
+        $config['allowed_types'] = 'xlsx|xls';
+       
+        $this->load->library('upload', $config);
+        
+        if ( ! $this->upload->do_upload()){
+            //$error = array('error' => $this->upload->display_errors());
+            echo 'Terjadi Kesalahan, silakan kembali kehalaman sebelumnya';
+        }
+        else{
+            $data = array('upload_data' => $this->upload->data());
+            $upload_data = $this->upload->data(); //Returns array of containing all of the data related to the file you uploaded.
+            $filename = $upload_data['file_name'];
+            $this->upload_data($filename);
+            unlink('./uploads/'.$filename);
+            $this->session->set_flashdata('message', 'Upload Data Selesai');
+            redirect('auth/list_group','refresh');
+        }
+    }
+
+    public function upload_data($filename){
+        $this->load->library('PHPExcel');
+        ini_set('memory_limit', '-1');
+        $inputFileName = './uploads/'.$filename;
+        try {
+        $objPHPExcel = PHPExcel_IOFactory::load($inputFileName);
+        } catch(Exception $e) {
+        die('Error loading file :' . $e->getMessage());
+        }
+
+        $worksheet = $objPHPExcel->getActiveSheet()->toArray(null,true,true,true);
+        $numRows = count($worksheet);
+        echo 'Mohon tunggu, sedang mengupload data.....';
+        for ($i=2; $i < ($numRows+1) ; $i++) { 
+            if(!empty($worksheet[$i]["B"])):
+                $user_id = getValue('id', 'users', array('nik'=>'where/'.$worksheet[$i]["A"]));
+                $group_id = getValue('id', 'groups', array('name'=>'where/'.$worksheet[$i]["B"]));
+                $data = array(
+                        "user_id"          => $user_id,
+                        "group_id"          => $group_id
+                       );
+                $cek = getAll('users_groups', array('user_id'=>'where/'.$user_id, 'group_id'=>'where/'.$group_id))->num_rows();
+                if($cek<1)$this->db->insert('users_groups', $data);
+            endif;
+        }
+    }
+
     function _render_page($view, $data=null, $render=false)
     {
         // $this->viewdata = (empty($data)) ? $this->data: $data;
