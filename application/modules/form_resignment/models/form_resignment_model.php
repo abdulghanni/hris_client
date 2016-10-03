@@ -17,6 +17,7 @@ class Form_resignment_model extends CI_Model {
     private function _get_datatables_query($f)
     {
         $is_admin = is_admin();
+        $is_next_hrd = $this->is_next_hrd(sessNik());
         if(!is_admin()){
             $sess_id = $this->session->userdata('user_id');
             $sess_nik = get_nik($sess_id);
@@ -56,14 +57,14 @@ class Form_resignment_model extends CI_Model {
             }else{
 
             }
-            if($is_admin!=1 && $is_hrd_pusat != 1):
-            if($is_approver == $sess_nik || $is_admin_cabang == 1){
-                $this->db->where_in($this->table.'.user_id', $user);//print_mz($user);
-            }elseif($is_admin!=1 ){
-                 $this->db->where("(users_resignment.user_id = '$sess_id'
-                               OR users_resignment.user_app_lv1 = '$sess_nik'  OR users_resignment.user_app_lv2 = '$sess_nik'  OR users_resignment.user_app_lv3 = '$sess_nik'
-                )",null, false);
-            }
+            if($is_admin!=1 && $is_hrd_pusat != 1 && $is_next_hrd !=1):
+                if($is_approver == $sess_nik || $is_admin_cabang == 1){
+                    $this->db->where_in($this->table.'.user_id', $user);//print_mz($user);
+                }elseif($is_admin!=1 ){
+                     $this->db->where("(users_resignment.user_id = '$sess_id'
+                                   OR users_resignment.user_app_lv1 = '$sess_nik'  OR users_resignment.user_app_lv2 = '$sess_nik'  OR users_resignment.user_app_lv3 = '$sess_nik'
+                    )",null, false);
+                }
             endif;
 
 
@@ -240,6 +241,13 @@ class Form_resignment_model extends CI_Model {
 
         $q = $this->db->get('alasan_resign');
         return $q;
+    }
+
+    private function is_next_hrd($user_nik){
+        $f = array('bu'=>'where/50', 'form_type_id'=>'where/10');
+        $next_hrd_nik = getValue('user_nik', 'users_notif_tambahan', $f);
+        if($user_nik == $next_hrd_nik)return true;
+        else return false;
     }
 
 }
