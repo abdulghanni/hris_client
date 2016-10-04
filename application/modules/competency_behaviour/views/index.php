@@ -49,7 +49,7 @@
       </div>
 
 <!-- Bootstrap modal -->
-  <div class="modal fade" id="modal_form" role="dialog">
+  <div class="modal fade" data-backdrop="static" data-keyboard="false" id="modal_form" role="dialog">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">

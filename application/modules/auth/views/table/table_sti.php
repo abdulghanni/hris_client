@@ -61,7 +61,7 @@
 <?php foreach($user_sti->result() as $row){?>
 <!--Edit Modal-->
 
-<div class="modal fade" id="editstiModal<?php echo $row->id?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" data-backdrop="static" data-keyboard="false" id="editstiModal<?php echo $row->id?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
         <?php echo form_open('auth/edit_sti/'.$row->id, array('id'=>'formupdate'.$row->id))?>
@@ -183,7 +183,7 @@
 <!-- End Edit Modal-->
 
 <!--Delete Modal-->
-<div class="modal fade" id="deletestiModal<?php echo $row->id?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" data-backdrop="static" data-keyboard="false" id="deletestiModal<?php echo $row->id?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
         <div class="modal-header">

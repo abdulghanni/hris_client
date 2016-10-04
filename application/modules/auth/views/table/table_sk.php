@@ -56,7 +56,7 @@
 
 <!--Delete Modal Window-->
 <?php foreach($user_sk->result() as $row){?>
-<div class="modal fade" id="deleteskModal<?php echo $row->id?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" data-backdrop="static" data-keyboard="false" id="deleteskModal<?php echo $row->id?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -97,7 +97,7 @@ $(function(){
 <!--Edit Modal-->
 <?php foreach($user_sk->result() as $row){?>
 <?php echo form_open('auth/edit_sk/'.$row->id, array('id'=>'formupdate'.$row->id))?> 
-<div class="modal fade" id="editskModal<?php echo $row->id?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" data-backdrop="static" data-keyboard="false" id="editskModal<?php echo $row->id?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog" id="modal-dialog">
         <div class="modal-content">
         <div class="modal-header">

@@ -56,7 +56,7 @@
 
 <!--Edit MOdal-->
  <?php echo form_open('auth/edit_education/'.$row->id, array('id'=>'formupdate'.$row->id))?>
-<div class="modal fade" id="editeducationModal<?php echo $row->id?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" data-backdrop="static" data-keyboard="false" id="editeducationModal<?php echo $row->id?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -186,7 +186,7 @@ $(document).ready(function(){
 </script>
 
 <!--Delete Modal-->
-<div class="modal fade" id="deleteeducationModal<?php echo $row->id?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" data-backdrop="static" data-keyboard="false" id="deleteeducationModal<?php echo $row->id?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
         <div class="modal-header">

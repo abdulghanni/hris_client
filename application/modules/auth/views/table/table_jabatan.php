@@ -63,7 +63,7 @@
 
 <?php foreach($user_jabatan->result() as $row){?>
 <!--Delete Modal-->
-<div class="modal fade" id="deletejabatanModal<?php echo $row->id?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" data-backdrop="static" data-keyboard="false" id="deletejabatanModal<?php echo $row->id?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
         <div class="modal-header">
@@ -105,7 +105,7 @@ $(function(){
 <!--Edit Modal-->
 
 <?php foreach($user_jabatan->result() as $row){?>
-<div class="modal fade" id="editjabatanModal<?php echo $row->id?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" data-backdrop="static" data-keyboard="false" id="editjabatanModal<?php echo $row->id?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <?php echo form_open('auth/edit_jabatan/'.$row->id, array('id'=>'formupdate'.$row->id))?> 
   <div class="modal-dialog">
     <div class="modal-content">

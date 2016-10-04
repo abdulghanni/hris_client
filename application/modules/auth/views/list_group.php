@@ -120,7 +120,7 @@
 
 <?php foreach ($groups as $user):?>
 <!--Delete Modal-->
-<div class="modal fade" id="deleteGroupModal<?php echo $user->id?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" data-backdrop="static" data-keyboard="false" id="deleteGroupModal<?php echo $user->id?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
         <div class="modal-header">
@@ -172,7 +172,7 @@
 </script>
 
 <!-- Upload excel modal -->
-<div class="modal fade" id="modal_upload" role="dialog">
+<div class="modal fade" data-backdrop="static" data-keyboard="false" id="modal_upload" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

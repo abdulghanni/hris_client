@@ -56,7 +56,7 @@
 
 <!--Delete Modal Window-->
 <?php foreach($user_experience->result() as $row){?>
-<div class="modal fade" id="deleteexperienceModal<?php echo $row->id?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" data-backdrop="static" data-keyboard="false" id="deleteexperienceModal<?php echo $row->id?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -97,7 +97,7 @@ $(function(){
 
 <!--Edit Modal-->
 <?php foreach($user_experience->result() as $row){?>
-<div class="modal fade" id="editexperienceModal<?php echo $row->id?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" data-backdrop="static" data-keyboard="false" id="editexperienceModal<?php echo $row->id?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 <?php echo form_open('auth/edit_experience/'.$row->id, array('id'=>'formupdate'.$row->id))?> 
   <div class="modal-dialog" id="modal-dialog">
     <div class="modal-content">

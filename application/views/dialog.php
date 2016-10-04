@@ -1,4 +1,4 @@
-<div class="modal fade" id="<?php echo $id; ?>">
+<div class="modal fade" data-backdrop="static" data-keyboard="false" id="<?php echo $id; ?>">
     <div class="modal-dialog<?php ( ! empty($size)) && print(' ' . $size); ?>">
         <div class="modal-content">
             <?php if ( ! empty($title)): ?>

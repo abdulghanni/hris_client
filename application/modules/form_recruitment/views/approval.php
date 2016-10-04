@@ -340,7 +340,7 @@
 	<!-- END PAGE -->
 
 <!-- do approval recruitment Modal spv -->
-<div class="modal fade" id="submitrecruitmentspvModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" data-backdrop="static" data-keyboard="false" id="submitrecruitmentspvModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog" id="modaldialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -391,7 +391,7 @@
 
 
 <!-- do approval recruitment Modal kbg -->
-<div class="modal fade" id="submitrecruitmentkbgModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" data-backdrop="static" data-keyboard="false" id="submitrecruitmentkbgModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog" id="modaldialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -441,7 +441,7 @@
 <!--end do modal--> 
 
 <!-- do approval recruitment hrd Modal -->
-<div class="modal fade" id="submitrecruitmenthrdModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" data-backdrop="static" data-keyboard="false" id="submitrecruitmenthrdModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog" id="modaldialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -491,7 +491,7 @@
 <!--end do modal--> 
 
 <!-- Edit approval recruitment Modal spv -->
-<div class="modal fade" id="updaterecruitmentspvModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" data-backdrop="static" data-keyboard="false" id="updaterecruitmentspvModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog" id="modaldialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -542,7 +542,7 @@
 
 
 <!-- Edit approval recruitment Modal kbg -->
-<div class="modal fade" id="updaterecruitmentkbgModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" data-backdrop="static" data-keyboard="false" id="updaterecruitmentkbgModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog" id="modaldialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -592,7 +592,7 @@
 <!--end edit modal--> 
 
 <!-- Edit approval recruitment hrd Modal -->
-<div class="modal fade" id="updaterecruitmenthrdModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" data-backdrop="static" data-keyboard="false" id="updaterecruitmenthrdModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog" id="modaldialog">
     <div class="modal-content">
       <div class="modal-header">

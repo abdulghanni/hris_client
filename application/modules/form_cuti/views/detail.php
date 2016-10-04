@@ -391,7 +391,7 @@
 	<!-- END PAGE -->
 
 <!--approval cuti Modal Lv1 -->
-<div class="modal fade" id="submitcutiModalLv1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" data-backdrop="static" data-keyboard="false" id="submitcutiModalLv1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog" id="modaldialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -471,7 +471,7 @@
 <!--end approve modal Lv1--> 
 
 <!--approval cuti Modal Lv2 -->
-<div class="modal fade" id="submitcutiModalLv2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" data-backdrop="static" data-keyboard="false" id="submitcutiModalLv2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog" id="modaldialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -551,7 +551,7 @@
 <!--end approve modal Lv2--> 
 
 <!--approval cuti Modal Lv3 -->
-<div class="modal fade" id="submitcutiModalLv3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" data-backdrop="static" data-keyboard="false" id="submitcutiModalLv3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog" id="modaldialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -631,7 +631,7 @@
 <!--end approve modal Lv3--> 
 
 <!--approval cuti Modal HRD -->
-<div class="modal fade" id="submitcutiModalHrd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" data-backdrop="static" data-keyboard="false" id="submitcutiModalHrd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog" id="modaldialog">
     <div class="modal-content">
       <div class="modal-header">

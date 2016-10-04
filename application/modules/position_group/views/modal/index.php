@@ -1,6 +1,6 @@
 <!-- Add Position Group -->
 <?php echo form_open('position_group/add/', array('id'=>'formadd2'))?> 
-<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" data-backdrop="static" data-keyboard="false" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog" id="modaldialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -78,7 +78,7 @@
 <?php foreach ($position_group as $user):?>
 <!--Edit Modal-->
         <?php echo form_open('position_group/update/'.$user->id, array('id'=>'formupdate'.$user->id))?>
-        <div class="modal fade" id="editModal<?php echo $user->id?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal fade" data-backdrop="static" data-keyboard="false" id="editModal<?php echo $user->id?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -156,7 +156,7 @@
         <!-- End Edit Modal-->
 
         <!--Delete Modal-->
-        <div class="modal fade" id="deleteModal<?php echo $user->id?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal fade" data-backdrop="static" data-keyboard="false" id="deleteModal<?php echo $user->id?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">

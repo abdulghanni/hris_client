@@ -48,7 +48,7 @@
 
 <!--Edit Modal-->
 <?php echo form_open('auth/edit_certificate/'.$row->id, array('id'=>'formupdate'.$row->id))?> 
-<div class="modal fade" id="editcertificateModal<?php echo $row->id?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" data-backdrop="static" data-keyboard="false" id="editcertificateModal<?php echo $row->id?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -126,7 +126,7 @@ $(document).ready(function(){
 <!-- End Edit Modal-->
 
 <!--Delete Modal-->
-<div class="modal fade" id="deletecertificateModal<?php echo $row->id?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" data-backdrop="static" data-keyboard="false" id="deletecertificateModal<?php echo $row->id?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
         <div class="modal-header">
