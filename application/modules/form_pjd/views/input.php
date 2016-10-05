@@ -208,6 +208,14 @@
                             </div>
                           </div>
 
+                          <div class="row form-row">
+                          <div class="col-md-3">
+                            <label class="form-label text-right">Nama Kantor Cabang</label>
+                          </div>
+                          <div class="col-md-9">
+                            <input type="text" class="form-control" name="nama_kantor_cabang">
+                          </div>
+                        </div>
 
                         <div class="row form-row">
                           <div class="col-md-3">

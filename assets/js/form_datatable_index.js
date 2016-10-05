@@ -127,6 +127,34 @@ function del()
         });
     }
 
+    function del_cuti()
+    {
+        $('#remove').text('Deleting...'); //change button text
+        $('#remove').attr('disabled',true); //set button disable 
+        url  = base_url+'form_cuti/remove';
+        // ajax adding data to database
+        $.ajax({
+            url : url,
+            type: "POST",
+            data: $('#form-delete').serialize(),
+            //dataType: "JSON",
+            success: function()
+            {
+                reload_table();
+                $('#remove').text('Delete'); //change button text
+                $('#remove').attr('disabled',false); //set button enable
+                $("[data-dismiss=modal]").trigger({ type: "click" }); 
+            },
+            error: function (jqXHR, textStatus, errorThrown)
+            {
+                alert('Error adding / update data');
+                $('#remove').text('Delete'); //change button text
+                $('#remove').attr('disabled',false); //set button enable 
+
+            }
+        });
+    }
+
     function reload_table()
 {
     table.ajax.reload(null,false); //reload datatable ajax 

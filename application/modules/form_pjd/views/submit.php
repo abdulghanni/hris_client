@@ -158,6 +158,16 @@
                         </div>
                       </div>
                     <?php endfor; ?>
+                    <?php if(!empty($td->nama_kantor_cabang)):?>
+                      <div class="row form-row">
+                        <div class="col-md-2">
+                          <label class="form-label text-left">Nama Kantor Cabang</label>
+                        </div>
+                        <div class="col-md-5">
+                          <input name="title" id="title" type="text"  class="form-control" placeholder="" value="<?php echo $td->nama_kantor_cabang; ?>" disabled>
+                        </div>
+                      </div>
+                    <?php endif;?>
                       <div class="row form-row">
                         <div class="col-md-2">
                           <label class="form-label text-left">Tgl. Berangkat</label>
