@@ -88,8 +88,8 @@ class Form_absen_model extends CI_Model {
                     $item = $this->join2.'.title';
                 }
 
-                // ($i===0) ? $this->db->like($item, $_POST['search']['value']) : $this->db->or_like($item, $_POST['search']['value']);
-                ($i===0) ? $this->db->like($item, $_POST['search']['value']) : $this->db->like($item, $_POST['search']['value']);
+                ($i===0) ? $this->db->like($item, $_POST['search']['value']) : $this->db->or_like($item, $_POST['search']['value']);
+                // ($i===0) ? $this->db->like($item, $_POST['search']['value']) : $this->db->like($item, $_POST['search']['value']);
             }
                 
             $column[$i] = $item;
