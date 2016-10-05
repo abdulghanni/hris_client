@@ -87,7 +87,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="icon-ban-circle"></i>&nbsp;<?php echo lang('cancel_button')?></button> 
-       <button id="remove" type="button" class="btn btn-danger" style="margin-top: 3px;" onclick="del()"><i class="icon-warning-sign"></i>&nbsp;<?php echo lang('delete_button')?></button>
+       <button id="remove" type="button" class="btn btn-danger" style="margin-top: 3px;" onclick="del_cuti()"><i class="icon-warning-sign"></i>&nbsp;<?php echo lang('delete_button')?></button>
       </div>
         <?php echo form_close()?>
     </div>

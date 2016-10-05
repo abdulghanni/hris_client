@@ -601,6 +601,47 @@ class Form_cuti extends MX_Controller {
         $this->update_status_flag($user_nik, $date, $end_date, $status_id);
     }
 
+    function remove(){
+      $sess_id = $this->session->userdata('user_id');
+      $form = $this->input->post('form');
+      $id = $this->input->post('id');
+      $form_no = $this->input->post('form-no');
+      $user_app_lv1 = getValue('user_app_lv1', 'users_'.$form, array('id'=>'where/'.$id));
+      $subject_email = "$form no $id-Pembatalan Pengajuan $form";
+      $isi_email = get_name($sess_id).' membatalkan pengajuan '.$form.' dengan no '.$id;
+      $data_update = array(
+      'is_deleted'=>1,
+      'deleted_by'=>sessId(),
+      'deleted_on' => date('Y-m-d',strtotime('now')),
+      );
+      $this->db->where('id', $id)->update('users_'.$form, $data_update);
+      if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), $subject_email, $isi_email);
+      
+      $data = array(
+      'sender_id' => get_nik($sess_id),
+      'receiver_id' => get_nik($user_app_lv1),
+      'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+      'subject' => $subject_email,
+      'email_body' => $isi_email,
+      'is_read' => 0,
+      );
+      $this->db->insert('email', $data);
+      $f = array('id' => 'where/'.$id);
+      $user_nik = get_nik(getValue('user_id','users_cuti', $f));
+      // Start date
+      $date = getValue('date_mulai_cuti','users_cuti', $f);
+      // End date
+      $end_date = getValue('date_selesai_cuti','users_cuti', $f);
+      $status_id = 4;
+      $this->update_status_flag($user_nik, $date, $end_date, $status_id);
+      $jml_hari_cuti = getValue('jumlah_hari','users_cuti', array('id' => 'where/'.$id));
+      $recid = $this->get_sisa_cuti($user_nik)['recid'];
+      $potong_cuti = getValue('potong_cuti','users_cuti', array('id' => 'where/'.$id));
+      $sisa_cuti = $this->get_sisa_cuti($user_nik)['sisa_cuti'] + $potong_cuti;
+      $this->update_sisa_cuti($recid, $sisa_cuti);
+      //echo json_encode(array('status'=>true));
+    }
+
     function update_status_flag($nik, $date, $end_date, $status_id)
     {
         if (!$this->ion_auth->logged_in())
@@ -641,6 +682,33 @@ class Form_cuti extends MX_Controller {
         $method = 'post';
         $params =  array();
         $uri = get_api_key().'users/sisa_cuti/RECID/'.$recid.'/ENTITLEMENT/'.$sisa_cuti;
+
+        $this->rest->format('application/json');
+
+        $result = $this->rest->{$method}($uri, $params);
+
+
+        if(isset($result->status) && $result->status == 'success')
+        {
+            return TRUE;
+        }
+        else
+        {
+            return FALSE;
+        }
+    }
+
+    function update_status_cuti($recid, $sisa_cuti)
+    {
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+
+        $method = 'post';
+        $params =  array();
+        $uri = get_api_key().'users/status_cuti/RECID/'.$recid.'/ENTITLEMENT/'.$sisa_cuti;
 
         $this->rest->format('application/json');
 
