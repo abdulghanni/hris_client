@@ -14,7 +14,7 @@ class notif_reminder extends MX_Controller {
     }
 
     function cek(){
-        $this->load->library('email');
+        //$this->load->library('email');
         $notif_reminder_var = getValue('var', 'notif_reminder_var');
         $now = new DateTime();
         $f_form = array('form_name'=>'where/cuti');
@@ -25,20 +25,49 @@ class notif_reminder extends MX_Controller {
                 switch ($form_name) {
                     case 'Demosi':
                         $form_name = "demotion";
+                        $subject_email = "Demosi";
                         break;
                     case 'pjd':
                         $form_name = "spd_luar_group";
+                        $subject_email = "Perjalanan Dinas";
                         break;
                     case 'training':
                     case 'training-group':
                         $form_name = "training_group";
+                        $subject_email = "Pelatihan";
                         break;
+                    case 'absen':
+                        $form_name = "absen";
+                        $subject_email = "Keterangan Tidak Absen";
+                    break;
                     case 'tidak-masuk':
                         $form_name = "tidak_masuk";
+                        $subject_email = "Izin Tidak Masuk";
+                    break;
+                    case 'rolling':
+                        $form_name = "rolling";
+                        $subject_email = "Mutasi";
+                    break;
+                    case 'pemutusan':
+                        $form_name = "pemutusan";
+                        $subject_email = "Pemutusan Kontrak";
+                    break;
+                    case 'recruitment':
+                        $form_name = "recruitment";
+                        $subject_email = "Permintaan SDM Baru";
+                    break;
+                    case 'resignment':
+                        $form_name = "resignment";
+                        $subject_email = "Pengunduran Diri";
+                    break;
+                    case 'exit':
+                        $form_name = "exit";
+                        $subject_email = "Rekomendasi Karyawan Keluar";
                     break;
                     
                     default:
                         $form_name = $form_name;
+                        $subject_email = $form_name;
                         break;
                 }
 
@@ -53,12 +82,15 @@ class notif_reminder extends MX_Controller {
                     $diff = $diff->days;
                     $user_app = $a->$u;
                        if($diff > $notif_reminder_var && $diff < 30 && !empty($user_app)){
-                            echo $a->id." - $form_name <br/>";
-                            echo $user_app." <br/>";
-                            $subject_email = "Reminder Approval Pengajuan ".$form_name;
-                            $isi_email = "Ada pengajuan yang membutuhkan Approval dari anda, silakan mengakses WEB-HRIS PT. Erlangga untuk melihat pengajuan yang belum anda approve ";
-                            if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), $subject_email, $isi_email);
-                            print_r($this->email->print_debugger());
+                            if($form_name == "spd_luar_group"){
+                                $url = base_url().'form_pjd/submit/'.$a->id;
+                            }else{
+                                $url = base_url().'form_'.$form_name.'/detail/'.$a->id;
+                            }
+                            $subject_emailx = "Reminder Approval Pengajuan ".ucfirst($subject_email);
+                            $isi_email = 'pengajuan '.$subject_email.' No : '.$a->id.' menunggu Approval dari anda, silakan <a class="klikmail" href='.$url.'>Klik Disini untuk melihat pengajuan melalui WEB HRIS PT. Erlangga</a><br />';
+                            if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), $subject_emailx, $isi_email);
+                            print_r($user_app.' ---- '.$subject_emailx.'<br/>'.$isi_email.'<br/><br/><br/>');
                             echo "<br/>";//die();
                        }
                 }
