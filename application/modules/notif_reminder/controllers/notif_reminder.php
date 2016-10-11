@@ -18,7 +18,7 @@ class notif_reminder extends MX_Controller {
         $notif_reminder_var = getValue('var', 'notif_reminder_var');
         $now = new DateTime();
         $f_form = array('form_name'=>'where/cuti');
-        $form = GetAllSelect('form_id', 'form_name')->result();
+        $form = GetAll('form_id')->result();
         for($i=1;$i<4;$i++){
             foreach ($form as $f) {
                 $form_name = $f->form_name;
@@ -89,8 +89,11 @@ class notif_reminder extends MX_Controller {
                             }
                             $subject_emailx = "Reminder Approval Pengajuan ".ucfirst($subject_email);
                             $isi_email = 'pengajuan '.$subject_email.' No : '.$a->id.' menunggu Approval dari anda, silakan <a class="klikmail" href='.$url.'>Klik Disini untuk melihat pengajuan melalui WEB HRIS PT. Erlangga</a><br />';
-                            if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), $subject_emailx, $isi_email);
-                            print_r($user_app.' ---- '.$subject_emailx.'<br/>'.$isi_email.'<br/><br/><br/>');
+                            $user_bu = $this->get_user_bu($user_app);
+                            $f =  array('form_type_id'=>'where/'.$f->id, 'bu'=>'where/'.$user_bu);
+                            $cc = getValue('user_nik', 'users_notif_cc',$f);
+                            if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), $subject_emailx, $isi_email, getEmail($cc));
+                            print_r($user_app.' ---- '.$subject_emailx.'<br/>'.$isi_email.$cc.'<br/><br/><br/>');
                             echo "<br/>";//die();
                        }
                 }

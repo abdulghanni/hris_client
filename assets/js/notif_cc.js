@@ -1,0 +1,96 @@
+$(document).ready(function() {				
+	$(".select2").select2();
+	 $('#limit').select2();
+     
+     $("#bu").change(function() {
+        var id = $(this).val();
+        $.ajax({
+            type: 'POST',
+            url: 'notif_cc/get_table',
+            data: {id : id},
+            success: function(data) {
+                $('#table').html('<img src="assets/img/loading.gif"> loading...');
+                $('#table').html(data);
+            }
+        });
+    })
+    .change(); 
+
+    $("#hrd-name").keyup(function(){
+        var bu = $('#bu option:selected').val(),
+            name = $("#hrd-name").val();
+        $.ajax({
+            type: 'POST',
+            url: 'notif_cc/get_table_by_name',
+            data: {bu : bu, name:name},
+            success: function(data) {
+                $('#table').html('<img src="assets/img/loading.gif"> loading...');
+                $('#table').html(data);
+            }
+        });
+    });
+
+});
+
+function edit(form_id){
+    var bu = $('#bu option:selected').val();
+    $('#formEdit')[0].reset(); // reset form on modals
+    $('.form-group').removeClass('has-error'); // clear error class
+    $('.help-block').empty(); // clear error string
+
+    //Ajax Load data from ajax
+    $.ajax({
+        url : "notif_cc/get_modal/" + bu + '/' + form_id,
+        type: "GET",
+        //dataType: "JSON",
+        success: function(data)
+        {
+//alert(data);
+            //var dat = "P0586";
+            $('[name="id"]').val(bu);
+            $('[name="form_type_id"]').select2().select2('val',form_id);
+            $("#nik").select2().select2('val',data);
+            //$('[name="nik"]').select2().select2('val',form_id);
+            $('#editModal').modal('show'); // show bootstrap modal when complete loaded
+
+        },
+        error: function (jqXHR, textStatus, errorThrown)
+        {
+            alert('Error get data from ajax');
+        }
+    });
+}
+
+function save()
+{
+    $('#btnSave').text('saving...'); //change button text
+    $('#btnSave').attr('disabled',true); //set button disable 
+    var url = "notif_cc/update"
+    $.ajax({
+        url : url,
+        type: "POST",
+        data: $('#formEdit').serialize(),
+        dataType: "JSON",
+        success: function(data)
+        {
+
+            if(data.status) //if success close modal and reload ajax table
+            {
+                $('#editModal').modal('hide');
+                location.reload();
+            }
+
+
+        $('#btnSave').text('save'); //change button text
+        $('#btnSave').attr('disabled',false); //set button enable 
+        },
+        error: function (jqXHR, textStatus, errorThrown)
+        {
+            alert('Error adding / update data');
+
+        $('#btnSave').text('save'); //change button text
+        $('#btnSave').attr('disabled',false); //set button enable 
+        }
+
+    });
+}
