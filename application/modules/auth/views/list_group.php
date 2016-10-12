@@ -187,7 +187,7 @@
                     </div>
                 </div>
                 <div class="row form-row">
-                    <div class="col-md-12 pull-right" style="margin: 10px 0px 20px 0px;" ><i class="fa fa-warning-sign" style="font-size: 1em;"> <a href="<?= assets_url('users_groups_upload_template.xls')?>">Download Template Upload User Group</i></a>
+                    <div class="col-md-12 pull-right" style="margin: 10px 0px 20px 0px;" ><i class="fa fa-warning-sign" style="font-size: 1em;"> <a href="<?= assets_url('groups_upload_template.xls')?>">Download Template Upload User Group</i></a>
                     </div>
                 </div>
                 <div class="row form-row">

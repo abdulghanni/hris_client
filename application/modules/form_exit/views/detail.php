@@ -139,7 +139,7 @@
                         <div class="row text-center">
                           <div class="row text-center"><span class="semi-bold">Mengetahui,</span></div>
                           <div class="row wf-cuti">
-                            <div class="col-md-2" id="mgr">
+                            <div class="col-md-3" id="mgr">
                               <p class="wf-approve-sp">
                                 <?php 
                                 $approved = assets_url('img/approved_stamp.png');
@@ -147,7 +147,7 @@
                                  $pending = assets_url('img/pending_stamp.png');
                                 if($row->is_app_mgr == 1){
                                 echo ($row->app_status_id_mgr == 1)?"<img class=approval-img src=$approved>": (($row->app_status_id_mgr == 2) ? "<img class=approval-img src=$rejected>"  : (($row->app_status_id_mgr == 3) ? "<img class=approval-img src=$pending>" : "<span class='small'></span><br/>"));?><br/>
-                      <span class="semi-bold"><?php echo get_name($row->user_app_mgr)?></span><br/>
+                                <span class="semi-bold"><?php echo get_name($row->user_app_mgr)?></span><br/>
                                 <span class="small"><?php echo dateIndo($row->date_app_mgr)?></span><br/>
                                 <?php }elseif($row->is_app_mgr == 0 && $is_admin_logistik == 1){?>
                                 <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitModalmgr"><i class="icon-ok"></i>Submit</div>
@@ -165,7 +165,7 @@
                               </p>
                             </div>
 
-                          <div class="col-md-2" id="koperasi">
+                          <div class="col-md-3" id="koperasi">
                             <p class="wf-approve-sp">
                               <?php if($row->is_app_koperasi == 1){
                               echo ($row->app_status_id_koperasi == 1)?"<img class=approval-img src=$approved>": (($row->app_status_id_koperasi == 2) ? "<img class=approval-img src=$rejected>"  : (($row->app_status_id_koperasi == 3) ? "<img class=approval-img src=$pending>" : "<span class='small'></span><br/>"));?><br/>
@@ -187,11 +187,11 @@
                             </p>
                           </div>
                           
-                          <div class="col-md-2" id="perpus">
+                          <div class="col-md-3" id="perpus">
                             <p class="wf-approve-sp">
                               <?php if($row->is_app_perpus == 1){
                              echo ($row->app_status_id_perpus == 1)?"<img class=approval-img src=$approved>": (($row->app_status_id_perpus == 2) ? "<img class=approval-img src=$rejected>"  : (($row->app_status_id_perpus == 3) ? "<img class=approval-img src=$pending>" : "<span class='small'></span><br/>"));?><br/>
-                       <span class="semi-bold"><?php echo get_name($row->user_app_perpus)?></span><br/>
+                              <span class="semi-bold"><?php echo get_name($row->user_app_perpus)?></span><br/>
                               <span class="small"><?php echo dateIndo($row->date_app_perpus)?></span><br/>
                               <?php }elseif($row->is_app_perpus == 0 && $is_admin_perpus == 1){?>
                               <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitModalperpus"><i class="icon-ok"></i>Submit</div>
@@ -209,7 +209,7 @@
                             </p>
                           </div>
                           
-                          <div class="col-md-2" id="hrd">
+                          <div class="col-md-3" id="hrd">
                             <p class="wf-approve-sp">
                               <?php if($row->is_app_hrd == 1){
                               echo ($row->app_status_id_hrd == 1)?"<img class=approval-img src=$approved>": (($row->app_status_id_hrd == 2) ? "<img class=approval-img src=$rejected>"  : (($row->app_status_id_hrd == 3) ? "<img class=approval-img src=$pending>" : "<span class='small'></span><br/>"));?><br />
@@ -230,8 +230,60 @@
                               <span class="semi-bold">HRD</span>
                             </p>
                           </div>
+                        </div>
 
-                          <div class="col-md-2" id="it">
+                        <div class="row text-center">
+                          <div class="row text-center"><span class="semi-bold">Mengetahui,</span></div>
+                          <div class="row wf-cuti">
+                            <div class="col-md-3" id="akunting">
+                              <p class="wf-approve-sp">
+                                <?php 
+                                $approved = assets_url('img/approved_stamp.png');
+                                $rejected = assets_url('img/rejected_stamp.png');
+                                 $pending = assets_url('img/pending_stamp.png');
+                                if($row->is_app_akunting == 1){
+                                echo ($row->app_status_id_akunting == 1)?"<img class=approval-img src=$approved>": (($row->app_status_id_akunting == 2) ? "<img class=approval-img src=$rejected>"  : (($row->app_status_id_akunting == 3) ? "<img class=approval-img src=$pending>" : "<span class='small'></span><br/>"));?><br/>
+                                <span class="semi-bold"><?php echo get_name($row->user_app_akunting)?></span><br/>
+                                <span class="small"><?php echo dateIndo($row->date_app_akunting)?></span><br/>
+                                <?php }elseif($row->is_app_akunting == 0 && $is_admin_akunting == 1){?>
+                                <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitModalakunting"><i class="icon-ok"></i>Submit</div>
+                                <span class="semi-bold"></span><br/>
+                                <span class="semi-bold"></span><br/>
+                                <span class="small"></span>
+                                <?php }else{?>
+                                <span class="semi-bold"></span><br/>
+                                <span class="semi-bold"></span><br/>
+                                <span class="semi-bold"></span><br/>
+                                <span class="small"></span><br/>
+                                <?php } ?>
+                                <span class="semi-bold"></span><br/>
+                                <span class="semi-bold">Akunting</span>
+                              </p>
+                            </div>
+
+                          <div class="col-md-3" id="audit">
+                            <p class="wf-approve-sp">
+                              <?php if($row->is_app_audit == 1){
+                              echo ($row->app_status_id_audit == 1)?"<img class=approval-img src=$approved>": (($row->app_status_id_audit == 2) ? "<img class=approval-img src=$rejected>"  : (($row->app_status_id_audit == 3) ? "<img class=approval-img src=$pending>" : "<span class='small'></span><br/>"));?><br/>
+                              <span class="semi-bold"><?php echo get_name($row->user_app_audit)?></span><br/>
+                              <span class="small"><?php echo dateIndo($row->date_app_audit)?></span><br/>
+                              <?php }elseif($row->is_app_audit == 0 && $is_admin_audit == 1){?>
+                              <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitModalaudit"><i class="icon-ok"></i>Submit</div>
+                              <span class="semi-bold"></span><br/>
+                              <span class="semi-bold"></span><br/>
+                              <span class="small"></span>
+                              <?php }else{?>
+                              <span class="semi-bold"></span><br/>
+                              <span class="semi-bold"></span><br/>
+                              <span class="semi-bold"></span><br/>
+                              <span class="small"></span><br/>
+                              <?php } ?>
+                              <span class="semi-bold"></span><br/>
+                              <span class="semi-bold">Audit</span>
+                            </p>
+                          </div>
+
+                          <div class="col-md-3" id="it">
                             <p class="wf-approve-sp">
                               <?php if($row->is_app_it == 1){
                               echo ($row->app_status_id_it == 1)?"<img class=approval-img src=$approved>": (($row->app_status_id_it == 2) ? "<img class=approval-img src=$rejected>"  : (($row->app_status_id_it == 3) ? "<img class=approval-img src=$pending>" : "<span class='small'></span><br/>"));?><br />
@@ -252,11 +304,11 @@
                               <span class="semi-bold">IT</span>
                             </p>
                           </div>
-                          <div class="col-md-2" id="keuangan">
+                          <div class="col-md-3" id="keuangan">
                             <p class="wf-approve-sp">
                               <?php if($row->is_app_keuangan == 1){
                               echo ($row->app_status_id_keuangan == 1)?"<img class=approval-img src=$approved>": (($row->app_status_id_keuangan == 2) ? "<img class=approval-img src=$rejected>"  : (($row->app_status_id_keuangan == 3) ? "<img class=approval-img src=$pending>" : "<span class='small'></span><br/>"));?><br/>
-                      <span class="semi-bold"><?php echo get_name($row->user_app_keuangan)?></span><br/>
+                              <span class="semi-bold"><?php echo get_name($row->user_app_keuangan)?></span><br/>
                               <span class="small"><?php echo dateIndo($row->date_app_keuangan)?></span><br/>
                               <?php }elseif($row->is_app_keuangan == 0 && $is_admin_keuangan == 1){?><br/>
                               <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitModalkeuangan"><i class="icon-ok"></i>Submit</div>
@@ -274,6 +326,7 @@
                             </p>
                           </div>
                         </div>
+
                         <?php if(!empty($row->user_app_asset)){?>
                         <div class="row text-center">
                             <p class="wf-approve-sp">

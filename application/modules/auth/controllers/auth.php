@@ -3778,15 +3778,24 @@ class Auth extends MX_Controller {
         $numRows = count($worksheet);
         echo 'Mohon tunggu, sedang mengupload data.....';
         for ($i=2; $i < ($numRows+1) ; $i++) { 
-            if(!empty($worksheet[$i]["B"])):
+            if(!empty($worksheet[$i]["A"])):
                 $user_id = getValue('id', 'users', array('nik'=>'where/'.$worksheet[$i]["A"]));
                 $group_id = getValue('id', 'groups', array('name'=>'where/'.$worksheet[$i]["B"]));
                 $data = array(
-                        "user_id"          => $user_id,
-                        "group_id"          => $group_id
+                        "name"          => $worksheet[$i]["A"],
+                        "description"          => $worksheet[$i]["B"],
+                        "bu"          => $worksheet[$i]["C"],
+                        "admin_type_id"          => $worksheet[$i]["D"],
+                        "type_inventory_id"          => $worksheet[$i]["E"],
                        );
-                $cek = getAll('users_groups', array('user_id'=>'where/'.$user_id, 'group_id'=>'where/'.$group_id))->num_rows();
-                if($cek<1)$this->db->insert('users_groups', $data);
+                $cek = getAll('groups', array(
+                    'name'=>'where/'.$worksheet[$i]["A"],
+                    'description'=>'where/'.$worksheet[$i]["B"],
+                    'bu'=>'where/'.$worksheet[$i]["C"],
+                    'admin_type_id'=>'where/'.$worksheet[$i]["D"],
+                    'type_inventory_id'=>'where/'.$worksheet[$i]["E"],
+                    ))->num_rows();
+                if($cek<1)$this->db->insert('groups', $data);
             endif;
         }
     }

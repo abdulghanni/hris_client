@@ -180,6 +180,7 @@ class Form_exit extends MX_Controller {
                             'user_id' => $user_id,
                             'created_by' => $creator_id,
                             'created_on' => date('Y-m-d',strtotime('now')),
+                            'is_deleted' => 0
                         );
                     $this->db->insert('users_exit', $exit);
                     $exit_id = $this->db->insert_id();
@@ -196,6 +197,7 @@ class Form_exit extends MX_Controller {
                     'user_app_asset'        => $this->input->post('asset_mng'),
                     'created_on'            => date('Y-m-d',strtotime('now')),
                     'created_by'            => $creator_id,
+                    'is_deleted'            => 0
                     );
                 $this->db->where('user_id', $user_id);
                 $this->db->update('users_exit', $data1);
@@ -374,6 +376,8 @@ class Form_exit extends MX_Controller {
             $this->data['is_admin_koperasi'] = (is_admin_koperasi()) ? TRUE : FALSE;
             $this->data['is_admin_perpus'] = (is_admin_perpus() && get_user_buid($sess_nik) == get_user_buid($user_nik)) ? TRUE : FALSE;
             $this->data['is_admin_keuangan'] = (is_admin_keuangan() && get_user_buid($sess_nik) == get_user_buid($user_nik)) ? TRUE : FALSE;
+            $this->data['is_admin_audit'] = (is_admin_audit() && get_user_buid($sess_nik) == get_user_buid($user_nik)) ? TRUE : FALSE;
+            $this->data['is_admin_akunting'] = (is_admin_akunting() && get_user_buid($sess_nik) == get_user_buid($user_nik)) ? TRUE : FALSE;
             $i =$this->db->select('*')->from('users_inventory')->join('inventory', 'users_inventory.inventory_id = inventory.id', 'left')->where('users_inventory.user_id', $user_id)->where('users_inventory.is_deleted', 0)->get();
            
             $this->data['users_inventory'] = $i;
