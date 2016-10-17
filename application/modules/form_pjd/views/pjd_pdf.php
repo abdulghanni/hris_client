@@ -155,6 +155,7 @@ if ($td_num_rows > 0) {
   $approved = assets_url('img/approved_stamp.png');
   $rejected = assets_url('img/rejected_stamp.png');
   $cancelled = assets_url('img/cancelled.png');
+  $signed = assets_url('img/signed.png');
   foreach ($task_detail as $td) : 
 
     $a = strtotime($td->date_spd_end);
@@ -235,7 +236,7 @@ if ($td_num_rows > 0) {
 <div id="container1">
   <div id="col1" style="margin-top:-4px;">
     <!-- Column one start -->
-    <?php echo ($td->is_deleted == 1)?"<img class=approval-img-md src=$cancelled>":'<span class="small"></span><br/><br/><br/>';?><br/>
+    <?php echo ($td->is_deleted == 1)?"<img class=approval-img-md src=$cancelled>":"<img class=approval-img-md src=$signed>";?><br/>
     <span class="nama"><?php echo get_name($td->task_creator) ?></span><br/>
     <span class="tanggal"><?php echo dateIndo($td->created_on) ?></span><br/>
     <span class="position">(<?php echo get_user_position($td->task_creator) ?>)</span>
