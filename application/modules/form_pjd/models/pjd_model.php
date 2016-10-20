@@ -24,7 +24,7 @@ class Pjd_model extends CI_Model {
             $is_approver = $this->approval->approver('dinas', $sess_nik);
             $is_admin_cabang = is_admin_cabang();
             if($is_hrd_pusat != 1){
-                if($is_approver == $sess_nik || $is_admin_cabang == 1)$user = get_user_satu_bu($sess_nik);
+                if($is_approver == $sess_nik || $is_admin_cabang == 1)$user = get_user_satu_bu_nik($sess_nik);
             }
         }
         $this->db->select(array(
