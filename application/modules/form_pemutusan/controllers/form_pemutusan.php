@@ -380,7 +380,7 @@ class Form_Pemutusan extends MX_Controller {
         }
 
         if($type == 'hrd' && $approval_status == 1){
-            $this->send_notif_tambahan($id, 'pemutusan');die('s');
+            $this->send_notif_tambahan($id, 'pemutusan');//die('s');
         }
     }
 

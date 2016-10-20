@@ -196,7 +196,11 @@ if ($td_num_rows > 0) {
 <?php 
         $total = 0;
      $i=1;foreach($biaya_single->result() as $row):
-     $jumlah_biaya = (!empty($row->type)) ? $row->jumlah_biaya*$jml_pjd : $row->jumlah_biaya;
+     if($row->pjd_biaya_id%3 == 0){
+     $jumlah_biaya = (!empty($row->type)) ? $row->jumlah_biaya*($jml_pjd-1) : $row->jumlah_biaya;
+      }else{
+     $jumlah_biaya = (!empty($row->type)) ? $row->jumlah_biaya*($jml_pjd) : $row->jumlah_biaya;
+     }
      //$jumlah_hari = (!empty($row->type)) ? '/'.$jml_pjd.' hari' : '';
      $total += $jumlah_biaya;
     ?>

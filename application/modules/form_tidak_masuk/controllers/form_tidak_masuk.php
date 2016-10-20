@@ -952,7 +952,7 @@ class form_tidak_masuk extends MX_Controller {
                 // $tidak_masuk_id = array(1100,1103,1105,1110,1119,1123,1124,1126,1129,1131,1132,1136,1138,1140,1150,1154,1159,1160,1163,1164,1170,1189);
                 // $tidak_masuk_id = array(1104);
                 // $tidak_masuk_id = array(993);
-				$tidak_masuk_id = array(1342);
+				$tidak_masuk_id = array(1543);
 				foreach ($tidak_masuk_id as $key => $value) {
 						//echo $value;
 						$data = GetAll('users_tidak_masuk', array('id'=>'where/'.$value))->row_array();

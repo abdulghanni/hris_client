@@ -113,6 +113,30 @@ $pending = assets_url('img/pending_stamp.png');
         <td height="100"><span class="style3">Alasan Pengangkatan</span></td>
         <td colspan="2"><span class="style3"><?php echo $row->alasan?></span></td>
       </tr>
+      <?php if(!empty($row->note_lv1)):?>
+      <tr>
+        <td height="100"><span class="style3">Catatan Atasan Langsung</span></td>
+        <td colspan="2"><span class="style3"><?php echo $row->note_lv1?></span></td>
+      </tr>
+      <?php endif; ?>
+      <?php if(!empty($row->note_lv2)):?>
+      <tr>
+        <td height="100"><span class="style3">Catatan Atasan Tidak Langsung</span></td>
+        <td colspan="2"><span class="style3"><?php echo $row->note_lv2?></span></td>
+      </tr>
+      <?php endif; ?>
+      <?php if(!empty($row->note_lv3)):?>
+      <tr>
+        <td height="100"><span class="style3">Catatan Atasan Lainnya</span></td>
+        <td colspan="2"><span class="style3"><?php echo $row->note_lv3?></span></td>
+      </tr>
+      <?php endif; ?>
+      <?php if(!empty($row->note_hrd)):?>
+      <tr>
+        <td height="100"><span class="style3">Catatan HRD</span></td>
+        <td colspan="2"><span class="style3"><?php echo $row->note_hrd?></span></td>
+      </tr>
+      <?php endif; ?>
 </table>
 <div class="style4">
 <p>Demikian surat pengajuan ini kami sampaikan, atas perhatian dan kerjasamanya kami ucapkan terima kasih.</p>

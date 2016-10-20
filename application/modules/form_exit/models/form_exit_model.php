@@ -25,7 +25,8 @@ class Form_exit_model extends CI_Model {
             $is_hrd_pusat = is_hrd_pusat($sess_nik, 8);
             $is_approver = $this->approval->approver('exit', $sess_nik);//print_mz($is_approver);
             $is_admin_cabang = is_admin_cabang();
-            if($is_hrd_pusat != 1 && !is_admin_inventaris()){
+            // if($is_hrd_pusat != 1 && !is_admin_inventaris()){
+            if($is_hrd_pusat != 1){
                 if($is_approver == $sess_nik || $is_admin_cabang == 1)$user = get_user_satu_bu($sess_nik);
             }
         }
