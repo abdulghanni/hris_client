@@ -58,9 +58,8 @@ class MX_Controller
 		return CI::$APP->$class;
 	}
 
-	public function send_email($email, $subject, $isi_email, $cc = null)
+	public function send_email($email, $subject, $isi_email)
   {
-    //$email = 'abdulghanni2@gmail.com';
     $connected = @fsockopen("erlangga.co.id", 80);
     $testing = '';
     if($connected):
@@ -79,7 +78,6 @@ class MX_Controller
        $this->email->set_newline("\r\n");  
        $this->email->from('ax.hrd@erlangga.co.id', 'HRIS-Erlangga');
        $this->email->to($email);
-       if($cc != null)$this->email->cc($cc);
        $this->email->subject($testing.' HRIS Erlangga - '.$subject);
        $this->email->message($isi_email);
      
@@ -160,110 +158,5 @@ class MX_Controller
                 $result['0']= '- Karyawan Tidak Memiliki Atasan -';
         }
       endif;
-  }
-
-  function get_user_bu($user_id)
-  {
-      if(empty($user_id)){
-          return '-';
-      }else{
-          $url = get_api_key().'users/user_bu/EMPLID/'.$user_id.'/format/json';
-          $headers = get_headers($url);
-          $response = substr($headers[0], 9, 3);
-          if ($response != "404") 
-          {
-              $getuser_info = file_get_contents($url);
-              $user_info = json_decode($getuser_info, true);
-              //if($user_info == '51')$user_info = '50';
-              return $user_info;
-          } else {
-              return '';
-          }
-      }
-  }
-
-  function send_notif_tambahan($id, $form)
-  {   
-      if($form == "tidak_masuk"){
-         $form_id = getValue('id', 'form_type', array('title'=>'like/tidak'));
-      }elseif($form == "demotion"){
-         $form_id = getValue('id', 'form_type', array('title'=>'like/demosi'));
-      }elseif($form == "spd_luar_group"){
-         $form_id = getValue('id', 'form_type', array('title'=>'like/dinas'));
-      }elseif($form == "training_group"){
-         $form_id = getValue('id', 'form_type', array('title'=>'like/training'));
-      }else{
-        $form_id = getValue('id', 'form_type', array('title'=>'like/'.$form));
-      }
-
-      if($form == 'spd_luar_group'){
-        $url = base_url().'form_pjd/submit/'.$id;
-      }else{
-        $url = base_url().'form_'.$form.'/detail/'.$id;
-      }
-
-      if($form == 'spd_luar_group'){
-        $user_id = getValue('task_creator', 'users_'.$form, array('id'=>'where/'.$id));
-      }elseif($form == 'training_group'){
-        $user_id = getValue('user_pengaju_id', 'users_'.$form, array('id'=>'where/'.$id));
-      }else{
-        $user_id = getValue('user_id', 'users_'.$form, array('id'=>'where/'.$id));
-      }
-      $user_nik = get_nik($user_id);
-      $user_bu = $this->get_user_bu($user_nik);
-      $f =  array('form_type_id'=>'where/'.$form_id, 'bu'=>'where/'.$user_bu);
-      $receiver = getValue('user_nik', 'users_notif_tambahan',$f);
-      switch ($form) {
-        case 'absen':
-          $subject_form = "Keterangan Tidak Absen";
-          break;
-        case 'tidak_masuk':
-          $subject_form = "Izin Tidak Masuk";
-          break;
-        case 'recruitment':
-          $subject_form = "SDM Baru";
-          break;
-        case 'pemutusan':
-          $subject_form = "Pemutusan Kontrak";
-          break;
-        case 'kontrak':
-          $subject_form = "Perpanjangan Kontrak";
-          break;
-        case 'demotion':
-          $subject_form = "Demosi";
-          break;
-        case 'rolling':
-          $subject_form = "Mutasi";
-          break;
-        case 'spd_luar_group':
-          $subject_form = "Perjalanan Dinas";
-          break;
-        case 'training_group':
-          $subject_form = "Pelatihan";
-          break;
-        case 'resignment':
-          $subject_form = "Pengunduran Diri";
-          break;
-        
-        default:
-          $subject_form = $form;
-          break;
-      }
-
-      $subject_email = 'Pengajuan '.ucfirst($subject_form);
-      $isi_email = 'HRD telah menyetujui pengajuan '.$subject_form.' oleh '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />';
-      //Notif to karyawan
-      if(!empty($receiver)){
-          $data4 = array(
-                  'sender_id' => get_nik(sessId()),
-                  'receiver_id' => $receiver,
-                  'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                  'subject' => $subject_email,
-                  'email_body' => $isi_email,
-                  'is_read' => 0,
-              );
-          $this->db->insert('email', $data4);
-          if(!empty(getEmail($receiver)))$this->send_email(getEmail($receiver), $subject_email, $isi_email);
-      }
   }
 }
