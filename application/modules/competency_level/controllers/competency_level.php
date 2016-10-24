@@ -9,6 +9,7 @@ class Competency_level extends MX_Controller {
         parent::__construct();
         $this->load->library('authentication', NULL, 'ion_auth');
         $this->load->library('form_validation');
+        $this->load->library('competency');
         $this->load->helper('url');
 
         $this->load->database();
@@ -46,7 +47,8 @@ class Competency_level extends MX_Controller {
             $data['url_ajax_edit'] = site_url('competency_level/ajax_edit');
             $data['url_ajax_delete'] = site_url('competency_level/ajax_delete');
             $data['url_ajax_update'] = site_url('competency_level/ajax_update');
-
+            // $data['position_group'] = $this->competency->get_organization();
+            $data['position_group'] = $this->competency->get_position_group();
             $data['options_competency_def'] = options_row($this->model_name,'get_competency_def','id','title','Competency Def');
 
             $this->_render_page('competency_level/index',$data);

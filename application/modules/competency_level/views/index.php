@@ -62,7 +62,7 @@
               <div class="row form-row">
                 <label class="control-label col-md-3">Title</label>
                 <div class="col-md-9">
-                  <input name="title" placeholder="Title" class="form-control" type="text">
+                  <textarea name="title" class="form-control" style="width:100%"></textarea>
                   <span class="help-block"></span>
                 </div>
               </div>
@@ -70,7 +70,12 @@
               <div class="row form-row">
                 <label class="control-label col-md-3">Level</label>
                 <div class="col-md-9">
-                  <input name="level" placeholder="level" class="form-control" type="text">
+                  <select name="level" class="select2" style="width:100%">
+                    <?php for($i=1;$i<5;$i++):?>
+                      <option value="<?=$i?>"><?=$i?></option>
+                    <?php endfor;?>
+
+                  </select>
                   <span class="help-block"></span>
                 </div>
               </div>
@@ -79,9 +84,21 @@
                 <label class="control-label col-md-3">Competency Def</label>
                 <div class="col-md-9">
                   <?php 
-                    $js = 'class="" style="width:50%"';
+                    $js = 'class="select2" style="width:100%"';
                     echo form_dropdown('competency_def_id', $options_competency_def,'',$js); 
                   ?>
+                </div>
+              </div>
+
+              <div class="row form-row">
+                <label class="control-label col-md-3">Position Group</label>
+                <div class="col-md-9">
+                  <select class="select2" style="width:100%">
+                    <option>-- Pilih  Position Group --</option>
+                    <?php foreach($position_group as $ps){?>
+                    <option><?php echo $ps['DESCRIPTION']?></option>
+                    <?php } ?>
+                  </select>
                 </div>
               </div>
           </div>

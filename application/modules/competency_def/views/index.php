@@ -10,7 +10,7 @@
     <div class="content">
         <div class="page-title">
             <i class="icon-custom-left"></i>
-            <h3>Competency Def</h3> 
+            <h3>Kompetensi</h3> 
         </div>
           <div class="row">
             <div class="col-md-12">
@@ -31,9 +31,9 @@
                       <table id="table" class="table table-striped table-bordered" cellspacing="0" width="100%">
                         <thead>
                           <tr>
-                            <th>Title</th>
-                            <th>Code</th>
-                            <th>Competency Group</th>
+                            <th>Nama Kompetensi</th>
+                            <th>Kode</th>
+                            <th>Tipe Kompetensi</th>
                             <th style="width:125px;">Action</th>
                           </tr>
                         </thead>

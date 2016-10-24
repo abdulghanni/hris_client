@@ -1298,6 +1298,15 @@
 
 	}
 
+	if (!function_exists('print_ag')){	
+		function print_ag($data)
+		{
+			echo "<pre>";
+			print_r($data);
+			echo "</pre>";
+		}
+	}	
+
 	if(!function_exists('lq'))
 	{
 		function lq()

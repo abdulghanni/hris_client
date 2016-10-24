@@ -9,6 +9,7 @@ class competency_group extends MX_Controller {
         parent::__construct();
         $this->load->library('authentication', NULL, 'ion_auth');
         $this->load->library('form_validation');
+        $this->load->library('competency');
         $this->load->helper('url');
 
         $this->load->database();
@@ -46,6 +47,7 @@ class competency_group extends MX_Controller {
             $data['url_ajax_edit'] = site_url('competency_group/ajax_edit');
             $data['url_ajax_delete'] = site_url('competency_group/ajax_delete');
             $data['url_ajax_update'] = site_url('competency_group/ajax_update');
+            $data['position_group'] = $this->competency->get_position_group();
 
             $this->_render_page('competency_group/index',$data);
         }

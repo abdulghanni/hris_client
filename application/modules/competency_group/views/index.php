@@ -64,6 +64,17 @@
                   <span class="help-block"></span>
                 </div>
               </div>
+              <div class="row form-row">
+                <label class="control-label col-md-3">Position Group</label>
+                <div class="col-md-9">
+                  <select class="select2">
+                    <option>-- Pilih  Position Group --</option>
+                    <?php foreach($position_group as $ps){?>
+                    <option><?php echo $ps['DESCRIPTION']?></option>
+                    <?php } ?>
+                  </select>
+                </div>
+              </div>
           </div>
           <div class="modal-footer">
             <input type="hidden" value="" name="id" class="form-control"> 
