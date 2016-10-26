@@ -59,6 +59,15 @@ class mapping_standar extends MX_Controller {
         $data['controller'] = $this->controller;
         $data['org_id'] = $org_id;
         $data['competency_group'] = GetAll('competency_group')->result();
+        $data['competency_mapping_indikator'] = $indikatorx = GetAll('competency_mapping_indikator_detail', array('organization_id'=>'where/'.$org_id));
+        // print_mz($indikatorx->result());
+        $indikator = array();
+        foreach ($indikatorx->result() as $r) {
+            $indikator[] = $r->competency_def_id;
+        }
+
+        $data['def_indikator'] = array_unique($indikator);
+
         $pos = $this->competency->get_position_group_from_org($org_id);
         $pos_group = array();
         foreach ($pos as $key => $value) {
@@ -103,19 +112,26 @@ class mapping_standar extends MX_Controller {
         }
 
         // INSERT TO COMPETENCY_MAPPING_STANDAR_APPROVER
-        for ($i=0;$i<sizeof($approver_id);$i++) {
-            $data = array(
-                'organization_id' => $this->input->post('org_id'),
-                'user_id' => $approver_id[$i],
-                'created_by'=>sessId(),
-                'created_on'=>dateNow(),
-            );
-            $this->db->insert($this->table.'_approver', $data);//print_ag(lq());
+        if(!empty($approver_id)){
+            for ($i=0;$i<sizeof($approver_id);$i++) {
+                $data = array(
+                    'organization_id' => $this->input->post('org_id'),
+                    'user_id' => $approver_id[$i],
+                    'created_by'=>sessId(),
+                    'created_on'=>dateNow(),
+                );
+                $this->db->insert($this->table.'_approver', $data);//print_ag(lq());
+            }
         }
         redirect(base_url($this->controller), 'refresh');
     }
 
     // FOR js
+    function get_organization(){
+        $data['org'] = $this->competency->get_organization();
+        $this->load->view('mapping_standar/org',$data);
+     }
+
     function get_mapping_from_org($org_id){
         $data['org_id'] = $org_id;
         $data['competency_group'] = GetAll('competency_group')->result();
@@ -134,7 +150,7 @@ class mapping_standar extends MX_Controller {
         $data['pg_size'] = sizeof($pos_group);
         $data['col'] = 70/sizeof($pos_group);
         $comp_def = array();
-        $def = GetAllSelect($this->table.'_detail', 'competency_def_id')->result_array();
+        $def = GetAllSelect($this->table.'_detail', 'competency_def_id', array('organization_id'=>'where/'.$org_id))->result_array();
         foreach ($def as $key => $value) {
            $comp_def[] = $value['competency_def_id'];
         }

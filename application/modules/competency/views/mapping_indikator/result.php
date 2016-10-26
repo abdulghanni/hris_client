@@ -64,7 +64,10 @@
                     	?>
                     	<div class="col-md-3" id="lv1">
                       		<p class="wf-approve-sp">
-                          	<span class="small"></span><br/>
+                          	<?php 
+                          		echo ($a->app_status_id == 1)?"<img class=approval-img src=$approved>": (($a->app_status_id == 2) ? "<img class=approval-img src=$rejected>"  : (($a->app_status_id == 3) ? "<img class=approval-img src=$pending>" : "<span class='small'></span><br/>"));
+                      			?>
+                      			<br/>
 	                          <span class="semi-bold"><?php echo get_name($a->user_id)?></span><br/>
 	                          <span class="small"><?php echo dateIndo($a->date_app)?></span><br/>
 	                          <span class="semi-bold"><?=get_user_position(get_nik($a->user_id))?></span>

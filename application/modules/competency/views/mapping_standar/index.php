@@ -21,13 +21,10 @@
               <div class="row-fluid dataTables_wrapper">
                 <div class="row form-row">
                   <label class="control-label col-md-3">Departement / Bagian</label>
-                  <div class="col-md-9">
-                    <select id="org" class="select2" style="width:100%">
+                  <div class="col-md-9" id="org-field">
+                    <!-- <select id="org" class="select2" style="width:100%">
                       <option value="0">-- Pilih  Departement/Bagian --</option>
-                      <?php foreach($org as $r){?>
-                      <option value="<?=$r['ID']?>"><?php echo $r['DESCRIPTION']?></option>
-                      <?php } ?>
-                    </select>
+                    </select> -->
                   </div>
                 </div>
                 <div id="mapping-standar">

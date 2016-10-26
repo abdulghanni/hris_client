@@ -23,7 +23,7 @@ class mapping_indikator_model extends CI_Model {
 			');
 		$this->db->from($this->t.' as t');
 		$this->db->join($this->tj1.' as tj1', 'tj1.organization_id = t.organization_id');
-		$this->db->join($this->tj2.' as tj2', 'tj2.organization_id = tj1.organization_id');
+		$this->db->join($this->tj2.' as tj2', 'tj2.organization_id = tj1.organization_id', 'left');
 		
 		$this->db->where('t.organization_id', $org_id);
 

@@ -64,36 +64,71 @@
 											</tr>
 										</thead>
 										<tbody>
-											<?php $i = 1;foreach($competency_group as $cg){
-												$kompetensi = getAll('competency_def', array('comp_group_id'=>'where/'.$cg->id));
-											?>
-												<tr>
-													<th colspan="2" width="30%"><?= $cg->title ?></th>
-													<?php foreach ($pos_group as $key => $value) {
-														echo '<th style="text-center" width="'.$col.'%">'.$value.'</th>';
-														echo '<input type="hidden" name="position_group[]" value="'.$value.'">';
-													}?>
-												</tr>
-												<?php foreach($kompetensi->result() as $k){
+											<?php if($competency_mapping_indikator->num_rows > 0){ ?>
+												<?php $i = 1;foreach($competency_group as $cg){
+													$kompetensi = getAll('competency_def', array('comp_group_id'=>'where/'.$cg->id), array('id'=>$def_indikator));
 												?>
-												<tr>
-													<td width="5%">
-														<div class="checkbox check-default">
-									                      <input id="checkbox<?=$k->id?>" type="checkbox" name="competency_def_id[]" value="<?=$k->id?>">
-								                      	  <label for="checkbox<?=$k->id?>"></label>
-									                    </div>
-													</td>
-													<td class="text-left" width="25%"><?=$k->title?></td>
-													<?php foreach ($pos_group as $key => $value) {?>
-														<td width="<?=$col?>%">
-															<select class="select2" name="level[<?=$k->id?>][]">
-															<?php for ($i=0; $i<5 ; $i++) { ?>
-																<option value="<?=$i?>"><?=$i?></option>
-															<?php } ?>
-															</select>
+													<tr>
+														<th colspan="2" width="30%"><?= $cg->title ?></th>
+														<?php foreach ($pos_group as $key => $value) {
+															echo '<th style="text-center" width="'.$col.'%">'.$value.'</th>';
+															echo '<input type="hidden" name="position_group[]" value="'.$value.'">';
+														}?>
+													</tr>
+													<?php $j = 1;foreach($kompetensi->result() as $k){
+													?>
+													<tr>
+														<td width="5%">
+															<?=$j++?>
 														</td>
-													<?php }?>
-												</tr>
+														<td class="text-left" width="25%">
+															<?=$k->title?>
+															<input type="hidden" name="competency_def_id[]" value="<?=$k->id?>">		
+														</td>
+														<?php foreach ($pos_group as $key => $value) {?>
+															<td width="<?=$col?>%">
+																<select class="select2" name="level[<?=$k->id?>][]">
+																<?php for ($i=0; $i<5 ; $i++) { ?>
+																	<option value="<?=$i?>"><?=$i?></option>
+																<?php } ?>
+																</select>
+															</td>
+														<?php }?>
+													</tr>
+													<?php } ?>
+												<?php } ?>
+											<?php }else{ ?> 
+												<?php $i = 1;foreach($competency_group as $cg){
+													$kompetensi = getAll('competency_def', array('comp_group_id'=>'where/'.$cg->id));
+												?>
+													<tr>
+														<th colspan="2" width="30%"><?= $cg->title ?></th>
+														<?php foreach ($pos_group as $key => $value) {
+															echo '<th style="text-center" width="'.$col.'%">'.$value.'</th>';
+															echo '<input type="hidden" name="position_group[]" value="'.$value.'">';
+														}?>
+													</tr>
+													<?php foreach($kompetensi->result() as $k){
+													?>
+													<tr>
+														<td width="5%">
+															<div class="checkbox check-default">
+										                      <input id="checkbox<?=$k->id?>" type="checkbox" name="competency_def_id[]" value="<?=$k->id?>">
+									                      	  <label for="checkbox<?=$k->id?>"></label>
+										                    </div>
+														</td>
+														<td class="text-left" width="25%"><?=$k->title?></td>
+														<?php foreach ($pos_group as $key => $value) {?>
+															<td width="<?=$col?>%">
+																<select class="select2" name="level[<?=$k->id?>][]">
+																<?php for ($i=0; $i<5 ; $i++) { ?>
+																	<option value="<?=$i?>"><?=$i?></option>
+																<?php } ?>
+																</select>
+															</td>
+														<?php }?>
+													</tr>
+													<?php } ?>
 												<?php } ?>
 											<?php } ?>
 										</tbody>
