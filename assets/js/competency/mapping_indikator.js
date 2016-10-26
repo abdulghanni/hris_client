@@ -1,4 +1,23 @@
 var base_url    = $("#base_url").val();
+$(window).load(function() {
+    $("#org-field").html('Memuat data....');
+    $.ajax({
+        url : base_url+'competency/mapping_indikator/get_organization/',
+        type: "POST",
+        success: function(data)
+        {  
+            $("#org-field").html(data);
+            $(document).find("select.select2").select2({
+                dropdownAutoWidth : true
+            });
+        },
+        error: function (jqXHR, textStatus, errorThrown)
+        {
+            alert('Terjadi Kesalahan, Silakan Refresh Halaman Ini');
+        }
+    });
+});
+
 $(document).ready(function() {
     $(".select2").select2();
     $("#org").change(function() {

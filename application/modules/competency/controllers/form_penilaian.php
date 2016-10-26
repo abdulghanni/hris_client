@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 ini_set('MAX_EXECUTION_TIME', 0);
-class mapping_indikator extends MX_Controller {
+class form_penilaian extends MX_Controller {
 
     public $data;
 
@@ -9,28 +9,26 @@ class mapping_indikator extends MX_Controller {
         parent::__construct();
         $this->load->library('authentication', NULL, 'ion_auth');
         $this->load->library('form_validation');
-        $this->load->library('competency');
+        //$this->load->library('competency');
 
         $this->load->database();
 
-
         $this->lang->load('auth');
         $this->load->helper('language');
-        $this->load->model('mapping_indikator_model','main');
+        // $this->load->model('competency/form_penilaian','main');
     }
 
-    var $title = 'Mapping Indikator';
+    var $title = 'Form Penilaian Kompetensi Karyawan';
     var $limit = 100000;
-    var $controller = 'competency/mapping_indikator';
-    var $model_name = 'mapping_indikator_model';
-    var $table = 'competency_mapping_indikator';
+    var $controller = 'competency/form_penilaian';
+    var $model_name = 'form_penilaian';
+    var $table = 'competency_form_penilaian';
     var $id_table = 'id';
-    var $list_view = 'mapping_indikator/index';
+    var $list_view = 'form_penilaian/index';
 
     //redirect if needed, otherwise display the user list
     function index($id=NULL)
     {
-
         if (!$this->ion_auth->logged_in())
         {
             redirect('auth/login', 'refresh');
@@ -42,14 +40,15 @@ class mapping_indikator extends MX_Controller {
         else
         {
             $data['title'] = $this->title;
-            $data['url_ajax_list'] = site_url('mapping_indikator/ajax_list');
-            $data['url_ajax_add'] = site_url('mapping_indikator/ajax_add');
-            $data['url_ajax_edit'] = site_url('mapping_indikator/ajax_edit');
-            $data['url_ajax_delete'] = site_url('mapping_indikator/ajax_delete');
-            $data['url_ajax_update'] = site_url('mapping_indikator/ajax_update');
+            $data['url_ajax_list'] = site_url('form_penilaian/ajax_list');
+            $data['url_ajax_add'] = site_url('form_penilaian/ajax_add');
+            $data['url_ajax_edit'] = site_url('form_penilaian/ajax_edit');
+            $data['url_ajax_delete'] = site_url('form_penilaian/ajax_delete');
+            $data['url_ajax_update'] = site_url('form_penilaian/ajax_update');
+            $data['ci'] = $this;
             //$data['org'] = $this->competency->get_organization();
 
-            $this->_render_page('mapping_indikator/index',$data);
+            $this->_render_page($this->controller.'/index',$data);
         }
     }
 
@@ -57,18 +56,18 @@ class mapping_indikator extends MX_Controller {
         permission();
         $data['title'] = $this->title;
         $data['controller'] = $this->controller;
-        $data['org_id'] = $org_id;
-        $data['competency_group'] = GetAll('competency_group')->result();
-        $level_av = getAll('competency_level')->result();
-        $levelx = array();
-        foreach ($level_av as $r) {
-            $levelx[] = $r->level;
-        }
+        // $data['org_id'] = $org_id;
+        $data['competency_penilaian'] = GetAll('competency_penilaian')->result();
+        // $level_av = getAll('competency_level')->result();
+        // $levelx = array();
+        // foreach ($level_av as $r) {
+        //     $levelx[] = $r->level;
+        // }
 
-        $data['level'] = $level = array_unique($levelx);
-        $data['pg_size'] = sizeof($level);
-        $data['col'] = 80/sizeof($level);
-        $this->_render_page('mapping_indikator/input', $data);
+        // $data['level'] = $level = array_unique($levelx);
+        // $data['pg_size'] = sizeof($level);
+        // $data['col'] = 80/sizeof($level);
+        $this->_render_page('form_penilaian/input', $data);
     }
 
     function add(){
@@ -79,7 +78,7 @@ class mapping_indikator extends MX_Controller {
         $l = $this->input->post('indikator');
         $comp_def = $this->input->post('competency_def_id');
 
-        // INSERT TO COMPETENCY_MAPPING_indikator
+        // INSERT TO COMPETENCY_form_penilaian
         $data = array(
             'organization_id' => $this->input->post('org_id'),
             'created_by'=>sessId(),
@@ -87,7 +86,7 @@ class mapping_indikator extends MX_Controller {
             );
         $this->db->insert($this->table, $data);
 
-        // INSERT TO COMPETENCY_MAPPING_indikator_DETAIL
+        // INSERT TO COMPETENCY_form_penilaian_DETAIL
         foreach ($l as $key => $value) {
             if(in_array($key, $comp_def)){
                 foreach ($value as $k => $v) {
@@ -102,7 +101,7 @@ class mapping_indikator extends MX_Controller {
             }
         }
 
-        // INSERT TO COMPETENCY_MAPPING_indikator_APPROVER
+        // INSERT TO COMPETENCY_form_penilaian_APPROVER
         for ($i=0;$i<sizeof($approver_id);$i++) {
             $data = array(
                 'organization_id' => $this->input->post('org_id'),
@@ -115,11 +114,6 @@ class mapping_indikator extends MX_Controller {
         redirect(base_url($this->controller), 'refresh');
     }
     // FOR js
-    function get_organization(){
-        $data['org'] = $this->competency->get_organization();
-        $this->load->view('mapping_indikator/org',$data);
-     }
-
     function get_mapping_from_org($org_id){
        $data['org_id'] = $org_id;
         $data['competency_group'] = GetAll('competency_group')->result();
@@ -145,7 +139,7 @@ class mapping_indikator extends MX_Controller {
         // print_mz($comp_def);
         $data['comp_def'] = $comp_def;
         $data['ci'] = $this;
-        $this->load->view('mapping_indikator/result', $data);
+        $this->load->view('form_penilaian/result', $data);
     }
 
     function add_row($id)
@@ -153,7 +147,7 @@ class mapping_indikator extends MX_Controller {
         $data['id'] = $id;
         $data['com'] = getAll('competency_level')->result_array();
         $data['com'] = getAll('competency_level')->result_array();
-        $this->load->view('competency/mapping_indikator/row', $data);
+        $this->load->view('competency/form_penilaian/row', $data);
     }
 
     function _render_page($view, $data=null, $render=false)
@@ -164,7 +158,7 @@ class mapping_indikator extends MX_Controller {
         {
             $this->load->library('template');
 
-            if (in_array($view, array('mapping_indikator/index')))
+            if (in_array($view, array('form_penilaian/index')))
             {
                 $this->template->set_layout('default');
                 $this->template->add_js('jquery-ui-1.10.1.custom.min.js');
@@ -177,9 +171,9 @@ class mapping_indikator extends MX_Controller {
                 $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                 $this->template->add_css('plugins/select2/select2.css');
 
-                $this->template->add_js('competency/mapping_indikator.js');
+                $this->template->add_js('competency/form_penilaian.js');
                     
-            }elseif(in_array($view, array('mapping_indikator/input')))
+            }elseif(in_array($view, array('form_penilaian/input')))
             {
                 $this->template->set_layout('default');
                 $this->template->add_js('jquery-ui-1.10.1.custom.min.js');
@@ -192,7 +186,7 @@ class mapping_indikator extends MX_Controller {
                 $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                 $this->template->add_css('plugins/select2/select2.css');
 
-                $this->template->add_js('competency/mapping_indikator_input.js');
+                $this->template->add_js('competency/form_penilaian_input.js');
                     
             }
 

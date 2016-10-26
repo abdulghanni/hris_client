@@ -98,8 +98,8 @@
           <li > <a href="<?php echo site_url('competency_def')?>">Kompetensi</a></li>
           <li > <a href="<?php echo site_url('competency_group')?>">Kompetensi Tipe</a></li>
           <li > <a href="<?php echo site_url('competency_level')?>">Kompetensi Level</a></li>
-          <li > <a href="<?php echo site_url('competency/mapping_standar')?>">Mapping Standar</a></li>
           <li > <a href="<?php echo site_url('competency/mapping_indikator')?>">Mapping Indikator</a></li>
+          <li > <a href="<?php echo site_url('competency/mapping_standar')?>">Mapping Standar</a></li>
         </ul>
       </li>   
     <?php endif;?>
