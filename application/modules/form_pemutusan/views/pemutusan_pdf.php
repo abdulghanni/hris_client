@@ -44,7 +44,7 @@
 <div align="center">
   <p align="left"><img src="<?php echo assets_url('img/erlangga.jpg')?>"/></p>
 </div>
-<?php foreach($form_kontrak as $row):
+<?php foreach($form_pemutusan as $row):
 $user_nik = get_nik($row->user_id);
 $pengaju_nik = get_nik($row->created_by);
 $signed = assets_url('img/signed.png');
@@ -61,13 +61,13 @@ $rejected = assets_url('img/rejected_stamp.png');?>
   </div>
 
   <div style="clear: both; margin: 0pt; padding: 0pt; "></div>
-  Perihal : Pengajuan Perpanjangan Kontrak Karyawan <?= get_nik($row->user_id).' '.get_name($row->user_id)?><br/><br/>
+  Perihal : Pengajuan Pemutusan Kontrak Karyawan <?= get_nik($row->user_id).' '.get_name($row->user_id)?><br/><br/>
   Kepada Yth.,<br/>
   Departemen HRD<br/>
   Di Tempat<br/>
 
   <p>Dengan hormat,</p>
-  <p>Sesuai evaluasi kinerja karyawan terlampir, bersama ini kami sampaikan permohonan proses Perpanjangan Kontrak karyawan atas nama <?= get_name($row->user_id).' ('.get_nik($row->user_id).')' ?> dengan data sebagai berikut:</p>
+  <p>Sesuai evaluasi kinerja karyawan terlampir, bersama ini kami sampaikan permohonan proses Pemutusan Kontrak karyawan atas nama <?= get_name($row->user_id).' ('.get_nik($row->user_id).')' ?> dengan data sebagai berikut:</p>
 </div>
 
   <table width="800" height="128" border-style:solid border="1" class="tg">
@@ -93,15 +93,11 @@ $rejected = assets_url('img/rejected_stamp.png');?>
         <td><span class="style3"><?php echo get_user_position(get_nik($row->user_id))?></span></td>
       </tr>
       <tr>
-        <td><span class="style3">Lama Perpanjangan Kontrak </span></td>
-        <td><span class="style3"><?php echo $lama ?></span></td>
+        <td><span class="style3">Tanggal Pemutusan Kontrak </span></td>
+        <td><div align="center"><?php echo dateIndo($row->date_pemutusan)?></div></td>
       </tr>
       <tr>
-        <td><span class="style3">Tanggal Perpanjangan Kontrak </span></td>
-        <td><div align="center"><?php echo dateIndo($row->date_kontrak)?></div></td>
-      </tr>
-      <tr>
-        <td height="100"><span class="style3">Alasan Perpanjangan Kontrak</span></td>
+        <td height="100"><span class="style3">Alasan Pemutusan Kontrak</span></td>
         <td><span class="style3"><?php echo $row->alasan?></span></td>
       </tr>
       <?php if(!empty($row->note_lv1)):?>

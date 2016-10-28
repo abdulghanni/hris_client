@@ -121,7 +121,7 @@
                       <h4>Pemutusan Kontrak Yang Diajukan</h4>
                       <div class="row form-row">
                         <div class="col-md-4">
-                          <label class="form-label text-left">Tgl. perpanjangan</label>
+                          <label class="form-label text-left">Tgl. pemutusan</label>
                         </div>
                         <div class="col-md-8">
                           <input name="form3LastName" id="form3LastName" type="text"  class="form-control " placeholder="Nama" value="<?php echo dateIndo($row->date_pemutusan)?>"  disabled="disabled" >
@@ -129,7 +129,7 @@
                       </div>
                       <div class="row form-row">
                         <div class="col-md-4">
-                          <label class="form-label text-left">Alasan perpanjangan</label>
+                          <label class="form-label text-left">Alasan pemutusan</label>
                         </div>
                         <div class="col-md-8">
                           <textarea name="alasan" id="alasan" class="form-control" placeholder="" disabled><?php echo $row->alasan ?></textarea>
