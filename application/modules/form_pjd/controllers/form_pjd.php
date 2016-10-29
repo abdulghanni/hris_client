@@ -429,7 +429,8 @@ class Form_pjd extends MX_Controller {
                 'user_app_lv2'          => $this->input->post('atasan2'),
                 'user_app_lv3'          => $this->input->post('atasan3'),
                 'created_on'            => date('Y-m-d',strtotime('now')),
-                'created_by'            => $sess_id
+                'created_by'            => $sess_id,
+                'is_show'               => 0
             );
 
             $task_creator = $this->input->post('emp_tc');
@@ -455,21 +456,6 @@ class Form_pjd extends MX_Controller {
                         endfor;
                     }
                  }
-
-                
-                $task_receiver_id = explode(',',$task_receiver);
-
-                $user_app_lv1 = getValue('user_app_lv1', 'users_spd_luar_group', array('id'=>'where/'.$spd_id));
-                $subject_email = get_form_no($spd_id).' - Pengajuan Perjalanan Dinas';
-                $isi_email = get_name($task_creator).' mengajukan Perjalanan Dinas, untuk melihat detail silakan <a href='.base_url().'form_pjd/submit/'.$spd_id.'>Klik Disini</a><br />';
-                if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), $subject_email, $isi_email);
-                $emails = '';
-                foreach ($task_receiver_id as $key => $value) {
-                    $email = getEmail($value).',';
-                    $emails .= $email;
-                }
-                $msg = get_name($task_creator).' memberikan tugas perjalan dinas, untuk melihat detail silakan <a href='.base_url().'form_pjd/submit/'.$spd_id.'>Klik Disini</a><br />';
-                if(!empty($emails))$this->send_email($emails, get_form_no($spd_id).' - Pemberian Tugas Perjalanan Dinas', $msg);
                 redirect('form_pjd/input_biaya/'.$spd_id,'refresh');
             }
         }
@@ -869,7 +855,7 @@ class Form_pjd extends MX_Controller {
                     'email_body' => get_name($sender_id).' memberikan tugas perjalan dinas, untuk melakukan konfirmasi silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$this->detail_email($spd_id).'<br/> untuk melakukan konfirmasi silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>',
                     'is_read' => 0,
                 );
-            $this->db->insert('email', $data);
+        $this->db->insert('email', $data);
         endfor;
     }
 
@@ -987,15 +973,38 @@ class Form_pjd extends MX_Controller {
             $this->db->where('id', $biaya_tambahan_id[$j])->update('users_spd_luar_group_biaya', $data);
         endfor;
 
+        $url = base_url().'form_pjd/submit/'.$id;
         $task_receiver = getValue('task_receiver','users_spd_luar_group', array('id'=>'where/'.$id));
         $task_creator = getValue('task_creator','users_spd_luar_group', array('id'=>'where/'.$id));
         $creator_nik = get_nik($task_creator);
         $created_by = getValue('created_by','users_spd_luar_group', array('id'=>'where/'.$id));
         $task_receiver_id = explode(',',$task_receiver);
 
-        $this->send_spd_mail($spd_id);
+        //$this->send_spd_mail($spd_id);
 
-        //if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), 'Pengajuan Perjalanan Dinas (Group)', $isi_email);
+        //Kirim Notif Ke Penerima Tugas
+        $emails = '';
+        foreach ($task_receiver_id as $key => $value) {
+            $email = getEmail($value).',';
+            $emails .= $email;
+        }
+
+        $msg = get_name($task_creator).' memberikan tugas perjalan dinas, untuk melihat detail silakan <a href='.base_url().'form_pjd/submit/'.$spd_id.'>Klik Disini</a><br />';
+        if(!empty($emails))$this->send_email($emails, get_form_no($spd_id).' - Pemberian Tugas Perjalanan Dinas', $msg);
+
+        for($i=0;$i<sizeof($task_receiver_id);$i++):
+        $data = array(
+                    'sender_id' => $task_creator,
+                    'receiver_id' => $task_receiver_id[$i],
+                    'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                    'subject' => get_form_no($spd_id).'-Pemberian Tugas Perjalanan Dinas',
+                    'email_body' => get_name($task_creator).' memberikan tugas perjalan dinas, untuk melakukan konfirmasi silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$this->detail_email($id).'<br/> untuk melakukan konfirmasi silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>',
+                    'is_read' => 0,
+                );
+        $this->db->insert('email', $data);
+        endfor;
+
+        // KIRIM NOTIF KEATASAN
         $user_app_lv1 = getValue('user_app_lv1', 'users_spd_luar_group', array('id'=>'where/'.$spd_id));
         $subject_email = get_form_no($spd_id).' - Pengajuan Perjalanan Dinas';
         $isi_email = get_name($task_creator).' mengajukan Perjalanan Dinas, untuk melihat detail silakan <a href='.base_url().'form_pjd/submit/'.$spd_id.'>Klik Disini</a><br />';
@@ -1011,6 +1020,7 @@ class Form_pjd extends MX_Controller {
             $this->approval->request('hrd', 'spd_luar_group', $spd_id, $task_creator, $this->detail_email($spd_id));
          endif;
 
+         $this->db->where('id', $spd_id)->update('users_spd_luar_group', array('is_show'=>1));
         redirect('form_pjd', 'refresh');
     }
 

@@ -37,6 +37,7 @@ class Pjd_model extends CI_Model {
             // $this->db->join($this->join1, $this->table.'.task_creator = users.id', 'left');
             
             $this->db->where($this->table.'.is_deleted', 0);
+            $this->db->where($this->table.'.is_show', 1);
             if($f == 1){
                 // $this->db->where('is_app_hrd', 0);
             }elseif($f == 2){
