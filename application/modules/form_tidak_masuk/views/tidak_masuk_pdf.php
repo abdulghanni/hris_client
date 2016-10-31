@@ -41,6 +41,7 @@
 <?php foreach($form_tidak_masuk as $row):
 $approved = assets_url('img/approved_stamp.png');
 $rejected = assets_url('img/rejected_stamp.png');
+$pending = assets_url('img/pending_stamp.png');
 ?>
 <table width="1000" height="135" border="0" style="padding-left:30px;">
   <tr>
@@ -89,10 +90,10 @@ $rejected = assets_url('img/rejected_stamp.png');
       <th width="250"></th>
     </tr>
     <tr>
-      <td width="250" align="center"><?php echo ($row->is_app_lv1 == 1)?"<img class=approval-img-md src=$approved>":(($row->is_app_lv1 == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
-      <td width="250" align="center"><?php echo ($row->is_app_lv2 == 1)?"<img class=approval-img-md src=$approved>":(($row->is_app_lv2 == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
-      <td width="250" align="center"><?php echo ($row->is_app_lv3 == 1)?"<img class=approval-img-md src=$approved>":(($row->is_app_lv3 == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
-      <td width="250" align="center"><?php echo ($row->is_app_hrd == 1)?"<img class=approval-img-md src=$approved>":(($row->is_app_hrd == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
+      <td width="250" align="center"><?php echo ($row->is_app_lv1 == 1)?"<img class=approval-img-md src=$approved>":(($row->is_app_lv1 == 2) ? "<img class=approval-img-md src=$rejected>":(($row->is_app_lv1 == 3) ? "<img class=approval-img-md src=$pending>":'<span class="small"></span><br/>'));?></td>
+      <td width="250" align="center"><?php echo ($row->is_app_lv2 == 1)?"<img class=approval-img-md src=$approved>":(($row->is_app_lv2 == 2) ? "<img class=approval-img-md src=$rejected>":(($row->is_app_lv2 == 3) ? "<img class=approval-img-md src=$pending>":'<span class="small"></span><br/>'));?></td>
+      <td width="250" align="center"><?php echo ($row->is_app_lv3 == 1)?"<img class=approval-img-md src=$approved>":(($row->is_app_lv3 == 2) ? "<img class=approval-img-md src=$rejected>":(($row->is_app_lv3 == 3) ? "<img class=approval-img-md src=$pending>":'<span class="small"></span><br/>'));?></td>
+      <td width="250" align="center"><?php echo ($row->is_app_hrd == 1)?"<img class=approval-img-md src=$approved>":(($row->is_app_hrd == 2) ? "<img class=approval-img-md src=$rejected>":(($row->is_app_hrd == 3) ? "<img class=approval-img-md src=$pending>":'<span class="small"></span><br/>'));?></td>
     </tr>
     <tr>
       <td height="80" align="center" class="style3"><?php echo get_name($row->user_app_lv1)?></td>
