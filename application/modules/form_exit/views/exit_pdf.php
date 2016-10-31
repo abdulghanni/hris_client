@@ -194,16 +194,6 @@ $rejected = assets_url('img/rejected_stamp.png');?>
       <td></td>
       <td></td>
     </tr>
-    <!--
-    <tr>
-      <td height="35" align="center">3</td>
-      <td>&nbsp;Diberikan Uang pisah</td>
-      <td align="center">&nbsp;<?php echo ($rekomendasi->is_uang_pisah == 1) ? 'Ya' : 'Tidak';?></td>
-      <td></td>
-      <td></td>
-      <td></td>
-    </tr>
-    -->
     <tr>
       <td height="35" align="center">4</td>
       <td>&nbsp;Diberikan Surat Keterangan Kerja</td>
@@ -220,7 +210,14 @@ $rejected = assets_url('img/rejected_stamp.png');?>
       <td></td>
       <td></td>
     </tr>
-    
+    <tr>
+      <td height="35" align="center">6</td>
+      <td>&nbsp;Diberikan Uang pisah (untuk PHK)</td>
+      <td align="center">&nbsp;<?php echo ($rekomendasi->is_uang_pisah == 1) ? 'Ya' : 'Tidak';?></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
   </tbody>
 </table>
 <?php if(!empty($row->note_mgr)){?>

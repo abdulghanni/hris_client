@@ -214,6 +214,18 @@
                             </label>
                           </td>
                         </tr>
+                        <tr>
+                          <td>6</td>
+                          <td>Diberikan uang Pisah (untuk PHK)</td>
+                          <td>
+                            <label class="radio-inline">
+                              <input type="radio" name="uang_pisah" id="uang_pisah1" required value="1">Ya
+                            </label>
+                            <label class="radio-inline">
+                              <input type="radio" name="uang_pisah" id="uang_pisah2" value="0">Tidak
+                            </label>
+                          </td>
+                        </tr>
                       </table>
 
                     <div class="row form-row">

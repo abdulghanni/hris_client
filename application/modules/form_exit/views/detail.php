@@ -161,7 +161,7 @@
                                 <span class="small"></span><br/>
                                 <?php } ?>
                                 <span class="semi-bold"></span><br/>
-                                <span class="semi-bold">Mgr GA Nasional</span>
+                                <span class="semi-bold">GA</span>
                               </p>
                             </div>
 
@@ -396,19 +396,6 @@
                                 </div>
                             </td>
                           </tr>
-                          <!--
-                          <tr>
-                            <td>3</td>
-                            <td>Diberikan uang pisah</td>
-                            <td>
-                              <?php $uang_pisah = ($rekomendasi->is_uang_pisah == 1) ? 'Ya' : 'Tidak';?>
-                                <div class="radio">
-                                    <input id="uang_pisah" type="radio" name="uang_pisah" value="<?php echo $rekomendasi->is_uang_pisah?>" checked="checked">
-                                  <label for="uang_pisah"><?php echo $uang_pisah?></label>
-                                </div>
-                            </td>
-                          </tr>
-                          -->
                           <tr>
                             <td>4</td>
                             <td>Diberikan surat keterangan kerja</td>
@@ -431,6 +418,19 @@
                                 </div>
                             </td>
                           </tr>
+
+                          <tr>
+                            <td>6</td>
+                            <td>Diberikan uang pisah (untuk PHK)</td>
+                            <td>
+                              <?php $uang_pisah = ($rekomendasi->is_uang_pisah == 1) ? 'Ya' : 'Tidak';?>
+                                <div class="radio">
+                                    <input id="uang_pisah" type="radio" name="uang_pisah" value="<?php echo $rekomendasi->is_uang_pisah?>" checked="checked">
+                                  <label for="uang_pisah"><?php echo $uang_pisah?></label>
+                                </div>
+                            </td>
+                          </tr>
+                          
                         </table>
                        </div>
                     </div>
