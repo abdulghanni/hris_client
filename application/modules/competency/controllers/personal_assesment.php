@@ -73,7 +73,7 @@ class personal_assesment extends MX_Controller {
             $note = '';
             echo json_encode(array('app'=>$app, 'note'=>$note, 'date'=>lq()));
         }else{
-            $this->_render_page('personal_assesment/detail', $data);
+            $this->_render_page($this->controller.'/approve', $data);
         }
     }
 
@@ -219,7 +219,7 @@ class personal_assesment extends MX_Controller {
                 $this->template->add_js('competency/personal_assesment_input.js');
                 $this->template->add_js('emp_dropdown.js');
                     
-            }elseif(in_array($view, array('personal_assesment/detail')))
+            }elseif(in_array($view, array($this->controller.'/approve')))
             {
                 $this->template->set_layout('default');
                 $this->template->add_js('jquery-ui-1.10.1.custom.min.js');
@@ -232,6 +232,9 @@ class personal_assesment extends MX_Controller {
                 $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                 $this->template->add_css('plugins/select2/select2.css');
 
+                $this->template->add_js('competency/competency.js');
+                $this->template->add_js('emp_dropdown.js');
+                    
                 $this->template->add_css('approval_img.css');
                 $this->template->add_js('competency/approve.js');
                     

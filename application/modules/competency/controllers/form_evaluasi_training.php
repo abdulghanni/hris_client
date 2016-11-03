@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 ini_set('MAX_EXECUTION_TIME', 0);
-class form_penilaian extends MX_Controller {
+class form_evaluasi_training extends MX_Controller {
 
     public $data;
 
@@ -15,16 +15,16 @@ class form_penilaian extends MX_Controller {
 
         $this->lang->load('auth');
         $this->load->helper('language');
-        $this->load->model('competency/form_penilaian_model','main');
+        $this->load->model('competency/form_evaluasi_training_model','main');
     }
 
     var $title = 'Form Penilaian Kompetensi Karyawan';
     var $limit = 100000;
-    var $controller = 'competency/form_penilaian';
-    var $model_name = 'form_penilaian';
-    var $table = 'competency_form_penilaian';
+    var $controller = 'competency/form_evaluasi_training';
+    var $model_name = 'form_evaluasi_training';
+    var $table = 'competency_form_evaluasi_training';
     var $id_table = 'id';
-    var $list_view = 'form_penilaian/index';
+    var $list_view = 'form_evaluasi_training/index';
 
     //redirect if needed, otherwise display the user list
     function index($id=NULL)
@@ -40,11 +40,11 @@ class form_penilaian extends MX_Controller {
         else
         {
             $data['title'] = $this->title;
-            $data['url_ajax_list'] = site_url('form_penilaian/ajax_list');
-            $data['url_ajax_add'] = site_url('form_penilaian/ajax_add');
-            $data['url_ajax_edit'] = site_url('form_penilaian/ajax_edit');
-            $data['url_ajax_delete'] = site_url('form_penilaian/ajax_delete');
-            $data['url_ajax_update'] = site_url('form_penilaian/ajax_update');
+            $data['url_ajax_list'] = site_url('form_evaluasi_training/ajax_list');
+            $data['url_ajax_add'] = site_url('form_evaluasi_training/ajax_add');
+            $data['url_ajax_edit'] = site_url('form_evaluasi_training/ajax_edit');
+            $data['url_ajax_delete'] = site_url('form_evaluasi_training/ajax_delete');
+            $data['url_ajax_update'] = site_url('form_evaluasi_training/ajax_update');
             $data['ci'] = $this;
             $data['form'] = getAll($this->table);
 
@@ -59,7 +59,7 @@ class form_penilaian extends MX_Controller {
         $data['competency_penilaian'] = GetAll('competency_penilaian')->result();
         $data['users'] = GetAll('users')->result();
         $data['rekomendasi'] = GetAll('competency_rekomendasi')->result();
-        $this->_render_page('form_penilaian/input', $data);
+        $this->_render_page('form_evaluasi_training/input', $data);
     }
 
     function detail($id, $approver_id=null){
@@ -100,7 +100,7 @@ class form_penilaian extends MX_Controller {
         $alasan = $this->input->post('alasan');
 
         //print_mz($kemampuan[1]);
-        // INSERT TO COMPETENCY_form_penilaian
+        // INSERT TO COMPETENCY_form_evaluasi_training
         $data = array(
             'nik' => $this->input->post('nik'),
             'rekomendasi_id' => $this->input->post('rekomendasi_id'),
@@ -109,10 +109,10 @@ class form_penilaian extends MX_Controller {
             );
         $this->db->insert($this->table, $data);
         $com_id = $this->db->insert_id();
-        // INSERT TO COMPETENCY_form_penilaian_DETAIL
+        // INSERT TO COMPETENCY_form_evaluasi_training_DETAIL
         for($i=1;$i<=sizeof($com);$i++) {
             $data = array(
-                'competency_form_penilaian_id' => $com_id,
+                'competency_form_evaluasi_training_id' => $com_id,
                 'competency_penilaian_id' => $com[$i],
                 'kemampuan' => $kemampuan[$i],
                 'kemauan' => $kemauan[$i],
@@ -121,7 +121,7 @@ class form_penilaian extends MX_Controller {
             $this->db->insert($this->table.'_detail', $data);
         }
         // lastq();
-        // INSERT TO COMPETENCY_form_penilaian_APPROVER
+        // INSERT TO COMPETENCY_form_evaluasi_training_APPROVER
         for ($i=0;$i<sizeof($approver_id);$i++) {
             $data = array(
                 $this->table.'_id' => $com_id,
@@ -157,7 +157,7 @@ class form_penilaian extends MX_Controller {
         // print_mz($comp_def);
         $data['comp_def'] = $comp_def;
         $data['ci'] = $this;
-        $this->load->view('form_penilaian/result', $data);
+        $this->load->view('form_evaluasi_training/result', $data);
     }
 
     function add_row($id)
@@ -165,7 +165,7 @@ class form_penilaian extends MX_Controller {
         $data['id'] = $id;
         $data['com'] = getAll('competency_level')->result_array();
         $data['com'] = getAll('competency_level')->result_array();
-        $this->load->view('competency/form_penilaian/row', $data);
+        $this->load->view('competency/form_evaluasi_training/row', $data);
     }
 
     function _render_page($view, $data=null, $render=false)
@@ -176,7 +176,7 @@ class form_penilaian extends MX_Controller {
         {
             $this->load->library('template');
 
-            if (in_array($view, array('form_penilaian/index')))
+            if (in_array($view, array('form_evaluasi_training/index')))
             {
                 $this->template->set_layout('default');
                 $this->template->add_js('jquery-ui-1.10.1.custom.min.js');
@@ -189,9 +189,9 @@ class form_penilaian extends MX_Controller {
                 $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                 $this->template->add_css('plugins/select2/select2.css');
 
-                $this->template->add_js('competency/form_penilaian.js');
+                $this->template->add_js('competency/form_evaluasi_training.js');
                     
-            }elseif(in_array($view, array('form_penilaian/input')))
+            }elseif(in_array($view, array('form_evaluasi_training/input')))
             {
                 $this->template->set_layout('default');
                 $this->template->add_js('jquery-ui-1.10.1.custom.min.js');
@@ -205,7 +205,7 @@ class form_penilaian extends MX_Controller {
                 $this->template->add_css('plugins/select2/select2.css');
 
                 $this->template->add_js('competency/competency.js');
-                $this->template->add_js('competency/form_penilaian_input.js');
+                $this->template->add_js('competency/form_evaluasi_training_input.js');
                 $this->template->add_js('emp_dropdown.js');
                     
             }elseif(in_array($view, array($this->controller.'/detail')))
