@@ -130,7 +130,8 @@ function activate(id)
         dataType: "html",
         success: function(data)
         {
-            $("#content").html(data);
+            //$("#content").html(data);
+            $("#"+id).hide();
             $(".msg").show('slow').fadeIn().delay(3000).fadeOut("slow");
             $('#btnActivate').text('Activate'); //change button text
             $('#btnActivate').attr('disabled',false); //set button enable 
