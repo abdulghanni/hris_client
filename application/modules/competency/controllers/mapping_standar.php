@@ -80,6 +80,59 @@ class mapping_standar extends MX_Controller {
         $this->_render_page('mapping_standar/input', $data);
     }
 
+    function approve($org_id, $approver_id = null){
+        permissionBiasa();
+        $data['org_id'] = $org_id;
+        $data['competency_group'] = GetAll('competency_group')->result();
+        $data['data'] = $this->main->standar($org_id);
+        $data['approver'] = GetAll($this->table.'_approver', array('organization_id'=>'where/'.$org_id));
+
+        $data['competency_mapping_indikator'] = $indikatorx = GetAll('competency_mapping_indikator_detail', array('organization_id'=>'where/'.$org_id));
+        // print_mz($indikatorx->result());
+        $indikator = array();
+        foreach ($indikatorx->result() as $r) {
+            $indikator[] = $r->competency_def_id;
+        }
+
+        $data['def_indikator'] = array_unique($indikator);
+
+        $pos = $this->competency->get_position_group_from_org($org_id);
+        $pos_group = array();
+        foreach ($pos as $key => $value) {
+            $pos_group[] = $value['POSITIONGROUP'];
+        }
+
+        $data['pos_group'] = $pos_group = array_unique($pos_group);
+        $data['pg_size'] = sizeof($pos_group);
+        $data['col'] = 70/sizeof($pos_group);
+
+        $data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
+        $data['approved'] = assets_url('img/approved_stamp.png');
+        $data['rejected'] = assets_url('img/rejected_stamp.png');
+        $data['pending'] = assets_url('img/pending_stamp.png');
+        $comp_def = array();
+        $def = GetAllSelect($this->table.'_detail', 'competency_def_id', array('organization_id'=>'where/'.$org_id))->result_array();
+        foreach ($def as $key => $value) {
+           $comp_def[] = $value['competency_def_id'];
+        }
+        // print_mz($comp_def);
+        $data['comp_def'] = $comp_def;
+        $data['ci'] = $this;
+        if($approver_id != null){
+            $f = array('organization_id' => 'where/'.$org_id,
+                       'user_id' => 'where/'.sessId(),
+             );
+            $data['app_status_id'] = getValue('app_status_id', $this->table.'_approver', $f);
+            $data['date_app'] = getValue('date_app', $this->table.'_approver', $f);
+            $app = $this->load->view($this->controller.'/app_stat', $data, true);
+            // $note = $this->load->view('form_cuti/note', $data, true);
+            $note = '';
+            echo json_encode(array('app'=>$app, 'note'=>$note, 'date'=>lq()));
+        }else{
+            $this->_render_page($this->controller.'/approve', $data);
+        }
+    }
+
     function add(){
         permission();
         $this->form_validation->set_rules('competency_def_id', 'Kompetensi', 'trim|required');
@@ -87,6 +140,7 @@ class mapping_standar extends MX_Controller {
         $pos = array_unique($this->input->post('position_group'));
         $l = $this->input->post('level');
         $comp_def = $this->input->post('competency_def_id');
+        $org = $this->input->post('org_id');
 
         // INSERT TO COMPETENCY_MAPPING_STANDAR
         $data = array(
@@ -111,6 +165,10 @@ class mapping_standar extends MX_Controller {
             }
         }
 
+        $url = base_url().$this->controller.'/approve/'.$org;
+        $subject_email = "Kompetensi - $this->title";
+        $isi_email = get_name(sessId())." Membuat mapping standar untuk departemen ".get_organization_name($org).
+                     "<br/>Untuk melihat detail silakan <a href=$url>Klik disini</a>";
         // INSERT TO COMPETENCY_MAPPING_STANDAR_APPROVER
         if(!empty($approver_id)){
             for ($i=0;$i<sizeof($approver_id);$i++) {
@@ -121,12 +179,45 @@ class mapping_standar extends MX_Controller {
                     'created_on'=>dateNow(),
                 );
                 $this->db->insert($this->table.'_approver', $data);//print_ag(lq());
+
+                $data4 = array(
+                  'sender_id' => get_nik(sessId()),
+                  'receiver_id' => get_nik($approver_id[$i]),
+                  'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                  'subject' => $subject_email,
+                  'email_body' => $isi_email,
+                  'is_read' => 0,
+                );
+                $this->db->insert('email', $data4);
+                if(!empty(getEmail($approver_id[$i])))$this->send_email(getEmail($approver_id[$i]), $subject_email, $isi_email);
             }
         }
         redirect(base_url($this->controller), 'refresh');
     }
 
     // FOR js
+    function do_approve($org_id){
+        if(!$this->ion_auth->logged_in())
+        {
+            redirect('auth/login', 'refresh');
+        }
+        else
+        {
+            $sessId = sessId();
+            $data = array(
+            'is_app' => 1,
+            'app_status_id' => $this->input->post('app_status_id'),
+            'date_app'=>dateNow(),
+            'note' => $this->input->post('note')
+            );
+
+            $this->db->where('organization_id', $org_id)
+                     ->where('user_id', $sessId)
+                     ->update($this->table.'_approver', $data);
+            return true;
+        }
+    }
+    
     function get_organization(){
         $data['org'] = $this->competency->get_organization();
         $this->load->view('mapping_standar/org',$data);
@@ -198,6 +289,22 @@ class mapping_standar extends MX_Controller {
                 $this->template->add_css('plugins/select2/select2.css');
 
                 $this->template->add_js('competency/mapping_standar_input.js');
+                    
+            }elseif(in_array($view, array($this->controller.'/approve')))
+            {
+                $this->template->set_layout('default');
+                $this->template->add_js('jquery-ui-1.10.1.custom.min.js');
+                $this->template->add_js('jquery.sidr.min.js');
+                $this->template->add_js('breakpoints.js');
+                $this->template->add_js('select2.min.js');
+
+                $this->template->add_js('core.js');
+
+                $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
+                $this->template->add_css('plugins/select2/select2.css');
+                $this->template->add_css('approval_img.css');
+
+                $this->template->add_js('competency/approve.js');
                     
             }
 

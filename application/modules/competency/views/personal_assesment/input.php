@@ -10,7 +10,7 @@
  	<div class="content">
 	    <div class="page-title">
 	        <i class="icon-custom-left"></i>
-	        <h3>Kompetensi - <a href="<?=base_url($controller)?>">Human Valule Matrix - Input</a></h3> 
+	        <h3>Kompetensi - <a href="<?=base_url($controller)?>"><?=$title?> - Input</a></h3> 
 	    </div>
 	    <div class="row">
 	     	<div class="col-md-12">
@@ -27,30 +27,32 @@
 					            <div class="col-md-6">
 					            	<div class="row form-row">
 						            	<div class="col-md-3">
-					                        <label class="form-label text-right">Karyawan Yang Dinilai</label>
+					                        <label class="form-label text-right">Nama</label>
 					                    </div>
 					                    <div class="col-md-9">
 							            	<select class="select2" style="width:100%" id="emp" name="nik">
+					                    		<option value="0">-- Pilih Karyawan --</option>
 							            		<?php foreach($users as $u){?>
 							            			<option value="<?=$u->nik?>"><?=$u->nik.' - '.$u->username?></option>
 							            		<?php } ?>
 							            	</select>
 					                    </div>
 					                </div>
-					            	<div class="row form-row">
-				                      <div class="col-md-3">
-				                        <label class="form-label text-right"><?php echo lang('start_working') ?></label>
-				                      </div>
-				                      <div class="col-md-9">
-				                        <input name="seniority_date" id="seniority_date" type="text"  class="form-control" placeholder="-" value="" disabled="disabled">
-				                      </div>
-				                    </div>
-				                    <div class="row form-row">
+					                <div class="row form-row">
 				                      <div class="col-md-3">
 				                        <label class="form-label text-right"><?php echo lang('dept_div') ?></label>
 				                      </div>
 				                      <div class="col-md-9">
 				                        <input name="organization" id="organization" type="text"  class="form-control" placeholder="-" value="" disabled="disabled">
+				                        <input name="organization_id" id="organization_id" type="hidden"  class="form-control" placeholder="-" value="">
+				                      </div>
+				                    </div>
+				                    <div class="row form-row">
+				                      <div class="col-md-3">
+				                        <label class="form-label text-right">Position Group</label>
+				                      </div>
+				                      <div class="col-md-9">
+				                        <input name="position_group_id" id="position-group" type="text"  class="form-control" placeholder="-" value="" readonly>
 				                      </div>
 				                    </div>
 				                    <div class="row form-row">
@@ -65,63 +67,9 @@
 					        </div>
 				            <div class="row">
 								<div class="col-md-12">
-									<table class="table table-bordered">
-										<thead>
-											<tr>
-												<th width="5%" rowspan="2" valign="center">
-													<!-- <div class="checkbox check-default">
-								                      <input id="checkbox" type="checkbox" value="0"> 
-								                      <label for="checkbox"></label>
-								                    </div> -->
-								                    No.
-												</th>
-												<th width="25%" rowspan="2">Kompetensi</th>
-												<th width="25%" colspan="2" class="text-center">Kemampuan</th>
-												<th width="25%" colspan="2" class="text-center">Kemauan</th>
-												<th width="25%" rowspan="2">Alasan</th>
-											</tr>
-											<tr>
-												<th class="text-center">Kurang</th>
-												<th class="text-center">Mampu</th>
-												<th class="text-center">Kurang</th>
-												<th class="text-center">Mampu</th>
-											</tr>
-										</thead>
-										<tbody>
-											<?php $i = 1;foreach ($competency_penilaian as $r) { ?>
-												<tr>
-													<td><?=$i++?></td>
-													<td>
-														<?=$r->title?>
-														<input type="hidden" name="competency_penilaian_id[<?=$r->id?>]" value="<?=$r->id?>">
-													</td>
-													<td class="text-center">
-														<input id="kemampuan_kurang<?=$r->id?>" name="kemampuan[<?=$r->id?>]" value="0" type="radio">
-													</td>
-													<td class="text-center">
-														<input id="kemampuan_mampu<?=$r->id?>" name="kemampuan[<?=$r->id?>]" value="1" type="radio">
-													</td>
-													<td class="text-center">
-														<input id="kemauan_kurang<?=$r->id?>" name="kemauan[<?=$r->id?>]" value="0" type="radio">
-													</td>
-													<td class="text-center">
-														<input id="kemauan_mampu<?=$r->id?>" name="kemauan[<?=$r->id?>]" value="1" type="radio">
-													</td>
-													<td><textarea name="alasan[<?=$r->id?>]" class="form-control"></textarea></td>
-												</tr>
-											<?php } ?>
-										</tbody>
-									</table>
-								</div>
+									<div id="result">
 
-								<div class="col-md-12">
-									<h4>Rekomendasi :</h4>
-									<?php foreach($rekomendasi as $r){?>
-										<div class="radio radio-success">
-					                        <input id="<?=$r->id?>" name="rekomendasi_id" value="<?=$r->id?>" type="radio">
-					                        <label for="<?=$r->id?>"><?=$r->title?></label>
-					                     </div>
-									<?php } ?>
+									</div>
 								</div>
 				            	<div id="approver">
 				            		<fieldset>

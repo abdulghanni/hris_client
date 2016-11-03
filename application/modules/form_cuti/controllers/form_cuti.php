@@ -638,7 +638,10 @@ class Form_cuti extends MX_Controller {
       $recid = $this->get_sisa_cuti($user_nik)['recid'];
       $potong_cuti = getValue('potong_cuti','users_cuti', array('id' => 'where/'.$id));
       $sisa_cuti = $this->get_sisa_cuti($user_nik)['sisa_cuti'] + $potong_cuti;
-      $this->update_sisa_cuti($recid, $sisa_cuti);
+      $status_cuti = getValue('approval_status_id_hrd', 'users_cuti', array('id'=>'where/'.$id));
+      if($status_cuti == 1){
+        $this->update_sisa_cuti($recid, $sisa_cuti);
+      }
       //echo json_encode(array('status'=>true));
     }
 

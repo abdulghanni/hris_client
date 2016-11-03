@@ -1,6 +1,6 @@
 var base_url    = $("#base_url").val(),   
-    controller        = $("#controller").val(),
-    org_id          = $("#org_id").val();
+    controller  = $("#controller").val(),
+    org_id      = $("#org_id").val();
 function approve(sessId)
 {
     $('#btnApp'+sessId).text('saving...'); //change button text

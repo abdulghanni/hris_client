@@ -140,6 +140,14 @@ $(document).ready(function() {
                 getEmpOrg(empId);
                 getEmpPos(empId);
             break;
+            case 'competency':
+                getEmpOrg(empId);
+                getEmpOrgId(empId);
+                getEmpNik(empId);
+                getEmpPos(empId);
+                getEmpPosGroup(empId);
+                getEmpSenDate(empId);
+            break;
         }
     })
     .change();
