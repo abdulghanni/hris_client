@@ -173,6 +173,31 @@ if ($td_num_rows > 0) {
     <p>I.  &nbsp;Cabang/Depo yang dikunjungi&emsp;: <?=get_bu_name($td->to_city_id)?></p>
     <p>II. Tanggal kunjungan&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;: <?= dateIndo($td->date_spd_start).' s/d '.dateIndo($td->date_spd_end)?> (<?=$jml_pjd?> Hari)</p>
     <p>III.Tujuan kunjungan &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;: <?=$td->title?></p>
+    <p>IV. Catatan</p>
+    <table width="630" class="tg_">
+      <?php if(!empty($td->user_app_lv1) && (strlen($td->note_lv1) > 1) ) { ?>
+        <tr>
+          <td width="200"><?php echo get_user_position($td->user_app_lv1); ?></td>
+          <td width="10">:</td>
+          <td width="500"><?php echo $td->note_lv1; ?></td>
+          
+        </tr>
+      <?php }?>
+      <?php if(!empty($td->user_app_lv2) && (strlen($td->note_lv2) > 1) ) { ?>
+        <tr>
+          <td width="200"><?php echo get_user_position($td->user_app_lv2); ?></td>
+          <td width="10">:</td>
+          <td width="500"><?php echo $td->note_lv2; ?></td>
+        </tr>
+      <?php }?>
+      <?php if(!empty($td->user_app_lv3) && (strlen($td->note_lv3) > 1) ) { ?>
+        <tr>
+          <td width="200"><?php echo get_user_position($td->user_app_lv3); ?></td>
+          <td width="10">:</td>
+          <td width="500"><?php echo $td->note_lv3; ?></td>
+        </tr>
+      <?php }?>
+    </table>
   </div>
 </div>
 <?php endforeach; } ?>

@@ -218,6 +218,32 @@ if ($td_num_rows > 0) {
         <td width="300"></td>
       </tr>
     </table>
+
+    <p>VIII. Catatan</p>
+    <table width="630" class="tg">
+      <?php if(!empty($td->user_app_lv1) && (strlen($td->note_lv1) > 1) ) { ?>
+        <tr>
+          <td width="200"><?php echo get_user_position($td->user_app_lv1); ?></td>
+          <td width="10">:</td>
+          <td width="500"><?php echo $td->note_lv1; ?></td>
+          
+        </tr>
+      <?php }?>
+      <?php if(!empty($td->user_app_lv2) && (strlen($td->note_lv2) > 1) ) { ?>
+        <tr>
+          <td width="200"><?php echo get_user_position($td->user_app_lv2); ?></td>
+          <td width="10">:</td>
+          <td width="500"><?php echo $td->note_lv2; ?></td>
+        </tr>
+      <?php }?>
+      <?php if(!empty($td->user_app_lv3) && (strlen($td->note_lv3) > 1) ) { ?>
+        <tr>
+          <td width="200"><?php echo get_user_position($td->user_app_lv3); ?></td>
+          <td width="10">:</td>
+          <td width="500"><?php echo $td->note_lv3; ?></td>
+        </tr>
+      <?php }?>
+    </table>
   </div>
 </div>
 <div class="style4">
