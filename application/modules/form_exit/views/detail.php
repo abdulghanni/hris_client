@@ -32,14 +32,14 @@
                         <label class="form-label text-right">Nama</label>
                       </div>
                       <div class="col-md-3">
-                          <input name="" id="" type="text"  class="form-control" placeholder="Nama Karyawan" value="<?php echo get_name($row->user_id)?>" disabled="disabled">
+                          <input name="" id="" type="text"  class="form-control" placeholder="" value="<?php echo get_name($row->user_id)?>" disabled="disabled">
                       </div>
 
                       <div class="col-md-2">
                         <label class="form-label text-right">Wilayah</label>
                       </div>
                       <div class="col-md-3">
-                        <input name="" id="bu" type="text"  class="form-control" placeholder="Nama Karyawan" value="" disabled="disabled">
+                        <input name="" id="bu" type="text"  class="form-control" placeholder="" value="" disabled="disabled">
                       </div>
 
                     </div>
@@ -49,13 +49,13 @@
                         <label class="form-label text-right">NIK</label>
                       </div>
                       <div class="col-md-3">
-                        <input name="" id="" type="text"  class="form-control" placeholder="Nama Karyawan" value="<?php echo $user_nik?>" disabled="disabled">
+                        <input name="" id="" type="text"  class="form-control" placeholder="" value="<?php echo $user_nik?>" disabled="disabled">
                       </div>
                       <div class="col-md-2">
                         <label class="form-label text-right">Dept/Bagian</label>
                       </div>
                       <div class="col-md-3">
-                        <input name="" id="organization" type="text"  class="form-control" placeholder="Nama Karyawan" value="" disabled="disabled">
+                        <input name="" id="organization" type="text"  class="form-control" placeholder="" value="" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
@@ -63,7 +63,7 @@
                         <label class="form-label text-right">Jabatan</label>
                       </div>
                       <div class="col-md-3">
-                        <input name="" id="position" type="text"  class="form-control" placeholder="Nama Karyawan" value="" disabled="disabled">
+                        <input name="" id="position" type="text"  class="form-control" placeholder="" value="" disabled="disabled">
                       </div>
                       <div class="col-md-2">
                         <label class="form-label text-right">Tanggal Keluar</label>
@@ -443,7 +443,7 @@
                       <label class="form-label text-left">Catatan Manager Ga Nasional</label>
                     </div>
                     <div class="col-md-12">
-                      <textarea  id="text-editor" placeholder="Enter text ..." class="form-control" rows="2" disabled><?php echo $row->note_mgr?></textarea>
+                      <textarea  id="text-editor" placeholder="" class="form-control" rows="2" disabled><?php echo $row->note_mgr?></textarea>
                     </div>
                   </div>
                   <?php }?>
@@ -455,7 +455,7 @@
                       <label class="form-label text-left">Catatan Sie Koperasi</label>
                     </div>
                     <div class="col-md-12">
-                      <textarea  id="text-editor" placeholder="Enter text ..." class="form-control" rows="2" disabled><?php echo $row->note_koperasi?></textarea>
+                      <textarea  id="text-editor" placeholder="" class="form-control" rows="2" disabled><?php echo $row->note_koperasi?></textarea>
                     </div>
                   </div>
                   <?php }?>
@@ -466,7 +466,7 @@
                       <label class="form-label text-left">Catatan Perpustakaan</label>
                     </div>
                     <div class="col-md-12">
-                      <textarea  id="text-editor" placeholder="Enter text ..." class="form-control" rows="2" disabled><?php echo $row->note_perpus?></textarea>
+                      <textarea  id="text-editor" placeholder="" class="form-control" rows="2" disabled><?php echo $row->note_perpus?></textarea>
                     </div>
                   </div>
                   <?php }?>
@@ -477,7 +477,7 @@
                       <label class="form-label text-left">Catatan HRD</label>
                     </div>
                     <div class="col-md-12">
-                      <textarea  id="text-editor" placeholder="Enter text ..." class="form-control" rows="2" disabled><?php echo $row->note_hrd?></textarea>
+                      <textarea  id="text-editor" placeholder="" class="form-control" rows="2" disabled><?php echo $row->note_hrd?></textarea>
                     </div>
                   </div>
                   <?php }?>
@@ -488,7 +488,7 @@
                       <label class="form-label text-left">Catatan IT</label>
                     </div>
                     <div class="col-md-12">
-                      <textarea  id="text-editor" placeholder="Enter text ..." class="form-control" rows="2" disabled><?php echo $row->note_it?></textarea>
+                      <textarea  id="text-editor" placeholder="" class="form-control" rows="2" disabled><?php echo $row->note_it?></textarea>
                     </div>
                   </div>
                   <?php }?>
