@@ -236,7 +236,7 @@
                           <div class="row text-center"><span class="semi-bold">Mengetahui,</span></div>
                           <div class="row wf-cuti">
                             <div class="col-md-3" id="akunting">
-                              <p class="wf-approve-sp">
+                              <p class="wf-approve-sp" id="akunting_box">
                                 <?php 
                                 $approved = assets_url('img/approved_stamp.png');
                                 $rejected = assets_url('img/rejected_stamp.png');
@@ -262,7 +262,7 @@
                             </div>
 
                           <div class="col-md-3" id="audit">
-                            <p class="wf-approve-sp">
+                            <p class="wf-approve-sp" id="audit_box">
                               <?php if($row->is_app_audit == 1){
                               echo ($row->app_status_id_audit == 1)?"<img class=approval-img src=$approved>": (($row->app_status_id_audit == 2) ? "<img class=approval-img src=$rejected>"  : (($row->app_status_id_audit == 3) ? "<img class=approval-img src=$pending>" : "<span class='small'></span><br/>"));?><br/>
                               <span class="semi-bold"><?php echo get_name($row->user_app_audit)?></span><br/>

@@ -102,8 +102,8 @@ $rejected = assets_url('img/rejected_stamp.png');?>
   <tbody>
     <tr>
       <th width="200" height="50"></th>
-      <th width="200">&nbsp;&nbsp;&nbsp;&nbsp;Mengetahui,</th>
       <th width="200"></th>
+      <th width="200">&nbsp;&nbsp;&nbsp;&nbsp;Mengetahui,</th>
       <th width="200"></th>
       <th width="200"></th>
     </tr>
@@ -122,7 +122,7 @@ $rejected = assets_url('img/rejected_stamp.png');?>
       <td align="center"><?php echo get_name($row->user_app_it)?><br/><?php echo dateIndo($row->date_app_it)?></td>
     </tr>
     <tr >
-      <td align="center">Manager GA Nasional</td>
+      <td align="center">GA</td>
       <td align="center">SIE Koperasi</td>
       <td align="center">Perpustakaan</td>
       <td align="center">HRD Database</td>
@@ -131,33 +131,78 @@ $rejected = assets_url('img/rejected_stamp.png');?>
   </tbody>
 </table>
 <p>&nbsp;</p>
-<?php if(!empty($row->user_app_asset)):?>
+
 <table width="1000" align="center">
   <tbody>
     <tr>
-      <td></td>
-      <td></td>
-      <td align="center"><?php echo ($row->app_status_id_asset == 1)?"<img class=approval-img-md src=$approved>":(($row->app_status_id_asset == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
-      <td></td>
-      <td></td>
+      <td align="center">
+        <?php if(!empty($row->user_app_akunting) && (get_user_bu($user_nik) != 'BU Jakarta')):?>
+          <?php echo ($row->app_status_id_akunting == 1)?"<img class=approval-img-md src=$approved>":(($row->app_status_id_akunting == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?>
+        <?php endif ?>
+      </td>
+      <td align="center">
+        <?php if(!empty($row->user_app_audit) && (get_user_bu($user_nik) != 'BU Jakarta')):?>
+          <?php echo ($row->app_status_id_audit == 1)?"<img class=approval-img-md src=$approved>":(($row->app_status_id_audit == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?>
+        <?php endif ?>
+      </td>
+      <td align="center">
+        <?php if(!empty($row->user_app_keuangan)):?>
+          <?php echo ($row->app_status_id_keuangan == 1)?"<img class=approval-img-md src=$approved>":(($row->app_status_id_keuangan == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?>
+        <?php endif ?>
+      </td>
+      <td align="center">
+        <?php if(!empty($row->user_app_asset)):?>
+          <?php echo ($row->app_status_id_asset == 1)?"<img class=approval-img-md src=$approved>":(($row->app_status_id_asset == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?>
+        <?php endif ?>
+      </td>
     </tr>
     <tr>
-      <td height="80" align="center"></td>
-      <td align="center"></td>
-      <td align="center"><?php echo get_name($row->user_app_asset)?><br/><?php echo dateIndo($row->date_app_asset)?></td>
-      <td align="center"></td>
-      <td align="center"></td>
+      <td height="80" align="center">
+        <?php if(!empty($row->user_app_akunting) && (get_user_bu($user_nik) != 'BU Jakarta')):?>
+          <?php echo get_name($row->user_app_akunting)?><br/><?php echo dateIndo($row->date_app_akunting)?>
+        <?php endif ?>
+      </td>
+      <td align="center">
+        <?php if(!empty($row->user_app_audit) && (get_user_bu($user_nik) != 'BU Jakarta')):?>
+          <?php echo get_name($row->user_app_audit)?><br/><?php echo dateIndo($row->date_app_audit)?>
+        <?php endif ?>
+      </td>
+      <td align="center">
+        <?php if(!empty($row->user_app_keuangan)):?>
+          <?php echo get_name($row->user_app_keuangan)?><br/><?php echo dateIndo($row->date_app_keuangan)?>
+        <?php endif ?>
+      </td>
+      <td align="center">
+        <?php if(!empty($row->user_app_asset)):?>
+          <?php echo get_name($row->user_app_asset)?><br/><?php echo dateIndo($row->date_app_asset)?>
+        <?php endif ?>
+      </td>
     </tr>
     <tr >
-      <td align="center"></td>
-      <td align="center"></td>
-      <td align="center">Asset Management</td>
-      <td align="center"></td>
-      <td align="center"></td>
+      <td align="center">
+        <?php if(!empty($row->user_app_akunting) && (get_user_bu($user_nik) != 'BU Jakarta')):?>
+          Akunting
+        <?php endif ?>  
+      </td>
+      <td align="center">
+        <?php if(!empty($row->user_app_audit) && (get_user_bu($user_nik) != 'BU Jakarta')):?>
+          Audit
+        <?php endif ?>  
+      </td>
+      <td align="center">
+        <?php if(!empty($row->user_app_keuangan)):?>
+          Keuangan
+        <?php endif ?>  
+      </td>
+      <td align="center">
+        <?php if(!empty($row->user_app_asset)):?>
+          Asset Management
+        <?php endif ?>  
+      </td>
     </tr>
   </tbody>
 </table>
-<?php endif ?>
+
 <pagebreak>
 <p class="style7">Kami rekomendasikan kepada karyawan tersebut </p>
 <table width="1000" align="center">

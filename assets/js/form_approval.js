@@ -2,6 +2,17 @@ var base_url    = $("#base_url").val(),
     form        = $("#form").val(),       
     id          = $("#id").val();
 
+$(document).ready(function() {
+    var businessunit = $('#bu').val();
+
+    if(businessunit = 'BU Jakarta'){
+        $('#akunting').hide();
+        $('#audit').hide();
+    }
+
+
+});
+
 function approve(lv)
 {
     $('#btnApp'+lv).text('saving...'); //change button text
