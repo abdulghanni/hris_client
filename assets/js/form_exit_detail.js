@@ -11,7 +11,6 @@
     uriAsset = form+'/do_approve/'+id+'/asset';
     uridropdown = base_url+'dropdown/get_atasan/';
 
-
     $('#btnAppMgr').click(function(){
       var $btn = $(this).button('loading');
                 $('#formAppMgr').submit(function(ev){
