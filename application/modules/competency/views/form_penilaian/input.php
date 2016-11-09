@@ -69,10 +69,6 @@
 										<thead>
 											<tr>
 												<th width="5%" rowspan="2" valign="center">
-													<!-- <div class="checkbox check-default">
-								                      <input id="checkbox" type="checkbox" value="0"> 
-								                      <label for="checkbox"></label>
-								                    </div> -->
 								                    No.
 												</th>
 												<th width="25%" rowspan="2">Kompetensi</th>

@@ -117,7 +117,12 @@ class personal_assesment extends MX_Controller {
                 );
             $this->db->insert($this->table.'_detail', $data);
         }
-        // lastq();
+
+        $url = base_url().$this->controller.'/approve/'.$com_id;
+        $subject_email = "Kompetensi - $this->title";
+        $isi_email = get_name(sessId())." Membuat ".$this->title.
+                     "<br/>Untuk melihat detail silakan <a href=$url>Klik disini</a>";
+                     
         // INSERT TO competency_personal_assesment_APPROVER
         for ($i=0;$i<sizeof($approver_id);$i++) {
             $data = array(
@@ -125,9 +130,21 @@ class personal_assesment extends MX_Controller {
                 'user_id' => $approver_id[$i]
             );
             $this->db->insert($this->table.'_approver', $data);//print_ag(lq());
+
+            $data4 = array(
+                  'sender_id' => get_nik(sessId()),
+                  'receiver_id' => get_nik($approver_id[$i]),
+                  'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                  'subject' => $subject_email,
+                  'email_body' => $isi_email,
+                  'is_read' => 0,
+            );
+            $this->db->insert('email', $data4);
+            if(!empty(getEmail($approver_id[$i])))$this->send_email(getEmail($approver_id[$i]), $subject_email, $isi_email);
         }
         redirect(base_url($this->controller), 'refresh');
     }
+
     // FOR js
     function do_approve($form_id){
         if(!$this->ion_auth->logged_in())
@@ -151,7 +168,6 @@ class personal_assesment extends MX_Controller {
         }
     }
     
-
     function get_mapping($emp_id){
         $emp_id = get_nik($emp_id);
         $data['org_id'] = $org_id = get_user_organization_id($emp_id);
