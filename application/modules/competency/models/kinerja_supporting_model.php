@@ -1,11 +1,11 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class form_evaluasi_training_model extends CI_Model {
+class kinerja_supporting_model extends CI_Model {
 
-	var $t = 'competency_form_evaluasi_training';
-	var $tj1 = 'competency_form_evaluasi_training_detail';
-	var $tj2 = 'competency_form_evaluasi_training_approver';
+	var $t = 'competency_kinerja_supporting';
+	var $tj1 = 'competency_kinerja_supporting_detail';
+	var $tj2 = 'competency_kinerja_supporting_approver';
 	// var $tj2 = 'form_competency';
 
 	public function __construct()

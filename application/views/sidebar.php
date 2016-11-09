@@ -102,6 +102,8 @@
           <li > <a href="<?php echo site_url('competency/mapping_standar')?>">Mapping Standar</a></li>
           <li > <a href="<?php echo site_url('competency/personal_assesment')?>">Personal Assesment</a></li>
           <li > <a href="<?php echo site_url('competency/form_penilaian')?>">Human Value Matrix</a></li>
+          <li > <a href="<?php echo site_url('competency/form_evaluasi_training')?>">Evaluasi Keefektifan Training</a></li>
+          <li > <a href="<?php echo site_url('competency/kinerja_supporting')?>">Penilaian Kinerja Supporting</a></li>
         </ul>
       </li>   
     <?php endif;?>

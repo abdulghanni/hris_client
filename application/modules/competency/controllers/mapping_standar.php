@@ -169,6 +169,7 @@ class mapping_standar extends MX_Controller {
         $subject_email = "Kompetensi - $this->title";
         $isi_email = get_name(sessId())." Membuat mapping standar untuk departemen ".get_organization_name($org).
                      "<br/>Untuk melihat detail silakan <a href=$url>Klik disini</a>";
+                     
         // INSERT TO COMPETENCY_MAPPING_STANDAR_APPROVER
         if(!empty($approver_id)){
             for ($i=0;$i<sizeof($approver_id);$i++) {

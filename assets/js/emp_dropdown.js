@@ -141,10 +141,11 @@ $(document).ready(function() {
                 getEmpPos(empId);
             break;
             case 'competency':
+                getEmpNik(empId);
                 getEmpOrg(empId);
                 getEmpOrgId(empId);
-                getEmpNik(empId);
                 getEmpPos(empId);
+                getEmpPosId(empId);
                 getEmpPosGroup(empId);
                 getEmpSenDate(empId);
             break;

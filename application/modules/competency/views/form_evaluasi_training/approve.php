@@ -1,3 +1,5 @@
+<input type="hidden" id="controller" value="<?=$controller?>">
+<input type="hidden" id="org_id" name="org_id" value="<?=$id?>">
 <div class="page-content">
   	<div id="portlet-config" class="modal hide">
       <div class="modal-header">
@@ -10,7 +12,7 @@
  	<div class="content">
 	    <div class="page-title">
 	        <i class="icon-custom-left"></i>
-	        <h3>Kompetensi - <a href="<?=base_url($controller)?>"><?=$title?> - Input</a></h3> 
+	        <h3>Kompetensi - <a href="<?=base_url($controller)?>"><?=$title?> - Detail</a></h3> 
 	    </div>
 	    <div class="row">
 	     	<div class="col-md-12">
@@ -30,12 +32,7 @@
 					                        <label class="form-label text-right">Nama</label>
 					                    </div>
 					                    <div class="col-md-9">
-							            	<select class="select2" style="width:100%" id="emp" name="nik">
-							            		<option value="0">-- Pilih Karyawan --</option>
-							            		<?php foreach($users as $u){?>
-							            			<option value="<?=$u->nik?>"><?=$u->nik.' - '.$u->username?></option>
-							            		<?php } ?>
-							            	</select>
+							            	<input type="text" class="form-control" value="<?=get_name($form->nik)?>" readonly="readonly">
 					                    </div>
 					                </div>
 				                    <div class="row form-row">
@@ -43,8 +40,7 @@
 				                        <label class="form-label text-right"><?php echo lang('dept_div') ?></label>
 				                      </div>
 				                      <div class="col-md-9">
-				                        <input name="organization" id="organization" type="text"  class="form-control" placeholder="-" value="" disabled="disabled">
-				                        <input type="hidden" id="organization_id" name="organization_id" value="">
+				                        <input name="" id="" type="text"  class="form-control" value="<?=get_organization_name($form->organization_id)?>" disabled="disabled">
 				                      </div>
 				                    </div>
 				                    <div class="row form-row">
@@ -52,8 +48,7 @@
 				                        <label class="form-label text-right"><?php echo lang('position') ?></label>
 				                      </div>
 				                      <div class="col-md-9">
-				                        <input name="position" id="position" type="text"  class="form-control" placeholder="-" value="" disabled="disabled">
-				                        <input type="hidden" id="position_id" name="position_id" value="">
+				                        <input name="" id="" type="text"  class="form-control" value="<?=get_position_name($form->position_id)?>" disabled="disabled">
 				                      </div>
 				                    </div>
 					            </div>
@@ -64,7 +59,7 @@
 				                        <label class="form-label text-right">Nama Training</label>
 				                      </div>
 				                      <div class="col-md-9">
-				                        <input name="nama_training" id="nama_training" type="text"  class="form-control" placeholder="-" value="">
+				                        <input name="nama_training" id="nama_training" type="text"  class="form-control" placeholder="-" value="<?=$form->nama_training?>" readonly>
 				                      </div>
 				                    </div>
 				                    <div class="row form-row">
@@ -73,7 +68,7 @@
 				                      </div>
 				                      <div class="col-md-9">
 				                        <div id="datepicker_start" class="input-append date success no-padding">
-				                          <input type="text" class="form-control" name="tgl_training" required>
+				                          <input type="text" class="form-control" name="tgl_training" value="<?=dateIndo($form->tgl_training)?>" readonly>
 				                          <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span> 
 				                        </div>
 				                      </div>
@@ -89,7 +84,7 @@
 				                        	<h4 class="">Sasaran Training :</h4>
 				                      	</div>
 				                      	<div class="col-md-12">
-					                        <textarea name="sasaran" class="form-control" placeholder="isi sasaran training disini....."></textarea>
+					                        <textarea name="sasaran" class="form-control" placeholder="isi sasaran training disini....." readonly="readonly"><?=$form->sasaran?></textarea>
 					                   	</div>
 				                    </div>
 					        	</div>
@@ -102,17 +97,14 @@
 				                      	<div class="col-md-12">
 				                        	<h4 class="">Evaluasi Training :</h4>
 				                      	</div>
-				                      	<div class="radio radio-success">
-				                      		<?php foreach($competency_evaluasi as $e){?>
-			                      			<div class="col-md-6">
-					                        	<input name="competency_evaluasi_training_id" id="<?=$e->id?>" name="competency_evaluasi_training_id" value="<?=$e->id?>" type="radio">
-					                        	<label for="<?=$e->id?>"><?=$e->title?></label>
-					                   		 </div>
-					                        <?php } ?>
-					               		 </div>
 					               		<div class="col-md-12">
-					                    	<input type="text" class="form-control" id="competency_evaluasi_training_lain" name="competency_evaluasi_training_lain" style="display: none" placeholder="Isi Evaluasi Training Lainnya Disini .....">
+				                      		<input type="text" class="" name="" value="<?=getValue('title', 'competency_evaluasi_training', array('id'=>'where/'.$form->competency_evaluasi_training_id))?>" readonly>
+					               		</div>
+					               		<?php if($form->competency_evaluasi_training_id == 5 && !empty($form->competency_evaluasi_training_lain)){?>
+					               		<div class="col-md-12">
+					                    	<input type="text" class="" id="competency_evaluasi_training_lain" name="competency_evaluasi_training_lain" placeholder="Isi Evaluasi Training Lainnya Disini ....." value="<?=$form->competency_evaluasi_training_id?>">
 					                   	</div>
+					                   	<?php } ?>
 				                    </div>
 					        	</div>
 					        </div>
@@ -124,13 +116,10 @@
 				                    	<div class="col-md-12">
 				                        	<h4 class="">Metode Evaluasi :</h4>
 				                      	</div>
-				                      	<?php foreach($competency_metode as $m){?>
-					                      	<div class="col-md-4">
-						                        <div class="checkbox check-default">
-							                      <input name="competency_metode_evaluasi_id[]" id="metode_<?=$m->id?>" value="<?=$m->id?>" type="checkbox">
-							                      <label for="metode_<?=$m->id?>"><?=$m->title?></label>
-							                    </div>
-						                   	</div>
+				                      	<?php foreach($competency_metode as $key=>$v){?>
+					                      	<div class="col-md-12">
+				                      		<input type="text" class="" name="" value="<?=getValue('title','competency_metode_evaluasi', array('id'=>'where/'.$v));?>" readonly>
+					               		</div>
 						                <?php } ?>
 				                    </div>
 					        	</div>
@@ -182,23 +171,13 @@
 															<tr>
 																<td><?=$i++?></td>
 																<td>
-																	<?=$p->title?>
-																	<input type="hidden" name="pengetahuan_point_id[]" value="<?=$p->id?>">
+																	<?=getValue('title', 'competency_pengetahuan', array('id'=>'where/'.$p->competency_pengetahuan_id))?>
 																</td>
 																<td class="text-center">
-																	<select class="select2" name="pengetahuan_point_sebelum[]">
-																		<?php for ($j=1; $j < 6; $j++) { 
-																			echo "<option value='$j'>$j</option>";
-																		}
-																		?>
-																	</select>
+																	<?=$p->point_sebelum?>
 																</td>
 																<td class="text-center">
-																	<select class="select2" name="pengetahuan_point_sesudah[]">
-																		<?php for ($k=1; $k < 6; $k++) { 
-																			echo "<option value='$k'>$k</option>";
-																		}
-																		?>
+																	<?=$p->point_sesudah?>
 																	</select>
 																</td>
 															</tr>
@@ -218,27 +197,17 @@
 														</tr>
 													</thead>
 													<tbody>
-														<?php $i = 1;foreach ($competency_sikap as $s) { ?>
+														<?php $i = 1;foreach ($competency_sikap as $p) { ?>
 															<tr>
 																<td><?=$i++?></td>
 																<td>
-																	<?=$s->title?>
-																	<input type="hidden" name="sikap_point_id[]" value="<?=$s->id?>">
+																	<?=getValue('title', 'competency_sikap', array('id'=>'where/'.$p->competency_sikap_id))?>
 																</td>
 																<td class="text-center">
-																	<select class="select2" name="sikap_point_sebelum[]">
-																		<?php for ($j=1; $j < 6; $j++) { 
-																			echo "<option value='$j'>$j</option>";
-																		}
-																		?>
-																	</select>
+																	<?=$p->point_sebelum?>
 																</td>
 																<td class="text-center">
-																	<select class="select2" name="sikap_point_sesudah[]">
-																		<?php for ($k=1; $k < 6; $k++) { 
-																			echo "<option value='$k'>$k</option>";
-																		}
-																		?>
+																	<?=$p->point_sesudah?>
 																	</select>
 																</td>
 															</tr>
@@ -258,12 +227,24 @@
 														</tr>
 													</thead>
 													<tbody>
+														<?php $i = 1;foreach ($competency_keterampilan as $p) { ?>
+															<tr>
+																<td><?=$i++?></td>
+																<td>
+																	<?=$p->title?>
+																</td>
+																<td class="text-center">
+																	<?=$p->point_sebelum?>
+																</td>
+																<td class="text-center">
+																	<?=$p->point_sesudah?>
+																	</select>
+																</td>
+															</tr>
+														<?php } ?>
 													</tbody>
 												</table>
 
-												<div class="col-md-12">
-									        		<button id="btnAdd" type="button" class="btn btn-small btn-primary" title="Tambah Point Keterampilan" onclick="addKeterampilan('tbl_keterampilan')"><i class="icon-plus"></i> Tambah Point Keterampilan</button>
-									        	</div>
 									        	<br/>
 									        	<br/>
 
@@ -276,25 +257,20 @@
 														</tr>
 													</thead>
 													<tbody>
-														<tr>
-															<td><input type="text" class="form-control" name="output" placeholder="isi output/hasil Pekerjaan disini....."></td>
-															<td class="text-center">
-																<select class="select2" name="output_point_sebelum">
-																	<?php for ($j=1; $j < 6; $j++) { 
-																		echo "<option value='$j'>$j</option>";
-																	}
-																	?>
-																</select>
-															</td>
-															<td class="text-center">
-																<select class="select2" name="output_point_sesudah">
-																	<?php for ($k=1; $k < 6; $k++) { 
-																		echo "<option value='$k'>$k</option>";
-																	}
-																	?>
-																</select>
-															</td>
-														</tr>
+														<?php $i = 1;foreach ($competency_output as $p) { ?>
+															<tr>
+																<td>
+																	<?=$p->title?>
+																</td>
+																<td class="text-center">
+																	<?=$p->point_sebelum?>
+																</td>
+																<td class="text-center">
+																	<?=$p->point_sesudah?>
+																	</select>
+																</td>
+															</tr>
+														<?php } ?>
 													</tbody>
 												</table>
 							                </div>
@@ -315,11 +291,11 @@
 				                        	<h4 class="">Realisasi Tanggal :</h4>
 				                      	</div>
 				                      	<div class="col-md-8">
-					                        <textarea name="tindak_lanjut" class="form-control" placeholder="isi tindak lanjut dari evaluasi disini....."></textarea>
+					                        <textarea name="tindak_lanjut" class="form-control" placeholder="isi tindak lanjut dari evaluasi disini....." readonly="readonly"><?=$form->tindak_lanjut?></textarea>
 					                   	</div>
 				                      	<div class="col-md-4">
 					                        <div id="datepicker_start" class="input-append date success no-padding">
-					                          <input type="text" class="form-control" name="realisasi_tgl" required>
+					                          <input type="text" class="form-control" name="realisasi_tgl" value="<?=dateIndo($form->realisasi_tgl)?>" readonly>
 					                          <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span> 
 					                        </div>
 					                   	</div>
@@ -327,34 +303,47 @@
 					        	</div>
 					        </div>
 					        <hr/>
-
-					        <div class="row">
-					        	<div class="col-md-12">
-				                    <div class="row form-row">
-				                      	<div class="col-md-1">
-				                        	<label class="form-label">HRD</label>
-				                      	</div>
-
-					                   	<div class="col-md-4">
-				                        	<select class="select2" style="width:100%" id="hrd" name="hrd">
-				                        		<option value="0">-- Pilih HRD --</option>
-							            		<?php foreach($users as $u){?>
-							            			<option value="<?=$u->nik?>"><?=$u->nik.' - '.$u->username?></option>
-							            		<?php } ?>
-							            	</select>
-				                      	</div>
-				                    </div>
-					        	</div>
-					        </div>
-					        <hr/>
-				            
-			            	<div id="submit" class="form-actions">
-			                 	<div class="pull-right">
-			                    	<button class="btn btn-success btn-cons" type="submit"><i class="icon-ok"></i> <?php echo lang('save_button') ?></button>
-			                    	<a href="<?php echo site_url($controller) ?>"><button class="btn btn-white btn-cons" type="button"><?php echo lang('cancel_button') ?></button></a>
-			                  	</div>
-			                </div>
 			              	<?php echo form_close(); ?>
+
+			              	<div class="form-actions">
+					        	<div class="col-md-12 text-center">
+					        		<div class="row">
+					        			<div class="col-md-6 text-center"><span class="semi-bold">Evaluator,</span><br/><br/><br/></div>
+					        			<div class="col-md-6 text-center"><span class="semi-bold">HRD,</span><br/><br/><br/></div>
+					        		</div>
+					              	<div class="row wf-cuti">
+					                	<div class="col-md-6" id="lv1">
+					                  		<p class="wf-approve-sp">
+					                      	<span class="small"></span><br/>
+					                          <span class="semi-bold"><?php echo get_name($form->created_by)?></span><br/>
+					                          <span class="small"><?php echo dateIndo($form->created_on)?></span><br/>
+					                          <span class="semi-bold"><?=get_user_position($form->created_by)?></span>
+					                  		</p>
+					                	</div>
+
+					                	<div class="col-md-6" id="<?=sessId()?>">
+					                  		<p class="wf-approve-sp">
+					                      	<?php 
+					                  			if($form->hrd == sessNik() && $form->hrd == 0){ ?>
+					                  				<div class="btn btn-success btn-cons" id="" type="button" data-toggle="modal" data-target="#submitModal<?=sessId()?>" style="margin-top: -15px;"><i class="icon-ok"></i>Submit</div><br/>
+					                  				<span class="semi-bold"><?php echo get_name($form->hrd)?></span><br/>
+					                          		<span class="small"><?php echo dateIndo($form->date_app)?></span><br/>
+					                          		<span class="semi-bold"><?=get_user_position(get_nik($form->hrd))?></span>
+					                  			<?php }else{ 
+					                  				echo ($form->app_status_id == 1)?"<img class=approval-img src=$approved>": (($form->app_status_id == 2) ? "<img class=approval-img src=$rejected>"  : (($form->app_status_id == 3) ? "<img class=approval-img src=$pending>" : "<span class='small'></span><br/>"));
+					                  			?>
+					                      	  <span class="small"></span><br/>
+					                          <span class="semi-bold"><?php echo get_name($form->hrd)?></span><br/>
+					                          <span class="small"><?php echo dateIndo($form->date_app)?></span><br/>
+					                          <span class="semi-bold"><?=get_user_position(get_nik($form->hrd))?></span>
+					                         <?php } ?>
+					                  		</p>
+					                	</div>
+					                	
+					              	</div>
+					            </div> 
+					        </div>
+
 			            </div>
 		          	</div>
 		        </div>
@@ -362,3 +351,56 @@
 	    </div>
   	</div>
 </div>
+
+<!--approval Modal -->
+<div class="modal fade" data-backdrop="static" data-keyboard="false" id="submitModal<?=sessId()?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" id="modaldialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Approval Form</h4>
+      </div>
+      <p class="error_msg" id="MsgBad" style="background: #fff; display: none;"></p>
+      <div class="modal-body">
+        <form class="form-no-horizontal-spacing"  id="formApp<?=sessId()?>">
+        	<div class="row form-row">
+              <div class="col-md-12">
+                <label class="form-label text-left">Status Approval </label>
+              </div>
+              <div class="col-md-12">
+                <div class="radio">
+                  <?php 
+                  if($approval_status->num_rows() > 0){
+                    foreach($approval_status->result() as $app){
+                      // $checked = ($app->id <> 0 && $app->id == $user->approval_status_id_lv2) ? 'checked = "checked"' : '';
+                      $checked = '';
+                      $checked2 = ($app->id == 1) ? 'checked = "checked"' : '';
+                      ?>
+                  <input id="app_status_lv2<?php echo $app->id?>" type="radio" name="app_status_id" value="<?php echo $app->id?>" <?php echo (!empty($checked))?$checked:$checked2;?>>
+                  <label for="app_status_lv2<?php echo $app->id?>"><?php echo $app->title?></label>
+                  <?php }}else{?>
+                  <input id="app_status" type="radio" name="app_status_lv2" value="0">
+                  <label for="app_status">No Data</label>
+                    <?php } ?>
+                </div>
+              </div>
+            </div>
+            <div class="row form-row">
+              <div class="col-md-12">
+                <label class="form-label text-left">Note : </label>
+              </div>
+              <div class="col-md-12">
+                <textarea name="note" class="custom-txtarea-form" placeholder="Note isi disini...."></textarea>
+              </div>
+            </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="icon-remove"></i>&nbsp;<?php echo lang('close_button')?></button> 
+        <button id="btnApp<?=sessId()?>" onclick="approve(<?=sessId()?>)" type="button" class="btn btn-success btn-cons"><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
+      </div>
+        <?php echo form_close()?>
+    </div>
+  </div>
+</div>
+<!--end approve modal Lv2--> 
+

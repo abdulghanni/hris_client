@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 ini_set('MAX_EXECUTION_TIME', 0);
-class form_penilaian extends MX_Controller {
+class kinerja_supporting extends MX_Controller {
 
     public $data;
 
@@ -15,16 +15,16 @@ class form_penilaian extends MX_Controller {
 
         $this->lang->load('auth');
         $this->load->helper('language');
-        $this->load->model('competency/form_penilaian_model','main');
+        $this->load->model('competency/kinerja_supporting_model','main');
     }
 
-    var $title = 'Form Penilaian Kemauan dan Kemampuan SDM';
+    var $title = 'Penilaian Kinerja Supporting';
     var $limit = 100000;
-    var $controller = 'competency/form_penilaian';
-    var $model_name = 'form_penilaian';
-    var $table = 'competency_form_penilaian';
+    var $controller = 'competency/kinerja_supporting';
+    var $model_name = 'kinerja_supporting';
+    var $table = 'competency_kinerja_supporting';
     var $id_table = 'id';
-    var $list_view = 'form_penilaian/index';
+    var $list_view = 'kinerja_supporting/index';
 
     //redirect if needed, otherwise display the user list
     function index($id=NULL)
@@ -40,11 +40,11 @@ class form_penilaian extends MX_Controller {
         else
         {
             $data['title'] = $this->title;
-            $data['url_ajax_list'] = site_url('form_penilaian/ajax_list');
-            $data['url_ajax_add'] = site_url('form_penilaian/ajax_add');
-            $data['url_ajax_edit'] = site_url('form_penilaian/ajax_edit');
-            $data['url_ajax_delete'] = site_url('form_penilaian/ajax_delete');
-            $data['url_ajax_update'] = site_url('form_penilaian/ajax_update');
+            $data['url_ajax_list'] = site_url('kinerja_supporting/ajax_list');
+            $data['url_ajax_add'] = site_url('kinerja_supporting/ajax_add');
+            $data['url_ajax_edit'] = site_url('kinerja_supporting/ajax_edit');
+            $data['url_ajax_delete'] = site_url('kinerja_supporting/ajax_delete');
+            $data['url_ajax_update'] = site_url('kinerja_supporting/ajax_update');
             $data['ci'] = $this;
             $data['form'] = getAll($this->table);
 
@@ -56,10 +56,8 @@ class form_penilaian extends MX_Controller {
         permissionBiasa();
         $data['title'] = $this->title;
         $data['controller'] = $this->controller;
-        $data['competency_penilaian'] = GetAll('competency_penilaian')->result();
         $data['users'] = GetAll('users')->result();
-        $data['rekomendasi'] = GetAll('competency_rekomendasi')->result();
-        $this->_render_page('form_penilaian/input', $data);
+        $this->_render_page('kinerja_supporting/input', $data);
     }
 
     function approve($id, $approver_id=null){
@@ -68,7 +66,8 @@ class form_penilaian extends MX_Controller {
         $data['title'] = $this->title;
         $data['controller'] = $this->controller;
         $data['form'] = getAll($this->table, array('id'=>'where/'.$id))->row();
-        $data['detail'] = $this->main->detail($id);//print_mz($data['detail']);
+        $data['performance'] = getAll($this->table.'_performance', array($this->table.'_id'=>'where/'.$id))->result();
+        $data['kompetensi'] = getAll($this->table.'_kompetensi', array($this->table.'_id'=>'where/'.$id))->result();
         $data['approver'] = getAll($this->table.'_approver', array($this->table.'_id'=>'where/'.$id));
         $data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
         $data['approved'] = assets_url('img/approved_stamp.png');
@@ -83,7 +82,7 @@ class form_penilaian extends MX_Controller {
             $app = $this->load->view($this->controller.'/app_stat', $data, true);
             // $note = $this->load->view('form_cuti/note', $data, true);
             $note = '';
-            echo json_encode(array('app'=>$app, 'note'=>$note, 'date'=>lq()));
+            echo json_encode(array('app'=>$app, 'note'=>$note, 'date'=>dateNow()));
         }else{
             $this->_render_page($this->controller.'/approve', $data);
         }
@@ -92,68 +91,95 @@ class form_penilaian extends MX_Controller {
     function add(){
         // print_mz($_POST);
         permissionBiasa();
-        // $this->form_validation->set_rules('competency_def_id', 'Kompetensi', 'trim|required');
-        $approver_id = $this->input->post('approver_id');
-        $com = $this->input->post('competency_penilaian_id');
-        $kemampuan = $this->input->post('kemampuan');
-        $kemauan = $this->input->post('kemauan');
-        $alasan = $this->input->post('alasan');
 
-        //print_mz($kemampuan[1]);
-        // INSERT TO COMPETENCY_form_penilaian
+        $aspek_performance = $this->input->post('aspek_performance');
+        $bobot_performance = $this->input->post('bobot_performance');
+        $nilai_performance = $this->input->post('nilai_performance');
+        $persentase_performance = $this->input->post('persentase_performance');
+        $aspek_kompetensi = $this->input->post('aspek_kompetensi');
+        $bobot_kompetensi = $this->input->post('bobot_kompetensi');
+        $nilai_kompetensi = $this->input->post('nilai_kompetensi');
+        $persentase_kompetensi = $this->input->post('persentase_kompetensi');
+        $approver_id = $this->input->post('approver_id');
+        // INSERT TO COMPETENCY_form_evaluasi_training
         $data = array(
             'nik' => $this->input->post('nik'),
-            'rekomendasi_id' => $this->input->post('rekomendasi_id'),
+            'organization_id' => $this->input->post('organization_id'),
+            'position_id' => $this->input->post('position_id'),
+            'periode' => date('Y-m-d', strtotime($this->input->post('tgl_training'))),
+            'sub_total_bobot_performance' => $this->input->post('sub_total_bobot_performance'),
+            'sub_total_nilai_performance' => $this->input->post('sub_total_nilai_performance'),
+            'sub_total_persentase_performance' => $this->input->post('sub_total_persentase_performance'),
+            'sub_total_bobot_kompetensi' => $this->input->post('sub_total_bobot_kompetensi'),
+            'sub_total_nilai_kompetensi' => $this->input->post('sub_total_nilai_kompetensi'),
+            'sub_total_persentase_kompetensi' => $this->input->post('sub_total_persentase_kompetensi'),
+            'total' => $this->input->post('total'),
+            'konversi' => $this->input->post('konversi'),
+            'potensi_promosi' => $this->input->post('potensi_promosi'),
+            'catatan_perilaku' => $this->input->post('catatan_perilaku'),
+            'kebutuhan_training' => $this->input->post('kebutuhan_training'),
+            'target_kedepan' => $this->input->post('target_kedepan'),
             'created_by'=>sessId(),
             'created_on'=>dateNow(),
             );
-        $this->db->insert($this->table, $data);
-        $com_id = $this->db->insert_id();
-        // INSERT TO COMPETENCY_form_penilaian_DETAIL
-        for($i=1;$i<=sizeof($com);$i++) {
-            $data = array(
-                'competency_form_penilaian_id' => $com_id,
-                'competency_penilaian_id' => $com[$i],
-                'kemampuan' => $kemampuan[$i],
-                'kemauan' => $kemauan[$i],
-                'alasan' => $alasan[$i],
+
+        if($this->db->insert($this->table, $data)){
+            $form_id = $this->db->insert_id();
+            
+            //table competency kinerja supporting performance
+            for ($i=0; $i < sizeof($aspek_performance) ; $i++) { 
+                $performance = array(
+                    $this->table.'_id' => $form_id, 
+                    'aspek' => $aspek_performance[$i], 
+                    'bobot' => $bobot_performance[$i], 
+                    'nilai' => $nilai_performance[$i], 
+                    'persentase' => $persentase_performance[$i], 
                 );
-            $this->db->insert($this->table.'_detail', $data);
-        }
 
-        $url = base_url().$this->controller.'/approve/'.$com_id;
-        $subject_email = "Kompetensi - $this->title";
-        $isi_email = get_name(sessId())." Membuat ".$this->title.
+                $this->db->insert($this->table.'_performance', $performance);
+            }
+
+            //table competency kinerja supporting kompetensi
+            for ($i=0; $i < sizeof($aspek_kompetensi) ; $i++) { 
+                $kompetensi = array(
+                    $this->table.'_id' => $form_id, 
+                    'aspek' => $aspek_kompetensi[$i], 
+                    'bobot' => $bobot_kompetensi[$i], 
+                    'nilai' => $nilai_kompetensi[$i], 
+                    'persentase' => $persentase_kompetensi[$i], 
+                );
+
+                $this->db->insert($this->table.'_kompetensi', $kompetensi);
+            }
+
+            //INSERT TO KINERJA SUPPORTING APPROVER
+            $url = base_url().$this->controller.'/approve/'.$form_id;
+            $subject_email = "Kompetensi - $this->title";
+            $isi_email = get_name(sessId())." Membuat ".$this->title.
                      "<br/>Untuk melihat detail silakan <a href=$url>Klik disini</a>";
                      
-                     
-        // INSERT TO COMPETENCY_form_penilaian_APPROVER
-        $url = base_url().$this->controller.'/approve/'.$com_id;
-        $subject_email = "Kompetensi - $this->title";
-        $isi_email = get_name(sessId())." Membuat ".$this->title.
-                     "<br/>Untuk melihat detail silakan <a href=$url>Klik disini</a>";
-                     
-        for ($i=0;$i<sizeof($approver_id);$i++) {
-            $data = array(
-                $this->table.'_id' => $com_id,
-                'user_id' => $approver_id[$i]
-            );
-            $this->db->insert($this->table.'_approver', $data);//print_ag(lq());
+            for ($i=0;$i<sizeof($approver_id);$i++) {
+                $data = array(
+                    $this->table.'_id' => $form_id,
+                    'user_id' => $approver_id[$i]
+                );
+                $this->db->insert($this->table.'_approver', $data);//print_ag(lq());
 
-            $data4 = array(
-                  'sender_id' => get_nik(sessId()),
-                  'receiver_id' => get_nik($approver_id[$i]),
-                  'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                  'subject' => $subject_email,
-                  'email_body' => $isi_email,
-                  'is_read' => 0,
-            );
-            $this->db->insert('email', $data4);
-            if(!empty(getEmail($approver_id[$i])))$this->send_email(getEmail($approver_id[$i]), $subject_email, $isi_email);
+                $data4 = array(
+                      'sender_id' => get_nik(sessId()),
+                      'receiver_id' => get_nik($approver_id[$i]),
+                      'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                      'subject' => $subject_email,
+                      'email_body' => $isi_email,
+                      'is_read' => 0,
+                );
+                $this->db->insert('email', $data4);
+                if(!empty(getEmail($approver_id[$i])))$this->send_email(getEmail($approver_id[$i]), $subject_email, $isi_email);
+            }
         }
+
         redirect(base_url($this->controller), 'refresh');
     }
-
     // FOR js
     function do_approve($form_id){
         if(!$this->ion_auth->logged_in())
@@ -177,6 +203,19 @@ class form_penilaian extends MX_Controller {
         }
     }
     
+    function add_performance($id)
+    {
+        $data['id'] = $id;
+        $this->load->view('competency/kinerja_supporting/row_performance', $data);
+    }
+
+    function add_kompetensi($id)
+    {
+        $data['id'] = $id;
+        $this->load->view('competency/kinerja_supporting/row_kompetensi', $data);
+    }
+
+
     function _render_page($view, $data=null, $render=false)
     {
 
@@ -185,7 +224,7 @@ class form_penilaian extends MX_Controller {
         {
             $this->load->library('template');
 
-            if (in_array($view, array('form_penilaian/index')))
+            if (in_array($view, array('kinerja_supporting/index')))
             {
                 $this->template->set_layout('default');
                 $this->template->add_js('jquery-ui-1.10.1.custom.min.js');
@@ -198,9 +237,9 @@ class form_penilaian extends MX_Controller {
                 $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                 $this->template->add_css('plugins/select2/select2.css');
 
-                $this->template->add_js('competency/form_penilaian.js');
+                $this->template->add_js('competency/kinerja_supporting.js');
                     
-            }elseif(in_array($view, array('form_penilaian/input')))
+            }elseif(in_array($view, array('kinerja_supporting/input')))
             {
                 $this->template->set_layout('default');
                 $this->template->add_js('jquery-ui-1.10.1.custom.min.js');
@@ -214,7 +253,7 @@ class form_penilaian extends MX_Controller {
                 $this->template->add_css('plugins/select2/select2.css');
 
                 $this->template->add_js('competency/competency.js');
-                $this->template->add_js('competency/form_penilaian_input.js');
+                $this->template->add_js('competency/kinerja_supporting_input.js');
                 $this->template->add_js('emp_dropdown.js');
                     
             }elseif(in_array($view, array($this->controller.'/approve')))
