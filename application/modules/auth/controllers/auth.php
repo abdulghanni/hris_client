@@ -932,6 +932,7 @@ class Auth extends MX_Controller {
         $this->form_validation->set_rules('marital_id', $this->lang->line('edit_user_validation_marital_label'), 'xss_clean');
         $this->form_validation->set_rules('groups', $this->lang->line('edit_user_validation_groups_label'), 'xss_clean');
         $this->form_validation->set_rules('photo', $this->lang->line('edit_user_validation_photo_label'), 'xss_clean');
+        
 
        if (isset($_POST) && !empty($_POST))
         {
@@ -1095,6 +1096,7 @@ class Auth extends MX_Controller {
             }
 
             //update the password if it was posted
+
             if ($this->input->post('password_update'))
             {
                 $this->form_validation->set_rules('password_update', $this->lang->line('edit_user_validation_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[password_confirm]');
@@ -1103,8 +1105,12 @@ class Auth extends MX_Controller {
                 $data['password'] = $this->input->post('password_update');
             }
 
+            $this->form_validation->set_rules('email', $this->lang->line('edit_user_validation_email_label'), 'xss_clean|required|valid_email');
+
+            $data['email'] = $this->input->post('email');
             if ($this->form_validation->run() === TRUE)
             {
+                
                 $this->ion_auth->update($user->id, $data);
 
                 //check to see if we are creating the user
@@ -1200,7 +1206,7 @@ class Auth extends MX_Controller {
             'name'  => 'email',
             'id'    => 'email',
             'type'  => 'text',
-            'disabled'  => 'disabled',
+            //'disabled'  => 'disabled',
             'value' => $this->form_validation->set_value('email', $user->email),
             'required' => 'required'
         );
