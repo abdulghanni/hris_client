@@ -34,7 +34,11 @@ $(document).ready(function() {
 	      equalTo : password,
 	    },
 
-	    superior_id: {notEqual:0}
+	    superior_id: {notEqual:0},
+
+	    email: {
+	    	email: true,
+	    }
 	  },
 	    messages: {
 	        //password: "Password harus berisi delapan karakter atau lebih",
