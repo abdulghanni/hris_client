@@ -22,3 +22,8 @@ function addApprover(tableID){
          dataType:"html"
     });
 }
+
+$(document).on('click', 'button.removebutton', function () {
+ $(this).closest('tr').remove();
+ return false;
+});

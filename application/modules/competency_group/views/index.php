@@ -55,24 +55,13 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <h3 class="modal-title">Form</h3>
         </div>
-        <form action="#" id="form" class="form">
+        <form action="#" id="form-competency" class="form">
           <div class="modal-body">
               <div class="row form-row">
                 <label class="control-label col-md-3">Title</label>
                 <div class="col-md-9">
                   <input name="title" placeholder="Title" class="form-control" type="text">
                   <span class="help-block"></span>
-                </div>
-              </div>
-              <div class="row form-row">
-                <label class="control-label col-md-3">Position Group</label>
-                <div class="col-md-9">
-                  <select class="select2">
-                    <option>-- Pilih  Position Group --</option>
-                    <?php foreach($position_group as $ps){?>
-                    <option><?php echo $ps['DESCRIPTION']?></option>
-                    <?php } ?>
-                  </select>
                 </div>
               </div>
           </div>

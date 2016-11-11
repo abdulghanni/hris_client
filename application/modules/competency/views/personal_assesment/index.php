@@ -45,7 +45,8 @@
                                             <td width="15%"><?=get_name($r->nik)?></td>
                                             <td width="10%"><?=get_user_position($r->nik)?></td>
                                             <td width="5%" class="text-center">
-                                              <a href="<?=base_url($ci->controller.'/approve/'.$r->id)?>"><button type="button" class="btn btn-primary" title="Klik disini untuk membuat pengajuan baru"><i class="icon-info"></i></button></a>
+                                              <a href="<?=base_url($ci->controller.'/approve/'.$r->id)?>"><button type="button" class="btn btn-primary" title="Klik disini untuk melihat detail"><i class="icon-info"></i></button></a>
+                                              <a href="<?=base_url($ci->controller.'/edit/'.$r->id)?>"><button type="button" class="btn btn-primary" title="Klik disini untuk merubah"><i class="icon-pencil"></i></button></a>
                                             </td>
                                           </tr>
                                           <?php } ?>

@@ -54,10 +54,10 @@
 										<thead>
 											<tr>
 												<th width="5%">
-													<div class="checkbox check-default">
+													<!-- <div class="checkbox check-default">
 								                      <input id="checkbox" type="checkbox" value="0"> 
 								                      <label for="checkbox"></label>
-								                    </div>
+								                    </div> -->
 												</th>
 												<th width="25%">Kompetensi</th>
 												<th width="70%" colspan="<?=$pg_size?>" class="text-center">Level Jabatan</th>
@@ -85,11 +85,17 @@
 															<?=$k->title?>
 															<input type="hidden" name="competency_def_id[]" value="<?=$k->id?>">		
 														</td>
-														<?php foreach ($pos_group as $key => $value) {?>
+														<?php foreach ($pos_group as $key => $value) {
+															$filter = array('organization_id'=>'where/'.$org_id,
+																		'competency_def_id'=>'where/'.$k->id,
+																		'position_group_id'=>'where/'.$value
+																		);
+																	$standar = getValue('level', 'competency_mapping_standar_detail', $filter);
+															?>
 															<td width="<?=$col?>%">
 																<select class="select2" name="level[<?=$k->id?>][]">
 																<?php for ($i=0; $i<5 ; $i++) { ?>
-																	<option value="<?=$i?>"><?=$i?></option>
+																	<option value="<?=$i?>" <?=($standar == $i) ? 'selected="selected"' : ''?>><?=$i?></option>
 																<?php } ?>
 																</select>
 															</td>
@@ -150,7 +156,22 @@
 						                			</tr>
 						            			</thead>
 						            			<tbody>
-						            				
+						            				<?php
+						            				if($approver->num_rows>0){
+						            					$i = 1;foreach ($approver->result() as $a) {
+						            				?>
+						            				<tr>
+						            						<td><?=$i++?></td>
+						            						<td>Nama Approver</td>
+						            						<td><?=get_name($a->user_id)?>
+						            							<input type="hidden" name="approver_id[]" value="<?=$a->user_id?>">
+						            						</td>
+						            						<td><button type="button" id="removebutton" class="btn btn-danger removebutton"><i class="icon-remove"></i></button></td>
+						            				</tr>
+						            				<?php 
+						            					}
+						            				} 
+						            				?>
 						            			</tbody>
 						            		</table>
 						            	</div>
