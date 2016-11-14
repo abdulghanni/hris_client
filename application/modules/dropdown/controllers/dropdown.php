@@ -204,7 +204,7 @@ class Dropdown extends MX_Controller {
                  foreach ($atasan as $row)
                     {
                         $result['0']= '-- Pilih Admin Asset Management --';
-                        $result[$row['EMPLID']]= ucwords(strtolower($row['NAME']));
+                        $result[$row['EMPLID']]= $row['ID'].' - '.ucwords(strtolower($row['NAME']));
                     }
             }else{
                 $result['0']= '- No Data Available -';
@@ -241,7 +241,7 @@ class Dropdown extends MX_Controller {
               foreach ($atasan4 as $row)
                 {
                     $result['0']= '-- Pilih Atasan --';
-                    $result[$row['ID']]= ucwords(strtolower($row['NAME']));
+                    $result[$row['ID']]= $row['ID'].' - '.ucwords(strtolower($row['NAME']));
                 }
           }elseif($response == "404" && $response2 != "404" && $response3 != "404"){
                
@@ -253,7 +253,7 @@ class Dropdown extends MX_Controller {
               foreach ($atasan4 as $row)
                 {
                     $result['0']= '-- Pilih Atasan --';
-                    $result[$row['ID']]= ucwords(strtolower($row['NAME']));
+                    $result[$row['ID']]= $row['ID'].' - '.ucwords(strtolower($row['NAME']));
                 }
           }elseif($response == "404" && $response2 == "404" && $response3 != "404"){
               
@@ -262,7 +262,7 @@ class Dropdown extends MX_Controller {
               foreach ($atasan3 as $row)
                 {
                     $result['0']= '-- Pilih Atasan --';
-                    $result[$row['ID']]= ucwords(strtolower($row['NAME']));
+                    $result[$row['ID']]= $row['ID'].' - '.ucwords(strtolower($row['NAME']));
                 }
           }else{
               $result['0']= '- Karyawan Tidak Memiliki Atasan -';
@@ -275,7 +275,7 @@ class Dropdown extends MX_Controller {
              foreach ($atasan as $row)
                 {
                     $result['0']= '-- Pilih Atasan --';
-                    $result[$row['ID']]= ucwords(strtolower($row['NAME']));
+                    $result[$row['ID']]= $row['ID'].' - '.ucwords(strtolower($row['NAME']));
                 }
            }elseif($response == "404" && $response2 != "404") {
             $get_atasan = file_get_contents($url_atasan_satu_bu);
@@ -284,7 +284,7 @@ class Dropdown extends MX_Controller {
              foreach ($atasan as $row)
                 {
                     $result['0']= '-- Pilih Atasan --';
-                    $result[$row['ID']]= ucwords(strtolower($row['NAME']));
+                    $result[$row['ID']]= $row['ID'].' - '.ucwords(strtolower($row['NAME']));
                 }
            }else{
                 $result['0']= '- Karyawan Tidak Memiliki Atasan -';
@@ -321,7 +321,7 @@ class Dropdown extends MX_Controller {
               foreach ($atasan4 as $row)
                 {
                     $result['0']= '-- Pilih Atasan --';
-                    $result[$row['ID']]= ucwords(strtolower($row['NAME']));
+                    $result[$row['ID']]= $row['ID'].' - '.ucwords(strtolower($row['NAME']));
                 }
           }elseif($response == "404" && $response2 != "404" && $response3 != "404"){
                
@@ -333,7 +333,7 @@ class Dropdown extends MX_Controller {
               foreach ($atasan4 as $row)
                 {
                     $result['0']= '-- Pilih Atasan --';
-                    $result[$row['ID']]= ucwords(strtolower($row['NAME']));
+                    $result[$row['ID']]= $row['ID'].' - '.ucwords(strtolower($row['NAME']));
                 }
           }elseif($response == "404" && $response2 == "404" && $response3 != "404"){
               
@@ -343,7 +343,7 @@ class Dropdown extends MX_Controller {
               foreach ($atasan3 as $row)
                 {
                     $result['0']= '-- Pilih Atasan --';
-                    $result[$row['ID']]= ucwords(strtolower($row['NAME']));
+                    $result[$row['ID']]= $row['ID'].' - '.ucwords(strtolower($row['NAME']));
                 }
           }else{
               $result['0']= '- Karyawan Tidak Memiliki Atasan -';
@@ -356,7 +356,7 @@ class Dropdown extends MX_Controller {
              foreach ($atasan as $row)
                 {
                     $result['0']= '-- Pilih Atasan --';
-                    $result[$row['ID']]= ucwords(strtolower($row['NAME']));
+                    $result[$row['ID']]= $row['ID'].' - '.ucwords(strtolower($row['NAME']));
                 }
            }elseif($response == "404" && $response2 != "404") {
             $get_atasan = file_get_contents($url_atasan_satu_bu);
@@ -365,7 +365,7 @@ class Dropdown extends MX_Controller {
              foreach ($atasan as $row)
                 {
                     $result['0']= '-- Pilih Atasan --';
-                    $result[$row['ID']]= ucwords(strtolower($row['NAME']));
+                    $result[$row['ID']]= $row['ID'].' - '.ucwords(strtolower($row['NAME']));
                 }
            }else{
                 $result['0']= '- Karyawan Tidak Memiliki Atasan -';
@@ -394,7 +394,7 @@ class Dropdown extends MX_Controller {
              foreach ($atasan as $row)
                 {
                     $result['0']= '-- Pilih Atasan --';
-                    $result[$row['ID']]= $row['NAME'];
+                    $result[$row['ID']]= $row['ID'].' - '.$row['NAME'];
                 }
         }else{
             $result['0']= '- Karyawan Tidak Memiliki Atasan -';
@@ -415,7 +415,7 @@ class Dropdown extends MX_Controller {
                  foreach ($task_receiver as $row)
                     {
                         $result['0']= '-- Pilih Karyawan --';
-                        $result[$row['ID']]= ucwords(strtolower($row['NAME']));
+                        $result[$row['ID']]= $row['ID'].' - '.ucwords(strtolower($row['NAME']));
                     }
             } else {
                $result['-']= '- Not Availbale -';
@@ -475,7 +475,7 @@ class Dropdown extends MX_Controller {
         foreach ($subordinate->result_array()  as $row)
         {
             $result['0']= '-- Pilih Karyawan --';
-            $result[$row['id']]= ucwords(strtolower($row['username']));
+            $result[$row['id']]= $row['ID'].' - '.ucwords(strtolower($row['username']));
         }
 
 

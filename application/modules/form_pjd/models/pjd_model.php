@@ -39,9 +39,9 @@ class Pjd_model extends CI_Model {
             $this->db->where($this->table.'.is_deleted', 0);
             $this->db->where($this->table.'.is_show', 1);
             if($f == 1){
-                // $this->db->where('is_app_hrd', 0);
+                 $this->db->where('is_app_hrd', 0);
             }elseif($f == 2){
-                // $this->db->where('is_app_hrd', 1);
+                 $this->db->where('is_app_hrd', 1);
             }else{
                 
             }

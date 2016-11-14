@@ -109,7 +109,15 @@
 										</tbody>
 									</table>
 								</div>
-
+								<div class="col-md-12">
+									<h4>Kuadran :</h4>
+									<?php foreach($kuadran as $s){?>
+										<div class="radio radio-success">
+					                        <input id="<?php echo 'kuadran_id_'.$s->id?>" name="kuadran_id" value="<?=$s->id?>" type="radio">
+					                        <label for="<?php echo 'kuadran_id_'.$s->id?>"><?=$s->title?></label>
+					                     </div>
+									<?php } ?>
+								</div>
 								<div class="col-md-12">
 									<h4>Rekomendasi :</h4>
 									<?php foreach($rekomendasi as $r){?>
