@@ -2,6 +2,7 @@ var save_method; //for save method string
 var table;
 var form = $("#form_name").val();
 var is_admin = $("#is_admin").val();
+var bfliter = false; 
 $(document).ready(function() {
 	// $(".select2").select2();
     //var opt_id = $('#opt option:selected').val();
@@ -31,10 +32,12 @@ $(document).ready(function() {
     })
     .change();
 
-    var bfliter = false;
+    
 
     if(is_admin == 1){
         bfilter = true;
+    }else{
+        bfilter = false;
     }
 
     table = $('#table').DataTable({ 
