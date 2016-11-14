@@ -96,6 +96,29 @@ class form_evaluasi_training extends MX_Controller {
         }
     }
 
+    function edit($id){
+        permissionBiasa();
+        $data['id'] = $id;
+        $data['ci'] = $this;
+        $data['title'] = $this->title;
+        $data['controller'] = $this->controller;
+        $data['competency_evaluasi'] = GetAll('competency_evaluasi_training')->result();
+        $data['competency_metode'] = GetAll('competency_metode_evaluasi')->result();
+        $data['competency_pengetahuan'] = GetAll('competency_pengetahuan')->result();
+        $data['competency_sikap'] = GetAll('competency_sikap')->result();
+        $data['competency_keterampilan'] = GetAll('competency_form_evaluasi_point_keterampilan', array($this->table."_id"=>'where/'.$id))->result();
+
+        $data['users'] = GetAll('users')->result();
+        $data['form'] = getAll($this->table, array('id'=>'where/'.$id))->row();
+        // $data['competency_metode'] = explode(',', $data['form']->competency_metode_evaluasi_id);
+        // $data['competency_pengetahuan'] = GetAll('competency_form_evaluasi_point_pengetahuan', array($this->table."_id"=>'where/'.$id))->result();
+        // $data['competency_sikap'] = GetAll('competency_form_evaluasi_point_sikap', array($this->table."_id"=>'where/'.$id))->result();
+        // $data['competency_keterampilan'] = GetAll('competency_form_evaluasi_point_keterampilan', array($this->table."_id"=>'where/'.$id))->result();
+        // $data['competency_output'] = GetAll('competency_form_evaluasi_point_output', array($this->table."_id"=>'where/'.$id))->result();
+
+        $this->_render_page('form_evaluasi_training/edit', $data);
+    }
+
     function add(){
         //print_mz($_POST);
         permissionBiasa();
@@ -200,6 +223,118 @@ class form_evaluasi_training extends MX_Controller {
         }
         redirect(base_url($this->controller), 'refresh');
     }
+
+    function do_edit($id){
+        permissionBiasa();
+
+        $pengetahuan_point_id = $this->input->post('pengetahuan_point_id');
+        $pengetahuan_point_sebelum = $this->input->post('pengetahuan_point_sebelum');
+        $pengetahuan_point_sesudah = $this->input->post('pengetahuan_point_sesudah');
+        $sikap_point_id = $this->input->post('sikap_point_id');
+        $sikap_point_sebelum = $this->input->post('sikap_point_sebelum');
+        $sikap_point_sesudah = $this->input->post('sikap_point_sesudah');
+        $keterampilan = $this->input->post('keterampilan');
+        // print_mz(sizeof($keterampilan));
+        $keterampilan_point_sebelum = $this->input->post('keterampilan_point_sebelum');
+        $keterampilan_point_sesudah = $this->input->post('keterampilan_point_sesudah');
+
+        // INSERT TO COMPETENCY_form_evaluasi_training
+        $data = array(
+            // 'nik' => $this->input->post('nik'),
+            // 'organization_id' => $this->input->post('organization_id'),
+            // 'position_id' => $this->input->post('position_id'),
+            'nama_training' => $this->input->post('nama_training'),
+            'tgl_training' => date('Y-m-d', strtotime($this->input->post('tgl_training'))),
+            'sasaran' => $this->input->post('sasaran'),
+            'competency_evaluasi_training_id' => $this->input->post('competency_evaluasi_training_id'),
+            'competency_evaluasi_training_lain' => $this->input->post('competency_evaluasi_training_lain'),
+            'competency_metode_evaluasi_id' => implode(',', $this->input->post('competency_metode_evaluasi_id')),
+            'tindak_lanjut' => $this->input->post('tindak_lanjut'),
+            'realisasi_tgl' => date('Y-m-d', strtotime($this->input->post('realisasi_tgl'))),
+
+            'is_app' => 0,
+            'date_app' => 0,
+            'app_status_id' => 0,
+            'hrd' => $this->input->post('hrd'),
+            'edited_by'=>sessId(),
+            'edited_on'=>dateNow(),
+            );
+
+        if($this->db->where('id', $id)->update($this->table, $data)){
+            $form_id = $id;
+            
+            //POINT PENGETAHUAN
+            $this->db->where($this->table.'_id', $id)->delete('competency_form_evaluasi_point_pengetahuan');
+            for ($i=0; $i < sizeof($pengetahuan_point_id) ; $i++) { 
+                $pengetahuan = array(
+                    'competency_form_evaluasi_training_id' => $form_id, 
+                    'competency_pengetahuan_id' => $pengetahuan_point_id[$i], 
+                    'point_sebelum' => $pengetahuan_point_sebelum[$i], 
+                    'point_sesudah' => $pengetahuan_point_sesudah[$i], 
+                );
+
+                $this->db->insert('competency_form_evaluasi_point_pengetahuan', $pengetahuan);
+            }
+
+            // POINT SIKAP
+            $this->db->where($this->table.'_id', $id)->delete('competency_form_evaluasi_point_sikap');
+            for ($i=0; $i < sizeof($sikap_point_id) ; $i++) { 
+                $sikap = array(
+                    'competency_form_evaluasi_training_id' => $form_id, 
+                    'competency_sikap_id' => $sikap_point_id[$i], 
+                    'point_sebelum' => $sikap_point_sebelum[$i], 
+                    'point_sesudah' => $sikap_point_sesudah[$i], 
+                );
+
+                $this->db->insert('competency_form_evaluasi_point_sikap', $sikap);
+            }
+
+            // POINT KETERAMPILAN
+            $this->db->where($this->table.'_id', $id)->delete('competency_form_evaluasi_point_keterampilan');
+            for ($i=0; $i < sizeof($keterampilan) ; $i++) { 
+                $keterampilan_data = array(
+                    'competency_form_evaluasi_training_id' => $form_id, 
+                    'title' => $keterampilan[$i], 
+                    'point_sebelum' => $keterampilan_point_sebelum[$i], 
+                    'point_sesudah' => $keterampilan_point_sesudah[$i], 
+                );
+
+                $this->db->insert('competency_form_evaluasi_point_keterampilan', $keterampilan_data);
+            }
+
+            // POINT OUTPUT
+
+            $this->db->where($this->table.'_id', $id)->delete('competency_form_evaluasi_point_output');
+            $output = array(
+                'competency_form_evaluasi_training_id' => $form_id, 
+                'title' => $this->input->post('output'), 
+                'point_sebelum' => $this->input->post('output_point_sebelum'), 
+                'point_sesudah' => $this->input->post('output_point_sesudah'), 
+            );
+
+            $this->db->insert('competency_form_evaluasi_point_output', $output);
+
+            //NOTIF KE HRD
+            $hrd = $this->input->post('hrd');
+            $url = base_url().$this->controller.'/approve/'.$form_id;
+            $subject_email = "Kompetensi - $this->title";
+            $isi_email = get_name(sessId())." Membuat perubahan".$this->title.
+                     "<br/>Untuk melihat detail silakan <a href=$url>Klik disini</a>";
+                     
+            $data4 = array(
+                  'sender_id' => get_nik(sessId()),
+                  'receiver_id' => $hrd,
+                  'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                  'subject' => $subject_email,
+                  'email_body' => $isi_email,
+                  'is_read' => 0,
+            );
+            $this->db->insert('email', $data4);
+            if(!empty(getEmail($hrd)))$this->send_email(getEmail($hrd), $subject_email, $isi_email);
+
+        }
+        redirect(base_url($this->controller), 'refresh');
+    }
     // FOR js
 
     function do_approve($form_id){
@@ -253,6 +388,25 @@ class form_evaluasi_training extends MX_Controller {
                 $this->template->add_js('competency/form_evaluasi_training.js');
                     
             }elseif(in_array($view, array('form_evaluasi_training/input')))
+            {
+                $this->template->set_layout('default');
+                $this->template->add_js('jquery-ui-1.10.1.custom.min.js');
+                $this->template->add_js('jquery.sidr.min.js');
+                $this->template->add_js('breakpoints.js');
+                $this->template->add_js('select2.min.js');
+                $this->template->add_js('bootstrap-datepicker.js');
+
+                $this->template->add_js('core.js');
+
+                $this->template->add_js('competency/competency.js');
+                $this->template->add_js('competency/form_evaluasi_training_input.js');
+                $this->template->add_js('emp_dropdown.js');
+
+                $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
+                $this->template->add_css('plugins/select2/select2.css');
+                $this->template->add_css('datepicker.css');
+                    
+            }elseif(in_array($view, array('form_evaluasi_training/edit')))
             {
                 $this->template->set_layout('default');
                 $this->template->add_js('jquery-ui-1.10.1.custom.min.js');

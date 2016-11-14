@@ -2,6 +2,9 @@
 	<div class="col-md-12">
 		<?php 
 			if($data->num_rows>0){?>
+			<div class="row col-md-12">
+				<a href="<?=base_url($ci->controller.'/input/'.$org_id)?>"><button class="btn btn-primary"><i class="icon-pencil"></i> Ubah Mapping</button></a>
+			</div>
 			<table class="table table-bordered">
 				<thead>
 					<tr>

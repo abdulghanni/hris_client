@@ -50,7 +50,7 @@ $(document).ready(function(){
 function add()
 {
   save_method = 'add';
-  // $('#form')[0].reset(); // reset form on modals
+  $('#form-competency')[0].reset(); // reset form on modals
   $('.form-group').removeClass('has-error'); // clear error class
   $('.help-block').empty(); // clear error string
   $('#modal_form').modal('show'); // show bootstrap modal
@@ -84,7 +84,7 @@ function save()
       $.ajax({
         url : url,
         type: "POST",
-        data: $('#form').serialize(),
+        data: $('#form-competency').serialize(),
         dataType: "JSON",
         success: function(data)
         {
@@ -145,7 +145,7 @@ function edit_(id)
 {
   var url_ajax_edit = $('#url_ajax_edit').val();
   save_method = 'update';
-  $('#form')[0].reset(); // reset form on modals
+  $('#form-competency')[0].reset(); // reset form on modals
   $('.form-group').removeClass('has-error'); // clear error class
   $('.help-block').empty(); // clear error string
 

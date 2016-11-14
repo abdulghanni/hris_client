@@ -54,10 +54,10 @@
 										<thead>
 											<tr>
 												<th width="5%">
-													<div class="checkbox check-default">
+													<!--<div class="checkbox check-default">
 								                      <input id="checkbox" type="checkbox" value="0"> 
 								                      <label for="checkbox"></label>
-								                    </div>
+								                    </div>-->
 												</th>
 												<th width="15%">Kompetensi</th>
 												<th width="80%" class="text-center" colspan="<?=$pg_size?>">Level Dan Indikator Kompetensi</th>
@@ -75,18 +75,28 @@
 													}?>
 												</tr>
 												<?php foreach($kompetensi->result() as $k){
+													$c_filter = array('organization_id'=>'where/'.$org_id,
+																	'competency_def_id'=>'where/'.$k->id
+																	);
+													$num = getAll('competency_mapping_indikator_detail', $c_filter)->num_rows();
 												?>
 												<tr>
 													<td width="5%">
 														<div class="checkbox check-default">
-									                      <input id="checkbox<?=$k->id?>" type="checkbox" name="competency_def_id[]" value="<?=$k->id?>">
+									                      <input id="checkbox<?=$k->id?>" type="checkbox" name="competency_def_id[]" value="<?=$k->id?>" <?=($num > 0) ? 'checked="checked"' : ''?>>
 								                      	  <label for="checkbox<?=$k->id?>"></label>
 									                    </div>
 													</td>
 													<td class="text-left" width="15%"><?=$k->title?></td>
-													<?php foreach ($level as $key => $value) {?>
+													<?php foreach ($level as $key => $value) {
+														$filter = array('organization_id'=>'where/'.$org_id,
+																		'competency_def_id'=>'where/'.$k->id,
+																		'level'=>'where/'.$value
+																		);
+														$indikator = getValue('indikator', 'competency_mapping_indikator_detail', $filter);
+														?>
 														<td width="<?=$col?>%">
-															<textarea class="form-control" placeholder="Isi indikator kompetensi disini..." name="indikator[<?=$k->id?>][]"></textarea>
+															<textarea class="form-control" placeholder="Isi indikator kompetensi disini..." name="indikator[<?=$k->id?>][]"><?php if(!empty($indikator))echo $indikator;?></textarea>
 														</td>
 													<?php }?>
 												</tr>
@@ -106,12 +116,28 @@
 						            			<thead>
 						            				<tr>
 					                					<th width="1%"></th>
-						                				<th width="29%"></th>
+						                				<th width="28%"></th>
 						                				<th width="70%"></th>
+						                				<th width="1%"></th>
 						                			</tr>
 						            			</thead>
 						            			<tbody>
-						            				
+						            				<?php
+						            				if($approver->num_rows>0){
+						            					$i = 1;foreach ($approver->result() as $a) {
+						            				?>
+						            					<tr>
+						            						<td><?=$i++?></td>
+						            						<td>Nama Approver</td>
+						            						<td><?=get_name($a->user_id)?>
+						            							<input type="hidden" name="approver_id[]" value="<?=$a->user_id?>">
+						            						</td>
+						            						<td><button type="button" id="removebutton" class="btn btn-danger removebutton"><i class="icon-remove"></i></button></td>
+						            					</tr>
+						            				<?php 
+						            					}
+						            				} 
+						            				?>
 						            			</tbody>
 						            		</table>
 						            	</div>

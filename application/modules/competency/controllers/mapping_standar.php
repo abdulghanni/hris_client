@@ -58,7 +58,9 @@ class mapping_standar extends MX_Controller {
         $data['title'] = $this->title;
         $data['controller'] = $this->controller;
         $data['org_id'] = $org_id;
-        $data['competency_group'] = GetAll('competency_group')->result();
+        $data['approver'] = getAll($this->table.'_approver', array('organization_id'=>'where/'.$org_id));
+        $f = array('is_deleted'=>'where/0');
+        $data['competency_group'] = GetAll('competency_group', $f)->result();
         $data['competency_mapping_indikator'] = $indikatorx = GetAll('competency_mapping_indikator_detail', array('organization_id'=>'where/'.$org_id));
         // print_mz($indikatorx->result());
         $indikator = array();
@@ -141,16 +143,27 @@ class mapping_standar extends MX_Controller {
         $l = $this->input->post('level');
         $comp_def = $this->input->post('competency_def_id');
         $org = $this->input->post('org_id');
+        $num_rows = getAll($this->table, array('organization_id'=>'where/'.$org))->num_rows();
 
         // INSERT TO COMPETENCY_MAPPING_STANDAR
-        $data = array(
-            'organization_id' => $this->input->post('org_id'),
-            'created_by'=>sessId(),
-            'created_on'=>dateNow(),
-            );
-        $this->db->insert($this->table, $data);
+        if($num_rows == 0){
+            $data = array(
+                'organization_id' => $this->input->post('org_id'),
+                'created_by'=>sessId(),
+                'created_on'=>dateNow(),
+                );
+            $this->db->insert($this->table, $data);
+        }else{
+            $data = array(
+                // 'organization_id' => $this->input->post('org_id'),
+                'edited_by'=>sessId(),
+                'edited_on'=>dateNow(),
+                );
+            $this->db->where('organization_id', $org)->update($this->table, $data);
+        }
 
         // INSERT TO COMPETENCY_MAPPING_STANDAR_DETAIL
+        if($num_rows > 0)$this->db->where('organization_id', $org)->delete($this->table.'_detail');
         foreach ($l as $key => $value) {
             if(in_array($key, $comp_def)){
                 foreach ($value as $k => $v) {
@@ -171,6 +184,7 @@ class mapping_standar extends MX_Controller {
                      "<br/>Untuk melihat detail silakan <a href=$url>Klik disini</a>";
                      
         // INSERT TO COMPETENCY_MAPPING_STANDAR_APPROVER
+        if($num_rows > 0)$this->db->where('organization_id', $org)->delete($this->table.'_approver');
         if(!empty($approver_id)){
             for ($i=0;$i<sizeof($approver_id);$i++) {
                 $data = array(
@@ -226,12 +240,12 @@ class mapping_standar extends MX_Controller {
 
     function get_mapping_from_org($org_id){
         $data['org_id'] = $org_id;
-        $data['competency_group'] = GetAll('competency_group')->result();
+        $f = array('is_deleted'=>'where/0');
+        $data['competency_group'] = GetAll('competency_group', $f)->result();
         // $data['data'] = GetAll($this->table.'_detail', array('organization_id'=>'where/'.$org_id));
         $data['approver'] = GetAll($this->table.'_approver', array('organization_id'=>'where/'.$org_id));
         $data['data'] = $this->main->standar($org_id);
         $data['org_id'] = $org_id;
-        $data['competency_group'] = GetAll('competency_group')->result();
         $pos = $this->competency->get_position_group_from_org($org_id);
         $pos_group = array();
         foreach ($pos as $key => $value) {

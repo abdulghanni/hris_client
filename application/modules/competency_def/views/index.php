@@ -57,7 +57,7 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <h3 class="modal-title">Form</h3>
         </div>
-        <form action="#" id="form" class="form">
+        <form action="#" id="form-competency" class="form">
           <div class="modal-body">
               <div class="row form-row">
                 <label class="control-label col-md-3">Title</label>

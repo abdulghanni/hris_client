@@ -50,6 +50,31 @@ class personal_assesment extends MX_Controller {
         $this->_render_page('personal_assesment/input', $data);
     }
 
+    function edit($id){
+        permissionBiasa();
+        $data['id'] = $id;
+        $data['title'] = $this->title;
+        $data['controller'] = $this->controller;
+        $data['emp_id'] = $emp_id = Getvalue('nik', $this->table, array('id'=>'where/'.$id));
+        $emp_id = get_nik($emp_id);
+        $data['org_id'] = $org_id = get_user_organization_id($emp_id);
+        $data['pos_group_id'] = get_pos_group($emp_id);
+        $data['approver'] = getAll($this->table.'_approver', array($this->table.'_id'=>'where/'.$id));
+        $f = array('is_deleted'=>'where/0');
+        $data['competency_group'] = GetAll('competency_group', $f)->result();
+        $data['competency_mapping_indikator'] = $indikatorx = GetAll('competency_mapping_indikator_detail', array('organization_id'=>'where/'.$org_id));
+        // print_mz($indikatorx->result());
+        $indikator = array();
+        foreach ($indikatorx->result() as $r) {
+            $indikator[] = $r->competency_def_id;
+        }
+
+        $data['def_indikator'] = array_unique($indikator);
+
+        $data['tindakan'] = getAll('competency_tindakan')->result();
+        $this->_render_page('personal_assesment/edit', $data);
+    }
+
     function approve($id, $approver_id=null){
         permissionBiasa();
         $data['id'] = $id;
@@ -145,6 +170,76 @@ class personal_assesment extends MX_Controller {
         redirect(base_url($this->controller), 'refresh');
     }
 
+    function do_edit($id){
+        // print_mz($_POST);
+        permissionBiasa();
+        // $this->form_validation->set_rules('competency_def_id', 'Kompetensi', 'trim|required');
+        $approver_id = $this->input->post('approver_id');
+        $com = $this->input->post('competency_def_id');
+        $sk = $this->input->post('sk');
+        $ak = $this->input->post('ak');
+        $gap = $this->input->post('gap');
+        $competency_tindakan_id = $this->input->post('competency_tindakan_id');
+        $pic = $this->input->post('pic');
+        $hasil = $this->input->post('hasil');
+        $tgl = $this->input->post('tgl');
+
+        // INSERT TO competency_personal_assesment
+        $data = array(
+            // 'nik' => $this->input->post('nik'),
+            // 'organization_id' => $this->input->post('organization_id'),
+            // 'position_group_id' => $this->input->post('position_group_id'),
+            // 'edited_by'=>sessId(),
+            // 'edited_on'=>dateNow(),
+            );
+        //$this->db->where('id', $id)->update($this->table, $data);
+        $com_id = $id;
+
+        // INSERT TO competency_personal_assesment_DETAIL
+        $this->db->where($this->table.'_id', $id)->delete($this->table.'_detail');
+        for($i=0;$i<sizeof($com);$i++) {
+            $data = array(
+                'competency_personal_assesment_id' => $com_id,
+                'competency_def_id' => $com[$i],
+                'sk' => $sk[$i],
+                'ak' => $ak[$i],
+                'gap' => $gap[$i],
+                'competency_tindakan_id' => $competency_tindakan_id[$i],
+                'tgl' => date('Y-m-d', strtotime($tgl[$i])),
+                'pic' => $pic[$i],
+                'hasil' => $hasil[$i],
+                );
+            $this->db->insert($this->table.'_detail', $data);
+        }
+
+        $url = base_url().$this->controller.'/approve/'.$com_id;
+        $subject_email = "Kompetensi - $this->title";
+        $isi_email = get_name(sessId())." Membuat ".$this->title.
+                     "<br/>Untuk melihat detail silakan <a href=$url>Klik disini</a>";
+                     
+        // INSERT TO competency_personal_assesment_APPROVER
+        $this->db->where($this->table.'_id', $id)->delete($this->table.'_approver');
+        for ($i=0;$i<sizeof($approver_id);$i++) {
+            $data = array(
+                'competency_personal_assesment_id' => $com_id,
+                'user_id' => $approver_id[$i]
+            );
+            $this->db->insert($this->table.'_approver', $data);//print_ag(lq());
+
+            $data4 = array(
+                  'sender_id' => get_nik(sessId()),
+                  'receiver_id' => get_nik($approver_id[$i]),
+                  'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                  'subject' => $subject_email,
+                  'email_body' => $isi_email,
+                  'is_read' => 0,
+            );
+            $this->db->insert('email', $data4);
+            if(!empty(getEmail($approver_id[$i])))$this->send_email(getEmail($approver_id[$i]), $subject_email, $isi_email);
+        }
+        redirect(base_url($this->controller), 'refresh');
+    }
+
     // FOR js
     function do_approve($form_id){
         if(!$this->ion_auth->logged_in())
@@ -171,8 +266,9 @@ class personal_assesment extends MX_Controller {
     function get_mapping($emp_id){
         $emp_id = get_nik($emp_id);
         $data['org_id'] = $org_id = get_user_organization_id($emp_id);
-        $data['pos_group_id'] = get_pos_group($emp_id);
-        $data['competency_group'] = GetAll('competency_group')->result();
+        $data['pos_group_id'] = get_pos_group($emp_id); 
+        $f = array('is_deleted'=>'where/0');
+        $data['competency_group'] = GetAll('competency_group', $f)->result();
         $data['competency_mapping_indikator'] = $indikatorx = GetAll('competency_mapping_indikator_detail', array('organization_id'=>'where/'.$org_id));
         // print_mz($indikatorx->result());
         $indikator = array();
@@ -219,6 +315,23 @@ class personal_assesment extends MX_Controller {
                 $this->template->add_js('competency/personal_assesment.js');
                     
             }elseif(in_array($view, array('personal_assesment/input' )))
+            {
+                $this->template->set_layout('default');
+                $this->template->add_js('jquery-ui-1.10.1.custom.min.js');
+                $this->template->add_js('jquery.sidr.min.js');
+                $this->template->add_js('breakpoints.js');
+                $this->template->add_js('select2.min.js');
+
+                $this->template->add_js('core.js');
+
+                $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
+                $this->template->add_css('plugins/select2/select2.css');
+
+                $this->template->add_js('competency/competency.js');
+                $this->template->add_js('competency/personal_assesment_input.js');
+                $this->template->add_js('emp_dropdown.js');
+                    
+            }elseif(in_array($view, array('personal_assesment/edit' )))
             {
                 $this->template->set_layout('default');
                 $this->template->add_js('jquery-ui-1.10.1.custom.min.js');
