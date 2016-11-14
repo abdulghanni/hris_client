@@ -34,6 +34,7 @@ class Form_exit extends MX_Controller {
             $this->data['form_id'] = getValue('form_id', 'form_id', array('form_name'=>'like/exit'));
             $this->data['form_name'] = 'exit';
             $this->data['form'] = 'exit';
+            $this->data['is_admin'] = is_admin(); 
             $this->_render_page('form_exit/index', $this->data);
         }
     }

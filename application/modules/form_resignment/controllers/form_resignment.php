@@ -36,6 +36,7 @@ class Form_resignment extends MX_Controller {
             $this->data['form_id'] = getValue('form_id', 'form_id', array('form_name'=>'like/resign'));
             $this->data['form_name'] = 'resignment';
             $this->data['form'] = 'resignment';
+            $this->data['is_admin'] = is_admin();
             $this->_render_page('form_resignment/index', $this->data);
         }
     }

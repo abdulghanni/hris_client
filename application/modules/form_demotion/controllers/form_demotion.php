@@ -32,6 +32,7 @@ class Form_demotion extends MX_Controller {
         }
         else
         {
+            $this->data['is_admin'] = is_admin(); 
             $this->_render_page('form_demotion/index', $this->data);
         }
     }

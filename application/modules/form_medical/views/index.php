@@ -16,6 +16,7 @@
           <div class="grid simple ">
             <div class="grid-title">
               <h4>List Rekapitulasi <span class="semi-bold"><?php echo 'Rawat Jalan' ?></span></h4>
+              <input type="hidden" name="is_admin" id="is_admin" class="form-control" value="<?php echo $is_admin; ?>">
             </div>
 
             <div class="grid-body ">

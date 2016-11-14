@@ -30,6 +30,7 @@ class Form_pengangkatan extends MX_Controller {
         }
         else
         {
+            $this->data['is_admin'] = is_admin(); 
             $this->_render_page('form_pengangkatan/index', $this->data);
         }
     }

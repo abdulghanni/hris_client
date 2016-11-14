@@ -13,6 +13,7 @@
         <div class="page-title">
             <i class="icon-custom-left"></i>
             <h3>Daftar Inventaris Karyawan</span></h3> 
+            <input type="hidden" name="is_admin" id="is_admin" class="form-control" value="<?php echo $is_admin; ?>">
         </div>
         <div class="row">
             <div class="col-md-12">

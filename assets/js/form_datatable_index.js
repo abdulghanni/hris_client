@@ -1,6 +1,7 @@
 var save_method; //for save method string
 var table;
 var form = $("#form_name").val();
+var is_admin = $("#is_admin").val();
 $(document).ready(function() {
 	// $(".select2").select2();
     //var opt_id = $('#opt option:selected').val();
@@ -30,6 +31,12 @@ $(document).ready(function() {
     })
     .change();
 
+    var bfliter = false;
+
+    if(is_admin == 1){
+        bfilter = true;
+    }
+
     table = $('#table').DataTable({ 
             oLanguage: {
                 sProcessing: "<img src='assets/images/loading_spinner.gif'>"
@@ -37,7 +44,7 @@ $(document).ready(function() {
             "processing": true, //Feature control the processing indicator.
             "serverSide": true, //Feature control DataTables' server-side processing mode.
             "order": [], //Initial no order.
-            "bFilter": false,
+            "bFilter": bfilter,
             //"retrieve": true,
 
             // Load data for the table's content from an Ajax source
