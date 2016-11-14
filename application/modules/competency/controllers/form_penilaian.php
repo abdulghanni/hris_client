@@ -59,6 +59,7 @@ class form_penilaian extends MX_Controller {
         $data['competency_penilaian'] = GetAll('competency_penilaian')->result();
         $data['users'] = GetAll('users')->result();
         $data['rekomendasi'] = GetAll('competency_rekomendasi')->result();
+        $data['kuadran'] = GetAll('competency_kuadran')->result();
         $this->_render_page('form_penilaian/input', $data);
     }
 
@@ -97,6 +98,7 @@ class form_penilaian extends MX_Controller {
         $data['competency_penilaian'] = GetAll('competency_penilaian')->result();
         $data['users'] = GetAll('users')->result();
         $data['rekomendasi'] = GetAll('competency_rekomendasi')->result();
+        $data['kuadran'] = GetAll('competency_kuadran')->result();
         $data['form'] = getAll($this->table, array('id'=>'where/'.$id))->row();
         $data['detail'] = $this->main->detail($id);//print_mz($data['detail']);
         $data['approver'] = getAll($this->table.'_approver', array($this->table.'_id'=>'where/'.$id));
@@ -118,6 +120,7 @@ class form_penilaian extends MX_Controller {
         $data = array(
             'nik' => $this->input->post('nik'),
             'rekomendasi_id' => $this->input->post('rekomendasi_id'),
+            'kuadran_id' => $this->input->post('kuadran_id'),
             'created_by'=>sessId(),
             'created_on'=>dateNow(),
             );
@@ -183,6 +186,7 @@ class form_penilaian extends MX_Controller {
         $data = array(
             // 'nik' => $this->input->post('nik'),
             'rekomendasi_id' => $this->input->post('rekomendasi_id'),
+            'kuadran_id' => $this->input->post('kuadran_id'),
             // 'created_by'=>sessId(),
             // 'created_on'=>dateNow(),
             );

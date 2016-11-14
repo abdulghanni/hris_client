@@ -108,6 +108,14 @@
 								</div>
 
 								<div class="col-md-12">
+									<h4>Kuadran :</h4>
+										<div class="radio radio-success">
+					                        <input id="kuad" name="kuadran_id" value="" type="radio" checked="checked">
+					                        <label for="kuad"><?=getValue('title', 'competency_kuadran', array('id'=>'where/'.$form->kuadran_id))?></label>
+					                    </div>
+								</div>
+
+								<div class="col-md-12">
 									<h4>Rekomendasi :</h4>
 										<div class="radio radio-success">
 					                        <input id="rek" name="rekomendasi_id" value="" type="radio" checked="checked">

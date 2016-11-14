@@ -101,8 +101,10 @@
                       </div>
                       <div class="col-md-9">
                         <?php
-                          $style_up='class="select2 atasan" style="width:100%" id="atasan1"';
+                          $style_up='class="select2 atasan" style="width:100%;" id="atasan1"';
+                              //echo '<div id="memuat_data" style="display:none">Loading</div>';
                               echo form_dropdown('atasan1',array('0'=>'- Pilih Atasan Langsung -'),'0',$style_up);
+                              
                         ?>
                       </div>
                     </div>
@@ -114,8 +116,10 @@
                       <div class="col-md-9">
                       <?php if(is_admin()){
                         $style_up='class="select2 atasan" style="width:100%" id="atasan2"';
+                            //echo '<div id="memuat_data" style="display:none">Loading</div>';
                             echo form_dropdown('atasan2',array('0'=>'- Pilih Atasan Tidak Langsung -'),'',$style_up);
                         }else{?>
+                        <?php //echo '<div id="memuat_data" style="display:none">Loading</div>'?>
                         <select name="atasan2" id="atasan2" class="select2" style="width:100%">
                               <option value="0" selected="selected">- Pilih Atasan Tidak Langsung -</option> 
                         </select>
@@ -130,8 +134,10 @@
                       <div class="col-md-9">
                       <?php if(is_admin()){
                         $style_up='class="select2 atasan" style="width:100%" id="atasan3"';
+                            //echo '<div id="memuat_data" style="display:none">Loading</div>';
                             echo form_dropdown('atasan3',array('0'=>'- Pilih Atasan Lainnya -'),'',$style_up);
                         }else{?>
+                        <?php //echo '<div id="memuat_data" style="display:none">Loading</div>'?>
                         <select name="atasan3" id="atasan3" class="select2 atasan" style="width:100%">
                             <option value="0">- Pilih Atasan Lainnya -</option>
                         </select>

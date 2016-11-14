@@ -1,6 +1,6 @@
 $(document).ready(function() {
 	var url = $.url();
-    var baseurl = url.attr('protocol')+'://'+url.attr('host')+'/'+url.segment(1)+'/';
+    var baseurl = url.attr('protocol')+'://'+url.attr('host')+':'+url.attr('port')+'/'+url.segment(1)+'/';
     var uri = url.segment(2)+'/do_approve/'+url.segment(4);
 
     $('#btn_app').click(function(){

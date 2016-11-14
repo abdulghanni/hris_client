@@ -39,6 +39,9 @@ class Form_tidak_masuk_model extends CI_Model {
                 'users_tidak_masuk'.'.user_app_lv1',
                 'users_tidak_masuk'.'.user_app_lv2',
                 'users_tidak_masuk'.'.user_app_lv3',
+                'users_tidak_masuk'.'.app_status_id_lv1',
+                'users_tidak_masuk'.'.app_status_id_lv2',
+                'users_tidak_masuk'.'.app_status_id_lv3',
                'users'.'.username',
                'users'.'.nik',
             ));

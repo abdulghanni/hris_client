@@ -39,6 +39,7 @@
 					<td class="text-left" width="25%">
 						<?=$k->title?>
 						<input type="hidden" name="competency_def_id[]" value="<?=$k->id?>">		
+						<input type="hidden" name="competency_name_[]" id="competency_name_<?=$k->id?>" value="<?=$k->title?>">		
 					</td>
 					<td class="text-center">
 						<!-- <?=$sk?> -->
@@ -78,7 +79,15 @@
 	function getGap(id){
 		var sk = parseInt($("#sk"+id).val());
 		var ak = parseInt($("#ak"+id).val());
-		$("#gap"+id).val(ak-sk);
+		var competency_name = $("#competency_name_"+id).val();
+		if(ak > sk){
+			
+			alert('Pada kompetensi '+competency_name+', Aktual Komp. (AK) tidak boleh lebih besar dari Standar Komp. (SK)');
+			$("#ak"+id).val(0);
+		}else{
+			$("#gap"+id).val(ak-sk);	
+		}
+		
 	}
 
 	$(function() 
