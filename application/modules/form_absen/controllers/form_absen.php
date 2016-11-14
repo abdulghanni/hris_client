@@ -35,6 +35,7 @@ class form_absen extends MX_Controller {
             $this->data['form_id'] = getValue('form_id', 'form_id', array('form_name'=>'like/absen'));
             $this->data['form'] = 'absen';
             $this->data['form_name'] = $this->form_name;
+            $this->data['is_admin'] = is_admin(); 
             $this->_render_page('form_absen/index', $this->data);
         }
     }

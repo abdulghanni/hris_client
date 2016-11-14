@@ -36,6 +36,7 @@ class Inventory extends MX_Controller {
         {
             $this->data['title'] = ucfirst($this->form_name);
             $this->data['form_name'] = $this->form_name;
+            $this->data['is_admin'] = is_admin();
 
             $this->_render_page('inventory/index', $this->data);
         }

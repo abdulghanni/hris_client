@@ -33,6 +33,7 @@ class Form_recruitment extends MX_Controller {
         else
         {
         $this->data['form'] = 'recruitment';
+        $this->data['is_admin'] = is_admin(); 
         $this->_render_page('form_recruitment/index', $this->data);
         }
     }

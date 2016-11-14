@@ -30,6 +30,7 @@ class Form_promosi extends MX_Controller {
         }
         else
         {
+            $this->data['is_admin'] = is_admin(); 
             $this->_render_page('form_promosi/index', $this->data);
         }
     }

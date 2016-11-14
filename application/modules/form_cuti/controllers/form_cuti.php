@@ -32,7 +32,8 @@ class Form_cuti extends MX_Controller {
         }
         else
         {
-        $this->_render_page('form_cuti/index', $this->data);
+            $this->data['is_admin'] = is_admin(); 
+            $this->_render_page('form_cuti/index', $this->data);
         }
     }
 

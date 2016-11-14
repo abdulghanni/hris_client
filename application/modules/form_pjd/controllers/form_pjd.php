@@ -32,6 +32,7 @@ class Form_pjd extends MX_Controller {
         }
         else
         {
+            $this->data['is_admin'] = is_admin(); 
             $this->_render_page('form_'.$this->form_name.'/index', $this->data);
         }
     }

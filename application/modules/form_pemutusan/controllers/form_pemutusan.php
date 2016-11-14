@@ -32,6 +32,7 @@ class Form_Pemutusan extends MX_Controller {
         else
         {
         $this->data['form'] = $this->form_name;
+        $this->data['is_admin'] = is_admin(); 
         $this->_render_page('form_'.$this->form_name.'/index', $this->data);
         }
     }

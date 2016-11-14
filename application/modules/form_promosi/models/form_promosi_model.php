@@ -5,7 +5,7 @@ class Form_promosi_model extends CI_Model {
 
     var $table = 'users_promosi';
     var $join1  = 'users';
-    var $column = array('users_promosi.id', 'nik_karyawan','karyawan', 'nik_pengaju', 'pengaju', 'old_pos', 'new_pos','date_promosi', 'created_on'); //set column field database for order and search
+    var $column = array('users_promosi.id', 'users.nik_karyawan','users.karyawan', 'pengaju.nik_pengaju', 'pengaju.pengaju', 'users_promosi.old_pos', 'users_promosi.new_pos','users_promosi.date_promosi', 'users_promosi.created_on'); //set column field database for order and search
     var $order = array('id' => 'desc'); // default order 
 
     public function __construct()

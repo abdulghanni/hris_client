@@ -36,6 +36,7 @@ class Form_medical extends MX_Controller {
         }
         else
         {
+            $this->data['is_admin'] = is_admin(); 
             $this->_render_page('form_medical/index', $this->data);
         }
     }

@@ -33,7 +33,7 @@ class form_training_group extends MX_Controller {
         }
         else
         {
-            
+            $this->data['is_admin'] = is_admin();
             $this->_render_page('form_training_group/index', $this->data);
         }
     }
