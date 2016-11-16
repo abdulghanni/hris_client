@@ -147,7 +147,7 @@
                                  $pending = assets_url('img/pending_stamp.png');
                                 if($row->is_app_mgr == 1){
                                 echo ($row->app_status_id_mgr == 1)?"<img class=approval-img src=$approved>": (($row->app_status_id_mgr == 2) ? "<img class=approval-img src=$rejected>"  : (($row->app_status_id_mgr == 3) ? "<img class=approval-img src=$pending>" : "<span class='small'></span><br/>"));?><br/>
-                                <span class="semi-bold"><?php echo get_name($row->user_app_mgr)?></span><br/>
+                                <!-- <span class="semi-bold"><?php echo get_name($row->user_app_mgr)?></span><br/> -->
                                 <span class="small"><?php echo dateIndo($row->date_app_mgr)?></span><br/>
                                 <?php }elseif($row->is_app_mgr == 0 && $is_admin_logistik == 1){?>
                                 <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitModalmgr"><i class="icon-ok"></i>Submit</div>
@@ -160,7 +160,7 @@
                                 <span class="semi-bold"></span><br/>
                                 <span class="small"></span><br/>
                                 <?php } ?>
-                                <span class="semi-bold"></span><br/>
+                                <span class="semi-bold"><?php echo get_name_admin_logistik(get_user_buid($user_nik))?></span><br/>
                                 <span class="semi-bold">GA</span>
                               </p>
                             </div>
@@ -169,7 +169,7 @@
                             <p class="wf-approve-sp">
                               <?php if($row->is_app_koperasi == 1){
                               echo ($row->app_status_id_koperasi == 1)?"<img class=approval-img src=$approved>": (($row->app_status_id_koperasi == 2) ? "<img class=approval-img src=$rejected>"  : (($row->app_status_id_koperasi == 3) ? "<img class=approval-img src=$pending>" : "<span class='small'></span><br/>"));?><br/>
-                              <span class="semi-bold"><?php echo get_name($row->user_app_koperasi)?></span><br/>
+                              <!-- <span class="semi-bold"><?php echo get_name($row->user_app_koperasi)?></span><br/> -->
                               <span class="small"><?php echo dateIndo($row->date_app_koperasi)?></span><br/>
                               <?php }elseif($row->is_app_koperasi == 0 && $is_admin_koperasi == 1){?>
                               <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitModalkoperasi"><i class="icon-ok"></i>Submit</div>
@@ -182,7 +182,7 @@
                               <span class="semi-bold"></span><br/>
                               <span class="small"></span><br/>
                               <?php } ?>
-                              <span class="semi-bold"></span><br/>
+                              <span class="semi-bold"><?php echo get_name_admin_koperasi(get_user_buid($user_nik))?></span><br/>
                               <span class="semi-bold">Sie Koperasi</span>
                             </p>
                           </div>
@@ -191,7 +191,7 @@
                             <p class="wf-approve-sp">
                               <?php if($row->is_app_perpus == 1){
                              echo ($row->app_status_id_perpus == 1)?"<img class=approval-img src=$approved>": (($row->app_status_id_perpus == 2) ? "<img class=approval-img src=$rejected>"  : (($row->app_status_id_perpus == 3) ? "<img class=approval-img src=$pending>" : "<span class='small'></span><br/>"));?><br/>
-                              <span class="semi-bold"><?php echo get_name($row->user_app_perpus)?></span><br/>
+                              <!-- <span class="semi-bold"><?php echo get_name($row->user_app_perpus)?></span><br/> -->
                               <span class="small"><?php echo dateIndo($row->date_app_perpus)?></span><br/>
                               <?php }elseif($row->is_app_perpus == 0 && $is_admin_perpus == 1){?>
                               <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitModalperpus"><i class="icon-ok"></i>Submit</div>
@@ -204,7 +204,7 @@
                               <span class="semi-bold"></span><br/>
                               <span class="small"></span><br/>
                               <?php } ?>
-                              <span class="semi-bold"></span><br/>
+                              <span class="semi-bold"><?php echo get_name_admin_perpus(get_user_buid($user_nik))?></span><br/>
                               <span class="semi-bold">Perpustakaan</span>
                             </p>
                           </div>
@@ -213,7 +213,7 @@
                             <p class="wf-approve-sp">
                               <?php if($row->is_app_hrd == 1){
                               echo ($row->app_status_id_hrd == 1)?"<img class=approval-img src=$approved>": (($row->app_status_id_hrd == 2) ? "<img class=approval-img src=$rejected>"  : (($row->app_status_id_hrd == 3) ? "<img class=approval-img src=$pending>" : "<span class='small'></span><br/>"));?><br />
-                                <span class="semi-bold"><?php echo get_name($row->user_app_hrd)?></span><br/>
+                              <!-- <span class="semi-bold"><?php echo get_name($row->user_app_hrd)?></span><br/> -->
                               <span class="small"><?php echo dateIndo($row->date_app_hrd)?></span><br/>
                               <?php }elseif($row->is_app_hrd == 0 && $is_admin_hrd == 1){?>
                               <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitModalhrd"><i class="icon-ok"></i>Submit</div>
@@ -226,7 +226,7 @@
                               <span class="semi-bold"></span><br/>
                               <span class="small"></span><br/>
                               <?php } ?>
-                              <span class="semi-bold"></span><br/>
+                              <span class="semi-bold"><?php echo get_name_admin_hrd(get_user_buid($user_nik))?></span><br/>
                               <span class="semi-bold">HRD</span>
                             </p>
                           </div>
@@ -243,7 +243,7 @@
                                  $pending = assets_url('img/pending_stamp.png');
                                 if($row->is_app_akunting == 1){
                                 echo ($row->app_status_id_akunting == 1)?"<img class=approval-img src=$approved>": (($row->app_status_id_akunting == 2) ? "<img class=approval-img src=$rejected>"  : (($row->app_status_id_akunting == 3) ? "<img class=approval-img src=$pending>" : "<span class='small'></span><br/>"));?><br/>
-                                <span class="semi-bold"><?php echo get_name($row->user_app_akunting)?></span><br/>
+                                <!-- <span class="semi-bold"><?php echo get_name($row->user_app_akunting)?></span><br/> -->
                                 <span class="small"><?php echo dateIndo($row->date_app_akunting)?></span><br/>
                                 <?php }elseif($row->is_app_akunting == 0 && $is_admin_akunting == 1){?>
                                 <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitModalakunting"><i class="icon-ok"></i>Submit</div>
@@ -256,7 +256,7 @@
                                 <span class="semi-bold"></span><br/>
                                 <span class="small"></span><br/>
                                 <?php } ?>
-                                <span class="semi-bold"></span><br/>
+                                <span class="semi-bold"><?php echo get_name_admin_akunting(get_user_buid($user_nik))?></span><br/>
                                 <span class="semi-bold">Akunting</span>
                               </p>
                             </div>
@@ -265,7 +265,7 @@
                             <p class="wf-approve-sp" id="audit_box">
                               <?php if($row->is_app_audit == 1){
                               echo ($row->app_status_id_audit == 1)?"<img class=approval-img src=$approved>": (($row->app_status_id_audit == 2) ? "<img class=approval-img src=$rejected>"  : (($row->app_status_id_audit == 3) ? "<img class=approval-img src=$pending>" : "<span class='small'></span><br/>"));?><br/>
-                              <span class="semi-bold"><?php echo get_name($row->user_app_audit)?></span><br/>
+                              <!-- <span class="semi-bold"><?php echo get_name($row->user_app_audit)?></span><br/> -->
                               <span class="small"><?php echo dateIndo($row->date_app_audit)?></span><br/>
                               <?php }elseif($row->is_app_audit == 0 && $is_admin_audit == 1){?>
                               <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitModalaudit"><i class="icon-ok"></i>Submit</div>
@@ -278,7 +278,7 @@
                               <span class="semi-bold"></span><br/>
                               <span class="small"></span><br/>
                               <?php } ?>
-                              <span class="semi-bold"></span><br/>
+                              <span class="semi-bold"><?php echo get_name_admin_audit(get_user_buid($user_nik))?></span><br/>
                               <span class="semi-bold">Audit</span>
                             </p>
                           </div>
@@ -287,7 +287,7 @@
                             <p class="wf-approve-sp">
                               <?php if($row->is_app_it == 1){
                               echo ($row->app_status_id_it == 1)?"<img class=approval-img src=$approved>": (($row->app_status_id_it == 2) ? "<img class=approval-img src=$rejected>"  : (($row->app_status_id_it == 3) ? "<img class=approval-img src=$pending>" : "<span class='small'></span><br/>"));?><br />
-                                <span class="semi-bold"><?php echo get_name($row->user_app_it)?></span><br/>
+                              <!-- <span class="semi-bold"><?php echo get_name($row->user_app_it)?></span><br/> -->
                               <span class="small"><?php echo dateIndo($row->date_app_it)?></span><br/>
                               <?php }elseif($row->is_app_it == 0 && $is_admin_it == 1){?>
                               <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitModalit"><i class="icon-ok"></i>Submit</div>
@@ -300,7 +300,7 @@
                               <span class="semi-bold"></span><br/>
                               <span class="small"></span><br/>
                               <?php } ?>
-                              <span class="semi-bold"></span><br/>
+                              <span class="semi-bold"><?php echo get_name_admin_it(get_user_buid($user_nik))?></span><br/>
                               <span class="semi-bold">IT</span>
                             </p>
                           </div>
@@ -308,7 +308,7 @@
                             <p class="wf-approve-sp">
                               <?php if($row->is_app_keuangan == 1){
                               echo ($row->app_status_id_keuangan == 1)?"<img class=approval-img src=$approved>": (($row->app_status_id_keuangan == 2) ? "<img class=approval-img src=$rejected>"  : (($row->app_status_id_keuangan == 3) ? "<img class=approval-img src=$pending>" : "<span class='small'></span><br/>"));?><br/>
-                              <span class="semi-bold"><?php echo get_name($row->user_app_keuangan)?></span><br/>
+                              <!-- <span class="semi-bold"><?php echo get_name($row->user_app_keuangan)?></span><br/> -->
                               <span class="small"><?php echo dateIndo($row->date_app_keuangan)?></span><br/>
                               <?php }elseif($row->is_app_keuangan == 0 && $is_admin_keuangan == 1){?><br/>
                               <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitModalkeuangan"><i class="icon-ok"></i>Submit</div>
@@ -321,7 +321,7 @@
                               <span class="semi-bold"></span><br/>
                               <span class="small"></span><br/>
                               <?php } ?>
-                              <span class="semi-bold"></span><br/>
+                              <span class="semi-bold"><?php echo get_name_admin_keuangan(get_user_buid($user_nik))?></span><br/>
                               <span class="semi-bold">Keuangan</span>
                             </p>
                           </div>
