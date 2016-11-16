@@ -153,11 +153,52 @@
 			$CI =& get_instance();
 			
 			$sess_id = $CI->session->userdata('user_id');
-			$r = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 3)->like('name', 'it')->get()->result_array('user_id');
+			$nik = get_nik($sess_id);
+			$bu = get_user_buid($nik);
+			$r = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 3)->like('groups.name', 'it')->where('groups.bu',$bu)->get()->result_array('user_id');
 			for ($i = 0;$i<sizeof($r);$i++) {
 			if($sess_id == $r[$i]['user_id']):
 				return TRUE;
 			endif;
+			}
+		}
+	}
+
+	if (!function_exists('is_admin_it_bu'))
+	{	
+		function is_admin_it_bu($uid)
+		{
+			$CI =& get_instance();
+			
+			$sess_id = $CI->session->userdata('user_id');
+			$nik = get_nik($uid);
+			$bu = get_user_buid($nik);
+			$r = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 3)->like('name', 'it')->where('groups.bu',$bu)->get()->result_array('user_id');
+			for ($i = 0;$i<sizeof($r);$i++) {
+			if($sess_id == $r[$i]['user_id']):
+				return TRUE;
+			endif;
+			}
+		}
+	}
+
+
+	if (!function_exists('get_is_admin_it'))
+	{	
+		function get_is_admin_it()
+		{
+			$CI =& get_instance();
+			
+			$sess_id = $CI->session->userdata('user_id');
+			$nik = get_nik($sess_id);
+			$bu = get_user_buid($nik);
+			$r = $CI->db->select('users_groups.user_id as user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 3)->like('groups.name', 'it')->where('groups.bu',51)->get()->result_array('users_groups.user_id');
+			for ($i = 0;$i<sizeof($r);$i++) {
+				if($sess_id == $r[$i]['user_id']){
+					return $r[$i]['user_id'];
+				}else{
+					return $r[$i]['user_id'];
+				}
 			}
 		}
 	}
@@ -875,6 +916,21 @@
 		}
 	}
 
+	if(!function_exists('get_year_session'))
+	{
+		function get_year_session($comp_session_id)
+		{
+			$CI =&get_instance();
+			$q_year_session = $CI->db->select('year')->where('id', $comp_session_id)->get('comp_session');
+			if($q_year_session->num_rows() > 0)
+			{
+				return $year_session = $q_year_session->row('year');
+			}else{
+				return $year_session = '9999';
+			}
+		}
+	}
+
 	if(!function_exists('get_user_position_id'))
 	{
 		function get_user_position_id($user_id)
@@ -1052,7 +1108,7 @@
             {
                 $getuser_info = file_get_contents($url);
                 $user_info = json_decode($getuser_info, true);
-                if($user_info == '51')$user_info = '50';
+                //if($user_info == '51')$user_info = '50';
                 return $user_info;
             } else {
                 return '';
@@ -1327,7 +1383,8 @@
 
 			if(!empty($username&&$password))
 			{
-				return 'http://'.$username.':'.$password.'@localhost/hris_api/';
+				return 'http://'.$username.':'.$password.'@localhost:801/hris_api/';
+				//return 'http://'.$username.':'.$password.'@123.231.241.12/hris_api/';
 			}else
 			{
 				return false;
