@@ -112,6 +112,42 @@
 		}
 	}
 
+	if (!function_exists('get_admin_cabang'))
+	{	
+		function get_admin_cabang()
+		{
+			$CI =& get_instance();
+			
+			$sess_id = $CI->session->userdata('user_id');
+			$nik = get_nik($sess_id);
+			$bu = get_user_buid($nik);
+			$r = $CI->db->select('groups.bu as bu')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 5)->where('users_groups.user_id',$sess_id)->get()->result_array('groups.bu');
+			$bu = array();
+			for ($i = 0;$i<sizeof($r);$i++) {
+				$bu[] = $r[$i]['bu'];
+			}
+
+			return $bu;
+			
+		}
+	}
+
+	if (!function_exists('get_admin_cabang_num_rows'))
+	{	
+		function get_admin_cabang_num_rows()
+		{
+			$CI =& get_instance();
+			
+			$sess_id = $CI->session->userdata('user_id');
+			$nik = get_nik($sess_id);
+			$bu = get_user_buid($nik);
+			$r = $CI->db->select('groups.bu as bu')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 5)->where('users_groups.user_id',$sess_id)->get()->num_rows();
+			
+			return $r;
+			
+		}
+	}
+
 	if (!function_exists('is_admin_inventaris'))
 	{	
 		function is_admin_inventaris()
@@ -131,16 +167,54 @@
 	//TO CHECK IS USER ADMIN IN ION AUTH LIBRARY
 	if (!function_exists('is_admin_hrd'))
 	{	
-		function is_admin_hrd()
+		function is_admin_hrd($buid)
 		{
 			$CI =& get_instance();
 			
 			$sess_id = $CI->session->userdata('user_id');
-			$r = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 3)->like('name', 'hrd')->get()->result_array('user_id');
+			$nik = get_nik($sess_id);
+			$bu = get_user_buid($nik);
+			$r = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 3)->where('groups.type_inventory_id', 1)->where('groups.bu',$buid)->get()->result_array('user_id');
 			for ($i = 0;$i<sizeof($r);$i++) {
 			if($sess_id == $r[$i]['user_id']):
 				return TRUE;
 			endif;
+			}
+		}
+	}
+
+	if (!function_exists('get_admin_hrd'))
+	{	
+		function get_admin_hrd($buid)
+		{
+			$CI =& get_instance();
+			
+			$sess_id = $CI->session->userdata('user_id');
+			$nik = get_nik($sess_id);
+			$bu = get_user_buid($nik);
+			$r = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 3)->where('groups.type_inventory_id', 1)->where('groups.bu',$buid)->get()->result_array('user_id');
+			for ($i = 0;$i<sizeof($r);$i++) {
+			//if($sess_id == $r[$i]['user_id']):
+				return $r[$i]['user_id'];
+			//endif;
+			}
+		}
+	}
+
+	if (!function_exists('get_name_admin_hrd'))
+	{	
+		function get_name_admin_hrd($buid)
+		{
+			$CI =& get_instance();
+			
+			$sess_id = $CI->session->userdata('user_id');
+			$nik = get_nik($sess_id);
+			$bu = get_user_buid($nik);
+			$r = $CI->db->select('users.username as username')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->join('users','users_groups.user_id = users.id')->where('groups.admin_type_id', 3)->where('groups.type_inventory_id', 1)->where('groups.bu',$buid)->get()->result_array('users.username');
+			for ($i = 0;$i<sizeof($r);$i++) {
+			//if($sess_id == $r[$i]['user_id']):
+				return $r[$i]['username'];
+			//endif;
 			}
 		}
 	}
@@ -148,14 +222,14 @@
 	//TO CHECK IS USER ADMIN IN ION AUTH LIBRARY
 	if (!function_exists('is_admin_it'))
 	{	
-		function is_admin_it()
+		function is_admin_it($buid)
 		{
 			$CI =& get_instance();
 			
 			$sess_id = $CI->session->userdata('user_id');
 			$nik = get_nik($sess_id);
 			$bu = get_user_buid($nik);
-			$r = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 3)->like('groups.name', 'it')->where('groups.bu',$bu)->get()->result_array('user_id');
+			$r = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 3)->where('groups.type_inventory_id', 2)->where('groups.bu',$buid)->get()->result_array('user_id');
 			for ($i = 0;$i<sizeof($r);$i++) {
 			if($sess_id == $r[$i]['user_id']):
 				return TRUE;
@@ -164,69 +238,102 @@
 		}
 	}
 
-	if (!function_exists('is_admin_it_bu'))
+	if (!function_exists('get_admin_it'))
 	{	
-		function is_admin_it_bu($uid)
-		{
-			$CI =& get_instance();
-			
-			$sess_id = $CI->session->userdata('user_id');
-			$nik = get_nik($uid);
-			$bu = get_user_buid($nik);
-			$r = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 3)->like('name', 'it')->where('groups.bu',$bu)->get()->result_array('user_id');
-			for ($i = 0;$i<sizeof($r);$i++) {
-			if($sess_id == $r[$i]['user_id']):
-				return TRUE;
-			endif;
-			}
-		}
-	}
-
-
-	if (!function_exists('get_is_admin_it'))
-	{	
-		function get_is_admin_it()
+		function get_admin_it($buid)
 		{
 			$CI =& get_instance();
 			
 			$sess_id = $CI->session->userdata('user_id');
 			$nik = get_nik($sess_id);
 			$bu = get_user_buid($nik);
-			$r = $CI->db->select('users_groups.user_id as user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 3)->like('groups.name', 'it')->where('groups.bu',51)->get()->result_array('users_groups.user_id');
+			$r = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 3)->where('groups.type_inventory_id', 2)->where('groups.bu',$buid)->get()->result_array('user_id');
 			for ($i = 0;$i<sizeof($r);$i++) {
-				if($sess_id == $r[$i]['user_id']){
-					return $r[$i]['user_id'];
-				}else{
-					return $r[$i]['user_id'];
-				}
+			//if($sess_id == $r[$i]['user_id']):
+				return $r[$i]['user_id'];
+			//endif;
+			}
+		}
+	}
+
+	if (!function_exists('get_name_admin_it'))
+	{	
+		function get_name_admin_it($buid)
+		{
+			$CI =& get_instance();
+			
+			$sess_id = $CI->session->userdata('user_id');
+			$nik = get_nik($sess_id);
+			$bu = get_user_buid($nik);
+			$r = $CI->db->select('users.username as username')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->join('users','users_groups.user_id = users.id')->where('groups.admin_type_id', 3)->where('groups.type_inventory_id', 2)->where('groups.bu',$buid)->get()->result_array('users.username');
+			for ($i = 0;$i<sizeof($r);$i++) {
+			//if($sess_id == $r[$i]['user_id']):
+				return $r[$i]['username'];
+			//endif;
 			}
 		}
 	}
 
 	if (!function_exists('is_admin_akunting'))
 	{	
-		function is_admin_akunting()
+		function is_admin_akunting($buid)
 		{
 			$CI =& get_instance();
 			
 			$sess_id = $CI->session->userdata('user_id');
-			$r = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 3)->like('name', 'akunting')->get()->result_array('user_id');
+			$r = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 3)->where('groups.type_inventory_id', 8)->where('groups.bu',$buid)->get()->result_array('user_id');
 			for ($i = 0;$i<sizeof($r);$i++) {
 			if($sess_id == $r[$i]['user_id']):
 				return TRUE;
 			endif;
+			}
+		}
+	}
+
+	if (!function_exists('get_admin_akunting'))
+	{	
+		function get_admin_akunting($buid)
+		{
+			$CI =& get_instance();
+			
+			$sess_id = $CI->session->userdata('user_id');
+			$nik = get_nik($sess_id);
+			$bu = get_user_buid($nik);
+			$r = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 3)->where('groups.type_inventory_id', 8)->where('groups.bu',$buid)->get()->result_array('user_id');
+			for ($i = 0;$i<sizeof($r);$i++) {
+			//if($sess_id == $r[$i]['user_id']):
+				return $r[$i]['user_id'];
+			//endif;
+			}
+		}
+	}
+
+	if (!function_exists('get_name_admin_akunting'))
+	{	
+		function get_name_admin_akunting($buid)
+		{
+			$CI =& get_instance();
+			
+			$sess_id = $CI->session->userdata('user_id');
+			$nik = get_nik($sess_id);
+			$bu = get_user_buid($nik);
+			$r = $CI->db->select('users.username as username')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->join('users','users_groups.user_id = users.id')->where('groups.admin_type_id', 3)->where('groups.type_inventory_id', 8)->where('groups.bu',$buid)->get()->result_array('users.username');
+			for ($i = 0;$i<sizeof($r);$i++) {
+			//if($sess_id == $r[$i]['user_id']):
+				return $r[$i]['username'];
+			//endif;
 			}
 		}
 	}
 
 	if (!function_exists('is_admin_audit'))
 	{	
-		function is_admin_audit()
+		function is_admin_audit($buid)
 		{
 			$CI =& get_instance();
 			
 			$sess_id = $CI->session->userdata('user_id');
-			$r = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 3)->like('name', 'audit')->get()->result_array('user_id');
+			$r = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 3)->where('groups.type_inventory_id', 9)->where('groups.bu',$buid)->get()->result_array('user_id');
 			for ($i = 0;$i<sizeof($r);$i++) {
 			if($sess_id == $r[$i]['user_id']):
 				return TRUE;
@@ -235,18 +342,90 @@
 		}
 	}
 
-	if (!function_exists('is_admin_keuangan'))
+	if (!function_exists('get_admin_audit'))
 	{	
-		function is_admin_keuangan()
+		function get_admin_audit($buid)
 		{
 			$CI =& get_instance();
 			
 			$sess_id = $CI->session->userdata('user_id');
-			$r = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 3)->like('name', 'keuangan')->get()->result_array('user_id');
+			$nik = get_nik($sess_id);
+			$bu = get_user_buid($nik);
+			$r = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 3)->where('groups.type_inventory_id', 9)->where('groups.bu',$buid)->get()->result_array('user_id');
+			for ($i = 0;$i<sizeof($r);$i++) {
+			//if($sess_id == $r[$i]['user_id']):
+				return $r[$i]['user_id'];
+			//endif;
+			}
+		}
+	}
+
+	if (!function_exists('get_name_admin_audit'))
+	{	
+		function get_name_admin_audit($buid)
+		{
+			$CI =& get_instance();
+			
+			$sess_id = $CI->session->userdata('user_id');
+			$nik = get_nik($sess_id);
+			$bu = get_user_buid($nik);
+			$r = $CI->db->select('users.username as username')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->join('users','users_groups.user_id = users.id')->where('groups.admin_type_id', 3)->where('groups.type_inventory_id', 9)->where('groups.bu',$buid)->get()->result_array('users.username');
+			for ($i = 0;$i<sizeof($r);$i++) {
+			//if($sess_id == $r[$i]['user_id']):
+				return $r[$i]['username'];
+			//endif;
+			}
+		}
+	}
+
+	if (!function_exists('is_admin_keuangan'))
+	{	
+		function is_admin_keuangan($buid)
+		{
+			$CI =& get_instance();
+			
+			$sess_id = $CI->session->userdata('user_id');
+			$r = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 3)->where('groups.type_inventory_id', 6)->where('groups.bu',$buid)->get()->result_array('user_id');
 			for ($i = 0;$i<sizeof($r);$i++) {
 			if($sess_id == $r[$i]['user_id']):
 				return TRUE;
 			endif;
+			}
+		}
+	}
+
+	if (!function_exists('get_admin_keuangan'))
+	{	
+		function get_admin_keuangan($buid)
+		{
+			$CI =& get_instance();
+			
+			$sess_id = $CI->session->userdata('user_id');
+			$nik = get_nik($sess_id);
+			$bu = get_user_buid($nik);
+			$r = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 3)->where('groups.type_inventory_id', 6)->where('groups.bu',$buid)->get()->result_array('user_id');
+			for ($i = 0;$i<sizeof($r);$i++) {
+			//if($sess_id == $r[$i]['user_id']):
+				return $r[$i]['user_id'];
+			//endif;
+			}
+		}
+	}
+
+	if (!function_exists('get_name_admin_keuangan'))
+	{	
+		function get_name_admin_keuangan($buid)
+		{
+			$CI =& get_instance();
+			
+			$sess_id = $CI->session->userdata('user_id');
+			$nik = get_nik($sess_id);
+			$bu = get_user_buid($nik);
+			$r = $CI->db->select('users.username as username')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->join('users','users_groups.user_id = users.id')->where('groups.admin_type_id', 3)->where('groups.type_inventory_id', 6)->where('groups.bu',$buid)->get()->result_array('users.username');
+			for ($i = 0;$i<sizeof($r);$i++) {
+			//if($sess_id == $r[$i]['user_id']):
+				return $r[$i]['username'];
+			//endif;
 			}
 		}
 	}
@@ -254,16 +433,52 @@
 	//TO CHECK IS USER ADMIN IN ION AUTH LIBRARY
 	if (!function_exists('is_admin_logistik'))
 	{	
-		function is_admin_logistik()
+		function is_admin_logistik($buid)
 		{
 			$CI =& get_instance();
 			
 			$sess_id = $CI->session->userdata('user_id');
-			$r = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 3)->like('name', 'logistik')->get()->result_array('user_id');
+			$r = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 3)->where('groups.type_inventory_id', 3)->where('groups.bu',$buid)->get()->result_array('user_id');
 			for ($i = 0;$i<sizeof($r);$i++) {
 			if($sess_id == $r[$i]['user_id']):
 				return TRUE;
 			endif;
+			}
+		}
+	}
+
+	if (!function_exists('get_admin_logistik'))
+	{	
+		function get_admin_logistik($buid)
+		{
+			$CI =& get_instance();
+			
+			$sess_id = $CI->session->userdata('user_id');
+			$nik = get_nik($sess_id);
+			$bu = get_user_buid($nik);
+			$r = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 3)->where('groups.type_inventory_id', 3)->where('groups.bu',$buid)->get()->result_array('user_id');
+			for ($i = 0;$i<sizeof($r);$i++) {
+			//if($sess_id == $r[$i]['user_id']):
+				return $r[$i]['user_id'];
+			//endif;
+			}
+		}
+	}
+
+	if (!function_exists('get_name_admin_logistik'))
+	{	
+		function get_name_admin_logistik($buid)
+		{
+			$CI =& get_instance();
+			
+			$sess_id = $CI->session->userdata('user_id');
+			$nik = get_nik($sess_id);
+			$bu = get_user_buid($nik);
+			$r = $CI->db->select('users.username as username')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->join('users','users_groups.user_id = users.id')->where('groups.admin_type_id', 3)->where('groups.type_inventory_id', 3)->where('groups.bu',$buid)->get()->result_array('users.username');
+			for ($i = 0;$i<sizeof($r);$i++) {
+			//if($sess_id == $r[$i]['user_id']):
+				return $r[$i]['username'];
+			//endif;
 			}
 		}
 	}
@@ -271,16 +486,52 @@
 	//TO CHECK IS USER ADMIN IN ION AUTH LIBRARY
 	if (!function_exists('is_admin_koperasi'))
 	{	
-		function is_admin_koperasi()
+		function is_admin_koperasi($buid)
 		{
 			$CI =& get_instance();
 			
 			$sess_id = $CI->session->userdata('user_id');
-			$r = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 3)->like('name', 'koperasi')->get()->result_array('user_id');
+			$r = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 3)->where('groups.type_inventory_id', 4)->where('groups.bu',$buid)->get()->result_array('user_id');
 			for ($i = 0;$i<sizeof($r);$i++) {
 			if($sess_id == $r[$i]['user_id']):
 				return TRUE;
 			endif;
+			}
+		}
+	}
+
+	if (!function_exists('get_admin_koperasi'))
+	{	
+		function get_admin_koperasi($buid)
+		{
+			$CI =& get_instance();
+			
+			$sess_id = $CI->session->userdata('user_id');
+			$nik = get_nik($sess_id);
+			$bu = get_user_buid($nik);
+			$r = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 3)->where('groups.type_inventory_id', 4)->where('groups.bu',$buid)->get()->result_array('user_id');
+			for ($i = 0;$i<sizeof($r);$i++) {
+			//if($sess_id == $r[$i]['user_id']):
+				return $r[$i]['user_id'];
+			//endif;
+			}
+		}
+	}
+
+	if (!function_exists('get_name_admin_koperasi'))
+	{	
+		function get_name_admin_koperasi($buid)
+		{
+			$CI =& get_instance();
+			
+			$sess_id = $CI->session->userdata('user_id');
+			$nik = get_nik($sess_id);
+			$bu = get_user_buid($nik);
+			$r = $CI->db->select('users.username as username')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->join('users','users_groups.user_id = users.id')->where('groups.admin_type_id', 3)->where('groups.type_inventory_id', 4)->where('groups.bu',$buid)->get()->result_array('users.username');
+			for ($i = 0;$i<sizeof($r);$i++) {
+			//if($sess_id == $r[$i]['user_id']):
+				return $r[$i]['username'];
+			//endif;
 			}
 		}
 	}
@@ -288,28 +539,12 @@
 	//TO CHECK IS USER ADMIN IN ION AUTH LIBRARY
 	if (!function_exists('is_admin_perpus'))
 	{	
-		function is_admin_perpus()
+		function is_admin_perpus($buid)
 		{
 			$CI =& get_instance();
 			
 			$sess_id = $CI->session->userdata('user_id');
-			$r = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 3)->like('name', 'perpus')->get()->result_array('user_id');
-			for ($i = 0;$i<sizeof($r);$i++) {
-			if($sess_id == $r[$i]['user_id']):
-				return TRUE;
-			endif;
-			}
-		}
-	}
-	
-	if (!function_exists('is_admin_legal'))
-	{	
-		function is_admin_legal()
-		{
-			$CI =& get_instance();
-			
-			$sess_id = $CI->session->userdata('user_id');
-			$r = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 4)->like('name', 'legal')->get()->result_array('user_id');
+			$r = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 3)->where('groups.type_inventory_id', 5)->where('groups.bu',$buid)->get()->result_array('user_id');
 			for ($i = 0;$i<sizeof($r);$i++) {
 			if($sess_id == $r[$i]['user_id']):
 				return TRUE;
@@ -318,18 +553,142 @@
 		}
 	}
 
-	if (!function_exists('is_admin_payroll'))
+	if (!function_exists('get_admin_perpus'))
 	{	
-		function is_admin_payroll()
+		function get_admin_perpus($buid)
 		{
 			$CI =& get_instance();
 			
 			$sess_id = $CI->session->userdata('user_id');
-			$r = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 4)->like('name', 'payroll')->get()->result_array('user_id');
+			$nik = get_nik($sess_id);
+			$bu = get_user_buid($nik);
+			$r = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 3)->where('groups.type_inventory_id', 5)->where('groups.bu',$buid)->get()->result_array('user_id');
+			for ($i = 0;$i<sizeof($r);$i++) {
+			//if($sess_id == $r[$i]['user_id']):
+				return $r[$i]['user_id'];
+			//endif;
+			}
+		}
+	}
+
+	if (!function_exists('get_name_admin_perpus'))
+	{	
+		function get_name_admin_perpus($buid)
+		{
+			$CI =& get_instance();
+			
+			$sess_id = $CI->session->userdata('user_id');
+			$nik = get_nik($sess_id);
+			$bu = get_user_buid($nik);
+			$r = $CI->db->select('users.username as username')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->join('users','users_groups.user_id = users.id')->where('groups.admin_type_id', 3)->where('groups.type_inventory_id', 5)->where('groups.bu',$buid)->get()->result_array('users.username');
+			for ($i = 0;$i<sizeof($r);$i++) {
+			//if($sess_id == $r[$i]['user_id']):
+				return $r[$i]['username'];
+			//endif;
+			}
+		}
+	}
+	
+	if (!function_exists('is_admin_legal'))
+	{	
+		function is_admin_legal($buid)
+		{
+			$CI =& get_instance();
+			
+			$sess_id = $CI->session->userdata('user_id');
+			$r = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 3)->where('groups.type_inventory_id', 10)->where('groups.bu',$buid)->get()->result_array('user_id');
 			for ($i = 0;$i<sizeof($r);$i++) {
 			if($sess_id == $r[$i]['user_id']):
 				return TRUE;
 			endif;
+			}
+		}
+	}
+
+	if (!function_exists('get_admin_legal'))
+	{	
+		function get_admin_legal($buid)
+		{
+			$CI =& get_instance();
+			
+			$sess_id = $CI->session->userdata('user_id');
+			$nik = get_nik($sess_id);
+			$bu = get_user_buid($nik);
+			$r = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 3)->where('groups.type_inventory_id', 10)->where('groups.bu',$buid)->get()->result_array('user_id');
+			for ($i = 0;$i<sizeof($r);$i++) {
+			//if($sess_id == $r[$i]['user_id']):
+				return $r[$i]['user_id'];
+			//endif;
+			}
+		}
+	}
+
+	if (!function_exists('get_name_admin_legal'))
+	{	
+		function get_name_admin_legal($buid)
+		{
+			$CI =& get_instance();
+			
+			$sess_id = $CI->session->userdata('user_id');
+			$nik = get_nik($sess_id);
+			$bu = get_user_buid($nik);
+			$r = $CI->db->select('users.username as username')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->join('users','users_groups.user_id = users.id')->where('groups.admin_type_id', 3)->where('groups.type_inventory_id', 10)->where('groups.bu',$buid)->get()->result_array('users.username');
+			for ($i = 0;$i<sizeof($r);$i++) {
+			//if($sess_id == $r[$i]['user_id']):
+				return $r[$i]['username'];
+			//endif;
+			}
+		}
+	}
+
+	if (!function_exists('is_admin_payroll'))
+	{	
+		function is_admin_payroll($buid)
+		{
+			$CI =& get_instance();
+			
+			$sess_id = $CI->session->userdata('user_id');
+			$r = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 3)->where('groups.type_inventory_id', 11)->where('groups.bu',$buid)->get()->result_array('user_id');
+			for ($i = 0;$i<sizeof($r);$i++) {
+			if($sess_id == $r[$i]['user_id']):
+				return TRUE;
+			endif;
+			}
+		}
+	}
+
+	if (!function_exists('get_admin_payroll'))
+	{	
+		function get_admin_payroll($buid)
+		{
+			$CI =& get_instance();
+			
+			$sess_id = $CI->session->userdata('user_id');
+			$nik = get_nik($sess_id);
+			$bu = get_user_buid($nik);
+			$r = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 3)->where('groups.type_inventory_id', 11)->where('groups.bu',$buid)->get()->result_array('user_id');
+			for ($i = 0;$i<sizeof($r);$i++) {
+			//if($sess_id == $r[$i]['user_id']):
+				return $r[$i]['user_id'];
+			//endif;
+			}
+		}
+	}
+
+	if (!function_exists('get_name_admin_payroll'))
+	{	
+		function get_name_admin_payroll($buid)
+		{
+			$CI =& get_instance();
+			
+			$sess_id = $CI->session->userdata('user_id');
+			$nik = get_nik($sess_id);
+			$bu = get_user_buid($nik);
+			$r = $CI->db->select('users.username as username')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->join('users','users_groups.user_id = users.id')->where('groups.admin_type_id', 3)->where('groups.type_inventory_id', 11)->where('groups.bu',$buid)->get()->result_array('users.username');
+			for ($i = 0;$i<sizeof($r);$i++) {
+			//if($sess_id == $r[$i]['user_id']):
+				return $r[$i]['username'];
+			//endif;
 			}
 		}
 	}

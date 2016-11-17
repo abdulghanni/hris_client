@@ -97,6 +97,7 @@ $(document).ready(function() {
             case 'form_promosi':
             case 'form_demotion':
             case 'form_rolling':
+            case 'form_kenaikan_gaji':
             case 'form_phk':
                 getEmpBu(empId);
                 getEmpOrg(empId);
@@ -556,12 +557,14 @@ $(document).ready(function() {
 
     function getAtasan1(empId)
     {
+        //$("#memuat_data").show();
         $.ajax({
             type: 'POST',
             url: baseurl+'dropdown/get_atasan/'+empId,
             data: {id : empId},
             success: function(data) {
-                if(empId!=0)$('#atasan1').html(data);
+                //$("#memuat_data").hide();
+                if(empId!=0)$('#atasan1').html(data).show();
             }
         });
     }

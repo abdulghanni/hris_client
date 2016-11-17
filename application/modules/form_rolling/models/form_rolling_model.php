@@ -63,7 +63,13 @@ class Form_rolling_model extends CI_Model {
             }
             if($is_admin!=1 && $is_hrd_pusat != 1):
             if($is_approver == $sess_nik || $is_admin_cabang == 1){
-                $this->db->where_in("users_rolling.user_id", $user);//print_mz($user);
+                //$this->db->where_in("users_rolling.user_id", $user);//print_mz($user);
+                if($sess_nik == 'P1493'){
+                    $this->db->or_like('users'.'.nik','P', 'after');
+                    $this->db->or_like('users'.'.nik','J', 'after');
+                }else{
+                    $this->db->where_in("users_rolling.user_id", $user);//print_mz($user);    
+                }
             }elseif($is_admin!=1 ){
                   $this->db->where("(users_rolling.user_id = $sess_id OR  users_rolling.user_app_lv1 = '$sess_nik' OR users_rolling.user_app_lv2 = '$sess_nik' OR users_rolling.user_app_lv3 = '$sess_nik' OR users_rolling.user_app_lv4 = '$sess_nik' OR users_rolling.user_app_lv5 = '$sess_nik' OR users_rolling.created_by = '$sess_id')",null, false);
             }

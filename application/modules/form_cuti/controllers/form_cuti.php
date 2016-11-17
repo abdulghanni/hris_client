@@ -39,7 +39,7 @@ class Form_cuti extends MX_Controller {
 
     public function ajax_list($f)
     {
-        $list = $this->cuti->get_datatables($f);
+        $list = $this->cuti->get_datatables($f);//lastq();
         $data = array();
         $no = $_POST['start'];
         foreach ($list as $r) {

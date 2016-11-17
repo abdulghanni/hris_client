@@ -370,15 +370,39 @@ class Form_exit extends MX_Controller {
             $user_nik = $this->data['user_nik'] = get_nik($user_id);//print_mz(get_user_buid($user_nik));
             $this->data['sess_id'] = $sess_id = $this->session->userdata('user_id');
             $sess_nik = $this->data['sess_nik'] = get_nik($sess_id);
-            $this->data['is_admin_it'] = (is_admin_it() && get_user_buid($sess_nik) == get_user_buid($user_nik)) ? TRUE : FALSE;
-            $this->data['is_admin_logistik'] = (is_admin_logistik() && get_user_buid($sess_nik) == get_user_buid($user_nik)) ? TRUE : FALSE;
-            $this->data['is_admin_hrd'] = (is_admin_hrd() && get_user_buid($sess_nik) == get_user_buid($user_nik)) ? TRUE : FALSE;
-            // $this->data['is_admin_koperasi'] = (is_admin_koperasi() && get_user_buid($sess_nik) == get_user_buid($user_nik)) ? TRUE : FALSE;
-            $this->data['is_admin_koperasi'] = (is_admin_koperasi()) ? TRUE : FALSE;
-            $this->data['is_admin_perpus'] = (is_admin_perpus() && get_user_buid($sess_nik) == get_user_buid($user_nik)) ? TRUE : FALSE;
-            $this->data['is_admin_keuangan'] = (is_admin_keuangan() && get_user_buid($sess_nik) == get_user_buid($user_nik)) ? TRUE : FALSE;
-            $this->data['is_admin_audit'] = (is_admin_audit() && get_user_buid($sess_nik) == get_user_buid($user_nik)) ? TRUE : FALSE;
-            $this->data['is_admin_akunting'] = (is_admin_akunting() && get_user_buid($sess_nik) == get_user_buid($user_nik)) ? TRUE : FALSE;
+            $user_buid = get_user_buid($user_nik);
+
+            $get_admin_hrd = get_admin_hrd($user_buid);
+            $get_admin_it = get_admin_it($user_buid);
+            $get_admin_logistik = get_admin_logistik($user_buid);
+            $get_admin_koperasi = get_admin_koperasi($user_buid);
+            $get_admin_perpus = get_admin_perpus($user_buid);
+            $get_admin_keuangan = get_admin_keuangan($user_buid);
+            $get_admin_audit = get_admin_audit($user_buid);
+            $get_admin_akunting = get_admin_akunting($user_buid);
+            $get_admin_legal = get_admin_legal($user_buid);
+            $get_admin_payroll = get_admin_payroll($user_buid);
+
+            //$this->data['is_admin_it'] = (is_admin_it() && get_user_buid($sess_nik) == get_user_buid($user_nik)) ? TRUE : FALSE;
+            //$this->data['is_admin_hrd'] = (is_admin_hrd() && get_user_buid($sess_nik) == get_user_buid($user_nik)) ? TRUE : FALSE;
+            $this->data['is_admin_hrd'] = (is_admin_hrd($user_buid) && $get_admin_hrd == $sess_id) ? TRUE : FALSE;
+            $this->data['is_admin_it'] = (is_admin_it($user_buid) && $get_admin_it == $sess_id) ? TRUE : FALSE;
+            $this->data['is_admin_logistik'] = (is_admin_logistik($user_buid) && $get_admin_logistik == $sess_id) ? TRUE : FALSE;
+            $this->data['is_admin_koperasi'] = (is_admin_koperasi($user_buid)) ? TRUE : FALSE;
+            $this->data['is_admin_perpus'] = (is_admin_perpus($user_buid) && $get_admin_perpus == $sess_id) ? TRUE : FALSE;
+            $this->data['is_admin_keuangan'] = (is_admin_keuangan($user_buid) && $get_admin_keuangan == $sess_id) ? TRUE : FALSE;
+            $this->data['is_admin_audit'] = (is_admin_audit($user_buid) && $get_admin_audit == $sess_id) ? TRUE : FALSE;
+            $this->data['is_admin_akunting'] = (is_admin_akunting($user_buid) && $get_admin_akunting == $sess_id) ? TRUE : FALSE;
+            $this->data['is_admin_legal'] = (is_admin_legal($user_buid) && $get_admin_legal == $sess_id) ? TRUE : FALSE;
+            $this->data['is_admin_payroll'] = (is_admin_payroll($user_buid) && $get_admin_payroll == $sess_id) ? TRUE : FALSE;
+
+
+            //$this->data['is_admin_logistik'] = (is_admin_logistik() && get_user_buid($sess_nik) == get_user_buid($user_nik)) ? TRUE : FALSE;
+            //$this->data['is_admin_koperasi'] = (is_admin_koperasi()) ? TRUE : FALSE;
+            //$this->data['is_admin_perpus'] = (is_admin_perpus() && get_user_buid($sess_nik) == get_user_buid($user_nik)) ? TRUE : FALSE;
+            //$this->data['is_admin_keuangan'] = (is_admin_keuangan() && get_user_buid($sess_nik) == get_user_buid($user_nik)) ? TRUE : FALSE;
+            //$this->data['is_admin_audit'] = (is_admin_audit() && get_user_buid($sess_nik) == get_user_buid($user_nik)) ? TRUE : FALSE;
+            //$this->data['is_admin_akunting'] = (is_admin_akunting() && get_user_buid($sess_nik) == get_user_buid($user_nik)) ? TRUE : FALSE;
             $i =$this->db->select('*')->from('users_inventory')->join('inventory', 'users_inventory.inventory_id = inventory.id', 'left')->where('users_inventory.user_id', $user_id)->where('users_inventory.is_deleted', 0)->get();
            
             $this->data['users_inventory'] = $i;
