@@ -112,6 +112,42 @@
 		}
 	}
 
+	if (!function_exists('get_admin_cabang'))
+	{	
+		function get_admin_cabang()
+		{
+			$CI =& get_instance();
+			
+			$sess_id = $CI->session->userdata('user_id');
+			$nik = get_nik($sess_id);
+			$bu = get_user_buid($nik);
+			$r = $CI->db->select('groups.bu as bu')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 5)->where('users_groups.user_id',$sess_id)->get()->result_array('groups.bu');
+			$bu = array();
+			for ($i = 0;$i<sizeof($r);$i++) {
+				$bu[] = $r[$i]['bu'];
+			}
+
+			return $bu;
+			
+		}
+	}
+
+	if (!function_exists('get_admin_cabang_num_rows'))
+	{	
+		function get_admin_cabang_num_rows()
+		{
+			$CI =& get_instance();
+			
+			$sess_id = $CI->session->userdata('user_id');
+			$nik = get_nik($sess_id);
+			$bu = get_user_buid($nik);
+			$r = $CI->db->select('groups.bu as bu')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 5)->where('users_groups.user_id',$sess_id)->get()->num_rows();
+			
+			return $r;
+			
+		}
+	}
+
 	if (!function_exists('is_admin_inventaris'))
 	{	
 		function is_admin_inventaris()
