@@ -6,7 +6,7 @@ class Form_tidak_masuk_model extends CI_Model {
     var $table = 'users_tidak_masuk';
     var $join1  = 'users';
     var $join2  = 'alasan_tidak_masuk';
-    var $column = array('users_tidak_masuk.id', 'nik', 'username','dari_tanggal', 'alasan', 'created_on'); //set column field database for order and search
+    var $column = array('users.nik'); //set column field database for order and search
     var $order = array('id' => 'desc'); // default order 
 
     public function __construct()
@@ -63,8 +63,10 @@ class Form_tidak_masuk_model extends CI_Model {
             if($is_approver == $sess_nik || $is_admin_cabang == 1){
                 //$this->db->where_in($this->table.'.user_id', $user);//print_mz($user);
                 if($sess_nik == 'P1493'){
-                    $this->db->or_like('users'.'.nik','P', 'after');
-                    $this->db->or_like('users'.'.nik','J', 'after');
+                    //$this->db->or_like('users'.'.nik','P', 'after');
+                    //$this->db->or_like('users'.'.nik','J', 'after');
+                    $where = "(users.nik like 'P%' OR users.nik like 'J%')";
+                    $this->db->where($where);
                 }else{
                     $this->db->where_in($this->table.'.user_id', $user);//print_mz($user);    
                 }
@@ -81,7 +83,7 @@ class Form_tidak_masuk_model extends CI_Model {
         {
             if($_POST['search']['value'])
             {
-                if($item == 'nik'){
+               /* if($item == 'nik'){
                     $item = $this->join1.'.nik';
                 }elseif($item == 'username'){
                     $item = $this->join1.'.username';
@@ -91,7 +93,7 @@ class Form_tidak_masuk_model extends CI_Model {
                     $item = $this->join2.'.title';
                 }elseif($item == 'created_on'){
                     $item = $this->table.'.created_on';
-                }
+                }*/
 
                 ($i===0) ? $this->db->like($item, $_POST['search']['value']) : $this->db->or_like($item, $_POST['search']['value']);
             }

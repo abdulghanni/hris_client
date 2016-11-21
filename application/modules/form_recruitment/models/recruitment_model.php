@@ -6,7 +6,7 @@ class recruitment_model extends CI_Model {
     var $table = 'users_recruitment';
     var $join1  = 'users';
     var $join2  = 'users_recruitment_kemampuan';
-    var $column = array('users_recruitment.id', 'nik', 'username','position_id', 'created_on'); //set column field database for order and search
+    var $column = array('users.nik',); //set column field database for order and search
     var $order = array('id' => 'desc'); // default order 
 
     public function __construct()
@@ -68,8 +68,10 @@ class recruitment_model extends CI_Model {
                 if($is_approver == $sess_nik || $is_admin_cabang == 1){
                     //$this->db->where_in("users_recruitment.user_id", $user);//print_mz($user);
                     if($sess_nik == 'P1493'){
-                        $this->db->or_like('users'.'.nik','P', 'after');
-                        $this->db->or_like('users'.'.nik','J', 'after');
+                        $where = "(users.nik like 'P%' OR users.nik like 'J%')";
+                        $this->db->where($where);
+                        //$this->db->or_like('users'.'.nik','J', 'after');
+                        //$this->db->query('(users.nik like P)');
                     }else{
                         $this->db->where_in("users_recruitment.user_id", $user);//print_mz($user);    
                     }
@@ -86,7 +88,7 @@ class recruitment_model extends CI_Model {
         {
             if($_POST['search']['value'])
             {
-                if($item == 'nik'){
+                /*if($item == 'nik'){
                     $item = $this->join1.'.nik';
                 }elseif($item == 'username'){
                     $item = $this->join1.'.username';
@@ -98,7 +100,7 @@ class recruitment_model extends CI_Model {
                     $item = $this->table.'.position_id';
                 }elseif($item == 'created_on'){
                     $item = $this->table.'.created_on';
-                }
+                }*/
 
                 ($i===0) ? $this->db->like($item, $_POST['search']['value']) : $this->db->or_like($item, $_POST['search']['value']);
             }
