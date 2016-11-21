@@ -6,7 +6,7 @@ class Form_absen_model extends CI_Model {
     var $table = 'users_absen';
     var $join1  = 'users';
     var $join2  = 'keterangan_absen';
-    var $column = array('users_absen.id', 'nik', 'username','date_tidak_hadir', 'keterangan', 'created_on'); //set column field database for order and search
+    var $column = array('users.nik'); //set column field database for order and search
     var $order = array('id' => 'desc'); // default order 
 
     public function __construct()
@@ -61,7 +61,15 @@ class Form_absen_model extends CI_Model {
             }
             if($is_admin!=1 && $is_hrd_pusat != 1):
                 if($is_approver == $sess_nik || $is_admin_cabang == 1){
-                    $this->db->where_in("users_absen.user_id", $user);//print_mz($user);
+                    //$this->db->where_in("users_absen.user_id", $user);//print_mz($user);
+                    if($sess_nik == 'P1493'){
+                    //$this->db->or_like('users'.'.nik','P', 'after');
+                    //$this->db->or_like('users'.'.nik','J', 'after');
+                    $where = "(users.nik like 'P%' OR users.nik like 'J%')";
+                    $this->db->where($where);
+                    }else{
+                        $this->db->where_in("users_absen.user_id", $user);//print_mz($user);    
+                    }
                 }elseif($is_admin!=1 ){
                      $this->db->where("(users_absen.user_id = '$sess_id'
                                    OR users_absen.user_app_lv1 = '$sess_nik'  OR users_absen.user_app_lv2 = '$sess_nik'  OR users_absen.user_app_lv3 = '$sess_nik'
@@ -76,7 +84,7 @@ class Form_absen_model extends CI_Model {
         {
             if($_POST['search']['value'])
             {
-                if($item == 'nik'){
+                /*if($item == 'nik'){
                     $item = $this->join1.'.nik';
                 }elseif($item == 'username'){
                     $item = $this->join1.'.username';
@@ -86,7 +94,7 @@ class Form_absen_model extends CI_Model {
                     $item = $this->table.'.created_on';
                 }elseif($item == 'keterangan'){
                     $item = $this->join2.'.title';
-                }
+                }*/
 
                 ($i===0) ? $this->db->like($item, $_POST['search']['value']) : $this->db->or_like($item, $_POST['search']['value']);
                 // ($i===0) ? $this->db->like($item, $_POST['search']['value']) : $this->db->like($item, $_POST['search']['value']);

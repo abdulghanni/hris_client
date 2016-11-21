@@ -3,6 +3,7 @@ var table;
 var form = $("#form_name").val();
 var is_admin = $("#is_admin").val();
 var bfliter = false; 
+
 $(document).ready(function() {
 	// $(".select2").select2();
     //var opt_id = $('#opt option:selected').val();
@@ -37,12 +38,19 @@ $(document).ready(function() {
     if(is_admin == 1){
         bfilter = true;
     }else{
-        bfilter = false;
+        if(form != "pjd" ){
+            bfilter = true;
+        }else{
+            bfilter = false;
+        }
+            
     }
 
     table = $('#table').DataTable({ 
             oLanguage: {
-                sProcessing: "<img src='assets/images/loading_spinner.gif'>"
+                //sProcessing: "<img src='assets/images/loading_spinner.gif'>"
+                sProcessing: "Memuat data ... ",
+                sSearch: "NIK : ",
             },
             "processing": true, //Feature control the processing indicator.
             "serverSide": true, //Feature control DataTables' server-side processing mode.
@@ -65,12 +73,22 @@ $(document).ready(function() {
             { "sClass": "text-center", "aTargets": [-1,-2,-3,-4,-5,-6] }
             ],
 
-        });
+        }); 
+
+    $(".dataTables_filter input").unbind().bind("input", function (e) {
+        // Search if enough characters, or search cleared with backspace
+        if (this.value.length >= 5 || this.value == "") {
+            table.search(this.value).draw();
+        }
+    }).bind("keydown", function (e) {
+        if (e.keyCode == 13)
+            table.search(this.value).draw();
+    });
 
     table_inv = $('#table_inv').DataTable({ 
 
         oLanguage: {
-            sProcessing: "<img src='assets/images/loading_spinner.gif'>"
+            sProcessing: "Memuat Data ... "
         },
         "processing": true, //Feature control the processing indicator.
         "serverSide": true, //Feature control DataTables' server-side processing mode.
