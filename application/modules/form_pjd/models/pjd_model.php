@@ -39,22 +39,16 @@ class Pjd_model extends CI_Model {
             $this->db->where($this->table.'.is_deleted', 0);
             $this->db->where($this->table.'.is_show', 1);
             if($f == 1){
-                 $this->db->where('is_app_hrd', 0);
+                // $this->db->where('is_app_hrd', 0);
             }elseif($f == 2){
-                 $this->db->where('is_app_hrd', 1);
+                // $this->db->where('is_app_hrd', 1);
             }else{
                 
             }
 
             if($is_admin!=1 && $is_hrd_pusat != 1):
             if($is_approver == $sess_nik || $is_admin_cabang == 1){
-                //$this->db->where_in("users_spd_luar_group.task_creator", $user);
-                if($sess_nik == 'P1493'){
-                    $this->db->or_like('users_spd_luar_group'.'.task_creator','P', 'after');
-                    $this->db->or_like('users_spd_luar_group'.'.task_creator','J', 'after');
-                }else{
-                    $this->db->where_in("users_spd_luar_group.task_creator", $user);//print_mz($user);    
-                }
+                $this->db->where_in("users_spd_luar_group.task_creator", $user);
             }elseif($is_admin!=1 ){
                 $this->db->where("(users_spd_luar_group.task_receiver like '%$sess_nik%' OR users_spd_luar_group.task_creator = '$sess_nik' OR users_spd_luar_group.created_by = '$sess_id' 
                                OR users_spd_luar_group.user_app_lv1 = '$sess_nik'  OR users_spd_luar_group.user_app_lv2 = '$sess_nik'  OR users_spd_luar_group.user_app_lv3 = '$sess_nik' 
