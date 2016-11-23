@@ -32,6 +32,7 @@ class Form_pjd extends MX_Controller {
         }
         else
         {
+            $this->data['is_admin'] = is_admin(); 
             $this->_render_page('form_'.$this->form_name.'/index', $this->data);
         }
     }
@@ -414,7 +415,6 @@ class Form_pjd extends MX_Controller {
 
             $additional_data = array(
                 'task_creator'          => $this->input->post('emp_tc'),
-                'type'                  => $this->input->post('tipe_pjd'),
                 'title'                 => $this->input->post('title'),
                 'destination'           => $this->input->post('destination'),
                 'date_spd_start'        => date('Y-m-d', strtotime($this->input->post('date_spd_start'))),
@@ -429,13 +429,6 @@ class Form_pjd extends MX_Controller {
                 'user_app_lv1'          => $this->input->post('atasan1'),
                 'user_app_lv2'          => $this->input->post('atasan2'),
                 'user_app_lv3'          => $this->input->post('atasan3'),
-                'user_app_lv4'          => $this->input->post('atasan4'),
-                'user_app_lv5'          => $this->input->post('atasan5'),
-                'user_app_lv6'          => $this->input->post('atasan6'),
-                'user_app_lv7'          => $this->input->post('atasan7'),
-                'user_app_lv8'          => $this->input->post('atasan8'),
-                'user_app_lv9'          => $this->input->post('atasan9'),
-                'user_app_lv10'          => $this->input->post('atasan10'),
                 'created_on'            => date('Y-m-d',strtotime('now')),
                 'created_by'            => $sess_id,
                 'is_show'               => 0
@@ -457,8 +450,8 @@ class Form_pjd extends MX_Controller {
                             'user_id' => $tr[$i],
                             'pjd_biaya_id'=>$biaya_tambahan_id[$j],
                             'jumlah_biaya'=>str_replace( ',', '', $biaya_tambahan[$j]),
-                            'created_on'=> date('Y-m-d',strtotime('now')),
-                            'created_by'=> $sess_id
+                            'created_on'            => date('Y-m-d',strtotime('now')),
+                            'created_by'            => $sess_id
                             );
                             $this->db->insert('users_spd_luar_group_biaya', $data);
                         endfor;
@@ -476,14 +469,10 @@ class Form_pjd extends MX_Controller {
             //redirect them to the login page
             redirect('auth/login', 'refresh');
         }
-        $tipe_pjd=getValue('type','users_spd_luar_group',array('id'=>'where/'.$id));
-        if($tipe_pjd=='ac')$tbl='pjd_biaya';
-        else $tbl='pjd_biaya_intern';
 
         $this->data['id']=$id;
-        $b = $this->data['biaya_pjd'] = $this->db->distinct()->select('users_spd_luar_group_biaya.pjd_biaya_id as biaya_id, '.$tbl.'.title as jenis_biaya')->from('users_spd_luar_group_biaya')->join($tbl,$tbl.'.id = users_spd_luar_group_biaya.pjd_biaya_id', 'left')->where('user_spd_luar_group_id', $id)->where($tbl.'.type_grade', 0)->get();
+        $b = $this->data['biaya_pjd'] = $this->db->distinct()->select('users_spd_luar_group_biaya.pjd_biaya_id as biaya_id, pjd_biaya.title as jenis_biaya')->from('users_spd_luar_group_biaya')->join('pjd_biaya','pjd_biaya.id = users_spd_luar_group_biaya.pjd_biaya_id', 'left')->where('user_spd_luar_group_id', $id)->where('pjd_biaya.type_grade', 0)->get();                  
         $this->data['detail'] = $this->db->distinct()->select('user_id')->where('user_spd_luar_group_id', $id)->get('users_spd_luar_group_biaya');
-        
         $this->data['ci'] = $this;
         $this->data['created_by'] = getValue('created_by', 'users_spd_luar_group', array('id'=>'where/'.$id));
         $this->data['task_creator'] = getValue('task_creator', 'users_spd_luar_group', array('id'=>'where/'.$id));
@@ -948,13 +937,9 @@ class Form_pjd extends MX_Controller {
             //redirect them to the login page
             redirect('auth/login', 'refresh');
         }
-        $tipe_pjd=getValue('type','users_spd_luar_group',array('id'=>'where/'.$id));
-        if($tipe_pjd=='ac'){$tbl='pjd_biaya';}
-        else{ $tbl='pjd_biaya_intern';}
-        //echo $tipe_pjd;
-        //die();
+        
         $this->data['id']=$id;
-        $b = $this->data['biaya_pjd'] = $this->db->distinct()->select('users_spd_luar_group_biaya.pjd_biaya_id as biaya_id, '.$tbl.'.title as jenis_biaya')->from('users_spd_luar_group_biaya')->join($tbl,$tbl.'.id = users_spd_luar_group_biaya.pjd_biaya_id', 'left')->where('user_spd_luar_group_id', $id)->where($tbl.'.type_grade', 0)->get();                  
+        $b = $this->data['biaya_pjd'] = $this->db->distinct()->select('users_spd_luar_group_biaya.pjd_biaya_id as biaya_id, pjd_biaya.title as jenis_biaya')->from('users_spd_luar_group_biaya')->join('pjd_biaya','pjd_biaya.id = users_spd_luar_group_biaya.pjd_biaya_id', 'left')->where('user_spd_luar_group_id', $id)->where('pjd_biaya.type_grade', 0)->get();                  
         $this->data['detail'] = $this->db->distinct()->select('user_id')->where('user_spd_luar_group_id', $id)->get('users_spd_luar_group_biaya');
         $this->data['ci'] = $this;
         $this->_render_page('form_pjd/input_biaya', $this->data);
@@ -1045,34 +1030,27 @@ class Form_pjd extends MX_Controller {
         return '';
     }
 
-    function get_biaya_pjd($id,$group=null)
+    function get_biaya_pjd($id)
     {
         $grade = get_grade($id);
-        if($group!=null){
-        $tipe_pjd=getValue('type','users_spd_luar_group',array('id'=>'where/'.$group));
-        if($tipe_pjd=='ac'){$tbl='pjd_biaya';}
-        else{ $tbl='pjd_biaya_intern';}}
-        else{
-            $tbl='pjd_biaya';
-        }
             $pos_group = get_pos_group($id);
 
             if($grade == 'G08' && $pos_group == 'AMD')
             {
-                return $this->data['biaya_fix'] = getAll($tbl, array('type_grade'=>'where/7'));
+                return $this->data['biaya_fix'] = getAll('pjd_biaya', array('type_grade'=>'where/7'));
             }elseif($grade == 'G08' && $pos_group == 'MGR')
             {
-               return $this->data['biaya_fix'] = getAll($tbl, array('type_grade'=>'where/6'));
+               return $this->data['biaya_fix'] = getAll('pjd_biaya', array('type_grade'=>'where/6'));
             }elseif($grade == 'G08' && $pos_group == 'KACAB'){
-                return $this->data['biaya_fix'] = getAll($tbl, array('type_grade'=>'where/5'));
+                return $this->data['biaya_fix'] = getAll('pjd_biaya', array('type_grade'=>'where/5'));
             }elseif($grade == 'G07'){
-               return $this->data['biaya_fix'] = getAll($tbl, array('type_grade'=>'where/4'));
+               return $this->data['biaya_fix'] = getAll('pjd_biaya', array('type_grade'=>'where/4'));
             }elseif($grade == 'G06' || $grade == 'G05'){
-                return $this->data['biaya_fix'] = getAll($tbl, array('type_grade'=>'where/3'));
+                return $this->data['biaya_fix'] = getAll('pjd_biaya', array('type_grade'=>'where/3'));
             }elseif($grade == 'G04' || $grade == 'G03'){
-                return $this->data['biaya_fix'] = getAll($tbl, array('type_grade'=>'where/2'));
+                return $this->data['biaya_fix'] = getAll('pjd_biaya', array('type_grade'=>'where/2'));
             }elseif($grade == 'G02' || $grade == 'G01'){
-                return $this->data['biaya_fix'] = getAll($tbl, array('type_grade'=>'where/1'));
+                return $this->data['biaya_fix'] = getAll('pjd_biaya', array('type_grade'=>'where/1'));
             }
     } 
 

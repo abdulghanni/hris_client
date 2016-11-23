@@ -23,7 +23,7 @@
                     <hr/>
                     <h5 class="text-center"><span class="semi-bold">Ketentuan Biaya Perjalan Dinas</span></h5>
 
-                    <!--table class="table table-bordered">
+                    <table class="table table-bordered">
                       <thead>
                         <tr>
                           <th width="15%">Nama</th>
@@ -78,87 +78,7 @@
                             <td id="totaltambahan<?=$o?>" class="total_tambahan" align="right"></td>
                           <?php endforeach ?>
                         </tr>
-                        <!--tr><td><b>Total</b></td><td align="right" id="grand_total" colspan="<?php $cs=4+sizeof($biaya_pjd->result());echo $cs;?>"></td></tr>
-                      </tbody>
-                    </table-->
-                    <table class="table table-bordered">
-                      <thead>
-                        <tr>
-                          <th width="3%">Deskripsi</th>
-                      <?php foreach ($detail->result() as $key):?>
-                          <th width="15%">
-                            <?php echo get_name($key->user_id)?>
-                          </th>
-                      <?php endforeach ?>
-                          
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td width="3%">Gol</td>
-                      <?php foreach ($detail->result() as $key):?>
-                          <td width="15%">
-                            <?php echo get_grade($key->user_id)?>
-                          </td>
-                      <?php endforeach ?>
-                        </tr>
-                            <?php $i = 0;
-                              $c = $ci->get_biaya_pjd($key->user_id,$id);
-                              foreach ($c->result() as $k) :
-                            ?>
-                          <?php $i++ ?>
-                        <tr>
-                          <td width="3%"><?php echo $k->title?> **</td>
-                      <?php
-                      $ppl=0;
-                      foreach ($detail->result() as $key):
-                          $fix[$i][]=$k->jumlah_biaya;
-                          ?>
-                          <td width="15%">
-                          <input type="hidden" class="form-control" name="emp[]" value="<?php echo $key->user_id?>" />
-                            <input type="hidden" class="form-control" name="biaya_fix_id[]" value="<?php echo $k->id?>" />
-                            <input type="text" class="biaya-orang-<?php echo $ppl?> rupiah text-right fix<?php echo $i ?>"  name="biaya_fix[]" value="<?php echo number_format($k->jumlah_biaya,0);?>" />
-                          </td>
-                      <?php
-                      $ppl++;
-                      endforeach ?>
-                        </tr>
-                      <?php endforeach ?>
-                        <!-- biaya tambahan -->
-                          <?php foreach($biaya_pjd->result() as $z):
-                             // print_mz($z);
-                              ?>
-                        <tr>
-                          <td width="3%"><?php echo $z->jenis_biaya?> *</td>
-                          
-                      <?php 
-                      $j = 0;
-                      $ppl=0;
-                      $b = $ci->db->select('id, jumlah_biaya')->where(array('pjd_biaya_id'=> $z->biaya_id,'user_spd_luar_group_id'=>$id))->where('user_spd_luar_group_id', $id)->get('users_spd_luar_group_biaya');
-                      foreach ($b->result() as $b) {
-                          $j++;
-                         // print_mz($b);
-                              ?>
-                          <td width="15%">
-                          
-                            <input type="hidden" class="form-control" name="biaya_tambahan_id[]" value="<?php echo $b->id?>"/>
-                            <input type="text" class="biaya-orang-<?php echo $ppl?> rupiah text-right tambahan<?php echo $j ?>" name="biaya_tambahan[]" value="<?php echo number_format($b->jumlah_biaya,0)?>"/>
-                          </td>
-                              <?php $ppl++; } ?>
-                        </tr>
-                        <?php endforeach; ?> 
-                        <tr>
-                           <td><b>Sub Total</b></td>
-                      <?php $o=0; 
-                      foreach ($detail->result() as $key):?>
-                            <td id="totalorang<?=$o?>" class="total_tambahan" align="right"></td>
-                          <?php
-                          $o++;
-                          endforeach ?>
-                        </tr>
                         <tr><td><b>Total</b></td><td align="right" id="grand_total" colspan="<?php $cs=4+sizeof($biaya_pjd->result());echo $cs;?>"></td></tr>
-                        
-                        
                       </tbody>
                     </table>
                     <button type="button" class="btn-primary" onclick="hitungTotal()" style="margin-top:-10px;">Hitung Total</button><br/><br/>
@@ -181,24 +101,7 @@
 
 
 <script type="text/javascript">
-window.onload = function(){fix(); totalall()}; 
-function totalall(){
-    //alert();
-    //totalorang0
-    var num_ppl=<?php echo $detail->num_rows()?>;
-    //alert(num_ppl);
-    var summaryall=0;
-    for (var i = 0; i < num_ppl; i++) {
-        total = 0;
-        $('.biaya-orang-'+i).each(function (index, element) {
-            var num = parseInt($(element).val().replace(/,/g,""));
-            total = total + num;
-        });
-        $('#totalorang'+i).text(addCommas(total));
-            summaryall=summaryall+total;
-     }
-        $('#grand_total').text(addCommas(summaryall));
-}
+window.onload = function(){fix();};  
   function fix(){
       for (var i = 1; i < 4; i++) {
         total = 0;
@@ -246,8 +149,7 @@ function totalall(){
 
   function hitungTotal()
   {
-    //fix();
-    totalall();
+    fix();
   }
 
   function addCommas(nStr)
