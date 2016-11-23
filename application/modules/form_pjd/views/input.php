@@ -91,17 +91,102 @@
                       </div>
                     </div>
 
-                    <div class="row form-row">
+                    <div class="row form-row atasanlain" style="display:none" id="atasan-3">
                       <div class="col-md-3">
                         <label class="form-label text-right"><?php echo 'Atasan Lainnya' ?></label>
                       </div>
                       <div class="col-md-9">
                         <select name="atasan3" id="atasan3" class="select2" style="width:100%">
-                            <option value="0">- Pilih Atasan Lainnya -</option>
+                            <option value="0">- Pilih Atasan -</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="row form-row atasanlain" style="display:none" id="atasan-4">
+                      <div class="col-md-3">
+                        <label class="form-label text-right"><?php echo 'Atasan Lainnya' ?></label>
+                      </div>
+                      <div class="col-md-9">
+                        <select name="atasan4" id="atasan3" class="select2" style="width:100%">
+                            <option value="0">- Pilih Atasan -</option>
                         </select>
                       </div>
                     </div> 
 
+                    <div class="row form-row atasanlain" style="display:none" id="atasan-5">
+                      <div class="col-md-3">
+                        <label class="form-label text-right"><?php echo 'Atasan Lainnya' ?></label>
+                      </div>
+                      <div class="col-md-9">
+                        <select name="atasan5" id="atasan3" class="select2" style="width:100%">
+                            <option value="0">- Pilih Atasan -</option>
+                        </select>
+                      </div>
+                    </div> 
+
+                    <div class="row form-row atasanlain" style="display:none" id="atasan-6">
+                      <div class="col-md-3">
+                        <label class="form-label text-right"><?php echo 'Atasan Lainnya' ?></label>
+                      </div>
+                      <div class="col-md-9">
+                        <select name="atasan6" id="atasan3" class="select2" style="width:100%">
+                            <option value="0">- Pilih Atasan -</option>
+                        </select>
+                      </div>
+                    </div> 
+
+                    <div class="row form-row atasanlain" style="display:none" id="atasan-7">
+                      <div class="col-md-3">
+                        <label class="form-label text-right"><?php echo 'Atasan Lainnya' ?></label>
+                      </div>
+                      <div class="col-md-9">
+                        <select name="atasan7" id="atasan3" class="select2" style="width:100%">
+                            <option value="0">- Pilih Atasan -</option>
+                        </select>
+                      </div>
+                    </div> 
+
+                    <div class="row form-row atasanlain" style="display:none" id="atasan-8">
+                      <div class="col-md-3">
+                        <label class="form-label text-right"><?php echo 'Atasan Lainnya' ?></label>
+                      </div>
+                      <div class="col-md-9">
+                        <select name="atasan8" id="atasan3" class="select2" style="width:100%">
+                            <option value="0">- Pilih Atasan -</option>
+                        </select>
+                      </div>
+                    </div> 
+
+                    <div class="row form-row atasanlain" style="display:none" id="atasan-9">
+                      <div class="col-md-3">
+                        <label class="form-label text-right"><?php echo 'Atasan Lainnya' ?></label>
+                      </div>
+                      <div class="col-md-9">
+                        <select name="atasan9" id="atasan3" class="select2" style="width:100%">
+                            <option value="0">- Pilih Atasan -</option>
+                        </select>
+                      </div>
+                    </div> 
+
+                    <div class="row form-row atasanlain" style="display:none" id="atasan-10">
+                      <div class="col-md-3">
+                        <label class="form-label text-right"><?php echo 'Atasan Lainnya' ?></label>
+                      </div>
+                      <div class="col-md-9">
+                        <select name="atasan10" id="atasan3" class="select2" style="width:100%">
+                            <option value="0">- Pilih Atasan -</option>
+                        </select>
+                      </div>
+                    </div>  
+
+                   <div class="row form-row">
+                      <div class="col-md-3">
+                      </div>
+                      <div class="col-md-9">
+                          <button type="button" class="btn btn-primary btn-xs" onclick="tambahatasan()" id="addatasan" title="Tambah Atasan"><i class="icon-plus"></i>&nbsp;<?php echo '';?></button>&nbsp;<button type="button" class="btn btn-danger btn-xs" onclick="hapusatasanz()" id="hapusatasan"  title="Hapus Atasan" style="display: none;"><i class="icon-minus"></i>&nbsp;<?php echo '';?></button>
+                          
+                      </div>
+                    </div>
                     <div class="row form-row">
                       <div class="col-md-3">
                         <label class="form-label text-right"><?php echo 'Diajukan Kepada' ?></label>
@@ -126,7 +211,7 @@
                     <div class="row form-row">
                       <div class="col-md-12">
                         <button type="button" id="btnAdd" class="btn btn-primary btn-xs" onclick="addEmp('dataTableEmp')"><i class="icon-plus"></i>&nbsp;<?php echo lang('add_button');?></button>
-                        <button type="button" id="btnRemove" class="btn btn-danger btn-xs" onclick="deleteEmp('dataTableEmp')" style="display: none;"><i class="icon-remove"></i>&nbsp;<?php echo 'Remove'?></button>
+                        <button type="button" id="btnRemove" class="btn btn-danger btn-xs" onclick="deleteEmp('dataTableEmp')" style="display: none;"><i class="icon-remove" ></i>&nbsp;<?php echo 'Remove'?></button>
                       </div> 
                     </div>
                     <p></p>
@@ -143,6 +228,14 @@
                           <tbody>
                           </tbody>
                         </table>
+                      </div>
+                    </div>
+                    <div class="row form-row">
+                      <div class="col-md-3">
+                        <label class="form-label text-right">Jenis PJD</label>
+                      </div>
+                      <div class="col-md-9"> <?php echo form_radio('tipe_pjd','ac')?>&nbsp;&nbsp;Antar Cabang&nbsp;&nbsp;&nbsp;&nbsp;
+                        <?php echo form_radio('tipe_pjd','intern')?>&nbsp;&nbsp;Intern
                       </div>
                     </div>
                     <div class="row form-row">
@@ -315,6 +408,28 @@
 
 <?php $all_users = $all_users->result();?>
 <script type="text/javascript">
+    function tambahatasan(){
+        var skrg=$(".atasanlain:visible").length;
+        var idskrg=skrg+3;
+        $("#atasan-"+idskrg).show();
+        $("#hapusatasan").show();
+        if(idskrg==10){
+        $("#addatasan").hide();
+            
+        }
+       //alert(idskrg);
+    }
+    function hapusatasanz(){
+        var skrg=$(".atasanlain:visible").length;
+        var idskrg=skrg+2;
+        $("#atasan-"+idskrg).hide();
+        $("#addatasan").show();
+        if(idskrg==3){
+        $("#hapusatasan").hide();
+            
+        }
+       //alert(idskrg);
+    }
   function addEmp(tableID){
   var table=document.getElementById(tableID);
   var rowCount=table.rows.length;
