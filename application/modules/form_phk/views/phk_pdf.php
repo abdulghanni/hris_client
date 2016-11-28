@@ -92,6 +92,30 @@ $rejected = assets_url('img/rejected_stamp.png');?>
         <td><span class="style3">Alasan PHK </span></td>
         <td><div align="center"><?php echo $row->alasan?></div></td>
       </tr>
+      <?php if(!empty($row->note_lv1)){ ?>
+      <tr>
+        <td><span class="style3">Catatan Atasan Langsung</span></td>
+        <td><div align="center"><?php echo $row->note_lv1?></div></td>
+      </tr>
+      <?php }?>
+      <?php if(!empty($row->note_lv2)){ ?>
+      <tr>
+        <td><span class="style3">Catatan Atasan Tidak Langsung</span></td>
+        <td><div align="center"><?php echo $row->note_lv2?></div></td>
+      </tr>
+      <?php }?>
+      <?php if(!empty($row->note_lv3)){ ?>
+      <tr>
+        <td><span class="style3">Catatan Atasan Lainnya</span></td>
+        <td><div align="center"><?php echo $row->note_lv3?></div></td>
+      </tr>
+      <?php }?>
+      <?php if(!empty($row->note_hrd)){ ?>
+      <tr>  
+        <td><span class="style3">Catatan HRD</span></td>
+        <td><div align="center"><?php echo $row->note_hrd?></div></td>
+      </tr>
+      <?php }?>
 </table>
 <div class="style4">
 <p>Demikian surat pengajuan ini kami sampaikan, atas perhatian dan kerjasamanya kami ucapkan terima kasih.</p>
