@@ -26,6 +26,9 @@
                 <table class="table table-bordered table-hover table-full-width " id="table" style="width: 100%;">
                     <thead>
                          <tr>
+                          <th colspan="9" scope="col" width="100%" class="text-center">Biaya PJD</th>
+                        </tr>
+                         <tr>
                           <th rowspan="2" scope="col" width="20%">Komponen Biaya</th>
                           <th colspan="7" scope="col" width="70%" class="text-center">Biaya PJD/Golongan</th>
                         </tr>
@@ -75,6 +78,80 @@
                         <td>Hotel</td>
                         <?php for($i=3;$i<=21;$i+=3){
                           $v = number_format(getValue('jumlah_biaya', 'pjd_biaya', array('id'=>'where/'.$i)), 0);
+                          ?>
+                        <td align="right">
+                            <a href="javascript:void(0);" onclick="updateVal('<?php echo $i?>')">
+                              <span id="td<?php echo $i?>" class="td-val">
+                                <u><?= $v ?></u>
+                              </span>
+                            </a>
+                            <input type="text" style="display:none" value="<?=$v?>" id="text<?php echo $i?>" class="text-val text-right form-control money" onKeydown="Javascript: if (event.keyCode==13) changeVal(<?=$i?>);">
+                        </td>
+                        <?php } ?>
+                      </tr>
+                    </tbody>
+                </table>
+            </div>
+            </div>
+            </div><br/>
+            <div class="row">
+            <div class="col-md-12">
+              <div class="table-responsive">
+                <table class="table table-bordered table-hover table-full-width " id="table" style="width: 100%;">
+                    <thead>
+                         <tr>
+                          <th colspan="9" scope="col" width="100%" class="text-center">Biaya PJD Intern</th>
+                        </tr>
+                         <tr>
+                          <th rowspan="2" scope="col" width="20%">Komponen Biaya</th>
+                          <th colspan="7" scope="col" width="70%" class="text-center">Biaya PJD/Golongan</th>
+                        </tr>
+                        <tr>
+                          <th scope="col" class="text-center" width="10%">1</th>
+                          <th scope="col" class="text-center" width="10%">2</th>
+                          <th scope="col" class="text-center" width="10%">3</th>
+                          <th scope="col" class="text-center" width="10%">4</th>
+                          <th scope="col" class="text-center" width="10%">5</th>
+                          <th scope="col" class="text-center" width="10%">6</th>
+                          <th scope="col" class="text-center" width="10%">7</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Uang Makan</td>
+                        <?php for($i=101;$i<=119;$i+=3){
+                            $v = number_format(getValue('jumlah_biaya', 'pjd_biaya_intern', array('id'=>'where/'.($i-100))), 0);
+                          ?>
+
+                        <td align="right">
+                            <a href="javascript:void(0);" onclick="updateVal('<?php echo $i?>')">
+                              <span id="td<?php echo $i?>" class="td-val">
+                                <u><?= $v ?></u>
+                              </span>
+                            </a>
+                            <input type="text" style="display:none" value="<?=$v?>" id="text<?php echo $i?>" class="text-val text-right form-control money" onKeydown="Javascript: if (event.keyCode==13) changeVal(<?=$i?>);">
+                        </td>
+                        <?php } ?>
+                      </tr>
+                       <tr>
+                        <td>Uang Saku</td>
+                        <?php for($i=102;$i<=120;$i+=3){
+                            $v = number_format(getValue('jumlah_biaya', 'pjd_biaya_intern', array('id'=>'where/'.($i-100))), 0);
+                          ?>
+                        <td align="right">
+                            <a href="javascript:void(0);" onclick="updateVal('<?php echo $i?>')">
+                              <span id="td<?php echo $i?>" class="td-val">
+                                <u><?= $v ?></u>
+                              </span>
+                            </a>
+                            <input type="text" style="display:none" value="<?=$v?>" id="text<?php echo $i?>" class="text-val text-right form-control money" onKeydown="Javascript: if (event.keyCode==13) changeVal(<?=$i?>);">
+                        </td>
+                        <?php } ?>
+                      </tr>
+                      <tr>
+                        <td>Hotel</td>
+                        <?php for($i=103;$i<=121;$i+=3){
+                          $v = number_format(getValue('jumlah_biaya', 'pjd_biaya_intern', array('id'=>'where/'.($i-100))), 0);
                           ?>
                         <td align="right">
                             <a href="javascript:void(0);" onclick="updateVal('<?php echo $i?>')">

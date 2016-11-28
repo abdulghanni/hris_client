@@ -34,13 +34,19 @@ class biaya_pjd extends MX_Controller {
 
     function update($id)
     {
+        if($id>100){
+            $id=$id-100;
+            $tbl='pjd_biaya_intern';
+        }else{
+            $tbl='pjd_biaya';
+        }
         $value = str_replace(',', '', $this->input->post('value'));
         $data = array('jumlah_biaya'=>$value,
                       'edited_by' => sessId(),
                       'edited_on' =>dateNow()
             );
         $this->db->where('id', $id)
-             ->update('pjd_biaya', $data);
+             ->update($tbl, $data);
         return true;
     }
 
