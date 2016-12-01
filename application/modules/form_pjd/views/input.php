@@ -1,3 +1,4 @@
+<!-- last update 1 dec 16 -->
 <!-- BEGIN PAGE CONTAINER-->
   <div class="page-content"> 
     <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
@@ -25,13 +26,13 @@
                 $att = array('class' => 'form-no-horizontal-spacing', 'id' => 'formadd');
                 echo form_open('form_pjd/add', $att); ?>
                 <div class="row column-seperation">
-                  <div class="col-md-5">
+                  <div class="col-md-6">
                     <h4>Admin Pembuat Tugas</h4> 
                     <div class="row form-row">
-                      <div class="col-md-3">
+                      <div class="col-md-4">
                         <label class="form-label text-right">Nama</label>
                       </div>
-                      <div class="col-md-9">
+                      <div class="col-md-8">
                       <?php if(is_admin()||is_admin_bagian()||is_admin_khusus()){?>
                         <select id="emp" class="select2" style="width:100%" name="emp_tc">
                           <?php
@@ -47,32 +48,32 @@
                       </div>
                     </div>
                     <div class="row form-row">
-                      <div class="col-md-3">
+                      <div class="col-md-4">
                         <label class="form-label text-right">Dept/Bagian</label>
                       </div>
-                      <div class="col-md-9">
+                      <div class="col-md-8">
                         <input name="org_tc" id="organization" type="text"  class="form-control" placeholder="Nama" value="<?php echo get_user_organization($sess_nik);?>" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
-                      <div class="col-md-3">
+                      <div class="col-md-4">
                         <label class="form-label text-right">Jabatan</label>
                       </div>
-                      <div class="col-md-9">
+                      <div class="col-md-8">
                         <input name="pos_tc" id="position" type="text"  class="form-control" placeholder="Nama" value="<?php echo get_user_position($sess_nik);?>" disabled="disabled">
                       </div>
                     </div> 
                     <div class="row form-row">
-                      <div class="col-md-3">
+                      <div class="col-md-4">
                         <label class="bold form-label text-right"><?php echo 'Approval' ?></label>
                       </div>
                     </div>
 
                     <div class="row form-row">
-                      <div class="col-md-3">
+                      <div class="col-md-4">
                         <label class="form-label text-right"><?php echo 'Atasan Langsung' ?></label>
                       </div>
-                      <div class="col-md-9">
+                      <div class="col-md-8">
                       <?php
                         $style_up='class="select2" style="width:100%" id="atasan1"';
                             echo form_dropdown('atasan1',array('0'=>'- Pilih Atasan Langsung -'),'',$style_up);
@@ -81,10 +82,10 @@
                     </div>
 
                    <div class="row form-row">
-                      <div class="col-md-3">
+                      <div class="col-md-4">
                         <label class="form-label text-right"><?php echo 'Atasan Tidak Langsung' ?></label>
                       </div>
-                      <div class="col-md-9">
+                      <div class="col-md-8">
                         <select name="atasan2" id="atasan2" class="select2" style="width:100%">
                             <option value="0">- Pilih Atasan Tidak Langsung -</option>
                         </select>
@@ -92,10 +93,10 @@
                     </div>
 
                     <div class="row form-row atasanlain" style="display:none" id="atasan-3">
-                      <div class="col-md-3">
+                      <div class="col-md-4">
                         <label class="form-label text-right"><?php echo 'Atasan Lainnya' ?></label>
                       </div>
-                      <div class="col-md-9">
+                      <div class="col-md-8">
                         <select name="atasan3" id="atasan3" class="select2" style="width:100%">
                             <option value="0">- Pilih Atasan -</option>
                         </select>
@@ -103,10 +104,10 @@
                     </div>
 
                     <div class="row form-row atasanlain" style="display:none" id="atasan-4">
-                      <div class="col-md-3">
+                      <div class="col-md-4">
                         <label class="form-label text-right"><?php echo 'Atasan Lainnya' ?></label>
                       </div>
-                      <div class="col-md-9">
+                      <div class="col-md-8">
                         <select name="atasan4" id="atasan3" class="select2" style="width:100%">
                             <option value="0">- Pilih Atasan -</option>
                         </select>
@@ -114,10 +115,10 @@
                     </div> 
 
                     <div class="row form-row atasanlain" style="display:none" id="atasan-5">
-                      <div class="col-md-3">
+                      <div class="col-md-4">
                         <label class="form-label text-right"><?php echo 'Atasan Lainnya' ?></label>
                       </div>
-                      <div class="col-md-9">
+                      <div class="col-md-8">
                         <select name="atasan5" id="atasan3" class="select2" style="width:100%">
                             <option value="0">- Pilih Atasan -</option>
                         </select>
@@ -125,10 +126,10 @@
                     </div> 
 
                     <div class="row form-row atasanlain" style="display:none" id="atasan-6">
-                      <div class="col-md-3">
+                      <div class="col-md-4">
                         <label class="form-label text-right"><?php echo 'Atasan Lainnya' ?></label>
                       </div>
-                      <div class="col-md-9">
+                      <div class="col-md-8">
                         <select name="atasan6" id="atasan3" class="select2" style="width:100%">
                             <option value="0">- Pilih Atasan -</option>
                         </select>
@@ -136,10 +137,10 @@
                     </div> 
 
                     <div class="row form-row atasanlain" style="display:none" id="atasan-7">
-                      <div class="col-md-3">
+                      <div class="col-md-4">
                         <label class="form-label text-right"><?php echo 'Atasan Lainnya' ?></label>
                       </div>
-                      <div class="col-md-9">
+                      <div class="col-md-8">
                         <select name="atasan7" id="atasan3" class="select2" style="width:100%">
                             <option value="0">- Pilih Atasan -</option>
                         </select>
@@ -147,10 +148,10 @@
                     </div> 
 
                     <div class="row form-row atasanlain" style="display:none" id="atasan-8">
-                      <div class="col-md-3">
+                      <div class="col-md-4">
                         <label class="form-label text-right"><?php echo 'Atasan Lainnya' ?></label>
                       </div>
-                      <div class="col-md-9">
+                      <div class="col-md-8">
                         <select name="atasan8" id="atasan3" class="select2" style="width:100%">
                             <option value="0">- Pilih Atasan -</option>
                         </select>
@@ -158,10 +159,10 @@
                     </div> 
 
                     <div class="row form-row atasanlain" style="display:none" id="atasan-9">
-                      <div class="col-md-3">
+                      <div class="col-md-4">
                         <label class="form-label text-right"><?php echo 'Atasan Lainnya' ?></label>
                       </div>
-                      <div class="col-md-9">
+                      <div class="col-md-8">
                         <select name="atasan9" id="atasan3" class="select2" style="width:100%">
                             <option value="0">- Pilih Atasan -</option>
                         </select>
@@ -169,10 +170,10 @@
                     </div> 
 
                     <div class="row form-row atasanlain" style="display:none" id="atasan-10">
-                      <div class="col-md-3">
+                      <div class="col-md-4">
                         <label class="form-label text-right"><?php echo 'Atasan Lainnya' ?></label>
                       </div>
-                      <div class="col-md-9">
+                      <div class="col-md-8">
                         <select name="atasan10" id="atasan3" class="select2" style="width:100%">
                             <option value="0">- Pilih Atasan -</option>
                         </select>
@@ -180,33 +181,33 @@
                     </div>  
 
                    <div class="row form-row">
-                      <div class="col-md-3">
+                      <div class="col-md-4">
                       </div>
-                      <div class="col-md-9">
-                          <button type="button" class="btn btn-primary btn-xs" onclick="tambahatasan()" id="addatasan" title="Tambah Atasan"><i class="icon-plus"></i>&nbsp;<?php echo '';?></button>&nbsp;<button type="button" class="btn btn-danger btn-xs" onclick="hapusatasanz()" id="hapusatasan"  title="Hapus Atasan" style="display: none;"><i class="icon-minus"></i>&nbsp;<?php echo '';?></button>
-                          
+                      <div class="col-md-8">
+                          <button type="button" class="btn btn-primary btn-xs" onclick="tambahatasan()" id="addatasan" title="Tambah Atasan"><i class="icon-plus"></i>&nbsp;<?php echo 'Tambah atasan';?></button>&nbsp;<button type="button" class="btn btn-danger btn-xs" onclick="hapusatasanz()" id="hapusatasan"  title="Hapus Atasan" style="display: none;"><i class="icon-minus"></i>&nbsp;<?php echo '';?></button>
                       </div>
                     </div>
+                    <p></p>
                     <div class="row form-row">
-                      <div class="col-md-3">
+                      <div class="col-md-4">
                         <label class="form-label text-right"><?php echo 'Diajukan Kepada' ?></label>
                       </div>
-                      <div class="col-md-9">
+                      <div class="col-md-8">
                         <input type="text" name="diajukan_ke" class="form-control" required="required">
                       </div>
                     </div> 
 
                     <div class="row form-row">
-                      <div class="col-md-3">
+                      <div class="col-md-4">
                         <label class="form-label text-right"><?php echo 'Jabatan' ?></label>
                       </div>
-                      <div class="col-md-9">
+                      <div class="col-md-8">
                         <input type="text" name="jabatan" class="form-control" required="required">
                       </div>
                     </div> 
                     
                   </div>
-                  <div class="col-md-7">
+                  <div class="col-md-6">
                     <h4>Memberi Tugas Kepada</h4>
                     <div class="row form-row">
                       <div class="col-md-12">
@@ -297,7 +298,7 @@
                             <div class="col-md-3">
                             </div>
                             <div class="col-md-9">
-                              <button type="button" class="btn-primary" id="btnTambahKota" style="display:none">Tambah Kota</button>
+                              <button type="button" class="btn btn-primary" id="btnTambahKota" style="display:none">Tambah Kota</button>
                             </div>
                           </div>
 
@@ -329,7 +330,7 @@
                         <div class="row form-row">
                           <div class="col-md-3"></div>
                           <div class="col-md-9">
-                            <button type="button" class="btn-primary" id="btnTambahKendaraan" style="">Tambah Kendaraan</button>
+                            <button type="button" class="btn btn-primary" id="btnTambahKendaraan" style="">Tambah Kendaraan</button>
                           </div>
                         </div><br/>
                         <div class="row form-row">

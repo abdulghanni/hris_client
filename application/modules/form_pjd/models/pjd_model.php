@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-
+//last update 1 dec 16
 class Pjd_model extends CI_Model {
 
     var $table = 'users_spd_luar_group';
