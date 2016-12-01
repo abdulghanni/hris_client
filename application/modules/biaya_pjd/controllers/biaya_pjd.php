@@ -1,5 +1,6 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
 
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
+// last update 1 dec 16
 class biaya_pjd extends MX_Controller {
 
   public $data;

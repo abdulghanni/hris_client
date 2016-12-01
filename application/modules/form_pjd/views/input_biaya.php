@@ -1,3 +1,4 @@
+<!-- last update 1 dec 16 -->
 <!-- BEGIN PAGE CONTAINER-->
   <div class="page-content"> 
     <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
