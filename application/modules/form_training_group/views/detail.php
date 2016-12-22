@@ -289,6 +289,7 @@
                             $user_app = 'user_app_lv'.$i;
                             if($user->$is_app == 1 && get_nik($sess_id) == $user->$user_app){?>
                               <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitModalLv<?php echo $i ?>"><i class='icon-edit'> Edit Approval</i></div>
+                              <div class='btn btn-warning btn-small text-center' title='Kirim Notifikasi' onClick="send_notif_('lv<?php echo $i?>')"><i class='icon-mail-forward'> Kirim Notifikasi</i></div>
                           <?php }endfor;
                           if($user->is_app_hrd == 1 && get_nik($sess_id) == $this->approval->approver('training', $user_nik)){?>
                             <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitModalHrd"><i class='icon-edit'> Edit Approval</i></div>

@@ -32,6 +32,7 @@
                                   <table class="table table-bordered table-hover table-full-width " id="table" style="width: 100%;">
                                       <thead>
                                            <tr>
+                                            <th width="5%">Periode</th>
                                             <th width="5%">NIK</th>
                                             <th width="15%">Nama</th>
                                             <th width="10%">Jabatan</th>
@@ -41,6 +42,7 @@
                                       <tbody>
                                           <?php foreach($form->result() as $r){?>
                                           <tr>
+                                            <td width="5%"><?=get_year_session($r->comp_session_id)?></td>
                                             <td width="5%"><?=$r->nik?></td>
                                             <td width="15%"><?=get_name($r->nik)?></td>
                                             <td width="10%"><?=get_user_position($r->nik)?></td>

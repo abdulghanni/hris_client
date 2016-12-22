@@ -33,12 +33,14 @@ class form_penilaian extends MX_Controller {
         {
             redirect('auth/login', 'refresh');
         }
-        elseif (!$this->ion_auth->is_admin())
+        /*elseif (!$this->ion_auth->is_admin())
         {
             return show_error('You must be an administrator to view this page.');
-        }
+        }*/
         else
         {
+            permissionBiasa();
+            $sess_id = $data['sess_id'] = $this->session->userdata('user_id');
             $data['title'] = $this->title;
             $data['url_ajax_list'] = site_url('form_penilaian/ajax_list');
             $data['url_ajax_add'] = site_url('form_penilaian/ajax_add');
@@ -46,7 +48,16 @@ class form_penilaian extends MX_Controller {
             $data['url_ajax_delete'] = site_url('form_penilaian/ajax_delete');
             $data['url_ajax_update'] = site_url('form_penilaian/ajax_update');
             $data['ci'] = $this;
-            $data['form'] = getAll($this->table);
+            //echo 'admin yes? '.is_admin_competency(50);
+            if(is_admin_competency(50) == 1 || $this->ion_auth->is_admin())
+            {
+                $data['form'] = getAll($this->table,array('id'=>'order/desc'));    
+            }else
+            {
+                $data['form'] = getJoin($this->table, 'users', $this->table.'.nik = users.nik', 'left', $this->table.'.*,users.superior_id', array('users.superior_id'=>'where/'.get_nik($sess_id),'id'=>'order/desc'));
+                
+            }
+            //echo $this->db->last_query();
 
             $this->_render_page($this->controller.'/index',$data);
         }
@@ -54,12 +65,15 @@ class form_penilaian extends MX_Controller {
 
     function input(){
         permissionBiasa();
+        $sess_id = $data['sess_id'] = $this->session->userdata('user_id');
         $data['title'] = $this->title;
         $data['controller'] = $this->controller;
-        $data['competency_penilaian'] = GetAll('competency_penilaian')->result();
+        $data['competency_penilaian'] = GetAll('competency_penilaian',array('is_deleted'=>'where/0'))->result();
         $data['users'] = GetAll('users')->result();
+        $data['subordinate'] = getAll('users', array('superior_id'=>'where/'.get_nik($sess_id)));
         $data['rekomendasi'] = GetAll('competency_rekomendasi')->result();
         $data['kuadran'] = GetAll('competency_kuadran')->result();
+        $data['periode'] = GetAll('comp_session',array('is_deleted'=>'where/0'))->result();
         $this->_render_page('form_penilaian/input', $data);
     }
 
@@ -95,7 +109,8 @@ class form_penilaian extends MX_Controller {
         $data['id'] = $id;
         $data['title'] = $this->title;
         $data['controller'] = $this->controller;
-        $data['competency_penilaian'] = GetAll('competency_penilaian')->result();
+        $data['competency_penilaian'] = GetAll('competency_penilaian',array('is_deleted'=>'where/0'))->result();
+        $data['comp_session_id'] = Getvalue('comp_session_id', $this->table, array('id'=>'where/'.$id));
         $data['users'] = GetAll('users')->result();
         $data['rekomendasi'] = GetAll('competency_rekomendasi')->result();
         $data['kuadran'] = GetAll('competency_kuadran')->result();
@@ -119,6 +134,7 @@ class form_penilaian extends MX_Controller {
         // INSERT TO COMPETENCY_form_penilaian
         $data = array(
             'nik' => $this->input->post('nik'),
+            'comp_session_id' => $this->input->post('comp_session_id'),
             'rekomendasi_id' => $this->input->post('rekomendasi_id'),
             'kuadran_id' => $this->input->post('kuadran_id'),
             'created_by'=>sessId(),

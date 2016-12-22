@@ -27,6 +27,15 @@
 					            <div class="col-md-6">
 					            	<div class="row form-row">
 						            	<div class="col-md-3">
+					                        <label class="form-label text-right">Periode</label>
+					                    </div>
+					                    <div class="col-md-9">
+							            	<input type="text" class="form-control" value="<?=get_year_session($comp_session_id)?>" readonly>
+							            	<input type="hidden" name="comp_session_id" value="<?=get_year_session($comp_session_id)?>">
+					                    </div>
+					                </div>
+					            	<div class="row form-row">
+						            	<div class="col-md-3">
 					                        <label class="form-label text-right">Nama</label>
 					                    </div>
 					                    <div class="col-md-9">
@@ -385,6 +394,27 @@
 				                        		<option value="0">-- Pilih HRD --</option>
 							            		<?php foreach($users as $u){
 							            			$selected = ($form->hrd == $u->nik) ? 'selected="selected"' : '';
+							            			?>
+							            			<option value="<?=$u->nik?>" <?=$selected?>><?=$u->nik.' - '.$u->username?></option>
+							            		<?php } ?>
+							            	</select>
+				                      	</div>
+				                    </div>
+					        	</div>
+					        </div>
+
+					        <div class="row">
+					        	<div class="col-md-12">
+				                    <div class="row form-row">
+				                      	<div class="col-md-1">
+				                        	<label class="form-label">HRD Lainnya</label>
+				                      	</div>
+
+					                   	<div class="col-md-4">
+				                        	<select class="select2" style="width:100%" id="hrd2" name="hrd2">
+				                        		<option value="0">-- Pilih HRD --</option>
+							            		<?php foreach($users as $u){
+							            			$selected = ($form->hrd2 == $u->nik) ? 'selected="selected"' : '';
 							            			?>
 							            			<option value="<?=$u->nik?>" <?=$selected?>><?=$u->nik.' - '.$u->username?></option>
 							            		<?php } ?>

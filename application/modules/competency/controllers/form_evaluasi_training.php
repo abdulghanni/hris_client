@@ -56,11 +56,12 @@ class form_evaluasi_training extends MX_Controller {
         permissionBiasa();
         $data['title'] = $this->title;
         $data['controller'] = $this->controller;
-        $data['competency_evaluasi'] = GetAll('competency_evaluasi_training')->result();
+        $data['competency_evaluasi'] = GetAll('competency_evaluasi_training',array('is_deleted'=>'where/0'))->result();
         $data['competency_metode'] = GetAll('competency_metode_evaluasi')->result();
         $data['competency_pengetahuan'] = GetAll('competency_pengetahuan')->result();
         $data['competency_sikap'] = GetAll('competency_sikap')->result();
         $data['users'] = GetAll('users')->result();
+        $data['periode'] = GetAll('comp_session',array('is_deleted'=>'where/0'))->result();
         $this->_render_page('form_evaluasi_training/input', $data);
     }
 
@@ -102,12 +103,12 @@ class form_evaluasi_training extends MX_Controller {
         $data['ci'] = $this;
         $data['title'] = $this->title;
         $data['controller'] = $this->controller;
-        $data['competency_evaluasi'] = GetAll('competency_evaluasi_training')->result();
+        $data['competency_evaluasi'] = GetAll('competency_evaluasi_training',array('is_deleted'=>'where/0'))->result();
         $data['competency_metode'] = GetAll('competency_metode_evaluasi')->result();
         $data['competency_pengetahuan'] = GetAll('competency_pengetahuan')->result();
         $data['competency_sikap'] = GetAll('competency_sikap')->result();
         $data['competency_keterampilan'] = GetAll('competency_form_evaluasi_point_keterampilan', array($this->table."_id"=>'where/'.$id))->result();
-
+        $data['comp_session_id'] = Getvalue('comp_session_id', $this->table, array('id'=>'where/'.$id));
         $data['users'] = GetAll('users')->result();
         $data['form'] = getAll($this->table, array('id'=>'where/'.$id))->row();
         // $data['competency_metode'] = explode(',', $data['form']->competency_metode_evaluasi_id);
@@ -137,6 +138,7 @@ class form_evaluasi_training extends MX_Controller {
         // INSERT TO COMPETENCY_form_evaluasi_training
         $data = array(
             'nik' => $this->input->post('nik'),
+            'comp_session_id' => $this->input->post('comp_session_id'),
             'organization_id' => $this->input->post('organization_id'),
             'position_id' => $this->input->post('position_id'),
             'nama_training' => $this->input->post('nama_training'),
@@ -149,6 +151,7 @@ class form_evaluasi_training extends MX_Controller {
             'realisasi_tgl' => date('Y-m-d', strtotime($this->input->post('realisasi_tgl'))),
 
             'hrd' => $this->input->post('hrd'),
+            'hrd2' => $this->input->post('hrd2'),
             'created_by'=>sessId(),
             'created_on'=>dateNow(),
             );
@@ -220,6 +223,25 @@ class form_evaluasi_training extends MX_Controller {
             $this->db->insert('email', $data4);
             if(!empty(getEmail($hrd)))$this->send_email(getEmail($hrd), $subject_email, $isi_email);
 
+
+            //NOTIF KE HRD2
+            $hrd2 = $this->input->post('hrd2');
+            $url = base_url().$this->controller.'/approve/'.$form_id;
+            $subject_email = "Kompetensi - $this->title";
+            $isi_email = get_name(sessId())." Membuat ".$this->title.
+                     "<br/>Untuk melihat detail silakan <a href=$url>Klik disini</a>";
+                     
+            $data4 = array(
+                  'sender_id' => get_nik(sessId()),
+                  'receiver_id' => $hrd2,
+                  'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                  'subject' => $subject_email,
+                  'email_body' => $isi_email,
+                  'is_read' => 0,
+            );
+            $this->db->insert('email', $data4);
+            if(!empty(getEmail($hrd2)))$this->send_email(getEmail($hrd2), $subject_email, $isi_email);
+
         }
         redirect(base_url($this->controller), 'refresh');
     }
@@ -256,6 +278,10 @@ class form_evaluasi_training extends MX_Controller {
             'date_app' => 0,
             'app_status_id' => 0,
             'hrd' => $this->input->post('hrd'),
+            'hrd2' => $this->input->post('hrd2'),
+            'hrd2_is_app' => 0,
+            'hrd2_date_app' => 0,
+            'hrd2_app_status_id' => 0,
             'edited_by'=>sessId(),
             'edited_on'=>dateNow(),
             );
@@ -332,6 +358,24 @@ class form_evaluasi_training extends MX_Controller {
             $this->db->insert('email', $data4);
             if(!empty(getEmail($hrd)))$this->send_email(getEmail($hrd), $subject_email, $isi_email);
 
+            //NOTIF KE HRD2
+            $hrd2 = $this->input->post('hrd2');
+            $url = base_url().$this->controller.'/approve/'.$form_id;
+            $subject_email = "Kompetensi - $this->title";
+            $isi_email = get_name(sessId())." Membuat perubahan".$this->title.
+                     "<br/>Untuk melihat detail silakan <a href=$url>Klik disini</a>";
+                     
+            $data4 = array(
+                  'sender_id' => get_nik(sessId()),
+                  'receiver_id' => $hrd2,
+                  'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                  'subject' => $subject_email,
+                  'email_body' => $isi_email,
+                  'is_read' => 0,
+            );
+            $this->db->insert('email', $data4);
+            if(!empty(getEmail($hrd2)))$this->send_email(getEmail($hrd2), $subject_email, $isi_email);
+
         }
         redirect(base_url($this->controller), 'refresh');
     }
@@ -350,6 +394,27 @@ class form_evaluasi_training extends MX_Controller {
                 'app_status_id' => $this->input->post('app_status_id'),
                 'date_app'=>dateNow(),
                 'note' => $this->input->post('note')
+            );
+
+            $this->db->where('id', $form_id)
+                     ->update($this->table, $data);
+            return true;
+        }
+    }
+
+    function do_approve2($form_id){
+        if(!$this->ion_auth->logged_in())
+        {
+            redirect('auth/login', 'refresh');
+        }
+        else
+        {
+            $sessId = sessId();
+            $data = array(
+                'hrd2_is_app' => 1,
+                'hrd2_app_status_id' => $this->input->post('hrd2_app_status_id'),
+                'hrd2_date_app'=>dateNow(),
+                'hrd2_note' => $this->input->post('hrd2_note')
             );
 
             $this->db->where('id', $form_id)

@@ -30,6 +30,35 @@ function approve(sessId)
     });
 }
 
+function approve2(sessId)
+{
+    $('#btnApp2'+sessId).text('saving...'); //change button text
+    $('#btnApp2'+sessId).attr('disabled',true); //set button disable 
+    url  = base_url+controller+'/do_approve2/'+org_id;
+    // ajax adding data to database
+    $.ajax({
+        url : url,
+        type: "POST",
+        data: $('#formApp2'+sessId).serialize(),
+        //dataType: "JSON",
+        success: function()
+        {
+            reload_status(sessId);
+            $('#btnApp2'+sessId).text('save'); //change button text
+            $('#btnApp2'+sessId).attr('disabled',false); //set button enable
+            $("[data-dismiss=modal]").trigger({ type: "click" });  
+            //send_notif(sessId);   
+        },
+        error: function (jqXHR, textStatus, errorThrown)
+        {
+            alert('Error adding / update data');
+            $('#btnApp2'+sessId).text('save'); //change button text
+            $('#btnApp2'+sessId).attr('disabled',false); //set button enable 
+
+        }
+    });
+}
+
 function reload_status(sessId)
 {
     uri = base_url+controller+'/approve/'+org_id+'/'+sessId;

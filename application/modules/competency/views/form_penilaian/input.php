@@ -27,14 +27,49 @@
 					            <div class="col-md-6">
 					            	<div class="row form-row">
 						            	<div class="col-md-3">
+					                        <label class="form-label text-right">Periode</label>
+					                    </div>
+					                    <div class="col-md-9">
+							            	<select class="select2" style="width:100%" id="comp_session_id" name="comp_session_id" required>
+					                    		<option value="">-- Pilih Periode --</option>
+							            		<?php foreach($periode as $u){?>
+							            			<option value="<?=$u->id?>"><?=$u->year?></option>
+							            		<?php } ?>
+							            	</select>
+					                    </div>
+					                </div>
+					            	<div class="row form-row">
+						            	<div class="col-md-3">
 					                        <label class="form-label text-right">Karyawan Yang Dinilai</label>
 					                    </div>
 					                    <div class="col-md-9">
-							            	<select class="select2" style="width:100%" id="emp" name="nik">
+					                    	<?php if(is_admin()){?>
+					                            <select id="emp" class="select2" style="width:100%" name="nik">
+					                              <option value="0">-- Pilih Karyawan --</option>
+					                              <?php
+					                              foreach ($users as $u) : ?>
+					                                <option value="<?php echo $u->nik?>" ><?php echo $u->username.' - '.$u->nik; ?></option>
+					                              <?php endforeach; ?>
+					                            </select>
+					                          <?php }elseif($subordinate->num_rows() > 0){?>
+					                          <input type="hidden" id="empSess" value="<?= $sess_id ?>">
+					                            <select id="emp" class="select2" style="width:100%" name="nik">
+					                              <option value="0">-- Pilih Karyawan --</option>
+					                              <?php foreach($subordinate->result() as $row):?>
+					                                <option value="<?php echo get_nik($row->id)?>"><?php echo get_name($row->id).' - '.get_nik($row->id)?></option>
+					                              <?php endforeach;?>
+					                            </select>
+					                          <?php }else{ ?>
+					                            <select id="emp" class="select2" style="width:100%" name="nik">
+					                              <option value="0">-- Anda tidak mempunyai bawahan --</option>
+					                            </select>
+					                        <?php } ?>
+
+							            	<!-- <select class="select2" style="width:100%" id="emp" name="nik">
 							            		<?php foreach($users as $u){?>
 							            			<option value="<?=$u->nik?>"><?=$u->nik.' - '.$u->username?></option>
 							            		<?php } ?>
-							            	</select>
+							            	</select> -->
 					                    </div>
 					                </div>
 					            	<div class="row form-row">
@@ -80,7 +115,7 @@
 												<th class="text-center">Kurang</th>
 												<th class="text-center">Mampu</th>
 												<th class="text-center">Kurang</th>
-												<th class="text-center">Mampu</th>
+												<th class="text-center">Mau</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -110,20 +145,34 @@
 									</table>
 								</div>
 								<div class="col-md-12">
+									<h3>Kolom dibawah ini untuk HR</h3>
+									<?php $myk = ($sess_id != 118) ? 'disabled="disabled"' : '';?>
+								</div>
+								<div class="col-md-12">
 									<h4>Kuadran :</h4>
 									<?php foreach($kuadran as $s){?>
+									
 										<div class="radio radio-success">
-					                        <input id="<?php echo 'kuadran_id_'.$s->id?>" name="kuadran_id" value="<?=$s->id?>" type="radio">
-					                        <label for="<?php echo 'kuadran_id_'.$s->id?>"><?=$s->title?></label>
+					                        <input id="<?php echo 'kuadran_id_'.$s->id?>" name="kuadran_id" value="<?=$s->id?>" type="radio" <?php echo $myk?>>
+					                        <label for="<?php echo 'kuadran_id_'.$s->id?>"><?=$s->id.'. '.$s->title?></label>
 					                     </div>
 									<?php } ?>
 								</div>
 								<div class="col-md-12">
 									<h4>Rekomendasi :</h4>
 									<?php foreach($rekomendasi as $r){?>
+									<?php if($r->id == 1) { 
+										$label_rek = 'A';
+									}elseif($r->id == 2) {
+										$label_rek = 'B';
+									}elseif($r->id == 3) {
+										$label_rek = 'C';
+									}else{
+										$label_rek = 'D';
+									} ?>
 										<div class="radio radio-success">
-					                        <input id="<?=$r->id?>" name="rekomendasi_id" value="<?=$r->id?>" type="radio">
-					                        <label for="<?=$r->id?>"><?=$r->title?></label>
+					                        <input id="<?=$r->id?>" name="rekomendasi_id" value="<?=$r->id?>" type="radio" <?php echo $myk?>>
+					                        <label for="<?=$r->id?>"><?=$label_rek.'. '.$r->title?></label>
 					                     </div>
 									<?php } ?>
 								</div>

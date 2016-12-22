@@ -237,12 +237,16 @@
                         <div class="col-md-12 text-center">
                         <?php  if($user->is_app_lv1 == 1 && get_nik($sess_id) == $user->user_app_lv1){?>
                             <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitcutiModalLv1"><i class='icon-edit'> Edit Approval</i></div>
+                            <div class='btn btn-warning btn-small text-center' title='Kirim Notifikasi' onClick="send_notif_('lv<?php echo $i?>')"><i class='icon-mail-forward'> Kirim Notifikasi</i></div>
                           <?php }elseif($user->is_app_lv2 == 1 && get_nik($sess_id) == $user->user_app_lv2){?>
                             <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitcutiModalLv2"><i class='icon-edit'> Edit Approval</i></div>
+                            <div class='btn btn-warning btn-small text-center' title='Kirim Notifikasi' onClick="send_notif_('lv<?php echo $i?>')"><i class='icon-mail-forward'> Kirim Notifikasi</i></div>
                           <?php }elseif($user->is_app_lv3 == 1 && get_nik($sess_id) == $user->user_app_lv3){?>
                             <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitcutiModalLv3"><i class='icon-edit'> Edit Approval</i></div>
+                            <div class='btn btn-warning btn-small text-center' title='Kirim Notifikasi' onClick="send_notif_('lv<?php echo $i?>')"><i class='icon-mail-forward'> Kirim Notifikasi</i></div>
                           <?php }elseif($user->is_app_hrd == 1 && get_nik($sess_id) == $user->user_app_hrd){?>
                             <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitcutiModalHrd"><i class='icon-edit'> Edit Approval</i></div>
+                            <div class='btn btn-warning btn-small text-center' title='Kirim Notifikasi' onClick="send_notif_('lv<?php echo $i?>')"><i class='icon-mail-forward'> Kirim Notifikasi</i></div>
                           <?php } ?>
                         </div>
                     </div>

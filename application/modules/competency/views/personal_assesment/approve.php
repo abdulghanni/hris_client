@@ -28,6 +28,15 @@
 					            <div class="col-md-8">
 					            	<div class="row form-row">
 						            	<div class="col-md-3">
+					                        <label class="form-label text-right">Periode</label>
+					                    </div>
+					                    <div class="col-md-9">
+							            	<input name="" id="" type="text"  class="form-control" placeholder="-" value="<?=get_year_session($form->comp_session_id)?>" disabled="disabled">
+							            	<input type="hidden" value="<?=$form->comp_session_id?>" id="comp_session_id">
+					                    </div>
+					                </div>
+					            	<div class="row form-row">
+						            	<div class="col-md-3">
 					                        <label class="form-label text-right">Nama</label>
 					                    </div>
 					                    <div class="col-md-9">
@@ -113,7 +122,7 @@
 															<?=$d->gap?>	
 														</td>
 														<td>
-															<?=getValue('title', 'competency_tindakan', array('id'=>'where/'.$d->competency_tindakan_id))?>	
+															<?=getValue('title', 'competency_tindakan', array('id'=>'where/'.$d->competency_tindakan_id,'is_deleted'=>'where/0'))?>	
 														</td>
 														<td><?=dateIndo($d->tgl)?></td>
 														<td><?=$d->pic?>	</td>

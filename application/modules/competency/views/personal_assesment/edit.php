@@ -27,6 +27,15 @@
 					            <div class="col-md-6">
 					            	<div class="row form-row">
 						            	<div class="col-md-3">
+					                        <label class="form-label text-right">Periode</label>
+					                    </div>
+					                    <div class="col-md-9">
+							            	<input type="text" class="form-control" value="<?=get_year_session($comp_session_id)?>" readonly>
+							            	<input type="hidden" name="comp_session_id" value="<?=get_year_session($comp_session_id)?>">
+					                    </div>
+					                </div>
+					            	<div class="row form-row">
+						            	<div class="col-md-3">
 					                        <label class="form-label text-right">Nama</label>
 					                    </div>
 					                    <div class="col-md-9">
@@ -143,8 +152,7 @@
 										</table>
 										<div>
 
-										<script type="text/javascript" src="<?=assets_url('js/bootstrap-datepicker.js')?>"></script>
-										<link rel="stylesheet" type="text/css" href="<?=assets_url('css/datepicker.css')?>">
+										
 										<script type="text/javascript">
 											function getGap(id){
 												var sk = parseInt($("#sk"+id).val());
@@ -152,7 +160,7 @@
 												$("#gap"+id).val(ak-sk);
 											}
 
-											$(function() 
+											/*$(document).ready(function() 
 											{
 												$('.tanggal')
 												.datepicker({
@@ -160,7 +168,7 @@
 													autoclose: true,
 													format: "yyyy-mm-dd"
 												});
-											});
+											});*/
 										</script>
 										<?php }else{ ?> 
 											<label class="label label-warning">Departement <?=get_organization_name($org_id);?> Belum Mempunyai Mapping Kompetensi</label>

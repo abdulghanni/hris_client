@@ -27,6 +27,15 @@
 					            <div class="col-md-6">
 					            	<div class="row form-row">
 						            	<div class="col-md-3">
+					                        <label class="form-label text-right">Periode</label>
+					                    </div>
+					                    <div class="col-md-9">
+							            	<input type="text" class="form-control" value="<?=get_year_session($comp_session_id)?>" readonly>
+							            	<input type="hidden" name="comp_session_id" value="<?=get_year_session($comp_session_id)?>">
+					                    </div>
+					                </div>
+					            	<div class="row form-row">
+						            	<div class="col-md-3">
 					                        <label class="form-label text-right">Karyawan Yang Dinilai</label>
 					                    </div>
 					                    <div class="col-md-9">
@@ -77,7 +86,7 @@
 												<th class="text-center">Kurang</th>
 												<th class="text-center">Mampu</th>
 												<th class="text-center">Kurang</th>
-												<th class="text-center">Mampu</th>
+												<th class="text-center">Mau</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -113,7 +122,7 @@
 									<?php foreach($kuadran as $s){?>
 										<div class="radio radio-success">
 					                        <input id="<?php echo 'kuadran_id_'.$s->id?>" name="kuadran_id" value="<?=$s->id?>" type="radio" <?=($form->kuadran_id == $s->id) ? 'checked' : ''?>>
-					                        <label for="<?php echo 'kuadran_id_'.$s->id?>"><?=$s->title?></label>
+					                        <label for="<?php echo 'kuadran_id_'.$s->id?>"><?=$s->id.'. '.$s->title?></label>
 					                     </div>
 									<?php } ?>
 								</div>
@@ -121,9 +130,18 @@
 								<div class="col-md-12">
 									<h4>Rekomendasi :</h4>
 									<?php foreach($rekomendasi as $r){?>
+									<?php if($r->id == 1) { 
+										$label_rek = 'A';
+									}elseif($r->id == 2) {
+										$label_rek = 'B';
+									}elseif($r->id == 3) {
+										$label_rek = 'C';
+									}else{
+										$label_rek = 'D';
+									} ?>
 										<div class="radio radio-success">
 					                        <input id="<?=$r->id?>" name="rekomendasi_id" value="<?=$r->id?>" type="radio" <?=($form->rekomendasi_id == $r->id) ? 'checked' : ''?>>
-					                        <label for="<?=$r->id?>"><?=$r->title?></label>
+					                        <label for="<?=$r->id?>"><?=$label_rek.'. '.$r->title?></label>
 					                     </div>
 									<?php } ?>
 								</div>

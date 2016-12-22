@@ -8,6 +8,9 @@ kompetensi disini.....">
 		<input type="text" id="bobot_kompetensi<?=$id?>" class="form-control text-right bobot_kompetensi" name="bobot_kompetensi[]" placeholder="....." onkeyup="hitungkompetensi('<?=$id?>')" min="0"  max="100"  value="0">
 	</td>
 	<td>
+		<input type="text" id="target_kompetensi<?=$id?>" class="form-control text-right target_kompetensi" name="target_kompetensi[]" placeholder="....." onkeyup="hitungkompetensi('<?=$id?>')" min="0"  max="100"  value="0">
+	</td>
+	<td>
 		<input type="text" id="nilai_kompetensi<?=$id?>" class="form-control text-right nilai_kompetensi" name="nilai_kompetensi[]" placeholder="....." min="0" max="100" value="0" onkeyup="hitungkompetensi('<?=$id?>')">
 	</td>
 	<td>

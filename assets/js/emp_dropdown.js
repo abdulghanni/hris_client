@@ -94,6 +94,12 @@ $(document).ready(function() {
                 getEmpOrg(empId);
                 getEmpPos(empId);
                 break;
+            case 'form_pjd_training':
+                getAtasan1(empId);
+                getAtasan3(empId);
+                getEmpOrg(empId);
+                getEmpPos(empId);
+                break;
             case 'form_promosi':
             case 'form_demotion':
             case 'form_rolling':
