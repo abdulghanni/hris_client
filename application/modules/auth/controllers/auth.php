@@ -240,7 +240,7 @@ class Auth extends MX_Controller {
             //set the flash data error message if there is one
             $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
 
-           /*$this->data['identity'] = array('name' => 'identity',
+           $this->data['identity'] = array('name' => 'identity',
                 'id' => 'identity',
                 'type' => 'text',
                 'value' => $this->form_validation->set_value('identity'),
@@ -254,10 +254,10 @@ class Auth extends MX_Controller {
                 'required'=> 'required',
             );
             
-            $this->_render_page('auth/login', $this->data);*/
-            $this->data['title'] = "Dalam perbaikan";
+            $this->_render_page('auth/login', $this->data);
+            /*$this->data['title'] = "Dalam perbaikan";
 
-            $this->_render_page('auth/maintenance', $this->data);
+            $this->_render_page('auth/maintenance', $this->data);*/
         }
     }
     
