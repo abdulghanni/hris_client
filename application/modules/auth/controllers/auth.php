@@ -29,7 +29,8 @@ class Auth extends MX_Controller {
         if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page
-            redirect('auth/login', 'refresh');
+            //redirect('auth/login', 'refresh');
+            redirect('auth/maintenance', 'refresh');
         }
         elseif (!$this->ion_auth->is_admin()) //remove this elseif if you want to enable this for non-admins
         {
@@ -239,7 +240,7 @@ class Auth extends MX_Controller {
             //set the flash data error message if there is one
             $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
 
-           $this->data['identity'] = array('name' => 'identity',
+           /*$this->data['identity'] = array('name' => 'identity',
                 'id' => 'identity',
                 'type' => 'text',
                 'value' => $this->form_validation->set_value('identity'),
@@ -253,7 +254,10 @@ class Auth extends MX_Controller {
                 'required'=> 'required',
             );
             
-            $this->_render_page('auth/login', $this->data);
+            $this->_render_page('auth/login', $this->data);*/
+            $this->data['title'] = "Dalam perbaikan";
+
+            $this->_render_page('auth/maintenance', $this->data);
         }
     }
     
@@ -3834,7 +3838,7 @@ class Auth extends MX_Controller {
                 }
                 elseif(in_array($view, array('auth/login',
                                          'auth/forgot_password','auth/register_user',
-                                         'auth/reset_password')))
+                                         'auth/reset_password','auth/maintenance')))
                 {
                     $this->template->set_layout('single');
                     $this->template->add_js('jquery.validate.min.js');
