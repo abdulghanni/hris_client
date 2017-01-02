@@ -44,6 +44,24 @@ class Competency {
         }
     }
 
+    public function get_login_organization($emplid)
+    {
+        $CI =&get_instance();
+        $url = get_api_key().'users/user_orgid/EMPLID/'.$emplid.'/format/json';
+        $headers = get_headers($url);
+        $response = substr($headers[0], 9, 3);
+        if ($response != "404") 
+        {
+            $get_info = file_get_contents($url);
+            $info = json_decode($get_info, true);
+            return $info;
+        } else {
+            return '';
+        }
+    }
+
+
+
     public function get_position()
     {
         $CI =&get_instance();
@@ -82,6 +100,42 @@ class Competency {
     {
         $CI =&get_instance();
         $url = get_api_key().'users/pos_from_org/ORGID/'.$org_id.'/format/json';
+        $headers = get_headers($url);
+        $response = substr($headers[0], 9, 3);
+        if ($response != "404") {
+            $getpos = file_get_contents($url);
+            $pos = json_decode($getpos, true);
+            return $pos;
+        } elseif($pos_id == 0) {
+            return '-';
+        }else{
+            return '-';
+        }
+
+    }
+
+    function get_emp_by_pos($position_group_id)
+    {
+        $CI =&get_instance();
+        $url = get_api_key().'users/employee_by_pos/POSID/'.$position_group_id.'/format/json';
+        $headers = get_headers($url);
+        $response = substr($headers[0], 9, 3);
+        if ($response != "404") {
+            $getpos = file_get_contents($url);
+            $pos = json_decode($getpos, true);
+            return $pos;
+        } elseif($pos_id == 0) {
+            return '-';
+        }else{
+            return '-';
+        }
+
+    }
+
+    function get_emps_by_pos($position_group_id)
+    {
+        $CI =&get_instance();
+        $url = get_api_key().'users/employees_by_pos/POSID/'.$position_group_id.'/format/json';
         $headers = get_headers($url);
         $response = substr($headers[0], 9, 3);
         if ($response != "404") {

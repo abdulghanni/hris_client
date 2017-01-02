@@ -33,12 +33,13 @@ class kinerja_supporting extends MX_Controller {
         {
             redirect('auth/login', 'refresh');
         }
-        elseif (!$this->ion_auth->is_admin())
+        /*elseif (!$this->ion_auth->is_admin())
         {
             return show_error('You must be an administrator to view this page.');
-        }
+        }*/
         else
         {
+            $sess_id = $data['sess_id'] = $this->session->userdata('user_id');
             $data['title'] = $this->title;
             $data['url_ajax_list'] = site_url('kinerja_supporting/ajax_list');
             $data['url_ajax_add'] = site_url('kinerja_supporting/ajax_add');
@@ -46,7 +47,14 @@ class kinerja_supporting extends MX_Controller {
             $data['url_ajax_delete'] = site_url('kinerja_supporting/ajax_delete');
             $data['url_ajax_update'] = site_url('kinerja_supporting/ajax_update');
             $data['ci'] = $this;
-            $data['form'] = getAll($this->table);
+            if(is_admin_competency(50) == 1 || $this->ion_auth->is_admin())
+            {
+                $data['form'] = getAll($this->table,array('id'=>'order/desc'));    
+            }else
+            {
+                $data['form'] = getJoin($this->table, 'users', $this->table.'.nik = users.nik', 'left', $this->table.'.*,users.superior_id', array('users.superior_id'=>'where/'.get_nik($sess_id),'id'=>'order/desc'));
+                
+            }
 
             $this->_render_page($this->controller.'/index',$data);
         }
@@ -55,9 +63,172 @@ class kinerja_supporting extends MX_Controller {
     function input(){
         permissionBiasa();
         $data['title'] = $this->title;
+        $sess_id = $data['sess_id'] = $this->session->userdata('user_id');
         $data['controller'] = $this->controller;
         $data['users'] = GetAll('users')->result();
+        $data['subordinate'] = getAll('users', array('superior_id'=>'where/'.get_nik($sess_id)));
+        $periode = getAll('comp_session',array('is_deleted'=>'where/0'));
+        if($periode->num_rows() > 0)
+        {
+            $data['periode'] = $periode->result_array();
+        }else{
+            $data['periode'] = array();
+        }
         $this->_render_page('kinerja_supporting/input', $data);
+    }
+
+    function get_kpi_detail($comp_session_id,$organization_id,$position_id,$user_nik){
+        $user_id = get_id($user_nik);
+        //$data['id'] = $rowcount;
+        $kpi_detail = $this->main->get_kpi_detail($comp_session_id,$organization_id,$position_id, $user_id);
+        if($kpi_detail->num_rows() > 0)
+        {
+            $data['kpi_detail'] = $r_kpi_detail = $kpi_detail->result_array();
+
+            $no = 1;
+            $bobot_performance = 0;
+            $target_performance = 0;
+            $nilai_performance = 0;
+            $persentase_performance = 0;
+            $html_performance = '';
+            
+            foreach ($r_kpi_detail as $key => $value) 
+            { 
+                $html_performance .='<tr>';
+                $html_performance .= '<td>'.$no.'</td>';
+                $html_performance .= '<td>';
+                $html_performance .= '<input type="text" class="form-control" name="aspek_performance[]" placeholder="isi Aspek Penilaian Performance disini....." value="'.$value['kpi'].'">';
+                $html_performance .= '</td>';
+                $html_performance .= '<td>';
+                    $html_performance .= '<input type="text" id="bobot_performance'.$value['id'].'" class="form-control text-right bobot_performance" name="bobot_performance[]" placeholder="....." onkeyup="hitungPerformance('.$value['id'].')" min="0"  max="100" readonly="readonly" value="'.$value['bobot_kpi'].'">';
+                $html_performance .= '</td>';
+                $html_performance .= '<td>';
+                    $html_performance .= '<input type="text" id="target_performance'.$value['id'].'" class="form-control text-right target_performance" name="target_performance[]" placeholder="....." onkeyup="hitungPerformance('.$value['id'].')" min="0"  max="100" readonly="readonly" value="'.$value['target_kpi'].'">';
+                $html_performance .= '</td>';
+                $html_performance .= '<td>';
+                    $html_performance .= '<input type="text" id="nilai_performance'.$value['id'].'" class="form-control text-right nilai_performance" name="nilai_performance[]" placeholder="....." min="0" max="100" readonly="readonly" value="'.$value['rata_rata'].'" onkeyup="hitungPerformance('.$value['id'].')">';
+                $html_performance .= '</td>';
+                $html_performance .= '<td>';
+                    $html_performance .= '<input type="text" id="persentase_performance'.$value['id'].'" class="form-control text-right persentase_performance" name="persentase_performance[]" placeholder="....." readonly="readonly" value="'.(($value['bobot_kpi']/100)*$value['rata_rata']).'">';
+                $html_performance .= '</td>';
+            $html_performance .= '</tr>';
+            
+                $no = $no+1;
+                $bobot_performance = $bobot_performance + $value['bobot_kpi'];
+                $target_performance = $target_performance + $value['target_kpi'];
+                $nilai_performance = $nilai_performance + $value['rata_rata'];
+                $persentase_performance = $persentase_performance + (($value['bobot_kpi']/100)*$value['rata_rata']);
+            } 
+            
+            $html_performance .= '<tr>';
+                $html_performance .= '<td></td>';
+                $html_performance .= '<td>Subtotal Nilai Performance</td>';
+                $html_performance .= '<td><input class="form-control text-right" type="text" id="sub_total_bobot_performance" name="sub_total_bobot_performance" value="'.$bobot_performance.'" readonly="readonly"></td>';
+                $html_performance .= '<td><input class="form-control text-right" type="text" id="sub_total_target_performance" name="sub_total_target_performance" value="'.$target_performance.'" readonly="readonly"></td>';
+                $html_performance .= '<td><input class="form-control text-right" id="sub_total_nilai_performance" type="text" name="sub_total_nilai_performance" value="'.$nilai_performance.'" readonly="readonly"></td>';
+                $html_performance .= '<td><input class="form-control text-right" id="sub_total_persentase_performance" type="text" name="sub_total_persentase_performance" readonly="readonly" value="'.$persentase_performance.'" ></td>';
+            $html_performance .= '</tr>';
+        }else{
+            $data['kpi_detail'] = array();
+            $html_performance = '';
+        }
+        $html_kompetensi = '';
+        $bobot_kompetensi = 0;
+        $target_kompetensi = 0;
+        $nilai_kompetensi = 0;
+        $persentase_kompetensi = 0;
+        $kpi_standar = $this->main->get_competency_dasar();
+        if($kpi_standar->num_rows() > 0)
+        {
+            $r_kpi_standar = $kpi_standar->result_array();
+            $no_standar = 1;
+
+            foreach ($r_kpi_standar as $key => $value) {
+                $html_kompetensi .= '<tr>';
+                    $html_kompetensi .= '<td>'.$no_standar.'</td>';
+                    $html_kompetensi .= '<td>';
+                        $html_kompetensi .= '<input type="text" class="form-control" name="aspek_kompetensi[]" placeholder="isi Aspek Penilaian kompetensi disini....." value="'.$value['title'].'">';
+                    $html_kompetensi .= '</td>';
+                    $html_kompetensi .= '<td>';
+                        $html_kompetensi .= '<input type="text" id="bobot_kompetensi'.$value['id'].'" class="form-control text-right bobot_kompetensi" name="bobot_kompetensi[]" placeholder="....." onkeyup="hitungkompetensi('.$value['id'].')" min="0"  max="100"  value="'.$value['bobot'].'" readonly="readonly">';
+                    $html_kompetensi .= '</td>';
+                    $html_kompetensi .= '<td>';
+                        $html_kompetensi .= '<input type="text" id="target_kompetensi'.$value['id'].'" class="form-control text-right target_kompetensi" name="target_kompetensi[]" placeholder="....." onkeyup="hitungkompetensi('.$value['id'].')" min="0"  max="100"  value="'.$value['target'].'" readonly="readonly">';
+                    $html_kompetensi .= '</td>';
+                    $html_kompetensi .= '<td>';
+                        $html_kompetensi .= '<input type="text" id="nilai_kompetensi'.$value['id'].'" class="form-control text-right nilai_kompetensi" name="nilai_kompetensi[]" placeholder="....." min="0" max="100" value="0" onkeyup="hitungkompetensi('.$value['id'].')">';
+                    $html_kompetensi .= '</td>';
+                    $html_kompetensi .= '<td>';
+                        $html_kompetensi .= '<input type="text" id="persentase_kompetensi'.$value['id'].'" class="form-control text-right persentase_kompetensi" name="persentase_kompetensi[]" placeholder="....." readonly="readonly" value="0">';
+                    $html_kompetensi .= '</td>';
+                $html_kompetensi .= '</tr>';
+                $no_standar = $no_standar+1;
+                $bobot_kompetensi = $bobot_kompetensi + $value['bobot'];
+                $target_kompetensi = $target_kompetensi + $value['target'];
+                //$nilai_kompetensi = $nilai_kompetensi + $value['rata_rata'];
+                //$persentase_kompetensi = $persentase_kompetensi + (($value['bobot_kpi']/100)*$value['rata_rata']);
+            }
+            $html_kompetensi .= '<tr>';
+                $html_kompetensi .= '<td></td>';
+                $html_kompetensi .= '<td>Subtotal Nilai Kompetensi</td>';
+                $html_kompetensi .= '<td><input class="form-control text-right" type="text" id="sub_total_bobot_kompetensi" name="sub_total_bobot_kompetensi" readonly="readonly" value="'.$bobot_kompetensi.'"></td>';
+                $html_kompetensi .= '<td><input class="form-control text-right" type="text" id="sub_total_target_kompetensi" name="sub_total_target_kompetensi" readonly="readonly" value="'.$target_kompetensi.'"></td>';
+                $html_kompetensi .= '<td><input class="form-control text-right" id="sub_total_nilai_kompetensi" type="text" name="sub_total_nilai_kompetensi" readonly="readonly"></td>';
+                $html_kompetensi .= '<td><input class="form-control text-right" id="sub_total_persentase_kompetensi" type="text" name="sub_total_persentase_kompetensi" readonly="readonly"></td>';
+            $html_kompetensi .= '</tr>';
+        }else{
+            $data['kpi_standar'] = array();
+            $html_kompetensi = '';
+        }
+
+        $html_kedisiplinan = '';
+        $bobot_kedisiplinan = 0;
+        $target_kedisiplinan = 0;
+        $nilai_kedisiplinan = 0;
+        $persentase_kedisiplinan = 0;
+        $kpi_standar = $this->main->get_competency_kedisiplinan();
+        if($kpi_standar->num_rows() > 0)
+        {
+            $r_kpi_standar = $kpi_standar->result_array();
+            $no_standar = 1;
+
+            foreach ($r_kpi_standar as $key => $value) {
+                $html_kedisiplinan .= '<tr>';
+                    $html_kedisiplinan .= '<td>'.$no_standar.'</td>';
+                    $html_kedisiplinan .= '<td>';
+                        $html_kedisiplinan .= '<input type="text" class="form-control" name="aspek_kedisiplinan[]" placeholder="isi Aspek Penilaian kedisiplinan disini....." value="'.$value['title'].'">';
+                    $html_kedisiplinan .= '</td>';
+                    $html_kedisiplinan .= '<td>';
+                        $html_kedisiplinan .= '<input type="text" id="bobot_kedisiplinan'.$value['id'].'" class="form-control text-right bobot_kedisiplinan" name="bobot_kedisiplinan[]" placeholder="....." onkeyup="hitungkedisiplinan('.$value['id'].')" min="0"  max="100"  value="'.$value['bobot'].'" readonly="readonly">';
+                    $html_kedisiplinan .= '</td>';
+                    $html_kedisiplinan .= '<td>';
+                        $html_kedisiplinan .= '<input type="text" id="target_kedisiplinan'.$value['id'].'" class="form-control text-right target_kedisiplinan" name="target_kedisiplinan[]" placeholder="....." onkeyup="hitungkedisiplinan('.$value['id'].')" min="0"  max="100"  value="'.$value['target'].'" readonly="readonly">';
+                    $html_kedisiplinan .= '</td>';
+                    $html_kedisiplinan .= '<td>';
+                        $html_kedisiplinan .= '<input type="text" id="nilai_kedisiplinan'.$value['id'].'" class="form-control text-right nilai_kedisiplinan" name="nilai_kedisiplinan[]" placeholder="....." min="0" max="100" value="0" onkeyup="hitungkedisiplinan('.$value['id'].')">';
+                    $html_kedisiplinan .= '</td>';
+                    $html_kedisiplinan .= '<td>';
+                        $html_kedisiplinan .= '<input type="text" id="persentase_kedisiplinan'.$value['id'].'" class="form-control text-right persentase_kedisiplinan" name="persentase_kedisiplinan[]" placeholder="....." readonly="readonly" value="0">';
+                    $html_kedisiplinan .= '</td>';
+                $html_kedisiplinan .= '</tr>';
+                $bobot_kedisiplinan = $bobot_kedisiplinan + $value['bobot'];
+                $target_kedisiplinan = $target_kedisiplinan + $value['target'];
+                $no_standar = $no_standar+1;
+            }
+            $html_kedisiplinan .= '<tr>';
+                $html_kedisiplinan .= '<td></td>';
+                $html_kedisiplinan .= '<td>Subtotal Nilai kedisiplinan</td>';
+                $html_kedisiplinan .= '<td><input class="form-control text-right" type="text" id="sub_total_bobot_kedisiplinan" name="sub_total_bobot_kedisiplinan" readonly="readonly" value="'.$bobot_kedisiplinan.'"></td>';
+                $html_kedisiplinan .= '<td><input class="form-control text-right" type="text" id="sub_total_target_kedisiplinan" name="sub_total_target_kedisiplinan" readonly="readonly" value="'.$target_kedisiplinan.'"></td>';
+                $html_kedisiplinan .= '<td><input class="form-control text-right" id="sub_total_nilai_kedisiplinan" type="text" name="sub_total_nilai_kedisiplinan" readonly="readonly"></td>';
+                $html_kedisiplinan .= '<td><input class="form-control text-right" id="sub_total_persentase_kedisiplinan" type="text" name="sub_total_persentase_kedisiplinan" readonly="readonly"></td>';
+            $html_kedisiplinan .= '</tr>';
+        }else{
+            $data['kpi_standar'] = array();
+            $html_kedisiplinan = '';
+        }
+        echo json_encode(array("status" => TRUE,"html_performance" => $html_performance,"html_kompetensi" => $html_kompetensi,"html_kedisiplinan" => $html_kedisiplinan));
+        //$this->load->view('kinerja_supporting/result_performance', $data);
     }
 
     function approve($id, $approver_id=null){
@@ -106,6 +277,7 @@ class kinerja_supporting extends MX_Controller {
             'nik' => $this->input->post('nik'),
             'organization_id' => $this->input->post('organization_id'),
             'position_id' => $this->input->post('position_id'),
+            'comp_session_id' => $this->input->post('comp_session_id'),
             'periode' => date('Y-m-d', strtotime($this->input->post('tgl_training'))),
             'sub_total_bobot_performance' => $this->input->post('sub_total_bobot_performance'),
             'sub_total_nilai_performance' => $this->input->post('sub_total_nilai_performance'),

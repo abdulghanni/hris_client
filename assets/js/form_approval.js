@@ -42,7 +42,6 @@ function approve(lv)
     });
 }
 
-
 function reload_status(lv)
 {
     uri = base_url+form+'/detail/'+id+'/'+lv;
@@ -71,6 +70,24 @@ function send_notif(lv)
         },
         error: function(){
             console.log('e');
+        }
+    });
+}   
+
+function send_notif_(lv)
+{
+    uri = base_url+form+'/send_notif/'+id+'/'+lv;
+    $.ajax({
+        type: 'POST',
+        url: uri,
+        // dataType: "JSON",
+        success: function() {
+            console.log('y');
+            alert('Email notifikasi ke approver berikutnya BERHASIL terkirim.');
+        },
+        error: function(){
+            console.log('e');
+            alert('Email notifikasi ke approver berikutnya GAGAL terkirim.');
         }
     });
 }   

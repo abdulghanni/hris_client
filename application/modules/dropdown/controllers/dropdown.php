@@ -388,9 +388,9 @@ class Dropdown extends MX_Controller {
 
             $atasan = json_decode($get_atasan, true);
             $uri = $this->uri->segment(3,9);
-            if(get_user_buid($nik) != '50' ):
+            //if(get_user_buid($nik) != '50' ):
                 $atasan = (array_merge_recursive($atasan, $at_khusus));
-            endif;
+            //endif; 
              foreach ($atasan as $row)
                 {
                     $result['0']= '-- Pilih Atasan --';

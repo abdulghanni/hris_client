@@ -27,15 +27,49 @@
 					            <div class="col-md-6">
 					            	<div class="row form-row">
 						            	<div class="col-md-3">
+					                        <label class="form-label text-right">Periode</label>
+					                    </div>
+					                    <div class="col-md-9">
+							            	<select class="select2" style="width:100%" id="comp_session_id" name="comp_session_id" required>
+					                    		<option value="">-- Pilih Periode --</option>
+							            		<?php foreach($periode as $u){?>
+							            			<option value="<?=$u->id?>"><?=$u->year?></option>
+							            		<?php } ?>
+							            	</select>
+					                    </div>
+					                </div>
+					            	<div class="row form-row">
+						            	<div class="col-md-3">
 					                        <label class="form-label text-right">Nama</label>
 					                    </div>
 					                    <div class="col-md-9">
-							            	<select class="select2" style="width:100%" id="emp" name="nik">
-					                    		<option value="0">-- Pilih Karyawan --</option>
+					                    	<?php if(is_admin()){?>
+					                            <select id="emp" class="select2" style="width:100%" name="nik">
+					                              <option value="0">-- Pilih Karyawan --</option>
+					                              <?php
+					                              foreach ($users as $u) : ?>
+					                                <option value="<?php echo $u->nik?>" ><?php echo $u->username.' - '.$u->nik; ?></option>
+					                              <?php endforeach; ?>
+					                            </select>
+					                          <?php }elseif($subordinate->num_rows() > 0){?>
+					                          <input type="hidden" id="empSess" value="<?= $sess_id ?>">
+					                            <select id="emp" class="select2" style="width:100%" name="nik">
+					                              <option value="0">-- Pilih Karyawan --</option>
+					                              <?php foreach($subordinate->result() as $row):?>
+					                                <option value="<?php echo get_nik($row->id)?>"><?php echo get_name($row->id).' - '.get_nik($row->id)?></option>
+					                              <?php endforeach;?>
+					                            </select>
+					                          <?php }else{ ?>
+					                            <select id="emp" class="select2" style="width:100%" name="nik">
+					                              <option value="0">-- Anda tidak mempunyai bawahan --</option>
+					                            </select>
+					                        <?php } ?>
+
+							            	<!-- <select class="select2" style="width:100%" id="emp" name="nik">
 							            		<?php foreach($users as $u){?>
 							            			<option value="<?=$u->nik?>"><?=$u->nik.' - '.$u->username?></option>
 							            		<?php } ?>
-							            	</select>
+							            	</select> -->
 					                    </div>
 					                </div>
 					                <div class="row form-row">
@@ -43,7 +77,7 @@
 				                        <label class="form-label text-right"><?php echo lang('dept_div') ?></label>
 				                      </div>
 				                      <div class="col-md-9">
-				                        <input name="organization" id="organization" type="text"  class="form-control" placeholder="-" value="" disabled="disabled">
+				                        <input name="organization" id="organization" type="text"  class="form-control" placeholder="-" value="" disabled="disabled" required>
 				                        <input name="organization_id" id="organization_id" type="hidden"  class="form-control" placeholder="-" value="">
 				                      </div>
 				                    </div>
@@ -52,7 +86,7 @@
 				                        <label class="form-label text-right">Position Group</label>
 				                      </div>
 				                      <div class="col-md-9">
-				                        <input name="position_group_id" id="position-group" type="text"  class="form-control" placeholder="-" value="" readonly>
+				                        <input name="position_group_id" id="position-group" type="text"  class="form-control" placeholder="-" value="" readonly required>
 				                      </div>
 				                    </div>
 				                    <div class="row form-row">
@@ -60,7 +94,7 @@
 				                        <label class="form-label text-right"><?php echo lang('position') ?></label>
 				                      </div>
 				                      <div class="col-md-9">
-				                        <input name="position" id="position" type="text"  class="form-control" placeholder="-" value="" disabled="disabled">
+				                        <input name="position" id="position" type="text"  class="form-control" placeholder="-" value="" disabled="disabled" required>
 				                      </div>
 				                    </div>
 					            </div>
@@ -96,7 +130,7 @@
 				            </div>
 			            	<div id="submit" class="form-actions">
 			                 	<div class="pull-right">
-			                    	<button class="btn btn-success btn-cons" type="submit"><i class="icon-ok"></i> <?php echo lang('save_button') ?></button>
+			                    	<button class="btn btn-success btn-cons" type="submit" id="savebutton" disabled="true"><i class="icon-ok"></i> <?php echo lang('save_button') ?></button>
 			                    	<a href="<?php echo site_url($controller) ?>"><button class="btn btn-white btn-cons" type="button"><?php echo lang('cancel_button') ?></button></a>
 			                  	</div>
 			                </div>

@@ -857,6 +857,74 @@
 		}
 	}
 
+	if (!function_exists('is_admin_competency'))
+	{	
+		function is_admin_competency($buid)
+		{
+			$CI =& get_instance();
+			
+			$sess_id = $CI->session->userdata('user_id');
+			$r = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 6)->where('groups.bu',$buid)->get()->result_array('user_id');
+			for ($i = 0;$i<sizeof($r);$i++) {
+			if($sess_id == $r[$i]['user_id']):
+				return TRUE;
+			endif;
+			}
+		}
+	}
+
+	if (!function_exists('is_admin_competency_'))
+	{	
+		function is_admin_competency_()
+		{
+			$CI =& get_instance();
+			
+			$sess_id = $CI->session->userdata('user_id');
+			$r = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 6)->get()->result_array('user_id');
+			for ($i = 0;$i<sizeof($r);$i++) {
+			if($sess_id == $r[$i]['user_id']):
+				return TRUE;
+			endif;
+			}
+		}
+	}
+
+	if (!function_exists('get_admin_competency'))
+	{	
+		function get_admin_competency($buid)
+		{
+			$CI =& get_instance();
+			
+			$sess_id = $CI->session->userdata('user_id');
+			$nik = get_nik($sess_id);
+			$bu = get_user_buid($nik);
+			$r = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 6)->where('groups.bu',$buid)->get()->result_array('user_id');
+			for ($i = 0;$i<sizeof($r);$i++) {
+			//if($sess_id == $r[$i]['user_id']):
+				return $r[$i]['user_id'];
+			//endif;
+			}
+		}
+	}
+
+	if (!function_exists('get_name_admin_competency'))
+	{	
+		function get_name_admin_competency($buid)
+		{
+			$CI =& get_instance();
+			
+			$sess_id = $CI->session->userdata('user_id');
+			$nik = get_nik($sess_id);
+			$bu = get_user_buid($nik);
+			$r = $CI->db->select('users.username as username')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->join('users','users_groups.user_id = users.id')->where('groups.admin_type_id', 6)->where('groups.bu',$buid)->get()->result_array('users.username');
+			for ($i = 0;$i<sizeof($r);$i++) {
+			//if($sess_id == $r[$i]['user_id']):
+				return $r[$i]['username'];
+			//endif;
+			}
+		}
+	}
+
 	//TO CHECK IS USER HAVE AUTHORIZATION TO SEE FORM CUTI LIST
 	if (!function_exists('is_authorized'))
 	{	
@@ -1592,6 +1660,9 @@
 		$CI =&get_instance();
 		$uri = $CI->uri->segment(1,0);
 		if($uri == 'form_pjd')$uri='form_spd_luar_group';
+		
+		if($uri == 'form_pjd_training')$uri='form_spd_training';
+		
 		$form = substr($uri, 5);
 
 		if ($form == 'training_group' || $form == 'training') {
@@ -1716,6 +1787,25 @@
 		}
 	}
 
+	if(!function_exists('get_pos_id'))
+	{
+		function get_pos_id($user_id)
+		{
+			$CI =&get_instance();
+            $url = get_api_key().'users/employement/EMPLID/'.$user_id.'/format/json';
+            $headers = get_headers($url);
+            $response = substr($headers[0], 9, 3);
+            if ($response != "404") 
+            {
+                $getuser_info = file_get_contents($url);
+                $user_info = json_decode($getuser_info, true);
+                return $user_info;
+            } else {
+                return '-';
+            }
+		}
+	}
+
 	if(!function_exists('get_user_same_org'))
 	{
 		function get_user_same_org($id)
@@ -1745,7 +1835,7 @@
 		function get_user_in_org($org_id)
 	    {
 	    	$result = '';
-	        $url = get_api_key().'users/user_in_org/ORGID/'.$org_id.'/format/json';
+	        $url = get_api_key().'users/user_at_org/ORGID/'.$org_id.'/format/json';
 	            $headers = get_headers($url);
 	            $response = substr($headers[0], 9, 3);
 	            if ($response != "404") {
@@ -1754,13 +1844,41 @@
 	                //return print_r($task_receiver);
 	                 foreach ($task_receiver as $row)
 	                    {
-	                        $result.=$row['EMPLID'].' ';
+	                        $result.=$row['EMPLID'].' - '.$row['NAME'].';';
 	                    }
 	            } else {
 	               $result .= '';
 	            }
 
-	        return explode(' ' ,$result);
+	        return $task_receiver;
+	        //return explode(';',$result);
+	        //return explode(' ' ,$result);
+	    }
+	}
+
+	if(!function_exists('get_users_in_org'))
+	{
+		function get_users_in_org($org_id)
+	    {
+	    	$result = '';
+	        $url = get_api_key().'users/user_at_org/ORGID/'.$org_id.'/format/json';
+	            $headers = get_headers($url);
+	            $response = substr($headers[0], 9, 3);
+	            if ($response != "404") {
+	                $get_task_receiver = file_get_contents($url);
+	                $task_receiver = json_decode($get_task_receiver, true);
+	                //return print_r($task_receiver);
+	                 /*foreach ($task_receiver as $row)
+	                    {
+	                        $result.=$row['EMPLID'].' - ';
+	                    }*/
+	                return $task_receiver;
+	            } else {
+	               //$result .= '';
+	            	return array();
+	            }
+
+	        //return explode(' ' ,$result);
 	    }
 	}
 

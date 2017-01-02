@@ -1,5 +1,39 @@
 $(document).ready(function() {
     $(".select2").select2();
+    $("#comp_session_id").change(function() {
+        var id = $(this).val();
+        var organization_id = $("#organization_id").val();
+        var position_id = $("#position_id").val();
+        var user_nik = $("#emp").val();
+        //var table_=document.getElementById("#tbl_performance");
+        //var rowCount=table_.rows.length-2;
+        if(id!=0){
+            //alert('comp_session_id : '+id+' organization_id : '+organization_id+' position_id : '+position_id);
+            $.ajax({
+                url : base_url+'competency/kinerja_supporting/get_kpi_detail/'+id+'/'+organization_id+'/'+position_id+'/'+user_nik,
+                type: "POST",
+                success: function(data)
+                {  
+                    //$("#mapping-kpi").html(data);
+                    $("#tbl_performance").find('tbody').remove().end().append(data.html_performance);
+                    $("#tbl_kompetensi").find('tbody').remove().end().append(data.html_kompetensi);  
+                    $("#tbl_kedisiplinan").find('tbody').remove().end().append(data.html_kedisiplinan);  
+                    //$("#btnAddPerformance").attr('disabled',false);
+                    //$("#btnAddPerformance").text('Tambah Aspek Penilaian Performance');
+                    $(document).find("select.select2").select2({
+                        dropdownAutoWidth : true
+                    });
+                    //$("#tbl_kompetensi_footer").show();
+                },
+                error: function (jqXHR, textStatus, errorThrown)
+                {
+                    alert('Terjadi Kesalahan, Silakan Refresh Halaman Ini org');
+                },
+                dataType:"json"
+            });
+        }
+    })
+    .change();
 });
 
 function addPerformance(tableID){
@@ -21,6 +55,8 @@ function addPerformance(tableID){
          dataType:"html"
     });
 }
+
+
 
 function addKompetensi(tableID){
     var table=document.getElementById(tableID);
@@ -50,20 +86,20 @@ function hitungPerformance(id){
 	console.log(persentase);
 	$("#persentase_performance"+id).val(persentase);
 
-	var totalBobot = 0,
-	 	totalNilai = 0,
-	 	totalPersentase = 0;
+	var totalBobot = 0.00,
+	 	totalNilai = 0.00,
+	 	totalPersentase = 0.00;
 
 	$('.bobot_performance').each(function (index, element) {
-        totalBobot = totalBobot + parseInt($(element).val());
+        totalBobot = totalBobot + parseFloat($(element).val());
     });
 
     $('.nilai_performance').each(function (index, element) {
-        totalNilai = totalNilai + parseInt($(element).val());
+        totalNilai = totalNilai + parseFloat($(element).val());
     });
 
     $('.persentase_performance').each(function (index, element) {
-        totalPersentase = totalPersentase + parseInt($(element).val());
+        totalPersentase = totalPersentase + parseFloat($(element).val());
     });
 
     $("#sub_total_bobot_performance").val(totalBobot);
@@ -91,15 +127,15 @@ function hitungkompetensi(id){
 	 	totalPersentase = 0;
 
 	$('.bobot_kompetensi').each(function (index, element) {
-        totalBobot = totalBobot + parseInt($(element).val());
+        totalBobot = totalBobot + parseFloat($(element).val());
     });
 
     $('.nilai_kompetensi').each(function (index, element) {
-        totalNilai = totalNilai + parseInt($(element).val());
+        totalNilai = totalNilai + parseFloat($(element).val());
     });
 
     $('.persentase_kompetensi').each(function (index, element) {
-        totalPersentase = totalPersentase + parseInt($(element).val());
+        totalPersentase = totalPersentase + parseFloat($(element).val());
     });
 
     $("#sub_total_bobot_kompetensi").val(totalBobot);
@@ -123,4 +159,53 @@ function hitungkompetensi(id){
 
     	$("#total_nilai").val(total);
     	$("#konversi_nilai").val(konversi);
+}
+
+function hitungkedisiplinan(id){
+    //alert('hit');
+    var a = $("#bobot_kedisiplinan"+id).val();
+    var b = $("#nilai_kedisiplinan"+id).val();
+
+    var persentase = (a/100) * b;
+    console.log(persentase);
+    $("#persentase_kedisiplinan"+id).val(persentase);
+
+    var totalBobot = 0,
+        totalNilai = 0,
+        totalPersentase = 0;
+
+    /*$('.bobot_kedisiplinan').each(function (index, element) {
+        totalBobot = totalBobot + parseFloat($(element).val());
+    });*/
+
+    $('.nilai_kedisiplinan').each(function (index, element) {
+        totalNilai = totalNilai + parseFloat($(element).val());
+    });
+
+    $('.persentase_kedisiplinan').each(function (index, element) {
+        totalPersentase = totalPersentase + parseFloat($(element).val());
+    });
+
+    //$("#sub_total_bobot_kedisiplinan").val(totalBobot);
+    $("#sub_total_nilai_kedisiplinan").val(totalNilai);
+    $("#sub_total_persentase_kedisiplinan").val(totalPersentase);
+
+    var c = $("#sub_total_persentase_performance").val(),
+        d = $("#sub_total_persentase_kompetensi").val(),
+        e = $("#sub_total_persentase_kedisiplinan").val(),
+        total = (c * (60/100)) + (d * (30/100)) + (e * (10/100)),
+        konversi = 'E';
+
+        if(total > 90){
+            konversi = "A";
+        }else if(total > 70 && total < 90){
+            konversi = "B";
+        }else if(total > 59 && total < 71){
+            konversi = "C";
+        }else if(total < 60){
+            konversi = "D";
+        }
+
+        $("#total_nilai").val(total);
+        $("#konversi_nilai").val(konversi);
 }

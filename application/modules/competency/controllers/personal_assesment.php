@@ -31,22 +31,34 @@ class personal_assesment extends MX_Controller {
     {
         permissionBiasa();
         $data['title'] = $this->title;
+        $sess_id = $data['sess_id'] = $this->session->userdata('user_id');
         $data['url_ajax_list'] = site_url('personal_assesment/ajax_list');
         $data['url_ajax_add'] = site_url('personal_assesment/ajax_add');
         $data['url_ajax_edit'] = site_url('personal_assesment/ajax_edit');
         $data['url_ajax_delete'] = site_url('personal_assesment/ajax_delete');
         $data['url_ajax_update'] = site_url('personal_assesment/ajax_update');
         $data['ci'] = $this;
-        $data['form'] = getAll($this->table);
+        //$data['form'] = getAll($this->table,array('id'=>'order/desc'));
+        if(is_admin_competency(50) == 1 || $this->ion_auth->is_admin())
+        {
+            $data['form'] = getAll($this->table,array('id'=>'order/desc'));    
+        }else
+        {
+            $data['form'] = getJoin($this->table, 'users', $this->table.'.nik = users.nik', 'left', $this->table.'.*,users.superior_id', array('users.superior_id'=>'where/'.get_nik($sess_id),'id'=>'order/desc'));
+            
+        }
 
         $this->_render_page($this->controller.'/index',$data);
     }
 
     function input(){
         permissionBiasa();
+        $sess_id = $data['sess_id'] = $this->session->userdata('user_id');
         $data['title'] = $this->title;
         $data['controller'] = $this->controller;
         $data['users'] = GetAll('users')->result();
+        $data['subordinate'] = getAll('users', array('superior_id'=>'where/'.get_nik($sess_id)));
+        $data['periode'] = GetAll('comp_session',array('is_deleted'=>'where/0'))->result();
         $this->_render_page('personal_assesment/input', $data);
     }
 
@@ -55,6 +67,7 @@ class personal_assesment extends MX_Controller {
         $data['id'] = $id;
         $data['title'] = $this->title;
         $data['controller'] = $this->controller;
+        $data['comp_session_id'] = Getvalue('comp_session_id', $this->table, array('id'=>'where/'.$id));
         $data['emp_id'] = $emp_id = Getvalue('nik', $this->table, array('id'=>'where/'.$id));
         $emp_id = get_nik($emp_id);
         $data['org_id'] = $org_id = get_user_organization_id($emp_id);
@@ -71,7 +84,7 @@ class personal_assesment extends MX_Controller {
 
         $data['def_indikator'] = array_unique($indikator);
 
-        $data['tindakan'] = getAll('competency_tindakan')->result();
+        $data['tindakan'] = getAll('competency_tindakan',array('is_deleted'=>'where/0'))->result();
         $this->_render_page('personal_assesment/edit', $data);
     }
 
@@ -119,6 +132,7 @@ class personal_assesment extends MX_Controller {
         // INSERT TO competency_personal_assesment
         $data = array(
             'nik' => $this->input->post('nik'),
+            'comp_session_id' => $this->input->post('comp_session_id'),
             'organization_id' => $this->input->post('organization_id'),
             'position_group_id' => $this->input->post('position_group_id'),
             'created_by'=>sessId(),
@@ -166,8 +180,11 @@ class personal_assesment extends MX_Controller {
             );
             $this->db->insert('email', $data4);
             if(!empty(getEmail($approver_id[$i])))$this->send_email(getEmail($approver_id[$i]), $subject_email, $isi_email);
+
+            redirect(base_url($this->controller), 'refresh');
+            
         }
-        redirect(base_url($this->controller), 'refresh');
+        
     }
 
     function do_edit($id){
@@ -278,7 +295,7 @@ class personal_assesment extends MX_Controller {
 
         $data['def_indikator'] = array_unique($indikator);
 
-        $data['tindakan'] = getAll('competency_tindakan')->result();
+        $data['tindakan'] = getAll('competency_tindakan',array('is_deleted'=>'where/0'))->result();
 
         $this->load->view($this->controller.'/result', $data);
     }
@@ -340,9 +357,11 @@ class personal_assesment extends MX_Controller {
                 $this->template->add_js('select2.min.js');
 
                 $this->template->add_js('core.js');
+                $this->template->add_js('bootstrap-datepicker.js');
 
                 $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                 $this->template->add_css('plugins/select2/select2.css');
+                $this->template->add_css('datepicker.css');
 
                 $this->template->add_js('competency/competency.js');
                 $this->template->add_js('competency/personal_assesment_input.js');

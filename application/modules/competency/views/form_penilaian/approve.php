@@ -28,6 +28,15 @@
 					            <div class="col-md-8">
 					            	<div class="row form-row">
 						            	<div class="col-md-3">
+					                        <label class="form-label text-right">Periode</label>
+					                    </div>
+					                    <div class="col-md-9">
+							            	<input name="" id="" type="text"  class="form-control" placeholder="-" value="<?=get_year_session($form->comp_session_id)?>" disabled="disabled">
+							            	<input type="hidden" value="<?=$form->comp_session_id?>" id="comp_session_id">
+					                    </div>
+					                </div>
+					            	<div class="row form-row">
+						            	<div class="col-md-3">
 					                        <label class="form-label text-right">Karyawan Yang Dinilai</label>
 					                    </div>
 					                    <div class="col-md-9">
@@ -98,7 +107,7 @@
 													</td>
 													
 													<td class="text-center">
-														<?=($r->kemauan == 1) ? "Mampu" : "Kurang";?>
+														<?=($r->kemauan == 1) ? "Mau" : "Kurang";?>
 													</td>
 													<td><textarea name="alasan" class="form-control" readonly="readonly"><?=$r->alasan?></textarea></td>
 												</tr>
@@ -110,16 +119,33 @@
 								<div class="col-md-12">
 									<h4>Kuadran :</h4>
 										<div class="radio radio-success">
+											<?php $qkuadran = getAll('competency_kuadran',array('id'=>'where/'.$form->kuadran_id));?>
+											<?php if($qkuadran->num_rows() > 0) { $val = $qkuadran->row_array() ?>
 					                        <input id="kuad" name="kuadran_id" value="" type="radio" checked="checked">
-					                        <label for="kuad"><?=getValue('title', 'competency_kuadran', array('id'=>'where/'.$form->kuadran_id))?></label>
+					                        <label for="kuad"><?=$val['id'].'. '.$val['title']?></label>
+					                        <?php } else {}?>
 					                    </div>
 								</div>
 
 								<div class="col-md-12">
 									<h4>Rekomendasi :</h4>
 										<div class="radio radio-success">
+											<?php $qrekomendasi = getAll('competency_rekomendasi',array('id'=>'where/'.$form->rekomendasi_id));?>
+											<?php if($qrekomendasi->num_rows() > 0) { $val = $qrekomendasi->row_array(); ?>
+											<?php if($val['id'] == 1) { 
+										$label_rek = 'A';
+									}elseif($val['id'] == 2) {
+										$label_rek = 'B';
+									}elseif($val['id'] == 3) {
+										$label_rek = 'C';
+									}else{
+										$label_rek = 'D';
+									} ?>
 					                        <input id="rek" name="rekomendasi_id" value="" type="radio" checked="checked">
-					                        <label for="rek"><?=getValue('title', 'competency_rekomendasi', array('id'=>'where/'.$form->rekomendasi_id))?></label>
+					                        <label for="rek"><?=$val['id'].'. '.$val['title']?></label>
+					                        <?php } else {}?>
+					                        <!-- <input id="rek" name="rekomendasi_id" value="" type="radio" checked="checked">
+					                        <label for="rek"><?=getValue('title', 'competency_rekomendasi', array('id'=>'where/'.$form->rekomendasi_id))?></label> -->
 					                    </div>
 								</div>
 				            </div>

@@ -164,6 +164,7 @@
                     <div class="col-md-12 text-center">
                       <?php  if($row->is_app_lv1 == 1 && get_nik($sess_id) == $row->user_app_lv1){?>
                         <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitMedicalModalLv1"><i class='icon-edit'> Edit Approval</i></div>
+                        <div class='btn btn-warning btn-small text-center' title='Kirim Notifikasi' onClick="send_notif_('lv<?php echo $i?>')"><i class='icon-mail-forward'> Kirim Notifikasi</i></div>
                       <?php } ?>
                     </div>
                 </div>

@@ -45,4 +45,58 @@ class kinerja_supporting_model extends CI_Model {
 
 		return $this->db->get();
 	}
+
+	public function get_kpi_detail($comp_session_id,$organization_id,$position_id,$user_id)
+	{
+		$this->db->select('
+			a.id as id,
+			a.comp_session_id as comp_session_id,
+			a.organization_id as organization_id,
+			a.user_id as user_id,
+			a.competency_mapping_kpi_detail_id as competency_mapping_kpi_detail_id,
+			a.kpi as kpi,
+			a.target_kpi as target_kpi,
+			a.rata_rata as rata_rata,
+			b.position_group_id as position_group_id,
+			b.area_kinerja_utama as area_kinerja_utama,
+			b.kpi as mapping_kpi,
+			b.target_kpi as mapping_target_kpi,
+			b.bobot_kpi as bobot_kpi,
+			b.sumber_info as sumber_info,
+			b.competency_monitoring_id as competency_monitoring_id
+		');
+		$this->db->from('competency_form_kpi_detail as a');
+		$this->db->join('competency_mapping_kpi_detail as b','a.competency_mapping_kpi_detail_id = b.id');
+		$this->db->where('a.comp_session_id',$comp_session_id);
+		$this->db->where('a.organization_id',$organization_id);
+		$this->db->where('a.user_id',$user_id);
+		$this->db->where('a.is_deleted',0);
+		$this->db->where('b.is_deleted',0);
+		$this->db->where('b.position_group_id',$position_id);
+		return $this->db->get();
+	}
+
+	public function get_competency_penilaian()
+	{
+		$this->db->select('*');
+		$this->db->from('competency_penilaian');
+		$this->db->where('is_deleted',0);
+		return $this->db->get();
+	}
+
+	public function get_competency_dasar()
+	{
+		$this->db->select('*');
+		$this->db->from('competency_dasar');
+		$this->db->where('is_deleted',0);
+		return $this->db->get();
+	}
+
+	public function get_competency_kedisiplinan()
+	{
+		$this->db->select('*');
+		$this->db->from('competency_kedisiplinan');
+		$this->db->where('is_deleted',0);
+		return $this->db->get();
+	}
 }

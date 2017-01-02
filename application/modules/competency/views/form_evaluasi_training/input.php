@@ -27,6 +27,19 @@
 					            <div class="col-md-6">
 					            	<div class="row form-row">
 						            	<div class="col-md-3">
+					                        <label class="form-label text-right">Periode</label>
+					                    </div>
+					                    <div class="col-md-9">
+							            	<select class="select2" style="width:100%" id="comp_session_id" name="comp_session_id" required>
+					                    		<option value="">-- Pilih Periode --</option>
+							            		<?php foreach($periode as $u){?>
+							            			<option value="<?=$u->id?>"><?=$u->year?></option>
+							            		<?php } ?>
+							            	</select>
+					                    </div>
+					                </div>
+					            	<div class="row form-row">
+						            	<div class="col-md-3">
 					                        <label class="form-label text-right">Nama</label>
 					                    </div>
 					                    <div class="col-md-9">
@@ -337,6 +350,25 @@
 
 					                   	<div class="col-md-4">
 				                        	<select class="select2" style="width:100%" id="hrd" name="hrd">
+				                        		<option value="0">-- Pilih HRD --</option>
+							            		<?php foreach($users as $u){?>
+							            			<option value="<?=$u->nik?>"><?=$u->nik.' - '.$u->username?></option>
+							            		<?php } ?>
+							            	</select>
+				                      	</div>
+				                    </div>
+					        	</div>
+					        </div>
+
+					        <div class="row">
+					        	<div class="col-md-12">
+				                    <div class="row form-row">
+				                      	<div class="col-md-1">
+				                        	<label class="form-label">HRD lainnya</label>
+				                      	</div>
+
+					                   	<div class="col-md-4">
+				                        	<select class="select2" style="width:100%" id="hrd2" name="hrd2">
 				                        		<option value="0">-- Pilih HRD --</option>
 							            		<?php foreach($users as $u){?>
 							            			<option value="<?=$u->nik?>"><?=$u->nik.' - '.$u->username?></option>

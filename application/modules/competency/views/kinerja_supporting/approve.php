@@ -68,7 +68,7 @@
 				                        <label class="form-label text-right">Periode Penilaian</label>
 				                      </div>
 				                      <div class="col-md-9">
-				                        <input name="periode" id="" type="text"  class="form-control" placeholder="-" value="<?=$form->periode?>" readonly>
+				                        <input name="periode" id="" type="text"  class="form-control" placeholder="-" value="<?=get_year_session($form->comp_session_id)?>" readonly>
 				                      </div>
 				                    </div>
 					        	</div>
