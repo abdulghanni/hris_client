@@ -2024,7 +2024,7 @@
 
 			if(!empty($username&&$password))
 			{
-				return 'http://'.$username.':'.$password.'@localhost:801/hris_api/';
+				return 'http://'.$username.':'.$password.'@localhost/hris_api/';
 				//return 'http://'.$username.':'.$password.'@123.231.241.12/hris_api/';
 			}else
 			{

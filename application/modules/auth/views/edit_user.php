@@ -94,7 +94,7 @@
                                             </div>
                                         </div>
                                     </div>
-									
+                                    
                                     <div class="form-group">
                                         <?php echo lang('register_marital_label', 'marital');?>
                                         <div class="input-with-icon right">
@@ -111,8 +111,8 @@
                                             </div>
                                         </div>
                                     </div>
-									<?php //die(is_admin_khusus($user_nik)) ?>
-									<?php if($id != 1 && is_admin_khusus($user_nik) != 1): ?>
+                                    <?php //die(is_admin_khusus($user_nik)) ?>
+                                    <?php if($id != 1 && is_admin_khusus($user_nik) != 1): ?>
                                     <div class="form-group">
                                         <?php echo 'Superior Name';?>
                                         <div class="input-with-icon right">
@@ -121,11 +121,11 @@
                                                 <select name="superior_id" class="select2" id="superior_id" style="width:100%">
                                                     <?php if (!empty($user_atasan))  {
                                                         echo '<option value="0">'.' -- Pilih Atasan -- '.'</option>';
-														foreach ($user_atasan as $key => $up) {
-                                                          $selected = ($up['ID'] == $selected_superior) ? 'selected = "selected"' : '';
-														  echo '<option value="'.$up['ID'].'" '.$selected.'>'.$up['NAME'].'</option>';
-														}
-													  }else{
+                                                        foreach ($users as $u) {
+                                                            $selected2 = ($u->nik == $selected_superior) ? 'selected = "selected"' : '';
+                                                            echo '<option value="'.$u->nik.'" '.$selected2.'>'.$u->username.'</option>';
+                                                        }
+                                                      }else{
                                                         echo '<option value="0">'.' -- Pilih Atasan -- '.'</option>';
                                                         foreach ($users as $u) {
                                                             $selected2 = ($u->nik == $selected_superior) ? 'selected = "selected"' : '';
@@ -168,7 +168,7 @@
                                             </div>
                                         </div>
                                     </div>
-									
+                                    
                                 </div>
                                 <div class="col-md-6">
                                     <h4><?php echo lang('user_contact_subheading')?></h4>
@@ -284,7 +284,7 @@
 </div>
 
 <!-- Upload KK Modal -->
-<div class="modal fade" data-backdrop="static" data-keyboard="false" id="uploadkkModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="uploadkkModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog" id="modaldialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -321,7 +321,7 @@
 <!--end  modal-->
 
 <!-- Upload akta Modal -->
-<div class="modal fade" data-backdrop="static" data-keyboard="false" id="uploadaktaModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="uploadaktaModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog" id="modaldialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -358,7 +358,7 @@
 <!--end  modal-->
 
 <!-- Modal -->
-<div class="modal fade" data-backdrop="static" data-keyboard="false" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
