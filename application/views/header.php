@@ -9,7 +9,7 @@
         </li>        
         </ul>
       <!-- BEGIN LOGO -->   
-      <a href="<?php site_url()?>">
+      <a href="<?php site_url('auth')?>">
         <img src="<?php echo assets_url('img/logo.png'); ?>" class="logo"  data-src="<?php echo assets_url('img/logo.png'); ?>" data-src-retina="<?php echo assets_url('img/logo2x.png'); ?>" width="106" height="21"/>
       </a>
       <!-- END LOGO --> 
