@@ -154,8 +154,8 @@ function edit_(id)
     {
         $('[name="id"]').val(data.id);
         $('[name="title"]').val(data.title);
-        $('[name="code"]').val(data.code);
-        $('[name="comp_group_id"]').select2().select2('val',data.comp_group_id);
+        $('[name="bobot"]').val(data.bobot);
+        $('[name="target"]').val(data.target);
 
         $('#modal_form').modal('show'); // show bootstrap modal when complete loaded
         $('.modal-title').text('Edit'); // Set title to Bootstrap modal title

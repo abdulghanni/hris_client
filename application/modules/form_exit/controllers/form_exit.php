@@ -281,6 +281,26 @@ class Form_exit extends MX_Controller {
                 'is_read' => 0,
                 );
             $this->db->insert('email', $data1);
+            /*kirim notif ke pak naryo sebagai manager HR*/
+            $data_hrd1 = array(
+                'sender_id' => get_nik($creator_id),
+                'receiver_id' => 'G0019',
+                'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                'subject' => 'Pengajuan Rekomendasi Karyawan Keluar',
+                'email_body' =>get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
+                'is_read' => 0,
+                );
+            $this->db->insert('email', $data_hrd1);
+            /*kirim notif ke bu dede sebagai admin payroll*/
+            $data_hrd2 = array(
+                'sender_id' => get_nik($creator_id),
+                'receiver_id' => 'P0081',
+                'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                'subject' => 'Pengajuan Rekomendasi Karyawan Keluar',
+                'email_body' =>get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
+                'is_read' => 0,
+                );
+            $this->db->insert('email', $data_hrd2);
             $isi_email = get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />';
             if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), 'Pengajuan Rekomendasi Karyawan Keluar', $isi_email);
         }
@@ -328,6 +348,10 @@ class Form_exit extends MX_Controller {
             $isi_email = get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />';
             if(!empty(getEmail($user_app_asset)))$this->send_email(getEmail($user_app_asset), 'Pengajuan Rekomendasi Karyawan Keluar', $isi_email);
         }
+
+        //if($type == 'hrd' && $approval_status == 1){
+            $this->send_notif_tambahan($id, 'Exit Clearance');
+        //}
 
     }
 

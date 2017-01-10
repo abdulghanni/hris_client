@@ -184,8 +184,10 @@
                       <table class="table table-bordered">
                         <thead>
                           <tr>
-                            <th width="10%" class="text-center">Lama</th>
-                            <th width="10%" class="text-center">Baru</th>
+                            <th width="10%" class="text-center">Komponen Lama</th>
+                            <th width="10%" class="text-center">Nominal Lama</th>
+                            <th width="10%" class="text-center">Komponen Baru</th>
+                            <th width="10%" class="text-center">Nominal Baru</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -196,7 +198,13 @@
                               <?php echo $key->old_komponen;?>
                             </td>
                             <td>
+                              <?php echo number_format($key->old_nominal,'0',',','.');?>
+                            </td>
+                            <td>
                               <?php echo $key->new_komponen;?>
+                            </td>
+                            <td>
+                              <?php echo number_format($key->new_nominal,'0',',','.');?>
                             </td>
                           </tr>
                         <?php endforeach ?>
