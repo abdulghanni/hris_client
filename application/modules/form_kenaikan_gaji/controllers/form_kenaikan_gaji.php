@@ -189,7 +189,9 @@ class Form_kenaikan_gaji extends MX_Controller {
                 );
 
                 $lama = $this->input->post('lama');
+                $nominal_lama = $this->input->post('nominal_lama');
                 $baru = $this->input->post('baru');
+                $nominal_baru = $this->input->post('nominal_baru');
 
                 if ($this->form_validation->run() == true && $this->main->create_($user_id, $additional_data))
                 {
@@ -199,7 +201,9 @@ class Form_kenaikan_gaji extends MX_Controller {
                                 $data = array(
                                 'user_kenaikan_gaji_id' => $rolling_id,
                                 'old_komponen' => $lama[$j],
+                                'old_nominal' => $nominal_lama[$j],
                                 'new_komponen' => $baru[$j],
+                                'new_nominal' => $nominal_baru[$j],
                                 'created_on'   => date('Y-m-d',strtotime('now')),
                                 'created_by'   => $sess_id
                                 );
@@ -299,10 +303,10 @@ class Form_kenaikan_gaji extends MX_Controller {
         $approval_status = getValue('app_status_id_'.$type, 'users_kenaikan_gaji', array('id'=>'where/'.$id));
         $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
         $user_rolling_id = getValue('user_id', 'users_kenaikan_gaji', array('id'=>'where/'.$id));
-        $subject_email = get_form_no($id).'['.$approval_status_mail.']Status Pengajuan Permohonan Mutasi dari Atasan';
-        $subject_email_request = get_form_no($id).'-Pengajuan Mutasi Karyawan';
-        $isi_email = 'Status pengajuan mutasi anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_kenaikan_gaji/detail/'.$id.'>Klik Disini</a><br />';
-        $isi_email_request = get_name($user_rolling_id).' mengajukan Permohonan mutasi, untuk melihat detail silakan <a href='.base_url().'form_kenaikan_gaji/detail/'.$id.'>Klik Disini</a><br />';
+        $subject_email = get_form_no($id).'['.$approval_status_mail.']Status Pengajuan kenaikan gaji dari Atasan';
+        $subject_email_request = get_form_no($id).'-Pengajuan Kenaikan Gaji Karyawan';
+        $isi_email = 'Status kenaikan gaji anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_kenaikan_gaji/detail/'.$id.'>Klik Disini</a><br />';
+        $isi_email_request = get_name($user_rolling_id).' mengajukan Permohonan kenaikan gaji, untuk melihat detail silakan <a href='.base_url().'form_kenaikan_gaji/detail/'.$id.'>Klik Disini</a><br />';
         
         $user_rolling_id = getValue('user_id', 'users_kenaikan_gaji', array('id'=>'where/'.$id));
         
@@ -394,7 +398,7 @@ class Form_kenaikan_gaji extends MX_Controller {
         }
 
         if($type == 'hrd' && $approval_status == 1){
-            $this->send_notif_tambahan($id, 'rolling');
+            $this->send_notif_tambahan($id, 'kenaikan_gaji');
         }
     }
 
@@ -408,8 +412,8 @@ class Form_kenaikan_gaji extends MX_Controller {
                     'sender_id' => get_nik($pengaju_id),
                     'receiver_id' => get_nik($user_id),
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-                    'subject' => 'Pengajuan rolling Karyawan',
-                    'email_body' => get_name($pengaju_id).' mengajukan rolling untuk Anda, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
+                    'subject' => 'Pengajuan kenaikan gaji Karyawan',
+                    'email_body' => get_name($pengaju_id).' mengajukan kenaikan gaji untuk Anda, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data4);

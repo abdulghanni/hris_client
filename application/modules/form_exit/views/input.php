@@ -216,7 +216,7 @@
                         </tr>
                         <tr>
                           <td>6</td>
-                          <td>Diberikan uang Pisah (untuk PHK)</td>
+                          <td>Diberikan uang Pisah (untuk resign/pengunduran diri)</td>
                           <td>
                             <label class="radio-inline">
                               <input type="radio" name="uang_pisah" id="uang_pisah1" required value="1">Ya

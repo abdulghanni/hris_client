@@ -317,6 +317,12 @@ class MX_Controller
         case 'resignment':
           $subject_form = "Pengunduran Diri";
           break;
+        case 'kenaikan_gaji':
+          $subject_form = "Kenaikan Gaji";
+        break;
+        case 'Exit Clearance':
+          $subject_form = "Rekomendasi Karyawan Keluar";
+        break;
         
         default:
           $subject_form = $form;

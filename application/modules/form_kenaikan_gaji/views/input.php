@@ -249,8 +249,10 @@
                                     <tr>
                                       <th width="2%"></th>
                                       <th width="2%">No</th>
-                                      <th width="40%">Lama</th>
-                                      <th width="40%">Baru</th>
+                                      <th width="25%">Komponen lama</th>
+                                      <th width="23%">Nominal lama</th>
+                                      <th width="25%">Komponen Baru</th>
+                                      <th width="23%">Nominal Baru</th>
                                     </tr>
                                   </thead>
                                 </table>
@@ -333,10 +335,16 @@
     cell2.innerHTML=rowCount+1-1;
     
     var cell3=row.insertCell(2);
-    cell3.innerHTML = "<input type='text' name='lama[]' class='form-control rupiah text-right'>";  
-    
+    cell3.innerHTML = "<input type='text' name='lama[]' class='form-control rupiah text-right'>"; 
+
     var cell4=row.insertCell(3);
-    cell4.innerHTML = "<input type='text' name='baru[]' class='form-control rupiah text-right'>";
+    cell4.innerHTML = "<input type='text' name='nominal_lama[]' class='form-control rupiah text-right'>"; 
+    
+    var cell5=row.insertCell(4);
+    cell5.innerHTML = "<input type='text' name='baru[]' class='form-control rupiah text-right'>";
+
+    var cell6=row.insertCell(5);
+    cell6.innerHTML = "<input type='text' name='nominal_baru[]' class='form-control rupiah text-right'>";
   }
   function deleteRow(tableID)
   {

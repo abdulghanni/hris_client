@@ -232,7 +232,9 @@ class Form_kenaikan_gaji_model extends CI_Model {
             a.id as id,
             a.user_kenaikan_gaji_id as user_id,
             a.old_komponen as old_komponen,
-            a.new_komponen as new_komponen
+            a.old_nominal as old_nominal,
+            a.new_komponen as new_komponen,
+            a.new_nominal as new_nominal
             ');
 
         $this->db->from('users_kenaikan_gaji_komponen as a');
