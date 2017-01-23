@@ -628,55 +628,92 @@ class form_kpi extends MX_Controller {
         // INSERT TO COMPETENCY_form_kpi_DETAIL
         $num_rows = getAll($this->table.'_detail', array('organization_id'=>'where/'.$org,'comp_session_id'=>'where/'.$comp_session_id,'id'=>'where/'.$kpi_detail_id))->num_rows();
         $counter_rata = 0;
-        if($this->input->post('jan') != 0){
+        if($this->input->post('jan_status') != 0){
             $counter_rata = $counter_rata + 1;
+            $tot_jan = $this->input->post('jan'); 
+        }else{
+            $tot_jan = 0;
         }
 
-        if($this->input->post('feb') != 0){
+        if($this->input->post('feb_status') != 0){
             $counter_rata = $counter_rata + 1;
+            $tot_feb = $this->input->post('feb'); 
+        }
+        else{
+            $tot_feb = 0;
         }
 
-        if($this->input->post('mar') != 0){
+        if($this->input->post('mar_status') != 0){
             $counter_rata = $counter_rata + 1;
+            $tot_mar = $this->input->post('mar');
+        }else{
+            $tot_mar = 0;
         }
 
-        if($this->input->post('apr') != 0){
+        if($this->input->post('apr_status') != 0){
             $counter_rata = $counter_rata + 1;
+            $tot_apr = $this->input->post('apr');
+        }else{
+            $tot_apr = 0;
         }
 
-        if($this->input->post('may') != 0){
+        if($this->input->post('may_status') != 0){
             $counter_rata = $counter_rata + 1;
+            $tot_may = $this->input->post('may');
+        }else{
+            $tot_may = 0;
         }
 
-        if($this->input->post('jun') != 0){
+        if($this->input->post('jun_status') != 0){
             $counter_rata = $counter_rata + 1;
+            $tot_jun = $this->input->post('jun');
+        }else{
+            $tot_jun = 0;
         }
 
-        if($this->input->post('jul') != 0){
+        if($this->input->post('jul_status') != 0){
             $counter_rata = $counter_rata + 1;
+            $tot_jul = $this->input->post('jul');
+        }else{
+            $tot_jul = 0;
         }
 
-        if($this->input->post('aug') != 0){
+        if($this->input->post('aug_status') != 0){
             $counter_rata = $counter_rata + 1;
+            $tot_aug = $this->input->post('aug');
+        }else{
+            $tot_aug = 0;
         }
 
-        if($this->input->post('sept') != 0){
+        if($this->input->post('sept_status') != 0){
             $counter_rata = $counter_rata + 1;
+            $tot_sept = $this->input->post('sept');
+        }else{
+            $tot_sept = 0;
         }
 
-        if($this->input->post('oct') != 0){
+        if($this->input->post('oct_status') != 0){
             $counter_rata = $counter_rata + 1;
+            $tot_oct = $this->input->post('oct');
+        }else{
+            $tot_oct = 0;
         }
 
-        if($this->input->post('nov') != 0){
+        if($this->input->post('nov_status') != 0){
             $counter_rata = $counter_rata + 1;
+            $tot_nov = $this->input->post('nov');
+        }else{
+            $tot_nov = 0;
         }
 
-        if($this->input->post('dece') != 0){
+        if($this->input->post('dece_status') != 0){
             $counter_rata = $counter_rata + 1;
+            $tot_dece = $this->input->post('dece');
+        }else{
+            $tot_dece = 0;
         }
 
-        $rata = ($this->input->post('jan')+$this->input->post('feb')+$this->input->post('mar')+$this->input->post('apr')+$this->input->post('may')+$this->input->post('jun')+$this->input->post('jul')+$this->input->post('aug')+$this->input->post('sept')+$this->input->post('oct')+$this->input->post('nov')+$this->input->post('dece'))/$counter_rata;    
+        $rata = ($tot_jan+$tot_feb+$tot_mar+$tot_apr+$tot_may+$tot_jun+$tot_jul+$tot_aug+$tot_sept+$tot_oct+$tot_nov+$tot_dece)/$counter_rata;    
             if($num_rows == 0){
                 
                 $data = array(
@@ -710,6 +747,18 @@ class form_kpi extends MX_Controller {
                     'pencapaian_nov' => $this->input->post('pencapaian_nov'),
                     'dece' => $this->input->post('dece'),
                     'pencapaian_dece' => $this->input->post('pencapaian_dece'),
+                    'jan_status' => $this->input->post('jan_status'),
+                    'feb_status' => $this->input->post('feb_status'),
+                    'mar_status' => $this->input->post('mar_status'),
+                    'apr_status' => $this->input->post('apr_status'),
+                    'may_status' => $this->input->post('may_status'),
+                    'jun_status' => $this->input->post('jun_status'),
+                    'jul_status' => $this->input->post('jul_status'),
+                    'aug_status' => $this->input->post('aug_status'),
+                    'sept_status' => $this->input->post('sept_status'),
+                    'oct_status' => $this->input->post('oct_status'),
+                    'nov_status' => $this->input->post('nov_status'),
+                    'dece_status' => $this->input->post('dece_status'),
                     'rata_rata' => $rata,
                     'keterangan' => $this->input->post('keterangan'),
                     'created_by'=>sessId(),
@@ -744,6 +793,18 @@ class form_kpi extends MX_Controller {
                     'pencapaian_nov' => $this->input->post('pencapaian_nov'),
                     'dece' => $this->input->post('dece'),
                     'pencapaian_dece' => $this->input->post('pencapaian_dece'),
+                    'jan_status' => $this->input->post('jan_status'),
+                    'feb_status' => $this->input->post('feb_status'),
+                    'mar_status' => $this->input->post('mar_status'),
+                    'apr_status' => $this->input->post('apr_status'),
+                    'may_status' => $this->input->post('may_status'),
+                    'jun_status' => $this->input->post('jun_status'),
+                    'jul_status' => $this->input->post('jul_status'),
+                    'aug_status' => $this->input->post('aug_status'),
+                    'sept_status' => $this->input->post('sept_status'),
+                    'oct_status' => $this->input->post('oct_status'),
+                    'nov_status' => $this->input->post('nov_status'),
+                    'dece_status' => $this->input->post('dece_status'),
                     'rata_rata' => $rata,
                     'keterangan' => $this->input->post('keterangan'),
                     );

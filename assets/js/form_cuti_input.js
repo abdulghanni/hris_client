@@ -151,6 +151,10 @@ ToEndDate.setDate(ToEndDate.getDate()+365);
         required: true,
         notEqual : 0,
       },
+      jml_hari: {
+        required: true,
+        notEqual : 0,
+      },
 
       atasan1: {notEqual:0},
       atasan2: {notEqual:0},
@@ -162,7 +166,7 @@ ToEndDate.setDate(ToEndDate.getDate()+365);
     },
 
     messages: {
-          alasan_cuti: "This field is required.",
+          alasan_cuti: "Kolom ini wajib diisi.",
           atasan1 : "Silakan Pilih Atasan",
           atasan2 : "Silakan Pilih Atasan Tidak Langsung",
           sisa_cuti : "Sisa Cuti anda 0",

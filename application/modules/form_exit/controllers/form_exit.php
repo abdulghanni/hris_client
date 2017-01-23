@@ -50,7 +50,7 @@ class Form_exit extends MX_Controller {
                $detail = base_url()."form_$this->form_name/detail/".$r->id; 
                $print = base_url()."form_$this->form_name/form_$this->form_name"."_pdf/".$r->id; 
                $delete = (($r->app_status_id_lv1 == 0 && $r->created_by == sessId()) || is_admin()) ? '<button onclick="showModal('.$r->id.')" class="btn btn-sm btn-danger" type="button" title="Batalkan Pengajuan"><i class="icon-remove"></i></button>' : '';
-
+				
                 //APPROVAL
                 if(!empty($r->user_app_lv1)){
                     $status1 = ($r->app_status_id_lv1 == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($r->app_status_id_lv1 == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($r->app_status_id_lv1 == 3) ? "<i class='icon-exclamation-sign' style='color:orange;' title = 'Pending'></i>" : "<i class='icon-question' title = 'Menunggu Status Approval'></i>"));
@@ -282,7 +282,7 @@ class Form_exit extends MX_Controller {
                 );
             $this->db->insert('email', $data1);
             /*kirim notif ke pak naryo sebagai manager HR*/
-            $data_hrd1 = array(
+         /*    $data_hrd1 = array(
                 'sender_id' => get_nik($creator_id),
                 'receiver_id' => 'G0019',
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
@@ -290,9 +290,9 @@ class Form_exit extends MX_Controller {
                 'email_body' =>get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
                 'is_read' => 0,
                 );
-            $this->db->insert('email', $data_hrd1);
+            $this->db->insert('email', $data_hrd1); */
             /*kirim notif ke bu dede sebagai admin payroll*/
-            $data_hrd2 = array(
+         /*    $data_hrd2 = array(
                 'sender_id' => get_nik($creator_id),
                 'receiver_id' => 'P0081',
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
@@ -300,7 +300,7 @@ class Form_exit extends MX_Controller {
                 'email_body' =>get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
                 'is_read' => 0,
                 );
-            $this->db->insert('email', $data_hrd2);
+            $this->db->insert('email', $data_hrd2); */
             $isi_email = get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />';
             if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), 'Pengajuan Rekomendasi Karyawan Keluar', $isi_email);
         }
@@ -465,18 +465,308 @@ class Form_exit extends MX_Controller {
             $user_id = get_nik($this->session->userdata('user_id'));
             $date_now = date('Y-m-d');
 
-            $data = array(
-            'is_app_'.$type => 1, 
-            'app_status_id_'.$type => $this->input->post('app_status_'.$type),
-            'user_app_'.$type => $user_id, 
-            'date_app_'.$type => $date_now,
-            'note_'.$type => $this->input->post('note_'.$type)
-            );
-
-           if ($this->main->update($id,$data)) {
-               redirect('form_exit/detail/'.$id, 'refresh');
+				$user_app_lv1 = getValue('user_app_lv1', 'users_exit', array('id'=>'where/'.$id));
+				$user_status_id_lv1 = getValue('app_status_id_lv1', 'users_exit', array('id'=>'where/'.$id));
+				$user_app_lv2 = getValue('user_app_lv2', 'users_exit', array('id'=>'where/'.$id));
+				$user_status_id_lv2 = getValue('app_status_id_lv2', 'users_exit', array('id'=>'where/'.$id));
+				$user_app_lv3 = getValue('user_app_lv3', 'users_exit', array('id'=>'where/'.$id));
+				$user_status_id_lv3 = getValue('app_status_id_lv3', 'users_exit', array('id'=>'where/'.$id));
+				$user_app_asset = getValue('user_app_asset', 'users_exit', array('id'=>'where/'.$id));
+				$user_status_id_asset = getValue('app_status_id_asset', 'users_exit', array('id'=>'where/'.$id));
+				$creator_id = getValue('created_by', 'users_exit', array('id'=>'where/'.$id));
+				$target_id = getValue('user_id', 'users_exit', array('id'=>'where/'.$id));
+				//GA
+				$user_status_id_mgr = getValue('app_status_id_mgr', 'users_exit', array('id'=>'where/'.$id));
+				//Koperasi
+				$user_status_id_koperasi = getValue('app_status_id_koperasi', 'users_exit', array('id'=>'where/'.$id));
+				//Perpus
+				$user_status_id_perpus = getValue('app_status_id_perpus', 'users_exit', array('id'=>'where/'.$id));
+				//HRD
+				$user_status_id_hrd = getValue('app_status_id_hrd', 'users_exit', array('id'=>'where/'.$id));
+				//Akunting
+				$user_status_id_akunting = getValue('app_status_id_akunting', 'users_exit', array('id'=>'where/'.$id));
+				//Audit
+				$user_status_id_audit = getValue('app_status_id_audit', 'users_exit', array('id'=>'where/'.$id));
+				//IT
+				$user_status_id_it = getValue('app_status_id_it', 'users_exit', array('id'=>'where/'.$id));
+				//Keuangan
+				$user_status_id_keuangan = getValue('app_status_id_keuangan', 'users_exit', array('id'=>'where/'.$id));
+				
+				//target
+				$target_nik = get_nik($target_id);
+				$user_buid = get_user_buid($target_nik);
+						
+				//GA
+				$get_admin_logistik = get_admin_logistik($user_buid);
+				if(!empty($get_admin_logistik))
+				{
+					$statusganeed =1;
+					if($user_status_id_mgr==1)
+					{	
+						$statusgadone=1;
+					}
+					else
+					{	
+						$statusgadone=0;
+					}
+				}
+				else
+				{	
+					$statusganeed=0;
+					$statusgadone=0;
+				}
+				
+				//hrd
+				$get_admin_hrd = get_admin_hrd($user_buid);
+				if(!empty($get_admin_hrd))
+				{
+					$statushrdneed =1;
+					if($user_status_id_hrd==1)
+					{	
+						$statushrddone=1;
+					}
+					else
+					{	
+						$statushrddone=0;
+					}
+				}
+				else
+				{	
+					$statushrdneed=0;
+					$statushrddone=0;
+				}
+				//IT
+				$get_admin_it = get_admin_it($user_buid);
+				if(!empty($get_admin_it))
+				{
+					$statusitneed =1;
+					if($user_status_id_it==1)
+					{	
+						$statusitdone=1;
+					}
+					else
+					{	
+						$statusitdone=0;
+						$statusitneed=0;
+					}
+				}
+				else
+				{	
+					$statusitneed=0;
+					$statusitdone=0;
+				}
+				//Koperasi
+				$get_admin_koperasi = get_admin_koperasi($user_buid);
+				if(!empty($get_admin_koperasi))
+				{
+					$statuskoperasineed =1;
+					if($user_status_id_koperasi==1)
+					{	
+						$statuskoperasidone=1;
+					}
+					else
+					{	
+						$statuskoperasidone=0;
+						$statuskoperasineed=0;
+					}
+				}
+				else
+				{	
+					$statuskoperasineed=0;
+					$statuskoperasidone=0;
+				}
+				//Perpus
+				$get_admin_perpus = get_admin_perpus($user_buid);
+				if(!empty($get_admin_perpus))
+				{
+					$statusperpusneed =1;
+					if($user_status_id_perpus==1)
+					{	
+						$statusperpusdone=1;
+					}
+					else
+					{	
+						$statusperpusdone=0;
+						$statusperpusneed=0;
+					}
+				}
+				else
+				{	
+					$statusperpusneed=0;
+					$statusperpusdone=0;
+				}
+				//Keuangan
+				$get_admin_keuangan = get_admin_keuangan($user_buid);
+				if(!empty($get_admin_keuangan))
+				{
+					$statuskeuanganneed =1;
+					if($user_status_id_keuangan==1)
+					{	
+						$statuskeuangandone=1;
+					}
+					else
+					{	
+						$statuskeuangandone=0;
+						$statuskeuanganneed=0;
+					}
+				}
+				else
+				{	
+					$statuskeuanganneed=0;
+					$statuskeuangandone=0;
+				}
+				//audit
+				$get_admin_audit = get_admin_audit($user_buid);
+				if(!empty($get_admin_audit))
+				{
+					$statusauditneed =1;
+					if($user_status_id_audit==1)
+					{	
+						$statusauditdone=1;
+					}
+					else
+					{	
+						$statusauditdone=0;
+					}
+				}
+				else
+				{	
+					$statusauditneed=0;
+					$statusauditdone=0;
+				}
+				//Akunting
+				$get_admin_akunting = get_admin_akunting($user_buid);
+				if(!empty($get_admin_akunting))
+				{
+					$statusakuntingneed =1;
+					if($user_status_id_akunting==1)
+					{	
+						$statusakuntingdone=1;
+					}
+					else
+					{	
+						$statusakuntingdone=0;
+					}
+				}
+				else
+				{	
+					$statusakuntingneed=0;
+					$statusakuntingdone=0;
+				}
+		
+						//Atasan pertama
+						if(!empty($user_app_lv1)){
+							$status1need =1;
+							if($user_status_id_lv1==1)
+							{	$status1done=1;}
+							else
+							{	$status1done=0;}
+						}
+						else
+						{	
+							$status1need =0;
+							$status1done=0;
+						}
+						//Atasan Kedua
+						if(!empty($user_app_lv2)){
+							$status2need =1;
+							if($user_status_id_lv2==1){
+								$status2done=1;
+							}
+							else{
+								$status2done=0;
+							}
+						}
+						else{
+							$status2need =0;
+							$status2done=0;
+						}
+						//Atasan Ketiga
+						if(!empty($user_app_lv3)){
+							$status3need =1;
+							if($user_status_id_lv3==1){
+								$status3done=1;
+							}
+							else{
+								$status3done=0;
+							}
+						}
+						else{
+							$status3need =0;
+							$status3done=0;
+						}
+						//Atasan Keempat
+						if(!empty($user_app_asset)){
+							$status4need =1;
+							if($user_status_id_asset==1){
+								$status4done=1;
+							}
+							else{
+								$status4done=0;
+							}
+						}
+						else{
+							$status4need =0;
+							$status4done=0;
+						}
+						
+						
+						$statusneed=$status1need+$status2need+$status3need+$status4need+$statusganeed+$statushrdneed+$statusitneed+$statusperpusneed+$statuskoperasineed+$statusauditneed+$statuskeuanganneed;
+						$statusdoneall=$status1done+$status3done+$status3done+$status4done+$statusgadone+$statushrddone+$statusitdone+$statusperpusdone+$statuskoperasidone+$statusauditdone+$statuskeuangandone;
+						$statusneedall=$statusneed-1;						
+						if($statusdoneall==$statusneedall){
+							  
+									$data1 = array(
+										'sender_id' => get_nik($creator_id),
+										'receiver_id' => $user_app_lv1,
+										'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+										'subject' => 'Pengajuan Rekomendasi Karyawan Keluar',
+										'email_body' =>get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($target_id).', untuk melihat detail silakan <a class="klikmail" href='.base_url()."form_exit/detail/".$id.'>Klik Disini</a><br />'.$this->detail_email($id),
+										'is_read' => 0,
+										);
+									$this->db->insert('email', $data1);
+									
+									//kirim notif ke pak naryo sebagai manager HR
+									$data_hrd1 = array(
+										'sender_id' => get_nik($creator_id),
+										'receiver_id' => 'G0019',
+										'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+										'subject' => 'Pengajuan Rekomendasi Karyawan Keluar',
+										'email_body' =>get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($target_id).', untuk melihat detail silakan <a class="klikmail" href='.base_url()."form_exit/detail/".$id.'>Klik Disini</a><br />'.$this->detail_email($id),
+										'is_read' => 0,
+										);
+									$this->db->insert('email', $data_hrd1);
+								
+									//kirim notif ke bu dede sebagai admin payroll
+									$data_hrd2 = array(
+										'sender_id' => get_nik($creator_id),
+										'receiver_id' => 'P0081',
+										'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+										'subject' => 'Pengajuan Rekomendasi Karyawan Keluar',
+										'email_body' =>get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($target_id).', untuk melihat detail silakan <a class="klikmail" href='.base_url()."form_exit/detail/".$id.'>Klik Disini</a><br />'.$this->detail_email($id),
+										'is_read' => 0,
+										);
+									$this->db->insert('email', $data_hrd2);
+									
+									$isi_email = get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($target_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />';
+									if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), 'Pengajuan Rekomendasi Karyawan Keluar', $isi_email);
+							
+							
+						}
+			
+						$data = array(
+						'is_app_'.$type => 1, 
+						'app_status_id_'.$type => $this->input->post('app_status_'.$type),
+						'user_app_'.$type => $user_id, 
+						'date_app_'.$type => $date_now,
+						'note_'.$type => $this->input->post('note_'.$type)
+						);
+			
+				if ($this->main->update($id,$data)) {
+			     redirect('form_exit/detail/'.$id, 'refresh');
             }
         }
+		
     }
 
     function send_notif($id, $type)
