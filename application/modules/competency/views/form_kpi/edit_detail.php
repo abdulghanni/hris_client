@@ -106,10 +106,10 @@
 				              	<table class="table table-bordered">
 				              		<thead>
 				              			<tr>
-				              				<th>Bulan</th>		
-											<th>Sasaran KPI</th>		
-											<th>Real KPI</th>		
-											<th>Pencapaian</th>		
+				              				<th style="width:25%">Bulan</th>		
+											<th style="width:25%">Sasaran KPI</th>		
+											<th style="width:25%">Real KPI</th>		
+											<th style="width:25%">Penilaian</th>
 				              			</tr>
 									</thead>
 									<tbody>
@@ -117,79 +117,128 @@
 											<td>Januari</td>
 											<td><?php echo $mapping_kpi['target_kpi']?> %</td>
 											<td><input type="text" id="jan" name="jan" value="<?php echo $kpi_detail['jan']?>"></td>
-											<td><input type="text" id="pencapaian_jan" name="pencapaian_jan" value="<?php echo $kpi_detail['pencapaian_jan']?>"></td>
+											<td>
+												<?php $checked = ($kpi_detail['jan_status'] == 1) ? 'checked="checked"' : '' ;?>
+												<input id="jan_status" type="checkbox" name="jan_status" value="1" <?php echo $checked?> class="">
+
+												<!-- <input type="text" id="pencapaian_jan" name="pencapaian_jan" value="<?php echo $kpi_detail['pencapaian_jan']?>"> -->
+											</td>
 										</tr>
 										<tr>
 											<td>Februari</td>
 											<td><?php echo $mapping_kpi['target_kpi']?> %</td>
 											<td><input type="text" id="feb" name="feb" value="<?php echo $kpi_detail['feb']?>"></td>
-											<td><input type="text" id="pencapaian_feb" name="pencapaian_feb" value="<?php echo $kpi_detail['pencapaian_feb']?>"></td>
+											<td>
+												<?php $checked = ($kpi_detail['feb_status'] == 1) ? 'checked="checked"' : '' ;?>
+												<input id="feb_status" type="checkbox" name="feb_status" value="1" <?php echo $checked?> class="">
+												<!-- <input type="text" id="pencapaian_feb" name="pencapaian_feb" value="<?php echo $kpi_detail['pencapaian_feb']?>"> -->
+											</td>
 										</tr>
 										<tr>
 											<td>Maret</td>
 											<td><?php echo $mapping_kpi['target_kpi']?> %</td>
 											<td><input type="text" id="mar" name="mar" value="<?php echo $kpi_detail['mar']?>"></td>
-											<td><input type="text" id="pencapaian_mar" name="pencapaian_mar" value="<?php echo $kpi_detail['pencapaian_mar']?>"></td>
+											<td>
+												<?php $checked = ($kpi_detail['mar_status'] == 1) ? 'checked="checked"' : '' ;?>
+												<input id="mar_status" type="checkbox" name="mar_status" value="1" <?php echo $checked?> class="">
+												<!-- <input type="text" id="pencapaian_mar" name="pencapaian_mar" value="<?php echo $kpi_detail['pencapaian_mar']?>"> -->
+											</td>
 										</tr>
 										<tr>
 											<td>April</td>
 											<td><?php echo $mapping_kpi['target_kpi']?> %</td>
 											<td><input type="text" id="apr" name="apr" value="<?php echo $kpi_detail['apr']?>"></td>
-											<td><input type="text" id="pencapaian_apr" name="pencapaian_apr" value="<?php echo $kpi_detail['pencapaian_apr']?>"></td>
+											<td>
+												<?php $checked = ($kpi_detail['apr_status'] == 1) ? 'checked="checked"' : '' ;?>
+												<input id="apr_status" type="checkbox" name="apr_status" value="1" <?php echo $checked?> class="">
+												<!-- <input type="text" id="pencapaian_apr" name="pencapaian_apr" value="<?php echo $kpi_detail['pencapaian_apr']?>"> -->
+											</td>
 										</tr>
 										<tr>
 											<td>Mei</td>
 											<td><?php echo $mapping_kpi['target_kpi']?> %</td>
 											<td><input type="text" id="may" name="may" value="<?php echo $kpi_detail['may']?>"></td>
-											<td><input type="text" id="pencapaian_may" name="pencapaian_may" value="<?php echo $kpi_detail['pencapaian_may']?>"></td>
+											<td>
+												<?php $checked = ($kpi_detail['may_status'] == 1) ? 'checked="checked"' : '' ;?>
+												<input id="may_status" type="checkbox" name="may_status" value="1" <?php echo $checked?> class="">
+												<!-- <input type="text" id="pencapaian_may" name="pencapaian_may" value="<?php echo $kpi_detail['pencapaian_may']?>"> -->
+											</td>
 										</tr>
 										<tr>
 											<td>Juni</td>
 											<td><?php echo $mapping_kpi['target_kpi']?> %</td>
 											<td><input type="text" id="jun" name="jun" value="<?php echo $kpi_detail['jun']?>"></td>
-											<td><input type="text" id="pencapaian_jun" name="pencapaian_jun" value="<?php echo $kpi_detail['pencapaian_jun']?>"></td>
+											<td>
+												<?php $checked = ($kpi_detail['jun_status'] == 1) ? 'checked="checked"' : '' ;?>
+												<input id="jun_status" type="checkbox" name="jun_status" value="1" <?php echo $checked?> class="">
+												<!-- <input type="text" id="pencapaian_jun" name="pencapaian_jun" value="<?php echo $kpi_detail['pencapaian_jun']?>"> -->
+											</td>
 										</tr>
 										<tr>
 											<td>Juli</td>
 											<td><?php echo $mapping_kpi['target_kpi']?> %</td>
 											<td><input type="text" id="jul" name="jul" value="<?php echo $kpi_detail['jul']?>"></td>
-											<td><input type="text" id="pencapaian_jul" name="pencapaian_jul" value="<?php echo $kpi_detail['pencapaian_jul']?>"></td>
+											<td>
+												<?php $checked = ($kpi_detail['jul_status'] == 1) ? 'checked="checked"' : '' ;?>
+												<input id="jul_status" type="checkbox" name="jul_status" value="1" <?php echo $checked?> class="">
+												<!-- <input type="text" id="pencapaian_jul" name="pencapaian_jul" value="<?php echo $kpi_detail['pencapaian_jul']?>"> -->
+											</td>
 										</tr>
 										<tr>
 											<td>Agustus</td>
 											<td><?php echo $mapping_kpi['target_kpi']?> %</td>
 											<td><input type="text" id="aug" name="aug" value="<?php echo $kpi_detail['aug']?>"></td>
-											<td><input type="text" id="pencapaian_aug" name="pencapaian_aug" value="<?php echo $kpi_detail['pencapaian_aug']?>"></td>
+											<td>
+												<?php $checked = ($kpi_detail['aug_status'] == 1) ? 'checked="checked"' : '' ;?>
+												<input id="aug_status" type="checkbox" name="aug_status" value="1" <?php echo $checked?> class="">
+												<!-- <input type="text" id="pencapaian_aug" name="pencapaian_aug" value="<?php echo $kpi_detail['pencapaian_aug']?>"> -->
+											</td>
 										</tr>
 										<tr>
 											<td>September</td>
 											<td><?php echo $mapping_kpi['target_kpi']?> %</td>
 											<td><input type="text" id="sept" name="sept" value="<?php echo $kpi_detail['sept']?>"></td>
-											<td><input type="text" id="pencapaian_sept" name="pencapaian_sept" value="<?php echo $kpi_detail['pencapaian_sept']?>"></td>
+											<td>
+												<?php $checked = ($kpi_detail['sept_status'] == 1) ? 'checked="checked"' : '' ;?>
+												<input id="sept_status" type="checkbox" name="sept_status" value="1" <?php echo $checked?> class="">
+												<!-- <input type="text" id="pencapaian_sept" name="pencapaian_sept" value="<?php echo $kpi_detail['pencapaian_sept']?>"> -->
+											</td>
 										</tr>
 										<tr>
 											<td>Oktober</td>
 											<td><?php echo $mapping_kpi['target_kpi']?> %</td>
 											<td><input type="text" id="oct" name="oct" value="<?php echo $kpi_detail['oct']?>"></td>
-											<td><input type="text" id="pencapaian_oct" name="pencapaian_oct" value="<?php echo $kpi_detail['pencapaian_oct']?>"></td>
+											<td>
+												<?php $checked = ($kpi_detail['oct_status'] == 1) ? 'checked="checked"' : '' ;?>
+												<input id="oct_status" type="checkbox" name="oct_status" value="1" <?php echo $checked?> class="">
+												<!-- <input type="text" id="pencapaian_oct" name="pencapaian_oct" value="<?php echo $kpi_detail['pencapaian_oct']?>"> -->
+											</td>
 										</tr>
 										<tr>
 											<td>November</td>
 											<td><?php echo $mapping_kpi['target_kpi']?> %</td>
 											<td><input type="text" id="nov" name="nov" value="<?php echo $kpi_detail['nov']?>"></td>
-											<td><input type="text" id="pencapaian_nov" name="pencapaian_nov" value="<?php echo $kpi_detail['pencapaian_nov']?>"></td>
+											<td>
+												<?php $checked = ($kpi_detail['nov_status'] == 1) ? 'checked="checked"' : '' ;?>
+												<input id="nov_status" type="checkbox" name="nov_status" value="1" <?php echo $checked?> class="">
+												<!-- <input type="text" id="pencapaian_nov" name="pencapaian_nov" value="<?php echo $kpi_detail['pencapaian_nov']?>"> -->
+											</td>
 										</tr>
 										<tr>
 											<td>Desember</td>
 											<td><?php echo $mapping_kpi['target_kpi']?> %</td>
 											<td><input type="text" id="dece" name="dece" value="<?php echo $kpi_detail['dece']?>"></td>
-											<td><input type="text" id="pencapaian_dece" name="pencapaian_dece" value="<?php echo $kpi_detail['pencapaian_dece']?>"></td>
+											<td>
+												<?php $checked = ($kpi_detail['dece_status'] == 1) ? 'checked="checked"' : '' ;?>
+												<input id="dece_status" type="checkbox" name="dece_status" value="1" <?php echo $checked?> class="">
+												<!-- <input type="text" id="pencapaian_dece" name="pencapaian_dece" value="<?php echo $kpi_detail['pencapaian_dece']?>"> -->
+											</td>
 										</tr>
 										<tr>
 											<td></td>
-											<td></td>
 											<td>Rata - rata</td>
 											<td><input type="text" id="rata_rata" name="rata_rata" value="<?php echo $kpi_detail['rata_rata']?>"></td>
+											<td></td>
 										</tr>
 									</tbody>
 				              	</table>

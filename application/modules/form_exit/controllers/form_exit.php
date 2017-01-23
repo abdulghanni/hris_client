@@ -763,8 +763,7 @@ class Form_exit extends MX_Controller {
 						);
 			
 				if ($this->main->update($id,$data)) {
-			
-               redirect('form_exit/detail/'.$id, 'refresh');
+			     redirect('form_exit/detail/'.$id, 'refresh');
             }
         }
 		
