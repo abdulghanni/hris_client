@@ -51,6 +51,7 @@ $('#datepicker_end')
 
 ToEndDate.setDate(ToEndDate.getDate()+365);
 
+
     function days() 
     {   
       var date1 = $('[name="start_cuti"]').val(),date2 = $('[name="end_cuti"]').val();
@@ -90,8 +91,13 @@ ToEndDate.setDate(ToEndDate.getDate()+365);
               iAdjust += json;
               iDateDiff -= iAdjust// take into account both days on weekend
               
-              $("#jml_hari").val(iDateDiff + 1);// add 1 because dates are inclusive
-              $("#jml_cuti").val(iDateDiff + 1);                
+              //$("#jml_hari").val(iDateDiff + 1);// add 1 because dates are inclusive
+              $('#clickdate').click(function(){        
+      					$("#jml_hari").val(iDateDiff + 1);// add 1 because dates are inclusive  
+      					$("#jml_cuti").val(iDateDiff + 1);           
+				      });
+			  
+			     
             }
         });
                     
@@ -123,6 +129,8 @@ ToEndDate.setDate(ToEndDate.getDate()+365);
             $("#datepicker_end").val($("#datepicker_start").val());
         }        
     });
+	
+
 
     $('#alasan_cuti').change(function(){      
         var id = $(this).val();  
@@ -155,7 +163,7 @@ ToEndDate.setDate(ToEndDate.getDate()+365);
         required: true,
         notEqual : 0,
       },
-
+      
       atasan1: {notEqual:0},
       atasan2: {notEqual:0},
 
