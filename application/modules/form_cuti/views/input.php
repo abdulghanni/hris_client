@@ -208,8 +208,13 @@
                         <label class="form-label text-right"><?php echo lang('count_day') ?></label>
                       </div>
                       <div class="col-md-2">
-                        <input id="jml_hari" name="jml_hari" type="text"  class="form-control" placeholder="-"disabled="disabled" required>
+                        <input id="jml_hari" name="jml_hari" type="text"  class="form-control" placeholder="-" disabled="disabled" required>
                         <input type="hidden" name="jml_cuti" id="jml_cuti" value="">
+                      </div>
+                      <div class="col-md-2">
+						            <a>
+                          <span class="btn btn-success" id="clickdate">Hitung Hari</span>
+                        </a>
                       </div>
                     </div>
                     
