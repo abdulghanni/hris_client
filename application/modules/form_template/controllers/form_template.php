@@ -11,7 +11,7 @@ class Form_template extends MX_Controller {
         $this->load->library('form_validation');
         $this->load->library('upload');
         $this->load->helper('url');
-        
+
         $this->load->database();
         $this->load->model('form_template_model');
         $this->lang->load('auth');
@@ -20,7 +20,7 @@ class Form_template extends MX_Controller {
     }
 
     function index($fname = "fn:",$sort_by = "id", $sort_order = "asc", $offset = 0)
-    { 
+    {
         if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page
@@ -33,26 +33,30 @@ class Form_template extends MX_Controller {
 
         //set sort order
         $this->data['sort_order'] = $sort_order;
-        
+
+        //select max id
+        $this->db->select_max('id');
+        $this->data['maxid'] = $this->db->get('form_template');
+
         //set sort by
         $this->data['sort_by'] = $sort_by;
-       
+
         //set filter by title
-        $this->data['fname_param'] = $fname; 
+        $this->data['fname_param'] = $fname;
         $exp_fname = explode(":",$fname);
         $fname_re = str_replace("_", " ", $exp_fname[1]);
         $fname_post = (strlen($fname_re) > 0) ? array('form_template.title'=>$fname_re) : array() ;
-        
-        //set default limit in var $config['list_limit'] at application/config/ion_auth.php 
+
+        //set default limit in var $config['list_limit'] at application/config/ion_auth.php
         $this->data['limit'] = $limit = (strlen($this->input->post('limit')) > 0) ? $this->input->post('limit') : 25 ;
 
         $this->data['offset'] = 6;
 
-        //list of filterize all form_template  
+        //list of filterize all form_template
         $this->data['form_template_all'] = $this->form_template_model->like($fname_post)->where('is_deleted',0)->form_template()->result();
-        
+
         $this->data['num_rows_all'] = $this->form_template_model->like($fname_post)->where('is_deleted',0)->form_template()->num_rows();
-        
+
         $this->data['form_template'] = $this->form_template_model->like($fname_post)->where('is_deleted',0)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->form_template()->result();
 
         //list of filterize limit form_template for pagination  d();
@@ -118,8 +122,24 @@ class Form_template extends MX_Controller {
                 );
 
                 $this->db->insert('users_form_template', $data);
-                $id = $this->db->insert_id(); 
+                $id = $this->db->insert_id();
                 $this->upload_attachment($id);
+
+
+                $tempid =    $this->input->post('form_template_id');
+                $this->db->select_max('id');
+                $querymaxid = $this->db->get('form_template');
+                $maxid = $querymaxid->row('id')+1;
+                if($tempid==$maxid){
+                      $data2 = array(
+                      'id' => $this->input->post('id-form'),
+                      'title' => $this->input->post('name-form'),
+                      'created_by' => $this->session->userdata('user_id'),
+                      'created_on' => date('Y-m-d',strtotime('now')),
+                      );
+                      $this->db->insert('form_template', $data2);
+                  }
+
                 redirect('form_template','refresh');
         }
     }
@@ -142,7 +162,7 @@ class Form_template extends MX_Controller {
             'edited_on' => date('Y-m-d',strtotime('now')),
             );
             $this->db->where('id', $id);
-            $this->db->update('users_form_template', $data); 
+            $this->db->update('users_form_template', $data);
             $this->upload_attachment($id);
             redirect('form_template','refresh');
         }
@@ -231,7 +251,7 @@ class Form_template extends MX_Controller {
                     $this->template->add_js('jquery-validate.bootstrap-tooltip.min.js');
 
                     $this->template->add_js('form_template.js');
-                    
+
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                     $this->template->add_css('plugins/select2/select2.css');
                 }
