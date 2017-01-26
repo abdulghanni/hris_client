@@ -189,7 +189,7 @@
                       </div>
                       <div class="col-md-3">
                         <div id="datepicker_start" class="input-append date success no-padding">
-                          <input type="text" class="form-control" name="start_cuti" required>
+                          <input type="text" class="form-control startcuti" name="start_cuti" required>
                           <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span> 
                         </div>
                       </div>
@@ -198,7 +198,7 @@
                       </div>
                       <div class="col-md-3">
                         <div id="datepicker_end" class="input-append date success no-padding">
-                          <input type="text" class="form-control" name="end_cuti" required>
+                          <input type="text" class="form-control endcuti" name="end_cuti" required>
                           <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span> 
                         </div>
                       </div>
@@ -208,8 +208,13 @@
                         <label class="form-label text-right"><?php echo lang('count_day') ?></label>
                       </div>
                       <div class="col-md-2">
-                        <input id="jml_hari" name="jml_hari" type="text"  class="form-control" placeholder="-"disabled="disabled" required>
+                        <input id="jml_hari" name="jml_hari" type="text"  class="form-control" placeholder="-" disabled="disabled" required>
                         <input type="hidden" name="jml_cuti" id="jml_cuti" value="">
+                      </div>
+                      <div class="col-md-2">
+						 <a>
+                          <span  id="clickdate" class="btn btn-default disabled" disabled="disabled">Hitung Hari</span>
+                        </a>
                       </div>
                     </div>
                     

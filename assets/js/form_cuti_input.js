@@ -1,5 +1,6 @@
 $(document).ready(function() {
     $(".select2").select2();
+	
     //Date Pickers
     $("#datepicker_start").datepicker({format: "yyyy-mm-dd", todayHighlight: true});
     $("#datepicker_end").datepicker({format: "yyyy-mm-dd", todayHighlight: true});
@@ -14,7 +15,13 @@ $(document).ready(function() {
               alert('Jumlah cuti melebihi sisa cuti yang diizinkan');
             }
             $(this).datepicker('hide').blur();
+			
     });
+	
+	$('.endcuti').change(function(){
+		$('#clickdate').attr("class","btn btn-success");
+		$('#clickdate').attr("disabled",false);
+	});
 
 var startDate = new Date('01/01/2015');
 var FromEndDate = new Date();
@@ -29,9 +36,11 @@ $('#datepicker_start').datepicker({
     autoclose: true
 })
     .on('changeDate', function(selected){
+		
         startDate = new Date(selected.date.valueOf());
         startDate.setDate(startDate.getDate(new Date(selected.date.valueOf())));
         $('#datepicker_end').datepicker('setStartDate', startDate);
+		
     }); 
 $('#datepicker_end')
     .datepicker({
@@ -46,10 +55,12 @@ $('#datepicker_end')
         FromEndDate = new Date(selected.date.valueOf());
         FromEndDate.setDate(FromEndDate.getDate(new Date(selected.date.valueOf())));
         $('#datepicker_start').datepicker('setEndDate', FromEndDate);
+		
     });
 
 
 ToEndDate.setDate(ToEndDate.getDate()+365);
+
 
     function days() 
     {   
@@ -90,8 +101,15 @@ ToEndDate.setDate(ToEndDate.getDate()+365);
               iAdjust += json;
               iDateDiff -= iAdjust// take into account both days on weekend
               
-              $("#jml_hari").val(iDateDiff + 1);// add 1 because dates are inclusive
-              $("#jml_cuti").val(iDateDiff + 1);                
+			
+              //$("#jml_hari").val(iDateDiff + 1);// add 1 because dates are inclusive
+			  
+              $('#clickdate').click(function(){        
+      					$("#jml_hari").val(iDateDiff + 1);// add 1 because dates are inclusive  
+      					$("#jml_cuti").val(iDateDiff + 1);           
+				      });
+			  
+			     
             }
         });
                     
@@ -123,6 +141,8 @@ ToEndDate.setDate(ToEndDate.getDate()+365);
             $("#datepicker_end").val($("#datepicker_start").val());
         }        
     });
+	
+
 
     $('#alasan_cuti').change(function(){      
         var id = $(this).val();  
@@ -155,7 +175,7 @@ ToEndDate.setDate(ToEndDate.getDate()+365);
         required: true,
         notEqual : 0,
       },
-
+      
       atasan1: {notEqual:0},
       atasan2: {notEqual:0},
 

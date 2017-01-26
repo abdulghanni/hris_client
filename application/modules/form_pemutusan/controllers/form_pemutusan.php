@@ -280,6 +280,7 @@ class Form_Pemutusan extends MX_Controller {
         $approval_status = getValue('app_status_id_'.$type, 'users_pemutusan', array('id'=>'where/'.$id));
         $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
         $user_pemutusan_id = getValue('user_id', 'users_pemutusan', array('id'=>'where/'.$id));
+        $creator_id = getValue('created_by', 'users_pemutusan', array('id'=>'where/'.$id));
         $subject_email = get_form_no($id).'['.$approval_status_mail.']Status Pengajuan pemutusan dari Atasan';
         $subject_email_request = get_form_no($id).'-Pengajuan pemutusan Karyawan';
         $isi_email = 'Status pengajuan pemutusan anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_pemutusan/detail/'.$id.'>Klik Disini</a><br />';
@@ -382,6 +383,19 @@ class Form_Pemutusan extends MX_Controller {
 
         if($type == 'hrd' && $approval_status == 1){
             $this->send_notif_tambahan($id, 'pemutusan');//die('s');
+
+            /*kirim notif ke bu dede sebagai admin payroll*/
+             $data_hrd2 = array(
+                'sender_id' => get_nik($creator_id),
+                'receiver_id' => 'P0081',
+                'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                'subject' => 'Pengajuan Pemutusan Kontrak',
+                'email_body' =>get_name($creator_id).' mengajukan pemutusan kontrak untuk user '.get_name($user_pemutusan_id).', untuk melihat detail silakan <a href='.base_url().'form_pemutusan/detail/'.$id.'>Klik Disini</a><br />';,
+                'is_read' => 0,
+                );
+            $this->db->insert('email', $data_hrd2); 
+            $isi_email = get_name($creator_id).' mengajukan pemutusan kontrak untuk user '.get_name($user_pemutusan_id).', untuk melihat detail silakan <a href='.base_url().'form_pemutusan/detail/'.$id.'>Klik Disini</a><br />';
+            if(!empty(getEmail('P0081')))$this->send_email(getEmail('P0081'), 'Pengajuan Pemutusan Kontrak', $isi_email);
         }
     }
 
