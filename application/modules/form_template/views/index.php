@@ -244,7 +244,7 @@
         <div class="row form-row">
             <div class="col-md-3">Nama Form</div>
             <div class="col-md-9">
-                <select name="form_template_id" class="namechange" id="" style="width:100%">
+                <select name="form_template_id" class="namechange form-control" id="" style="width:100%">
                 <?php
                     foreach ($template->result_array() as $key => $value) {
                         echo '<option id="hidename" value="'.$value['id'].'">'.$value['title'].'</option>';
@@ -258,8 +258,8 @@
           <div class="col-md-3">
             <label class="form-label text-left">Tambah Nama Template</label>
           </div>
-          <div class="col-  md-9">
-            <input type='text' name='name-form' id="name-form"/>
+          <div class="col-md-9">
+            <input type='text' name='name-form' id="name-form" class="form-control"/>
             <input type='hidden' name='id-form' id="id-form" value="<?php echo $maxid->row('id')+1; ?>"/>
           </div>
         </div>
@@ -267,8 +267,8 @@
           <div class="col-md-3">
             <label class="form-label text-left">Template Form</label>
           </div>
-          <div class="col-  md-9">
-            <input type='file' name='file' id="file"/>
+          <div class="col-md-9">
+            <input type='file' name='file' id="file" class="form-control" style="height: 24px !important; padding: 3px 0px 26px 3px;"/>
           </div>
         </div>
         <div class="row form-row">
