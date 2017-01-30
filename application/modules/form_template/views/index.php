@@ -11,7 +11,7 @@
     <div class="content">
         <div class="row">
             <div class="col-md-12">
-                <div class="grid simple ">                            
+                <div class="grid simple ">
                     <div class="grid-body no-border">
                         <br/>
                         <div class="row">
@@ -25,7 +25,7 @@
                             <div class="row">
                                 <div class="col-md-5">
                                     <div class="row">
-                                        <div class="col-md-3 search_label"><?php echo form_label('Nama','first_name')?></div>
+                                        <div class="col-md-3 search_label"><?php echo form_label('Nama', 'first_name')?></div>
                                         <div class="col-md-9"><?php echo bs_form_input($fname_search)?></div>
                                     </div>
                                 </div>
@@ -36,16 +36,18 @@
                                             <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#addModal"><i class="icon-plus"></i>&nbsp;<?php echo lang('add_button');?></button>
                                         </div>
                                     </div>
-                                </div>    
+                                </div>
                             </div>
                         <?php echo form_close()?>
                         -->
-                        <?php if(is_admin()){ ?>
-                        <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#addModal"><i class="icon-plus"></i>&nbsp;<?php echo lang('add_button');?></button>
-                        <?php } ?>
+                        <?php if (is_admin()) {
+    ?>
+                        <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#addModal"><i class="icon-plus"></i>&nbsp;<?php echo lang('add_button'); ?></button>
+                        <?php
+} ?>
                         <br/>
-                        <div <?php ( ! empty($message)) && print('class="alert alert-info text-center"'); ?> id="infoMessage"><?php echo $message;?></div>
-                        <div class="table-responsive">   
+                        <div <?php (! empty($message)) && print('class="alert alert-info text-center"'); ?> id="infoMessage"><?php echo $message;?></div>
+                        <div class="table-responsive">
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
@@ -53,21 +55,23 @@
                                     <th width="30%" class="text-center">Nama Form</th>
                                     <th width="15%" class="text-center">Nama File</th>
                                     <th width="35%" class="text-center">Keterangan</th>
-                                    <th width="18%" class="text-center"><?php echo lang('index_action_th');?></th>                                  
+                                    <th width="18%" class="text-center"><?php echo lang('index_action_th');?></th>
                                 </tr>
                             </thead>
                             <tbody>
-                            <?php $i=1;foreach ($form_template as $user):?>
+                            <?php $i=1; foreach ($form_template as $user):?>
                                 <tr>
                                     <td valign="middle"><?php echo $i++;?></td>
                                     <td valign="middle"><?php echo $user->form_template;?></td>
                                     <td valign="middle"><span class="muted"><?php echo $user->file;?></span></td>
                                     <td valign="middle"><span class="muted"><?php echo $user->keterangan;?></span></td>
                                     <td valign="middle" class="text-center">
-                                    <?php if(is_admin()){ ?>
+                                    <?php if (is_admin()) {
+    ?>
                                         <button type="button" class="btn btn-info btn-small" data-toggle="modal" data-target="#editModal<?php echo $user->id?>" title="<?php echo lang('edit_button')?>"><i class="icon-edit"></i></button>
                                         <button class='btn btn-danger btn-small' type="submit" value="Delete" data-toggle="modal" data-target="#deleteModal<?php echo $user->id?>" title="<?php echo lang('delete_button')?>"><i class="icon-warning-sign"></i></button>
-                                    <?php } ?>
+                                    <?php
+} ?>
                                         <a href="<?php echo './uploads/template/'.$user->file?>"  target="_blank"><button class='btn btn-primary btn-small' type="submit" title="Download File"><i class="icon-download"></i></button></a>
                                     </td>
                                 </tr>
@@ -78,7 +82,7 @@
                         <div class="row">
                             <div class="col-md-4 page_limit">
                                 <?php echo form_open(uri_string());?>
-                                <?php 
+                                <?php
                                     $selectComponentData = array(
                                         10  => '10',
                                         25 => '25',
@@ -86,7 +90,9 @@
                                         75 => '75',
                                         100 => '100',);
                                     $selectComponentJs = 'class="select2" onChange="this.form.submit()" id="limit"';
-                                    if($num_rows_all>10)echo "Per page: ".form_dropdown('limit', $selectComponentData, $limit, $selectComponentJs);
+                                    if ($num_rows_all>10) {
+                                        echo "Per page: ".form_dropdown('limit', $selectComponentData, $limit, $selectComponentJs);
+                                    }
                                     echo '&nbsp;'.lang('found_subheading').'&nbsp;'.$num_rows_all.'&nbsp;'.'File';
                                 ?>
                                 <?php echo form_close();?>
@@ -127,8 +133,8 @@
                                 <select name="form_template_id" class="select2" id="" style="width:100%">
                                 <?php
                                     foreach ($template->result_array() as $key => $value) {
-                                    $selected = ($user->form_template_id === $value['id']) ? 'selected = selected' : '';
-                                    echo '<option value="'.$value['id'].'" '.$selected.'>'.$value['title'].'</option>';
+                                        $selected = ($user->form_template_id === $value['id']) ? 'selected = selected' : '';
+                                        echo '<option value="'.$value['id'].'" '.$selected.'>'.$value['title'].'</option>';
                                     }
                                     ?>
                                 </select>
@@ -139,12 +145,16 @@
                             <label class="form-label text-left">Template Form</label>
                           </div>
                           <div class="col-md-9">
-                            <?php if(!empty($user->file) && file_exists('./uploads/template/'.$user->file)) {?>
+                            <?php if (!empty($user->file) && file_exists('./uploads/template/'.$user->file)) {
+                                        ?>
                             <div id="file_old" class="file_old"><?php echo $user->file.' - '?><button onclick="removeFile()" type='button' class='btn btn-danger btn-small' title='Remove File'><i class='icon-remove'></i></button></div>
                             <input type='file' name='file' id="file" class="file" style="display:none;" />
-                            <?php }else{?>
+                            <?php
+                                    } else {
+                                        ?>
                             <input type='file' name='file' id="file"/>
-                            <?php } ?>
+                            <?php
+                                    } ?>
                           </div>
                         </div>
                         <div class="row form-row">
@@ -154,13 +164,13 @@
                           <div class="col-md-9">
                             <textarea class="form-control" name="keterangan"><?= $user->keterangan ?></textarea>
                           </div>
-                        </div>  
-                               
+                        </div>
+
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="icon-remove"></i>&nbsp;<?php echo lang('close_button')?></button> 
-                        <button type="submit" class="btn btn-primary" style="margin-top: 3px;" id=""><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button> 
-                    </div>             
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="icon-remove"></i>&nbsp;<?php echo lang('close_button')?></button>
+                        <button type="submit" class="btn btn-primary" style="margin-top: 3px;" id=""><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
+                    </div>
                 </div>
 
                     <?php echo form_close();?>
@@ -182,8 +192,8 @@
         <p><?php echo lang('delete_this_data').$user->form_template.' ?'; ?></p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="icon-ban-circle"></i>&nbsp;<?php echo lang('cancel_button')?></button> 
-        <button type="submit" class="btn btn-danger" style="margin-top: 3px;" id="btndelete<?php echo $user->id?>"><i class="icon-ok-sign"></i>&nbsp;Delete</button> 
+        <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="icon-ban-circle"></i>&nbsp;<?php echo lang('cancel_button')?></button>
+        <button type="submit" class="btn btn-danger" style="margin-top: 3px;" id="btndelete<?php echo $user->id?>"><i class="icon-ok-sign"></i>&nbsp;Delete</button>
      </div>
         <?php echo form_close()?>
     </div>
@@ -205,8 +215,8 @@
                              $btn.button('reset')
                         }
                     });
-                    ev.preventDefault(); 
-                });  
+                    ev.preventDefault();
+                });
             });
 
             function removeFile(){
@@ -234,22 +244,31 @@
         <div class="row form-row">
             <div class="col-md-3">Nama Form</div>
             <div class="col-md-9">
-                <select name="form_template_id" class="select2" id="" style="width:100%">
+                <select name="form_template_id" class="namechange form-control" id="" style="width:100%">
                 <?php
                     foreach ($template->result_array() as $key => $value) {
-                    echo '<option value="'.$value['id'].'">'.$value['title'].'</option>';
+                        echo '<option id="hidename" value="'.$value['id'].'">'.$value['title'].'</option>';
                     }
                     ?>
+                    <option class="showname" value="<?php echo $maxid->row('id')+1; ?>">-- Tambah nama template --</option>
                 </select>
             </div>
-        </div>   
-
+        </div>
+        <div class="row form-row nameform">
+          <div class="col-md-3">
+            <label class="form-label text-left">Tambah Nama Template</label>
+          </div>
+          <div class="col-md-9">
+            <input type='text' name='name-form' id="name-form" class="form-control"/>
+            <input type='hidden' name='id-form' id="id-form" value="<?php echo $maxid->row('id')+1; ?>"/>
+          </div>
+        </div>
         <div class="row form-row">
           <div class="col-md-3">
             <label class="form-label text-left">Template Form</label>
           </div>
           <div class="col-md-9">
-            <input type='file' name='file' id="file"/>
+            <input type='file' name='file' id="file" class="form-control" style="height: 24px !important; padding: 3px 0px 26px 3px;"/>
           </div>
         </div>
         <div class="row form-row">
@@ -259,15 +278,14 @@
           <div class="col-md-9">
             <textarea class="form-control" name="keterangan"></textarea>
           </div>
-        </div>                        
+        </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="icon-remove"></i>&nbsp;<?php echo lang('close_button')?></button> 
-         <button type="submit" class="btn btn-primary" style="margin-top: 3px;" id=""><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button> 
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="icon-remove"></i>&nbsp;<?php echo lang('close_button')?></button>
+         <button type="submit" class="btn btn-primary" style="margin-top: 3px;" id=""><i class="icon-ok-sign"></i>&nbsp;<?php echo lang('save_button')?></button>
       </div>
         <?php echo form_close()?>
     </div>
   </div>
 </div>
 <!--end add modal-->
-

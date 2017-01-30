@@ -390,7 +390,7 @@ class Form_Pemutusan extends MX_Controller {
                 'receiver_id' => 'P0081',
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Pengajuan Pemutusan Kontrak',
-                'email_body' =>get_name($creator_id).' mengajukan pemutusan kontrak untuk user '.get_name($user_pemutusan_id).', untuk melihat detail silakan <a href='.base_url().'form_pemutusan/detail/'.$id.'>Klik Disini</a><br />';,
+                'email_body' =>get_name($creator_id).' mengajukan pemutusan kontrak untuk user '.get_name($user_pemutusan_id).', untuk melihat detail silakan <a href='.base_url().'form_pemutusan/detail/'.$id.'>Klik Disini</a><br />',
                 'is_read' => 0,
                 );
             $this->db->insert('email', $data_hrd2); 
