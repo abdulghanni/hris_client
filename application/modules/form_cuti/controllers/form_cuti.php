@@ -796,7 +796,7 @@ class Form_cuti extends MX_Controller {
         {
             //print_mz($this->email->print_debugger());
             $isi_email = $this->rest->debug();
-            $this->send_email('abdulghanni2@gmail.com', $user_id.' error insert cuti', $isi_email);
+            $this->send_email('andy13galuh@gmail.com', $user_id.' error insert cuti', $isi_email);
             return false;
         }
     }
