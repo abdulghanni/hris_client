@@ -73,7 +73,7 @@ class notif_reminder extends MX_Controller {
 
                 $is_app = 'is_app_lv'.$i;
                 $u = "user_app_lv".$i;
-                $f_app = array($is_app=>'where/0');
+                $f_app = array($is_app=>'where/0','is_deleted'=>'where/0');
                 $app = GetAll('users_'.$form_name, $f_app)->result();
 
                 foreach ($app as $a) {
