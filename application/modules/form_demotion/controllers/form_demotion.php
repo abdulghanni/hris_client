@@ -15,9 +15,7 @@ class Form_demotion extends MX_Controller {
         $this->load->model('form_demotion/form_demotion_model','main');
 
         $this->lang->load('auth');
-        $this->load->helper('language');
-
-        
+        $this->load->helper('language');        
     }
 
     function index($ftitle = "fn:",$sort_by = "id", $sort_order = "asc", $offset = 0)
@@ -101,10 +99,14 @@ class Form_demotion extends MX_Controller {
     function input()
     {
         $this->data['title'] = "Input - Form Demosi";
+        $sess_id = $this->session->userdata('user_id');
+        $nik = get_nik($sess_id);
         if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page
             redirect('auth/login', 'refresh');
+        }elseif(!is_spv($nik) || !is_admin()){
+            return show_error('Anda tidak dapat mengakses halaman ini.');
         }else{
             $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
             $this->get_bu();
@@ -119,11 +121,16 @@ class Form_demotion extends MX_Controller {
     function detail($id, $lv = null)
     {
         $this->data['title'] = "Detail - Form Demosi";
+        $sess_id = $this->session->userdata('user_id');
+        $nik = get_nik($sess_id);
+        $bu = get_user_buid($nik);
         if (!$this->ion_auth->logged_in())
         {
             $this->session->set_userdata('last_link', $this->uri->uri_string());
             //redirect them to the login page
             redirect('auth/login', 'refresh');
+        }elseif(!is_spv($nik)&&!is_admin()&&!is_hrd_cabang($bu)&&!is_hrd_pusat()){
+            return show_error('Anda tidak dapat mengakses halaman ini.');
         }else{
            $this->data['id'] = $id;
             $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');

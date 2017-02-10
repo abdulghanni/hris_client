@@ -112,10 +112,14 @@ class Form_kontrak extends MX_Controller {
     function input()
     {
         $this->data['title'] = "Input - Form kontrak";
+        $sess_id = $this->session->userdata('user_id');
+        $nik = get_nik($sess_id);
         if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page
             redirect('auth/login', 'refresh');
+        }elseif(!is_spv($nik)&&!is_admin()){
+            return show_error('Anda tidak dapat mengakses halaman ini.');
         }else{
             $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
             $this->data['all_users'] = getAll('users', array('active'=>'where/1', 'username'=>'order/asc'), array('!=id'=>'1'));
@@ -130,11 +134,16 @@ class Form_kontrak extends MX_Controller {
     function detail($id, $lv = null)
     {
         $this->data['title'] = "Detail - Form kontrak";
+        $sess_id = $this->session->userdata('user_id');
+        $nik = get_nik($sess_id);
+        $bu = get_user_buid($nik);
         if (!$this->ion_auth->logged_in())
         {
             $this->session->set_userdata('last_link', $this->uri->uri_string());
             //redirect them to the login page
             redirect('auth/login', 'refresh');
+        }elseif(!is_spv($nik)&&!is_admin()&&!is_hrd_cabang($bu)&&!is_hrd_pusat()){
+            return show_error('Anda tidak dapat mengakses halaman ini.');
         }else{
             $this->data['id'] = $id;
             $this->data['form'] = 'form_'.$this->form_name;

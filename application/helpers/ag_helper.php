@@ -2025,6 +2025,7 @@
 			if(!empty($username&&$password))
 			{
 				return 'http://'.$username.':'.$password.'@localhost/hris_api/';
+				//return 'http://'.$username.':'.$password.'@localhost:801/hris_api/';
 				//return 'http://'.$username.':'.$password.'@123.231.241.12/hris_api/';
 			}else
 			{
@@ -2113,3 +2114,22 @@ function is_hrd_pusat($nik, $form_type){
 	if($x > 0)return true;
 	else return false;
 }
+
+if (!function_exists('is_hrd_cabang'))
+{	
+	function is_hrd_cabang($buid)
+	{
+		$CI =& get_instance();
+		
+		$sess_id = $CI->session->userdata('user_id');
+		$nik = get_nik($sess_id);
+		$bu = get_user_buid($nik);
+		$r = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 5)->where('groups.type_inventory_id', 1)->where('groups.bu',$buid)->get()->result_array('user_id');
+		for ($i = 0;$i<sizeof($r);$i++) {
+		if($sess_id == $r[$i]['user_id']):
+			return TRUE;
+		endif;
+		}
+	}
+}
+
