@@ -2133,3 +2133,18 @@ if (!function_exists('is_hrd_cabang'))
 	}
 }
 
+if (!function_exists('is_user_logged'))
+{
+	function is_user_logged($sess_nik,$id,$table)
+    {
+       $user_id = getValue('user_id', $table, array('id'=>'where/'.$id));
+       $user_nik = get_nik($user_id);
+       if($sess_nik == $user_nik)
+       {
+        return TRUE;
+       }else{
+        return FALSE;
+       }
+    }
+}
+

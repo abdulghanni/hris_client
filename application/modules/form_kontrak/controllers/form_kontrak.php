@@ -142,7 +142,7 @@ class Form_kontrak extends MX_Controller {
             $this->session->set_userdata('last_link', $this->uri->uri_string());
             //redirect them to the login page
             redirect('auth/login', 'refresh');
-        }elseif(!is_spv($nik)&&!is_admin()&&!is_hrd_cabang($bu)&&!is_hrd_pusat()){
+        }elseif(!is_spv($nik)&&!is_admin()&&!is_hrd_cabang($bu)&&!is_hrd_pusat($nik,13)&&!is_user_logged($nik,$id,'users_kontrak')){
             return show_error('Anda tidak dapat mengakses halaman ini.');
         }else{
             $this->data['id'] = $id;

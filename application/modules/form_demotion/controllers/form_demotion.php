@@ -124,12 +124,13 @@ class Form_demotion extends MX_Controller {
         $sess_id = $this->session->userdata('user_id');
         $nik = get_nik($sess_id);
         $bu = get_user_buid($nik);
+        
         if (!$this->ion_auth->logged_in())
         {
             $this->session->set_userdata('last_link', $this->uri->uri_string());
             //redirect them to the login page
             redirect('auth/login', 'refresh');
-        }elseif(!is_spv($nik)&&!is_admin()&&!is_hrd_cabang($bu)&&!is_hrd_pusat()){
+        }elseif(!is_spv($nik)&&!is_admin()&&!is_hrd_cabang($bu)&&!is_hrd_pusat($nik,6)&&!is_user_logged($nik,$id,'users_demotion')){
             return show_error('Anda tidak dapat mengakses halaman ini.');
         }else{
            $this->data['id'] = $id;
@@ -157,6 +158,8 @@ class Form_demotion extends MX_Controller {
             }
         }
     }
+
+    
 
     function add()
     {
