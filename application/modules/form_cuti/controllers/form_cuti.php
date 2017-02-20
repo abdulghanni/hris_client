@@ -257,24 +257,30 @@ class Form_cuti extends MX_Controller {
             //redirect them to the login page
             redirect('auth/login', 'refresh');
         }
+
         $this->data['id'] = $id;
         $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
         $sess_nik = $this->data['sess_nik'] = get_nik($sess_id);
-        $this->data['user_id'] = getValue('user_id', 'users_cuti', array('id'=>'where/'.$id));
-        $this->data['user_nik'] = get_nik($this->data['user_id']);
-        $this->data['user'] = $this->cuti->detail($id)->row();
-        $this->data['_num_rows'] = $this->cuti->detail($id)->num_rows();
-
-        $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
-        $this->data['approved'] = assets_url('img/approved_stamp.png');
-        $this->data['rejected'] = assets_url('img/rejected_stamp.png');
-        $this->data['pending'] = assets_url('img/pending_stamp.png');
-        if($lv != null){
-            $app = $this->load->view('form_cuti/'.$lv, $this->data, true);
-            $note = $this->load->view('form_cuti/note', $this->data, true);
-            echo json_encode(array('app'=>$app, 'note'=>$note));
+        $bu = get_user_buid($sess_nik);
+        if(!is_admin()&&!is_user_logged($sess_nik,$id,'users_cuti')&&!is_user_app_lv1($sess_nik,$id,'users_cuti')&&!is_user_app_lv2($sess_nik,$id,'users_cuti')&&!is_user_app_lv3($sess_nik,$id,'users_cuti')&&!is_hrd_cabang($bu)&&!is_hrd_pusat($sess_nik,1)){
+            return show_error('Anda tidak dapat mengakses halaman ini.');
         }else{
-            $this->_render_page('form_cuti/detail', $this->data);
+            $this->data['user_id'] = getValue('user_id', 'users_cuti', array('id'=>'where/'.$id));
+            $this->data['user_nik'] = get_nik($this->data['user_id']);
+            $this->data['user'] = $this->cuti->detail($id)->row();
+            $this->data['_num_rows'] = $this->cuti->detail($id)->num_rows();
+
+            $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
+            $this->data['approved'] = assets_url('img/approved_stamp.png');
+            $this->data['rejected'] = assets_url('img/rejected_stamp.png');
+            $this->data['pending'] = assets_url('img/pending_stamp.png');
+            if($lv != null){
+                $app = $this->load->view('form_cuti/'.$lv, $this->data, true);
+                $note = $this->load->view('form_cuti/note', $this->data, true);
+                echo json_encode(array('app'=>$app, 'note'=>$note));
+            }else{
+                $this->_render_page('form_cuti/detail', $this->data);
+            }
         }
     }
 

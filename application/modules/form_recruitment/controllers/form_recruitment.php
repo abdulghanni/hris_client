@@ -251,7 +251,7 @@ class Form_recruitment extends MX_Controller {
             //redirect them to the login page
             redirect('auth/login', 'refresh');
         }
-        elseif(!is_spv($nik)&&!is_admin()&&!is_admin_bagian()&&!is_hrd_cabang($bu)&&!is_hrd_pusat()){
+        elseif(!is_user_app_lv1($nik,$id,'users_recruitment')&&!is_user_app_lv2($nik,$id,'users_recruitment')&&!is_user_app_lv3($nik,$id,'users_recruitment')&&!is_admin()&&!is_admin_bagian()&&!is_hrd_cabang($bu)&&!is_hrd_pusat()){
             return show_error('Anda tidak dapat mengakses halaman ini.');
         }else{
             $this->data['id'] = $id;

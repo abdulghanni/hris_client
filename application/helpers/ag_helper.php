@@ -2148,3 +2148,73 @@ if (!function_exists('is_user_logged'))
     }
 }
 
+if (!function_exists('is_user_app_lv1'))
+{
+	function is_user_app_lv1($sess_nik,$id,$table)
+    {
+       $user_app_lv1 = getValue('user_app_lv1', $table, array('id'=>'where/'.$id));
+       if($sess_nik == $user_app_lv1)
+       {
+        return TRUE;
+       }else{
+        return FALSE;
+       }
+    }
+}
+
+if (!function_exists('is_user_app_lv2'))
+{
+	function is_user_app_lv2($sess_nik,$id,$table)
+    {
+       $user_app_lv2 = getValue('user_app_lv2', $table, array('id'=>'where/'.$id));
+       if($sess_nik == $user_app_lv2)
+       {
+        return TRUE;
+       }else{
+        return FALSE;
+       }
+    }
+}
+
+if (!function_exists('is_user_app_lv3'))
+{
+	function is_user_app_lv3($sess_nik,$id,$table)
+    {
+       $user_app_lv3 = getValue('user_app_lv3', $table, array('id'=>'where/'.$id));
+       if($sess_nik == $user_app_lv3)
+       {
+        return TRUE;
+       }else{
+        return FALSE;
+       }
+    }
+}
+
+if (!function_exists('is_user_app_lv4'))
+{
+	function is_user_app_lv4($sess_nik,$id,$table)
+    {
+       $user_app_lv4 = getValue('user_app_lv4', $table, array('id'=>'where/'.$id));
+       if($sess_nik == $user_app_lv4)
+       {
+        return TRUE;
+       }else{
+        return FALSE;
+       }
+    }
+}
+
+if (!function_exists('is_user_app_lv5'))
+{
+	function is_user_app_lv5($sess_nik,$id,$table)
+    {
+       $user_app_lv5 = getValue('user_app_lv5', $table, array('id'=>'where/'.$id));
+       if($sess_nik == $user_app_lv5)
+       {
+        return TRUE;
+       }else{
+        return FALSE;
+       }
+    }
+}
+
