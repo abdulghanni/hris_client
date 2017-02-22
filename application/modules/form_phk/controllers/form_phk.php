@@ -99,10 +99,14 @@ class Form_phk extends MX_Controller {
     function input()
     {
         $this->data['title'] = "Input - Form phk";
+        $sess_id = $this->session->userdata('user_id');
+        $nik = get_nik($sess_id);
         if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page
             redirect('auth/login', 'refresh');
+        }elseif(!is_spv($nik)&&!is_admin()){
+            return show_error('Anda tidak dapat mengakses halaman ini.');
         }else{
             $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
             //$this->get_bu();
@@ -117,11 +121,16 @@ class Form_phk extends MX_Controller {
     function detail($id, $lv = null)
     {
         $this->data['title'] = "Detail - Form phk";
+        $sess_id = $this->session->userdata('user_id');
+        $nik = get_nik($sess_id);
+        $bu = get_user_buid($nik);
         if (!$this->ion_auth->logged_in())
         {
             $this->session->set_userdata('last_link', $this->uri->uri_string());
             //redirect them to the login page
             redirect('auth/login', 'refresh');
+        }elseif(!is_user_app_lv1($nik,$id,'users_phk')&&!is_user_app_lv2($nik,$id,'users_phk')&&!is_user_app_lv3($nik,$id,'users_phk')&&!is_user_app_lv4($nik,$id,'users_phk')&&!is_user_app_lv5($nik,$id,'users_phk')&&!is_admin()&&!is_hrd_cabang($bu)&&!is_hrd_pusat($nik,15)&&!is_user_logged($nik,$id,'users_phk')){
+            return show_error('Anda tidak dapat mengakses halaman ini.');
         }else{
            $this->data['id'] = $id;
             $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');

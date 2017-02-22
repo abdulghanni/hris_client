@@ -128,18 +128,23 @@ class form_absen extends MX_Controller {
             $this->data['user_nik'] = get_nik($user_id);
             $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
             $sess_nik = $this->data['sess_nik'] = sessNik();
-            $this->data['row'] = $this->main->detail($id)->row();
-            $this->data['_num_rows'] = $this->main->detail($id)->num_rows();
-            $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
-            $this->data['approved'] = assets_url('img/approved_stamp.png');
-            $this->data['rejected'] = assets_url('img/rejected_stamp.png');
-            $this->data['pending'] = assets_url('img/pending_stamp.png');
-            if($lv != null){
-                $app = $this->load->view('form_absen/'.$lv, $this->data, true);
-                $note = $this->load->view('form_absen/note', $this->data, true);
-                echo json_encode(array('app'=>$app, 'note'=>$note));
+            $bu = get_user_buid($sess_nik);
+            if(!is_admin()&&!is_user_logged($sess_nik,$id,'users_absen')&&!is_user_app_lv1($sess_nik,$id,'users_absen')&&!is_user_app_lv2($sess_nik,$id,'users_absen')&&!is_user_app_lv3($sess_nik,$id,'users_absen')&&!is_hrd_cabang($bu)&&!is_hrd_pusat($sess_nik,2)){
+                return show_error('Anda tidak dapat mengakses halaman ini.');
             }else{
-                $this->_render_page('form_absen/detail', $this->data);
+                $this->data['row'] = $this->main->detail($id)->row();
+                $this->data['_num_rows'] = $this->main->detail($id)->num_rows();
+                $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
+                $this->data['approved'] = assets_url('img/approved_stamp.png');
+                $this->data['rejected'] = assets_url('img/rejected_stamp.png');
+                $this->data['pending'] = assets_url('img/pending_stamp.png');
+                if($lv != null){
+                    $app = $this->load->view('form_absen/'.$lv, $this->data, true);
+                    $note = $this->load->view('form_absen/note', $this->data, true);
+                    echo json_encode(array('app'=>$app, 'note'=>$note));
+                }else{
+                    $this->_render_page('form_absen/detail', $this->data);
+                }
             }
         }
     }

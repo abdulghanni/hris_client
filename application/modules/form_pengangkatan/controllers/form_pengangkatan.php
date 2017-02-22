@@ -97,10 +97,14 @@ class Form_pengangkatan extends MX_Controller {
     function input()
     {
         $this->data['title'] = "Input - Form Pengangkatan";
+        $sess_id = $this->session->userdata('user_id');
+        $nik = get_nik($sess_id);
         if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page
             redirect('auth/login', 'refresh');
+        }elseif(!is_spv($nik)&&!is_admin()){
+            return show_error('Anda tidak dapat mengakses halaman ini.');
         }else{
             $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
             $this->data['all_users'] = getAll('users', array('active'=>'where/1', 'username'=>'order/asc'), array('!=id'=>'1'));
@@ -114,11 +118,16 @@ class Form_pengangkatan extends MX_Controller {
     function detail($id, $lv = null)
     {
         $this->data['title'] = "Detail - Form Pengangkatan";
+        $sess_id = $this->session->userdata('user_id');
+        $nik = get_nik($sess_id);
+        $bu = get_user_buid($nik);
         if (!$this->ion_auth->logged_in())
         {
             $this->session->set_userdata('last_link', $this->uri->uri_string());
             //redirect them to the login page
             redirect('auth/login', 'refresh');
+        }elseif(!is_user_app_lv1($nik,$id,'users_pengangkatan')&&!is_user_app_lv2($nik,$id,'users_pengangkatan')&&!is_user_app_lv3($nik,$id,'users_pengangkatan')&&!is_admin()&&!is_hrd_cabang($bu)&&!is_hrd_pusat($nik,14)&&!is_user_logged($nik,$id,'users_pengangkatan')){
+            return show_error('Anda tidak dapat mengakses halaman ini.');
         }else{
             $this->data['id'] = $id;
             $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');

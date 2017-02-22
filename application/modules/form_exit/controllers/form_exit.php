@@ -237,7 +237,8 @@ class Form_exit extends MX_Controller {
                 
                 $isi_email = get_name($user_id).' mengajukan rekomendasi karyawan keluar, untuk melihat detail silakan <a href='.base_url().'form_exit/detail/'.$exit_id.'>Klik Disini</a><br />';
 
-                $this->send_approval_request($exit_id, $user_id, $creator_id);
+                //$this->send_approval_request($exit_id, $user_id, $creator_id); pengiriman notif berdasarkan BU pengaju
+                $this->send_approval_request($exit_id, $user_id, $user_id); //pengiriman notif berdasarkan BU user yang diajukan
                 redirect('form_exit', 'refresh');
                 //echo json_encode(array('st' =>1));
             }

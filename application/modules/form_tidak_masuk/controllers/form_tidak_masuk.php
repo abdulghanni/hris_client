@@ -116,23 +116,30 @@ class form_tidak_masuk extends MX_Controller {
             $form_tidak_masuk = $this->data['tidak_masuk'] = $this->main->detail($id)->row();
             $this->data['_num_rows'] = $this->main->detail($id)->num_rows();
             $this->data['user_nik'] = $user_nik = get_nik($form_tidak_masuk->user_id);
-            $alasan = $form_tidak_masuk->alasan_tidak_masuk_id;
-            $this->data['alasan'] = getValue('title', 'alasan_tidak_masuk', array('id'=>'where/'.$alasan));
-            $this->data['alasan_cuti'] = GetAllSelect('alasan_cuti', 'HRSLEAVETYPEID, title');
-            $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
-            $tipe_cuti = $form_tidak_masuk->type_cuti_id;
-            $this->data['tipe_cuti'] = getValue('title', 'alasan_cuti', array('HRSLEAVETYPEID'=>'where/'.$tipe_cuti));
-            $this->data['sisa_cuti'] = $this->get_sisa_cuti($user_nik);
-
-            $this->data['approved'] = assets_url('img/approved_stamp.png');
-            $this->data['rejected'] = assets_url('img/rejected_stamp.png');
-            $this->data['pending'] = assets_url('img/pending_stamp.png');
-            if($lv != null){
-                $app = $this->load->view('form_tidak_masuk/'.$lv, $this->data, true);
-                $note = $this->load->view('form_tidak_masuk/note', $this->data, true);
-                echo json_encode(array('app'=>$app, 'note'=>$note));
+            $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
+            $sess_nik = $this->data['sess_nik'] = sessNik();
+            $bu = get_user_buid($sess_nik);
+            if(!is_admin()&&!is_user_logged($sess_nik,$id,'users_tidak_masuk')&&!is_user_app_lv1($sess_nik,$id,'users_tidak_masuk')&&!is_user_app_lv2($sess_nik,$id,'users_tidak_masuk')&&!is_user_app_lv3($sess_nik,$id,'users_tidak_masuk')&&!is_hrd_cabang($bu)&&!is_hrd_pusat($sess_nik,12)){
+                return show_error('Anda tidak dapat mengakses halaman ini.');
             }else{
-                $this->_render_page('form_tidak_masuk/detail', $this->data);
+                $alasan = $form_tidak_masuk->alasan_tidak_masuk_id;
+                $this->data['alasan'] = getValue('title', 'alasan_tidak_masuk', array('id'=>'where/'.$alasan));
+                $this->data['alasan_cuti'] = GetAllSelect('alasan_cuti', 'HRSLEAVETYPEID, title');
+                $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
+                $tipe_cuti = $form_tidak_masuk->type_cuti_id;
+                $this->data['tipe_cuti'] = getValue('title', 'alasan_cuti', array('HRSLEAVETYPEID'=>'where/'.$tipe_cuti));
+                $this->data['sisa_cuti'] = $this->get_sisa_cuti($user_nik);
+
+                $this->data['approved'] = assets_url('img/approved_stamp.png');
+                $this->data['rejected'] = assets_url('img/rejected_stamp.png');
+                $this->data['pending'] = assets_url('img/pending_stamp.png');
+                if($lv != null){
+                    $app = $this->load->view('form_tidak_masuk/'.$lv, $this->data, true);
+                    $note = $this->load->view('form_tidak_masuk/note', $this->data, true);
+                    echo json_encode(array('app'=>$app, 'note'=>$note));
+                }else{
+                    $this->_render_page('form_tidak_masuk/detail', $this->data);
+                }
             }
         }
     }
@@ -634,7 +641,7 @@ class form_tidak_masuk extends MX_Controller {
         else
         {
             $isi_email = $this->rest->debug();
-            $this->send_email('andy13galuh@gmail.com', 'error insert cuti', $isi_email);
+            $this->send_email('andy13galuh@gmail.com', 'error insert izin tidak masuk', $isi_email);
             return false;
         }
     }

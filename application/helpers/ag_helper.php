@@ -2025,6 +2025,7 @@
 			if(!empty($username&&$password))
 			{
 				return 'http://'.$username.':'.$password.'@localhost/hris_api/';
+				//return 'http://'.$username.':'.$password.'@localhost:801/hris_api/';
 				//return 'http://'.$username.':'.$password.'@123.231.241.12/hris_api/';
 			}else
 			{
@@ -2113,3 +2114,107 @@ function is_hrd_pusat($nik, $form_type){
 	if($x > 0)return true;
 	else return false;
 }
+
+if (!function_exists('is_hrd_cabang'))
+{	
+	function is_hrd_cabang($buid)
+	{
+		$CI =& get_instance();
+		
+		$sess_id = $CI->session->userdata('user_id');
+		$nik = get_nik($sess_id);
+		$bu = get_user_buid($nik);
+		$r = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 5)->where('groups.type_inventory_id', 1)->where('groups.bu',$buid)->get()->result_array('user_id');
+		for ($i = 0;$i<sizeof($r);$i++) {
+		if($sess_id == $r[$i]['user_id']):
+			return TRUE;
+		endif;
+		}
+	}
+}
+
+if (!function_exists('is_user_logged'))
+{
+	function is_user_logged($sess_nik,$id,$table)
+    {
+       $user_id = getValue('user_id', $table, array('id'=>'where/'.$id));
+       $user_nik = get_nik($user_id);
+       if($sess_nik == $user_nik)
+       {
+        return TRUE;
+       }else{
+        return FALSE;
+       }
+    }
+}
+
+if (!function_exists('is_user_app_lv1'))
+{
+	function is_user_app_lv1($sess_nik,$id,$table)
+    {
+       $user_app_lv1 = getValue('user_app_lv1', $table, array('id'=>'where/'.$id));
+       if($sess_nik == $user_app_lv1)
+       {
+        return TRUE;
+       }else{
+        return FALSE;
+       }
+    }
+}
+
+if (!function_exists('is_user_app_lv2'))
+{
+	function is_user_app_lv2($sess_nik,$id,$table)
+    {
+       $user_app_lv2 = getValue('user_app_lv2', $table, array('id'=>'where/'.$id));
+       if($sess_nik == $user_app_lv2)
+       {
+        return TRUE;
+       }else{
+        return FALSE;
+       }
+    }
+}
+
+if (!function_exists('is_user_app_lv3'))
+{
+	function is_user_app_lv3($sess_nik,$id,$table)
+    {
+       $user_app_lv3 = getValue('user_app_lv3', $table, array('id'=>'where/'.$id));
+       if($sess_nik == $user_app_lv3)
+       {
+        return TRUE;
+       }else{
+        return FALSE;
+       }
+    }
+}
+
+if (!function_exists('is_user_app_lv4'))
+{
+	function is_user_app_lv4($sess_nik,$id,$table)
+    {
+       $user_app_lv4 = getValue('user_app_lv4', $table, array('id'=>'where/'.$id));
+       if($sess_nik == $user_app_lv4)
+       {
+        return TRUE;
+       }else{
+        return FALSE;
+       }
+    }
+}
+
+if (!function_exists('is_user_app_lv5'))
+{
+	function is_user_app_lv5($sess_nik,$id,$table)
+    {
+       $user_app_lv5 = getValue('user_app_lv5', $table, array('id'=>'where/'.$id));
+       if($sess_nik == $user_app_lv5)
+       {
+        return TRUE;
+       }else{
+        return FALSE;
+       }
+    }
+}
+

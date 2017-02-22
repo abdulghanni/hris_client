@@ -99,10 +99,14 @@ class Form_promosi extends MX_Controller {
     function input()
     {
         $this->data['title'] = "Input - Form Promosi";
+        $sess_id = $this->session->userdata('user_id');
+        $nik = get_nik($sess_id);
         if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page
             redirect('auth/login', 'refresh');
+        }elseif(!is_spv($nik) && !is_admin()){
+            return show_error('Anda tidak dapat mengakses halaman ini.');
         }else{
             $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
             $this->get_bu();
@@ -118,16 +122,22 @@ class Form_promosi extends MX_Controller {
     function detail($id, $lv = null)
     {
         $this->data['title'] = "Detail - Form Promosi";
+
+        $sess_id = $this->session->userdata('user_id');
+        $nik = get_nik($sess_id);
+        $bu = get_user_buid($nik);
         if (!$this->ion_auth->logged_in())
         {
             $this->session->set_userdata('last_link', $this->uri->uri_string());
             //redirect them to the login page
             redirect('auth/login', 'refresh');
+        }elseif(!is_user_app_lv1($nik,$id,'users_promosi')&&!is_user_app_lv2($nik,$id,'users_promosi')&&!is_user_app_lv3($nik,$id,'users_promosi')&&!is_user_app_lv4($nik,$id,'users_promosi')&&!is_user_app_lv5($nik,$id,'users_promosi')&&!is_admin()&&!is_hrd_cabang($bu)&&!is_hrd_pusat($nik,5)&&!is_user_logged($nik,$id,'users_promosi')){
+            return show_error('Anda tidak dapat mengakses halaman ini.');
         }else{
-           $this->data['id'] = $id;
+            $this->data['id'] = $id;
             $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
             $this->data['sess_nik'] = get_nik($sess_id);
-           $this->data['row'] = $this->main->detail($id)->row();
+            $this->data['row'] = $this->main->detail($id)->row();
             $this->data['_num_rows'] = $this->main->detail($id)->num_rows();
             $this->data['user_id'] =$user_id = getValue('created_by', 'users_promosi', array('id'=>'where/'.$id));
             $first_name = getValue('first_name', 'users', array('id'=>'where/'.$user_id));
