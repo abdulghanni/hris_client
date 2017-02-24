@@ -131,7 +131,7 @@ class Form_promosi extends MX_Controller {
             $this->session->set_userdata('last_link', $this->uri->uri_string());
             //redirect them to the login page
             redirect('auth/login', 'refresh');
-        }elseif(!is_user_app_lv1($nik,$id,'users_promosi')&&!is_user_app_lv2($nik,$id,'users_promosi')&&!is_user_app_lv3($nik,$id,'users_promosi')&&!is_user_app_lv4($nik,$id,'users_promosi')&&!is_user_app_lv5($nik,$id,'users_promosi')&&!is_admin()&&!is_hrd_cabang($bu)&&!is_hrd_pusat($nik,5)&&!is_user_logged($nik,$id,'users_promosi')){
+        }elseif(!is_user_app_lv1($nik,$id,'users_promosi')&&!is_user_app_lv2($nik,$id,'users_promosi')&&!is_user_app_lv3($nik,$id,'users_promosi')&&!is_user_app_lv4($nik,$id,'users_promosi')&&!is_user_app_lv5($nik,$id,'users_promosi')&&!is_admin()&&!is_hrd_cabang($bu)&&!is_hrd_pusat($nik,5)&&!is_user_logged($nik,$id,'users_promosi')&&!is_creator($nik,$id,'users_promosi')){
             return show_error('Anda tidak dapat mengakses halaman ini.');
         }else{
             $this->data['id'] = $id;

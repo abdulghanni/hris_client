@@ -2218,3 +2218,31 @@ if (!function_exists('is_user_app_lv5'))
     }
 }
 
+if (!function_exists('is_creator'))
+{
+	function is_creator($sess_nik,$id,$table)
+    {
+       $creator = getValue('created_by', $table, array('id'=>'where/'.$id));
+       if($sess_nik == $creator)
+       {
+        return TRUE;
+       }else{
+        return FALSE;
+       }
+    }
+}
+
+if (!function_exists('is_cc_notif'))
+{
+	function is_cc_notif($sess_nik,$bu,$form_type_id)
+    {
+       $cc_notif = getValue('user_nik', 'users_notif_tambahan', array('bu'=>'where/'.$bu,'form_type_id'=>'where/'.$form_type_id));
+       if($sess_nik == $cc_notif)
+       {
+        return TRUE;
+       }else{
+        return FALSE;
+       }
+    }
+}
+

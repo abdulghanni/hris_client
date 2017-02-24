@@ -262,11 +262,13 @@ class Form_cuti extends MX_Controller {
         $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
         $sess_nik = $this->data['sess_nik'] = get_nik($sess_id);
         $bu = get_user_buid($sess_nik);
-        if(!is_admin()&&!is_user_logged($sess_nik,$id,'users_cuti')&&!is_user_app_lv1($sess_nik,$id,'users_cuti')&&!is_user_app_lv2($sess_nik,$id,'users_cuti')&&!is_user_app_lv3($sess_nik,$id,'users_cuti')&&!is_hrd_cabang($bu)&&!is_hrd_pusat($sess_nik,1)){
+        $this->data['user_id'] = getValue('user_id', 'users_cuti', array('id'=>'where/'.$id));
+        $this->data['user_nik'] = get_nik($this->data['user_id']);
+        $user_bu = get_user_buid($this->data['user_nik']);
+        if(!is_admin()&&!is_user_logged($sess_nik,$id,'users_cuti')&&!is_user_app_lv1($sess_nik,$id,'users_cuti')&&!is_user_app_lv2($sess_nik,$id,'users_cuti')&&!is_user_app_lv3($sess_nik,$id,'users_cuti')&&!is_hrd_cabang($bu)&&!is_hrd_pusat($sess_nik,1)&&!is_cc_notif($sess_nik,$user_bu,1)){
             return show_error('Anda tidak dapat mengakses halaman ini.');
         }else{
-            $this->data['user_id'] = getValue('user_id', 'users_cuti', array('id'=>'where/'.$id));
-            $this->data['user_nik'] = get_nik($this->data['user_id']);
+            
             $this->data['user'] = $this->cuti->detail($id)->row();
             $this->data['_num_rows'] = $this->cuti->detail($id)->num_rows();
 
