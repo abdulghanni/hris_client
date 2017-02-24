@@ -2223,6 +2223,7 @@ if (!function_exists('is_creator'))
 	function is_creator($sess_nik,$id,$table)
     {
        $creator = getValue('created_by', $table, array('id'=>'where/'.$id));
+       $creator = get_nik($creator);
        if($sess_nik == $creator)
        {
         return TRUE;
