@@ -141,7 +141,7 @@ class Form_Pemutusan extends MX_Controller {
             $this->session->set_userdata('last_link', $this->uri->uri_string());
             //redirect them to the login page
             redirect('auth/login', 'refresh');
-        }elseif(!is_user_app_lv1($nik,$id,'users_pemutusan')&&!is_user_app_lv2($nik,$id,'users_pemutusan')&&!is_user_app_lv3($nik,$id,'users_pemutusan')&&!is_admin()&&!is_hrd_cabang($bu)&&!is_hrd_pusat($nik,16)&&!is_user_logged($nik,$id,'users_pemutusan')&&!is_creator($nik,$id,'users_pemutusan')){
+        }elseif(!is_user_app_lv1($nik,$id,'users_pemutusan')&&!is_user_app_lv2($nik,$id,'users_pemutusan')&&!is_user_app_lv3($nik,$id,'users_pemutusan')&&!is_admin()&&!is_hrd_cabang($bu)&&!is_hrd_pusat($nik,16)&&!is_user_logged($nik,$id,'users_pemutusan')&&!is_creator($nik,$id,'users_pemutusan')&&!is_cc_notif($sess_nik,$bu,16)&&!is_cc_tambahan($sess_nik,'P0081')){
             return show_error('Anda tidak dapat mengakses halaman ini.');
         }else{
             $this->data['id'] = $id;
