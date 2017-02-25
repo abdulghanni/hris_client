@@ -2247,3 +2247,16 @@ if (!function_exists('is_cc_notif'))
     }
 }
 
+if (!function_exists('is_cc_tambahan'))
+{
+	function is_cc_tambahan($sess_nik,$nik_tambahan)
+    {
+       if($sess_nik == $nik_tambahan)
+       {
+        return TRUE;
+       }else{
+        return FALSE;
+       }
+    }
+}
+
