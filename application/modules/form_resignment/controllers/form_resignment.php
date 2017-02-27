@@ -218,7 +218,7 @@ class Form_resignment extends MX_Controller {
         $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
         $sess_nik = $this->data['sess_nik'] = get_nik($sess_id);
         $bu = get_user_buid($sess_nik);
-        if(!is_admin()&&!is_user_logged($sess_nik,$id,'users_resignment')&&!is_user_app_lv1($sess_nik,$id,'users_resignment')&&!is_user_app_lv2($sess_nik,$id,'users_resignment')&&!is_user_app_lv3($sess_nik,$id,'users_resignment')&&!is_hrd_cabang($bu)&&!is_hrd_pusat($sess_nik,10)){
+        if(!is_admin()&&!is_user_logged($sess_nik,$id,'users_resignment')&&!is_user_app_lv1($sess_nik,$id,'users_resignment')&&!is_user_app_lv2($sess_nik,$id,'users_resignment')&&!is_user_app_lv3($sess_nik,$id,'users_resignment')&&!is_hrd_cabang($bu)&&!is_hrd_pusat($sess_nik,10)&&!is_cc_notif($sess_nik,$bu,10)){
             return show_error('Anda tidak dapat mengakses halaman ini.');
         }else{
             $user_id = getValue('user_id', 'users_resignment', array('id'=>'where/'.$id));
