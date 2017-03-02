@@ -421,7 +421,7 @@
 
                           <tr>
                             <td>6</td>
-                            <td>Diberikan uang pisah (untuk PHK)</td>
+                            <td>Diberikan uang pisah (untuk resign/pengunduran diri)</td>
                             <td>
                               <?php $uang_pisah = ($rekomendasi->is_uang_pisah == 1) ? 'Ya' : 'Tidak';?>
                                 <div class="radio">
