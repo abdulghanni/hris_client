@@ -257,7 +257,7 @@ $rejected = assets_url('img/rejected_stamp.png');?>
     </tr>
     <tr>
       <td height="35" align="center">6</td>
-      <td>&nbsp;Diberikan Uang pisah (untuk PHK)</td>
+      <td>&nbsp;Diberikan Uang pisah (untuk resign/pengunduran diri)</td>
       <td align="center">&nbsp;<?php echo ($rekomendasi->is_uang_pisah == 1) ? 'Ya' : 'Tidak';?></td>
       <td></td>
       <td></td>
