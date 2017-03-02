@@ -41,9 +41,9 @@
 </head>
 
 <body>
-<div align="center">
-  <p align="left"><img src="<?php echo assets_url('img/erlangga.jpg')?>"/></p>
-</div>
+<!-- <div align="center">
+  <p align="left"><img src="<?php //echo assets_url('img/erlangga.jpg')?>"/></p>
+</div> -->
 <?php foreach($form_resignment as $row):
 $user_nik = get_nik($row->user_id);
 $pengaju_nik = get_nik($row->created_by);
