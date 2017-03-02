@@ -49,7 +49,7 @@ $user_nik = get_nik($row->user_id);
 $pengaju_nik = get_nik($row->created_by);
 $approved = assets_url('img/approved_stamp.png');
 $rejected = assets_url('img/rejected_stamp.png');?>
-<div class="style4">
+<div class="style4" style="padding-top: 50px;">
   <div style="float: left; width: 54%;">
   Nomor : <?php echo "$form_id/$bu/$m/$y/$row->id" ?>
   </div>
