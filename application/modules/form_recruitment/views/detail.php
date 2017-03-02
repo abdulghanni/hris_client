@@ -115,19 +115,19 @@
                         <label class="form-label text-right">Jurusan</label>
                       </div>
                       <div class="col-md-2">
-                        <input name="jurusan" id="form3LastName" type="text"  class="form-control" placeholder="Jurusan" value="<?php echo $row->jurusan?>" disabled="disabled">
+                        <input name="jurusan" id="form3LastName" type="text"  class="form-control" placeholder="" value="<?php echo $row->jurusan?>" disabled="disabled">
                       </div>
                       <div class="col-md-2">
                         <label class="form-label text-right">IPK(Min)</label>
                       </div>
                       <div class="col-md-2">
-                        <input name="ipk" id="form3LastName" type="text"  class="form-control" placeholder="IPK" value="<?php echo $row->ipk?>" disabled="disabled">
+                        <input name="ipk" id="form3LastName" type="text"  class="form-control" placeholder="" value="<?php echo $row->ipk?>" disabled="disabled">
                       </div>
                       <div class="col-md-2">
                         <label class="form-label text-right">Toefl(Min)</label>
                       </div>
                       <div class="col-md-2">
-                        <input name="toefl" id="form3LastName" type="text"  class="form-control" placeholder="Toefl" value="<?php echo $row->toefl?>" disabled="disabled">
+                        <input name="toefl" id="form3LastName" type="text"  class="form-control" placeholder="" value="<?php echo $row->toefl?>" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
@@ -157,7 +157,7 @@
                         <label class="form-label text-right">Bahasa Pemrograman</label>
                       </div>
                       <div class="col-md-10">
-                        <input name="pemrograman" id="form3LastName" type="text"  class="form-control" placeholder="pemrograman" value="<?php echo $row->bahasa_pemrograman?>" disabled="disabled">
+                        <input name="pemrograman" id="form3LastName" type="text"  class="form-control" placeholder="" value="<?php echo $row->bahasa_pemrograman?>" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
@@ -165,7 +165,7 @@
                         <label class="form-label text-right">Komunikasi</label>
                       </div>
                       <div class="col-md-10">
-                        <input name="komunikasi" id="form3LastName" type="text"  class="form-control" placeholder="Komunikasi" value="<?php echo $row->komunikasi?>" disabled="disabled">
+                        <input name="komunikasi" id="form3LastName" type="text"  class="form-control" placeholder="" value="<?php echo $row->komunikasi?>" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
@@ -173,7 +173,7 @@
                         <label class="form-label text-right">Grafika</label>
                       </div>
                       <div class="col-md-10">
-                        <input name="grafika" id="form3LastName" type="text"  class="form-control" placeholder="Grafika" value="<?php echo $row->grafika?>" disabled="disabled">
+                        <input name="grafika" id="form3LastName" type="text"  class="form-control" placeholder="" value="<?php echo $row->grafika?>" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
@@ -181,7 +181,7 @@
                         <label class="form-label text-right">Desain/Setting</label>
                       </div>
                       <div class="col-md-10">
-                        <input name="desain" id="form3LastName" type="text"  class="form-control" placeholder="Desain/Setting" value="<?php echo $row->desain?>" disabled="disabled">
+                        <input name="desain" id="form3LastName" type="text"  class="form-control" placeholder="" value="<?php echo $row->desain?>" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
@@ -189,7 +189,7 @@
                         <label class="form-label text-right">Brevet</label>
                       </div>
                       <div class="col-md-10">
-                        <input name="brevet" id="form3LastName" type="text"  class="form-control" placeholder="brevet" value="<?php echo $row->brevet?>" disabled="disabled">
+                        <input name="brevet" id="form3LastName" type="text"  class="form-control" placeholder="" value="<?php echo $row->brevet?>" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
@@ -197,7 +197,7 @@
                         <label class="form-label text-right">Lain-lain</label>
                       </div>
                       <div class="col-md-10">
-                        <input name="lain-lain" id="form3LastName" type="text"  class="form-control" placeholder="Lain-lain" value="<?php echo $row->lain_lain?>" disabled="disabled">
+                        <input name="lain-lain" id="form3LastName" type="text"  class="form-control" placeholder="" value="<?php echo $row->lain_lain?>" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
@@ -205,7 +205,7 @@
                         <label class="form-label text-right">Portfolio</label>
                       </div>
                       <div class="col-md-10">
-                        <input name="portofolio" id="form3LastName" type="text"  class="form-control" placeholder="Portfolio" value="<?php echo $row->portofolio?>" disabled="disabled">
+                        <input name="portofolio" id="form3LastName" type="text"  class="form-control" placeholder="" value="<?php echo $row->portofolio?>" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
@@ -213,7 +213,7 @@
                         <label class="form-label text-right">Pengalaman</label>
                       </div>
                       <div class="col-md-2">
-                        <input name="pengalaman" id="form3LastName" type="text"  class="form-control" placeholder="Bidang" value="<?php echo $row->pengalaman?>" disabled="disabled">
+                        <input name="pengalaman" id="form3LastName" type="text"  class="form-control" placeholder="" value="<?php echo $row->pengalaman?>" disabled="disabled">
                       </div>
                       <div class="col-md-2">
                         <label class="form-label text-right">selama</label>
@@ -230,7 +230,7 @@
                         <label class="form-label text-right">Job Desc</label>
                       </div>
                       <div class="col-md-10">
-                        <textarea name="job_desc" id="text-editor" placeholder="Enter text ..." class="form-control" rows="10" disabled="disabled"><?php echo $row->job_desc?></textarea>
+                        <textarea name="job_desc" id="text-editor" placeholder="" class="form-control" rows="10" disabled="disabled"><?php echo $row->job_desc?></textarea>
                       </div>
                     </div>
                     <div class="row form-row">
@@ -238,7 +238,7 @@
                         <label class="form-label text-right">Catatan Pengaju</label>
                       </div>
                       <div class="col-md-10">
-                        <textarea name="note_pengaju" id="text-editor" placeholder="Enter text ..." class="form-control" rows="10" disabled="disabled"><?php echo $row->note_pengaju?></textarea>
+                        <textarea name="note_pengaju" id="text-editor" placeholder="" class="form-control" rows="10" disabled="disabled"><?php echo $row->note_pengaju?></textarea>
                       </div>
                     </div>
                     <div id="note">
