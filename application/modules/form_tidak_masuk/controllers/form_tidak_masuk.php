@@ -230,7 +230,7 @@ class form_tidak_masuk extends MX_Controller {
                  $this->upload_attachment($tidak_masuk_id);
                  $user_app_lv1 = getValue('user_app_lv1', 'users_tidak_masuk', array('id'=>'where/'.$tidak_masuk_id));
                  $subject_email = get_form_no($tidak_masuk_id).'-Pengajuan Keterangan Tidak Masuk';
-                 $isi_email = get_name($user_id).' mengajukan keterangan tidak masuk, untuk melihat detail silakan <a href='.base_url().'form_tidak_masuk/detail/'.$tidak_masuk_id.'>Klik Disini</a><br />';
+                 $isi_email = get_name($user_id).' mengajukan keterangan tidak masuk, untuk melihat detail silakan <a href='.base_url().'form_tidak_masuk/detail/'.$tidak_masuk_id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_tidak_masuk/detail/'.$tidak_masuk_id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
 
                  if($user_id!==$sess_id):
                     $this->approval->by_admin('tidak_masuk', $tidak_masuk_id, $sess_id, $user_id, $this->detail_email($tidak_masuk_id));
@@ -329,8 +329,8 @@ class form_tidak_masuk extends MX_Controller {
             $this->approval->approve('tidak_masuk', $id, $approval_status, $this->detail_email($id));
             $subject_email = get_form_no($id).'['.$approval_status_mail.']Status Pengajuan Keterangan Tidak Masuk dari Atasan';
             $subject_email_request = get_form_no($id).'-Pengajuan Keterangan Tidak Masuk';
-            $isi_email = 'Status pengajuan keterangan tidak Masuk anda disetujui oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_tidak_masuk/detail/'.$id.'>Klik Disini</a><br />';
-            $isi_email_request = get_name($user_tidak_masuk_id).' mengajukan keterangan tidak Masuk, untuk melihat detail silakan <a href='.base_url().'form_tidak_masuk/detail/'.$id.'>Klik Disini</a><br />';
+            $isi_email = 'Status pengajuan keterangan tidak Masuk anda disetujui oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_tidak_masuk/detail/'.$id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_tidak_masuk/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
+            $isi_email_request = get_name($user_tidak_masuk_id).' mengajukan keterangan tidak Masuk, untuk melihat detail silakan <a href='.base_url().'form_tidak_masuk/detail/'.$id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_tidak_masuk/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
             if(!empty(getEmail($user_tidak_masuk_id)))$this->send_email(getEmail($user_tidak_masuk_id), $subject_email, $isi_email);
 
             $lv = substr($type, -1)+1;
@@ -361,7 +361,7 @@ class form_tidak_masuk extends MX_Controller {
             $user_tidak_masuk_id = getValue('user_id', 'users_tidak_masuk', array('id'=>'where/'.$id));
 
             $subject_email = get_form_no($id).'-['.$approval_status_mail.']Status Pengajuan Izin Tidak Masuk dari HRD';
-            $isi_email = 'Status pengajuan tidak_masuk anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_tidak_masuk/detail/'.$id.'>Klik Disini</a><br />';
+            $isi_email = 'Status pengajuan tidak_masuk anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_tidak_masuk/detail/'.$id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_tidak_masuk/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
 
             $user_nik = get_nik($user_tidak_masuk_id);
             $potong_cuti = getValue('potong_cuti', 'users_tidak_masuk', array('id'=>'where/'.$id));

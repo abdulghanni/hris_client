@@ -191,7 +191,7 @@ class Form_cuti extends MX_Controller {
                      $leave_request_id = $this->get_last_leave_request_id();
                      $user_app_lv1 = getValue('user_app_lv1', 'users_cuti', array('id'=>'where/'.$cuti_id));
                      $subject_email = get_form_no($cuti_id).'-Pengajuan Permohonan Cuti';
-                     $isi_email = get_name($user_id).' mengajukan Permohonan Cuti, untuk melihat detail silakan <a href='.base_url().'form_cuti/detail/'.$cuti_id.'>Klik Disini</a><br />';
+                     $isi_email = get_name($user_id).' mengajukan Permohonan Cuti, untuk melihat detail silakan <a href='.base_url().'form_cuti/detail/'.$cuti_id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_cuti/detail/'.$cuti_id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
                      if($user_id!==$sess_id):
                         $this->approval->by_admin('cuti', $cuti_id, $sess_id, $user_id, $this->detail_email($cuti_id));
                      endif;
@@ -438,8 +438,8 @@ class Form_cuti extends MX_Controller {
 
         $subject_email = get_form_no($id).'-['.$approval_status_mail.']Status Pengajuan Permohonan Cuti dari Atasan';
         $subject_email_request = get_form_no($id).'Pengajuan Permohonan Cuti';
-        $isi_email = 'Status pengajuan cuti anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_cuti/detail/'.$id.'>Klik Disini</a><br />';
-        $isi_email_request = get_name($user_cuti_id).' mengajukan Permohonan Cuti, untuk melihat detail silakan <a href='.base_url().'form_cuti/detail/'.$id.'>Klik Disini</a><br />';
+        $isi_email = 'Status pengajuan cuti anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_cuti/detail/'.$id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_cuti/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
+        $isi_email_request = get_name($user_cuti_id).' mengajukan Permohonan Cuti, untuk melihat detail silakan <a href='.base_url().'form_cuti/detail/'.$id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_cuti/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
         $is_app = 0;
         if($is_app==0){
             $this->approval->approve('cuti', $id, $approval_status, $this->detail_email($id));
@@ -470,7 +470,7 @@ class Form_cuti extends MX_Controller {
                 if(!empty(getEmail($this->approval->approver('cuti', $user_id))))$this->send_email(getEmail($this->approval->approver('cuti', $user_id)), $subject_email_request, $isi_email_request);
             }
         }else{
-            $email_body = "Status pengajuan permohonan cuti yang diajukan oleh ".get_name($user_cuti_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_cuti/detail/'.$id.'>Klik Disini</a><br />';
+            $email_body = "Status pengajuan permohonan cuti yang diajukan oleh ".get_name($user_cuti_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_cuti/detail/'.$id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_cuti/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
             switch($type){
                 case 'lv1':
                     $app_status = getValue('approval_status_id_lv1', 'users_cuti', array('id'=>'where/'.$id));

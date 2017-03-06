@@ -201,7 +201,7 @@ class Form_demotion extends MX_Controller {
                      $this->upload_attachment($demotion_id);
                      $user_app_lv1 = getValue('user_app_lv1', 'users_demotion', array('id'=>'where/'.$demotion_id));
                      $subject_email = get_form_no($demotion_id).'-Pengajuan Permohonan Demosi';
-                     $isi_email = get_name($user_id).' mengajukan Permohonan demotion, untuk melihat detail silakan <a href='.base_url().'form_demotion/detail/'.$demotion_id.'>Klik Disini</a><br />';
+                     $isi_email = get_name($user_id).' mengajukan Permohonan demotion, untuk melihat detail silakan <a href='.base_url().'form_demotion/detail/'.$demotion_id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_demotion/detail/'.$demotion_id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
 
                      if(!empty($user_app_lv1)){
                         $this->approval->request('lv1', 'demotion', $demotion_id, $user_id, $this->detail_email($demotion_id));
@@ -290,8 +290,8 @@ class Form_demotion extends MX_Controller {
         $user_demotion_id = getValue('user_id', 'users_demotion', array('id'=>'where/'.$id));
         $subject_email = get_form_no($id).'['.$approval_status_mail.']Status Pengajuan Permohonan Demosi dari Atasan';
         $subject_email_request = get_form_no($id).'-Pengajuan Demosi Karyawan';
-        $isi_email = 'Status pengajuan demotion anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_demotion/detail/'.$id.'>Klik Disini</a><br />';
-        $isi_email_request = get_name($user_demotion_id).' mengajukan Permohonan demotion, untuk melihat detail silakan <a href='.base_url().'form_demotion/detail/'.$id.'>Klik Disini</a><br />';
+        $isi_email = 'Status pengajuan demotion anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_demotion/detail/'.$id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_demotion/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
+        $isi_email_request = get_name($user_demotion_id).' mengajukan Permohonan demotion, untuk melihat detail silakan <a href='.base_url().'form_demotion/detail/'.$id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_demotion/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
         
         if($is_app==0){
             $this->approval->approve('demotion', $id, $approval_status, $this->detail_email($id));
@@ -315,7 +315,7 @@ class Form_demotion extends MX_Controller {
         }elseif($type == 'hrd' && $approval_status == 1){
             $this->send_user_notification($id, $user_demotion_id);
         }else{
-            $email_body = "Status pengajuan permohonan demotion yang diajukan oleh ".get_name($user_demotion_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_demotion/detail/'.$id.'>Klik Disini</a><br />';
+            $email_body = "Status pengajuan permohonan demotion yang diajukan oleh ".get_name($user_demotion_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_demotion/detail/'.$id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_demotion/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
             $form = 'demotion';
             switch($type){
             case 'lv1':
@@ -396,7 +396,7 @@ class Form_demotion extends MX_Controller {
                     'receiver_id' => get_nik($user_id),
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Pengajuan demotion Karyawan',
-                    'email_body' => get_name($pengaju_id).' mengajukan demotion untuk Anda, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
+                    'email_body' => get_name($pengaju_id).' mengajukan demotion untuk Anda, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_demotion/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />'.$this->detail_email($id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data4);

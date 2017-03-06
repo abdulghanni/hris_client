@@ -165,7 +165,7 @@ class Form_resignment extends MX_Controller {
                     {
                      $resignment_id = $this->db->insert_id();
                      $subject_email = get_form_no($resignment_id).'-Pengajuan Permohonan Pengunduran Diri';
-                     $isi_email = get_name($user_id).' mengajukan Permohonan Pengunduran Diri, untuk melihat detail silakan <a href='.base_url().'form_resignment/detail/'.$resignment_id.'>Klik Disini</a><br />';
+                     $isi_email = get_name($user_id).' mengajukan Permohonan Pengunduran Diri, untuk melihat detail silakan <a href='.base_url().'form_resignment/detail/'.$resignment_id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_resignment/detail/'.$resignment_id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
                     
                      $user_app_lv1 = getValue('user_app_lv1', 'users_resignment', array('id'=>'where/'.$resignment_id));
                      if($user_id!==$sess_id):
@@ -191,7 +191,7 @@ class Form_resignment extends MX_Controller {
     {
         $sess_id = $this->session->userdata('user_id');
         $admin_payroll = $this->db->where('group_id',10)->get('users_groups')->result_array('user_id');
-        $msg = 'Dear Admin payroll,<br/><p>'.get_name($sess_id).' mengajukan Permohonan Pengunduran Diri, untuk melihat detail silakan <a href='.base_url().'form_resignment/detail/'.$id.'>Klik Disini</a></p>';
+        $msg = 'Dear Admin payroll,<br/><p>'.get_name($sess_id).' mengajukan Permohonan Pengunduran Diri, untuk melihat detail silakan <a href='.base_url().'form_resignment/detail/'.$id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_resignment/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. </p>';
         for($i=0;$i<sizeof($admin_payroll);$i++):
         $data = array(
                 'sender_id' => get_nik($sess_id),
@@ -395,8 +395,8 @@ class Form_resignment extends MX_Controller {
         $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
         $subject_email = get_form_no($id).'['.$approval_status_mail.']Status Pengajuan Pengunduran Diri dari Atasan';
         $subject_email_request = get_form_no($id).'-Pengajuan Pengunduran Diri';
-        $isi_email = 'Status pengajuan Pengunduran Diri anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_resignment/detail/'.$id.'>Klik Disini</a><br />';
-        $isi_email_request = get_name($user_resignment_id).' mengajukan Permohonan Pengunduran Diri, untuk melihat detail silakan <a href='.base_url().'form_resignment/detail/'.$id.'>Klik Disini</a><br />';
+        $isi_email = 'Status pengajuan Pengunduran Diri anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_resignment/detail/'.$id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_resignment/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
+        $isi_email_request = get_name($user_resignment_id).' mengajukan Permohonan Pengunduran Diri, untuk melihat detail silakan <a href='.base_url().'form_resignment/detail/'.$id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_resignment/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
         
         if($is_app==0){
             $this->approval->approve('resignment', $id, $approval_status, $this->detail_email($id));
@@ -443,8 +443,8 @@ class Form_resignment extends MX_Controller {
         $sess_id = $this->session->userdata('user_id');
         $user_id = getValue('user_id', 'users_resignment', array('id'=>'where/'.$id));
         $url = base_url().'form_resignment/detail/'.$id;
-        $isi_email = ($is_update == 0) ? get_name($sess_id)." mengundang anda untuk melakukan wawancara pengajuan resign yang telah anda ajukan, untuk melihat detail silakan <a class='klikmail' href=$url>Klik Disini</a><br />"
-                                       : get_name($sess_id)." melakukan perubahan jadwal wawancara pengajuan resign yang telah anda ajukan, untuk melihat detail silakan <a class='klikmail' href=$url>Klik Disini</a><br />";
+        $isi_email = ($is_update == 0) ? get_name($sess_id)." mengundang anda untuk melakukan wawancara pengajuan resign yang telah anda ajukan, untuk melihat detail silakan <a class='klikmail' href=$url>Klik Disini</a> atau <a href='http://123.231.241.12/hris_client/form_resignment/detail/".$id."'>Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />"
+                                       : get_name($sess_id)." melakukan perubahan jadwal wawancara pengajuan resign yang telah anda ajukan, untuk melihat detail silakan <a class='klikmail' href=$url>Klik Disini</a> atau <a href='http://123.231.241.12/hris_client/form_resignment/detail/".$id."'>Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />";
         $subject = ($is_update == 0) ? '' : 'Perubahan Jadwal ';
         $data = array(
                     'sender_id' => get_nik($sess_id),

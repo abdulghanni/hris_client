@@ -191,7 +191,7 @@ class Form_pengangkatan extends MX_Controller {
                      $this->upload_attachment($pengangkatan_id);
                      $user_app_lv1 = getValue('user_app_lv1', 'users_pengangkatan', array('id'=>'where/'.$pengangkatan_id));
                      $subject_email = get_form_no($pengangkatan_id).'Pengajuan pengangkatan';
-                     $isi_email = get_name($user_id).' mengajukan pengangkatan, untuk melihat detail silakan <a href='.base_url().'form_pengangkatan/detail/'.$pengangkatan_id.'>Klik Disini</a><br />';
+                     $isi_email = get_name($user_id).' mengajukan pengangkatan, untuk melihat detail silakan <a href='.base_url().'form_pengangkatan/detail/'.$pengangkatan_id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_pengangkatan/detail/'.$pengangkatan_id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
 
                      if(!empty($user_app_lv1)){
                         $this->approval->request('lv1', 'pengangkatan', $pengangkatan_id, $user_id, $this->detail_email($pengangkatan_id));
@@ -280,8 +280,8 @@ class Form_pengangkatan extends MX_Controller {
         $user_pengangkatan_id = getValue('user_id', 'users_pengangkatan', array('id'=>'where/'.$id));
         $subject_email = get_form_no($id).'['.$approval_status_mail.']Status Pengajuan pengangkatan dari Atasan';
         $subject_email_request = get_form_no($id).'-Pengajuan pengangkatan Karyawan';
-        $isi_email = 'Status pengajuan pengangkatan anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_pengangkatan/detail/'.$id.'>Klik Disini</a><br />';
-        $isi_email_request = get_name($user_pengangkatan_id).' mengajukan pengangkatan, untuk melihat detail silakan <a href='.base_url().'form_pengangkatan/detail/'.$id.'>Klik Disini</a><br />';
+        $isi_email = 'Status pengajuan pengangkatan anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_pengangkatan/detail/'.$id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_pengangkatan/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
+        $isi_email_request = get_name($user_pengangkatan_id).' mengajukan pengangkatan, untuk melihat detail silakan <a href='.base_url().'form_pengangkatan/detail/'.$id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_pengangkatan/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
         
         $user_pengangkatan_id = getValue('user_id', 'users_pengangkatan', array('id'=>'where/'.$id));
         if($is_app==0){
@@ -317,7 +317,7 @@ class Form_pengangkatan extends MX_Controller {
             $this->send_user_notification($id, $user_pengangkatan_id);
             //$this->send_notif_tambahan($id, $user_pengangkatan_id);
         }else{
-            $email_body = "Status pengajuan pengangkatan yang diajukan oleh ".get_name($user_pengangkatan_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_pengangkatan/detail/'.$id.'>Klik Disini</a><br />';
+            $email_body = "Status pengajuan pengangkatan yang diajukan oleh ".get_name($user_pengangkatan_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_pengangkatan/detail/'.$id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_pengangkatan/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
             $form = 'pengangkatan';
             switch($type){
             case 'lv1':
@@ -394,7 +394,7 @@ class Form_pengangkatan extends MX_Controller {
                 'receiver_id' => get_nik($user_id),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Pengajuan pengangkatan Karyawan',
-                'email_body' => get_name($pengaju_id).' mengajukan pengangkatan untuk Anda, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
+                'email_body' => get_name($pengaju_id).' mengajukan pengangkatan untuk Anda, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_pengangkatan/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />'.$this->detail_email($id),
                 'is_read' => 0,
             );
         $this->db->insert('email', $data4);

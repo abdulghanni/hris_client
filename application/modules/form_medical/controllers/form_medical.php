@@ -195,7 +195,7 @@ class Form_medical extends MX_Controller {
                 $user_id = $this->input->post('pengaju');
                 $user_app_lv1 = getValue('user_app_lv1', 'users_medical', array('id'=>'where/'.$last_medical_id));
                 $subject_email = get_form_no($last_medical_id).'Pengajuan Rekapitulasi Rawat Jalan/Inap';
-                $isi_email = get_name($user_id).' mengajukan Rekapitulasi Rawat Jalan/Inap, untuk melihat detail silakan <a href='.base_url().'form_medical/detail/'.$last_medical_id.'>Klik Disini</a><br />';
+                $isi_email = get_name($user_id).' mengajukan Rekapitulasi Rawat Jalan/Inap, untuk melihat detail silakan <a href='.base_url().'form_medical/detail/'.$last_medical_id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_medical/detail/'.$last_medical_id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
 
                 if($user_id!==$sess_id):
                      $this->approval->by_admin('medical', $last_medical_id, $sess_id, $user_id, $this->detail_email($last_medical_id));
@@ -388,8 +388,8 @@ class Form_medical extends MX_Controller {
        $this->approval_mail($id);
        $subject_email = get_form_no($id).'['.$approval_status_mail.']Status Pengajuan Rekapitulasi Rawat Jalan/Inap dari Atasan';
        $subject_email_request = get_form_no($id).'Pengajuan Rekapitulasi Rawat Jalan/Inap';
-       $isi_email = 'Status pengajuan Rekapitulasi Rawat Jalan/Inap anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_medical/detail/'.$id.'>Klik Disini</a><br />';
-       $isi_email_request = get_name($user_medical_id).' mengajukan Rekapitulasi Rawat Jalan/Inap medical, untuk melihat detail silakan <a href='.base_url().'form_medical/detail/'.$id.'>Klik Disini</a><br />';
+       $isi_email = 'Status pengajuan Rekapitulasi Rawat Jalan/Inap anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_medical/detail/'.$id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_medical/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
+       $isi_email_request = get_name($user_medical_id).' mengajukan Rekapitulasi Rawat Jalan/Inap medical, untuk melihat detail silakan <a href='.base_url().'form_medical/detail/'.$id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_medical/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
        if(!empty(getEmail($user_medical_id)))$this->send_email(getEmail($user_medical_id), $subject_email, $isi_email);
           
        if($type !== 'hrd'){
@@ -456,7 +456,7 @@ class Form_medical extends MX_Controller {
         
         $this->main->update($id,$data2);
         $this->approval_mail($id);
-        $isi_email = 'Status pengajuan Rekapitulasi Rawat Jalan/Inap anda disetujui oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_medical/detail/'.$id.'>Klik Disini</a><br />';
+        $isi_email = 'Status pengajuan Rekapitulasi Rawat Jalan/Inap anda disetujui oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_medical/detail/'.$id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_medical/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
         if(!empty(getEmail($user_medical_id)))$this->send_email(getEmail($user_medical_id), get_form_no($id).'[APPROVED]Status Pengajuan Rekapitulasi Rawat Jalan/Inap dari Atasan', $isi_email);
        
 
@@ -477,7 +477,7 @@ class Form_medical extends MX_Controller {
                     'receiver_id' => $user_app_lv1,
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Rekapitulasi Rawat Jalan & Inap',
-                    'email_body' => get_name($user_id).' membuat rekapitulasi rawat jalan dan inap, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$this->detail_email($id),
+                    'email_body' => get_name($user_id).' membuat rekapitulasi rawat jalan dan inap, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_medical/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br/>'.$this->detail_email($id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data1);
@@ -490,7 +490,7 @@ class Form_medical extends MX_Controller {
                     'receiver_id' => $user_app_lv2,
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Rekapitulasi Rawat Jalan & Inap',
-                    'email_body' => get_name($user_id).' membuat rekapitulasi rawat jalan dan inap, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$this->detail_email($id),
+                    'email_body' => get_name($user_id).' membuat rekapitulasi rawat jalan dan inap, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_medical/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br/>'.$this->detail_email($id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data2);
@@ -503,7 +503,7 @@ class Form_medical extends MX_Controller {
                     'receiver_id' => $user_app_lv3,
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Rekapitulasi Rawat Jalan & Inap',
-                    'email_body' => get_name($user_id).' membuat rekapitulasi rawat jalan dan inap, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$this->detail_email($id),
+                    'email_body' => get_name($user_id).' membuat rekapitulasi rawat jalan dan inap, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_medical/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br/>'.$this->detail_email($id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data3);
@@ -515,7 +515,7 @@ class Form_medical extends MX_Controller {
                     'receiver_id' => 1,
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Rekapitulasi Rawat Jalan & Inap',
-                    'email_body' => get_name($user_id).' membuat rekapitulasi rawat jalan dan inap, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$this->detail_email($id),
+                    'email_body' => get_name($user_id).' membuat rekapitulasi rawat jalan dan inap, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_medical/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br/>'.$this->detail_email($id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data4);
@@ -538,7 +538,7 @@ class Form_medical extends MX_Controller {
                 'receiver_id' => get_nik($receiver_id),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Rekapitulasi Rawat Jalan & Inap',
-                'email_body' => get_name($sender_id).' menyetujui rekapitulasi rawat jalan dan inap yang anda buat, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$this->detail_email($id),
+                'email_body' => get_name($sender_id).' menyetujui rekapitulasi rawat jalan dan inap yang anda buat, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_medical/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br/>'.$this->detail_email($id),
                 'is_read' => 0,
             );
         $this->db->insert('email', $data);

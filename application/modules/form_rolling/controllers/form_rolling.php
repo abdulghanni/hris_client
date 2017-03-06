@@ -200,7 +200,7 @@ class Form_rolling extends MX_Controller {
                      $this->upload_attachment($rolling_id);
                      $user_app_lv1 = getValue('user_app_lv1', 'users_rolling', array('id'=>'where/'.$rolling_id));
                      $subject_email = get_form_no($rolling_id).'Pengajuan Permohonan Mutasi';
-                     $isi_email = get_name($user_id).' mengajukan Permohonan mutasi karyawan, untuk melihat detail silakan <a href='.base_url().'form_rolling/detail/'.$rolling_id.'>Klik Disini</a><br />';
+                     $isi_email = get_name($user_id).' mengajukan Permohonan mutasi karyawan, untuk melihat detail silakan <a href='.base_url().'form_rolling/detail/'.$rolling_id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_rolling/detail/'.$rolling_id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
 
                      if(!empty($user_app_lv1)):
 
@@ -291,8 +291,8 @@ class Form_rolling extends MX_Controller {
         $user_rolling_id = getValue('user_id', 'users_rolling', array('id'=>'where/'.$id));
         $subject_email = get_form_no($id).'['.$approval_status_mail.']Status Pengajuan Permohonan Mutasi dari Atasan';
         $subject_email_request = get_form_no($id).'-Pengajuan Mutasi Karyawan';
-        $isi_email = 'Status pengajuan mutasi anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_rolling/detail/'.$id.'>Klik Disini</a><br />';
-        $isi_email_request = get_name($user_rolling_id).' mengajukan Permohonan mutasi, untuk melihat detail silakan <a href='.base_url().'form_rolling/detail/'.$id.'>Klik Disini</a><br />';
+        $isi_email = 'Status pengajuan mutasi anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_rolling/detail/'.$id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_rolling/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
+        $isi_email_request = get_name($user_rolling_id).' mengajukan Permohonan mutasi, untuk melihat detail silakan <a href='.base_url().'form_rolling/detail/'.$id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_rolling/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
         
         $user_rolling_id = getValue('user_id', 'users_rolling', array('id'=>'where/'.$id));
         
@@ -318,7 +318,7 @@ class Form_rolling extends MX_Controller {
         }elseif($type == 'hrd' && $approval_status == 1){
             $this->send_user_notification($id, $user_rolling_id);
         }else{
-            $email_body = "Status pengajuan permohonan rolling yang diajukan oleh ".get_name($user_rolling_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_rolling/detail/'.$id.'>Klik Disini</a><br />';
+            $email_body = "Status pengajuan permohonan rolling yang diajukan oleh ".get_name($user_rolling_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_rolling/detail/'.$id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_rolling/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
             $form = 'rolling';
             switch($type){
             case 'lv1':
@@ -399,7 +399,7 @@ class Form_rolling extends MX_Controller {
                     'receiver_id' => get_nik($user_id),
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Pengajuan rolling Karyawan',
-                    'email_body' => get_name($pengaju_id).' mengajukan rolling untuk Anda, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
+                    'email_body' => get_name($pengaju_id).' mengajukan rolling untuk Anda, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_rolling/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />'.$this->detail_email($id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data4);
