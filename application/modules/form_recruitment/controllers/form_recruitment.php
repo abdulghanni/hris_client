@@ -314,8 +314,8 @@ class Form_recruitment extends MX_Controller {
             $user_recruitment_id = getValue('user_id', 'users_recruitment', array('id'=>'where/'.$id));
             $subject_email = get_form_no($id).'['.$approval_status_mail.']Status Pengajuan Permohonan Permintaan SDM dari Atasan';
             $subject_email_request = get_form_no($id).'Pengajuan Permintaan SDM';
-            $isi_email = 'Status pengajuan permintaan SDM anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_recruitment/detail/'.$id.'>Klik Disini</a><br />';
-            $isi_email_request = get_name($user_recruitment_id).' mengajukan Permohonan permintaan SDM, untuk melihat detail silakan <a href='.base_url().'form_recruitment/detail/'.$id.'>Klik Disini</a><br />';
+            $isi_email = 'Status pengajuan permintaan SDM anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_recruitment/detail/'.$id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_recruitment/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
+            $isi_email_request = get_name($user_recruitment_id).' mengajukan Permohonan permintaan SDM, untuk melihat detail silakan <a href='.base_url().'form_recruitment/detail/'.$id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_recruitment/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
             $is_app = getValue('is_app_'.$type, 'users_recruitment', array('id'=>'where/'.$id));
            if($is_app==0){
                 $this->approval->approve('recruitment', $id, $approval_status, $this->detail_email($id));
@@ -346,7 +346,7 @@ class Form_recruitment extends MX_Controller {
                     if(!empty(getEmail($this->approval->approver('recruitment', $user_id))))$this->send_email(getEmail($this->approval->approver('recruitment', $user_id)), $subject_email_request, $isi_email_request);
                 endif;
             }else{
-                $email_body = "Status pengajuan permohonan recruitment yang diajukan oleh ".get_name($user_recruitment_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_recruitment/detail/'.$id.'>Klik Disini</a><br />';
+                $email_body = "Status pengajuan permohonan recruitment yang diajukan oleh ".get_name($user_recruitment_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_recruitment/detail/'.$id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_recruitment/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
                 switch($type){
                     case 'lv1':
                         $app_status = getValue('approval_status_id_lv1', 'users_recruitment', array('id'=>'where/'.$id));
@@ -404,7 +404,7 @@ class Form_recruitment extends MX_Controller {
         $user_id = getValue('user_id', 'users_recruitment', array('id'=>'where/'.$id));
         $receiver = getValue('user_nik', 'users_notif_tambahan', array('form_type_id'=>'where/9'));
         $subject_email = 'Permintaan SDM Baru';
-        $isi_email = 'HRD telah menyetujui pengajuan Permintaan SDM Baru oleh '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />';
+        $isi_email = 'HRD telah menyetujui pengajuan Permintaan SDM Baru oleh '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_recruitment/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
         //Notif to karyawan
         if(!empty($receiver)){
             $data4 = array(

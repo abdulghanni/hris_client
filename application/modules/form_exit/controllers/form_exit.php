@@ -235,7 +235,7 @@ class Form_exit extends MX_Controller {
                     $this->db->insert('users_inventory', $laporan);
                 }
                 
-                $isi_email = get_name($user_id).' mengajukan rekomendasi karyawan keluar, untuk melihat detail silakan <a href='.base_url().'form_exit/detail/'.$exit_id.'>Klik Disini</a><br />';
+                $isi_email = get_name($user_id).' mengajukan rekomendasi karyawan keluar, untuk melihat detail silakan <a href='.base_url().'form_exit/detail/'.$exit_id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_exit/detail/'.$exit_id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
 
                 //$this->send_approval_request($exit_id, $user_id, $creator_id); pengiriman notif berdasarkan BU pengaju
                 $this->send_approval_request($exit_id, $user_id, $user_id); //pengiriman notif berdasarkan BU user yang diajukan
@@ -263,11 +263,11 @@ class Form_exit extends MX_Controller {
                     'receiver_id' => $receiver,
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Pengajuan Rekomendasi Karyawan Keluar',
-                    'email_body' =>get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
+                    'email_body' =>get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_exit/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />'.$this->detail_email($id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data);
-            $isi_email = get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />';
+            $isi_email = get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_exit/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
             //if(!empty(getEmail($receiver)))$this->send_email(getEmail($receiver), 'Pengajuan Rekomendasi Karyawan Keluar', $isi_email);
         endfor;
             // lastq();
@@ -278,7 +278,7 @@ class Form_exit extends MX_Controller {
                 'receiver_id' => $user_app_lv1,
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Pengajuan Rekomendasi Karyawan Keluar',
-                'email_body' =>get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
+                'email_body' =>get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_exit/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />'.$this->detail_email($id),
                 'is_read' => 0,
                 );
             $this->db->insert('email', $data1);
@@ -302,7 +302,7 @@ class Form_exit extends MX_Controller {
                 'is_read' => 0,
                 );
             $this->db->insert('email', $data_hrd2); */
-            $isi_email = get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />';
+            $isi_email = get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_exit/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
             if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), 'Pengajuan Rekomendasi Karyawan Keluar', $isi_email);
         }
 
@@ -313,11 +313,11 @@ class Form_exit extends MX_Controller {
                 'receiver_id' => $user_app_lv2,
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Pengajuan Rekomendasi Karyawan Keluar',
-                'email_body' =>get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
+                'email_body' =>get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_exit/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />'.$this->detail_email($id),
                 'is_read' => 0,
                 );
             $this->db->insert('email', $data2);
-            $isi_email = get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />';
+            $isi_email = get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_exit/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
             if(!empty(getEmail($user_app_lv2)))$this->send_email(getEmail($user_app_lv2), 'Pengajuan Rekomendasi Karyawan Keluar', $isi_email);
         }
 
@@ -328,11 +328,11 @@ class Form_exit extends MX_Controller {
                 'receiver_id' => $user_app_lv3,
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Pengajuan Rekomendasi Karyawan Keluar',
-                'email_body' =>get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
+                'email_body' =>get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_exit/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />'.$this->detail_email($id),
                 'is_read' => 0,
                 );
             $this->db->insert('email', $data3);
-            $isi_email = get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />';
+            $isi_email = get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_exit/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
             if(!empty(getEmail($user_app_lv3)))$this->send_email(getEmail($user_app_lv3), 'Pengajuan Rekomendasi Karyawan Keluar', $isi_email);
         }
 
@@ -342,11 +342,11 @@ class Form_exit extends MX_Controller {
                 'receiver_id' => $user_app_asset,
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Pengajuan Rekomendasi Karyawan Keluar',
-                'email_body' =>get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
+                'email_body' =>get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_exit/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />'.$this->detail_email($id),
                 'is_read' => 0,
                 );
             $this->db->insert('email', $data4);
-            $isi_email = get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />';
+            $isi_email = get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_exit/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
             if(!empty(getEmail($user_app_asset)))$this->send_email(getEmail($user_app_asset), 'Pengajuan Rekomendasi Karyawan Keluar', $isi_email);
         }
 
@@ -722,7 +722,7 @@ class Form_exit extends MX_Controller {
 										'receiver_id' => $user_app_lv1,
 										'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
 										'subject' => 'Pengajuan Rekomendasi Karyawan Keluar',
-										'email_body' =>get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($target_id).', untuk melihat detail silakan <a class="klikmail" href='.base_url()."form_exit/detail/".$id.'>Klik Disini</a><br />'.$this->detail_email($id),
+										'email_body' =>get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($target_id).', untuk melihat detail silakan <a class="klikmail" href='.base_url()."form_exit/detail/".$id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_exit/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />'.$this->detail_email($id),
 										'is_read' => 0,
 										);
 									$this->db->insert('email', $data1);
@@ -733,7 +733,7 @@ class Form_exit extends MX_Controller {
 										'receiver_id' => 'G0019',
 										'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
 										'subject' => 'Pengajuan Rekomendasi Karyawan Keluar',
-										'email_body' =>get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($target_id).', untuk melihat detail silakan <a class="klikmail" href='.base_url()."form_exit/detail/".$id.'>Klik Disini</a><br />'.$this->detail_email($id),
+										'email_body' =>get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($target_id).', untuk melihat detail silakan <a class="klikmail" href='.base_url()."form_exit/detail/".$id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_exit/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />'.$this->detail_email($id),
 										'is_read' => 0,
 										);
 									$this->db->insert('email', $data_hrd1);
@@ -744,12 +744,12 @@ class Form_exit extends MX_Controller {
 										'receiver_id' => 'P0081',
 										'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
 										'subject' => 'Pengajuan Rekomendasi Karyawan Keluar',
-										'email_body' =>get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($target_id).', untuk melihat detail silakan <a class="klikmail" href='.base_url()."form_exit/detail/".$id.'>Klik Disini</a><br />'.$this->detail_email($id),
+										'email_body' =>get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($target_id).', untuk melihat detail silakan <a class="klikmail" href='.base_url()."form_exit/detail/".$id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_exit/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />'.$this->detail_email($id),
 										'is_read' => 0,
 										);
 									$this->db->insert('email', $data_hrd2);
 									
-									$isi_email = get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($target_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />';
+									$isi_email = get_name($creator_id).' mengajukan rekomendasi karyawan keluar untuk '.get_name($target_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_exit/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
 									if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), 'Pengajuan Rekomendasi Karyawan Keluar', $isi_email);
 							
 							
@@ -795,11 +795,11 @@ class Form_exit extends MX_Controller {
                 'receiver_id' =>  $receiver,
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => get_form_no($id).'['.$approval_status.']Status Pengajuan Rekomendasi Keluar dari Atasan',
-                'email_body' => "Status pengajuan Rekomendasi karyawan Keluar untuk anda oleh ".get_name($creator_id)." $approval_status oleh $approver untuk detail silakan <a class='klikmail' href=$url>Klik disini</a><br/>".$this->detail_email($id),
+                'email_body' => "Status pengajuan Rekomendasi karyawan Keluar untuk anda oleh ".get_name($creator_id)." $approval_status oleh $approver untuk detail silakan <a class='klikmail' href=$url>Klik disini</a> atau <a href='http://123.231.241.12/hris_client/form_exit/detail/".$id."'>Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br/>".$this->detail_email($id),
                 'is_read' => 0,
             );
         $this->db->insert('email', $data1);
-        $isi_email = "Status pengajuan Rekomendasi karyawan Keluar untuk anda oleh ".get_name($creator_id)." $approval_status oleh $approver untuk detail silakan <a class='klikmail' href=$url>Klik disini</a><br/>";
+        $isi_email = "Status pengajuan Rekomendasi karyawan Keluar untuk anda oleh ".get_name($creator_id)." $approval_status oleh $approver untuk detail silakan <a class='klikmail' href=$url>Klik disini</a> atau <a href='http://123.231.241.12/hris_client/form_exit/detail/".$id."'>Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br/>";
         if(!empty(getEmail($receiver)))$this->send_email(getEmail($receiver), 'Status Pengajuan Rekomendasi Keluar dari Atasan', $isi_email);
 
 
@@ -808,7 +808,7 @@ class Form_exit extends MX_Controller {
                 'receiver_id' => get_nik($creator_id),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => get_form_no($id).'['.$approval_status.']Status Pengajuan Rekomendasi Keluar dari Atasan',
-                'email_body' => "Status pengajuan Rekomendasi karyawan Keluar untuk ".get_name($user_id)." $approval_status oleh $approver untuk detail silakan <a class='klikmail' href=$url>Klik disini</a><br/>".$this->detail_email($id),
+                'email_body' => "Status pengajuan Rekomendasi karyawan Keluar untuk ".get_name($user_id)." $approval_status oleh $approver untuk detail silakan <a class='klikmail' href=$url>Klik disini</a> atau <a href='http://123.231.241.12/hris_client/form_exit/detail/".$id."'>Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br/>".$this->detail_email($id),
                 'is_read' => 0,
             );
         $this->db->insert('email', $data2);
@@ -828,11 +828,11 @@ class Form_exit extends MX_Controller {
                 'receiver_id' =>  $receiver,
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => get_form_no($id).'['.$approval_status.']Perubahan Status Pengajuan Rekomendasi Keluar dari Atasan',
-                'email_body' => $approver." melakukan perubahan status pengajuan rekomendasi karyawan Keluar untuk anda oleh ".get_name($creator_id)." status pengajuan anda saat ini $approval_status, untuk detail silakan <a href=$url>Klik disini</a><br/>".$this->detail_email($id),
+                'email_body' => $approver." melakukan perubahan status pengajuan rekomendasi karyawan Keluar untuk anda oleh ".get_name($creator_id)." status pengajuan anda saat ini $approval_status, untuk detail silakan <a href=$url>Klik disini</a> atau <a href='http://123.231.241.12/hris_client/form_exit/detail/".$id."'>Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br/>".$this->detail_email($id),
                 'is_read' => 0,
             );
         $this->db->insert('email', $data1);
-        $isi_email = $approver." melakukan perubahan status pengajuan rekomendasi karyawan Keluar untuk anda oleh ".get_name($creator_id)." status pengajuan anda saat ini $approval_status, untuk detail silakan <a href=$url>Klik disini</a><br/>";
+        $isi_email = $approver." melakukan perubahan status pengajuan rekomendasi karyawan Keluar untuk anda oleh ".get_name($creator_id)." status pengajuan anda saat ini $approval_status, untuk detail silakan <a href=$url>Klik disini</a> atau <a href='http://123.231.241.12/hris_client/form_exit/detail/".$id."'>Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br/>";
         if(!empty(getEmail($receiver)))$this->send_email(getEmail($receiver), 'Perubahan Status Pengajuan Rekomendasi Keluar dari Atasan', $isi_email);
 
 
@@ -841,7 +841,7 @@ class Form_exit extends MX_Controller {
                 'receiver_id' => get_nik($creator_id),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => get_form_no($id).'['.$approval_status.']Perubahan Status Pengajuan Rekomendasi Keluar dari Atasan',
-                'email_body' => $approver." melakukan perubahan status pengajuan rekomendasi karyawan Keluar untuk  ".get_name($user_id)." status pengajuan anda saat ini $approval_status, untuk detail silakan <a href=$url>Klik disini</a><br/>".$this->detail_email($id),
+                'email_body' => $approver." melakukan perubahan status pengajuan rekomendasi karyawan Keluar untuk  ".get_name($user_id)." status pengajuan anda saat ini $approval_status, untuk detail silakan <a href=$url>Klik disini</a> atau <a href='http://123.231.241.12/hris_client/form_exit/detail/".$id."'>Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br/>".$this->detail_email($id),
                 'is_read' => 0,
             );
         $this->db->insert('email', $data2);

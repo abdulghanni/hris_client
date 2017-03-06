@@ -289,8 +289,8 @@ class Form_pjd extends MX_Controller {
             $creator_nik = get_nik($user_spd_luar_group_id);
             //$subject_email = get_form_no($id).'['.$approval_status_mail.']Status Pengajuan Perjalanan Dinas Dalam Kota dari Atasan';
             $subject_email_request = get_form_no($id).' - Pengajuan Perjalanan Dinas';
-            $isi_email = 'Status pengajuan perjalan dinas anda disetujui oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_pjd/submit/'.$id.'>Klik Disini</a><br />';
-            $isi_email_request = get_name($user_spd_luar_group_id ).' mengajukan Permohonan perjalan dinas, untuk melihat detail silakan <a href='.base_url().'form_pjd/submit/'.$id.'>Klik Disini</a><br />';
+            $isi_email = 'Status pengajuan perjalan dinas anda disetujui oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_pjd/submit/'.$id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_pjd/submit/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
+            $isi_email_request = get_name($user_spd_luar_group_id ).' mengajukan Permohonan perjalan dinas, untuk melihat detail silakan <a href='.base_url().'form_pjd/submit/'.$id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_pjd/submit/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
             
             if(!empty($user_app)):
                 if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app), $subject_email_request, $isi_email_request);
@@ -538,7 +538,7 @@ class Form_pjd extends MX_Controller {
                     'receiver_id' => $task_receiver_id[$i],
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Perubahan Data Tugas Perjalanan Dinas',
-                    'email_body' => get_name($sender_id).' melakukan perubahan data tugas perjalan dinas , untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$this->detail_email($id),
+                    'email_body' => get_name($sender_id).' melakukan perubahan data tugas perjalan dinas , untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_pjd/submit/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br/>'.$this->detail_email($id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data);
@@ -549,7 +549,7 @@ class Form_pjd extends MX_Controller {
                     'receiver_id' => $user_app_lv1,
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Perubahan Data Tugas Perjalanan Dinas',
-                    'email_body' => get_name($sender_id).' melakukan perubahan data tugas perjalan dinas , untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$this->detail_email($id),
+                    'email_body' => get_name($sender_id).' melakukan perubahan data tugas perjalan dinas , untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_pjd/submit/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br/>'.$this->detail_email($id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data);
@@ -864,7 +864,7 @@ class Form_pjd extends MX_Controller {
                     'receiver_id' => $task_receiver_id[$i],
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => get_form_no($spd_id).'-Pemberian Tugas Perjalanan Dinas',
-                    'email_body' => get_name($sender_id).' memberikan tugas perjalan dinas, untuk melakukan konfirmasi silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$this->detail_email($spd_id).'<br/> untuk melakukan konfirmasi silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>',
+                    'email_body' => get_name($sender_id).' memberikan tugas perjalan dinas, untuk melakukan konfirmasi silakan <a class="klikmail" href='.$url.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_pjd/submit/'.$spd_id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br/>'.$this->detail_email($spd_id).'<br/> untuk melakukan konfirmasi silakan <a class="klikmail" href='.$url.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_pjd/submit/'.$spd_id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br/>',
                     'is_read' => 0,
                 );
         $this->db->insert('email', $data);
@@ -885,7 +885,7 @@ class Form_pjd extends MX_Controller {
                     'receiver_id' => $receiver_id,
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Persetujuan Tugas Perjalanan Dinas',
-                    'email_body' => get_name($sender).' telah menyetujui tugas perjalan dinas yang anda berikan, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$this->detail_email($spd_id),
+                    'email_body' => get_name($sender).' telah menyetujui tugas perjalan dinas yang anda berikan, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_pjd/submit/'.$spd_id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br/>'.$this->detail_email($spd_id),
                     'is_read' => 0,
                 );
         $this->db->insert('email', $data);
@@ -907,7 +907,7 @@ class Form_pjd extends MX_Controller {
                     'receiver_id' => $receiver_id[$i],
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Pembatalan Tugas Perjalanan Dinas',
-                    'email_body' => get_name($sender_id).' membatalkan tugas perjalan dinas , untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$this->detail_email($spd_id),
+                    'email_body' => get_name($sender_id).' membatalkan tugas perjalan dinas , untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_pjd/submit/'.$spd_id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br/>'.$this->detail_email($spd_id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data);
@@ -930,7 +930,7 @@ class Form_pjd extends MX_Controller {
                     'receiver_id' => $receiver_id,
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => get_form_no($spd_id).' - Laporan Tugas Perjalanan Dinas',
-                    'email_body' => get_name($sender).' telah membuat laporan perjalanan dinas, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$this->detail_email_report($spd_id, $sess_id),
+                    'email_body' => get_name($sender).' telah membuat laporan perjalanan dinas, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_pjd/report_detail/'.$spd_id.'/'.$sess_id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br/>'.$this->detail_email_report($spd_id, $sess_id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data);
@@ -1005,7 +1005,7 @@ class Form_pjd extends MX_Controller {
             $emails .= $email;
         }
 
-        $msg = get_name($task_creator).' memberikan tugas perjalan dinas, untuk melihat detail silakan <a href='.base_url().'form_pjd/submit/'.$spd_id.'>Klik Disini</a><br />';
+        $msg = get_name($task_creator).' memberikan tugas perjalan dinas, untuk melihat detail silakan <a href='.base_url().'form_pjd/submit/'.$spd_id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_pjd/submit/'.$spd_id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
         if(!empty($emails))$this->send_email($emails, get_form_no($spd_id).' - Pemberian Tugas Perjalanan Dinas', $msg);
 
         for($i=0;$i<sizeof($task_receiver_id);$i++):
@@ -1014,7 +1014,7 @@ class Form_pjd extends MX_Controller {
                     'receiver_id' => $task_receiver_id[$i],
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => get_form_no($spd_id).'-Pemberian Tugas Perjalanan Dinas',
-                    'email_body' => get_name($task_creator).' memberikan tugas perjalan dinas, untuk melakukan konfirmasi silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>'.$this->detail_email($id).'<br/> untuk melakukan konfirmasi silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br/>',
+                    'email_body' => get_name($task_creator).' memberikan tugas perjalan dinas, untuk melakukan konfirmasi silakan <a class="klikmail" href='.$url.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_pjd/submit/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br/>'.$this->detail_email($id).'<br/> untuk melakukan konfirmasi silakan <a class="klikmail" href='.$url.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_pjd/submit/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br/>',
                     'is_read' => 0,
                 );
         $this->db->insert('email', $data);
@@ -1023,7 +1023,7 @@ class Form_pjd extends MX_Controller {
         // KIRIM NOTIF KEATASAN
         $user_app_lv1 = getValue('user_app_lv1', 'users_spd_luar_group', array('id'=>'where/'.$spd_id));
         $subject_email = get_form_no($spd_id).' - Pengajuan Perjalanan Dinas';
-        $isi_email = get_name($task_creator).' mengajukan Perjalanan Dinas, untuk melihat detail silakan <a href='.base_url().'form_pjd/submit/'.$spd_id.'>Klik Disini</a><br />';
+        $isi_email = get_name($task_creator).' mengajukan Perjalanan Dinas, untuk melihat detail silakan <a href='.base_url().'form_pjd/submit/'.$spd_id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_pjd/submit/'.$spd_id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
 
         if($task_creator!==$created_by):
             $this->approval->by_admin('spd_luar_group', $spd_id, $created_by, $task_creator, $this->detail_email($spd_id));

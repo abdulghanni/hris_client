@@ -205,7 +205,7 @@ class form_training_group extends MX_Controller {
                          $training_id = $this->db->insert_id();
                          $user_app_lv1 = getValue('user_app_lv1', 'users_training_group', array('id'=>'where/'.$training_id));
                          $subject_email = get_form_no($training_id).'-Pengajuan Permohonan Pelatihan(Group)';
-                         $isi_email = get_name($user_id).' mengajukan Permohonan pelatihan, untuk melihat detail silakan <a href='.base_url().'form_training_group/detail/'.$training_id.'>Klik Disini</a><br />';
+                         $isi_email = get_name($user_id).' mengajukan Permohonan pelatihan, untuk melihat detail silakan <a href='.base_url().'form_training_group/detail/'.$training_id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_training_group/detail/'.$training_id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
                          if($user_id!==$sess_id):
                          $this->approval->by_admin('training_group', $training_id, $sess_id, $user_id, $this->detail_email($training_id));
                          endif;
@@ -280,7 +280,7 @@ class form_training_group extends MX_Controller {
         $user_training_id = getValue('user_pengaju_id', 'users_training_group', array('id'=>'where/'.$id));
         $subject_email = get_form_no($id).'['.$approval_status_mail.']Status Pengajuan Pelatihan(Group) dari Atasan';
         $subject_email_request = get_form_no($id).'-Pengajuan Pelatihan(Group) Karyawan';
-        $isi_email = 'Status pengajuan training anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_training_group/detail/'.$id.'>Klik Disini</a><br />';
+        $isi_email = 'Status pengajuan training anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_training_group/detail/'.$id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_training_group/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
         $isi_email_request = get_name($user_training_id).' mengajukan Permohonan training, untuk melihat detail silakan <a href='.base_url().'form_training_group/detail/'.$id.'>Klik Disini</a><br />';
         $is_app = getValue('is_app_'.$type, 'users_training_group', array('id'=>'where/'.$id));
         if($is_app==0){
@@ -305,7 +305,7 @@ class form_training_group extends MX_Controller {
                 if(!empty(getEmail($this->approval->approver('training'))))$this->send_email(getEmail($this->approval->approver('training')), $subject_email_request, $isi_email_request);
             }
         }else{
-            $email_body = "Status pengajuan permohonan Training yang diajukan oleh ".get_name($user_training_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_training_group/detail/'.$id.'>Klik Disini</a><br />';
+            $email_body = "Status pengajuan permohonan Training yang diajukan oleh ".get_name($user_training_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_training_group/detail/'.$id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_training_group/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
             switch($type){
                 case 'lv1':
                     $app_status = getValue('approval_status_id_lv1', 'users_training_group', array('id'=>'where/'.$id));
@@ -391,7 +391,7 @@ class form_training_group extends MX_Controller {
         $this->main->update($id,$data);
         $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
         $user_training_id = getValue('user_pengaju_id', 'users_training_group', array('id'=>'where/'.$id));
-        $isi_email = 'Status pengajuan training anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_training_group/detail/'.$id.'>Klik Disini</a><br />';
+        $isi_email = 'Status pengajuan training anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_training_group/detail/'.$id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_training_group/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
 
         if($is_app==0){
             $this->approval_mail($id, $approval_status);
@@ -404,7 +404,7 @@ class form_training_group extends MX_Controller {
         if($approval_status == 1){
             $this->notif_legal($id);
         }else{
-            $email_body = "Status pengajuan permohonan training yang diajukan oleh ".get_name($user_training_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_training_group/detail/'.$id.'>Klik Disini</a><br />';
+            $email_body = "Status pengajuan permohonan training yang diajukan oleh ".get_name($user_training_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_training_group/detail/'.$id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_training_group/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
             $receiver_lv3 = getValue('user_app_lv3', 'users_training_group', array('id'=>'where/'.$id));
             if(!empty($receiver_lv3)):
                 $this->approval->not_approve('training_group', $id, $receiver_lv3, $approval_status ,$this->detail_email($id));
@@ -428,7 +428,7 @@ class form_training_group extends MX_Controller {
         $admin_legal = $this->db->where('group_id',9)->get('users_groups')->result_array('user_id');
         $user_id = getValue('user_pengaju_id', 'users_training_group', array('id'=>'where/'.$id));
         $user_hrd = getValue('user_app_hrd', 'users_training_group', array('id'=>'where/'.$id));
-        $msg = 'Dear Admin Legal,<br/><p>'.get_name($user_hrd).' telah menyetujui permintaan pelatihan yang diajukan oleh '.get_name($user_id).' ,untuk melihat detail silakan <a class="klikemail" href="'.base_url("form_training_group/detail/$id").'">Klik Disini</a></p>';
+        $msg = 'Dear Admin Legal,<br/><p>'.get_name($user_hrd).' telah menyetujui permintaan pelatihan yang diajukan oleh '.get_name($user_id).' ,untuk melihat detail silakan <a class="klikemail" href="'.base_url("form_training_group/detail/$id").'">Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_training_group/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. </p>';
         for($i=0;$i<sizeof($admin_legal);$i++):
         $data = array(
                 'sender_id' => get_nik($user_hrd),
@@ -452,7 +452,7 @@ class form_training_group extends MX_Controller {
                 'receiver_id' => get_nik($peserta_id[$i]),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Pengajuan Training Karyawan',
-                'email_body' => get_name($sender_id).' mengajukan permohonan pelatihan group untuk anda, untuk melihat detail silakan <a class="klikmail" href='.$url.'/'.$id.'>Klik Disini</a><br/>'.$this->detail_email($id),
+                'email_body' => get_name($sender_id).' mengajukan permohonan pelatihan group untuk anda, untuk melihat detail silakan <a class="klikmail" href='.$url.'/'.$id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_training_group/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br/>'.$this->detail_email($id),
                 'is_read' => 0,
             );
         $this->db->insert('email', $data);
@@ -470,7 +470,7 @@ class form_training_group extends MX_Controller {
                 'receiver_id' => get_nik($pengaju_id),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Status Pengajuan Training Karyawan dari Atasan',
-                'email_body' => "Status pengajuan permohonan training anda $approval_status oleh $approver untuk detail silakan <a class='klikmail' href=$url>Klik disini</a><br/>".$this->detail_email($id),
+                'email_body' => "Status pengajuan permohonan training anda $approval_status oleh $approver untuk detail silakan <a class='klikmail' href=$url>Klik disini</a> atau <a href='http://123.231.241.12/hris_client/form_training_group/detail/".$id."'>Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br/>".$this->detail_email($id),
                 'is_read' => 0,
             );
         $this->db->insert('email', $data);
@@ -487,7 +487,7 @@ class form_training_group extends MX_Controller {
                 'receiver_id' => get_nik($pengaju_id),
                 'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                 'subject' => 'Perubahan Status Pengajuan Training Karyawan dari Atasan',
-                'email_body' => "$approver melakukan perubahan status permintaan training group anda, Status permintaan anda kini $approval_status, untuk detail silakan <a class='klikmail' href=$url>Klik disini</a><br/>".$this->detail_email($id),
+                'email_body' => "$approver melakukan perubahan status permintaan training group anda, Status permintaan anda kini $approval_status, untuk detail silakan <a class='klikmail' href=$url>Klik disini</a> atau <a href='http://123.231.241.12/hris_client/form_training_group/detail/".$id."'>Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br/>".$this->detail_email($id),
                 'is_read' => 0,
             );
         $this->db->insert('email', $data);

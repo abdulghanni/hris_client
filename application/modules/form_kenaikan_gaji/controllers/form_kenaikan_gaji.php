@@ -223,7 +223,7 @@ class Form_kenaikan_gaji extends MX_Controller {
 
                      $user_app_lv1 = getValue('user_app_lv1', 'users_kenaikan_gaji', array('id'=>'where/'.$rolling_id));
                      $subject_email = get_form_no($rolling_id).'Pengajuan Permohonan Kenaikan Gaji';
-                     $isi_email = get_name($user_id).' mengajukan Permohonan kenaikan gaji karyawan, untuk melihat detail silakan <a href='.base_url().'form_kenaikan_gaji/detail/'.$rolling_id.'>Klik Disini</a><br />';
+                     $isi_email = get_name($user_id).' mengajukan Permohonan kenaikan gaji karyawan, untuk melihat detail silakan <a href='.base_url().'form_kenaikan_gaji/detail/'.$rolling_id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_kenaikan_gaji/detail/'.$rolling_id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
 
                      if(!empty($user_app_lv1)):
 
@@ -314,8 +314,8 @@ class Form_kenaikan_gaji extends MX_Controller {
         $user_rolling_id = getValue('user_id', 'users_kenaikan_gaji', array('id'=>'where/'.$id));
         $subject_email = get_form_no($id).'['.$approval_status_mail.']Status Pengajuan kenaikan gaji dari Atasan';
         $subject_email_request = get_form_no($id).'-Pengajuan Kenaikan Gaji Karyawan';
-        $isi_email = 'Status kenaikan gaji anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_kenaikan_gaji/detail/'.$id.'>Klik Disini</a><br />';
-        $isi_email_request = get_name($user_rolling_id).' mengajukan Permohonan kenaikan gaji, untuk melihat detail silakan <a href='.base_url().'form_kenaikan_gaji/detail/'.$id.'>Klik Disini</a><br />';
+        $isi_email = 'Status kenaikan gaji anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_kenaikan_gaji/detail/'.$id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_kenaikan_gaji/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
+        $isi_email_request = get_name($user_rolling_id).' mengajukan Permohonan kenaikan gaji, untuk melihat detail silakan <a href='.base_url().'form_kenaikan_gaji/detail/'.$id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_kenaikan_gaji/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
         
         $user_rolling_id = getValue('user_id', 'users_kenaikan_gaji', array('id'=>'where/'.$id));
         
@@ -341,7 +341,7 @@ class Form_kenaikan_gaji extends MX_Controller {
         }elseif($type == 'hrd' && $approval_status == 1){
             $this->send_user_notification($id, $user_rolling_id);
         }else{
-            $email_body = "Status pengajuan permohonan kenaikan gaji yang diajukan oleh ".get_name($user_rolling_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_kenaikan_gaji/detail/'.$id.'>Klik Disini</a><br />';
+            $email_body = "Status pengajuan permohonan kenaikan gaji yang diajukan oleh ".get_name($user_rolling_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_kenaikan_gaji/detail/'.$id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_kenaikan_gaji/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
             $form = 'kenaikan_gaji';
             switch($type){
             case 'lv1':
@@ -422,7 +422,7 @@ class Form_kenaikan_gaji extends MX_Controller {
                     'receiver_id' => get_nik($user_id),
                     'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                     'subject' => 'Pengajuan kenaikan gaji Karyawan',
-                    'email_body' => get_name($pengaju_id).' mengajukan kenaikan gaji untuk Anda, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$this->detail_email($id),
+                    'email_body' => get_name($pengaju_id).' mengajukan kenaikan gaji untuk Anda, untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_kenaikan_gaji/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />'.$this->detail_email($id),
                     'is_read' => 0,
                 );
             $this->db->insert('email', $data4);

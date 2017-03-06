@@ -233,7 +233,7 @@ class form_absen extends MX_Controller {
                  $absen_id = $this->db->insert_id();
                  $user_app_lv1 = getValue('user_app_lv1', 'users_absen', array('id'=>'where/'.$absen_id));
                  $subject_email = get_form_no($absen_id).'-Pengajuan Keterangan Tidak Absen';
-                 $isi_email = get_name($user_id).' mengajukan keterangan tidak absen, untuk melihat detail silakan <a href='.base_url().'form_absen/detail/'.$absen_id.'>Klik Disini</a><br />';
+                 $isi_email = get_name($user_id).' mengajukan keterangan tidak absen, untuk melihat detail silakan <a href='.base_url().'form_absen/detail/'.$absen_id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_absen/detail/'.$absen_id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
 
                  if($user_id!==$sess_id):
                     $this->approval->by_admin('absen', $absen_id, $sess_id, $user_id, $this->detail_email($absen_id));
@@ -437,8 +437,8 @@ class form_absen extends MX_Controller {
         $user_absen_id = getValue('user_id', 'users_absen', array('id'=>'where/'.$id));
         $subject_email = get_form_no($id).'['.$approval_status_mail.']Status Pengajuan Ketarangan Tidak Absen dari Atasan';
         $subject_email_request = get_form_no($id).'Pengajuan Ketarangan Tidak Absen';
-        $isi_email = 'Status pengajuan Ketarangan Tidak Absen anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_absen/detail/'.$id.'>Klik Disini</a><br />';
-        $isi_email_request = get_name($user_absen_id).' mengajukan Ketarangan Tidak Absen, untuk melihat detail silakan <a href='.base_url().'form_absen/detail/'.$id.'>Klik Disini</a><br />';
+        $isi_email = 'Status pengajuan Ketarangan Tidak Absen anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_absen/detail/'.$id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_absen/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
+        $isi_email_request = get_name($user_absen_id).' mengajukan Ketarangan Tidak Absen, untuk melihat detail silakan <a href='.base_url().'form_absen/detail/'.$id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_absen/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
         $is_app = getValue('is_app_'.$type, 'users_absen', array('id'=>'where/'.$id));
        if($is_app==0){
             $this->approval->approve('absen', $id, $approval_status, $this->detail_email($id));
@@ -469,7 +469,7 @@ class form_absen extends MX_Controller {
                 if(!empty(getEmail($this->approval->approver('absen', $user_id))))$this->send_email(getEmail($this->approval->approver('absen', $user_id)), $subject_email_request, $isi_email_request);
             endif;
         }else{
-            $email_body = "Status pengajuan permohonan absen yang diajukan oleh ".get_name($user_absen_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_absen/detail/'.$id.'>Klik Disini</a><br />';
+            $email_body = "Status pengajuan permohonan absen yang diajukan oleh ".get_name($user_absen_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_absen/detail/'.$id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_absen/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
             switch($type){
                 case 'lv1':
                     $app_status = getValue('approval_status_id_lv1', 'users_absen', array('id'=>'where/'.$id));
