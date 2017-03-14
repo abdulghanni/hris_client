@@ -536,6 +536,7 @@ class Form_cuti extends MX_Controller {
         $app_lv2 = getValue('is_app_lv2', 'users_cuti', array('id'=>'where/'.$id));
         $app_lv3 = getValue('is_app_lv3', 'users_cuti', array('id'=>'where/'.$id));
         $app_hrd = getValue('is_app_hrd', 'users_cuti', array('id'=>'where/'.$id));
+        $approval_status_id_hrd = getValue('approval_status_id_hrd', 'users_cuti', array('id'=>'where/'.$id));
 
         if(!empty(getValue('user_app_lv1', 'users_cuti', array('id'=>'where/'.$id))) && empty(getValue('user_app_lv2', 'users_cuti', array('id'=>'where/'.$id))) && empty(getValue('user_app_lv3', 'users_cuti', array('id'=>'where/'.$id)))){
             $total_app = '2';
@@ -549,16 +550,16 @@ class Form_cuti extends MX_Controller {
 
         switch ($total_app) {
             case "2":
-                if($app_lv1==1 && $app_hrd==1){$this->update_attendance($id);}else{return false;};
+                if($app_lv1==1 && $app_hrd==1 && $approval_status_id_hrd==1){$this->update_attendance($id);}else{return false;};
                 break;
             case "3":
-                if($app_lv1==1 && $app_lv2==1 && $app_hrd==1){$this->update_attendance($id);}else{return false;};
+                if($app_lv1==1 && $app_lv2==1 && $app_hrd==1 && $approval_status_id_hrd==1){$this->update_attendance($id);}else{return false;};
                 break;
             case "4":
-                if($app_lv1==1 && $app_lv2==1 && $app_lv3==1 && $app_hrd==1){$this->update_attendance($id);}else{return false;};
+                if($app_lv1==1 && $app_lv2==1 && $app_lv3==1 && $app_hrd==1 && $approval_status_id_hrd==1){$this->update_attendance($id);}else{return false;};
                 break;
             case "1":
-                if($app_hrd==1){$this->update_attendance($id);}else{return false;};
+                if($app_hrd==1 && $approval_status_id_hrd==1){$this->update_attendance($id);}else{return false;};
                 break;
         }
 
