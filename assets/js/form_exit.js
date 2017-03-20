@@ -12,6 +12,8 @@ $(document).ready(function() {
         get_employee_pos(empId);
         get_employee_nik(empId);
         get_employee_bu(empId);
+        get_employee_sen_date(empId);
+        get_employee_stat_id(empId);
         getInvList(empId);
         getAsmen(empId);
         getAtasan3(empId);
@@ -37,6 +39,8 @@ $(document).ready(function() {
         get_employee_pos(empId);
         get_employee_nik(empId);
         get_employee_bu(empId);
+        get_employee_sen_date(empId);
+        get_employee_stat_id(empId);
         getInvList(empId);
         getAtasan1(empId);
         getAtasan3(empId);
@@ -108,6 +112,30 @@ $(document).ready(function() {
             }
         });
 	    }
+
+      function get_employee_sen_date(empId)
+      {
+        $.ajax({
+            type: 'POST',
+            url: base_url+form+'/get_emp_sen_date',
+            data: {id : empId},
+            success: function(data) {
+                $('#tgl_masuk').val(data);
+            }
+        });
+      }
+
+      function get_employee_stat_id(empId)
+      {
+        $.ajax({
+            type: 'POST',
+            url: base_url+form+'/get_emp_stat_id',
+            data: {id : empId},
+            success: function(data) {
+                $('#old_status').val(data);
+            }
+        });
+      }
 
 	    function get_employee_bu(empId)
 	    {

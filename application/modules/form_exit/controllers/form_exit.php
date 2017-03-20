@@ -947,6 +947,24 @@ class Form_exit extends MX_Controller {
         echo $nik;
     }
 
+    public function get_emp_sen_date()
+    {
+        $id = $this->input->post('id');
+
+        $url = get_api_key().'users/employement/EMPLID/'.get_nik($id).'/format/json';
+            $headers = get_headers($url);
+            $response = substr($headers[0], 9, 3);
+            if ($response != "404") {
+                $getuser_info = file_get_contents($url);
+                $user_info = json_decode($getuser_info, true);
+                $nik = dateIndo($user_info['SENIORITYDATE']);
+            } else {
+                $nik = '';
+            }
+
+        echo $nik;
+    }
+
     public function get_emp_bu()
     {
         $id = $this->input->post('id');
@@ -963,6 +981,17 @@ class Form_exit extends MX_Controller {
             }
 
         echo $bu_nm;
+    }
+    
+    public function get_emp_stat_id()
+    {
+        $id = $this->input->post('id');
+        if($id == '0'){
+            echo '-';
+        }else{
+            $id = get_nik($id);
+            echo get_user_status($id);
+        }      
     }
 
     function form_exit_pdf($id)
