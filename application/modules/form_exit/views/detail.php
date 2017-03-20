@@ -35,12 +35,7 @@
                           <input name="" id="" type="text"  class="form-control" placeholder="" value="<?php echo get_name($row->user_id)?>" disabled="disabled">
                       </div>
 
-                      <div class="col-md-2">
-                        <label class="form-label text-right">Wilayah</label>
-                      </div>
-                      <div class="col-md-3">
-                        <input name="" id="bu" type="text"  class="form-control" placeholder="" value="" disabled="disabled">
-                      </div>
+                      
 
                     </div>
 
@@ -66,10 +61,25 @@
                         <input name="" id="position" type="text"  class="form-control" placeholder="" value="" disabled="disabled">
                       </div>
                       <div class="col-md-2">
-                        <label class="form-label text-right">Tanggal Keluar</label>
+                        <label class="form-label text-right">Tanggal Masuk</label>
                       </div>
                       <div class="col-md-3">
-                          <input type="text" class="form-control" id="sandbox-advance" name="date_exit" value="<?php echo dateIndo($row->date_exit)?>" disabled="disabled">    
+                        <input name="" id="seniority_date" type="text"  class="form-control" placeholder="" value="" disabled="disabled">
+                      </div>
+                      
+                    </div>
+                    <div class="row form-row">
+                      <div class="col-md-2">
+                        <label class="form-label text-right">Wilayah</label>
+                      </div>
+                      <div class="col-md-3">
+                        <input name="" id="bu" type="text"  class="form-control" placeholder="" value="" disabled="disabled">
+                      </div>
+                      <div class="col-md-2">
+                        <label class="form-label text-right">Status kepegawaian</label>
+                      </div>
+                      <div class="col-md-3">
+                        <input name="form3LastName" id="statuss" type="text"  class="form-control" placeholder="Status kepegawaian" value="" disabled="disabled">
                       </div>
                     </div>
                     <div class="row form-row">
@@ -78,6 +88,12 @@
                       </div>
                       <div class="col-md-3">
                         <input type="text" class="form-control" id="sandbox-advance" name="tipe" value="<?php echo $row->exit_type?>" disabled="disabled">    
+                      </div>
+                      <div class="col-md-2">
+                        <label class="form-label text-right">Tanggal Keluar</label>
+                      </div>
+                      <div class="col-md-3">
+                          <input type="text" class="form-control" id="sandbox-advance" name="date_exit" value="<?php echo dateIndo($row->date_exit)?>" disabled="disabled">    
                       </div>
                     </div>
                     

@@ -66,6 +66,12 @@ $rejected = assets_url('img/rejected_stamp.png');?>
     <td><span class="style3"><?php echo dateIndo(get_user_sen_date($user_nik))?> </span></td>
   </tr>
   <tr>
+    <td height="40"><span class="style3">Status kepegawaian </span></td>
+    <td><div align="center" class="style3">:</div></td>
+    <td><span class="style3"><?php echo get_user_status($user_nik)?></span></td>
+    
+  </tr>
+  <tr>
     <td><span class="style3">Tipe Rekomendasi </span></td>
     <td><div align="center" class="style3">:</div></td>
     <td><span class="style3"><?php echo $row->exit_type?> </span></td>

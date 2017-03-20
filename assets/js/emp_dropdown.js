@@ -146,6 +146,8 @@ $(document).ready(function() {
                 getEmpBu(empId);
                 getEmpOrg(empId);
                 getEmpPos(empId);
+                getEmpSenDate(empId);
+                getEmpStat(empId);
             break;
             case 'competency':
                 getEmpNik(empId);

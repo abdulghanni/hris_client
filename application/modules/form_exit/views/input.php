@@ -59,12 +59,7 @@
                       </div>
                     <?php endif; ?>
 
-                      <div class="col-md-2">
-                        <label class="form-label text-right">Wilayah</label>
-                      </div>
-                      <div class="col-md-3">
-                        <input name="form3LastName" id="bu" type="text"  class="form-control" placeholder="Wilayah" value="" disabled="disabled">
-                      </div>
+                      
 
                     </div>
 
@@ -90,21 +85,26 @@
                         <input name="form3LastName" id="position" type="text"  class="form-control" placeholder="Jabatan" value="" disabled="disabled">
                       </div>
                       <div class="col-md-2">
-                        <label class="form-label text-right">Tanggal Keluar</label>
+                        <label class="form-label text-right">Tanggal Masuk</label>
                       </div>
-                    <?php if(!empty($user_id) && $sess_nik == $superior):?>
                       <div class="col-md-3">
-                        <input type="text" class="form-control" id="sandbox-advance" value="<?php echo dateIndo($date_exit)?>" readonly>
-                        <input type="hidden" name="date_exit" value="<?php echo $date_exit ?>">
+                        <input name="form3LastName" id="tgl_masuk" type="text"  class="form-control" placeholder="Tanggal Masuk" value="" disabled="disabled">
                       </div>
-                    <?php else: ?>
+                    </div>
+                    <div class="row form-row">
+                      <div class="col-md-2">
+                        <label class="form-label text-right">Wilayah</label>
+                      </div>
                       <div class="col-md-3">
-                        <div class="input-append success date">
-                          <input type="text" class="form-control" id="sandbox-advance" name="date_exit" required>
-                          <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
-                        </div>    
+                        <input name="form3LastName" id="bu" type="text"  class="form-control" placeholder="Wilayah" value="" disabled="disabled">
                       </div>
-                    <?php endif; ?>
+                      
+                      <div class="col-md-2">
+                        <label class="form-label text-right">Status kepegawaian</label>
+                      </div>
+                      <div class="col-md-3">
+                        <input name="form3LastName" id="old_status" type="text"  class="form-control" placeholder="Jabatan" value="" disabled="disabled">
+                      </div>
                     </div>
                     <div class="row form-row">
                       <div class="col-md-2">
@@ -125,6 +125,22 @@
                           <option value="<?php echo $row->id?>"><?php echo $row->title?></option>
                         <?php endforeach;}?>
                         </select>
+                      </div>
+                    <?php endif; ?>
+                    <div class="col-md-2">
+                        <label class="form-label text-right">Tanggal Keluar</label>
+                      </div>
+                    <?php if(!empty($user_id) && $sess_nik == $superior):?>
+                      <div class="col-md-3">
+                        <input type="text" class="form-control" id="sandbox-advance" value="<?php echo dateIndo($date_exit)?>" readonly>
+                        <input type="hidden" name="date_exit" value="<?php echo $date_exit ?>">
+                      </div>
+                    <?php else: ?>
+                      <div class="col-md-3">
+                        <div class="input-append success date">
+                          <input type="text" class="form-control" id="sandbox-advance" name="date_exit" required>
+                          <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
+                        </div>    
                       </div>
                     <?php endif; ?>
                     </div>
