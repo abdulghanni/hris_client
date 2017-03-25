@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Database Error</title>
+<title>Web Hris Erlangga</title>
 <style type="text/css">
 
 ::selection{ background-color: #E13300; color: white; }
@@ -55,10 +55,10 @@ p {
 </head>
 <body>
 	<div id="container">
-		<!-- <h1><?php //echo $heading; ?></h1>
-		<?php //echo $message; ?> -->
-		<h1>Telah terjadi antrian :</h1>
-		<p>Silakan refresh/reload halaman ini atau hubungi HR Pusat/Administrator</p>
+		<h1><?php echo $heading; ?></h1>
+		<p><?php echo $message; ?></p>
+		<!--h1>Telah terjadi antrian :</h1>
+		<p>Silakan refresh/reload halaman ini atau hubungi HR Pusat/Administrator</p-->
 	</div>
 </body>
 </html>
