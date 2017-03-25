@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Error</title>
+<title>>Web Hris Erlangga</title>
 <style type="text/css">
 
 ::selection{ background-color: #E13300; color: white; }
@@ -56,7 +56,7 @@ p {
 <body>
 	<div id="container">
 		<h1><?php echo $heading; ?></h1>
-		<?php echo $message; ?>
+		<p><?php echo $message; ?></p>
 		<!-- <h1>Telah terjadi kesalahan :</h1>
 		<p>Silakan refresh/reload halaman ini atau hubungi HR Pusat/Administrator</p> -->
 	</div>
