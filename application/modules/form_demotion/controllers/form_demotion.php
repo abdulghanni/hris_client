@@ -101,11 +101,12 @@ class Form_demotion extends MX_Controller {
         $this->data['title'] = "Input - Form Demosi";
         $sess_id = $this->session->userdata('user_id');
         $nik = get_nik($sess_id);
+        $bu = get_user_buid($nik);
         if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page
             redirect('auth/login', 'refresh');
-        }elseif(!is_spv($nik) || !is_admin()){
+        }elseif(!is_spv($nik) && !is_admin()){
             return show_error('Anda tidak dapat mengakses halaman ini.');
         }else{
             $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
