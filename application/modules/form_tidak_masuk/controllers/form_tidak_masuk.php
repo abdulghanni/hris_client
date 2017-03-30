@@ -354,7 +354,7 @@ class form_tidak_masuk extends MX_Controller {
                     if(!empty(getEmail($this->approval->approver('tidak_masuk', $user_id))))$this->send_email(getEmail($this->approval->approver('tidak_masuk', $user_id)), $subject_email_request, $isi_email_request);
             endif;
         }else{
-             $user_id = sessNik();
+            $user_id = sessNik();
             $is_app = getValue('is_app_'.$type, 'users_tidak_masuk', array('id'=>'where/'.$id));
             $approval_status =  $approval_status = getValue('app_status_id_'.$type, 'users_tidak_masuk', array('id'=>'where/'.$id));
             $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
@@ -386,6 +386,7 @@ class form_tidak_masuk extends MX_Controller {
             }else{
                 $this->insert_attendancedata($id);
             }
+
             if($is_app==0){
                 $this->approval->approve('tidak_masuk', $id, $approval_status, $this->detail_email($id));
                 if(!empty(getEmail($user_tidak_masuk_id)))$this->send_email(getEmail($user_tidak_masuk_id), $subject_email , $isi_email);
@@ -617,7 +618,7 @@ class form_tidak_masuk extends MX_Controller {
         {
             //return $this->rest->debug();
             $isi_email = $this->rest->debug();
-            $this->send_email('abdulghanni2@gmail.com', $user_id.' error insert cuti diizin tidak masuk', $isi_email);
+            $this->send_email('andy13galuh@gmail.com', $user_id.' error insert cuti diizin tidak masuk', $isi_email);
             return false;
             //return $this->rest->debug();
         }
@@ -758,7 +759,7 @@ class form_tidak_masuk extends MX_Controller {
         }
         $data = GetAll('users_tidak_masuk', array('id'=>'where/'.$id))->row_array();
         $user_id = get_nik($data['user_id']);
-       $attendance_id = $this->get_last_attendacedata_id();
+        $attendance_id = $this->get_last_attendacedata_id();
         $RECVERSION = $attendance_id[0]['RECVERSION']+1;
         $RECID = $attendance_id[0]['RECID']+1;
         // Start date
@@ -799,9 +800,11 @@ class form_tidak_masuk extends MX_Controller {
            }
             else
            {
-                 //echo "<pre>";
-                ///print_r($this->rest->debug());
+                //echo "<pre>err";
+                //print_r($this->rest->debug());
                 //echo "</pre>";
+                $isi_email = '<pre>'.$this->rest->debug().'</pre>';
+                $this->send_email('andy13galuh@gmail.com', $user_id.' error insert cuti diizin tidak masuk', $isi_email);
                 return false;
             }
             $date = date ("Y-m-d", strtotime("+1 day", strtotime($date)));
