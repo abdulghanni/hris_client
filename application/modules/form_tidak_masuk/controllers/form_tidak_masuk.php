@@ -383,6 +383,8 @@ class form_tidak_masuk extends MX_Controller {
                 $sisa_cuti = $this->get_sisa_cuti($user_nik)['sisa_cuti'] - $jml_hari_cuti;
 
                 $this->update_sisa_cuti($recid, $sisa_cuti);
+
+                $this->insert_attendancedata($id);
             }else{
                 $this->insert_attendancedata($id);
             }

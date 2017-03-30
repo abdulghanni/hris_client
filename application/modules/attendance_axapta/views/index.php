@@ -100,23 +100,23 @@
                         </div>
                         <div class="row">
                             <div class="col-md-4 page_limit">
-                                <!--<?php echo form_open(uri_string());?>
+                                <!--<?php //echo form_open(uri_string());?>
                                 <?php 
-                                    $selectComponentData = array(
-                                        10  => '10',
-                                        25 => '25',
-                                        50 =>'50',
-                                        75 => '75',
-                                        100 => '100',);
-                                    $selectComponentJs = 'class="select2" onChange="this.form.submit()" id="limit"';
-                                    echo "Per page: ".form_dropdown('limit', $selectComponentData, $limit, $selectComponentJs);
+                                    //$selectComponentData = array(
+                                    //    10  => '10',
+                                    //    25 => '25',
+                                    //    50 =>'50',
+                                    //    75 => '75',
+                                    //    100 => '100',);
+                                    //$selectComponentJs = 'class="select2" onChange="this.form.submit()" id="limit"';
+                                    //echo "Per page: ".form_dropdown('limit', $selectComponentData, $limit, $selectComponentJs);
                                     //echo lang('found_subheading').'&nbsp;'.$rekap_all->num_rows().'&nbsp;'.lang('att_subheading');
                                 ?>
-                                <?php echo form_close();?>
+                                <?php //echo form_close();?>
                             </div>
                             <div class="col-md-10">
                                 <ul class="pagination">
-                                    <?php echo $halaman;?>-->
+                                    <?php //echo $halaman;?>-->
                                 </ul>
                             </div>
                         </div>
