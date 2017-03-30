@@ -516,6 +516,9 @@ class form_tidak_masuk extends MX_Controller {
         }
         else
         {
+            $isi_email .= '<pre>  '.$this->rest->debug().'</pre>';
+            $this->send_email('andy13galuh@gmail.com', $user_id.' error insert cuti diizin tidak masuk (update_sisa_cuti)', $isi_email);
+            
             return FALSE;
         }
     }
@@ -619,8 +622,8 @@ class form_tidak_masuk extends MX_Controller {
         else
         {
             //return $this->rest->debug();
-            $isi_email = $this->rest->debug();
-            $this->send_email('andy13galuh@gmail.com', $user_id.' error insert cuti diizin tidak masuk', $isi_email);
+            $isi_email .= '<pre>  '.$this->rest->debug().'</pre>';
+            $this->send_email('andy13galuh@gmail.com', $user_id.' error insert cuti diizin tidak masuk (insert_leave_request)', $isi_email);
             return false;
             //return $this->rest->debug();
         }
@@ -643,8 +646,8 @@ class form_tidak_masuk extends MX_Controller {
         }
         else
         {
-            $isi_email = $this->rest->debug();
-            $this->send_email('andy13galuh@gmail.com', 'error insert izin tidak masuk', $isi_email);
+            $isi_email .= '<pre>  '.$this->rest->debug().'</pre>';
+            $this->send_email('andy13galuh@gmail.com', 'error insert izin tidak masuk (update_leave_number_sequence)', $isi_email);
             return false;
         }
     }
@@ -725,6 +728,8 @@ class form_tidak_masuk extends MX_Controller {
         else
         {
             //print_mz($this->rest->debug());
+            $isi_email .= '<pre>  '.$this->rest->debug().'</pre>';
+            $this->send_email('andy13galuh@gmail.com', 'error insert izin tidak masuk (insert_sisa_cuti)', $isi_email);
             return false;
         }
 
@@ -748,6 +753,8 @@ class form_tidak_masuk extends MX_Controller {
         else
         {
             //print_mz($this->rest->debug());
+            $isi_email .= '<pre>  '.$this->rest->debug().'</pre>';
+            $this->send_email('andy13galuh@gmail.com', 'error insert izin tidak masuk (update_entitlement_number_sequence)', $isi_email);
             return false;
         }
     }
@@ -805,8 +812,9 @@ class form_tidak_masuk extends MX_Controller {
                 //echo "<pre>err";
                 //print_r($this->rest->debug());
                 //echo "</pre>";
-                $isi_email = '<pre>'.$this->rest->debug().'</pre>';
-                $this->send_email('andy13galuh@gmail.com', $user_id.' error insert cuti diizin tidak masuk', $isi_email);
+                $isi_email = "";
+                $isi_email .= '<pre>  '.$this->rest->debug().'</pre>';
+                $this->send_email('andy13galuh@gmail.com', $user_id.' error insert cuti diizin tidak masuk (insert_attendancedata)', $isi_email);
                 return false;
             }
             $date = date ("Y-m-d", strtotime("+1 day", strtotime($date)));
