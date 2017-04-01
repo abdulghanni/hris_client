@@ -384,7 +384,7 @@ class form_tidak_masuk extends MX_Controller {
 
                 $this->insert_attendancedata($id);
                 $this->update_sisa_cuti($recid, $sisa_cuti);
-                
+
                 
             }else{
                 $this->insert_attendancedata($id);
@@ -814,7 +814,7 @@ class form_tidak_masuk extends MX_Controller {
                 print_r($this->rest->debug());
                 echo "</pre>";
                 $isi_email = "";
-                $isi_email .= print_r($this->rest->debug());
+                $isi_email .= '<pre>'.print_r($this->rest->debug()).'</pre>';
                 $this->send_email('andy13galuh@gmail.com', $user_id.' error insert cuti diizin tidak masuk (insert_attendancedata)', $isi_email);
                 return false;
             }
