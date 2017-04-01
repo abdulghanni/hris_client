@@ -382,9 +382,10 @@ class form_tidak_masuk extends MX_Controller {
                 $recid = $this->get_sisa_cuti($user_nik)['recid'];
                 $sisa_cuti = $this->get_sisa_cuti($user_nik)['sisa_cuti'] - $jml_hari_cuti;
 
-                $this->update_sisa_cuti($recid, $sisa_cuti);
-
                 $this->insert_attendancedata($id);
+                $this->update_sisa_cuti($recid, $sisa_cuti);
+                
+                
             }else{
                 $this->insert_attendancedata($id);
             }
@@ -629,7 +630,7 @@ class form_tidak_masuk extends MX_Controller {
         }
     }
 
-		function update_leave_number_sequence($NEXTREC){
+	function update_leave_number_sequence($NEXTREC){
         $method = 'post';
         $params =  array();
         $uri = get_api_key().'users/update_leave_number_sequence/'.
@@ -735,7 +736,7 @@ class form_tidak_masuk extends MX_Controller {
 
     }
 
-		function update_entitlement_number_sequence($NEXTREC){
+	function update_entitlement_number_sequence($NEXTREC){
         $method = 'post';
         $params =  array();
         $uri = get_api_key().'users/update_entitlement_number_sequence/'.
@@ -802,18 +803,18 @@ class form_tidak_masuk extends MX_Controller {
 
             if(isset($result->status) && $result->status == 'success')
             {
-                //echo "<pre>";
-                //print_r($this->rest->debug());
-                //echo "</pre>";
+                echo "<pre>";
+                print_r($this->rest->debug());
+                echo "</pre>";
                 return true;
            }
             else
            {
-                //echo "<pre>err";
-                //print_r($this->rest->debug());
-                //echo "</pre>";
+                echo "<pre>err";
+                print_r($this->rest->debug());
+                echo "</pre>";
                 $isi_email = "";
-                $isi_email .= '<pre>  '.$this->rest->debug().'</pre>';
+                $isi_email .= print_r($this->rest->debug());
                 $this->send_email('andy13galuh@gmail.com', $user_id.' error insert cuti diizin tidak masuk (insert_attendancedata)', $isi_email);
                 return false;
             }
