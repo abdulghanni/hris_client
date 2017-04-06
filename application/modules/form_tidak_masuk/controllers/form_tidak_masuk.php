@@ -584,7 +584,8 @@ class form_tidak_masuk extends MX_Controller {
         $method = 'post';
         $params =  array();
         $uri = get_api_key().'users/leave_request/'.
-               'EMPLID/'.$user_id.
+               //'EMPLID/'.$user_id.
+               'EMPLID/'.$sess_nik.
                '/HRSLEAVETYPEID/'.$data['alasan_cuti_id'].
                '/REMARKS/'.$remarks.
                '/CONTACTPHONE/'.$phone.
@@ -617,7 +618,7 @@ class form_tidak_masuk extends MX_Controller {
         if(isset($result->status) && $result->status == 'success')
         {
            //return $this->rest->debug();
-					 $this->update_leave_number_sequence($NEXTREC);
+			$this->update_leave_number_sequence($NEXTREC);
             return true;
         }
         else
