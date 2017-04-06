@@ -288,25 +288,25 @@ class MX_Controller
       $receiver = getValue('user_nik', 'users_notif_tambahan',$f);
       switch ($form) {
         case 'absen':
-          $subject_form = "Keterangan Tidak Absen";
+          $subject_form = "Keterangan Tidak Absen ".$user_nik.'-'.get_name($user_id);
           break;
         case 'tidak_masuk':
-          $subject_form = "Izin Tidak Masuk";
+          $subject_form = "Izin Tidak Masuk ".$user_nik.'-'.get_name($user_id);
           break;
         case 'recruitment':
           $subject_form = "SDM Baru";
           break;
         case 'pemutusan':
-          $subject_form = "Pemutusan Kontrak";
+          $subject_form = "Pemutusan Kontrak ".$user_nik.'-'.get_name($user_id);
           break;
         case 'kontrak':
-          $subject_form = "Perpanjangan Kontrak";
+          $subject_form = "Perpanjangan Kontrak ".$user_nik.'-'.get_name($user_id);
           break;
         case 'demotion':
-          $subject_form = "Demosi";
+          $subject_form = "Demosi ".$user_nik.'-'.get_name($user_id);
           break;
         case 'rolling':
-          $subject_form = "Mutasi";
+          $subject_form = "Mutasi ".$user_nik.'-'.get_name($user_id);
           break;
         case 'spd_luar_group':
           $subject_form = "Perjalanan Dinas";
@@ -315,13 +315,13 @@ class MX_Controller
           $subject_form = "Pelatihan";
           break;
         case 'resignment':
-          $subject_form = "Pengunduran Diri";
+          $subject_form = "Pengunduran Diri ".$user_nik.'-'.get_name($user_id);
           break;
         case 'kenaikan_gaji':
-          $subject_form = "Kenaikan Gaji";
+          $subject_form = "Kenaikan Gaji ".$user_nik.'-'.get_name($user_id);
         break;
-        case 'Exit Clearance':
-          $subject_form = "Rekomendasi Karyawan Keluar";
+        case 'exit':
+          $subject_form = "Rekomendasi Karyawan Keluar ".$user_nik.'-'.get_name($user_id);
         break;
         
         default:

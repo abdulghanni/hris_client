@@ -351,7 +351,7 @@ class Form_exit extends MX_Controller {
         }
 
         //if($type == 'hrd' && $approval_status == 1){
-            $this->send_notif_tambahan($id, 'Exit Clearance');
+            $this->send_notif_tambahan($id, 'exit');
         //}
 
     }
