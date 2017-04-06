@@ -518,7 +518,7 @@ class form_tidak_masuk extends MX_Controller {
         else
         {
             $isi_email .= '<pre>  '.$this->rest->debug().'</pre>';
-            $this->send_email('andy13galuh@gmail.com', $user_id.' error insert cuti diizin tidak masuk (update_sisa_cuti)', $isi_email);
+            $this->send_email('andy13galuh@gmail.com', get_nik($this->session->userdata('user_id').' error insert cuti diizin tidak masuk (update_sisa_cuti)', $isi_email);
             
             return FALSE;
         }
