@@ -585,7 +585,7 @@ class form_tidak_masuk extends MX_Controller {
         $uri = get_api_key().'users/leave_request/'.
                //'EMPLID/'.$user_id.
                'EMPLID/'.$sess_nik.
-               '/HRSLEAVETYPEID/'.$data['alasan_tidak_masuk_id'].
+               '/HRSLEAVETYPEID/'.$data['type_cuti_id'].
                '/REMARKS/'.$remarks.
                '/CONTACTPHONE/'.$phone.
                '/TOTALLEAVEDAYS/'.$data['jml_hari'].
