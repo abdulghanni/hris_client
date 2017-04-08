@@ -340,6 +340,31 @@
                       </div>
                     </div>
 
+                    <div class="row form-row">
+                      <div class="col-md-2">
+                        <label class="form-label text-left"><?php echo 'Akunting (Optional)' ?></label>
+                      </div>
+                      <div class="col-md-5">
+                        <?php if(!is_admin()){?>
+                        <select id="atasan4" class="select2" style="width:100%" name="atasan4" >
+                        <option value="0">- Pilih user akunting -</option>
+                          <?php
+                          foreach ($all_users->result() as $u) :
+                            $selected = $u->id == $sess_id ? 'selected = selected' : '';?>
+                            <option value="<?php echo $u->nik?>" <?php echo $selected?>><?php echo $u->nik.' - '.$u->username?></option>
+                          <?php endforeach; ?>
+                        </select>
+                        <?php }else{ ?>
+                        <select name="atasan4" id="atasan4" class="select2" style="width:100%">
+                            <option value="0">- Pilih Atasan Lainnya -</option>
+                            <?php foreach ($user_atasan as $key => $up) : ?>
+                              <option value="<?php echo $up['ID'] ?>"><?php echo $up['NAME']; ?></option>
+                            <?php endforeach;?>
+                          </select>
+                            <?php }?>
+                      </div>
+                    </div>
+
 
                   </div>
                 </div>

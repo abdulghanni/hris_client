@@ -71,7 +71,8 @@ class personal_assesment extends MX_Controller {
         $data['emp_id'] = $emp_id = Getvalue('nik', $this->table, array('id'=>'where/'.$id));
         $emp_id = get_nik($emp_id);
         $data['org_id'] = $org_id = get_user_organization_id($emp_id);
-        $data['pos_group_id'] = get_pos_group($emp_id);
+        //$data['pos_group_id'] = get_pos_group($emp_id);
+        $data['pos_group_id'] = get_position($emp_id);
         $data['approver'] = getAll($this->table.'_approver', array($this->table.'_id'=>'where/'.$id));
         $f = array('is_deleted'=>'where/0');
         $data['competency_group'] = GetAll('competency_group', $f)->result();
@@ -181,9 +182,28 @@ class personal_assesment extends MX_Controller {
             $this->db->insert('email', $data4);
             if(!empty(getEmail($approver_id[$i])))$this->send_email(getEmail($approver_id[$i]), $subject_email, $isi_email);
 
-            redirect(base_url($this->controller), 'refresh');
-            
+            //redirect(base_url($this->controller), 'refresh');    
         }
+
+        //approval pak wisnu sebagai manager HR PUSAT
+        $data = array(
+            'competency_personal_assesment_id' => $com_id,
+            'user_id' => 644
+        );
+        $this->db->insert($this->table.'_approver', $data);//print_ag(lq());
+
+        $data5 = array(
+              'sender_id' => get_nik(sessId()),
+              'receiver_id' => get_nik(644),
+              'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+              'subject' => $subject_email,
+              'email_body' => $isi_email,
+              'is_read' => 0,
+        );
+        $this->db->insert('email', $data5);
+        if(!empty(getEmail(644)))$this->send_email(getEmail(644), $subject_email, $isi_email);
+
+        redirect(base_url($this->controller), 'refresh');
         
     }
 
@@ -283,7 +303,8 @@ class personal_assesment extends MX_Controller {
     function get_mapping($emp_id){
         $emp_id = get_nik($emp_id);
         $data['org_id'] = $org_id = get_user_organization_id($emp_id);
-        $data['pos_group_id'] = get_pos_group($emp_id); 
+        $data['pos_group_id'] = get_position($emp_id); 
+        //$data['pos_group_id'] = get_pos_group($emp_id); 
         $f = array('is_deleted'=>'where/0');
         $data['competency_group'] = GetAll('competency_group', $f)->result();
         $data['competency_mapping_indikator'] = $indikatorx = GetAll('competency_mapping_indikator_detail', array('organization_id'=>'where/'.$org_id));

@@ -16,7 +16,6 @@ class Form_recruitment extends MX_Controller {
     
         $this->lang->load('auth');
         $this->load->helper('language');
-
         
     }
 
@@ -181,6 +180,7 @@ class Form_recruitment extends MX_Controller {
                     'user_app_lv1'          => $this->input->post('atasan1'),
                     'user_app_lv2'          => $this->input->post('atasan2'),
                     'user_app_lv3'          => $this->input->post('atasan3'),
+                    'user_app_lv4'          => $this->input->post('atasan4'),
                     'created_on'            => date('Y-m-d',strtotime('now')),
                     'created_by'            => $this->session->userdata('user_id')
                 );
@@ -251,7 +251,7 @@ class Form_recruitment extends MX_Controller {
             //redirect them to the login page
             redirect('auth/login', 'refresh');
         }
-        elseif(!is_user_app_lv1($nik,$id,'users_recruitment')&&!is_user_app_lv2($nik,$id,'users_recruitment')&&!is_user_app_lv3($nik,$id,'users_recruitment')&&!is_creator($nik,$id,'users_recruitment')&&!is_admin()&&!is_admin_bagian()&&!is_hrd_cabang($bu)&&!is_hrd_pusat($nik,9)&&!is_cc_notif($nik,$bu,9)){
+        elseif(!is_user_app_lv1($nik,$id,'users_recruitment')&&!is_user_app_lv2($nik,$id,'users_recruitment')&&!is_user_app_lv3($nik,$id,'users_recruitment')&&!is_user_app_lv4($nik,$id,'users_recruitment')&&!is_creator($nik,$id,'users_recruitment')&&!is_admin()&&!is_admin_bagian()&&!is_hrd_cabang($bu)&&!is_hrd_pusat($nik,9)&&!is_cc_notif($nik,$bu,9)){
             return show_error('Anda tidak dapat mengakses halaman ini.');
         }else{
             $this->data['id'] = $id;
@@ -327,12 +327,16 @@ class Form_recruitment extends MX_Controller {
             if($type !== 'hrd' && $approval_status == 1){
                 $lv = substr($type, -1)+1;
                 $lv_app = 'lv'.$lv;
-                $user_app = ($lv<4) ? getValue('user_app_'.$lv_app, 'users_recruitment', array('id'=>'where/'.$id)):0;
+                $user_app = ($lv<5) ? getValue('user_app_'.$lv_app, 'users_recruitment', array('id'=>'where/'.$id)):0;
                 $user_app_lv3 = getValue('user_app_lv3', 'users_recruitment', array('id'=>'where/'.$id));
-                if(!empty($user_app)):
+                if(!empty($user_app)){
                     if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app),  $subject_email_request , $isi_email_request);
                     $this->approval->request($lv_app, 'recruitment', $id, $user_recruitment_id, $this->detail_email($id));
-                elseif(empty($user_app) && !empty($user_app_lv3) && $type == 'lv1'):
+                }else{
+                    $this->approval->request('hrd', 'recruitment', $id, $user_recruitment_id, $this->detail_email($id));
+                    if(!empty(getEmail($this->approval->approver('recruitment', $user_id))))$this->send_email(getEmail($this->approval->approver('recruitment', $user_id)), $subject_email_request, $isi_email_request);
+                }
+                /*elseif(empty($user_app) && !empty($user_app_lv3) && $type == 'lv1'):
                     if(!empty(getEmail($user_app_lv3)))$this->send_email(getEmail($user_app_lv3), $subject_email_request, $isi_email_request);
                     $this->approval->request('lv3', 'recruitment', $id, $user_recruitment_id, $this->detail_email($id));
                 elseif(empty($user_app) && empty($user_app_lv3) && $type == 'lv1'):
@@ -344,7 +348,7 @@ class Form_recruitment extends MX_Controller {
                 elseif(empty($user_app_lv3) && $type == 'lv2'):
                     $this->approval->request('hrd', 'recruitment', $id, $user_recruitment_id, $this->detail_email($id));
                     if(!empty(getEmail($this->approval->approver('recruitment', $user_id))))$this->send_email(getEmail($this->approval->approver('recruitment', $user_id)), $subject_email_request, $isi_email_request);
-                endif;
+                endif;*/
             }else{
                 $email_body = "Status pengajuan permohonan recruitment yang diajukan oleh ".get_name($user_recruitment_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_recruitment/detail/'.$id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_recruitment/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
                 switch($type){
@@ -374,7 +378,28 @@ class Form_recruitment extends MX_Controller {
                         //if(!empty(getEmail($receiver_lv1)))$this->send_email(getEmail($receiver_lv1), 'Status Pengajuan Permohonan recruitment Dari Atasan', $email_body);
                     break;
 
+                    case 'lv4':
+                        $app_status = getValue('approval_status_id_lv4', 'users_recruitment', array('id'=>'where/'.$id));
+                        if($app_status == 2)$this->db->where('id', $id)->update('users_recruitment', array('is_deleted'=>1));
+                        $receiver_lv3 = getValue('user_app_lv3', 'users_recruitment', array('id'=>'where/'.$id));
+                        $this->approval->not_approve('recruitment', $id, $receiver_lv3, $approval_status ,$this->detail_email($id));
+                        //if(!empty(getEmail($receiver_lv2)))$this->send_email(getEmail($receiver_lv2), 'Status Pengajuan Permohonan recruitment Dari Atasan', $email_body);
+
+                        $receiver_lv2 = getValue('user_app_lv2', 'users_recruitment', array('id'=>'where/'.$id));
+                        $this->approval->not_approve('recruitment', $id, $receiver_lv2, $approval_status ,$this->detail_email($id));
+                        //if(!empty(getEmail($receiver_lv1)))$this->send_email(getEmail($receiver_lv1), 'Status Pengajuan Permohonan recruitment Dari Atasan', $email_body);
+
+                        $receiver_lv1 = getValue('user_app_lv1', 'users_recruitment', array('id'=>'where/'.$id));
+                        $this->approval->not_approve('recruitment', $id, $receiver_lv1, $approval_status ,$this->detail_email($id));
+                        //if(!empty(getEmail($receiver_lv1)))$this->send_email(getEmail($receiver_lv1), 'Status Pengajuan Permohonan recruitment Dari Atasan', $email_body);
+                    break;
+
                     case 'hrd':
+                        $receiver_lv4 = getValue('user_app_lv4', 'users_recruitment', array('id'=>'where/'.$id));
+                        if(!empty($receiver_lv4)):
+                            $this->approval->not_approve('recruitment', $id, $receiver_lv4, $approval_status ,$this->detail_email($id));
+                            //if(!empty(getEmail($receiver_lv3)))$this->send_email(getEmail($receiver_lv3), 'Status Pengajuan Permohonan recruitment Dari Atasan', $email_body);
+                        endif;
                         $receiver_lv3 = getValue('user_app_lv3', 'users_recruitment', array('id'=>'where/'.$id));
                         if(!empty($receiver_lv3)):
                             $this->approval->not_approve('recruitment', $id, $receiver_lv3, $approval_status ,$this->detail_email($id));

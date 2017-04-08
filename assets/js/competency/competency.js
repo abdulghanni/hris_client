@@ -10,7 +10,7 @@ function addApprover(tableID){
             $("#"+tableID).find('tbody').append(response);
             $("#submit").show();	
             $("#btnAddApprover").attr('disabled',false);
-            $("#btnAddApprover").text('Tambah Approver');
+            $("#btnAddApprover").text('Tambah Atasan');
             $(document).find("select.select2").select2({
                 dropdownAutoWidth : true
             });

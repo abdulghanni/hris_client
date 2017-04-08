@@ -51,6 +51,15 @@ $(document).ready(function() {
                 getEmpNik(empId);
                 getEmpPos(empId);
             break;
+            case 'form_training_notif':
+                if(s2 == 'input'){
+                    getAtasan1(empId);
+                    getAtasan3(empId);
+                }
+                getEmpOrg(empId);
+                getEmpNik(empId);
+                getEmpPos(empId);
+            break;
             case 'form_medical':
                 getAtasan1(empId);
                 getAtasan3(empId);

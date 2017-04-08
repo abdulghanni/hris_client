@@ -1667,6 +1667,8 @@
 
 		if ($form == 'training_group' || $form == 'training') {
 			$user_id = 'user_pengaju_id';
+		}elseif($form == 'training_notif'){
+			$user_id = 'user_peserta_id';
 		}elseif(substr($form, 0, 3) == 'spd' ){
 			$user_id = 'task_creator';
 		}else{
@@ -1781,6 +1783,25 @@
                 $getuser_info = file_get_contents($url);
                 $user_info = json_decode($getuser_info, true);
                 return $user_info['POSITIONGROUP'];
+            } else {
+                return '-';
+            }
+		}
+	}
+
+	if(!function_exists('get_position'))
+	{
+		function get_position($user_id)
+		{
+			$CI =&get_instance();
+            $url = get_api_key().'users/employement/EMPLID/'.$user_id.'/format/json';
+            $headers = get_headers($url);
+            $response = substr($headers[0], 9, 3);
+            if ($response != "404") 
+            {
+                $getuser_info = file_get_contents($url);
+                $user_info = json_decode($getuser_info, true);
+                return $user_info['POSITION'];
             } else {
                 return '-';
             }

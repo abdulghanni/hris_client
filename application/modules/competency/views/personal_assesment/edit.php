@@ -177,9 +177,9 @@
 								</div>
 				            	<div id="approver">
 				            		<fieldset>
-				            			<legend>Approver</legend>
+				            			<legend>Atasan</legend>
 						            	<div class="col-md-12">
-						            		<button id="btnAddApprover" type="button" class="btn btn-primary" onclick="addApprover('tblApprover')"><i class="icon-plus"></i> Tambah Approver</button>
+						            		<button id="btnAddApprover" type="button" class="btn btn-primary" onclick="addApprover('tblApprover')"><i class="icon-plus"></i> Tambah Atasan</button>
 						            	</div>
 						            	<div class="col-md-7">
 						            		<table class="table" id="tblApprover">
@@ -196,8 +196,9 @@
 						            					$i = 1;foreach ($approver->result() as $a) {
 						            				?>
 						            				<tr>
+						            						
+						            						<td>Atasan</td>
 						            						<td><?=$i++?></td>
-						            						<td>Nama Approver</td>
 						            						<td><?=get_name($a->user_id)?>
 						            							<input type="hidden" name="approver_id[]" value="<?=$a->user_id?>">
 						            						</td>

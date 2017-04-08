@@ -141,6 +141,11 @@ class Approval {
                 $form = 'Training Karyawan (Group)';
                 $isi_email = get_name($user_id).' mengajukan '.$form.', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>';
                 break;
+            case "training_notif":
+                $receiver = $CI->approval->approver('training_notif', $user_nik);
+                $form = 'Notifikasi Pelatihan';
+                $isi_email = get_name($user_id).' mengajukan '.$form.', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />'.$detail.'<br />untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a>';
+                break;
             case "medical":
                 $receiver = $CI->approval->approver($form, $user_nik);
                 $form = 'Rekapitulasi Rawat Inap';
@@ -207,6 +212,10 @@ class Approval {
                 break;
             case "training_group":
                 $form = 'Pelatihan Karyawan (Group)';
+                $created_for = get_nik($created_for);
+                break;
+            case "training_notif":
+                $form = 'Notifikasi Pelatihan';
                 $created_for = get_nik($created_for);
                 break;
             case "medical":
@@ -439,6 +448,9 @@ class Approval {
                 $user_id = getValue('user_pengaju_id', 'users_'.$form, array('id'=>'where/'.$id));
                 break;
             case "training_group":
+                $user_id = getValue('user_pengaju_id', 'users_'.$form, array('id'=>'where/'.$id));
+                break;
+            case "training_notif":
                 $user_id = getValue('user_pengaju_id', 'users_'.$form, array('id'=>'where/'.$id));
                 break;
             default:
