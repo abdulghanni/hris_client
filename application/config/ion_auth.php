@@ -94,7 +94,7 @@ $config['tables']['users_approval']  = 'users_approval';
 $config['tables']['users_approval_khusus']  = 'users_approval_khusus';
 $config['tables']['users_admin_khusus']  = 'users_admin_khusus';
 $config['tables']['users_form_template']  = 'users_form_template';
-
+$config['tables']['users_training_notif']  = 'users_training_notif';
 /*
  | Users table column and Group table column you want to join WITH.
  |

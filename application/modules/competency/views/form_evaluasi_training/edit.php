@@ -69,7 +69,7 @@
 				                        <label class="form-label text-right">Nama Training</label>
 				                      </div>
 				                      <div class="col-md-9">
-				                        <input name="nama_training" id="nama_training" type="text"  class="form-control" placeholder="-" value="<?=$form->nama_training?>">
+				                        <input name="nama_training" id="nama_training" type="text"  class="form-control" placeholder="-" value="<?=$form->nama_training?>" readonly>
 				                      </div>
 				                    </div>
 				                    <div class="row form-row">
@@ -77,8 +77,8 @@
 				                        <label class="form-label text-right">Tanggal Training</label>
 				                      </div>
 				                      <div class="col-md-9">
-				                        <div id="datepicker_start" class="input-append date success no-padding">
-				                          <input type="text" class="form-control" name="tgl_training" value="<?=$form->tgl_training?>" required>
+				                        <div id="datepicker_start" class="input-append success no-padding">
+				                          <input type="text" class="form-control" name="tgl_training" value="<?=$form->tgl_training?>" required readonly>
 				                          <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span> 
 				                        </div>
 				                      </div>

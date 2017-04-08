@@ -67,13 +67,15 @@ class mapping_standar extends MX_Controller {
         foreach ($indikatorx->result() as $r) {
             $indikator[] = $r->competency_def_id;
         }
-
+        
         $data['def_indikator'] = array_unique($indikator);
 
-        $pos = $this->competency->get_position_group_from_org($org_id);
+        //$pos = $this->competency->get_position_group_from_org($org_id);
+        $pos = $this->competency->get_position_from_org($org_id);
         $pos_group = array();
         foreach ($pos as $key => $value) {
-            $pos_group[] = $value['POSITIONGROUP'];
+            //$pos_group[] = $value['POSITIONGROUP'];
+            $pos_group[] = $value['DESCRIPTION'];
         }
 
         $data['pos_group'] = $pos_group = array_unique($pos_group);
@@ -246,10 +248,12 @@ class mapping_standar extends MX_Controller {
         $data['approver'] = GetAll($this->table.'_approver', array('organization_id'=>'where/'.$org_id));
         $data['data'] = $this->main->standar($org_id);
         $data['org_id'] = $org_id;
-        $pos = $this->competency->get_position_group_from_org($org_id);
+        //$pos = $this->competency->get_position_group_from_org($org_id);
+        $pos = $this->competency->get_position_from_org($org_id);
         $pos_group = array();
         foreach ($pos as $key => $value) {
-            $pos_group[] = $value['POSITIONGROUP'];
+            //$pos_group[] = $value['POSITIONGROUP'];
+            $pos_group[] = $value['DESCRIPTION'];
         }
 
         $data['pos_group'] = $pos_group = array_unique($pos_group);

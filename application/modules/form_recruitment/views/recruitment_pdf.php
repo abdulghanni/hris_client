@@ -148,7 +148,7 @@ $signed = assets_url('img/signed.png');?>
   </table>
   <textarea class="jobdesc" rows="<?php echo $trow?>" width="1000px" align="center"><?php echo $row->job_desc?></textarea>
   <table class="tg" width="1000px" align="center">
-  <tr>
+ 
   <tr>
     <td height="100" colspan="4">Catatan Pengaju<br/></td>
   </tr>
@@ -157,9 +157,9 @@ $signed = assets_url('img/signed.png');?>
   <table class="tg" width="1000px" align="center">
   <tr>
     <td class="tg-031e" colspan="2" align="center">Pemohon</td>
-    <?php for($i=1;$i<=3;$i++):
+    <?php for($i=1;$i<=4;$i++):
       $x = "user_app_lv".$i;
-      $r = ($i==4)?$row->user_app_hrd:$row->$x;
+      $r = ($i==5)?$row->user_app_hrd:$row->$x;
       if(!empty($r)):?>
     <td class="tg-031e" colspan="2" align="center">Menyetujui</td>
     <?php endif;
@@ -169,9 +169,9 @@ $signed = assets_url('img/signed.png');?>
   <tr>
     <td class="tg-031e">Nama</td>
     <td class="tg-031e" width="200"><?php echo get_name($row->user_id)?></td>
-    <?php for($i=1;$i<=4;$i++):
+    <?php for($i=1;$i<=5;$i++):
       $x = "user_app_lv".$i;
-      $r = ($i==4)?$row->user_app_hrd:$row->$x;
+      $r = ($i==5)?$row->user_app_hrd:$row->$x;
       if(!empty($r)):?>
         <td class="tg-031e">Nama</td>
         <td class="tg-031e" width="200"><?php echo get_name($r)?></td>
@@ -181,23 +181,23 @@ $signed = assets_url('img/signed.png');?>
   <tr>
     <td class="tg-031e">Jabatan</td>
     <td class="tg-031e"><?php echo $position_pengaju?></td>
-     <?php for($i=1;$i<=4;$i++):
+     <?php for($i=1;$i<=5;$i++):
       $x = "user_app_lv".$i;
-      $r = ($i==4)?$row->user_app_hrd:$row->$x;
+      $r = ($i==5)?$row->user_app_hrd:$row->$x;
       if(!empty($r)):?>
     <td class="tg-031e">Jabatan</td>
-    <td class="tg-031e"><?php echo ($i==4) ? "HRD" : get_user_position($r); ?></td>
+    <td class="tg-031e"><?php echo ($i==5) ? "HRD" : get_user_position($r); ?></td>
     <?php endif;
           endfor; ?>
   </tr>
   <tr>
     <td class="tg-031e">Tanggal</td>
     <td class="tg-031e"><?php echo dateIndo($row->date_created)?></td>
-    <?php for($i=1;$i<=4;$i++):
+    <?php for($i=1;$i<=5;$i++):
       $x = "date_app_lv".$i;
       $y = "user_app_lv".$i;
-      $r = ($i==4)?$row->date_app_hrd:$row->$x;
-      $rx = ($i==4)?$row->user_app_hrd:$row->$y;
+      $r = ($i==5)?$row->date_app_hrd:$row->$x;
+      $rx = ($i==5)?$row->user_app_hrd:$row->$y;
       if(!empty($rx)):?>
     <td class="tg-031e">Tanggal</td>
     <td class="tg-031e"><?php echo dateIndo($r)?></td>
@@ -207,9 +207,9 @@ $signed = assets_url('img/signed.png');?>
   <tr>
     <td class="tg-031e">Tanda Tangan</td>
     <td class="tg-031e" align="center"><img class='approval-img-md' src=<?=$signed?>></td>
-     <?php for($i=1;$i<=4;$i++):
+     <?php for($i=1;$i<=5;$i++):
       $x = "approval_status_id_lv".$i;
-      $r = ($i==4)?$row->approval_status_id_hrd:$row->$x;
+      $r = ($i==5)?$row->approval_status_id_hrd:$row->$x;
       if(!empty($r)):?>
     <td class="tg-031e">Tanda Tangan</td>
     <td class="tg-031e" align="center"><?php echo ($r == 1)?"<img class=approval-img-md src=$approved>":(($r == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?>

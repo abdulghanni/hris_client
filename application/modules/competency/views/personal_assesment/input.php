@@ -107,9 +107,9 @@
 								</div>
 				            	<div id="approver">
 				            		<fieldset>
-				            			<legend>Approver</legend>
+				            			<legend>Atasan</legend>
 						            	<div class="col-md-12">
-						            		<button id="btnAddApprover" type="button" class="btn btn-primary" onclick="addApprover('tblApprover')"><i class="icon-plus"></i> Tambah Approver</button>
+						            		<button id="btnAddApprover" type="button" class="btn btn-primary" onclick="addApprover('tblApprover')"><i class="icon-plus"></i> Tambah Atasan</button>
 						            	</div>
 						            	<div class="col-md-7">
 						            		<table class="table" id="tblApprover">

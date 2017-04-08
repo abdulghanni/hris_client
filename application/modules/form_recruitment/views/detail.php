@@ -406,7 +406,7 @@
 
               <br/>
               <?php if(!empty($row->user_app_lv3)){?>
-              <div class="col-md-12 text-xenter" id="lv3">
+              <div class="col-md-6 text-xenter" id="lv3">
                 <div class="col-md-12 text-center">
                   <p class="wf-approve-sp">
                   <div class="col-md-12"><span class="semi-bold">Mengetahui / Menyetujui,</span><br/><br/></div>
@@ -443,6 +443,44 @@
               </div>
               <?php } ?>
 
+              <?php if(!empty($row->user_app_lv4)){?>
+              <div class="col-md-6 text-xenter" id="lv4">
+                <div class="col-md-12 text-center">
+                  <p class="wf-approve-sp">
+                  <div class="col-md-12"><span class="semi-bold">Mengetahui / Menyetujui,</span><br/><br/></div>
+                    <?php 
+                    $approved = assets_url('img/approved_stamp.png');
+                    $rejected = assets_url('img/rejected_stamp.png');
+                    if(!empty($row->user_app_lv4) && $row->is_app_lv4 == 0 && get_nik($sess_id) == $row->user_app_lv4){?>
+                      <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitModalLv4"><i class="icon-ok"></i>Submit</div>
+                      <span class="small"></span>
+                      <span class="semi-bold"></span><br/>
+                      <span class="small"></span><br/>
+                      <span class="semi-bold"></span><br/>
+                      <span class="semi-bold">(<?php echo get_user_position($row->user_app_lv4)?>)</span>
+                    <?php }elseif(!empty($row->user_app_lv4) && $row->is_app_lv4 == 1){
+                      echo ($row->approval_status_id_lv4 == 1)?"<img class=approval-img src=$approved>": (($row->approval_status_id_lv4 == 2) ? "<img class=approval-img src=$rejected>"  : (($row->approval_status_id_lv4 == 3) ? "<img class=approval-img src=$pending>" : "<span class='small'></span><br/>"));?>
+                      <span class="small"></span><br/>
+                      <span class="semi-bold"><?php echo get_name($row->user_app_lv4)?></span><br/>
+                      <span class="small"><?php echo dateIndo($row->date_app_lv4)?></span><br/>
+                      <span class="semi-bold">(<?php echo get_user_position($row->user_app_lv4)?>)</span>
+                    <?php }else{?>
+                        <span class="small"></span><br/>
+                        <span class="small"></span><br/>
+                        <span class="semi-bold"></span><br/>
+                        <span class="small"></span><br/>
+                        <span class="small"></span><br/>
+                        <span class="semi-bold"></span><br/>
+                        <span class="semi-bold"><?php echo get_name($row->user_app_lv4)?></span><br/>
+                        <span class="small"><?php echo dateIndo($row->date_app_lv4)?></span><br/>
+                        <span class="semi-bold">(<?php echo get_user_position($row->user_app_lv4)?>)</span>
+                    <?php } ?>
+                  </p>
+                </div>
+
+              </div>
+              <?php } ?>
+
 
 
                   </div>
@@ -460,7 +498,7 @@
 
 
 
-<?php for($i=1;$i<4;$i++):?>
+<?php for($i=1;$i<5;$i++):?>
   <!--approval  Modal atasan -->
 <div class="modal fade" data-backdrop="static" data-keyboard="false" id="<?php echo 'submitModalLv'.$i?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog" id="modaldialog">
