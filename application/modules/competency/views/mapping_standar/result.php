@@ -42,7 +42,18 @@
 							<?php }?>
 						</tr>
 						<?php } ?>
+						
 					<?php } ?>
+					<tr>
+						<td colspan="2" class="text-center"><strong>TOTAL</strong></td>
+						<?php foreach ($pos_group as $key => $value) {
+									$f = array('organization_id'=>'where/'.$org_id, 'position_group_id'=>'where/'.$value);
+								?>
+								<td width="<?=$col?>%" class="text-center">
+									<?=getValue('sum(level)', $ci->table.'_detail', $f)?>
+								</td>
+							<?php }?>
+					</tr>
 				</tbody>
 			</table>
 
