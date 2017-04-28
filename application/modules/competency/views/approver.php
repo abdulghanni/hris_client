@@ -1,6 +1,6 @@
 <tr>
-	<td>Atasan</td>
 	<td><?=$id?></td>
+	<td>Atasan</td>
 	<td>
 		<select class="select2" name="approver_id[]" style="width:100%">
 			<option value="0">-- Pilih Atasan --</option>

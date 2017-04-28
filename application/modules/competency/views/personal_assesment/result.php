@@ -63,7 +63,8 @@
 							}?>
 						</select>
 					</td>
-					<td><input name="tgl[]" class="tanggal form-control" required></td>
+					<!-- <td><input name="tgl[]" class="tanggal form-control" required></td> -->
+					<td><input name="tgl[]" class="tanggal form-control"></td>
 					<td><input type="text" name="pic[]" class="form-control"></td>
 					<td><input type="text" name="hasil[]" class="form-control"></td>
 				</tr>

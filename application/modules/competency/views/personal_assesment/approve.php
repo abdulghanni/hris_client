@@ -122,9 +122,9 @@
 															<?=$d->gap?>	
 														</td>
 														<td>
-															<?=getValue('title', 'competency_tindakan', array('id'=>'where/'.$d->competency_tindakan_id,'is_deleted'=>'where/0'))?>	
+															<?=($d->competency_tindakan_id == 0) ? '-' : getValue('title', 'competency_tindakan', array('id'=>'where/'.$d->competency_tindakan_id,'is_deleted'=>'where/0'))?>	
 														</td>
-														<td><?=dateIndo($d->tgl)?></td>
+														<td><?=($d->tgl == '1970-01-01') ? '-' : dateIndo($d->tgl)?></td>
 														<td><?=$d->pic?>	</td>
 														<td><?=$d->hasil?>	</td>
 													</tr>

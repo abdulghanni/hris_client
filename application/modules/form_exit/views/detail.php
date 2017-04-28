@@ -317,7 +317,7 @@
                               <span class="small"></span><br/>
                               <?php } ?>
                               <span class="semi-bold"><?php echo get_name_admin_it(get_user_buid($user_nik))?></span><br/>
-                              <span class="semi-bold">IT</span>
+                              <span class="semi-bold">IT<?php echo get_name_admin_it(get_user_buid($user_nik))?></span>
                             </p>
                           </div>
                           <div class="col-md-3" id="keuangan">

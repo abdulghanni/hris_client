@@ -192,7 +192,13 @@
 						                			</tr>
 						            			</thead>
 						            			<tbody>
-						            				
+							            			<tr>
+														<td>1</td>
+														<td>HRD</td>
+														<td>
+															Chandra Wisnu Kristiaji
+														</td>
+													</tr>
 						            			</tbody>
 						            		</table>
 						            	</div>

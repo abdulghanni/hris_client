@@ -210,6 +210,13 @@
 					                			</tr>
 					            			</thead>
 					            			<tbody>
+						            			<!-- <tr>
+													<td>1</td>
+													<td>HRD</td>
+													<td>
+														Chandra Wisnu Kristiaji
+													</td>
+												</tr> -->
 					            				<?php
 					            				if($approver->num_rows>0){
 					            					$i = 1;foreach ($approver->result() as $a) {
