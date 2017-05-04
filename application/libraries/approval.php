@@ -597,6 +597,19 @@ class Approval {
 
         return $approver;
     }
+
+    // USER YANG DIPILIH UNTUK APPROVE DIBAGIAN HRD
+    public function pewawancara($id)
+    {
+        //$bu = get_user_buid($user_nik);//lastq();
+        //if($bu == 0)$bu=50;
+        //print_mz($bu);
+        //$form_type_id = getValue('id', 'form_type', array('title'=>'like/'.$form));
+        $filter = array('id'=>'where/'.$id);
+        $approver = getValue('nama_pewawancara', 'users_resignment', $filter);
+
+        return $approver;
+    }
 }
 
 /* End of file Approval.php */

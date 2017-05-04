@@ -373,11 +373,15 @@
                     
                   <div class="col-md-3" id="hrd">
                     <p class="wf-approve-sp">
-                    <div class="col-md-12"><span class="semi-bold">Diterima HRD</span><br/><br/></div>
+                    <div class="col-md-12"><span class="semi-bold">Diterima HRD </span><br/><br/></div>
                       <?php 
                       $submitbutton = ($row->is_invited == 0) ? '#undanganModal' : '#submitModalHrd';
                       $submitlabel =  ($row->is_invited == 0) ? 'Undang Wawancara' : 'Wawancara';
-                      if($row->is_app_hrd == 0 && $this->approval->approver('resignment', $user_nik) == $sess_nik){?>
+                      if(($row->is_app_hrd == 0 && $this->approval->approver('resignment', $user_nik) == $sess_nik) || ($row->is_app_hrd == 0 && $this->approval->pewawancara($row->id) == $sess_nik)){
+                      //if($row->is_app_hrd == 0 && $this->approval->pewawancara($row->id) == $sess_nik){
+                      ?>
+                      
+
                         <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="<?php echo $submitbutton ?>"><i class="icon-ok"></i><?php echo $submitlabel?></div>
                         <span class="small"></span>
                         <span class="semi-bold"></span><br/>

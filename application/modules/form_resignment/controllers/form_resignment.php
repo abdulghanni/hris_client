@@ -369,6 +369,30 @@ class Form_resignment extends MX_Controller {
                     endif;
                 }
                 $this->main->update($id,$data2);
+                
+                //kirim notif ke pak wisnu untuk update approval di HRD setelah melakukan wawancara
+                if($user_id != 'P0227') 
+                {
+                    $url = base_url().'form_resignment/detail/'.$id;
+                    $isi_email = get_name($this->session->userdata('user_id'))."telah selesai melakukan wawancara, silakan ubah wawancara untuk melihat detail wawancara dan merubah nama approval atas nama anda. untuk melihat detail silakan <a class='klikmail' href=$url>Klik Disini</a> atau <a href='http://123.231.241.12/hris_client/form_resignment/detail/".$id."'>Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />";
+
+                    $pewawancara = 'P0227';
+                    $data_wawancara = array(
+                                'sender_id' => get_nik($this->session->userdata('user_id')),
+                                'receiver_id' => $pewawancara,
+                                'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                                'subject' => get_name($this->session->userdata('user_id')).' Telah melakukan Wawancara Pengunduran Diri',
+                                'email_body' => $isi_email.$this->detail_email($id),
+                                'is_read' => 0,
+                            );
+                    $this->db->insert('email', $data_wawancara);
+                    (!empty(getEmail($pewawancara))) ? $this->send_email(getEmail($pewawancara), get_form_no($id).' - Wawancara pengunduran diri telah selesai', $isi_email) : '';
+                }else{
+                    
+                }
+                
+                
+
             else:
                 $data = array(
                 'is_app_'.$type => 1, 
@@ -456,7 +480,9 @@ class Form_resignment extends MX_Controller {
                 );
         $this->db->insert('email', $data);
        if(!empty(getEmail(get_nik($user_id))))$this->send_email(getEmail($user_id), get_form_no($id).'- Undangan Wawancara Resignment', $isi_email);
-        $pewawancara = get_value('nama_pewawancara', 'users_resignment', array('id'=>'where/'.$id));
+
+        //$pewawancara = get_value('nama_pewawancara', 'users_resignment', array('id'=>'where/'.$id));
+        $pewawancara = $this->input->post('nama_pewawancara');
         $data = array(
                     'sender_id' => get_nik($sess_id),
                     'receiver_id' => $pewawancara,
@@ -466,7 +492,7 @@ class Form_resignment extends MX_Controller {
                     'is_read' => 0,
                 );
         $this->db->insert('email', $data);
-       if(!empty(getEmail($pewawancara)))$this->send_email(getEmail($pewawancara), get_form_no($id).'- Undangan Melakukan Wawancara Pengunduran Diri', $isi_email);
+        if(!empty(getEmail($pewawancara)))$this->send_email(getEmail($pewawancara), get_form_no($id).'- Undangan Melakukan Wawancara Pengunduran Diri', $isi_email);
         
     }
 
