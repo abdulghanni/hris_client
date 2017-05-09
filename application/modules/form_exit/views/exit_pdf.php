@@ -107,11 +107,12 @@ $rejected = assets_url('img/rejected_stamp.png');?>
 <table width="1000" align="center">
   <tbody>
     <tr>
-      <th width="200" height="50"></th>
-      <th width="200"></th>
-      <th width="200">&nbsp;&nbsp;&nbsp;&nbsp;Mengetahui,</th>
-      <th width="200"></th>
-      <th width="200"></th>
+      <th width="166" height="50"></th>
+      <th width="166"></th>
+      <th width="166">&nbsp;&nbsp;&nbsp;&nbsp;Mengetahui,</th>
+      <th width="166"></th>
+      <th width="166"></th>
+      <th width="166"></th>
     </tr>
     <tr>
       <td align="center"><?php echo ($row->app_status_id_mgr == 1)?"<img class=approval-img-md src=$approved>":(($row->app_status_id_mgr == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
@@ -119,6 +120,7 @@ $rejected = assets_url('img/rejected_stamp.png');?>
       <td align="center"><?php echo ($row->app_status_id_perpus == 1)?"<img class=approval-img-md src=$approved>":(($row->app_status_id_perpus == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
       <td align="center"><?php echo ($row->app_status_id_hrd == 1)?"<img class=approval-img-md src=$approved>":(($row->app_status_id_hrd == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
       <td align="center"><?php echo ($row->app_status_id_it == 1)?"<img class=approval-img-md src=$approved>":(($row->app_status_id_it == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
+      <td align="center"><?php echo ($row->app_status_id_keuangan == 1)?"<img class=approval-img-md src=$approved>":(($row->app_status_id_keuangan == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?></td>
     </tr>
     <tr>
       <td height="80" align="center"><?php echo get_name($row->user_app_mgr)?><br/><?php echo dateIndo($row->date_app_mgr)?></td>
@@ -126,6 +128,7 @@ $rejected = assets_url('img/rejected_stamp.png');?>
       <td align="center"><?php echo get_name($row->user_app_perpus)?><br/><?php echo dateIndo($row->date_app_perpus)?></td>
       <td align="center"><?php echo get_name($row->user_app_hrd)?><br/><?php echo dateIndo($row->date_app_hrd)?></td>
       <td align="center"><?php echo get_name($row->user_app_it)?><br/><?php echo dateIndo($row->date_app_it)?></td>
+      <td align="center"><?php echo get_name($row->user_app_keuangan)?><br/><?php echo dateIndo($row->date_app_keuangan)?></td>
     </tr>
     <tr >
       <td align="center">GA</td>
@@ -133,6 +136,7 @@ $rejected = assets_url('img/rejected_stamp.png');?>
       <td align="center">Perpustakaan</td>
       <td align="center">HRD Database</td>
       <td align="center">IT</td>
+      <td align="center">Keuangan</td>
     </tr>
   </tbody>
 </table>

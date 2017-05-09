@@ -324,7 +324,7 @@ class Form_recruitment extends MX_Controller {
                 $this->approval->update_approve('recruitment', $id, $approval_status, $this->detail_email($id));
                 if(!empty(getEmail($user_recruitment_id)))$this->send_email(getEmail($user_recruitment_id), get_form_no($id).'['.$approval_status_mail.']Perubahan Status Pengajuan Permohonan Permintaan SDM dari Atasan', $isi_email);
             }
-            if($type !== 'hrd' && $approval_status == 1){
+            if($type != 'hrd' && $approval_status == 1){
                 $lv = substr($type, -1)+1;
                 $lv_app = 'lv'.$lv;
                 $user_app = ($lv<5) ? getValue('user_app_'.$lv_app, 'users_recruitment', array('id'=>'where/'.$id)):0;
