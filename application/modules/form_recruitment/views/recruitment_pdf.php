@@ -140,13 +140,13 @@ $signed = assets_url('img/signed.png');?>
   </tr>
   <tr>
     <td class="tg-031e" colspan="2">8. Pengalaman</td>
-    <td class="tg-031e" colspan="2">Bidang : <?php echo $row->pengalaman?>&nbsp;&nbsp;&nbsp;&nbsp;Selama <?php echo $row->jumlah?> Tahun</td>
+    <td class="tg-031e" colspan="2">Bidang : <?php echo $row->pengalaman?>&nbsp;&nbsp;&nbsp;&nbsp;Selama <?php echo $row->lama_pengalaman?> Tahun</td>
   </tr>
   <tr>
     <td height="100" colspan="4">Job Desc / Uraian Pekerjaan<br/></td>
   </tr>
   </table>
-  <textarea class="jobdesc" rows="<?php echo $trow?>" width="1000px" align="center"><?php echo $row->job_desc?></textarea>
+  <textarea class="jobdesc" rows="100px" width="1000px" align="center"><?php echo $row->job_desc?></textarea>
   <table class="tg" width="1000px" align="center">
  
   <tr>
