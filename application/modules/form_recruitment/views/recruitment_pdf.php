@@ -146,7 +146,7 @@ $signed = assets_url('img/signed.png');?>
     <td height="100" colspan="4">Job Desc / Uraian Pekerjaan<br/></td>
   </tr>
   </table>
-  <textarea class="jobdesc" rows="100px" width="1000px" align="center"><?php echo $row->job_desc?></textarea>
+  <textarea class="jobdesc" rows="10px" width="1000px" align="center"><?php echo $row->job_desc?></textarea>
   <table class="tg" width="1000px" align="center">
  
   <tr>
