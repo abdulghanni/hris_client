@@ -15,7 +15,7 @@ $(document).ready(function() {
     $('#btnAddJurusan').click(function(){
         var $btn = $(this).button('loading');
             $.ajax({
-                url : uriJurusan,
+                url : 'form_recruitment/add_jurusan',
                 type: "POST",
                 data: $('#formAddJurusan').serialize(),
                 success: function(data)
