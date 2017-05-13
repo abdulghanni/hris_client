@@ -328,14 +328,77 @@ class Form_recruitment extends MX_Controller {
                 $lv = substr($type, -1)+1;
                 $lv_app = 'lv'.$lv;
                 $user_app = ($lv<5) ? getValue('user_app_'.$lv_app, 'users_recruitment', array('id'=>'where/'.$id)):0;
+                $user_app_lv1 = getValue('user_app_lv1', 'users_recruitment', array('id'=>'where/'.$id));
+                $user_app_lv2 = getValue('user_app_lv2', 'users_recruitment', array('id'=>'where/'.$id));
                 $user_app_lv3 = getValue('user_app_lv3', 'users_recruitment', array('id'=>'where/'.$id));
-                if(!empty($user_app)){
-                    if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app),  $subject_email_request , $isi_email_request);
-                    $this->approval->request($lv_app, 'recruitment', $id, $user_recruitment_id, $this->detail_email($id));
-                }else{
+                $user_app_lv4 = getValue('user_app_lv4', 'users_recruitment', array('id'=>'where/'.$id));
+               
+                if($type == 'lv1')
+                {
+                    if(!empty($user_app_lv2))
+                    {
+                        if(!empty(getEmail($user_app_lv2)))$this->send_email(getEmail($user_app_lv2),  $subject_email_request , $isi_email_request);
+                        $this->approval->request('lv2', 'recruitment', $id, $user_recruitment_id, $this->detail_email($id));
+                    }elseif(empty($user_app_lv2) && !empty($user_app_lv3))
+                    {
+                        if(!empty(getEmail($user_app_lv3)))$this->send_email(getEmail($user_app_lv3),  $subject_email_request , $isi_email_request);
+                        $this->approval->request('lv3', 'recruitment', $id, $user_recruitment_id, $this->detail_email($id));
+                    }elseif(empty($user_app_lv2) && empty($user_app_lv3) && !empty($user_app_lv4))
+                    {
+                        if(!empty(getEmail($user_app_lv4)))$this->send_email(getEmail($user_app_lv4),  $subject_email_request , $isi_email_request);
+                        $this->approval->request('lv4', 'recruitment', $id, $user_recruitment_id, $this->detail_email($id));
+                    }else
+                    {
+                        $this->approval->request('hrd', 'recruitment', $id, $user_recruitment_id, $this->detail_email($id));
+                        if(!empty(getEmail($this->approval->approver('recruitment', $user_id))))$this->send_email(getEmail($this->approval->approver('recruitment', $user_id)), $subject_email_request, $isi_email_request);
+                    }
+                }elseif($type == 'lv2')
+                {
+                    if(!empty($user_app_lv3))
+                    {
+                        if(!empty(getEmail($user_app_lv3)))$this->send_email(getEmail($user_app_lv3),  $subject_email_request , $isi_email_request);
+                        $this->approval->request('lv3', 'recruitment', $id, $user_recruitment_id, $this->detail_email($id));
+                    }elseif(empty($user_app_lv3) && !empty($user_app_lv4))
+                    {
+                        if(!empty(getEmail($user_app_lv4)))$this->send_email(getEmail($user_app_lv4),  $subject_email_request , $isi_email_request);
+                        $this->approval->request('lv4', 'recruitment', $id, $user_recruitment_id, $this->detail_email($id));
+                    }else
+                    {
+                       $this->approval->request('hrd', 'recruitment', $id, $user_recruitment_id, $this->detail_email($id));
+                        if(!empty(getEmail($this->approval->approver('recruitment', $user_id))))$this->send_email(getEmail($this->approval->approver('recruitment', $user_id)), $subject_email_request, $isi_email_request);
+                    }
+                }elseif($type == 'lv3')
+                {
+                    if(!empty($user_app_lv4))
+                    {
+                        if(!empty(getEmail($user_app_lv4)))$this->send_email(getEmail($user_app_lv4),  $subject_email_request , $isi_email_request);
+                        $this->approval->request('lv4', 'recruitment', $id, $user_recruitment_id, $this->detail_email($id));
+                    }else
+                    {
+                        $this->approval->request('hrd', 'recruitment', $id, $user_recruitment_id, $this->detail_email($id));
+                        if(!empty(getEmail($this->approval->approver('recruitment', $user_id))))$this->send_email(getEmail($this->approval->approver('recruitment', $user_id)), $subject_email_request, $isi_email_request);
+                    }
+                }elseif($type == 'lv4')
+                {
+                        $this->approval->request('hrd', 'recruitment', $id, $user_recruitment_id, $this->detail_email($id));
+                        if(!empty(getEmail($this->approval->approver('recruitment', $user_id))))$this->send_email(getEmail($this->approval->approver('recruitment', $user_id)), $subject_email_request, $isi_email_request);
+                }else
+                {
                     $this->approval->request('hrd', 'recruitment', $id, $user_recruitment_id, $this->detail_email($id));
                     if(!empty(getEmail($this->approval->approver('recruitment', $user_id))))$this->send_email(getEmail($this->approval->approver('recruitment', $user_id)), $subject_email_request, $isi_email_request);
                 }
+
+                /*if(!empty($user_app))
+                {
+                    if(!empty(getEmail($user_app)))$this->send_email(getEmail($user_app),  $subject_email_request , $isi_email_request);
+                    $this->approval->request($lv_app, 'recruitment', $id, $user_recruitment_id, $this->detail_email($id));
+                }
+                else{
+                    $this->approval->request('hrd', 'recruitment', $id, $user_recruitment_id, $this->detail_email($id));
+                    if(!empty(getEmail($this->approval->approver('recruitment', $user_id))))$this->send_email(getEmail($this->approval->approver('recruitment', $user_id)), $subject_email_request, $isi_email_request);
+                }*/
+                
+                
                 /*elseif(empty($user_app) && !empty($user_app_lv3) && $type == 'lv1'):
                     if(!empty(getEmail($user_app_lv3)))$this->send_email(getEmail($user_app_lv3), $subject_email_request, $isi_email_request);
                     $this->approval->request('lv3', 'recruitment', $id, $user_recruitment_id, $this->detail_email($id));
