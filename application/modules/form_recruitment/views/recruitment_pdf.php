@@ -209,10 +209,12 @@ $signed = assets_url('img/signed.png');?>
     <td class="tg-031e" align="center"><img class='approval-img-md' src=<?=$signed?>></td>
      <?php for($i=1;$i<=5;$i++):
       $x = "approval_status_id_lv".$i;
+      $y = "user_app_lv".$i;
       $r = ($i==5)?$row->approval_status_id_hrd:$row->$x;
-      if(!empty($r)):?>
+      $rx = ($i==5)?$row->user_app_hrd:$row->$y;
+      if(!empty($rx)):?>
     <td class="tg-031e">Tanda Tangan</td>
-    <td class="tg-031e" align="center"><?php echo ($r == 1)?"<img class=approval-img-md src=$approved>":(($r == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small">&nbsp;</span><br/>');?>
+    <td class="tg-031e" align="center"><?php echo ($r == 1)? "<img class=approval-img-md src=$approved>":(($r == 2) ? "<img class=approval-img-md src=$rejected>": '<span class="small">&nbsp;</span><br/>');?>
     </td>
      <?php endif;
           endfor; ?>
