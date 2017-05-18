@@ -210,7 +210,7 @@ $signed = assets_url('img/signed.png');?>
      <?php for($i=1;$i<=5;$i++):
       $x = "approval_status_id_lv".$i;
       $r = ($i==5)?$row->approval_status_id_hrd:$row->$x;
-      if(!empty($r)):?>
+      if(!empty($x)):?>
     <td class="tg-031e">Tanda Tangan</td>
     <td class="tg-031e" align="center"><?php echo ($r == 1)?"<img class=approval-img-md src=$approved>":(($r == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?>
     </td>
