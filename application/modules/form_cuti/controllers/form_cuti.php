@@ -1,5 +1,5 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
-
+ini_set('MAX_EXECUTION_TIME', 0);
 class Form_cuti extends MX_Controller {
 
     public $data;
@@ -1155,6 +1155,7 @@ class Form_cuti extends MX_Controller {
 
         $tgl_awal = $tgl_akhir = $minggu = $sabtu = $koreksi = $libur = 0;
         $liburnasional = $this->get_holiday();
+        $dayliburnasional = array();
 
     //  memecah tanggal untuk mendapatkan hari, bulan dan tahun
         $pecah_tglawal = explode($delimiter, $tglawal);
@@ -1171,8 +1172,12 @@ class Form_cuti extends MX_Controller {
     //    menghitung jumlah libur nasional
         for($i=$a; $i<$b; $i+=$jmldetik){
             for($j=0;$j<sizeof($liburnasional);$j++) {
+                $dayliburnasional[$j] = strtolower(date('D',strtotime($liburnasional[$j])));
                 if($liburnasional[$j]==date("Y-m-d",$i)){
-                    $libur++;
+                    if($dayliburnasional[$j] != 'sun')
+                    {
+                        $libur++;
+                    }
                 }
             }
         }
