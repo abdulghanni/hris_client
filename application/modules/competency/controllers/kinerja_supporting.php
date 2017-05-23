@@ -81,6 +81,7 @@ class kinerja_supporting extends MX_Controller {
         $user_id = get_id($user_nik);
         //$data['id'] = $rowcount;
         $kpi_detail = $this->main->get_kpi_detail($comp_session_id,$organization_id,$position_id, $user_id);
+       // die('q : '.$this->db->last_query());
         if($kpi_detail->num_rows() > 0)
         {
             $data['kpi_detail'] = $r_kpi_detail = $kpi_detail->result_array();

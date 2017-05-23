@@ -17,6 +17,8 @@ class Person extends MX_Controller {
 
         $this->lang->load('auth');
         $this->load->helper('language');
+        $this->load->helper('file');
+        $this->load->helper('directory');
     }
 
     //redirect if needed, otherwise display the user list
@@ -69,10 +71,32 @@ class Person extends MX_Controller {
         }
         else
         {
-    		$this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
+            $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
             
             $this->data['bod'] = (!empty($user->bod)) ? $user->bod : '-';
             $this->_render_page('person/detail', $this->data);
+        }
+    }
+
+    function payroll($id)
+    {
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+        elseif ($id != $this->session->userdata('user_id') && !$this->ion_auth->is_admin()) //remove this elseif if you want to enable this for non-admins
+        {
+            //redirect them to the home page because they must be an administrator to view this
+            //return show_error('You must be an administrator to view this page.');
+            return show_error('You can not view this page.');
+        }
+        else
+        {
+            $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
+            
+            $this->data['bod'] = (!empty($user->bod)) ? $user->bod : '-';
+            $this->_render_page('person/payroll', $this->data);
         }
     }
 

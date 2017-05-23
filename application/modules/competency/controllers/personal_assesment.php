@@ -90,17 +90,38 @@ class personal_assesment extends MX_Controller {
     }
 
     function approve($id, $approver_id=null){
+
         permissionBiasa();
         $data['id'] = $id;
         $data['title'] = $this->title;
         $data['controller'] = $this->controller;
         $data['form'] = getAll($this->table, array('id'=>'where/'.$id))->row();
+
         $data['detail'] = getAll($this->table.'_detail', array($this->table.'_id'=>'where/'.$id))->result();
         $data['approver'] = getAll($this->table.'_approver', array($this->table.'_id'=>'where/'.$id));
         $data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
         $data['approved'] = assets_url('img/approved_stamp.png');
         $data['rejected'] = assets_url('img/rejected_stamp.png');
         $data['pending'] = assets_url('img/pending_stamp.png');
+
+        //$data['total_sk'] = getvalue('sum(sk) as total_sk',$this->table.'_detail', array($this->table.'_id'=>'where/'.$id));
+        $this->db->select('sum(sk) as total_sk, sum(ak) as total_ak, sum(gap) as total_gap');
+        $this->db->from('competency_personal_assesment_detail');
+        $this->db->where('competency_personal_assesment_id', $id);
+        $query_total = $this->db->get();
+        if($query_total->num_rows() > 0)
+        {
+            $row_total = $query_total->row_array();
+            $data['total_sk'] = $row_total['total_sk'];
+            $data['total_ak'] = $row_total['total_ak'];
+            $data['total_gap'] = $row_total['total_gap'];
+        }else{
+            $data['total_sk'] = 0;
+            $data['total_ak'] = 0;
+            $data['total_gap'] = 0;
+        }
+        //die('here : '.$this->db->last_query());
+
         if($approver_id != null){
             $f = array($this->table.'_id' => 'where/'.$id,
                        'user_id' => 'where/'.sessId(),

@@ -129,6 +129,24 @@
 														<td><?=$d->hasil?>	</td>
 													</tr>
 													<?php } ?>
+													<tr>
+														<td width="5%" class="text-center">
+															
+														</td>
+														<td class="text-left" width="25%">
+															TOTAL	
+														</td>
+														<td class="text-center">
+															<?php echo $total_sk?>
+														</td>
+														<td class="text-center">
+															<?php echo $total_ak?>
+														</td>
+														<td class="text-center">
+															<?php echo $total_gap?>
+														</td>
+														<td colspan="4"></td>
+													</tr>
 											</tbody>
 										</table>
 									<div>

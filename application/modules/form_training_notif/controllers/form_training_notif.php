@@ -117,6 +117,7 @@ class form_training_notif extends MX_Controller {
             $this->data['pending'] = assets_url('img/pending_stamp.png');
 
             $this->data['periode'] = GetAll('comp_session',array('is_deleted'=>'where/0'))->result();
+            $this->data['training'] = GetAll('training',array('is_deleted'=>'where/0'))->result();
             if($lv != null){
                 $this->data['row'] = $this->main->detail($id)->row();
                 $app = $this->load->view('form_'.$this->form_name.'/'.$lv, $this->data, true);
@@ -150,6 +151,7 @@ class form_training_notif extends MX_Controller {
         //$this->get_penerima_tugas();
         //$this->get_penerima_tugas_satu_bu();
         $this->data['periode'] = GetAll('comp_session',array('is_deleted'=>'where/0'))->result();
+        $this->data['training'] = GetAll('training',array('is_deleted'=>'where/0'))->result();
         // $this->get_user_atasan();
 
         $this->_render_page('form_training_notif/input', $this->data);
@@ -163,7 +165,7 @@ class form_training_notif extends MX_Controller {
         }
         else
         {
-            $this->form_validation->set_rules('training_name', 'Nama Program Pelatihan', 'trim|required');
+            $this->form_validation->set_rules('training_id', 'Pelatihan/training', 'trim|required');
 
             if($this->form_validation->run() == FALSE)
             {
@@ -177,10 +179,11 @@ class form_training_notif extends MX_Controller {
                 $data = array(
                     'user_pengaju_id' => $sess_id,
                     'user_peserta_id' => $user_id,
-                    'training_name' => $this->input->post('training_name'),
+                    'training_id' => $this->input->post('training_id'),
+                    //'training_name' => $this->input->post('training_name'),
                     'comp_session_id' => $this->input->post('comp_session_id'),
-                    'tanggal_mulai' => date('Y-m-d',strtotime($this->input->post('tanggal_mulai'))),
-                    'tanggal_akhir' => date('Y-m-d',strtotime($this->input->post('tanggal_akhir'))),
+                    //'tanggal_mulai' => date('Y-m-d',strtotime($this->input->post('tanggal_mulai'))),
+                    //'tanggal_akhir' => date('Y-m-d',strtotime($this->input->post('tanggal_akhir'))),
                     'user_app_lv1'          => $this->input->post('atasan1'),
                     'created_on'            => date('Y-m-d',strtotime('now')),
                     'created_by'            => $sess_id,
@@ -196,7 +199,7 @@ class form_training_notif extends MX_Controller {
                         $this->main->insert_et($training_id,$this->input->post('comp_session_id'),$user_id);
                         
                         $user_app_lv1 = getValue('user_app_lv1', 'users_training_notif', array('id'=>'where/'.$training_id));
-                        $subject_email = get_form_no($training_id).'-Pengajuan Permohonan Notifikasi Pelatihan';
+                        $subject_email = get_form_no($training_id).'- Pengajuan Permohonan Notifikasi Pelatihan';
                         $isi_email = get_name($user_id).' mengajukan Permohonan notifikasi pelatihan, untuk melihat detail silakan <a href='.base_url().'form_training_notif/detail/'.$training_id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_training_notif/detail/'.$training_id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
                         if($user_id!==$sess_id):
                             $this->approval->by_admin('training_notif', $training_id, $sess_id, $user_id, $this->detail_email($training_id));
@@ -248,7 +251,7 @@ class form_training_notif extends MX_Controller {
         $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
         $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
         $user_training_id = getValue('user_pengaju_id', 'users_training_notif', array('id'=>'where/'.$id));
-        $subject_email = get_form_no($id).'['.$approval_status_mail.']Status Pengajuan Pelatihan(Group) dari Atasan';
+        $subject_email = get_form_no($id).'['.$approval_status_mail.'] Status Pengajuan Pelatihan(Group) dari Atasan';
         $subject_email_request = get_form_no($id).'-Pengajuan Pelatihan(Group) Karyawan';
         $isi_email = 'Status pengajuan training anda '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_training_notif/detail/'.$id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_training_notif/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
         $isi_email_request = get_name($user_training_id).' mengajukan Permohonan training, untuk melihat detail silakan <a href='.base_url().'form_training_notif/detail/'.$id.'>Klik Disini</a><br />';

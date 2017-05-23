@@ -571,7 +571,7 @@ class form_kpi extends MX_Controller {
                 $this->db->where('organization_id', $org)->where('comp_session_id', $comp_session_id)->update($this->table.'_detail', $data);
             }
 
-        $url = base_url().$this->controller.'/approve/'.$org;
+        $url = base_url().$this->controller.'/approve/'.$org.'/'.$comp_session_id;
         $subject_email = "Form Penilaian KPI Bulanan";
         $isi_email = get_name(sessId())." Membuat penilaian KPI untuk departemen ".get_organization_name($org).
                      "<br/>Untuk melihat detail silakan <a href=$url>Klik disini</a>";
@@ -865,7 +865,8 @@ class form_kpi extends MX_Controller {
     }
 
     // FOR js
-    function do_approve($org_id){
+    function do_approve($org_id)
+    {
         if(!$this->ion_auth->logged_in())
         {
             redirect('auth/login', 'refresh');

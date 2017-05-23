@@ -72,20 +72,34 @@
                             <select class="select2" style="width:100%" id="comp_session_id" name="comp_session_id" required disabled="disabled">
                                   <option value="">-- Pilih Periode --</option>
                               <?php foreach($periode as $u){?>
-                              <?php $selected = ($u->year == $user->comp_session_id) ? 'selected="selected"' : '' ?>
-                                <option value="<?php echo $u->year?>" <?php echo $selected?> ><?php echo $u->year?></option>
+                              <?php $selected = ($u->id == $user->comp_session_id) ? 'selected="selected"' : '' ?>
+                                <option value="<?php echo $u->id?>" <?php echo $selected?> ><?php echo $u->year?></option>
                               <?php } ?>
                             </select>
                           </div>
                         </div>
                         <div class="row form-row">
                           <div class="col-md-3">
+                            <label class="form-label text-right">Training</label>
+                          </div>
+                          <div class="col-md-9">
+                            <select class="select2" style="width:100%" id="training_id" name="training_id" required disabled="disabled">
+                                  <option value="">-- Pilih Training --</option>
+                              <?php foreach($training as $u){?>
+                              <?php $selected = ($u->id == $user->training_id) ? 'selected="selected"' : '' ?>
+                                <option value="<?php echo $u->id?>" <?php echo $selected?> ><?php echo $u->training_title.' ('.date('d-M-Y',strtotime($u->date_start)).' - '.date('d-M-Y',strtotime($u->date_end)).')'?></option>
+                              <?php } ?>
+                            </select>
+                          </div>
+                        </div>
+                        <!-- <div class="row form-row">
+                          <div class="col-md-3">
                             <label class="form-label text-right">Nama Pelatihan</label>
                           </div>
                           <div class="col-md-9">
                             <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Nama program pelatihan" value="<?php echo $user->training_name?>" disabled="disabled">
                           </div>
-                        </div>
+                        </div> -->
                         <!-- <div class="row form-row">
                           <div class="col-md-3">
                             <label class="form-label text-right">Tanggal Pelatihan</label>
@@ -94,7 +108,7 @@
                             <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Tujuan pelatihan" value="<?php //echo $user->tujuan_training?>" disabled="disabled">
                           </div>
                         </div> -->
-                        <div class="row form-row">
+                        <!-- <div class="row form-row">
                           <div class="col-md-3">
                             <label class="form-label text-left">Tanggal Pelatihan</label>
                           </div>
@@ -111,7 +125,7 @@
                                   <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span> 
                                 </div>
                               </div>
-                          </div>
+                          </div> -->
                     <?php 
                         for($i=1;$i<4;$i++):
                           $note_lv = 'note_app_lv'.$i;

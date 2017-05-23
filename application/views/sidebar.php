@@ -14,7 +14,7 @@
       </div>
       <div class="user-info">
         <div class="greeting">Welcome</div>
-        <div class="username" title="<?php echo lang('edit_button')?>"><a href="<?php echo site_url('auth/edit_user/'.$this->session->userdata('user_id'))?>"><?php echo $this->session->userdata('username')?></a></div>
+        <div class="username" title="<?php echo lang('edit_button')?>"><a href="<?php echo site_url('auth/edit_user/'.$this->session->userdata('user_id'))?>"><?php echo get_nik($this->session->userdata('user_id')).' - '.$this->session->userdata('username')?></a></div>
         <div class="usergroup"><?=get_user_group($this->session->userdata('user_id'))?></div>
         <div class="status"><?php echo anchor(site_url('auth/logout'), lang('logout_link_label'), array('title' => lang('logout_link_label')));?></div>
         <br/> <br/>
@@ -32,6 +32,7 @@
       <li class=""> <a href="javascript:;"> <i class="icon-plus-sign"></i> <span class="title">Form pengajuan</span> <span class="arrow "></span> </a>
         <ul class="sub-menu">
           <?php if(is_spv($nik)||is_admin()||is_admin_bagian()):?><li > <a href="<?php echo site_url('form_recruitment')?>">Permintaan SDM</a></li><?php endif; ?>
+          <li > <a href="<?php echo site_url('person/payroll/'.$this->session->userdata('user_id'))?>">Slip gaji</a> </li>          
           <li > <a href="<?php echo site_url('form_promosi')?>">Promosi</a> </li>          
           <li > <a href="<?php echo site_url('form_demotion')?>">Demosi</a> </li>          
           <li > <a href="<?php echo site_url('form_rolling')?>">Mutasi</a> </li>    
@@ -59,7 +60,7 @@
           <li > <a href="<?php echo site_url('form_template')?>">Form Template</a> </li>        
            </ul>
       </li>
-      <?php //if (is_admin()):?>
+      <?php //if (is_spv($nik)||is_admin()):?>
       <li class=""> <a href="javascript:;"> <i class="icon-check"></i> <span class="title">Form Penilaian</span> <span class="arrow "></span> </a>
         <ul class="sub-menu">
           <li > <a href="<?php echo site_url('competency/personal_assesment')?>">Personal Assesment</a></li>
@@ -91,7 +92,7 @@
         </ul>
       </li> -->
       <?php if(is_admin_inventaris()||is_admin()){?>
-      <li class=""> <a href="javascript:;"> <i class="icon-cogs"></i> <span class="title">Pengaturan perusahaan</span> <span class="arrow "></span> </a>
+      <li class=""> <a href="javascript:;"> <i class="icon-cogs"></i> <span class="title">Setup perusahaan</span> <span class="arrow "></span> </a>
         <ul class="sub-menu">
           <!--<li > <a href="<?php echo site_url('comp_session')?>">Company Session</a> </li>
           <li > <a href="<?php echo site_url('organization')?>">Organization</a> </li>
@@ -108,12 +109,15 @@
           <?php if(is_admin()):?><li ><a href="<?php echo site_url('inventory_type')?>"> Inventaris</a> </li><?php endif?>
           <?php if(is_admin()):?><li ><a href="<?php echo site_url('notif_tambahan')?>"> Notifikasi Tambahan</a> </li><?php endif?>
           <?php if(is_admin()):?><li > <a href="<?php echo site_url('pengumuman')?>">Pengumuman</a> </li><?php endif?>
+          <?php if(is_admin()):?><li > <a href="<?php echo site_url('vendor')?>">Vendor</a> </li><?php endif?>
+          <?php if(is_admin()):?><li > <a href="<?php echo site_url('form_training_notif')?>">Notifikasi training</a> </li><?php endif?>
+          <?php if(is_admin()):?><li > <a href="<?php echo site_url('training')?>">Training</a> </li><?php endif?>
           <!--<?php if(is_admin()):?><li > <a href="<?php echo site_url('position')?>">Position</a> </li><?php endif?>-->
         </ul>
       </li>  
       <?php } ?>  
       <?php if (is_admin()):?>
-      <li class=""> <a href="javascript:;"> <i class="icon-cog"></i> <span class="title">Pengaturan Kompetensi</span> <span class="arrow "></span> </a>
+      <li class=""> <a href="javascript:;"> <i class="icon-cogs"></i> <span class="title">Setup Kompetensi</span> <span class="arrow "></span> </a>
         <ul class="sub-menu">
           
           <li > <a href="<?php echo site_url('competency_def')?>">Kompetensi</a></li>

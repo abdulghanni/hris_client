@@ -11,6 +11,8 @@
 			</td>
 			<td width="20%" rowspan="2">Kompetensi</td>
 			<td width="5%" rowspan="2" class="text-center">Standar Komp. (SK)</td>
+			<td width="5%" rowspan="2" class="text-center">Aktual Komp. (AK) thn <?php echo date('Y') - 1 ?></td>
+			<td width="5%" rowspan="2" class="text-center">Score GAP (AK-SK) thn <?php echo date('Y') - 1 ?></td>
 			<td width="5%" rowspan="2" class="text-center">Aktual Komp. (AK)</td>
 			<td width="5%" rowspan="2" class="text-center">Score GAP (AK-SK)</td>
 			<td width="60%" colspan="4" class="text-center">Program Improvement</td>
@@ -31,6 +33,24 @@
 				<?php $j = 1;foreach($kompetensi->result() as $k){
 					$f = array('position_group_id'=>'where/'.$pos_group_id, 'competency_def_id'=>'where/'.$k->id);
 					$sk = getValue('level', 'competency_mapping_standar_detail', $f);
+
+			 
+					$yearsbl = date('Y') - 1;
+					$this->db->select('competency_personal_assesment_detail.ak as aksbl, competency_personal_assesment_detail.gap as gapsbl');
+					$this->db->from('competency_personal_assesment_detail');
+					$this->db->join('competency_personal_assesment', 'competency_personal_assesment.id = competency_personal_assesment_detail.competency_personal_assesment_id', 'left');
+					$this->db->join('comp_session', 'comp_session.id = competency_personal_assesment.comp_session_id', 'left');
+					$this->db->where('competency_personal_assesment_detail.competency_def_id', $k->id);
+					$this->db->where('comp_session.year', $yearsbl);
+					$querysbl = $this->db->get();
+					if($querysbl->num_rows() > 0) {
+						$rowsbl = $querysbl->row_array();
+						$aksbl = $rowsbl['aksbl'];
+						$gapsbl = $rowsbl['gapsbl'];
+					}else{
+						$aksbl = 0;
+						$gapsbl = 0;
+					}
 				?>
 				<tr>
 					<td width="5%">
@@ -44,6 +64,15 @@
 					<td class="text-center">
 						<!-- <?=$sk?> -->
 						<input type="text" id="sk<?=$k->id?>" name="sk[]" class="form-control text-center" value="<?=$sk?>" readonly>
+					</td>
+					<td class="text-center">
+
+						<!-- <?=$sk?> -->
+						<input type="text" id="aksbl<?=$k->id?>" name="aksbl[]" class="form-control text-center" value="<?=$aksbl?>" readonly>
+					</td>
+					<td class="text-center">
+						<!-- <?=$sk?> -->
+						<input type="text" id="gapsbl<?=$k->id?>" name="gapsbl[]" class="form-control text-center" value="<?=$gapsbl?>" readonly>
 					</td>
 					<td>
 						<select id="ak<?=$k->id?>" class="select2" name="ak[]" onchange='getGap("<?=$k->id?>")'>
@@ -66,7 +95,15 @@
 					<!-- <td><input name="tgl[]" class="tanggal form-control" required></td> -->
 					<td><input name="tgl[]" class="tanggal form-control"></td>
 					<td><input type="text" name="pic[]" class="form-control"></td>
-					<td><input type="text" name="hasil[]" class="form-control"></td>
+					<!-- <td><input type="text" name="hasil[]" class="form-control"></td> -->
+					<td><select id="" class="select2" name="hasil[]">
+						<option value="0">-- Pilih --</option>
+						<option value="A">A</option>
+						<option value="B">B</option>
+						<option value="C">C</option>
+						<option value="D">D</option>
+					</select>
+					</td>
 				</tr>
 				<?php } ?>
 			<?php } ?>

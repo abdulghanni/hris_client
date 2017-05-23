@@ -128,7 +128,7 @@ class form_penilaian extends MX_Controller {
         $com = $this->input->post('competency_penilaian_id');
         $kemampuan = $this->input->post('kemampuan');
         $kemauan = $this->input->post('kemauan');
-        $alasan = $this->input->post('alasan');
+        /*$alasan = $this->input->post('alasan');*/
 
         //print_mz($kemampuan[1]);
         // INSERT TO COMPETENCY_form_penilaian
@@ -149,22 +149,52 @@ class form_penilaian extends MX_Controller {
                 'competency_penilaian_id' => $com[$i],
                 'kemampuan' => $kemampuan[$i],
                 'kemauan' => $kemauan[$i],
-                'alasan' => $alasan[$i],
+                /*'alasan' => $alasan[$i],*/
                 );
             $this->db->insert($this->table.'_detail', $data);
         }
-
-        $url = base_url().$this->controller.'/approve/'.$com_id;
-        $subject_email = "Kompetensi - $this->title";
-        $isi_email = get_name(sessId())." Membuat ".$this->title.
-                     "<br/>Untuk melihat detail silakan <a href=$url>Klik disini</a>";
-                     
-                     
+              
         // INSERT TO COMPETENCY_form_penilaian_APPROVER
         $url = base_url().$this->controller.'/approve/'.$com_id;
         $subject_email = "Kompetensi - $this->title";
         $isi_email = get_name(sessId())." Membuat ".$this->title.
                      "<br/>Untuk melihat detail silakan <a href=$url>Klik disini</a>";
+
+        // approval Bu Maria sebagai penilai HR PUSAT
+        $data = array(
+            $this->table.'_id' => $com_id,
+            'user_id' => 118
+        );
+        $this->db->insert($this->table.'_approver', $data);//print_ag(lq());
+
+        $data4 = array(
+              'sender_id' => get_nik(sessId()),
+              'receiver_id' => get_nik(118),
+              'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+              'subject' => $subject_email,
+              'email_body' => $isi_email,
+              'is_read' => 0,
+        );
+        $this->db->insert('email', $data4);
+        if(!empty(getEmail(118)))$this->send_email(getEmail(118), $subject_email, $isi_email);
+
+        // approval pak wisnu sebagai manager HR PUSAT
+        $data = array(
+            $this->table.'_id' => $com_id,
+            'user_id' => 644
+        );
+        $this->db->insert($this->table.'_approver', $data);//print_ag(lq());
+
+        $data4 = array(
+              'sender_id' => get_nik(sessId()),
+              'receiver_id' => get_nik(644),
+              'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+              'subject' => $subject_email,
+              'email_body' => $isi_email,
+              'is_read' => 0,
+        );
+        $this->db->insert('email', $data4);
+        if(!empty(getEmail(644)))$this->send_email(getEmail(644), $subject_email, $isi_email);
                      
         for ($i=0;$i<sizeof($approver_id);$i++) {
             $data = array(
@@ -185,23 +215,7 @@ class form_penilaian extends MX_Controller {
             if(!empty(getEmail($approver_id[$i])))$this->send_email(getEmail($approver_id[$i]), $subject_email, $isi_email);
         }
 
-        // approval pak wisnu sebagai manager HR PUSAT
-        $data = array(
-            $this->table.'_id' => $com_id,
-            'user_id' => 644
-        );
-        $this->db->insert($this->table.'_approver', $data);//print_ag(lq());
-
-        $data4 = array(
-              'sender_id' => get_nik(sessId()),
-              'receiver_id' => get_nik(644),
-              'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-              'subject' => $subject_email,
-              'email_body' => $isi_email,
-              'is_read' => 0,
-        );
-        $this->db->insert('email', $data4);
-        if(!empty(getEmail(644)))$this->send_email(getEmail(644), $subject_email, $isi_email);
+        
 
         redirect(base_url($this->controller), 'refresh');
     }
@@ -214,7 +228,7 @@ class form_penilaian extends MX_Controller {
         $com = $this->input->post('competency_penilaian_id');
         $kemampuan = $this->input->post('kemampuan');
         $kemauan = $this->input->post('kemauan');
-        $alasan = $this->input->post('alasan');
+        /*$alasan = $this->input->post('alasan');*/
 
         //print_mz($kemampuan[1]);
         // INSERT TO COMPETENCY_form_penilaian
@@ -235,7 +249,7 @@ class form_penilaian extends MX_Controller {
                 'competency_penilaian_id' => $com[$i],
                 'kemampuan' => $kemampuan[$i],
                 'kemauan' => $kemauan[$i],
-                'alasan' => $alasan[$i],
+                /*'alasan' => $alasan[$i],*/
                 );
             $this->db->insert($this->table.'_detail', $data);
         }
@@ -291,7 +305,51 @@ class form_penilaian extends MX_Controller {
             $this->db->where($this->table.'_id', $form_id)
                      ->where('user_id', $sessId)
                      ->update($this->table.'_approver', $data);
+
+            if($this->status_approve_hr($form_id,118) == TRUE){
+                // INSERT TO COMPETENCY_form_penilaian_APPROVER
+                $url = base_url().$this->controller.'/approve/'.$form_id;
+                $subject_email = "Kompetensi - $this->title";
+                $isi_email = get_name(sessId())." Membuat ".$this->title.
+                             "<br/>Untuk melihat detail silakan <a href=$url>Klik disini</a>";
+
+                //send email to purwanti (dcpusat.hrd@erlangga.co.id)
+                /*$data4 = array(
+                      'sender_id' => get_nik(sessId()),
+                      'receiver_id' => get_nik(118),
+                      'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                      'subject' => $subject_email,
+                      'email_body' => $isi_email,
+                      'is_read' => 0,
+                );
+                $this->db->insert('email', $data4);
+                if(!empty(getEmail(118)))$this->send_email(getEmail(118), $subject_email, $isi_email);*/
+            }            
+            
             return true;
+        }
+    }
+
+    function status_approve_hr($form_id,$sessId)
+    {
+         if(!$this->ion_auth->logged_in())
+        {
+            redirect('auth/login', 'refresh');
+        }
+        else
+        {
+            $this->db->select('*');
+            $this->db->from($this->table.'_approver');
+            $this->db->where('user_id', $sessId);
+            $this->db->where('is_app', 1);
+            $this->db->where($this->table.'_id', $form_id);
+            $query = $this->db->get();
+            if($query->num_rows() > 0)
+            {
+                return TRUE;
+            }else{
+                return FALSE;
+            }
         }
     }
     

@@ -80,7 +80,6 @@
 												<th width="25%" rowspan="2">Kompetensi</th>
 												<th width="25%" colspan="2" class="text-center">Kemampuan</th>
 												<th width="25%" colspan="2" class="text-center">Kemauan</th>
-												<th width="25%" rowspan="2">Alasan</th>
 											</tr>
 											<tr>
 												<th class="text-center">Kurang</th>
@@ -110,7 +109,6 @@
 													<td class="text-center">
 														<input id="kemauan_mampu<?=$r->id?>" name="kemauan[<?=$r->id?>]" value="1" type="radio" <?=($det->kemauan == 1) ? 'checked' : ''?>>
 													</td>
-													<td><textarea name="alasan[<?=$r->id?>]" class="form-control"><?=$det->alasan?></textarea></td>
 												</tr>
 											<?php } ?>
 										</tbody>
