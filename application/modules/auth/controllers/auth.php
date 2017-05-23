@@ -120,6 +120,8 @@ class Auth extends MX_Controller {
         }
     }
 
+
+
     function keywords(){
         if (!$this->ion_auth->logged_in())
         {
@@ -3877,7 +3879,7 @@ class Auth extends MX_Controller {
                     $this->template->add_css('plugins/select2/select2.css');
                     
                 }
-                elseif(in_array($view, array('auth/edit_user',
+                elseif(in_array($view, array('auth/edit_user'
                     )))
                 {
 
@@ -3892,6 +3894,31 @@ class Auth extends MX_Controller {
 
                     $this->template->add_js('jquery-validate.bootstrap-tooltip.min.js');
                     $this->template->add_js('edit_user.js');
+                    $this->template->add_js('core.js');
+                    $this->template->add_js('jquery.prettyPhoto.js');
+                    
+                    $this->template->add_js('select2.min.js');
+                    
+                    $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
+                    $this->template->add_css('plugins/select2/select2.css');
+                    $this->template->add_css('pace-theme-flash.css');
+                    $this->template->add_css('datepicker.css');
+                    $this->template->add_css('prettyPhoto.css');
+                }elseif(in_array($view, array('auth/list_users'
+                    )))
+                {
+
+                    $this->template->set_layout('default');
+                    $this->template->add_js('jqueryblockui.js');
+                    $this->template->add_js('jquery.sidr.min.js');
+                    $this->template->add_js('breakpoints.js');
+                    $this->template->add_js('pace.min.js');
+                    $this->template->add_js('bootstrap-datepicker.js');
+                    $this->template->add_js('jquery.validate.min.js');
+                    $this->template->add_js('additional-methods.min.js');
+
+                    $this->template->add_js('jquery-validate.bootstrap-tooltip.min.js');
+                    $this->template->add_js('list_users.js');
                     $this->template->add_js('core.js');
                     $this->template->add_js('jquery.prettyPhoto.js');
                     
@@ -3983,7 +4010,31 @@ class Auth extends MX_Controller {
         );
 
         $this->session->set_userdata($session_data);
-        redirect('/','refresh');
+        //redirect('/','refresh');
+        echo json_encode(array('st' =>1,'url_direct' =>'/'));
+    }
+
+    function subtitute()
+    {
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+        else
+        {
+            $filter = array('active'=>'where/1');
+            $query = getall('users',$filter);
+            if($query->num_rows() > 0)
+            {
+                $res = $query->result_array();
+            }else{
+                $res = array();
+            }
+            $this->data['users'] = $res;
+
+            $this->_render_page('auth/list_users', $this->data);
+        }
     }
 
     function get_emp_group($id){
