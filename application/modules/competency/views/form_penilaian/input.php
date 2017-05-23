@@ -109,7 +109,6 @@
 												<th width="25%" rowspan="2">Kompetensi</th>
 												<th width="25%" colspan="2" class="text-center">Kemampuan</th>
 												<th width="25%" colspan="2" class="text-center">Kemauan</th>
-												<th width="25%" rowspan="2">Alasan</th>
 											</tr>
 											<tr>
 												<th class="text-center">Kurang</th>
@@ -138,7 +137,6 @@
 													<td class="text-center">
 														<input id="kemauan_mampu<?=$r->id?>" name="kemauan[<?=$r->id?>]" value="1" type="radio">
 													</td>
-													<td><textarea name="alasan[<?=$r->id?>]" class="form-control"></textarea></td>
 												</tr>
 											<?php } ?>
 										</tbody>
@@ -192,11 +190,18 @@
 						                			</tr>
 						            			</thead>
 						            			<tbody>
-							            			<tr>
+						            				<tr>
 														<td>1</td>
 														<td>HRD</td>
 														<td>
-															Chandra Wisnu Kristiaji
+															Maria Yulan
+														</td>
+													</tr>
+							            			<tr>
+														<td>2</td>
+														<td>HRD</td>
+														<td>
+															Wisnu Chandra Kristiaji
 														</td>
 													</tr>
 						            			</tbody>

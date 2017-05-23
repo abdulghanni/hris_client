@@ -85,18 +85,31 @@
                     <h4>Detail Pelatihan</h4>
                     <div class="row form-row">
                       <div class="col-md-3">
-                              <label class="form-label text-left">Periode</label>
-                          </div>
-                          <div class="col-md-9">
+                        <label class="form-label text-left">Periode</label>
+                      </div>
+                      <div class="col-md-9">
                         <select class="select2" style="width:100%" id="comp_session_id" name="comp_session_id" required>
-                              <option value="">-- Pilih Periode --</option>
+                            <option value="">-- Pilih Periode --</option>
                           <?php foreach($periode as $u){?>
                             <option value="<?php echo $u->id?>"><?php echo $u->year?></option>
                           <?php } ?>
-                        </select>
-                          </div>
-                      </div>
+                      </select>
+                        </div>
+                    </div>
                     <div class="row form-row">
+                      <div class="col-md-3">
+                        <label class="form-label text-left">Training</label>
+                      </div>
+                      <div class="col-md-9">
+                        <select class="select2" style="width:100%" id="training_id" name="training_id" required>
+                            <option value="">-- Pilih Training --</option>
+                          <?php foreach($training as $u){?>
+                            <option value="<?php echo $u->id?>"><?php echo $u->training_title.' ('.date('d-M-Y',strtotime($u->date_start)).' - '.date('d-M-Y',strtotime($u->date_end)).')'?></option>
+                          <?php } ?>
+                      </select>
+                        </div>
+                    </div>
+                    <!-- <div class="row form-row">
                       <div class="col-md-3">
                         <label class="form-label text-left">Nama Pelatihan</label>
                       </div>
@@ -121,7 +134,7 @@
                               <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span> 
                             </div>
                           </div>
-                      </div>
+                      </div> -->
                     </div>
                   </div>
                 </div>

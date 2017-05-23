@@ -140,6 +140,34 @@ function edit_(id)
 });
 }
 
+function pencapaian(bulan,real,sasaran){
+  var formula = Math.round((real/sasaran)*100);
+  $('#pencapaian_'+bulan).val(formula);
+  //$('#ratarata').val(ratarata());
+  //alert('#pencapaian_'+bulan+' : '+formula);
+}
+
+function ratarata()
+{
+  //alert('loaded');
+  var jan = $('#jan').val();
+  var feb = $('#feb').val();
+  var mar = $('#mar').val();
+  var apr = $('#apr').val();
+  var may = $('#may').val();
+  var jun = $('#jun').val();
+  var jul = $('#jul').val();
+  var aug = $('#aug').val();
+  var sept = $('#sept').val();
+  var oct = $('#oct').val();
+  var nov = $('#nov').val();
+  var dece = $('#dece').val();
+  var ratarata = Math.round((jan+feb+mar+apr+may+jun+jul+aug+sept+oct+nov+dece)/12);
+  return ratarata;
+  //$('#ratarata').val(ratarata);
+
+}
+
 function delete_(id)
 {
   var url_ajax_delete = $('#url_ajax_delete').val();

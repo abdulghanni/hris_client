@@ -5,6 +5,7 @@ class Form_training_notif_model extends CI_Model {
 
     var $table = 'users_training_notif';
     var $join1  = 'users';
+    var $join2  = 'training';
     var $column = array('users.nik'); //set column field database for order and search
     var $order = array('id' => 'desc'); // default order 
 
@@ -29,15 +30,15 @@ class Form_training_notif_model extends CI_Model {
         }
         $this->db->select(array(
                 'users_training_notif'.'.id as id',
-                'users_training_notif'.'.training_name',
+                $this->join2.'.training_title as training_name',
                 'users_training_notif'.'.created_by',
                 $this->table.'.created_on',
                 'users_training_notif'.'.approval_status_id_lv1',
                 'users_training_notif'.'.approval_status_id_lv2',
                 'users_training_notif'.'.approval_status_id_lv3',
                 'users_training_notif'.'.approval_status_id_hrd',
-                'users_training_notif'.'.tanggal_mulai',
-                'users_training_notif'.'.tanggal_akhir',
+                $this->join2.'.date_start as tanggal_mulai',
+                $this->join2.'.date_end as tanggal_akhir',
                 'users_training_notif'.'.user_app_lv1',
                 'users_training_notif'.'.user_app_lv2',
                 'users_training_notif'.'.user_app_lv3',
@@ -47,7 +48,7 @@ class Form_training_notif_model extends CI_Model {
 
             $this->db->from('users_training_notif');
 
-
+            $this->db->join($this->join2, 'users_training_notif.training_id = training.id', 'left');
             $this->db->join($this->join1, 'users_training_notif.user_peserta_id = users.id', 'left');
             
             $this->db->where('users_training_notif.is_deleted', 0);

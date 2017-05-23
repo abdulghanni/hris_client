@@ -13,7 +13,7 @@
             <i class="icon-custom-left"></i>
             <h3>Daftar <?=$title?></span></h3> 
         </div>
-        <a href="<?=base_url($ci->controller.'/input')?>"><button type="button" class="btn btn-primary" title="Klik disini untuk membuat pengajuan baru"><i class="icon-plus"></i> Buat <?=$title?></button><br/><br/></a>
+        <!-- <a href="<?//=base_url($ci->controller.'/input')?>"><button type="button" class="btn btn-primary" title="Klik disini untuk membuat pengajuan baru"><i class="icon-plus"></i> Buat <?//=$title?></button><br/><br/></a> -->
         <div class="row">
             <div class="col-md-12">
                 <div class="grid simple ">                            

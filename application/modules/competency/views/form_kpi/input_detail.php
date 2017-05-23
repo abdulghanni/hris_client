@@ -121,75 +121,81 @@
 										<tr>
 											<td>Januari</td>
 											<td><?php echo $mapping_kpi['target_kpi']?> %</td>
-											<td><input type="text" id="jan" name="jan"></td>
-											<td><input type="text" id="pencapaian_jan" name="pencapaian_jan"></td>
+											<td><input type="text" id="jan" name="jan" onChange="pencapaian('jan',this.value,<?php echo $mapping_kpi['target_kpi']?>)"> %</td>
+											<td><input type="text" id="pencapaian_jan" name="pencapaian_jan" disabled="disabled"> %</td>
 										</tr>
 										<tr>
 											<td>Februari</td>
 											<td><?php echo $mapping_kpi['target_kpi']?> %</td>
-											<td><input type="text" id="feb" name="feb"></td>
-											<td><input type="text" id="pencapaian_feb" name="pencapaian_feb"></td>
+											<td><input type="text" id="feb" name="feb" onChange="pencapaian('feb',this.value,<?php echo $mapping_kpi['target_kpi']?>)"> %</td>
+											<td><input type="text" id="pencapaian_feb" name="pencapaian_feb" disabled="disabled"> %</td>
 										</tr>
 										<tr>
 											<td>Maret</td>
 											<td><?php echo $mapping_kpi['target_kpi']?> %</td>
-											<td><input type="text" id="mar" name="mar"></td>
-											<td><input type="text" id="pencapaian_mar" name="pencapaian_mar"></td>
+											<td><input type="text" id="mar" name="mar" onChange="pencapaian('mar',this.value,<?php echo $mapping_kpi['target_kpi']?>)"> %</td>
+											<td><input type="text" id="pencapaian_mar" name="pencapaian_mar" disabled="disabled"> %</td>
 										</tr>
 										<tr>
 											<td>April</td>
 											<td><?php echo $mapping_kpi['target_kpi']?> %</td>
-											<td><input type="text" id="apr" name="apr"></td>
-											<td><input type="text" id="pencapaian_apr" name="pencapaian_apr"></td>
+											<td><input type="text" id="apr" name="apr" onChange="pencapaian('apr',this.value,<?php echo $mapping_kpi['target_kpi']?>)"> %</td>
+											<td><input type="text" id="pencapaian_apr" name="pencapaian_apr" disabled="disabled"> %</td>
 										</tr>
 										<tr>
 											<td>Mei</td>
 											<td><?php echo $mapping_kpi['target_kpi']?> %</td>
-											<td><input type="text" id="may" name="may"></td>
-											<td><input type="text" id="pencapaian_may" name="pencapaian_may"></td>
+											<td><input type="text" id="may" name="may" onChange="pencapaian('may',this.value,<?php echo $mapping_kpi['target_kpi']?>)"> %</td>
+											<td><input type="text" id="pencapaian_may" name="pencapaian_may" disabled="disabled"> %</td>
 										</tr>
 										<tr>
 											<td>Juni</td>
 											<td><?php echo $mapping_kpi['target_kpi']?> %</td>
-											<td><input type="text" id="jun" name="jun"></td>
-											<td><input type="text" id="pencapaian_jun" name="pencapaian_jun"></td>
+											<td><input type="text" id="jun" name="jun" onChange="pencapaian('jun',this.value,<?php echo $mapping_kpi['target_kpi']?>)"> %</td>
+											<td><input type="text" id="pencapaian_jun" name="pencapaian_jun" disabled="disabled"> %</td>
 										</tr>
 										<tr>
 											<td>Juli</td>
 											<td><?php echo $mapping_kpi['target_kpi']?> %</td>
-											<td><input type="text" id="jul" name="jul"></td>
-											<td><input type="text" id="pencapaian_jul" name="pencapaian_jul"></td>
+											<td><input type="text" id="jul" name="jul" onChange="pencapaian('jul',this.value,<?php echo $mapping_kpi['target_kpi']?>)"> %</td>
+											<td><input type="text" id="pencapaian_jul" name="pencapaian_jul" disabled="disabled"> %</td>
 										</tr>
 										<tr>
 											<td>Agustus</td>
 											<td><?php echo $mapping_kpi['target_kpi']?> %</td>
-											<td><input type="text" id="aug" name="aug"></td>
-											<td><input type="text" id="pencapaian_aug" name="pencapaian_aug"></td>
+											<td><input type="text" id="aug" name="aug" onChange="pencapaian('aug',this.value,<?php echo $mapping_kpi['target_kpi']?>)"> %</td>
+											<td><input type="text" id="pencapaian_aug" name="pencapaian_aug" disabled="disabled"> %</td>
 										</tr>
 										<tr>
 											<td>September</td>
 											<td><?php echo $mapping_kpi['target_kpi']?> %</td>
-											<td><input type="text" id="sept" name="sept"></td>
-											<td><input type="text" id="pencapaian_sept" name="pencapaian_sept"></td>
+											<td><input type="text" id="sept" name="sept" onChange="pencapaian('sept',this.value,<?php echo $mapping_kpi['target_kpi']?>)"> %</td>
+											<td><input type="text" id="pencapaian_sept" name="pencapaian_sept" disabled="disabled"> %</td>
 										</tr>
 										<tr>
 											<td>Oktober</td>
 											<td><?php echo $mapping_kpi['target_kpi']?> %</td>
-											<td><input type="text" id="oct" name="oct"></td>
-											<td><input type="text" id="pencapaian_oct" name="pencapaian_oct"></td>
+											<td><input type="text" id="oct" name="oct" onChange="pencapaian('oct',this.value,<?php echo $mapping_kpi['target_kpi']?>)"> %</td>
+											<td><input type="text" id="pencapaian_oct" name="pencapaian_oct" disabled="disabled"> %</td>
 										</tr>
 										<tr>
 											<td>November</td>
 											<td><?php echo $mapping_kpi['target_kpi']?> %</td>
-											<td><input type="text" id="nov" name="nov"></td>
-											<td><input type="text" id="pencapaian_nov" name="pencapaian_nov"></td>
+											<td><input type="text" id="nov" name="nov" onChange="pencapaian('nov',this.value,<?php echo $mapping_kpi['target_kpi']?>)"> %</td>
+											<td><input type="text" id="pencapaian_nov" name="pencapaian_nov" disabled="disabled"> %</td>
 										</tr>
 										<tr>
 											<td>Desember</td>
 											<td><?php echo $mapping_kpi['target_kpi']?> %</td>
-											<td><input type="text" id="dece" name="dece"></td>
-											<td><input type="text" id="pencapaian_dece" name="pencapaian_dece"></td>
+											<td><input type="text" id="dece" name="dece" onChange="pencapaian('dece',this.value,<?php echo $mapping_kpi['target_kpi']?>)"> %</td>
+											<td><input type="text" id="pencapaian_dece" name="pencapaian_dece" disabled="disabled"> %</td>
 										</tr>
+										<!-- <tr>
+											<td>RATA - RATA</td>
+											<td><?php echo $mapping_kpi['target_kpi']?> %</td>
+											<td><input type="text" id="ratarata" name="ratarata" > %</td>
+											<td><input type="text" id="rataratapencapaian" name="rataratapencapaian" disabled="disabled"> %</td>
+										</tr> -->
 									</tbody>
 				              	</table>
 				            </div>

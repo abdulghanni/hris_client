@@ -85,7 +85,6 @@
 												<th width="25%">Kompetensi</th>
 												<th width="25%" class="text-center">Kemampuan</th>
 												<th width="25%" class="text-center">Kemauan</th>
-												<th width="25%">Alasan</th>
 											</tr>
 											<!-- <tr>
 												<th class="text-center">Kurang</th>
@@ -109,7 +108,6 @@
 													<td class="text-center">
 														<?=($r->kemauan == 1) ? "Mau" : "Kurang";?>
 													</td>
-													<td><textarea name="alasan" class="form-control" readonly="readonly"><?=$r->alasan?></textarea></td>
 												</tr>
 											<?php } ?>
 										</tbody>

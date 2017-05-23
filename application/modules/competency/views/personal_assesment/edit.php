@@ -144,7 +144,20 @@
 															</td>
 															<td><input name="tgl[]" class="tanggal form-control" value="<?=$pa->tgl?>" required></td>
 															<td><input type="text" name="pic[]" class="form-control" value="<?=$pa->pic?>"></td>
-															<td><input type="text" name="hasil[]" class="form-control" value="<?=$pa->hasil?>"></td>
+															<!-- <td><input type="text" name="hasil[]" class="form-control" value="<?=$pa->hasil?>"></td> -->
+															<td>
+																<select id="" class="select2" name="hasil[]">
+																	<option value="0" <?php echo (($pa->hasil == '0') || (strlen($pa->hasil) == 0)) ? 'selected="selected"' : ''; ?> >-- Pilih --</option>
+																	<option value="A" <?php echo ($pa->hasil == 'A') ? 'selected="selected"' : ''; ?> >A</option>
+																	<option value="B" <?php echo ($pa->hasil == 'B') ? 'selected="selected"' : ''; ?> >B</option>
+																	<option value="C" <?php echo ($pa->hasil == 'C') ? 'selected="selected"' : ''; ?> >C</option>
+																	<option value="D" <?php echo ($pa->hasil == 'D') ? 'selected="selected"' : ''; ?> >D</option>
+																	<?php foreach ($tindakan as $t) {
+																		$selected = ($pa->competency_tindakan_id == $t->id) ? 'selected="selected"' : ''; 
+																		echo "<option value='$t->id' $selected>$t->title</option>";
+																	}?>
+																</select>
+															</td>
 														</tr>
 														<?php } } ?>
 													<?php } ?>

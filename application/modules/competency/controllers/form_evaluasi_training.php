@@ -23,6 +23,8 @@ class form_evaluasi_training extends MX_Controller {
     var $controller = 'competency/form_evaluasi_training';
     var $model_name = 'form_evaluasi_training';
     var $table = 'competency_form_evaluasi_training';
+    var $join1 = 'users_training_notif';
+    var $join2 = 'training';
     var $id_table = 'id';
     var $list_view = 'form_evaluasi_training/index';
 
@@ -71,7 +73,19 @@ class form_evaluasi_training extends MX_Controller {
         $data['title'] = $this->title;
         $data['controller'] = $this->controller;
 
-        $data['form'] = getAll($this->table, array('id'=>'where/'.$id))->row();
+        //$data['form'] = getAll($this->table, array('id'=>'where/'.$id))->row();
+        $this->db->select($this->table.'.*,'.$this->join2.'.training_title as training_title,'.$this->join2.'.date_start as date_start,'.$this->join2.'.date_end as date_end');
+        $this->db->from($this->table);
+        $this->db->join($this->join1,$this->table.'.training_notif_id = '.$this->join1.'.id');
+        $this->db->join($this->join2,$this->join1.'.training_id = '.$this->join2.'.id');
+        $this->db->where($this->table.'.id', $id);
+        $query_get = $this->db->get();
+        if($query_get->num_rows() > 0) {
+            $data['form'] = $query_get->row();
+        }else{
+            $data['form'] = "";
+        }
+
         $data['competency_metode'] = explode(',', $data['form']->competency_metode_evaluasi_id);
         $data['competency_pengetahuan'] = GetAll('competency_form_evaluasi_point_pengetahuan', array($this->table."_id"=>'where/'.$id))->result();
         $data['competency_sikap'] = GetAll('competency_form_evaluasi_point_sikap', array($this->table."_id"=>'where/'.$id))->result();
@@ -110,7 +124,18 @@ class form_evaluasi_training extends MX_Controller {
         $data['competency_keterampilan'] = GetAll('competency_form_evaluasi_point_keterampilan', array($this->table."_id"=>'where/'.$id))->result();
         $data['comp_session_id'] = Getvalue('comp_session_id', $this->table, array('id'=>'where/'.$id));
         $data['users'] = GetAll('users')->result();
-        $data['form'] = getAll($this->table, array('id'=>'where/'.$id))->row();
+        //$data['form'] = getAll($this->table, array('id'=>'where/'.$id))->row();
+        $this->db->select($this->table.'.*,'.$this->join2.'.training_title as training_title,'.$this->join2.'.date_start as date_start,'.$this->join2.'.date_end as date_end');
+        $this->db->from($this->table);
+        $this->db->join($this->join1,$this->table.'.training_notif_id = '.$this->join1.'.id');
+        $this->db->join($this->join2,$this->join1.'.training_id = '.$this->join2.'.id');
+        $this->db->where($this->table.'.id', $id);
+        $query_get = $this->db->get();
+        if($query_get->num_rows() > 0) {
+            $data['form'] = $query_get->row();
+        }else{
+            $data['form'] = "";
+        }
         // $data['competency_metode'] = explode(',', $data['form']->competency_metode_evaluasi_id);
         // $data['competency_pengetahuan'] = GetAll('competency_form_evaluasi_point_pengetahuan', array($this->table."_id"=>'where/'.$id))->result();
         // $data['competency_sikap'] = GetAll('competency_form_evaluasi_point_sikap', array($this->table."_id"=>'where/'.$id))->result();
@@ -267,6 +292,7 @@ class form_evaluasi_training extends MX_Controller {
             // 'position_id' => $this->input->post('position_id'),
             'nama_training' => $this->input->post('nama_training'),
             'tgl_training' => date('Y-m-d', strtotime($this->input->post('tgl_training'))),
+            'training_notif_id'=> $this->input->post('training_notif_id'),
             'sasaran' => $this->input->post('sasaran'),
             'competency_evaluasi_training_id' => $this->input->post('competency_evaluasi_training_id'),
             'competency_evaluasi_training_lain' => $this->input->post('competency_evaluasi_training_lain'),

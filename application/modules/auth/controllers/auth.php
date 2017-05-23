@@ -3761,7 +3761,7 @@ class Auth extends MX_Controller {
         
         if ( ! $this->upload->do_upload()){
             //$error = array('error' => $this->upload->display_errors());
-            echo 'Terjadi Kesalahan, silakan kembali kehalaman sebelumnya';
+            echo 'Terjadi Kesalahan, silakan kembali kehalaman sebelumnya <br/>'.$this->upload->display_errors();
         }
         else{
             $data = array('upload_data' => $this->upload->data());
