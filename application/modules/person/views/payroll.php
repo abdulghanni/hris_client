@@ -21,7 +21,7 @@
 							<div class="grid-body no-border">
 							<br/>
 					            <?php 
-					          	$data = get_filenames('c://HRD');
+					          	$data = get_filenames(base_url().'hrd/');
 					          	//$key = array_search(get_nik($this->session->userdata('user_id')).'-01012017.pdf',$data);
 					          	
 					          	echo '<ul>';
