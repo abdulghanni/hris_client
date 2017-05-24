@@ -21,14 +21,15 @@
 							<div class="grid-body no-border">
 							<br/>
 					            <?php 
-					          	$data = get_filenames(base_url().'hrd/');
+					          	$data = get_filenames('d://xampp/htdocs/hris_client/hrd/');
+					          	//echo 'data'.$data;
 					          	//$key = array_search(get_nik($this->session->userdata('user_id')).'-01012017.pdf',$data);
-					          	
+					          	//echo base_url().'hrd';
 					          	echo '<ul>';
 								foreach ($data as $key => $value) {
 									if(substr($value,0,5) == get_nik($this->session->userdata('user_id')))
 									{
-										echo '<li><a href="c:\\HRD/'.$value.'">'.$value.'</a></li>';
+										echo '<li><a href="'.base_url().'hrd/'.$value.'" target="_BLANK">'.$value.'</a></li>';
 									}
 								}
 								echo '</ul>';
