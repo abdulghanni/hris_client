@@ -167,7 +167,8 @@ $config['admin_koperasi']             = 'Admin Koperasi';
 $config['admin_perpustakaan']         = 'Admin Perpustakaan';
 $config['admin_keuangan']            = 'Admin Keuangan';
 $config['admin_legal']               = 'Admin Legal';
-$config['admin_payroll']         	  = 'Admin Payroll';
+$config['admin_payroll']             = 'Admin Payroll';
+$config['admin_kompetensi']          = 'Admin Kompetensi';
 
 
 //$config['identity']                   = 'email';             // A database column which is used to login with
