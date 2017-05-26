@@ -355,6 +355,23 @@ class form_training_group extends MX_Controller {
 
         if($type == 'hrd' && $approval_status == 1){
             $this->send_notif_tambahan($id, 'training_group');
+            /*send notif to anita kimasari*/
+            $receiver = 'TRAINING';
+            $subject_email = 'Pengajuan Pelatihan';
+            $isi_email = 'HRD telah menyetujui pengajuan Pelatihan oleh '.get_name($user_id).', untuk melihat detail silakan <a href='.base_url().'form_training_group/detail/'.$id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_training_group/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
+            //Notif to karyawan
+            if(!empty($receiver)){
+              $data4 = array(
+                      'sender_id' => get_nik(sessId()),
+                      'receiver_id' => $receiver,
+                      'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                      'subject' => $subject_email,
+                      'email_body' => $isi_email,
+                      'is_read' => 0,
+                  );
+              $this->db->insert('email', $data4);
+              if(!empty(getEmail($receiver)))$this->send_email(getEmail($receiver), $subject_email, $isi_email);
+            }
         }
     }
 
