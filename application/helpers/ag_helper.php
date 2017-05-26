@@ -164,6 +164,22 @@
 		}
 	}
 
+	if (!function_exists('is_admin_kompetensi'))
+	{	
+		function is_admin_kompetensi()
+		{
+			$CI =& get_instance();
+
+			$sess_id = $CI->session->userdata('user_id');
+			$r = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 4)->where('groups.id', 198)->get()->result_array('user_id');
+			for ($i = 0;$i<sizeof($r);$i++) {
+			if($sess_id == $r[$i]['user_id']):
+				return TRUE;
+			endif;
+			}
+		}
+	}
+
 	//TO CHECK IS USER ADMIN IN ION AUTH LIBRARY
 	if (!function_exists('is_admin_hrd'))
 	{	
@@ -2045,8 +2061,8 @@
 
 			if(!empty($username&&$password))
 			{
-				return 'http://'.$username.':'.$password.'@localhost/hris_api/';
-				//return 'http://'.$username.':'.$password.'@localhost:801/hris_api/';
+				//return 'http://'.$username.':'.$password.'@localhost/hris_api/';
+				return 'http://'.$username.':'.$password.'@localhost:801/hris_api/';
 				//return 'http://'.$username.':'.$password.'@123.231.241.12/hris_api/';
 			}else
 			{

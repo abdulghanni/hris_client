@@ -36,8 +36,9 @@ class vendor extends MX_Controller {
         {
             redirect('auth/login', 'refresh');
         }
-        elseif (!$this->ion_auth->is_admin())
+        elseif (!$this->ion_auth->is_admin() && !$this->ion_auth->is_admin_kompetensi())
         {
+            //echo $this->ion_auth->is_admin_kompetensi();
             return show_error('You must be an administrator to view this page.');
         }
         else
