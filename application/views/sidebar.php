@@ -91,7 +91,7 @@
           <li > <a href="datatables.html">Parameter pengaturan </a> </li>
         </ul>
       </li> -->
-      <?php if(is_admin_inventaris()||is_admin()){?>
+      <?php if(is_admin_inventaris()||is_admin()||is_admin_kompetensi()){?>
       <li class=""> <a href="javascript:;"> <i class="icon-cogs"></i> <span class="title">Setup perusahaan</span> <span class="arrow "></span> </a>
         <ul class="sub-menu">
           <!--<li > <a href="<?php echo site_url('comp_session')?>">Company Session</a> </li>
@@ -109,9 +109,9 @@
           <?php if(is_admin()):?><li ><a href="<?php echo site_url('inventory_type')?>"> Inventaris</a> </li><?php endif?>
           <?php if(is_admin()):?><li ><a href="<?php echo site_url('notif_tambahan')?>"> Notifikasi Tambahan</a> </li><?php endif?>
           <?php if(is_admin()):?><li > <a href="<?php echo site_url('pengumuman')?>">Pengumuman</a> </li><?php endif?>
-          <?php if(is_admin()):?><li > <a href="<?php echo site_url('vendor')?>">Vendor</a> </li><?php endif?>
-          <?php if(is_admin()):?><li > <a href="<?php echo site_url('form_training_notif')?>">Notifikasi training</a> </li><?php endif?>
-          <?php if(is_admin()):?><li > <a href="<?php echo site_url('training')?>">Training</a> </li><?php endif?>
+          <?php if(is_admin()||is_admin_kompetensi()):?><li > <a href="<?php echo site_url('vendor')?>">Vendor</a> </li><?php endif?>
+          <?php if(is_admin()||is_admin_kompetensi()):?><li > <a href="<?php echo site_url('form_training_notif')?>">Notifikasi training</a> </li><?php endif?>
+          <?php if(is_admin()||is_admin_kompetensi()):?><li > <a href="<?php echo site_url('training')?>">Training</a> </li><?php endif?>
           <!--<?php if(is_admin()):?><li > <a href="<?php echo site_url('position')?>">Position</a> </li><?php endif?>-->
         </ul>
       </li>  
