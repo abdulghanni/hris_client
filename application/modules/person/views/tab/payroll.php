@@ -14,7 +14,7 @@
 			                                        </thead>
 			                                        <tbody>
 			                                        <?php 
-											          	$data = get_filenames('d://xampp/htdocs/hris_client/hrd/');
+											          	$data = $datafiles;
 											          	if(count($data) > 0)
 											          	{
 															foreach ($data as $key => $value) {
@@ -25,7 +25,7 @@
 																			echo $key;
 																		echo '</td>';
 																		echo '<td>';
-																			echo '<a href="'.base_url().'hrd/'.$value.'" target="_BLANK">'.$value.'</a>';
+																			echo '<a href="'.site_url('person/slip/'.$this->session->userdata('user_id').'/'.$value).'">'.$value.'</a>';
 																		echo '</td>';
 																	echo '</tr>';
 																}
