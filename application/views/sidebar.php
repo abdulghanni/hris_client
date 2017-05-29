@@ -32,7 +32,7 @@
       <li class=""> <a href="javascript:;"> <i class="icon-plus-sign"></i> <span class="title">Form pengajuan</span> <span class="arrow "></span> </a>
         <ul class="sub-menu">
           <?php if(is_spv($nik)||is_admin()||is_admin_bagian()):?><li > <a href="<?php echo site_url('form_recruitment')?>">Permintaan SDM</a></li><?php endif; ?>
-          <li > <a href="<?php echo site_url('person/payroll/'.$this->session->userdata('user_id'))?>">Slip gaji</a> </li>          
+          <!-- <li > <a href="<?php //echo site_url('person/payroll/'.$this->session->userdata('user_id'))?>">Slip gaji</a> </li> -->          
           <li > <a href="<?php echo site_url('form_promosi')?>">Promosi</a> </li>          
           <li > <a href="<?php echo site_url('form_demotion')?>">Demosi</a> </li>          
           <li > <a href="<?php echo site_url('form_rolling')?>">Mutasi</a> </li>    
