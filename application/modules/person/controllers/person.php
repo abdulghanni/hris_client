@@ -19,6 +19,7 @@ class Person extends MX_Controller {
         $this->load->helper('language');
         $this->load->helper('file');
         $this->load->helper('directory');
+        $this->load->helper('download');
     }
 
     //redirect if needed, otherwise display the user list
@@ -96,7 +97,35 @@ class Person extends MX_Controller {
             $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
             
             $this->data['bod'] = (!empty($user->bod)) ? $user->bod : '-';
+            $this->data['datafiles'] = get_filenames('d://xampp5519/htdocs/hris_client/hrd/');
             $this->_render_page('person/tab/payroll', $this->data);
+        }
+    }
+
+    function slip($id,$filename)
+    {
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+        elseif ($id != $this->session->userdata('user_id') && !$this->ion_auth->is_admin()) //remove this elseif if you want to enable this for non-admins
+        {
+            //redirect them to the home page because they must be an administrator to view this
+            //return show_error('You must be an administrator to view this page.');
+            return show_error('You can not view this page.');
+        }
+        else
+        {
+            //$file = base_url().'hrd/'.$filename;
+            //if (file_exists(base_url().'hrd/'.$filename)) {
+                $data = file_get_contents(base_url().'hrd/'.$filename); // Read the file's contents
+                $name = $filename;
+                force_download($name, $data);
+            /*}else{
+                return show_error('File tidak tersedia.');
+            }*/
+            
         }
     }
 
