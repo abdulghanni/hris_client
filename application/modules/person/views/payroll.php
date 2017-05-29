@@ -22,9 +22,6 @@
 							<br/>
 					            <?php 
 					          	$data = get_filenames('d://xampp/htdocs/hris_client/hrd/');
-					          	//echo 'data'.$data;
-					          	//$key = array_search(get_nik($this->session->userdata('user_id')).'-01012017.pdf',$data);
-					          	//echo base_url().'hrd';
 					          	echo '<ul>';
 								foreach ($data as $key => $value) {
 									if(substr($value,0,5) == get_nik($this->session->userdata('user_id')))
