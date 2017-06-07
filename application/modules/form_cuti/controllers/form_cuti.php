@@ -158,7 +158,7 @@ class Form_cuti extends MX_Controller {
             $jumlah_hari = $this->input->post('jml_cuti');
             $plafon_cuti = $this->input->post('num_leave');
             $potong_cuti = $jumlah_hari - $plafon_cuti;
-            $potong_cuti = ($potong_cuti>0) ? $potong_cuti : 0;
+            //$potong_cuti = ($potong_cuti>0) ? $potong_cuti : 0;
 
             $filter = array('date_mulai_cuti'=>'where/'.date('Y-m-d', strtotime($this->input->post('start_cuti'))), 'date_selesai_cuti'=>'where/'.date('Y-m-d', strtotime($this->input->post('end_cuti'))), 'user_id'=>'where/'.$user_id, 'alasan_cuti_id' => 'where/'.$this->input->post('alasan_cuti'), 'remarks' => 'where/'.$this->input->post('remarks'), 'created_on' => 'where/'.date('Y-m-d',strtotime('now')));
             $num_rows = getAll('users_cuti', $filter)->num_rows();
