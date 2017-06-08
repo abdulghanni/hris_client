@@ -169,7 +169,7 @@ ToEndDate.setDate(ToEndDate.getDate()+365);
     rules: {
       sisa_cuti: {
         required: true,
-        notEqual : 0,
+        //notEqual : 0,
       },
       jml_hari: {
         required: true,
@@ -189,7 +189,7 @@ ToEndDate.setDate(ToEndDate.getDate()+365);
           alasan_cuti: "Kolom ini wajib diisi.",
           atasan1 : "Silakan Pilih Atasan",
           atasan2 : "Silakan Pilih Atasan Tidak Langsung",
-          sisa_cuti : "Sisa Cuti anda 0",
+          //sisa_cuti : "Sisa Cuti anda 0",
       }
   });
 
