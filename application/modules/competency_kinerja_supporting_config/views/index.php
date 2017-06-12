@@ -10,7 +10,7 @@
     <div class="content">
         <div class="page-title">
             <i class="icon-custom-left"></i>
-            <h3>Kompetensi Tipe</h3> 
+            <h3>Sesi penilaian</h3> 
         </div>
           <div class="row">
             <div class="col-md-12">
@@ -31,7 +31,8 @@
                       <table id="table" class="table table-striped table-bordered" cellspacing="0" width="100%">
                         <thead>
                           <tr>
-                            <th>Title</th>
+                            <th>Tahun</th>
+                            <th>status</th>
                             <th style="width:125px;">Action</th>
                           </tr>
                         </thead>
@@ -58,9 +59,26 @@
         <form action="#" id="form-competency" class="form">
           <div class="modal-body">
               <div class="row form-row">
-                <label class="control-label col-md-3">Title</label>
+                <label class="control-label col-md-3">Tahun</label>
                 <div class="col-md-9">
-                  <input name="title" placeholder="Title" class="form-control" type="text">
+                <select name="comp_session_id" class="form-control select2" id="comp_session_id">
+                    <option value="0">Tahun</option>
+                  <?php foreach($comp_session as $key=>$value) { ?>
+                    <option value="<?php echo $value['id']?>"><?php echo $value['year']?></option>
+                  <?php } ?>
+                </select>
+                  <!-- <input name="title" placeholder="Title" class="form-control" type="text"> -->
+                  <span class="help-block"></span>
+                </div>
+              </div>
+              <div class="row form-row">
+                <label class="control-label col-md-3">Status</label>
+                <div class="col-md-9">
+                <select name="is_open" class="form-control select2" id="is_open">
+                    <option value="1">Buka</option>
+                    <option value="0">Tutup</option>
+                </select>
+                  <!-- <input name="title" placeholder="Title" class="form-control" type="text"> -->
                   <span class="help-block"></span>
                 </div>
               </div>

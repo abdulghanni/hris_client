@@ -321,8 +321,9 @@ class personal_assesment extends MX_Controller {
         }
     }
     
-    function get_mapping($emp_id){
+    function get_mapping($emp_id,$comp_session_id){
         $emp_id = get_nik($emp_id);
+        $data['comp_session_year'] = $comp_session_year = getvalue('year','comp_session',array('id'=>'where/'.$comp_session_id));
         $data['org_id'] = $org_id = get_user_organization_id($emp_id);
         $data['pos_group_id'] = get_position($emp_id); 
         //$data['pos_group_id'] = get_pos_group($emp_id); 

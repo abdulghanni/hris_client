@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 ini_set('MAX_EXECUTION_TIME', 0);
-class competency_group extends MX_Controller {
+class competency_kinerja_supporting_config extends MX_Controller {
 
     public $data;
 
@@ -18,15 +18,15 @@ class competency_group extends MX_Controller {
 
         $this->lang->load('auth');
         $this->load->helper('language');
-        $this->load->model('competency_group_model','competency_group_model');
+        $this->load->model('competency_kinerja_supporting_config_model','competency_kinerja_supporting_config_model');
     }
 
-    var $title = 'Education Group';
+    var $title = 'Sesi Penilaian';
     var $limit = 100000;
-    var $controller_name = 'competency_group';
-    var $model_name = 'competency_group_model';
+    var $controller_name = 'competency_kinerja_supporting_config';
+    var $model_name = 'competency_kinerja_supporting_config_model';
     var $id_table = 'id';
-    var $list_view = 'competency_group/index';
+    var $list_view = 'competency_kinerja_supporting_config/index';
 
     //redirect if needed, otherwise display the user list
     function index($id=NULL)
@@ -42,26 +42,28 @@ class competency_group extends MX_Controller {
         }
         else
         {
-            $data['url_ajax_list'] = site_url('competency_group/ajax_list');
-            $data['url_ajax_add'] = site_url('competency_group/ajax_add');
-            $data['url_ajax_edit'] = site_url('competency_group/ajax_edit');
-            $data['url_ajax_delete'] = site_url('competency_group/ajax_delete');
-            $data['url_ajax_update'] = site_url('competency_group/ajax_update');
+            $data['url_ajax_list'] = site_url('competency_kinerja_supporting_config/ajax_list');
+            $data['url_ajax_add'] = site_url('competency_kinerja_supporting_config/ajax_add');
+            $data['url_ajax_edit'] = site_url('competency_kinerja_supporting_config/ajax_edit');
+            $data['url_ajax_delete'] = site_url('competency_kinerja_supporting_config/ajax_delete');
+            $data['url_ajax_update'] = site_url('competency_kinerja_supporting_config/ajax_update');
             $data['position_group'] = $this->competency->get_position_group();
+            $data['comp_session'] = $this->competency_kinerja_supporting_config_model->get_comp_session();
 
-            $this->_render_page('competency_group/index',$data);
+            $this->_render_page('competency_kinerja_supporting_config/index',$data);
         }
     }
 
     public function ajax_list()
     {
-        $list = $this->competency_group_model->get_datatables();
+        $list = $this->competency_kinerja_supporting_config_model->get_datatables();
         $data = array();
         $no = $_POST['start'];
         foreach ($list as $val) {
             $no++;
             $row = array();
-            $row[] = $val->title;
+            $row[] = $val->year;
+            $row[] = ($val->is_open != 1) ? 'TUTUP' : 'BUKA';
 
             //add html for action
             $row[] = '<a class="btn btn-sm btn-primary btn-mini" href="javascript:void()" title="Edit" onclick="edit_('."'".$val->id."'".')"><i class="icon-edit"></i> Edit</a>
@@ -72,8 +74,8 @@ class competency_group extends MX_Controller {
 
         $output = array(
                         "draw" => $_POST['draw'],
-                        "recordsTotal" => $this->competency_group_model->count_all(),
-                        "recordsFiltered" => $this->competency_group_model->count_filtered(),
+                        "recordsTotal" => $this->competency_kinerja_supporting_config_model->count_all(),
+                        "recordsFiltered" => $this->competency_kinerja_supporting_config_model->count_filtered(),
                         "data" => $data,
                 );
         //output to json format
@@ -84,11 +86,12 @@ class competency_group extends MX_Controller {
     {
         $this->_validate();
         $data = array(
-                'title' => $this->input->post('title'),
+                'comp_session_id' => $this->input->post('comp_session_id'),
+                'is_open' => $this->input->post('is_open'),
                 'created_on' => date('Y-m-d H:i:s', now()),
                 'created_by' => GetUserID()
                 );
-        $insert = $this->competency_group_model->save($data);
+        $insert = $this->competency_kinerja_supporting_config_model->save($data);
         echo json_encode(array("status" => TRUE));
     }
 
@@ -99,13 +102,13 @@ class competency_group extends MX_Controller {
                 'deleted_on' => date('Y-m-d H:i:s', now()),
                 'deleted_by' => GetUserID()
             );
-        $this->competency_group_model->update(array('id' => $id), $data);
+        $this->competency_kinerja_supporting_config_model->update(array('id' => $id), $data);
         echo json_encode(array("status" => TRUE));
     }
 
     public function ajax_edit($id)
     {
-        $data = $this->competency_group_model->get_by_id($id);
+        $data = $this->competency_kinerja_supporting_config_model->get_by_id($id);
         echo json_encode($data);
     }
 
@@ -113,11 +116,12 @@ class competency_group extends MX_Controller {
     {
         $this->_validate();
         $data = array(
-                'title' => $this->input->post('title'),
+                'comp_session_id' => $this->input->post('comp_session_id'),
+                'is_open' => $this->input->post('is_open'),
                 'edited_on' => date('Y-m-d H:i:s', now()),
                 'edited_by' => GetUserID()
             );
-        $this->competency_group_model->update(array('id' => $this->input->post('id')), $data);
+        $this->competency_kinerja_supporting_config_model->update(array('id' => $this->input->post('id')), $data);
         echo json_encode(array("status" => TRUE));
     }
 
@@ -128,12 +132,12 @@ class competency_group extends MX_Controller {
         $data['inputerror'] = array();
         $data['status'] = TRUE;
 
-        if($this->input->post('title') == '')
+        /*if($this->input->post('title') == '')
         {
             $data['inputerror'][] = 'title';
             $data['error_string'][] = 'Name is required';
             $data['status'] = FALSE;
-        }
+        }*/
 
         if($data['status'] === FALSE)
         {
@@ -174,7 +178,7 @@ class competency_group extends MX_Controller {
         {
             $this->load->library('template');
 
-            if (in_array($view, array('competency_group/index')))
+            if (in_array($view, array('competency_kinerja_supporting_config/index')))
             {
                 $this->template->set_layout('default');
 
@@ -199,7 +203,7 @@ class competency_group extends MX_Controller {
                 $this->template->add_css('datatables.min.css');
                 $this->template->add_js('datatables.min.js');
                 
-                $this->template->add_js('competency_group.js');
+                $this->template->add_js('competency_kinerja_supporting_config.js');
                     
             }
 
