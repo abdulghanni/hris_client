@@ -100,6 +100,9 @@
 										  <option value="<?=$r['id']?>"><?php echo $r['year']?></option>
 										  <?php } ?>
 										</select>
+										<div id="mohon_tunggu_kompetensi" style="display: none;" >
+					                        <div class="alert" >mohon tunggu ...</div>
+					                    </div>
 				                      </div>
 				                    </div>
 					        	</div>
@@ -196,8 +199,8 @@
 											<tr>
 												<td class="text-center">Bobot</td>
 												<td class="text-center">Target</td>
+												<td class="text-center">Menit keterlambatan</td>
 												<td class="text-center">Nilai</td>
-												<td class="text-center">(B/100) x N</td>
 											</tr>
 										</thead>
 										<tbody>
@@ -234,6 +237,10 @@
 											<td width="85%" class="">&nbsp;&nbsp; <h5>Konversi Nilai</h5></td>
 											<td class="text-right"><input class="form-control text-right" id="konversi_nilai" type="text" name="konversi" readonly="readonly" value="E"></td>
 										</tr>
+										<!-- <tr>
+											<td width="85%" class="">&nbsp;&nbsp; <h5>Hitung konversi nilai</h5></td>
+											<td class="text-right"><button type="button" class="btn btn-info" id="hitungkonversinilai_id" onclick="hitungkonversinilai()">Hitung</button></td>
+										</tr> -->
 									</table>
 					        	</div>
 					        </div>

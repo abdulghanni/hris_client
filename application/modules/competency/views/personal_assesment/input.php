@@ -97,8 +97,14 @@
 				                        <input name="position" id="position" type="text"  class="form-control" placeholder="-" value="" disabled="disabled" required>
 				                      </div>
 				                    </div>
+				                    
 					            </div>
 					        </div>
+					        <div class="row form-row">
+		                      <div class="col-md-12 text-center" id="loading_kompetensi" style="display: none;">
+		                        <div class="alert info">Mohon tunggu ..</div>
+		                      </div>
+		                    </div>
 				            <div class="row">
 								<div class="col-md-12">
 									<div id="result">
@@ -126,7 +132,7 @@
 													<td>1</td>
 													<td>HRD</td>
 													<td>
-														Chandra Wisnu Kristiaji
+														Wisnu Chandra Kristiaji
 													</td>
 												</tr>
 						            			</tbody>

@@ -20,7 +20,7 @@ Performance disini....." value="<?php echo $value['kpi']?>">
 		<input type="text" id="nilai_performance<?=$value['id']?>" class="form-control text-right nilai_performance" name="nilai_performance[]" placeholder="....." min="0" max="100" value="<?php echo $value['rata_rata']?>" onkeyup="hitungPerformance('<?=$value['id']?>')">
 	</td>
 	<td>
-		<input type="text" id="persentase_performance<?=$value['id']?>" class="form-control text-right persentase_performance" name="persentase_performance[]" placeholder="....." readonly="readonly" value="<?php echo (($value['bobot_kpi']/100)*$value['rata_rata']) ?>">
+		<input type="text" id="persentase_performance<?=$value['id']?>" class="form-control text-right persentase_performance" name="persentase_performance[]" placeholder="....." readonly="readonly" value="<?php echo number_format((($value['bobot_kpi']/100)*$value['rata_rata']),2) ?>">
 	</td>
 </tr>
 <?php 

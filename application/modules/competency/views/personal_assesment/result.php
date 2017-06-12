@@ -11,8 +11,8 @@
 			</td>
 			<td width="20%" rowspan="2">Kompetensi</td>
 			<td width="5%" rowspan="2" class="text-center">Standar Komp. (SK)</td>
-			<td width="5%" rowspan="2" class="text-center">Aktual Komp. (AK) thn <?php echo date('Y') - 1 ?></td>
-			<td width="5%" rowspan="2" class="text-center">Score GAP (AK-SK) thn <?php echo date('Y') - 1 ?></td>
+			<td width="5%" rowspan="2" class="text-center">Aktual Komp. (AK) thn <?php echo $comp_session_year - 1 ?></td>
+			<td width="5%" rowspan="2" class="text-center">Score GAP (AK-SK) thn <?php echo $comp_session_year - 1 ?></td>
 			<td width="5%" rowspan="2" class="text-center">Aktual Komp. (AK)</td>
 			<td width="5%" rowspan="2" class="text-center">Score GAP (AK-SK)</td>
 			<td width="60%" colspan="4" class="text-center">Program Improvement</td>
@@ -35,7 +35,7 @@
 					$sk = getValue('level', 'competency_mapping_standar_detail', $f);
 
 			 
-					$yearsbl = date('Y') - 1;
+					$yearsbl = $comp_session_year - 1;
 					$this->db->select('competency_personal_assesment_detail.ak as aksbl, competency_personal_assesment_detail.gap as gapsbl');
 					$this->db->from('competency_personal_assesment_detail');
 					$this->db->join('competency_personal_assesment', 'competency_personal_assesment.id = competency_personal_assesment_detail.competency_personal_assesment_id', 'left');

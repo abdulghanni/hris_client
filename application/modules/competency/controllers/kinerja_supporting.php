@@ -79,6 +79,9 @@ class kinerja_supporting extends MX_Controller {
 
     function get_kpi_detail($comp_session_id,$organization_id,$position_id,$user_nik){
         $user_id = get_id($user_nik);
+        $year_session = $this->main->get_year_session($comp_session_id);
+        $year_kpi = $year_session-1;
+        
         //$data['id'] = $rowcount;
         $kpi_detail = $this->main->get_kpi_detail($comp_session_id,$organization_id,$position_id, $user_id);
        // die('q : '.$this->db->last_query());
@@ -110,7 +113,7 @@ class kinerja_supporting extends MX_Controller {
                     $html_performance .= '<input type="text" id="nilai_performance'.$value['id'].'" class="form-control text-right nilai_performance" name="nilai_performance[]" placeholder="....." min="0" max="100" readonly="readonly" value="'.$value['rata_rata'].'" onkeyup="hitungPerformance('.$value['id'].')">';
                 $html_performance .= '</td>';
                 $html_performance .= '<td>';
-                    $html_performance .= '<input type="text" id="persentase_performance'.$value['id'].'" class="form-control text-right persentase_performance" name="persentase_performance[]" placeholder="....." readonly="readonly" value="'.(($value['bobot_kpi']/100)*$value['rata_rata']).'">';
+                    $html_performance .= '<input type="text" id="persentase_performance'.$value['id'].'" class="form-control text-right persentase_performance" name="persentase_performance[]" placeholder="....." readonly="readonly" value="'.number_format((($value['bobot_kpi']/100)*$value['rata_rata']),2).'">';
                 $html_performance .= '</td>';
             $html_performance .= '</tr>';
             
@@ -127,7 +130,7 @@ class kinerja_supporting extends MX_Controller {
                 $html_performance .= '<td><input class="form-control text-right" type="text" id="sub_total_bobot_performance" name="sub_total_bobot_performance" value="'.$bobot_performance.'" readonly="readonly"></td>';
                 $html_performance .= '<td><input class="form-control text-right" type="text" id="sub_total_target_performance" name="sub_total_target_performance" value="'.$target_performance.'" readonly="readonly"></td>';
                 $html_performance .= '<td><input class="form-control text-right" id="sub_total_nilai_performance" type="text" name="sub_total_nilai_performance" value="'.$nilai_performance.'" readonly="readonly"></td>';
-                $html_performance .= '<td><input class="form-control text-right" id="sub_total_persentase_performance" type="text" name="sub_total_persentase_performance" readonly="readonly" value="'.$persentase_performance.'" ></td>';
+                $html_performance .= '<td><input class="form-control text-right" id="sub_total_persentase_performance_id" type="text" name="sub_total_persentase_performance" value="'.number_format($persentase_performance,2).'" ></td>';
             $html_performance .= '</tr>';
         }else{
             $data['kpi_detail'] = array();
@@ -187,6 +190,40 @@ class kinerja_supporting extends MX_Controller {
         $target_kedisiplinan = 0;
         $nilai_kedisiplinan = 0;
         $persentase_kedisiplinan = 0;
+
+        $url_menit_telat = get_api_key().'attendance/user/EMPLID/'.$user_nik.'/YEAR/'.$year_kpi.'/format/json';//print_mz($url);
+        $headers = get_headers($url_menit_telat);
+        $response = substr($headers[0], 9, 3);
+        if ($response != "404") {
+            $get_user_menit_telat = file_get_contents($url_menit_telat);
+            $user_menit_telat = json_decode($get_user_menit_telat, true);
+
+            $jumlah_menit_telat = 0;
+            for($i=0;$i<sizeof($user_menit_telat);$i++)
+            {
+                $jumlah_menit_telat = $jumlah_menit_telat + date('i',$user_menit_telat[$i]['CLOCKIN'] - 25200);
+            }
+            $jumlah_menit_telat = $jumlah_menit_telat;
+
+        }else{
+            $jumlah_menit_telat = 0;
+        }
+
+        $url_jumlah_telat = get_api_key().'attendance/user_jumlah_telat/EMPLID/'.$user_nik.'/YEAR/'.$year_kpi.'/format/json';//print_mz($url);
+        $headers = get_headers($url_jumlah_telat);
+        $response = substr($headers[0], 9, 3);
+        if ($response != "404") {
+            $get_user_jumlah_telat = file_get_contents($url_jumlah_telat);
+            $user_jumlah_telat = json_decode($get_user_jumlah_telat, true);
+        }else{
+            $user_jumlah_telat = 1;
+        }
+
+        $nilai_keterlambatan = $jumlah_menit_telat/$user_jumlah_telat[0]['JUMLAH_HARI_TELAT'];
+
+        $point_keterlambatan = $this->point_keterlambatan($nilai_keterlambatan);
+
+
         $kpi_standar = $this->main->get_competency_kedisiplinan();
         if($kpi_standar->num_rows() > 0)
         {
@@ -194,6 +231,7 @@ class kinerja_supporting extends MX_Controller {
             $no_standar = 1;
 
             foreach ($r_kpi_standar as $key => $value) {
+                
                 $html_kedisiplinan .= '<tr>';
                     $html_kedisiplinan .= '<td>'.$no_standar.'</td>';
                     $html_kedisiplinan .= '<td>';
@@ -206,10 +244,10 @@ class kinerja_supporting extends MX_Controller {
                         $html_kedisiplinan .= '<input type="text" id="target_kedisiplinan'.$value['id'].'" class="form-control text-right target_kedisiplinan" name="target_kedisiplinan[]" placeholder="....." onkeyup="hitungkedisiplinan('.$value['id'].')" min="0"  max="100"  value="'.$value['target'].'" readonly="readonly">';
                     $html_kedisiplinan .= '</td>';
                     $html_kedisiplinan .= '<td>';
-                        $html_kedisiplinan .= '<input type="text" id="nilai_kedisiplinan'.$value['id'].'" class="form-control text-right nilai_kedisiplinan" name="nilai_kedisiplinan[]" placeholder="....." min="0" max="100" value="0" onkeyup="hitungkedisiplinan('.$value['id'].')">';
+                        $html_kedisiplinan .= '<input type="text" id="nilai_kedisiplinan'.$value['id'].'" class="form-control text-right nilai_kedisiplinan" name="nilai_kedisiplinan[]" placeholder="....." min="0" max="100" value="'.number_format($nilai_keterlambatan,2).'" onkeyup="hitungkedisiplinan('.$value['id'].')" readonly="readonly" >';
                     $html_kedisiplinan .= '</td>';
                     $html_kedisiplinan .= '<td>';
-                        $html_kedisiplinan .= '<input type="text" id="persentase_kedisiplinan'.$value['id'].'" class="form-control text-right persentase_kedisiplinan" name="persentase_kedisiplinan[]" placeholder="....." readonly="readonly" value="0">';
+                        $html_kedisiplinan .= '<input type="text" id="persentase_kedisiplinan'.$value['id'].'" class="form-control text-right persentase_kedisiplinan" name="persentase_kedisiplinan[]" placeholder="....." readonly="readonly" value="'.$point_keterlambatan.'">';
                     $html_kedisiplinan .= '</td>';
                 $html_kedisiplinan .= '</tr>';
                 $bobot_kedisiplinan = $bobot_kedisiplinan + $value['bobot'];
@@ -221,8 +259,8 @@ class kinerja_supporting extends MX_Controller {
                 $html_kedisiplinan .= '<td>Subtotal Nilai kedisiplinan</td>';
                 $html_kedisiplinan .= '<td><input class="form-control text-right" type="text" id="sub_total_bobot_kedisiplinan" name="sub_total_bobot_kedisiplinan" readonly="readonly" value="'.$bobot_kedisiplinan.'"></td>';
                 $html_kedisiplinan .= '<td><input class="form-control text-right" type="text" id="sub_total_target_kedisiplinan" name="sub_total_target_kedisiplinan" readonly="readonly" value="'.$target_kedisiplinan.'"></td>';
-                $html_kedisiplinan .= '<td><input class="form-control text-right" id="sub_total_nilai_kedisiplinan" type="text" name="sub_total_nilai_kedisiplinan" readonly="readonly"></td>';
-                $html_kedisiplinan .= '<td><input class="form-control text-right" id="sub_total_persentase_kedisiplinan" type="text" name="sub_total_persentase_kedisiplinan" readonly="readonly"></td>';
+                $html_kedisiplinan .= '<td><input class="form-control text-right" id="sub_total_nilai_kedisiplinan" type="text" name="sub_total_nilai_kedisiplinan" value="'.number_format($nilai_keterlambatan,2).'" readonly="readonly"></td>';
+                $html_kedisiplinan .= '<td><input class="form-control text-right" id="sub_total_persentase_kedisiplinan_id" type="text" name="sub_total_persentase_kedisiplinan" value="'.$point_keterlambatan.'" readonly="readonly"></td>';
             $html_kedisiplinan .= '</tr>';
         }else{
             $data['kpi_standar'] = array();
@@ -230,6 +268,36 @@ class kinerja_supporting extends MX_Controller {
         }
         echo json_encode(array("status" => TRUE,"html_performance" => $html_performance,"html_kompetensi" => $html_kompetensi,"html_kedisiplinan" => $html_kedisiplinan));
         //$this->load->view('kinerja_supporting/result_performance', $data);
+    }
+
+    function point_keterlambatan($nilai_keterlambatan)
+    {
+        if($nilai_keterlambatan <= 5)
+        {
+            $point = 100;
+        }
+        elseif($nilai_keterlambatan <= 10)
+        {
+            $point = 90;
+        }
+        elseif($nilai_keterlambatan <= 15)
+        {
+            $point = 80;
+        }
+        elseif($nilai_keterlambatan <= 20)
+        {
+            $point = 60;
+        }
+        elseif($nilai_keterlambatan <= 25)
+        {
+            $point = 40;
+        }
+        elseif($nilai_keterlambatan > 25)
+        {
+            $point = 0;
+        }
+
+        return $point;
     }
 
     function approve($id, $approver_id=null){

@@ -129,6 +129,7 @@
           <li > <a href="<?php echo site_url('competency/mapping_indikator')?>">Mapping Indikator</a></li>
           <li > <a href="<?php echo site_url('competency/mapping_standar')?>">Mapping Standar</a></li>
           <li > <a href="<?php echo site_url('competency/mapping_kpi')?>">Mapping KPI</a></li>
+          <li > <a href="<?php echo site_url('competency_kinerja_supporting_config')?>">Sesi penilaian</a></li>
         </ul>
       </li>
       <?php endif;?>

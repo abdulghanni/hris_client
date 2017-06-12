@@ -4,7 +4,8 @@ $(document).ready(function() {
 
    	$("#emp").change(function() {
     	var empId = $(this).val();
-    	if(empId!=0)getEmpData(empId);
+        var comp_session_id = $('#comp_session_id').val();
+    	if(empId!=0)getEmpData(empId,comp_session_id);
     	
     });
 
@@ -16,13 +17,17 @@ $(document).ready(function() {
         });
 });
 
-function getEmpData(empId)
+function getEmpData(empId,comp_session_id)
+{
+    if(empId != 0)
     {
+        $('#loading_kompetensi').show();
         $.ajax({
-            url : baseurl+'competency/personal_assesment/get_mapping/'+empId,
+            url : baseurl+'competency/personal_assesment/get_mapping/'+empId+'/'+comp_session_id,
             type: "POST",
             success: function(data2)
-            {  
+            {   
+                $('#loading_kompetensi').hide();
                 $("#savebutton").prop('disabled', false);
                 $("#result").html(data2);
                 $(document).find("select.select2").select2({
@@ -31,7 +36,12 @@ function getEmpData(empId)
             },
             error: function (jqXHR, textStatus, errorThrown)
             {
+                $('#loading_kompetensi').hide();
                 alert('Terjadi Kesalahan, Silakan Refresh Halaman Ini');
             }
         });
-    }
+    }else
+    {
+        $('#loading_kompetensi').hide();
+    }        
+}

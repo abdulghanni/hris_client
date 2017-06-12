@@ -99,4 +99,20 @@ class kinerja_supporting_model extends CI_Model {
 		$this->db->where('is_deleted',0);
 		return $this->db->get();
 	}
+
+	public function get_year_session($id)
+	{
+		$this->db->select('year');
+		$this->db->from('comp_session');
+		$this->db->where('id',$id);
+		//$this->db->where('is_active',0);
+		$query = $this->db->get();
+		if($query->num_rows() > 0)
+		{
+			$val = $query->row_array();
+			return $val['year'];
+		}else{
+			return 0;
+		}
+	}
 }

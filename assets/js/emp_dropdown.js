@@ -4,6 +4,10 @@ $(document).ready(function() {
         s2    = $("#s2").val();
     $("#emp").change(function() {
         var empId = $(this).val();
+        $('#organization').val('mohon tunggu..');
+        $('#position').val('mohon tunggu..');
+        $('#seniority_date').val('mohon tunggu..');
+        $('#position-group').val('mohon tunggu..');
         switch (form) 
         {
             case 'form_absen':
@@ -277,6 +281,7 @@ $(document).ready(function() {
 
     function getEmpOrg(empId)
     {
+        //$('#organization').val('mohon tunggu');
         $.ajax({
             type: 'POST',
             url: baseurl+'dropdown/get_emp_org/',

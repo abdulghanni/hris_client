@@ -5,15 +5,18 @@ $(document).ready(function() {
         var organization_id = $("#organization_id").val();
         var position_id = $("#position_id").val();
         var user_nik = $("#emp").val();
+        $("#mohon_tunggu_kompetensi").hide();
         //var table_=document.getElementById("#tbl_performance");
         //var rowCount=table_.rows.length-2;
         if(id!=0){
+            $("#mohon_tunggu_kompetensi").show();
             //alert('comp_session_id : '+id+' organization_id : '+organization_id+' position_id : '+position_id);
             $.ajax({
                 url : base_url+'competency/kinerja_supporting/get_kpi_detail/'+id+'/'+organization_id+'/'+position_id+'/'+user_nik,
                 type: "POST",
                 success: function(data)
                 {  
+                    $("#mohon_tunggu_kompetensi").hide();
                     //$("#mapping-kpi").html(data);
                     $("#tbl_performance").find('tbody').remove().end().append(data.html_performance);
                     $("#tbl_kompetensi").find('tbody').remove().end().append(data.html_kompetensi);  
@@ -27,6 +30,7 @@ $(document).ready(function() {
                 },
                 error: function (jqXHR, textStatus, errorThrown)
                 {
+                    $("#mohon_tunggu_kompetensi").hide();
                     alert('Terjadi Kesalahan, Silakan Refresh Halaman Ini org');
                 },
                 dataType:"json"
@@ -109,7 +113,8 @@ function hitungPerformance(id){
 
     var c = $("#sub_total_persentase_performance").val(),
     	d = $("#sub_total_persentase_kompetensi").val(),
-    	total = c * (60/100) + d * (40/100);
+        e = $("#sub_total_persentase_kedisiplinan").val(),
+        total = (c * (60/100)) + (d * (30/100)) + (e * (10/100));
 
     	$("#total_nilai").val(total);
 }
@@ -117,6 +122,7 @@ function hitungPerformance(id){
 function hitungkompetensi(id){
 	var a = $("#bobot_kompetensi"+id).val();
 	var b = $("#nilai_kompetensi"+id).val();
+    
 
 	var persentase = (a/100) * b;
 	console.log(persentase);
@@ -142,18 +148,21 @@ function hitungkompetensi(id){
     $("#sub_total_nilai_kompetensi").val(totalNilai);
     $("#sub_total_persentase_kompetensi").val(totalPersentase);
 
-    var c = $("#sub_total_persentase_performance").val(),
-    	d = $("#sub_total_persentase_kompetensi").val(),
-    	total = c * (60/100) + d * (40/100),
+    var c = $("#sub_total_persentase_performance_id").val(),
+        d = $("#sub_total_persentase_kompetensi").val(),
+    	e = $("#sub_total_persentase_kedisiplinan_id").val(),
+    	total = (c * (60/100)) + (d * (30/100)) + (e * (10/100)),
     	konversi = 'E';
 
-    	if(total > 90){
-    		konversi = "A";
-    	}else if(total >= 70 && total < 90){
+    	if(total >= 100){
+    		konversi = "A+";
+    	}else if(total < 100 && total > 90 ){
+            konversi = "A";
+        }else if(total > 71 && total < 89){
     		konversi = "B";
-    	}else if(total >= 50 && total < 70){
+    	}else if(total >= 60 && total < 70){
     		konversi = "C";
-    	}else if(total < 50){
+    	}else if(total < 60){
     		konversi = "D";
     	}
 
@@ -206,6 +215,29 @@ function hitungkedisiplinan(id){
             konversi = "D";
         }
 
+        $("#total_nilai").val(total);
+        $("#konversi_nilai").val(konversi);
+}
+
+function hitungkonversinilai()
+{
+    var c = $("#sub_total_persentase_performance_id").val(),
+        d = $("#sub_total_persentase_kompetensi").val(),
+        e = $("#sub_total_persentase_kedisiplinan_id").val(),
+        total = (c * (60/100)) + (d * (30/100)) + (e * (10/100)),
+        konversi = 'E';
+
+        if(total > 90){
+            konversi = "A";
+        }else if(total > 70 && total < 90){
+            konversi = "B";
+        }else if(total > 59 && total < 71){
+            konversi = "C";
+        }else if(total < 60){
+            konversi = "D";
+        }
+
+        alert('performance : '+c+' kompetensi : '+d+' kedisiplinan : '+e)
         $("#total_nilai").val(total);
         $("#konversi_nilai").val(konversi);
 }

@@ -74,7 +74,9 @@
                             </thead>
                             <tbody>
                             <?php if(!empty($user_att)){
+                                $jumlah_menit_telat = 0;
                             	for($i=0;$i<sizeof($user_att);$i++):?>
+                                <?php $jumlah_menit_telat = $jumlah_menit_telat + date('i',$user_att[$i]['CLOCKIN'] - 25200); ?>
                             	<tr class="odd gradeX">
 						                    <td><?php echo $user_att[$i]['EMPLID'];?></td>
 						                    <td><?php echo get_name($user_att[$i]['EMPLID']);?></td>
@@ -83,7 +85,6 @@
 						                    	<?php echo ($user_att[$i]['ATTENDANCESTATUS'] === 1) ? 'PRESENCE' : (($user_att[$i]['ATTENDANCESTATUS']===2) ? 'Absence' : '' )?>
 						                    </td>
 						                    <td><?php echo get_status($user_att[$i]['ABSENCESTATUS'])?></td>
-						                    <td><?php echo ($user_att[$i]['CLOCKIN'] != 0)?date('H:i:s', $user_att[$i]['CLOCKIN']) : '-';?></td>
 						                    <td><?php echo ($user_att[$i]['CLOCKOUT'] != 0)?date('H:i:s', $user_att[$i]['CLOCKOUT']) : '-';?></td>
 						                    
 						                    <?php if($this->ion_auth->is_admin()) {?>
@@ -95,6 +96,9 @@
                               	<?php }?>
 						        </tr>
 						       <?php endfor;}?>
+                               <tr>
+                                   <td colspan="7"><?php echo $jumlah_menit_telat;?></td>
+                               </tr>
                             </tbody>
                         </table>
                         </div>
