@@ -85,6 +85,7 @@
 						                    	<?php echo ($user_att[$i]['ATTENDANCESTATUS'] === 1) ? 'PRESENCE' : (($user_att[$i]['ATTENDANCESTATUS']===2) ? 'Absence' : '' )?>
 						                    </td>
 						                    <td><?php echo get_status($user_att[$i]['ABSENCESTATUS'])?></td>
+						                    <td><?php echo ($user_att[$i]['CLOCKIN'] != 0)? date('H:i:s', $user_att[$i]['CLOCKIN']) : '-';?></td>
 						                    <td><?php echo ($user_att[$i]['CLOCKOUT'] != 0)?date('H:i:s', $user_att[$i]['CLOCKOUT']) : '-';?></td>
 						                    
 						                    <?php if($this->ion_auth->is_admin()) {?>
@@ -96,9 +97,6 @@
                               	<?php }?>
 						        </tr>
 						       <?php endfor;}?>
-                               <tr>
-                                   <td colspan="7"><?php echo $jumlah_menit_telat;?></td>
-                               </tr>
                             </tbody>
                         </table>
                         </div>
