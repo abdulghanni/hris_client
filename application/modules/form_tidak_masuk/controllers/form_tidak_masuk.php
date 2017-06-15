@@ -600,14 +600,14 @@ class form_tidak_masuk extends MX_Controller {
                '/MODIFIEDBY/'.$sess_nik.
                '/CREATEDDATETIME/'.date('Y-m-d').
                '/CREATEDBY/'.$sess_nik.
-               '/DATAAREAID/'.get_user_dataareaid($user_id).
+               '/DATAAREAID/'.get_user_dataareaid($sess_nik).
                '/RECVERSION/'.$RECVERSION.
                '/RECID/'.$RECID.
-               '/BRANCHID/'.get_user_branchid($user_id).
-               '/DIMENSION/'.get_user_buid($user_id).
-               '/DIMENSION2_/'.get_user_dimension2_($user_id).
-               '/HRSLOCATIONID/'.get_user_locationid($user_id).
-               '/HRSEMPLGROUPID/'.get_user_emplgroupid($user_id)
+               '/BRANCHID/'.get_user_branchid($sess_nik).
+               '/DIMENSION/'.get_user_buid($sess_nik).
+               '/DIMENSION2_/'.get_user_dimension2_($sess_nik).
+               '/HRSLOCATIONID/'.get_user_locationid($sess_nik).
+               '/HRSEMPLGROUPID/'.get_user_emplgroupid($sess_nik)
                ;
 
         $this->rest->format('application/json');
@@ -962,20 +962,14 @@ class form_tidak_masuk extends MX_Controller {
         }
     }
 
-		function insert_manual_leave_request()
+		function insert_manual_leave_request($id_tidak_masuk)
     {
         if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page
             redirect('auth/login', 'refresh');
         }
-
-                // $tidak_masuk_id = array(934,947,948,949,950,951,956,967,968,969,970,976,978,980,990,991,997);
-                // $tidak_masuk_id = array(1014,1020,1026,1027,1028,1029,1032,1034,1038,1039,1040,1041,1050,1053,1060,1067,1072,1073,1074,1078,1084,1088,1090,1091,1094,1095,1098);
-                // $tidak_masuk_id = array(1100,1103,1105,1110,1119,1123,1124,1126,1129,1131,1132,1136,1138,1140,1150,1154,1159,1160,1163,1164,1170,1189);
-                // $tidak_masuk_id = array(1104);
-                // $tidak_masuk_id = array(993);
-				$tidak_masuk_id = array(3104);
+				$tidak_masuk_id = array($id_tidak_masuk);
 				foreach ($tidak_masuk_id as $key => $value) {
 						//echo $value;
 						$data = GetAll('users_tidak_masuk', array('id'=>'where/'.$value))->row_array();
