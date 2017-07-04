@@ -384,7 +384,7 @@ class form_tidak_masuk extends MX_Controller {
 
                 $this->insert_attendancedata_cuti($id);
                 $this->update_sisa_cuti($recid, $sisa_cuti);
-                $date_mulai_cuti = date('Y-m-d',strtotime(getValue('dari_tanggal', 'users_tidak_masuk', array('id'=>'where/'.$id))))
+                //$date_mulai_cuti = date('Y-m-d',strtotime(getValue('dari_tanggal', 'users_tidak_masuk', array('id'=>'where/'.$id))))
                 //$this->update_attendance_data($user_nik, $date_mulai_cuti, 5);
                 
             }else{
