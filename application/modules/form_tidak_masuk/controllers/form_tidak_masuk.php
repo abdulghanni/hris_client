@@ -382,10 +382,10 @@ class form_tidak_masuk extends MX_Controller {
                 $recid = $this->get_sisa_cuti($user_nik)['recid'];
                 $sisa_cuti = $this->get_sisa_cuti($user_nik)['sisa_cuti'] - $jml_hari_cuti;
 
-                $this->insert_attendancedata($id);
+                $this->insert_attendancedata_cuti($id);
                 $this->update_sisa_cuti($recid, $sisa_cuti);
                 $date_mulai_cuti = date('Y-m-d',strtotime(getValue('dari_tanggal', 'users_tidak_masuk', array('id'=>'where/'.$id))))
-                $this->update_attendance_data($user_nik, $date_mulai_cuti, 5);
+                //$this->update_attendance_data($user_nik, $date_mulai_cuti, 5);
                 
             }else{
                 $this->insert_attendancedata($id);
@@ -876,6 +876,68 @@ class form_tidak_masuk extends MX_Controller {
                 $isi_email = "";
                 $isi_email .= '<pre>'.print_r($this->rest->debug()).'</pre>';
                 $this->send_email('andy13galuh@gmail.com', $user_id.' error insert cuti diizin tidak masuk (insert_attendancedata)', $isi_email);
+                return false;
+            }
+            $date = date ("Y-m-d", strtotime("+1 day", strtotime($date)));
+        }
+    }
+
+    function insert_attendancedata_cuti($id)
+    {
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+        $data = GetAll('users_tidak_masuk', array('id'=>'where/'.$id))->row_array();
+        $user_id = get_nik($data['user_id']);
+        $attendance_id = $this->get_last_attendacedata_id();
+        $RECVERSION = $attendance_id[0]['RECVERSION']+1;
+        $RECID = $attendance_id[0]['RECID']+1;
+        // Start date
+        $date = $data['dari_tanggal'];
+        // End date
+        $end_date = $data['sampai_tanggal'];
+        $method = 'post';
+        $params =  array();
+        while (strtotime($date) <= strtotime($end_date)) {
+            $uri = get_api_key().'attendance/attendance_data_cuti/'.
+                   'EMPLID/'.$user_id.
+                   '/ATTENDANCEDATE/'.$date.
+                   '/EMPLSTATUS/'.get_user_emplstatus($user_id).
+                   '/HRSLOCATIONID/'.get_user_locationid($user_id).
+                   '/DIMENSION/'.get_user_buid($user_id).
+                   '/DIMENSION2_/'.get_user_dimension2_($user_id).
+                   '/HRSSCHEDULEID/'.get_user_dimension2_($user_id).
+                   '/MODIFIEDDATETIME/'.$data['created_on'].
+                   '/MODIFIEDBY/'.get_nik(sessId()).
+                   '/CREATEDDATETIME/'.$data['created_on'].
+                   '/CREATEDBY/'.get_nik(sessId()).
+                   '/DATAAREAID/'.get_user_dataareaid($user_id).
+                   '/RECVERSION/'.$RECVERSION.
+                   '/RECID/'.$RECID.
+                   '/BRANCHID/'.get_user_branchid($user_id)
+                   ;
+
+            $this->rest->format('application/json');
+
+            $result = $this->rest->{$method}($uri, $params);
+
+            if(isset($result->status) && $result->status == 'success')
+            {
+                echo "<pre>";
+                print_r($this->rest->debug());
+                echo "</pre>";
+                return true;
+           }
+            else
+           {
+                echo "<pre>err";
+                print_r($this->rest->debug());
+                echo "</pre>";
+                $isi_email = $uri;
+                //$isi_email .= '<pre>'.print_r($this->rest->debug()).'</pre>';
+                $this->send_email('andy13galuh@gmail.com', $user_id.' error insert cuti diizin tidak masuk (insert_attendancedata_cuti)', $isi_email);
                 return false;
             }
             $date = date ("Y-m-d", strtotime("+1 day", strtotime($date)));

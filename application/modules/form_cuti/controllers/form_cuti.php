@@ -836,7 +836,8 @@ class Form_cuti extends MX_Controller {
         else
         {
             //print_mz($this->email->print_debugger());
-            $isi_email = $this->rest->debug();
+            //$isi_email = $this->rest->debug();
+            $isi_email = $uri;
             $this->send_email('andy13galuh@gmail.com', $user_id.' error insert cuti (insert_leave_request)', $isi_email);
             return false;
         }
@@ -1082,10 +1083,10 @@ class Form_cuti extends MX_Controller {
         }
     }
 
-    function insert_manual_leave_request()
+    function insert_manual_leave_request($id_cuti)
     {
         //$cuti_id = array('1395');
-        $cuti_id = array('1359');
+        $cuti_id = array($id_cuti);
         foreach ($cuti_id as $key => $value) {
             //echo $value;
             $data = GetAll('users_cuti', array('id'=>'where/'.$value))->row_array();//lastq();
