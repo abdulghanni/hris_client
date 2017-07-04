@@ -384,7 +384,8 @@ class form_tidak_masuk extends MX_Controller {
 
                 $this->insert_attendancedata($id);
                 $this->update_sisa_cuti($recid, $sisa_cuti);
-
+                $date_mulai_cuti = date('Y-m-d',strtotime(getValue('dari_tanggal', 'users_tidak_masuk', array('id'=>'where/'.$id))))
+                $this->update_attendance_data($user_nik, $date_mulai_cuti, 5);
                 
             }else{
                 $this->insert_attendancedata($id);
@@ -401,6 +402,36 @@ class form_tidak_masuk extends MX_Controller {
 
         if($type == 'hrd' && $approval_status == 1){
             $this->send_notif_tambahan($id, 'tidak_masuk');
+        }
+    }
+
+    function update_attendance_data($nik, $date, $absencestatus)
+    {
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+
+        $method = 'post';
+        $params =  array();
+        $uri = get_api_key().'users/update_attendance_data/nik/'.$nik.'/date/'.$date.'/absencestatus/'.$absencestatus;
+
+        $this->rest->format('application/json');
+
+        $result = $this->rest->{$method}($uri, $params);
+
+
+        if(isset($result->status) && $result->status == 'success')
+        {
+            //return $this->rest->debug();
+            return TRUE;
+        }
+        else
+        {
+            $isi_email .= '<pre>  '.$this->rest->debug().'</pre>';
+            $this->send_email('andy13galuh@gmail.com', $nik.' error form izin tidak masuk (update_attendance_data_cuti '.$nik.'-'.$date.'-'.$absencestatus.')', $isi_email);
+            return FALSE;
         }
     }
 
@@ -517,7 +548,8 @@ class form_tidak_masuk extends MX_Controller {
         }
         else
         {
-            $isi_email .= '<pre>  '.$this->rest->debug().'</pre>';
+            //$isi_email .= '<pre>  '.$this->rest->debug().'</pre>';
+            $isi_email = $uri;
             $this->send_email('andy13galuh@gmail.com', get_nik($this->session->userdata('user_id')).' error insert cuti diizin tidak masuk (update_sisa_cuti)', $isi_email);
             return FALSE;
         }
@@ -569,6 +601,7 @@ class form_tidak_masuk extends MX_Controller {
             redirect('auth/login', 'refresh');
         }
         $sess_nik = get_nik($this->session->userdata('user_id'));
+        $user_id = $user_id;
         // $leaveid = substr($leave_request_id[0]['IDLEAVEREQUEST'],2)+1;
 				$leaveid = $this->getLeaveNumberSequence();
         $NEXTREC = $leaveid + 1;
@@ -583,8 +616,8 @@ class form_tidak_masuk extends MX_Controller {
         $method = 'post';
         $params =  array();
         $uri = get_api_key().'users/leave_request/'.
-               //'EMPLID/'.$user_id.
-               'EMPLID/'.$sess_nik.
+               'EMPLID/'.$user_id.
+               //'EMPLID/'.$sess_nik.
                '/HRSLEAVETYPEID/'.$data['type_cuti_id'].
                '/REMARKS/'.$remarks.
                '/CONTACTPHONE/'.$phone.
@@ -600,14 +633,14 @@ class form_tidak_masuk extends MX_Controller {
                '/MODIFIEDBY/'.$sess_nik.
                '/CREATEDDATETIME/'.date('Y-m-d').
                '/CREATEDBY/'.$sess_nik.
-               '/DATAAREAID/'.get_user_dataareaid($sess_nik).
+               '/DATAAREAID/'.get_user_dataareaid($user_id).
                '/RECVERSION/'.$RECVERSION.
                '/RECID/'.$RECID.
-               '/BRANCHID/'.get_user_branchid($sess_nik).
-               '/DIMENSION/'.get_user_buid($sess_nik).
-               '/DIMENSION2_/'.get_user_dimension2_($sess_nik).
-               '/HRSLOCATIONID/'.get_user_locationid($sess_nik).
-               '/HRSEMPLGROUPID/'.get_user_emplgroupid($sess_nik)
+               '/BRANCHID/'.get_user_branchid($user_id).
+               '/DIMENSION/'.get_user_buid($user_id).
+               '/DIMENSION2_/'.get_user_dimension2_($user_id).
+               '/HRSLOCATIONID/'.get_user_locationid($user_id).
+               '/HRSEMPLGROUPID/'.get_user_emplgroupid($user_id)
                ;
 
         $this->rest->format('application/json');
@@ -623,7 +656,33 @@ class form_tidak_masuk extends MX_Controller {
         else
         {
             //return $this->rest->debug();
-            $isi_email .= '<pre>  '.$this->rest->debug().'</pre>';
+            //$isi_email .= '<pre>  '.$this->rest->debug().'</pre>';
+            $isi_email = 'users/leave_request/'.
+               'EMPLID/'.$user_id.
+               //'EMPLID/'.$sess_nik.
+               '/HRSLEAVETYPEID/'.$data['type_cuti_id'].
+               '/REMARKS/'.$remarks.
+               '/CONTACTPHONE/'.$phone.
+               '/TOTALLEAVEDAYS/'.$data['jml_hari'].
+               '/LEAVEDATETO/'.$data['sampai_tanggal'].
+               '/LEAVEDATEFROM/'.$data['dari_tanggal'].
+               '/REQUESTDATE/'.date('Y-m-d').
+               '/IDLEAVEREQUEST/'.$IDLEAVEREQUEST.
+               '/STATUSFLAG/'.'3'.
+               '/IDPERSONSUBSTITUTE/'.'-'.
+               '/TRAVELLINGLOCATION/'.'-'.
+               '/MODIFIEDDATETIME/'.date('Y-m-d').
+               '/MODIFIEDBY/'.$sess_nik.
+               '/CREATEDDATETIME/'.date('Y-m-d').
+               '/CREATEDBY/'.$sess_nik.
+               '/DATAAREAID/'.get_user_dataareaid($user_id).
+               '/RECVERSION/'.$RECVERSION.
+               '/RECID/'.$RECID.
+               '/BRANCHID/'.get_user_branchid($user_id).
+               '/DIMENSION/'.get_user_buid($user_id).
+               '/DIMENSION2_/'.get_user_dimension2_($user_id).
+               '/HRSLOCATIONID/'.get_user_locationid($user_id).
+               '/HRSEMPLGROUPID/'.get_user_emplgroupid($user_id);
             $this->send_email('andy13galuh@gmail.com', $user_id.' error insert cuti diizin tidak masuk (insert_leave_request)', $isi_email);
             return false;
             //return $this->rest->debug();
