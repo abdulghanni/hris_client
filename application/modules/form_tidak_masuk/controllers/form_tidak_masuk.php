@@ -405,6 +405,23 @@ class form_tidak_masuk extends MX_Controller {
         }
     }
 
+    function test_parameter($id)
+    {
+        $tipe_cuti = getValue('type_cuti_id', 'users_tidak_masuk', array('id'=>'where/'.$id));
+        $additional_data  = array(
+            'remarks' => getValue('keterangan', 'users_tidak_masuk', array('id'=>'where/'.$id)),
+            'jumlah_hari' => getValue('jml_hari', 'users_tidak_masuk', array('id'=>'where/'.$id)),
+            'date_mulai_cuti' => date('Y-m-d',strtotime(getValue('dari_tanggal', 'users_tidak_masuk', array('id'=>'where/'.$id)))),
+            'date_selesai_cuti' => date('Y-m-d',strtotime(getValue('sampai_tanggal', 'users_tidak_masuk', array('id'=>'where/'.$id)))),
+            'alasan_cuti_id' => $tipe_cuti,
+        );
+        echo 'remarks : '.$additional_data['remarks'].'<br/>';
+        echo 'jumlah_hari : '.$additional_data['jumlah_hari'].'<br/>';
+        echo 'date_mulai_cuti : '.$additional_data['date_mulai_cuti'].'<br/>';
+        echo 'date_selesai_cuti : '.$additional_data['date_selesai_cuti'].'<br/>';
+        echo 'alasan_cuti_id : '.$additional_data['alasan_cuti_id'].'<br/>';
+    }
+
     function update_attendance_data($nik, $date, $absencestatus)
     {
         if (!$this->ion_auth->logged_in())
@@ -600,10 +617,16 @@ class form_tidak_masuk extends MX_Controller {
             //redirect them to the login page
             redirect('auth/login', 'refresh');
         }
+        /*foreach ($data as $key => $value) {
+            $remarks = $value['keterangan'];
+            $type_cuti_id = $value['type_cuti_id'];
+            $totalleavedays = $value['']
+
+        }*/
         $sess_nik = get_nik($this->session->userdata('user_id'));
         $user_id = $user_id;
         // $leaveid = substr($leave_request_id[0]['IDLEAVEREQUEST'],2)+1;
-				$leaveid = $this->getLeaveNumberSequence();
+		$leaveid = $this->getLeaveNumberSequence();
         $NEXTREC = $leaveid + 1;
         $leaveid = sprintf('%06d', $leaveid);
         $IDLEAVEREQUEST = 'CT'.$leaveid;
@@ -657,7 +680,9 @@ class form_tidak_masuk extends MX_Controller {
         {
             //return $this->rest->debug();
             //$isi_email .= '<pre>  '.$this->rest->debug().'</pre>';
-            $isi_email = 'users/leave_request/'.
+            $isi_email = "";
+            $isi_email .= "leave_request_id = ".$leave_request_id."<br/>";
+            $isi_email .= 'users/leave_request/'.
                'EMPLID/'.$user_id.
                //'EMPLID/'.$sess_nik.
                '/HRSLEAVETYPEID/'.$data['type_cuti_id'].
