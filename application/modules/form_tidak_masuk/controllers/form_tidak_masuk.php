@@ -522,6 +522,43 @@ class form_tidak_masuk extends MX_Controller {
         }
     }
 
+    function get_sisa_cuti_parameter($user_nik)
+    {
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+
+        $url = get_api_key().'users/sisa_cuti/EMPLID/'.$user_nik.'/format/json';
+        $seniority_date = get_seniority_date($user_nik);
+        $headers = get_headers($url);
+        $response = substr($headers[0], 9, 3);
+        if ($response != "404") {
+            $getsisa_cuti = file_get_contents($url);
+            $sisa_cuti = json_decode($getsisa_cuti, true);
+            $sisa_cuti = array(
+                    'sisa_cuti' => $sisa_cuti[0]['ENTITLEMENT'],
+                    'recid' => $sisa_cuti[0]['RECID'],
+                    'insert' => false
+                );
+            print_mz($sisa_cuti);
+        } elseif($response == "404" && strtotime($seniority_date) < strtotime('-1 year')) {
+            $sisa_cuti = array(
+                    'sisa_cuti' => 10,
+                    'insert' => 1
+                );
+
+            print_mz($sisa_cuti);
+        }else{
+            $sisa_cuti = array(
+                    'sisa_cuti' => 0,
+                    'insert' => false
+                );
+            print_mz($sisa_cuti);
+        }
+    }
+
     function get_type_cuti()
     {
         if (!$this->ion_auth->logged_in())
@@ -622,6 +659,14 @@ class form_tidak_masuk extends MX_Controller {
             $type_cuti_id = $value['type_cuti_id'];
             $totalleavedays = $value['']
 
+            $additional_data  = array(
+                        'remarks' => getValue('keterangan', 'users_tidak_masuk', array('id'=>'where/'.$id)),
+                        'jumlah_hari' => getValue('jml_hari', 'users_tidak_masuk', array('id'=>'where/'.$id)),
+                        'date_mulai_cuti' => date('Y-m-d',strtotime(getValue('dari_tanggal', 'users_tidak_masuk', array('id'=>'where/'.$id)))),
+                        'date_selesai_cuti' => date('Y-m-d',strtotime(getValue('sampai_tanggal', 'users_tidak_masuk', array('id'=>'where/'.$id)))),
+                        'alasan_cuti_id' => $tipe_cuti,
+                    );
+
         }*/
         $sess_nik = get_nik($this->session->userdata('user_id'));
         $user_id = $user_id;
@@ -633,7 +678,7 @@ class form_tidak_masuk extends MX_Controller {
         $RECVERSION = $leave_request_id[0]['RECVERSION']+1;
         $RECID = $leave_request_id[0]['RECID']+1;
         $char = array('"', '<', '>', '#', '%', '{', '}', '|', '^', '~','(',')', '[', ']', '`',',', ' ','&', '.', '/', "'", ';');
-        $remarks = str_replace($char, '-', $data['keterangan']);
+        $remarks = str_replace($char, '-', $data['remarks']);
 		$remarks = word_limiter($remarks, 75);
         $phone = (!empty(getValue('phone', 'users', array('nik'=>'where/'.$user_id))))?str_replace($char, '-', getValue('phone', 'users', array('nik'=>'where/'.$user_id))):'-';
         $method = 'post';
@@ -641,12 +686,12 @@ class form_tidak_masuk extends MX_Controller {
         $uri = get_api_key().'users/leave_request/'.
                'EMPLID/'.$user_id.
                //'EMPLID/'.$sess_nik.
-               '/HRSLEAVETYPEID/'.$data['type_cuti_id'].
+               '/HRSLEAVETYPEID/'.$data['alasan_cuti_id'].
                '/REMARKS/'.$remarks.
                '/CONTACTPHONE/'.$phone.
-               '/TOTALLEAVEDAYS/'.$data['jml_hari'].
-               '/LEAVEDATETO/'.$data['sampai_tanggal'].
-               '/LEAVEDATEFROM/'.$data['dari_tanggal'].
+               '/TOTALLEAVEDAYS/'.$data['jumlah_hari'].
+               '/LEAVEDATETO/'.$data['date_selesai_cuti'].
+               '/LEAVEDATEFROM/'.$data['date_mulai_cuti'].
                '/REQUESTDATE/'.date('Y-m-d').
                '/IDLEAVEREQUEST/'.$IDLEAVEREQUEST.
                '/STATUSFLAG/'.'3'.
