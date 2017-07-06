@@ -546,7 +546,8 @@ class form_tidak_masuk extends MX_Controller {
         } elseif($response == "404" && strtotime($seniority_date) < strtotime('-1 year')) {
             $sisa_cuti = array(
                     'sisa_cuti' => 10,
-                    'insert' => 1
+                    'insert' => 1,
+                    'seniority_date' =>$seniority_date
                 );
 
             print_mz($sisa_cuti);
