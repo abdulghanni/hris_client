@@ -71,7 +71,7 @@
           <li > <a href="<?php echo site_url('competency/kinerja_supporting')?>">Penilaian Kinerja Supporting</a></li>
         </ul>
       </li>   
-    <?php //endif;?>
+    <?php endif;?>
     <?php if (is_admin()):?>
       <li class=""> <a href="javascript:;"> <i class="icon-cog"></i> <span class="title">Laporan</span> <span class="arrow "></span> </a>
         <ul class="sub-menu">
