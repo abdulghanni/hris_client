@@ -610,6 +610,37 @@ class form_tidak_masuk extends MX_Controller {
         }
     }
 
+    function update_sisa_cuti_param($recid, $sisa_cuti)
+    {
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+
+        $method = 'post';
+        $params =  array();
+        $uri = get_api_key().'users/sisa_cuti/RECID/'.$recid.'/ENTITLEMENT/'.$sisa_cuti;
+
+        $this->rest->format('application/json');
+
+        $result = $this->rest->{$method}($uri, $params);
+
+
+        if(isset($result->status) && $result->status == 'success')
+        {
+            echo '<pre>  '.$this->rest->debug().'</pre>';
+            //return TRUE;
+        }
+        else
+        {
+            $isi_email .= '<pre>  '.$this->rest->debug().'</pre>';
+            /*$isi_email = $uri;
+            $this->send_email('andy13galuh@gmail.com', get_nik($this->session->userdata('user_id')).' error insert cuti diizin tidak masuk (update_sisa_cuti)', $isi_email);
+            return FALSE;*/
+        }
+    }
+
 		function getLeaveNumberSequence()
     {
         if (!$this->ion_auth->logged_in())
