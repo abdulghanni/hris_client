@@ -61,6 +61,7 @@
            </ul>
       </li>
       <?php //if (is_spv($nik)||is_admin()):?>
+      <?php if (is_admin()):?>
       <li class=""> <a href="javascript:;"> <i class="icon-check"></i> <span class="title">Form Penilaian</span> <span class="arrow "></span> </a>
         <ul class="sub-menu">
           <li > <a href="<?php echo site_url('competency/personal_assesment')?>">Personal Assesment</a></li>
