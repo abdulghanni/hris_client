@@ -100,7 +100,7 @@ $rejected = assets_url('img/rejected_stamp.png');
     <td height="40"><div align="center">:</div></td>
     <td height="40"><span class="style3"><?php echo $user->alasan_cuti?></span></td>
   </tr>
-  <?php if($user->alasan_cuti != 'Cuti Tahunan')?>
+  <?php if($user->alasan_cuti != 'Cuti Tahunan') { ?>
   <tr>
     <td height="40"><span class="style3">Jumlah cuti yang diberikan</span></td>
     <td height="40"><div align="center">:</div></td>
