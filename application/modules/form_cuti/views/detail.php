@@ -137,6 +137,16 @@
                           <input name="alasan" id="alasan" type="text"  class="form-control" placeholder="alasan" value="<?php echo $user->alasan_cuti?>" disabled>
                         </div>
                       </div>
+                      <?php if($user->alasan_cuti != 'Cuti Tahunan') { ?>
+                      <div class="row form-row">
+                        <div class="col-md-4">
+                          <label class="form-label text-right">Jumlah cuti yang diberikan</label>
+                        </div>
+                        <div class="col-md-8">
+                          <input name="plafon_cuti" id="plafon_cuti" type="text"  class="form-control" placeholder="plafon_cuti" value="<?php echo $user->plafon_cuti?>" disabled>
+                        </div>
+                      </div>
+                      <?php } ?>
                      <div class="row form-row">
                         <div class="col-md-4">
                           <label class="form-label text-right"><?php echo 'Alasan' ?></label>

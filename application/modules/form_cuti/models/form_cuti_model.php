@@ -222,12 +222,14 @@ class Form_cuti_model extends CI_Model {
                 'alasan_cuti'.'.title as alasan_cuti',
                'users'.'.username',
                'users'.'.nik',
+               'cuti_jumlah_plafon'.'.jumlah_hari as plafon_cuti',
             ));
 
             $this->db->from('users_cuti');
 
             $this->db->join('alasan_cuti', 'users_cuti.alasan_cuti_id = alasan_cuti.HRSLEAVETYPEID', 'left');
             $this->db->join('users', 'users_cuti.user_id = users.id', 'left');
+            $this->db->join('cuti_jumlah_plafon', 'alasan_cuti.HRSLEAVETYPEID = cuti_jumlah_plafon.alasan_cuti_id', 'left');
 
             $this->db->where('users_cuti.is_deleted', 0);
             $this->db->where('users_cuti.id', $id);

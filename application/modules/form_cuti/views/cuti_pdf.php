@@ -91,7 +91,7 @@ $rejected = assets_url('img/rejected_stamp.png');
     <td height="40"><span class="style3"><?php echo $user->jumlah_hari?></span></td>
   </tr>
   <tr>
-    <td height="40"><span class="style3">Sisa Cuti </span></td>
+    <td height="40"><span class="style3">Sisa Cuti Tahunan</span></td>
     <td height="40"><div align="center">:</div></td>
     <td height="40"><span class="style3"><?php echo $user->sisa_cuti?> Hari </span></td>
   </tr>
@@ -100,6 +100,13 @@ $rejected = assets_url('img/rejected_stamp.png');
     <td height="40"><div align="center">:</div></td>
     <td height="40"><span class="style3"><?php echo $user->alasan_cuti?></span></td>
   </tr>
+  <?php if($user->alasan_cuti != 'Cuti Tahunan')?>
+  <tr>
+    <td height="40"><span class="style3">Jumlah cuti yang diberikan</span></td>
+    <td height="40"><div align="center">:</div></td>
+    <td height="40"><span class="style3"><?php echo $user->plafon_cuti?></span></td>
+  </tr>
+  <?php } ?>
   <tr>
     <td height="40"><span class="style3">Alasan</span></td>
     <td height="40"><div align="center">:</div></td>
