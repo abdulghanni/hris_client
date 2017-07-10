@@ -208,7 +208,8 @@ class Form_cuti extends MX_Controller {
                         $this->insert_sisa_cuti($user_nik, $this->input->post('alasan_cuti'));
                      }
 
-                     $this->insert_leave_request($user_id, $additional_data, $leave_request_id);
+                     $this->insert_debug_leave_request($cuti_id);
+                     //$this->insert_leave_request($user_id, $additional_data, $leave_request_id);
                 else:
                     $id = getValue('id', 'users_cuti', $filter);
                     $this->db->where('id', $id)->update('users_cuti', array('is_deleted'=>0));
@@ -822,6 +823,25 @@ class Form_cuti extends MX_Controller {
                '/HRSEMPLGROUPID/'.get_user_emplgroupid($user_id)
                ;
 
+        /* $additional_data = array(
+                'id_comp_session'       => date('Y'),
+                'date_mulai_cuti'       => date('Y-m-d', strtotime($this->input->post('start_cuti'))),
+                'date_selesai_cuti'     => date('Y-m-d', strtotime($this->input->post('end_cuti'))),
+                'jumlah_hari'           => $jumlah_hari,
+                'sisa_cuti'             => $this->input->post('sisa_cuti'),
+                'potong_cuti'           => $potong_cuti,
+                'alasan_cuti_id'        => $this->input->post('alasan_cuti'),
+                'remarks'               => $this->input->post('remarks'),
+                'user_pengganti'        => $this->input->post('user_pengganti'),
+                'contact'               => $this->input->post('contact'),
+                'alamat_cuti'           => $this->input->post('alamat'),
+                'user_app_lv1'          => $this->input->post('atasan1'),
+                'user_app_lv2'          => $this->input->post('atasan2'),
+                'user_app_lv3'          => $this->input->post('atasan3'),
+                'created_on'            => date('Y-m-d',strtotime('now')),
+                'created_by'            => $sess_id,
+                'is_deleted'            => 0
+            );*/
         $this->rest->format('application/json');
 
         $result = $this->rest->{$method}($uri, $params);
@@ -830,7 +850,11 @@ class Form_cuti extends MX_Controller {
         {
             //$this->send_email('abdulghanni2@gmail.com', 'error insert cuti', $this->rest->debug());
             //print_mz($this->email->print_debugger());
+
             $this->update_leave_number_sequence($NEXTREC);
+            $isi_email = "NEXTREC =>".$NEXTREC."<br/>".$uri;
+            
+            $this->send_email('andy13galuh@gmail.com', $user_id.' success insert cuti (insert_leave_request)', $isi_email);
             return true;
         }
         else
@@ -842,6 +866,180 @@ class Form_cuti extends MX_Controller {
             return false;
         }
     }
+
+    function insert_debug_leave_request($id_cuti)
+    {
+        //$cuti_id = array('1395');
+        $cuti_id = array($id_cuti);
+        foreach ($cuti_id as $key => $value) {
+            //echo $value;
+            $data = GetAll('users_cuti', array('id'=>'where/'.$value))->row_array();//lastq();
+
+            $leave_request_id = $this->get_last_leave_request_id();
+            $user_id = get_nik($data['user_id']);
+            //$leaveid = substr($leave_request_id[0]['IDLEAVEREQUEST'],2)+1;
+            $leaveid = $this->getLeaveNumberSequence();
+            $NEXTREC = $leaveid + 1;
+            $leaveid = sprintf('%06d', $leaveid);
+            $IDLEAVEREQUEST = 'CT'.$leaveid;
+            $RECVERSION = $leave_request_id[0]['RECVERSION']+1;
+            $RECID = $leave_request_id[0]['RECID']+1;//print_mz($RECID);
+            $char = array('"', '<', '>', '#', '%', '{', '}', '|', '^', '~','(',')', '[', ']', '`',',', ' ','&', '.', '/', ';', '+');
+            $remarks = str_replace($char, '-', $data['remarks']);
+            $remarks = substr($remarks,0,75);
+            $alamat_cuti = str_replace($char, '-', $data['alamat_cuti']);
+            $alamat_cuti = substr($alamat_cuti,0,60);
+            $phone = str_replace($char, '-', $data['contact']);
+            $method = 'post';
+            $params =  array();
+            $uri = get_api_key().'users/leave_request/'.
+                   'EMPLID/'.$user_id.
+                   '/HRSLEAVETYPEID/'.$data['alasan_cuti_id'].
+                   '/REMARKS/'.$remarks.
+                   '/CONTACTPHONE/'.$phone.
+                   '/TOTALLEAVEDAYS/'.$data['jumlah_hari'].
+                   '/LEAVEDATETO/'.$data['date_selesai_cuti'].
+                   '/LEAVEDATEFROM/'.$data['date_mulai_cuti'].
+                   '/REQUESTDATE/'.date('Y-m-d', strtotime($data['created_on'])).
+                   '/IDLEAVEREQUEST/'.$IDLEAVEREQUEST.
+                   '/STATUSFLAG/'.'0'.
+                   '/IDPERSONSUBSTITUTE/'.$data['user_pengganti'].
+                   '/TRAVELLINGLOCATION/'.$alamat_cuti.
+                   '/MODIFIEDDATETIME/'.date('Y-m-d', strtotime($data['created_on'])).
+                   '/MODIFIEDBY/'.'1'.
+                   '/CREATEDDATETIME/'.date('Y-m-d', strtotime($data['created_on'])).
+                   '/CREATEDBY/'.'1'.
+                   '/DATAAREAID/'.get_user_dataareaid($user_id).
+                   '/RECVERSION/'.$RECVERSION.
+                   '/RECID/'.$RECID.
+                   '/BRANCHID/'.get_user_branchid($user_id).
+                   '/DIMENSION/'.get_user_buid($user_id).
+                   '/DIMENSION2_/'.get_user_dimension2_($user_id).
+                   '/HRSLOCATIONID/'.get_user_locationid($user_id).
+                   '/HRSEMPLGROUPID/'.get_user_emplgroupid($user_id)
+                   ;
+
+            $this->rest->format('application/json');
+
+            $result = $this->rest->{$method}($uri, $params);
+
+            if(isset($result->status) && $result->status == 'success')
+            {
+                //echo $value;
+                //echo $data['user_id'];
+                // echo '<pre>';
+                //print_r($this->rest->debug());
+                //return true;
+                //echo '</pre>';
+                $this->update_leave_number_sequence($NEXTREC);
+                //echo '<pre>';
+                //print_r($this->rest->debug());
+                //return true;
+                //echo '</pre>';
+
+                $isi_email = "NEXTREC =>".$NEXTREC."<br/>".$uri;
+            
+                $this->send_email('andy13galuh@gmail.com', $user_id.' success insert cuti (insert_debug_leave_request)', $isi_email);
+                return true;
+            }
+            else
+            {
+                //echo '<pre>';
+                //print_r($this->rest->debug());
+                //return true;
+                //echo '</pre>';
+                $isi_email = $uri;
+                $this->send_email('andy13galuh@gmail.com', $user_id.' error insert cuti (insert_debug_leave_request)', $isi_email);
+                return false;
+            }
+
+        }
+        //die();
+    }
+
+    function insert_manual_leave_request($id_cuti)
+    {
+        //$cuti_id = array('1395');
+        $cuti_id = array($id_cuti);
+        foreach ($cuti_id as $key => $value) {
+            //echo $value;
+            $data = GetAll('users_cuti', array('id'=>'where/'.$value))->row_array();//lastq();
+
+            $leave_request_id = $this->get_last_leave_request_id();
+            $user_id = get_nik($data['user_id']);
+            //$leaveid = substr($leave_request_id[0]['IDLEAVEREQUEST'],2)+1;
+            $leaveid = $this->getLeaveNumberSequence();
+            $NEXTREC = $leaveid + 1;
+            $leaveid = sprintf('%06d', $leaveid);
+            $IDLEAVEREQUEST = 'CT'.$leaveid;
+            $RECVERSION = $leave_request_id[0]['RECVERSION']+1;
+            $RECID = $leave_request_id[0]['RECID']+1;//print_mz($RECID);
+            $char = array('"', '<', '>', '#', '%', '{', '}', '|', '^', '~','(',')', '[', ']', '`',',', ' ','&', '.', '/', ';', '+');
+            $remarks = str_replace($char, '-', $data['remarks']);
+            $remarks = substr($remarks,0,75);
+            $alamat_cuti = str_replace($char, '-', $data['alamat_cuti']);
+            $alamat_cuti = substr($alamat_cuti,0,60);
+            $phone = str_replace($char, '-', $data['contact']);
+            $method = 'post';
+            $params =  array();
+            $uri = get_api_key().'users/leave_request/'.
+                   'EMPLID/'.$user_id.
+                   '/HRSLEAVETYPEID/'.$data['alasan_cuti_id'].
+                   '/REMARKS/'.$remarks.
+                   '/CONTACTPHONE/'.$phone.
+                   '/TOTALLEAVEDAYS/'.$data['jumlah_hari'].
+                   '/LEAVEDATETO/'.$data['date_selesai_cuti'].
+                   '/LEAVEDATEFROM/'.$data['date_mulai_cuti'].
+                   '/REQUESTDATE/'.date('Y-m-d', strtotime($data['created_on'])).
+                   '/IDLEAVEREQUEST/'.$IDLEAVEREQUEST.
+                   '/STATUSFLAG/'.'0'.
+                   '/IDPERSONSUBSTITUTE/'.$data['user_pengganti'].
+                   '/TRAVELLINGLOCATION/'.$alamat_cuti.
+                   '/MODIFIEDDATETIME/'.date('Y-m-d', strtotime($data['created_on'])).
+                   '/MODIFIEDBY/'.'1'.
+                   '/CREATEDDATETIME/'.date('Y-m-d', strtotime($data['created_on'])).
+                   '/CREATEDBY/'.'1'.
+                   '/DATAAREAID/'.get_user_dataareaid($user_id).
+                   '/RECVERSION/'.$RECVERSION.
+                   '/RECID/'.$RECID.
+                   '/BRANCHID/'.get_user_branchid($user_id).
+                   '/DIMENSION/'.get_user_buid($user_id).
+                   '/DIMENSION2_/'.get_user_dimension2_($user_id).
+                   '/HRSLOCATIONID/'.get_user_locationid($user_id).
+                   '/HRSEMPLGROUPID/'.get_user_emplgroupid($user_id)
+                   ;
+
+            $this->rest->format('application/json');
+
+            $result = $this->rest->{$method}($uri, $params);
+
+            if(isset($result->status) && $result->status == 'success')
+            {
+                echo $value;
+                echo $data['user_id'];
+                 echo '<pre>';
+                print_r($this->rest->debug());
+                //return true;
+                echo '</pre>';
+                $this->update_leave_number_sequence($NEXTREC);
+                echo '<pre>';
+                print_r($this->rest->debug());
+                //return true;
+                echo '</pre>';
+            }
+            else
+            {
+                echo '<pre>';
+                print_r($this->rest->debug());
+                //return true;
+                echo '</pre>';
+            }
+
+        }
+        die();
+    }
+
+
 
     function insert_sisa_cuti($user_nik, $alasan_cuti)
     {
@@ -1083,87 +1281,7 @@ class Form_cuti extends MX_Controller {
         }
     }
 
-    function insert_manual_leave_request($id_cuti)
-    {
-        //$cuti_id = array('1395');
-        $cuti_id = array($id_cuti);
-        foreach ($cuti_id as $key => $value) {
-            //echo $value;
-            $data = GetAll('users_cuti', array('id'=>'where/'.$value))->row_array();//lastq();
-
-            $leave_request_id = $this->get_last_leave_request_id();
-            $user_id = get_nik($data['user_id']);
-            //$leaveid = substr($leave_request_id[0]['IDLEAVEREQUEST'],2)+1;
-            $leaveid = $this->getLeaveNumberSequence();
-            $NEXTREC = $leaveid + 1;
-            $leaveid = sprintf('%06d', $leaveid);
-            $IDLEAVEREQUEST = 'CT'.$leaveid;
-            $RECVERSION = $leave_request_id[0]['RECVERSION']+1;
-            $RECID = $leave_request_id[0]['RECID']+1;//print_mz($RECID);
-            $char = array('"', '<', '>', '#', '%', '{', '}', '|', '^', '~','(',')', '[', ']', '`',',', ' ','&', '.', '/', ';', '+');
-            $remarks = str_replace($char, '-', $data['remarks']);
-            $remarks = substr($remarks,0,75);
-            $alamat_cuti = str_replace($char, '-', $data['alamat_cuti']);
-            $alamat_cuti = substr($alamat_cuti,0,60);
-            $phone = str_replace($char, '-', $data['contact']);
-            $method = 'post';
-            $params =  array();
-            $uri = get_api_key().'users/leave_request/'.
-                   'EMPLID/'.$user_id.
-                   '/HRSLEAVETYPEID/'.$data['alasan_cuti_id'].
-                   '/REMARKS/'.$remarks.
-                   '/CONTACTPHONE/'.$phone.
-                   '/TOTALLEAVEDAYS/'.$data['jumlah_hari'].
-                   '/LEAVEDATETO/'.$data['date_selesai_cuti'].
-                   '/LEAVEDATEFROM/'.$data['date_mulai_cuti'].
-                   '/REQUESTDATE/'.date('Y-m-d', strtotime($data['created_on'])).
-                   '/IDLEAVEREQUEST/'.$IDLEAVEREQUEST.
-                   '/STATUSFLAG/'.'0'.
-                   '/IDPERSONSUBSTITUTE/'.$data['user_pengganti'].
-                   '/TRAVELLINGLOCATION/'.$alamat_cuti.
-                   '/MODIFIEDDATETIME/'.date('Y-m-d', strtotime($data['created_on'])).
-                   '/MODIFIEDBY/'.'1'.
-                   '/CREATEDDATETIME/'.date('Y-m-d', strtotime($data['created_on'])).
-                   '/CREATEDBY/'.'1'.
-                   '/DATAAREAID/'.get_user_dataareaid($user_id).
-                   '/RECVERSION/'.$RECVERSION.
-                   '/RECID/'.$RECID.
-                   '/BRANCHID/'.get_user_branchid($user_id).
-                   '/DIMENSION/'.get_user_buid($user_id).
-                   '/DIMENSION2_/'.get_user_dimension2_($user_id).
-                   '/HRSLOCATIONID/'.get_user_locationid($user_id).
-                   '/HRSEMPLGROUPID/'.get_user_emplgroupid($user_id)
-                   ;
-
-            $this->rest->format('application/json');
-
-            $result = $this->rest->{$method}($uri, $params);
-
-            if(isset($result->status) && $result->status == 'success')
-            {
-                echo $value;
-                echo $data['user_id'];
-                 echo '<pre>';
-                print_r($this->rest->debug());
-                //return true;
-                echo '</pre>';
-                $this->update_leave_number_sequence($NEXTREC);
-                echo '<pre>';
-                print_r($this->rest->debug());
-                //return true;
-                echo '</pre>';
-            }
-            else
-            {
-                echo '<pre>';
-                print_r($this->rest->debug());
-                //return true;
-                echo '</pre>';
-            }
-
-        }
-        die();
-    }
+    
 
     function get_type_cuti()
     {
