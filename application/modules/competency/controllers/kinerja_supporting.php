@@ -308,6 +308,7 @@ class kinerja_supporting extends MX_Controller {
         $data['form'] = getAll($this->table, array('id'=>'where/'.$id))->row();
         $data['performance'] = getAll($this->table.'_performance', array($this->table.'_id'=>'where/'.$id))->result();
         $data['kompetensi'] = getAll($this->table.'_kompetensi', array($this->table.'_id'=>'where/'.$id))->result();
+        $data['kedisiplinan'] = getAll($this->table.'_kedisiplinan', array($this->table.'_id'=>'where/'.$id))->result();
         $data['approver'] = getAll($this->table.'_approver', array($this->table.'_id'=>'where/'.$id));
         $data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
         $data['approved'] = assets_url('img/approved_stamp.png');
@@ -340,6 +341,13 @@ class kinerja_supporting extends MX_Controller {
         $bobot_kompetensi = $this->input->post('bobot_kompetensi');
         $nilai_kompetensi = $this->input->post('nilai_kompetensi');
         $persentase_kompetensi = $this->input->post('persentase_kompetensi');
+
+        $aspek_kedisiplinan = $this->input->post('aspek_kedisiplinan');
+        $bobot_kedisiplinan = $this->input->post('bobot_kedisiplinan');
+        $target_kedisiplinan = $this->input->post('target_kedisiplinan');
+        $nilai_kedisiplinan = $this->input->post('nilai_kedisiplinan');
+        $persentase_kedisiplinan = $this->input->post('persentase_kedisiplinan');
+
         $approver_id = $this->input->post('approver_id');
         // INSERT TO COMPETENCY_form_evaluasi_training
         $data = array(
@@ -391,6 +399,20 @@ class kinerja_supporting extends MX_Controller {
                 );
 
                 $this->db->insert($this->table.'_kompetensi', $kompetensi);
+            }
+
+            //table competency kinerja supporting kedisiplinan
+            for ($i=0; $i < sizeof($aspek_kedisiplinan) ; $i++) { 
+                $kedisiplinan = array(
+                    $this->table.'_id' => $form_id, 
+                    'aspek' => $aspek_kedisiplinan[$i], 
+                    'bobot' => $bobot_kedisiplinan[$i], 
+                    'target' => $target_kedisiplinan[$i], 
+                    'nilai' => $nilai_kedisiplinan[$i], 
+                    'persentase' => $persentase_kedisiplinan[$i], 
+                );
+
+                $this->db->insert($this->table.'_kedisiplinan', $kedisiplinan);
             }
 
             //INSERT TO KINERJA SUPPORTING APPROVER

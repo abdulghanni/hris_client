@@ -142,6 +142,12 @@ class personal_assesment extends MX_Controller {
         permissionBiasa();
         // $this->form_validation->set_rules('competency_def_id', 'Kompetensi', 'trim|required');
         $approver_id = $this->input->post('approver_id');
+        //die('approver : '.$approver_id);
+        /*if(empty($approver_id)){
+            die('user_id : 644');
+        }else{
+            print_mz($approver_id);
+        }*/
         $com = $this->input->post('competency_def_id');
         $sk = $this->input->post('sk');
         $ak = $this->input->post('ak');
@@ -185,44 +191,66 @@ class personal_assesment extends MX_Controller {
                      "<br/>Untuk melihat detail silakan <a href=$url>Klik disini</a>";
                      
         // INSERT TO competency_personal_assesment_APPROVER
-        for ($i=0;$i<sizeof($approver_id);$i++) {
+        if(!empty($approver_id)) {
+            //die('disini '.sizeof($approver_id));
+            for ($i=0;$i<sizeof($approver_id);$i++) {
+                $data = array(
+                    'competency_personal_assesment_id' => $com_id,
+                    'user_id' => $approver_id[$i]
+                );
+                $this->db->insert($this->table.'_approver', $data);//print_ag(lq());
+
+                $data4 = array(
+                      'sender_id' => get_nik(sessId()),
+                      'receiver_id' => get_nik($approver_id[$i]),
+                      'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                      'subject' => $subject_email,
+                      'email_body' => $isi_email,
+                      'is_read' => 0,
+                );
+                $this->db->insert('email', $data4);
+                if(!empty(getEmail($approver_id[$i])))$this->send_email(getEmail($approver_id[$i]), $subject_email, $isi_email);
+
+                //redirect(base_url($this->controller), 'refresh');    
+            }
+
+            //approval pak wisnu sebagai manager HR PUSAT
             $data = array(
                 'competency_personal_assesment_id' => $com_id,
-                'user_id' => $approver_id[$i]
+                'user_id' => 644
             );
             $this->db->insert($this->table.'_approver', $data);//print_ag(lq());
 
-            $data4 = array(
+            $data5 = array(
                   'sender_id' => get_nik(sessId()),
-                  'receiver_id' => get_nik($approver_id[$i]),
+                  'receiver_id' => get_nik(644),
                   'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
                   'subject' => $subject_email,
                   'email_body' => $isi_email,
                   'is_read' => 0,
             );
-            $this->db->insert('email', $data4);
-            if(!empty(getEmail($approver_id[$i])))$this->send_email(getEmail($approver_id[$i]), $subject_email, $isi_email);
+            $this->db->insert('email', $data5);
+            if(!empty(getEmail(644)))$this->send_email(getEmail(644), $subject_email, $isi_email);
+        }else{
+            //die('disana');
+            //approval pak wisnu sebagai manager HR PUSAT
+            $data = array(
+                'competency_personal_assesment_id' => $com_id,
+                'user_id' => 644
+            );
+            $this->db->insert($this->table.'_approver', $data);//print_ag(lq());
 
-            //redirect(base_url($this->controller), 'refresh');    
+            $data5 = array(
+                  'sender_id' => get_nik(sessId()),
+                  'receiver_id' => get_nik(644),
+                  'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                  'subject' => $subject_email,
+                  'email_body' => $isi_email,
+                  'is_read' => 0,
+            );
+            $this->db->insert('email', $data5);
+            if(!empty(getEmail(644)))$this->send_email(getEmail(644), $subject_email, $isi_email);
         }
-
-        //approval pak wisnu sebagai manager HR PUSAT
-        $data = array(
-            'competency_personal_assesment_id' => $com_id,
-            'user_id' => 644
-        );
-        $this->db->insert($this->table.'_approver', $data);//print_ag(lq());
-
-        $data5 = array(
-              'sender_id' => get_nik(sessId()),
-              'receiver_id' => get_nik(644),
-              'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
-              'subject' => $subject_email,
-              'email_body' => $isi_email,
-              'is_read' => 0,
-        );
-        $this->db->insert('email', $data5);
-        if(!empty(getEmail(644)))$this->send_email(getEmail(644), $subject_email, $isi_email);
 
         redirect(base_url($this->controller), 'refresh');
         

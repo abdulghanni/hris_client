@@ -160,12 +160,59 @@
 					        	</div>
 					        </div>
 					        <hr/>
-				            
+				            <div class="row">
+					        	<div class="col-md-12">
+				                    <table class="table table-bordered" id="tbl_kedisiplinan">
+										<thead>
+											<tr>
+												<td width="5%" rowspan="2" valign="center">
+								                    No.
+												</td>
+												<td width="65%" rowspan="2" class="text-center">Aspek Penilaian<br/> Kedisiplinan(10%)</td>
+												<td widtd="30%" colspan="3" class="text-center">Penilaian</td>
+											</tr>
+											<tr>
+												<td class="text-center">Bobot</td>
+												<td class="text-center">Target</td>
+												<td class="text-center">Menit keterlambatan</td>
+												<td class="text-center">Nilai</td>
+											</tr>
+										</thead>
+										<tbody>
+											<?php $i = 1; foreach($kedisiplinan as $p){?>
+											<tr>
+												<td><?=$i++?></td>
+												<td><?=$p->aspek?></td>
+												<td><?=$p->bobot?></td>
+												<td><?=$p->target?></td>
+												<td><?=$p->nilai?></td>
+												<td><?=$p->persentase?></td>
+											</tr>
+											<?php } ?>
+										</tbody>
+
+										<tfoot id="tbl_kedisiplinan_footer" style="display: none">
+											<tr>
+												<td></td>
+												<td>Subtotal Nilai Kedisiplinan</td>
+												<td><input class="form-control text-right" type="text" id="sub_total_bobot_kedisiplinan" name="sub_total_bobot_kedisiplinan" readonly="readonly"></td>
+												<td><input class="form-control text-right" id="sub_total_target_kedisiplinan" type="text" name="sub_total_target_kedisiplinan" readonly="readonly"></td>
+												<td><input class="form-control text-right" id="sub_total_nilai_kedisiplinan" type="text" name="sub_total_nilai_kedisiplinan" readonly="readonly"></td>
+												<td><input class="form-control text-right" id="sub_total_persentase_kedisiplinan" type="text" name="sub_total_persentase_kedisiplinan" readonly="readonly"></td>
+											</tr>
+										</tfoot>
+									</table>
+					        	</div>
+					        	<!-- <div class="col-md-12">
+					        		<button type="button" class="btn btn-small" id="btnAddPerformance" title="Klik disini untuk membuat pengajuan baru" onclick="addPerformance('tbl_performance')"><i class="icon-plus"></i> Tambah Aspek Penilaian Performance</button>
+					        	</div> -->
+					        </div>
+					        <hr/>
 				            <div class="row">
 					        	<div class="col-md-12">
 					        		<table id="" class="table-bordered">
 										<tr>
-											<td width="85%" class="">&nbsp;&nbsp; <h5>Total Nilai Kinerja = (Performance x 60%) + (Kompetensi x 40%)</h5></td>
+											<td width="85%" class="">&nbsp;&nbsp; <h5>Total Nilai Kinerja = (Performance x 60%) + (Kompetensi x 30%) + (Kedisiplinan x 10%)</h5></td>
 											<td class="text-right"><input class="form-control text-right" id="total_nilai" type="text" name="total_nilai" readonly="readonly" value="<?=$form->total?>"></td>
 										</tr>
 
