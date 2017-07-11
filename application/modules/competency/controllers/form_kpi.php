@@ -374,11 +374,11 @@ class form_kpi extends MX_Controller {
         }
     }
 
-    function approve($org_id, $approver_id = null){
+    /*function approve($org_id, $comp_session_id, $approver_id = null){
         permissionBiasa();
         $data['org_id'] = $org_id;
         $data['competency_group'] = GetAll('competency_group')->result();
-        $data['data'] = $this->main->standar($org_id);
+        $data['data'] = $this->main->standar($org_id,$comp_session_id);
         $data['approver'] = GetAll($this->table.'_approver', array('organization_id'=>'where/'.$org_id));
 
         $data['competency_mapping_indikator'] = $indikatorx = GetAll('competency_mapping_indikator_detail', array('organization_id'=>'where/'.$org_id));
@@ -405,9 +405,9 @@ class form_kpi extends MX_Controller {
         $data['rejected'] = assets_url('img/rejected_stamp.png');
         $data['pending'] = assets_url('img/pending_stamp.png');
         $comp_def = array();
-        $def = GetAllSelect($this->table.'_detail', 'competency_def_id', array('organization_id'=>'where/'.$org_id))->result_array();
+        $def = GetAllSelect($this->table.'_detail', 'competency_mapping_kpi_detail_id', array('organization_id'=>'where/'.$org_id))->result_array();
         foreach ($def as $key => $value) {
-           $comp_def[] = $value['competency_def_id'];
+           $comp_def[] = $value['competency_mapping_kpi_detail_id'];
         }
         // print_mz($comp_def);
         $data['comp_def'] = $comp_def;
@@ -419,12 +419,47 @@ class form_kpi extends MX_Controller {
             $data['app_status_id'] = getValue('app_status_id', $this->table.'_approver', $f);
             $data['date_app'] = getValue('date_app', $this->table.'_approver', $f);
             $app = $this->load->view($this->controller.'/app_stat', $data, true);
-            // $note = $this->load->view('form_cuti/note', $data, true);
+            //$note = $this->load->view('form_cuti/note', $data, true);
             $note = '';
-            echo json_encode(array('app'=>$app, 'note'=>$note, 'date'=>lq()));
+            //echo json_encode(array('app'=>$app, 'note'=>$note, 'date'=>lq()));
         }else{
             $this->_render_page($this->controller.'/approve', $data);
         }
+    }*/
+
+    function approve($org_id, $comp_session_id, $id,$kpi_detail_id, $user_id)
+    {
+        permissionBiasa();
+        $data['title'] = $this->title;
+        $data['controller'] = $this->controller;
+        $data['org_id'] = $org_id;
+        $data['comp_session_id'] = $comp_session_id;
+        $data['competency_mapping_kpi_detail_id'] = $id;
+        $data['periode'] = getAll('comp_session',array('id'=>'where/'.$comp_session_id));
+        $mapping_kpi_detail = getAll('competency_mapping_kpi_detail',array('id'=>'where/'.$id,'is_deleted'=>'where/0'));
+        $data['approver'] = getAll($this->table.'_approver', array('organization_id'=>'where/'.$org_id,'comp_session_id'=>'where/'.$comp_session_id,'competency_mapping_kpi_detail_id'=>'where/'.$id));
+        if($mapping_kpi_detail->num_rows() > 0)
+        {
+            $data['mapping_kpi'] = $mapping_kpi = $mapping_kpi_detail->row_array();
+            //$data['users'] = $qusers = $this->competency->get_emps_by_pos($mapping_kpi['position_group_id']);
+            $data['users'] = $user_id;
+            $kpi_detail = getAll('competency_form_kpi_detail',array('organization_id'=>'where/'.$org_id,'comp_session_id'=>'where/'.$comp_session_id,'id'=>'where/'.$kpi_detail_id,'is_deleted'=>'where/0'));
+            if($kpi_detail->num_rows() > 0)
+            {
+                $data['kpi_detail'] = $kpi_detail->row_array();
+            }else{
+                $data['kpi_detail'] = array();
+            }           
+        }else{
+            $data['mapping_kpi'] = array();
+            $data['kpi_detail'] = array();
+            $data['users'] = "";
+        }
+        $data['url_ajax_add'] = site_url('competency/form_kpi/ajax_add');
+        $data['url_ajax_update'] = site_url('competency/form_kpi/ajax_update');
+        $data['url_ajax_edit'] = site_url('competency/form_kpi/ajax_edit');
+        $data['url_ajax_delete'] = site_url('competency/form_kpi/ajax_delete');
+        $this->_render_page('form_kpi/approve_ats', $data);
     }
 
     function add(){
@@ -537,6 +572,7 @@ class form_kpi extends MX_Controller {
                     'created_on'=>dateNow(),
                     );
                 $this->db->insert($this->table.'_detail', $data);
+                $competency_form_kpi_detail_id = $this->db->insert_id();
             }else{
                 $data = array(
                     'edited_by'=>sessId(),
@@ -570,8 +606,9 @@ class form_kpi extends MX_Controller {
                     );
                 $this->db->where('organization_id', $org)->where('comp_session_id', $comp_session_id)->update($this->table.'_detail', $data);
             }
-
-        $url = base_url().$this->controller.'/approve/'.$org.'/'.$comp_session_id;
+        //approve($org_id, $comp_session_id, $id,$kpi_detail_id, $user_id)
+        $url = base_url().$this->controller.'/approve/'.$org.'/'.$comp_session_id.'/'.$this->input->post('competency_mapping_kpi_detail_id').'/'.$competency_form_kpi_detail_id.'/'.$this->input->post('user_id');
+        //$url = base_url().$this->controller.'/approve/'.$org.'/'.$comp_session_id.'/'.$this->input->post('competency_mapping_kpi_detail_id').'/'.$this->input->post('user_id');
         $subject_email = "Form Penilaian KPI Bulanan";
         $isi_email = get_name(sessId())." Membuat penilaian KPI untuk departemen ".get_organization_name($org).
                      "<br/>Untuk melihat detail silakan <a href=$url>Klik disini</a>";
