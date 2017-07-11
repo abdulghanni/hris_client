@@ -823,8 +823,7 @@ class Form_cuti extends MX_Controller {
                '/HRSEMPLGROUPID/'.get_user_emplgroupid($user_id)
                ;
 
-        /* $additional_data = array(
-                'id_comp_session'       => date('Y'),
+        /* $additional_data = arrayre                'id_comp_session'       => date('Y'),
                 'date_mulai_cuti'       => date('Y-m-d', strtotime($this->input->post('start_cuti'))),
                 'date_selesai_cuti'     => date('Y-m-d', strtotime($this->input->post('end_cuti'))),
                 'jumlah_hari'           => $jumlah_hari,
