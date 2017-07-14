@@ -53,19 +53,29 @@ class form_tidak_masuk extends MX_Controller {
            $print = base_url()."form_$this->form_name/form_$this->form_name"."_pdf/".$r->id;
            $delete = (($r->is_app_lv1 == 0 && $r->created_by == sessId()) || is_admin()) ? '<button onclick="showModal('.$r->id.')" class="btn btn-sm btn-danger" type="button" title="Batalkan Pengajuan"><i class="icon-remove"></i></button>' : '';
 
-            //APPROVAL
-            if(!empty($r->app_status_id_lv1)){
+             //APPROVAL
+            //if(!empty($r->app_status_id_lv1)){
+           if($r->user_app_lv1 != '0' && !empty($r->user_app_lv1)){
                 $status1 = ($r->app_status_id_lv1 == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($r->app_status_id_lv1 == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($r->app_status_id_lv1 == 3) ? $r->app_status_id_lv1."<i class='icon-exclamation-sign' style='color:orange;' title = 'Pending'></i>" : "<i class='icon-question' title = 'Menunggu Status Approval'></i>"));
+           
             }else{
                 $status1 = "<i class='icon-minus' style='color:black;' title = 'Tidak Butuh Approval Atasan Langsung'></i>";
             }
-            if(!empty($r->app_status_id_lv2)){
+            if($r->user_app_lv2 != '0' && !empty($r->user_app_lv2)){
+            //if(!empty($r->app_status_id_lv2)){
                 $status2 = ($r->app_status_id_lv2 == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($r->app_status_id_lv2 == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($r->app_status_id_lv2 == 3) ? "<i class='icon-exclamation-sign' style='color:orange;' title = 'Pending'></i>" : "<i class='icon-question' title = 'Menunggu Status Approval'></i>"));
             }else{
                 $status2 = "<i class='icon-minus' style='color:black;' title = 'Tidak Butuh Approval Atasan Tidak Langsung'></i>";
             }
-            if(!empty($r->app_status_id_lv3)){
+            /*if(strlen($r->app_status_id_lv3) > 0){
                 $status3 = ($r->app_status_id_lv3 == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($r->app_status_id_lv3 == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($r->app_status_id_lv3 == 3) ? "<i class='icon-exclamation-sign' style='color:orange;' title = 'Pending'></i>" : "<i class='icon-question' title = 'Menunggu Status Approval'></i>"));
+            }else{
+                $status3 = "<i class='icon-minus' style='color:black;' title = 'Tidak Butuh Approval Atasan Lainnya'></i>";
+
+            }*/
+            if($r->user_app_lv3 != '0' && !empty($r->user_app_lv3))
+            {
+                 $status3 = ($r->app_status_id_lv3 == 1)? "<i class='icon-ok-sign' style='color:green;' title = 'Approved'></i>" : (($r->app_status_id_lv3 == 2) ? "<i class='icon-remove-sign' style='color:red;'  title = 'Rejected'></i>"  : (($r->app_status_id_lv3 == 3) ? "<i class='icon-exclamation-sign' style='color:orange;' title = 'Pending'></i>" : "<i class='icon-question' title = 'Menunggu Status Approval'></i>"));
             }else{
                 $status3 = "<i class='icon-minus' style='color:black;' title = 'Tidak Butuh Approval Atasan Lainnya'></i>";
             }
@@ -507,18 +517,116 @@ class form_tidak_masuk extends MX_Controller {
                 );
             return $sisa_cuti;
         } elseif($response == "404" && strtotime($seniority_date) < strtotime('-1 year')) {
-            $sisa_cuti = array(
+           if($this->insert_leave_entitlement($user_nik) == true){
+                $url_ = get_api_key().'users/sisa_cuti/EMPLID/'.$user_nik.'/format/json';
+                $headers_ = get_headers($url_);
+                $response_ = substr($headers_[0], 9, 3);
+                if ($response_ != "404") {
+                    $getsisa_cuti_ = file_get_contents($url_);
+                    $sisa_cuti_ = json_decode($getsisa_cuti_, true);
+                    $sisa_cuti_ = array(
+                            'sisa_cuti' => $sisa_cuti_[0]['ENTITLEMENT'],
+                            'recid' => $sisa_cuti_[0]['RECID'],
+                            'insert' => false
+                        );
+                    return $sisa_cuti_;
+                    //print_mz($sisa_cuti_);
+                }    
+            }else{
+                $sisa_cuti = array(
                     'sisa_cuti' => 10,
                     'insert' => 1
                 );
 
-            return $sisa_cuti;
+                //print_mz($sisa_cuti);    
+                return $sisa_cuti;
+            }
+           /* $sisa_cuti = array(
+                    'sisa_cuti' => 10,
+                    'insert' => 1
+                );
+
+            return $sisa_cuti;*/
         }else{
             $sisa_cuti = array(
                     'sisa_cuti' => 0,
                     'insert' => false
                 );
             return $sisa_cuti;
+        }
+    }
+
+    function insert_leave_entitlement($user_nik)
+    {
+        $leave_entitlement_id = $this->get_last_leave_entitlement_id();
+        //$leaveid = substr($leave_entitlement_id[0]['IDLEAVEENTITLEMENT'],5)+1;
+        $leaveid = $this->getEntitlementNumberSequence();
+        $NEXTREC = $leaveid +1;
+        $leaveid = sprintf('%06d', $leaveid);
+        $IDLEAVEENTITLEMENT = 'LVEN_'.$leaveid;
+        $RECVERSION = $leave_entitlement_id[0]['RECVERSION']+1;
+        $RECID = $leave_entitlement_id[0]['RECID']+1;
+        $seniority_date = get_seniority_date($user_nik);
+        $y = date('Y');
+        $STARTACTIVEDATE = $y.'-'.date('m-d', strtotime($seniority_date));
+        $ENDACTIVEDATE = date('Y-m-d', strtotime('+1 Year', strtotime($STARTACTIVEDATE)));
+        $ENDACTIVEDATE = date('Y-m-d', strtotime('-1 Day', strtotime($ENDACTIVEDATE)));
+
+        $sess_nik = get_nik($this->session->userdata('user_id'));
+        $method = 'post';
+        $params =  array();
+        $uri = get_api_key().'users/insert_leaveentitlement/'.
+               //'CURRCF/'.'0'.
+               //'/ENDPERIODCF/'.'0'.
+               'MAXENTITLEMENT/'.'15'.
+               //'/MAXCF/'.'0'.
+               //'/MAXADVANCE/'.'3'.
+               //'/ENTITLEMENT/'.'10'.
+               '/STARTACTIVEDATE/'.$STARTACTIVEDATE.
+               '/ENDACTIVEDATE/'.$ENDACTIVEDATE.
+               '/IDLEAVEENTITLEMENT/'.$IDLEAVEENTITLEMENT.
+               //'/HRSLEAVETYPEID/'.$HRSLEAVETYPEID.
+               //'/CASHABLEFLAG/'.'0'.
+               '/EMPLID/'.$user_nik.
+               '/ENTADJUSMENT/'.'0'.
+               '/CFADJUSMENT/'.'0'.
+               //'/ISCASHABLERESIGN/'.'0'.
+               '/PAYROLLRESIGNFLAG/'.'0'.
+               '/FIRSTCALCULATIONDATE/'.''.
+               '/MATANG/'.'0'.
+               //'/PAYMENTLEAVEFLAG/'.'0'.
+               '/PAYMENTLEAVEAMOUNT/'.'.000000000000'.
+               '/SPMID/'.''.
+               '/LASTGENERATEDATE/'.''.
+               '/ISSPM/'.'0'.
+               '/BASEDONMARITALSTATUS/'.'0'.
+               '/BASEDONSALARY/'.'0'.
+               '/CASHABLEREQUESTFLAG/'.'0'.
+               '/PAYROLPAYMENTLEAVEFLAG/'.'0'.
+               '/TGLMATANG/'.''.
+               '/MODIFIEDBY/'.$sess_nik.
+               '/CREATEDBY/'.$sess_nik.
+               '/DATAAREAID/'.get_user_dataareaid($user_nik).
+               '/RECVERSION/'.$RECVERSION.
+               '/RECID/'.$RECID.
+               '/HRSEMPLGROUPID/'.get_user_emplgroupid($user_nik).
+               '/BRANCHID/'.get_user_branchid($user_nik).
+               '/ERL_LEAVECF/'.'0';
+
+               $this->rest->format('application/json');
+
+        $result = $this->rest->{$method}($uri, $params);
+
+        if(isset($result->status) && $result->status == 'success')
+        {
+            //print_mz($this->rest->debug());
+            $this->update_entitlement_number_sequence($NEXTREC);
+            return true;
+        }
+        else
+        {
+            //print_mz($this->rest->debug());
+            return false;
         }
     }
 
@@ -885,7 +993,7 @@ class form_tidak_masuk extends MX_Controller {
         if(isset($result->status) && $result->status == 'success')
         {
             //print_mz($this->rest->debug());
-						$this->update_entitlement_number_sequence($NEXTREC);
+			$this->update_entitlement_number_sequence($NEXTREC);
             return true;
         }
         else
