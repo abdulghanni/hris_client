@@ -436,6 +436,9 @@ class Form_cuti extends MX_Controller {
         $approval_status_mail = getValue('title', 'approval_status', array('id'=>'where/'.$approval_status));
         $approval_status = getValue('approval_status_id_'.$type, 'users_cuti', array('id'=>'where/'.$id));
         $user_cuti_id = getValue('user_id', 'users_cuti', array('id'=>'where/'.$id));
+        $leavedatefrom = getValue('date_mulai_cuti', 'users_cuti', array('id'=>'where/'.$id));
+        $leavedateto = getValue('date_selesai_cuti', 'users_cuti', array('id'=>'where/'.$id));
+        $approval_id = get_nik($this->session->userdata('user_id'));
 
         $subject_email = get_form_no($id).'-['.$approval_status_mail.']Status Pengajuan Permohonan Cuti dari Atasan';
         $subject_email_request = get_form_no($id).'Pengajuan Permohonan Cuti';
@@ -523,7 +526,50 @@ class Form_cuti extends MX_Controller {
             $this->send_notif_tambahan($id, 'cuti');
         }
 
+        //$this->appr_leave_request($user_cuti_id, $leavedatefrom, $approval_status, $approval_id);
+         if($approval_status == 1){
+            $status_id = 3;
+        }elseif($approval_status == 2){
+            $status_id = 1;
+        }elseif($approval_status == 3){
+            $status_id = 2;
+        }else{
+            $status_id = 0;
+        }
+        $this->update_status_flag(get_nik($user_cuti_id), $leavedatefrom, $leavedateto, $status_id, get_nik($this->session->userdata('user_id')));
+
         $this->cek_all_approval($id);
+    }
+
+    function appr_leave_request($user_id, $leavedatefrom, $approval_status, $approval_id)
+    {
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+
+        $method = 'post';
+        $params =  array();
+        $uri = get_api_key().'users/appr_leave_request/EMPLID/'.$user_id.'/LEAVEDATEFROM/'.$leavedatefrom.'/STATUSFLAG/'.$approval_status.'/IDAPPROVAL'.$approval_id;
+
+        $this->rest->format('application/json');
+
+        $result = $this->rest->{$method}($uri, $params);
+
+
+        if(isset($result->status) && $result->status == 'success')
+        {
+            echo $this->rest->debug();
+            //return $this->rest->debug();
+            return TRUE;
+        }
+        else
+        {
+            echo $this->rest->debug();
+            //return $this->rest->debug();
+            return FALSE;
+        }
     }
 
     function detail_email($id)
@@ -609,7 +655,7 @@ class Form_cuti extends MX_Controller {
         }else{
             $status_id = 0;
         }
-        $this->update_status_flag($user_nik, $date, $end_date, $status_id);
+        //$this->update_status_flag($user_nik, $date, $end_date, $status_id);
         $this->update_attendance_data($user_nik, $date, 5);
     }
 
@@ -674,7 +720,7 @@ class Form_cuti extends MX_Controller {
       // End date
       $end_date = getValue('date_selesai_cuti','users_cuti', $f);
       $status_id = 4;
-      $this->update_status_flag($user_nik, $date, $end_date, $status_id);
+      $this->update_status_flag($user_nik, $date, $end_date, $status_id, get_nik($this->session->userdata('user_id')));
       $jml_hari_cuti = getValue('jumlah_hari','users_cuti', array('id' => 'where/'.$id));
       $recid = $this->get_sisa_cuti($user_nik)['recid'];
       $potong_cuti = getValue('potong_cuti','users_cuti', array('id' => 'where/'.$id));
@@ -686,7 +732,7 @@ class Form_cuti extends MX_Controller {
       //echo json_encode(array('status'=>true));
     }
 
-    function update_status_flag($nik, $date, $end_date, $status_id)
+    function update_status_flag($nik, $date, $end_date, $status_id, $id_approval)
     {
         if (!$this->ion_auth->logged_in())
         {
@@ -696,7 +742,7 @@ class Form_cuti extends MX_Controller {
 
         $method = 'post';
         $params =  array();
-        $uri = get_api_key().'users/update_flag_cuti/nik/'.$nik.'/date/'.$date.'/end_date/'.$end_date.'/status_id/'.$status_id;
+        $uri = get_api_key().'users/update_flag_cuti/nik/'.$nik.'/date/'.$date.'/end_date/'.$end_date.'/status_id/'.$status_id.'/id_approval/'.$id_approval;
 
         $this->rest->format('application/json');
 
@@ -706,11 +752,13 @@ class Form_cuti extends MX_Controller {
         if(isset($result->status) && $result->status == 'success')
         {
             //return $this->rest->debug();
+            //echo $this->rest->debug();
             return TRUE;
         }
         else
         {
             //return $this->rest->debug();
+            //echo $this->rest->debug();
             return FALSE;
         }
     }
@@ -806,6 +854,7 @@ class Form_cuti extends MX_Controller {
                '/LEAVEDATEFROM/'.$data['date_mulai_cuti'].
                '/REQUESTDATE/'.$data['created_on'].
                '/IDLEAVEREQUEST/'.$IDLEAVEREQUEST.
+               //'/STATUSFLAG/'.'0'.
                '/STATUSFLAG/'.'0'.
                '/IDPERSONSUBSTITUTE/'.$data['user_pengganti'].
                '/TRAVELLINGLOCATION/'.$alamat_cuti.
@@ -1186,19 +1235,114 @@ class Form_cuti extends MX_Controller {
                     'insert' => false
                 );
             return $sisa_cuti;
+            //print_mz($sisa_cuti);
         } elseif($response == "404" && strtotime($seniority_date) < strtotime('-1 year')) {
-            $sisa_cuti = array(
+            if($this->insert_leave_entitlement($user_nik) == true){
+                $url_ = get_api_key().'users/sisa_cuti/EMPLID/'.$user_nik.'/format/json';
+                //$seniority_date = get_seniority_date($user_nik);
+                $headers_ = get_headers($url_);
+                $response_ = substr($headers_[0], 9, 3);
+                if ($response_ != "404") {
+                    $getsisa_cuti_ = file_get_contents($url_);
+                    $sisa_cuti_ = json_decode($getsisa_cuti_, true);
+                    $sisa_cuti_ = array(
+                            'sisa_cuti' => $sisa_cuti_[0]['ENTITLEMENT'],
+                            'recid' => $sisa_cuti_[0]['RECID'],
+                            'insert' => false
+                        );
+                    return $sisa_cuti_;
+                    //print_mz($sisa_cuti_);
+                }    
+            }else{
+                $sisa_cuti = array(
                     'sisa_cuti' => 10,
                     'insert' => 1
                 );
 
-            return $sisa_cuti;
+                //print_mz($sisa_cuti);    
+                return $sisa_cuti;
+            }
         }else{
             $sisa_cuti = array(
                     'sisa_cuti' => 0,
                     'insert' => false
                 );
+            //print_mz($sisa_cuti);
             return $sisa_cuti;
+        }
+    }
+
+    function insert_leave_entitlement($user_nik)
+    {
+        $leave_entitlement_id = $this->get_last_leave_entitlement_id();
+        //$leaveid = substr($leave_entitlement_id[0]['IDLEAVEENTITLEMENT'],5)+1;
+        $leaveid = $this->getEntitlementNumberSequence();
+        $NEXTREC = $leaveid +1;
+        $leaveid = sprintf('%06d', $leaveid);
+        $IDLEAVEENTITLEMENT = 'LVEN_'.$leaveid;
+        $RECVERSION = $leave_entitlement_id[0]['RECVERSION']+1;
+        $RECID = $leave_entitlement_id[0]['RECID']+1;
+        $seniority_date = get_seniority_date($user_nik);
+        $y = date('Y');
+        $STARTACTIVEDATE = $y.'-'.date('m-d', strtotime($seniority_date));
+        $ENDACTIVEDATE = date('Y-m-d', strtotime('+1 Year', strtotime($STARTACTIVEDATE)));
+        $ENDACTIVEDATE = date('Y-m-d', strtotime('-1 Day', strtotime($ENDACTIVEDATE)));
+
+        $sess_nik = get_nik($this->session->userdata('user_id'));
+        $method = 'post';
+        $params =  array();
+        $uri = get_api_key().'users/insert_leaveentitlement/'.
+               //'CURRCF/'.'0'.
+               //'/ENDPERIODCF/'.'0'.
+               'MAXENTITLEMENT/'.'15'.
+               //'/MAXCF/'.'0'.
+               //'/MAXADVANCE/'.'3'.
+               //'/ENTITLEMENT/'.'10'.
+               '/STARTACTIVEDATE/'.$STARTACTIVEDATE.
+               '/ENDACTIVEDATE/'.$ENDACTIVEDATE.
+               '/IDLEAVEENTITLEMENT/'.$IDLEAVEENTITLEMENT.
+               //'/HRSLEAVETYPEID/'.$HRSLEAVETYPEID.
+               //'/CASHABLEFLAG/'.'0'.
+               '/EMPLID/'.$user_nik.
+               '/ENTADJUSMENT/'.'0'.
+               '/CFADJUSMENT/'.'0'.
+               //'/ISCASHABLERESIGN/'.'0'.
+               '/PAYROLLRESIGNFLAG/'.'0'.
+               '/FIRSTCALCULATIONDATE/'.''.
+               '/MATANG/'.'0'.
+               //'/PAYMENTLEAVEFLAG/'.'0'.
+               '/PAYMENTLEAVEAMOUNT/'.'.000000000000'.
+               '/SPMID/'.''.
+               '/LASTGENERATEDATE/'.''.
+               '/ISSPM/'.'0'.
+               '/BASEDONMARITALSTATUS/'.'0'.
+               '/BASEDONSALARY/'.'0'.
+               '/CASHABLEREQUESTFLAG/'.'0'.
+               '/PAYROLPAYMENTLEAVEFLAG/'.'0'.
+               '/TGLMATANG/'.''.
+               '/MODIFIEDBY/'.$sess_nik.
+               '/CREATEDBY/'.$sess_nik.
+               '/DATAAREAID/'.get_user_dataareaid($user_nik).
+               '/RECVERSION/'.$RECVERSION.
+               '/RECID/'.$RECID.
+               '/HRSEMPLGROUPID/'.get_user_emplgroupid($user_nik).
+               '/BRANCHID/'.get_user_branchid($user_nik).
+               '/ERL_LEAVECF/'.'0';
+
+               $this->rest->format('application/json');
+
+        $result = $this->rest->{$method}($uri, $params);
+
+        if(isset($result->status) && $result->status == 'success')
+        {
+            //print_mz($this->rest->debug());
+            $this->update_entitlement_number_sequence($NEXTREC);
+            return true;
+        }
+        else
+        {
+            //print_mz($this->rest->debug());
+            return false;
         }
     }
 
