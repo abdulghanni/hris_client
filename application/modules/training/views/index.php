@@ -35,6 +35,7 @@
                             <th>Mulai training</th>
                             <th>Selesai training</th>
                             <th>Vendor</th>
+                            <th>Deskripsi</th>
                             <th style="width:125px;">Action</th>
                           </tr>
                         </thead>
@@ -69,6 +70,14 @@
               </div>
 
               <div class="row form-row">
+                <label class="control-label col-md-3">Deskripsi</label>
+                <div class="col-md-9">
+                  <input name="training_deskripsi" placeholder="" class="form-control" type="text">
+                  <span class="help-block"></span>
+                </div>
+              </div>
+
+              <div class="row form-row">
                 <label class="control-label col-md-3">Mulai pelatihan</label>
                 <div class="col-md-9">
                   <div id="date_start" class="input-append success date no-padding">
@@ -91,6 +100,19 @@
               </div>
 
               <div class="row form-row">
+                <label class="control-label col-md-3">Jam</label>
+                <div class="col-md-2">
+                  <input name="jam_mulai" placeholder="" class="form-control" type="text">
+                  <span class="help-block"></span>
+                </div>
+                <label class="control-label col-md-3">s/d</label>
+                <div class="col-md-2">
+                  <input name="jam_akhir" placeholder="" class="form-control" type="text">
+                  <span class="help-block"></span>
+                </div>
+              </div>
+
+              <div class="row form-row">
                 <label class="control-label col-md-3">Vendor</label>
                 <div class="col-md-9">
                   <?php 
@@ -99,6 +121,88 @@
                   ?>
                 </div>
               </div>
+
+              <div class="row form-row">
+                <label class="control-label col-md-3">Tipe training</label>
+                <div class="col-md-9">
+                  <?php 
+                    $js = 'id="training_type_id" class="select2" style="width:50%"';
+                    echo form_dropdown('training_type_id', $options_training_type,'',$js); 
+                  ?>
+                </div>
+              </div>
+
+              <div class="row form-row">
+                <label class="control-label col-md-3">Penyelenggara</label>
+                <div class="col-md-9">
+                  <?php 
+                    $js = 'id="penyelenggara_id" class="select2" style="width:50%"';
+                    echo form_dropdown('penyelenggara_id', $options_penyelenggara,'',$js); 
+                  ?>
+                </div>
+              </div>
+
+              <div class="row form-row">
+                <label class="control-label col-md-3">Pembiayaan</label>
+                <div class="col-md-9">
+                  <?php 
+                    $js = 'id="pembiayaan_id" class="select2" style="width:50%"';
+                    echo form_dropdown('pembiayaan_id', $options_pembiayaan,'',$js); 
+                  ?>
+                </div>
+              </div>
+
+              <div class="row form-row">
+                <label class="control-label col-md-3">ikatan dinas</label>
+                <div class="col-md-9">
+                  <select name="ikatan_dinas_id" class="select2" id="ikatan_dinas_id" style="width:100%" >
+                  <option value="0">-- Pilih Tipe Ikatan Dinas --</option>
+                  <?php if(!empty($ikatan)){
+                    for($i=0;$i<sizeof($ikatan);$i++):
+                    //$selected = ($user->ikatan == $ikatan[$i]['DESCRIPTION']) ? 'selected = selected' : '';
+                    echo '<option value="'.$ikatan[$i]['DESCRIPTION'].'" >'.$ikatan[$i]['DESCRIPTION'].'</option>';
+                    endfor;}
+                  ?>
+              </select>
+                </div>
+              </div>
+
+              <div class="row form-row">
+                <label class="control-label col-md-3">Periode</label>
+                <div class="col-md-9">
+                  <?php 
+                    $js = 'id="waktu_id" class="select2" style="width:50%"';
+                    echo form_dropdown('waktu_id', $options_training_waktu,'',$js); 
+                  ?>
+                </div>
+              </div>
+
+              <div class="row form-row">
+                <label class="control-label col-md-3">Besar biaya</label>
+                <div class="col-md-9">
+                  <input id="besar_biaya" name="besar_biaya" placeholder="" class="form-control" type="text">
+                  <span class="help-block"></span>
+                </div>
+              </div>
+
+              <div class="row form-row">
+                <label class="control-label col-md-3">Tempat pelaksanaan</label>
+                <div class="col-md-9">
+                  <input name="tempat" placeholder="" class="form-control" type="text">
+                  <span class="help-block"></span>
+                </div>
+              </div>
+
+              
+
+              <div class="row form-row">
+                <label class="control-label col-md-3">Narasumber</label>
+                <div class="col-md-9">
+                  <input name="narasumber" placeholder="" class="form-control" type="text">
+                  <span class="help-block"></span>
+                </div>
+              </div>
+
           </div>
           <div class="modal-footer">
             <input type="hidden" value="" name="id" class="form-control"> 

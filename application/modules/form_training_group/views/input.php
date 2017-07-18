@@ -129,10 +129,19 @@
                     
                     <div class="row form-row">
                       <div class="col-md-3">
+                        <label class="form-label text-left">Pelatihan</label>
+                      </div>
+                      <div class="col-md-9">
+                         <?php 
+                          $js = 'id="training_id" class="select2" style="width:50%" required';
+                          echo form_dropdown('training_id', $options_training,'',$js); 
+                        ?>
+                      </div>
+                      <div class="col-md-3">
                         <label class="form-label text-left">Nama Pelatihan</label>
                       </div>
                       <div class="col-md-9">
-                        <input name="training_name"  type="text"  class="form-control"  value="" required>
+                        <input id="training_name" name="training_name" type="text"  class="form-control"  required readonly="readonly">
                       </div>
                     </div>
                     <div class="row form-row">
@@ -140,7 +149,7 @@
                         <label class="form-label text-left">Tujuan Pelatihan</label>
                       </div>
                       <div class="col-md-9">
-                        <input name="tujuan training" type="text"  class="form-control"  value="" required>
+                        <input name="tujuan_training" id="tujuan_training" type="text"  class="form-control" required readonly="readonly">
                       </div>
                     </div>
                   </div>
@@ -149,6 +158,20 @@
                   <div class="pull-right">
                     <button class="btn btn-danger btn-cons" id="btnSave" type="submit" style="display: none;"><i class="icon-ok"></i> Save</button>
                     <a href="<?php echo site_url('form_training_group')?>"><button id="btnCancel" class="btn btn-white btn-cons" type="button" style="display: none;">Cancel</button></a>
+                    <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url()?>">
+                    <input type="hidden" name="date_start" id="date_start" >
+                    <input type="hidden" name="date_end" id="date_end" >
+                    <input type="hidden" name="vendor_id" id="vendor_id" >
+                    <input type="hidden" name="training_type_id" id="training_type_id" >
+                    <input type="hidden" name="penyelenggara_id" id="penyelenggara_id" >
+                    <input type="hidden" name="pembiayaan_id" id="pembiayaan_id" >
+                    <input type="hidden" name="ikatan_dinas_id" id="ikatan_dinas_id" >
+                    <input type="hidden" name="waktu_id" id="waktu_id" >
+                    <input type="hidden" name="besar_biaya" id="besar_biaya" >
+                    <input type="hidden" name="tempat" id="tempat" >
+                    <input type="hidden" name="jam_mulai" id="jam_mulai" >
+                    <input type="hidden" name="jam_akhir" id="jam_akhir" >
+                    <input type="hidden" name="narasumber" id="narasumber" >
                   </div>
                 </div>
               </form>

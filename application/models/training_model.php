@@ -5,7 +5,11 @@ class training_model extends CI_Model {
 
 	var $table = 'training';
 	var $table_join1 = 'vendor';
-	var $column = array('title','date_start','date_end','vendor');
+	var $table_join2 = 'training_type';
+	var $table_join3 = 'penyelenggara';
+	var $table_join4 = 'training_waktu';
+	var $table_join5 = 'pembiayaan';
+	var $column = array('title','date_start','date_end','vendor','description');
 	var $order = array('id' => 'desc');
 
 	public function __construct()
@@ -19,6 +23,7 @@ class training_model extends CI_Model {
 		$this->db->select(
 			$this->table.'.id as id,
 			'.$this->table.'.training_title as title,
+			'.$this->table.'.description as description,
 			'.$this->table.'.date_start as date_start,
 			'.$this->table.'.date_end as date_end,
 			'.$this->table_join1.'.vendor_title as vendor
@@ -39,6 +44,8 @@ class training_model extends CI_Model {
 					$item = $this->table.'.date_end';
 				}elseif($item == 'vendor'){
 					$item = $this->table_join1.'.vendor_title';
+				}elseif($item == 'description'){
+					$item = $this->table_join1.'.description';
 				}
 
 				($i===0) ? $this->db->like($item, $_POST['search']['value']) : $this->db->or_like($item, $_POST['search']['value']);
@@ -119,5 +126,33 @@ class training_model extends CI_Model {
 		$this->db->where($this->table_join1.'.is_deleted',0);
 		$this->db->order_by($this->table_join1.'.vendor_title','asc');
 		return $this->db->get($this->table_join1);
+	}
+
+	public function get_training_type()
+	{	
+		$this->db->where($this->table_join2.'.is_deleted',0);
+		$this->db->order_by($this->table_join2.'.title','asc');
+		return $this->db->get($this->table_join2);
+	}
+
+	public function get_penyelenggara()
+	{	
+		$this->db->where($this->table_join3.'.is_deleted',0);
+		$this->db->order_by($this->table_join3.'.title','asc');
+		return $this->db->get($this->table_join3);
+	}
+
+	public function get_training_waktu()
+	{	
+		$this->db->where($this->table_join4.'.is_deleted',0);
+		$this->db->order_by($this->table_join4.'.title','asc');
+		return $this->db->get($this->table_join4);
+	}
+
+	public function get_pembiayaan()
+	{	
+		$this->db->where($this->table_join5.'.is_deleted',0);
+		$this->db->order_by($this->table_join5.'.title','asc');
+		return $this->db->get($this->table_join5);
 	}
 }
