@@ -48,8 +48,29 @@ class training extends MX_Controller {
             $data['url_ajax_update'] = site_url('training/ajax_update');
 
             $data['options_vendor'] = options_row($this->model_name,'get_vendor','id','vendor_title','Pilih vendor');
+            $data['options_training_type'] = options_row($this->model_name,'get_training_type','id','title','Pilih Tipe');
+            $data['options_penyelenggara'] = options_row($this->model_name,'get_penyelenggara','id','title','Pilih Penyelenggara');
+            $data['options_training_waktu'] = options_row($this->model_name,'get_training_waktu','id','title','Pilih Periode');
+            $data['options_pembiayaan'] = options_row($this->model_name,'get_pembiayaan','id','title','Pilih pembiayaan');
+            $data['ikatan'] = $this->get_tipe_ikatan_dinas();
 
             $this->_render_page('training/index',$data);
+        }
+    }
+
+    function get_tipe_ikatan_dinas()
+    {
+        $url = get_api_key().'training/tipe_ikatan_dinas/format/json';
+      
+        $headers = get_headers($url);
+        $response = substr($headers[0], 9, 3);
+        if ($response != "404") {
+            $get_task_receiver = file_get_contents($url);
+            $ikatan = json_decode($get_task_receiver, true);
+
+            return $ikatan;
+        }else{
+            return false;
         }
     }
 
@@ -65,6 +86,7 @@ class training extends MX_Controller {
             $row[] = $val->date_start;
             $row[] = $val->date_end;
             $row[] = $val->vendor;
+            $row[] = $val->description;
 
             //add html for action
             $row[] = '<a class="btn btn-sm btn-primary btn-mini" href="javascript:void()" title="Edit" onclick="edit_('."'".$val->id."'".')"><i class="icon-edit"></i> Edit</a>
@@ -88,9 +110,21 @@ class training extends MX_Controller {
         $this->_validate();
         $data = array(
                 'training_title' => $this->input->post('training_title'),
+                'description' => $this->input->post('training_deskripsi'),
                 'date_start' => $this->input->post('date_start'),
                 'date_end' => $this->input->post('date_end'),
                 'vendor_id' => $this->input->post('vendor_id'),
+                'jam_mulai' => $this->input->post('jam_mulai'),
+                'jam_akhir' => $this->input->post('jam_akhir'),
+                'vendor_id' => $this->input->post('vendor_id'),
+                'training_type_id' => $this->input->post('training_type_id'),
+                'penyelenggara_id' => $this->input->post('penyelenggara_id'),
+                'pembiayaan_id' => $this->input->post('pembiayaan_id'),
+                'ikatan_dinas_id' => $this->input->post('ikatan_dinas_id'),
+                'waktu_id' => $this->input->post('waktu_id'),
+                'besar_biaya' => $this->input->post('besar_biaya'),
+                'tempat' => $this->input->post('tempat'),
+                'narasumber' => $this->input->post('narasumber'),
                 'created_on' => date('Y-m-d H:i:s', now()),
                 'created_by' => GetUserID()
                 );
@@ -120,9 +154,21 @@ class training extends MX_Controller {
         $this->_validate();
         $data = array(
                 'training_title' => $this->input->post('training_title'),
+                'description' => $this->input->post('training_deskripsi'),
                 'date_start' => $this->input->post('date_start'),
                 'date_end' => $this->input->post('date_end'),
                 'vendor_id' => $this->input->post('vendor_id'),
+                'jam_mulai' => $this->input->post('jam_mulai'),
+                'jam_akhir' => $this->input->post('jam_akhir'),
+                'vendor_id' => $this->input->post('vendor_id'),
+                'training_type_id' => $this->input->post('training_type_id'),
+                'penyelenggara_id' => $this->input->post('penyelenggara_id'),
+                'pembiayaan_id' => $this->input->post('pembiayaan_id'),
+                'ikatan_dinas_id' => $this->input->post('ikatan_dinas_id'),
+                'waktu_id' => $this->input->post('waktu_id'),
+                'besar_biaya' => $this->input->post('besar_biaya'),
+                'tempat' => $this->input->post('tempat'),
+                'narasumber' => $this->input->post('narasumber'),
                 'edited_on' => date('Y-m-d H:i:s', now()),
                 'edited_by' => GetUserID()
             );
@@ -140,28 +186,91 @@ class training extends MX_Controller {
         if($this->input->post('training_title') == '')
         {
             $data['inputerror'][] = 'training_title';
-            $data['error_string'][] = 'Title is required';
+            $data['error_string'][] = 'Judul wajib diisi';
             $data['status'] = FALSE;
         }
 
         if($this->input->post('date_start') == '')
         {
             $data['inputerror'][] = 'date_start';
-            $data['error_string'][] = 'Date start is required';
+            $data['error_string'][] = 'Tanggal mulai wajib diisi';
             $data['status'] = FALSE;
         }
 
         if($this->input->post('date_end') == '')
         {
             $data['inputerror'][] = 'date_end';
-            $data['error_string'][] = 'Date end is required';
+            $data['error_string'][] = 'Tangal selesai wajib diisi';
             $data['status'] = FALSE;
         }
 
-        if($this->input->post('vendor_id') == '')
+        if($this->input->post('vendor_id') == 0)
         {
             $data['inputerror'][] = 'vendor_id';
-            $data['error_string'][] = 'Vendor is required';
+            $data['error_string'][] = 'Vendor wajib diisi';
+            $data['status'] = FALSE;
+        }
+
+        if($this->input->post('training_type_id') == 0)
+        {
+            $data['inputerror'][] = 'training_type_id';
+            $data['error_string'][] = 'Type training wajib diisi';
+            $data['status'] = FALSE;
+        }
+
+        if($this->input->post('penyelenggara_id') == 0)
+        {
+            $data['inputerror'][] = 'penyelenggara_id';
+            $data['error_string'][] = 'Penyelenggara wajib diisi';
+            $data['status'] = FALSE;
+        }
+
+        if($this->input->post('penyelenggara_id') == 0)
+        {
+            $data['inputerror'][] = 'penyelenggara_id';
+            $data['error_string'][] = 'Penyelenggara wajib diisi';
+            $data['status'] = FALSE;
+        }
+
+        if($this->input->post('pembiayaan_id') == 0)
+        {
+            $data['inputerror'][] = 'pembiayaan_id';
+            $data['error_string'][] = 'Pembiayaan wajib diisi';
+            $data['status'] = FALSE;
+        }
+
+        if($this->input->post('ikatan_dinas_id') == '0')
+        {
+            $data['inputerror'][] = 'ikatan_dinas_id';
+            $data['error_string'][] = 'Ikatan dinas wajib diisi';
+            $data['status'] = FALSE;
+        }
+
+        if($this->input->post('waktu_id') == 0)
+        {
+            $data['inputerror'][] = 'waktu_id';
+            $data['error_string'][] = 'Periode wajib diisi';
+            $data['status'] = FALSE;
+        }
+
+        if($this->input->post('besar_biaya') == 0)
+        {
+            $data['inputerror'][] = 'besar_biaya';
+            $data['error_string'][] = 'Besar biaya wajib diisi';
+            $data['status'] = FALSE;
+        }
+
+        if($this->input->post('tempat') == '')
+        {
+            $data['inputerror'][] = 'tempat';
+            $data['error_string'][] = 'Tempat pelaksanaan wajib diisi';
+            $data['status'] = FALSE;
+        }
+
+        if($this->input->post('narasumber') == '')
+        {
+            $data['inputerror'][] = 'narasumber';
+            $data['error_string'][] = 'Narasumber wajib diisi';
             $data['status'] = FALSE;
         }
 
@@ -216,6 +325,7 @@ class training extends MX_Controller {
 
 
                 $this->template->add_js('core.js');
+                $this->template->add_js('jquery.maskMoney.js');
 
                 $this->template->add_js('main.js');
                 $this->template->add_js('respond.min.js');

@@ -235,4 +235,11 @@ class Form_training_group_model extends CI_Model {
 
             return $this->db->get();
     }
+
+    public function get_training()
+    {   
+        $this->db->where('training.is_deleted',0);
+        $this->db->order_by('training.training_title','asc');
+        return $this->db->get('training');
+    }
 }

@@ -136,7 +136,9 @@ class form_training_group extends MX_Controller {
             }else{
 
                 $this->data['ikatan'] = $this->get_tipe_ikatan_dinas();
-                $this->data['vendor'] = $this->get_vendor();
+                //$this->data['vendor'] = $this->get_vendor();
+                $this->data['vendor'] = GetAll('vendor', array('is_deleted' => 'where/0'));
+
 
                 $this->_render_page('form_'.$this->form_name.'/detail', $this->data);
             }
@@ -160,7 +162,9 @@ class form_training_group extends MX_Controller {
         $this->data['users'] =  getAll('users', array('active'=>'where/1', 'username'=>'order/asc'), array('!=id'=>'1'))->result_array();
         $this->get_penerima_tugas();
         $this->get_penerima_tugas_satu_bu();
+        $this->data['options_training'] = options_row('main','get_training','id','training_title','Pilih Training');
         // $this->get_user_atasan();
+        //$data['options_training'] = 
 
         $this->_render_page('form_training_group/input', $this->data);
     }
@@ -173,6 +177,7 @@ class form_training_group extends MX_Controller {
         }
         else
         {
+            $this->form_validation->set_rules('training_id', 'Program Pelatihan', 'trim|required');
             $this->form_validation->set_rules('training_name', 'Nama Program Pelatihan', 'trim|required');
             $this->form_validation->set_rules('tujuan_training', 'Tujuan Pelatihan', 'trim|required');
 
@@ -185,11 +190,38 @@ class form_training_group extends MX_Controller {
             {
                 $user_id= $this->input->post('emp');
                 $sess_id = $this->session->userdata('user_id');
+                /*<!-- 'date_start'=>$date_start,
+                                    'date_end'=>$date_end,
+                                    'training_type_id'=>$training_type_id,
+                                    'penyelenggara_id'=>$penyelenggara_id,
+                                    'pembiayaan_id'=>$pembiayaan_id,
+                                    'ikatan_dinas_id'=>$ikatan_dinas_id,
+                                    'waktu_id'=>$waktu_id,
+                                    'besar_biaya'=>$besar_biaya,
+                                    'tempat'=>$tempat,
+                                    'jam_mulai'=>$jam_mulai,
+                                    'jam_akhir'=>$jam_akhir,
+                                    'narasumber'=>$narasumber,
+                                    'vendor_id'=>$vendor_id -->*/
                 $data = array(
                     'user_peserta_id' => implode(',',$this->input->post('peserta')),
                     'id_comp_session' => 1,
+                    'training_id' => $this->input->post('training_id'),
                     'training_name' => $this->input->post('training_name'),
                     'tujuan_training' => $this->input->post('tujuan_training'),
+                    'tanggal_mulai' => $this->input->post('date_start'),
+                    'tanggal_akhir' => $this->input->post('date_end'),
+                    'training_type_id' => $this->input->post('training_type_id'),
+                    'penyelenggara_id' => $this->input->post('penyelenggara_id'),
+                    'pembiayaan_id' => $this->input->post('pembiayaan_id'),
+                    'ikatan_dinas_id' => $this->input->post('ikatan_dinas_id'),
+                    'waktu_id' => $this->input->post('waktu_id'),
+                    'besar_biaya' => $this->input->post('besar_biaya'),
+                    'tempat' => $this->input->post('tempat'),
+                    'jam_mulai' => $this->input->post('jam_mulai'),
+                    'jam_akhir' => $this->input->post('jam_akhir'),
+                    'narasumber' => $this->input->post('narasumber'),
+                    'vendor_id' => $this->input->post('vendor_id'),
                     'user_app_lv1'          => $this->input->post('atasan1'),
                     'user_app_lv2'          => $this->input->post('atasan2'),
                     'user_app_lv3'          => $this->input->post('atasan3'),
@@ -245,7 +277,7 @@ class form_training_group extends MX_Controller {
             'besar_biaya' => $this->input->post('besar_biaya'),
             'tempat' => $this->input->post('tempat'),
             'narasumber' => $this->input->post('narasumber'),
-            'vendor' => $this->input->post('vendor'),
+            'vendor_id' => $this->input->post('vendor_id'),
             'tanggal_mulai'=> date('Y-m-d',strtotime($this->input->post('tanggal_mulai'))),
             'tanggal_akhir'=> date('Y-m-d',strtotime($this->input->post('tanggal_akhir'))),
             'lama_training_bulan' => $this->input->post('lama_training_bulan'),
@@ -616,6 +648,94 @@ function get_penerima_tugas()
         $mpdf->WriteHTML($html);
         $mpdf->Output($id.'-'.$title.'.pdf', 'I');
         }
+    }
+
+    function get_training()
+    {
+        $id = $this->input->post('id');
+
+        $training =  getAll('training', array('id'=>'where/'.$id));
+        if($training->num_rows() > 0)
+        {   
+            $val = $training->row_array();
+            $training_name = $val['training_title'];
+            $tujuan_training = $val['description'];
+            $date_start = $val['date_start'];
+            $date_end = $val['date_end'];
+            $vendor_id = $val['vendor_id'];
+            $training_type_id = $val['training_type_id'];
+            $penyelenggara_id = $val['penyelenggara_id'];
+            $pembiayaan_id = $val['pembiayaan_id'];
+            $ikatan_dinas_id = $val['ikatan_dinas_id'];
+            $waktu_id = $val['waktu_id'];
+            $besar_biaya = $val['besar_biaya'];
+            $tempat = $val['tempat'];
+            $jam_mulai = $val['jam_mulai'];
+            $jam_akhir = $val['jam_akhir'];
+            $narasumber = $val['narasumber'];
+            $output = array(
+                'status'=>true, 
+                'message'=>'fetching data success',
+                'training_name'=>$training_name,
+                'tujuan_training'=>$tujuan_training,
+                'date_start'=>$date_start,
+                'date_end'=>$date_end,
+                'vendor_id'=>$vendor_id,
+                'training_type_id'=>$training_type_id,
+                'penyelenggara_id'=>$penyelenggara_id,
+                'pembiayaan_id'=>$pembiayaan_id,
+                'ikatan_dinas_id'=>$ikatan_dinas_id,
+                'waktu_id'=>$waktu_id,
+                'besar_biaya'=>$besar_biaya,
+                'tempat'=>$tempat,
+                'jam_mulai'=>$jam_mulai,
+                'jam_akhir'=>$jam_akhir,
+                'narasumber'=>$narasumber
+                );
+            //echo json_encode($output);
+        }else{
+            $training_name = '';
+            $tujuan_training = '';
+            $date_start = '';
+            $date_end = '';
+            $vendor_id = '';
+            $training_type_id = '';
+            $penyelenggara_id = '';
+            $pembiayaan_id = '';
+            $ikatan_dinas_id = '';
+            $waktu_id = '';
+            $besar_biaya = '';
+            $tempat = '';
+            $jam_mulai = '';
+            $jam_akhir = '';
+            $narasumber = '';
+            $output = array(
+                'status'=>false, 
+                'message'=>'fetching data failed',
+                'training_name'=>$training_name,
+                'tujuan_training'=>$tujuan_training,
+                'date_start'=>$date_start,
+                'date_end'=>$date_end,
+                'vendor_id'=>$vendor_id,
+                'training_type_id'=>$training_type_id,
+                'penyelenggara_id'=>$penyelenggara_id,
+                'pembiayaan_id'=>$pembiayaan_id,
+                'ikatan_dinas_id'=>$ikatan_dinas_id,
+                'waktu_id'=>$waktu_id,
+                'besar_biaya'=>$besar_biaya,
+                'tempat'=>$tempat,
+                'jam_mulai'=>$jam_mulai,
+                'jam_akhir'=>$jam_akhir,
+                'narasumber'=>$narasumber
+                );
+            
+        }
+
+        echo json_encode($output);
+
+
+        //$data['result']=$result;
+        //$this->load->view('dropdown_atasan',$data);
     }
 
     function _render_page($view, $data=null, $render=false)

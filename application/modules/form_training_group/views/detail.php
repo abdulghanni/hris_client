@@ -512,14 +512,13 @@
                   <option value="0">-- Pilih Tipe Ikatan Dinas --</option>
                   <?php if(!empty($ikatan)){
                     for($i=0;$i<sizeof($ikatan);$i++):
-                    $selected = ($user->ikatan == $ikatan[$i]['DESCRIPTION']) ? 'selected = selected' : '';
+                    $selected = ($user->ikatan_dinas_id == $ikatan[$i]['DESCRIPTION']) ? 'selected = selected' : '';
                     echo '<option value="'.$ikatan[$i]['DESCRIPTION'].'" '.$selected.'>'.$ikatan[$i]['DESCRIPTION'].'</option>';
                     endfor;}
                   ?>
               </select>
             </div>
           </div>
-          <br/>
           <div class="row form-row">
             <div class="col-md-3">
               <label class="form-label text-right">Periode Ikatan Dinas</label>
@@ -542,7 +541,7 @@
               <label for="besar_biaya" class="form-label text-right">Besar Biaya (Rp.)</label>
             </div>
             <div class="col-md-9">
-              <input name="besar_biaya" id="besar_biaya" type="text"  class="form-control" placeholder="Besar biaya (Rp.)" value="<?php echo $user->besar_biaya?>"  required>
+              <input name="besar_biaya" id="besar_biaya" type="text"  class="form-control" placeholder="Besar biaya (Rp.)" value="<?php echo number_format($user->besar_biaya,0,',','.')?>"  required>
             </div>
           </div>
           <div class="row form-row">
@@ -566,14 +565,17 @@
               <label class="form-label text-right">Nama Vendor</label>
             </div>
             <div class="col-md-9">
-              <select name="vendor" class="select2" id="vendor" style="width:100%" >
+              <select name="vendor_id" class="select2" id="vendor_id" style="width:100%" >
                   <option value="0">-- Pilih Nama Vendor --</option>
-                  <?php if(!empty($vendor)){
-                    for($i=0;$i<sizeof($vendor);$i++):
-                    $selected = ($user->vendor == $vendor[$i]['NAME']) ? 'selected = selected' : '';
-                    echo '<option value="'.$vendor[$i]['NAME'].'" '.$selected.'>'.$vendor[$i]['NAME'].'</option>';
-                    endfor;}
-                  ?>
+                  <?php if($vendor->num_rows()>0){
+                    foreach ($vendor->result_array() as $key => $value) {
+                      $selected = ($user->vendor_id <> 0 && $user->vendor_id == $value['id']) ? 'selected = selected' : '';
+                        echo '<option value="'.$value['id'].'" '.$selected.'>'.$value['vendor_title'].'</option>';
+                      }
+                    }else{
+                      echo '<option value="0">'.'No Data'.'</option>';
+                    }
+                      ?>
               </select>
             </div>
           </div>
@@ -601,7 +603,7 @@
               </div>
             </div>
           </div>
-          <div class="row form-row">
+          <div class="row form-row" style="display: none">
             <div class="col-md-3">
               <label class="form-label text-right">Lama Pelaksanaan</label>
             </div>

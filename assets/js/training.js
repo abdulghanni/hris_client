@@ -45,6 +45,8 @@ $(document).ready(function(){
     });
 
     $(".select2").select2();
+
+    $('#besar_biaya').maskMoney({precision: 0, allowZero:true});
 });
 
 function add()
@@ -143,6 +145,7 @@ function delete_(id)
 
 function edit_(id)
 {
+  //alert('here');
   var url_ajax_edit = $('#url_ajax_edit').val();
   save_method = 'update';
   $('#form-competency')[0].reset(); // reset form on modals
@@ -158,9 +161,20 @@ function edit_(id)
     {
         $('[name="id"]').val(data.id);
         $('[name="training_title"]').val(data.training_title);
+        $('[name="training_deskripsi"]').val(data.description);
         $('[name="date_start"]').val(data.date_start);
         $('[name="date_end"]').val(data.date_end);
+        $('[name="jam_mulai"]').val(data.jam_mulai);
+        $('[name="jam_akhir"]').val(data.jam_akhir);
         $('[name="vendor_id"]').select2().select2('val',data.vendor_id);
+        $('[name="training_type_id"]').select2().select2('val',data.training_type_id);
+        $('[name="pembiayaan_id"]').select2().select2('val',data.pembiayaan_id);
+        $('[name="penyelenggara_id"]').select2().select2('val',data.penyelenggara_id);
+        $('[name="ikatan_dinas_id"]').select2().select2('val',data.ikatan_dinas_id);
+        $('[name="waktu_id"]').select2().select2('val',data.waktu_id);
+        $('[name="besar_biaya"]').val(data.besar_biaya);
+        $('[name="tempat"]').val(data.tempat);
+        $('[name="narasumber"]').val(data.narasumber);
 
         $('#modal_form').modal('show'); // show bootstrap modal when complete loaded
         $('.modal-title').text('Edit'); // Set title to Bootstrap modal title
