@@ -8,7 +8,7 @@ $(document).ready(function(){
 
   $("#date_start").datepicker({format: "yyyy-mm-dd", todayHighlight: true});
   $('#date_end').datepicker({format: "yyyy-mm-dd", todayHighlight: true});
-  $('.select2').select2();
+  //$('.select2').select2();
 
 	table = $('#table').DataTable({ 
         
@@ -43,8 +43,6 @@ $(document).ready(function(){
         $(this).parent().parent().removeClass('has-error');
         $(this).next().empty();
     });
-
-    $(".select2").select2();
 
     $('#besar_biaya').maskMoney({precision: 0, allowZero:true});
 });
@@ -96,7 +94,14 @@ function save()
            if(data.status) //if success close modal and reload ajax table
             {
                 $('#modal_form').modal('hide');
+                $('#vendor_id').val(0);
+                $('#training_type_id').val(0);
+                $('#penyelenggara_id').val(0);
+                $('#pembiayaan_id').val(0);
+                $('#ikatan_dinas_id').val(0);
+                $('#waktu_id').val(0);
                 reload_table();
+                //location.reload(false);
             }
             else
             {

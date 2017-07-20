@@ -119,6 +119,7 @@
                     $js = 'class="select2" style="width:50%"';
                     echo form_dropdown('vendor_id', $options_vendor,'',$js); 
                   ?>
+                  <span class="help-block"></span>
                 </div>
               </div>
 
@@ -129,6 +130,7 @@
                     $js = 'id="training_type_id" class="select2" style="width:50%"';
                     echo form_dropdown('training_type_id', $options_training_type,'',$js); 
                   ?>
+                  <span class="help-block"></span>
                 </div>
               </div>
 
@@ -139,6 +141,7 @@
                     $js = 'id="penyelenggara_id" class="select2" style="width:50%"';
                     echo form_dropdown('penyelenggara_id', $options_penyelenggara,'',$js); 
                   ?>
+                  <span class="help-block"></span>
                 </div>
               </div>
 
@@ -149,14 +152,15 @@
                     $js = 'id="pembiayaan_id" class="select2" style="width:50%"';
                     echo form_dropdown('pembiayaan_id', $options_pembiayaan,'',$js); 
                   ?>
+                  <span class="help-block"></span>
                 </div>
               </div>
 
               <div class="row form-row">
                 <label class="control-label col-md-3">ikatan dinas</label>
                 <div class="col-md-9">
-                  <select name="ikatan_dinas_id" class="select2" id="ikatan_dinas_id" style="width:100%" >
-                  <option value="0">-- Pilih Tipe Ikatan Dinas --</option>
+                  <select name="ikatan_dinas_id" class="select2" id="ikatan_dinas_id" style="width:50%" >
+                  <option value="0">Pilih Tipe Ikatan Dinas</option>
                   <?php if(!empty($ikatan)){
                     for($i=0;$i<sizeof($ikatan);$i++):
                     //$selected = ($user->ikatan == $ikatan[$i]['DESCRIPTION']) ? 'selected = selected' : '';
@@ -164,6 +168,7 @@
                     endfor;}
                   ?>
               </select>
+              <span class="help-block"></span>
                 </div>
               </div>
 
@@ -174,6 +179,7 @@
                     $js = 'id="waktu_id" class="select2" style="width:50%"';
                     echo form_dropdown('waktu_id', $options_training_waktu,'',$js); 
                   ?>
+                  <span class="help-block"></span>
                 </div>
               </div>
 
