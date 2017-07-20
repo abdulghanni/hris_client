@@ -45,7 +45,7 @@ class training_model extends CI_Model {
 				}elseif($item == 'vendor'){
 					$item = $this->table_join1.'.vendor_title';
 				}elseif($item == 'description'){
-					$item = $this->table_join1.'.description';
+					$item = $this->table.'.description';
 				}
 
 				($i===0) ? $this->db->like($item, $_POST['search']['value']) : $this->db->or_like($item, $_POST['search']['value']);
