@@ -350,8 +350,8 @@
                         <option value="0">- Pilih user akunting -</option>
                           <?php
                           foreach ($all_users->result() as $u) :
-                            $selected = $u->id == $sess_id ? 'selected = selected' : '';?>
-                            <option value="<?php echo $u->nik?>" <?php echo $selected?>><?php echo $u->nik.' - '.$u->username?></option>
+                            //$selected = $u->id == $sess_id ? 'selected = selected' : '';?>
+                            <option value="<?php echo $u->nik?>" <?php //echo $selected?>><?php echo $u->nik.' - '.$u->username?></option>
                           <?php endforeach; ?>
                         </select>
                         <?php }else{ ?>
