@@ -139,6 +139,7 @@ function send_notif_(lv)
             alert('Email notifikasi ke approver berikutnya GAGAL terkirim.');
         }
     });
+}
 
 function approve1()
     {
