@@ -120,65 +120,67 @@ $(document).ready(function() {
                 console.log('e');
             }
         });
+    }
+
+    function send_notif_(lv)
+    {
+        uri = base_url+form+'/send_notif/'+id+'/'+lv;
+        $.ajax({
+            type: 'POST',
+            url: uri,
+            // dataType: "JSON",
+            success: function() {
+                console.log('y');
+                alert('Email notifikasi ke approver berikutnya BERHASIL terkirim.');
+            },
+            error: function(){
+                console.log('e');
+                alert('Email notifikasi ke approver berikutnya GAGAL terkirim.');
+            }
+        });
     }   
 });
 
-function send_notif_(lv)
+
+
+function approve1()
 {
-    uri = base_url+form+'/send_notif/'+id+'/'+lv;
+    $('#btnApp').text('saving...'); //change button text
+    $('#btnApp').attr('disabled',true); //set button disable 
+    var url = uri1;
+    // ajax adding data to database
     $.ajax({
-        type: 'POST',
-        url: uri,
-        // dataType: "JSON",
-        success: function() {
-            console.log('y');
-            alert('Email notifikasi ke approver berikutnya BERHASIL terkirim.');
+        url : url,
+        type: "POST",
+        data: $('#formAppLv1').serialize(),
+        dataType: "JSON",
+        success: function(data)
+        {
+            if(data) //if success close modal and reload ajax table
+            {
+                $("[data-dismiss=modal]").trigger({ type: "click" });
+                location.reload()
+            }
+            else
+            {
+                for (var i = 0; i < data.inputerror.length; i++) 
+                {
+                    $('[name="'+data.inputerror[i]+'"]').parent().parent().addClass('has-error'); //select parent twice to select div form-group class and add has-error class
+                    $('[name="'+data.inputerror[i]+'"]').next().text(data.error_string[i]); //select span help-block class set text error string
+                }
+            }
+            $('#btnApp').text('save'); //change button text
+            $('#btnApp').attr('disabled',false); //set button enable 
+
+
         },
-        error: function(){
-            console.log('e');
-            alert('Email notifikasi ke approver berikutnya GAGAL terkirim.');
+        error: function (jqXHR, textStatus, errorThrown)
+        {
+            alert('Error adding / update data');
+            $('#btnApp').text('save'); //change button text
+            $('#btnApp').attr('disabled',false); //set button enable 
+
         }
     });
 }
-
-function approve1()
-    {
-        $('#btnApp').text('saving...'); //change button text
-        $('#btnApp').attr('disabled',true); //set button disable 
-        var url = uri1;
-        // ajax adding data to database
-        $.ajax({
-            url : url,
-            type: "POST",
-            data: $('#formAppLv1').serialize(),
-            dataType: "JSON",
-            success: function(data)
-            {
-                if(data) //if success close modal and reload ajax table
-                {
-                    $("[data-dismiss=modal]").trigger({ type: "click" });
-                    location.reload()
-                }
-                else
-                {
-                    for (var i = 0; i < data.inputerror.length; i++) 
-                    {
-                        $('[name="'+data.inputerror[i]+'"]').parent().parent().addClass('has-error'); //select parent twice to select div form-group class and add has-error class
-                        $('[name="'+data.inputerror[i]+'"]').next().text(data.error_string[i]); //select span help-block class set text error string
-                    }
-                }
-                $('#btnApp').text('save'); //change button text
-                $('#btnApp').attr('disabled',false); //set button enable 
-
-
-            },
-            error: function (jqXHR, textStatus, errorThrown)
-            {
-                alert('Error adding / update data');
-                $('#btnApp').text('save'); //change button text
-                $('#btnApp').attr('disabled',false); //set button enable 
-
-            }
-        });
-    }
 
