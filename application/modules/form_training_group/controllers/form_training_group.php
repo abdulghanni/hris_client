@@ -801,7 +801,7 @@ function get_penerima_tugas()
                     $this->template->add_js('jquery.validate.min.js');
                     $this->template->add_js('jquery-validate.bootstrap-tooltip.min.js');
                     $this->template->add_js('bootstrap-datepicker.js');
-                    $this->template->add_js('bootstrap-timepicker.js');
+                    /*$this->template->add_js('bootstrap-timepicker.js');*/
                     $this->template->add_js('emp_dropdown.js');
                     $this->template->add_js('form_training_group.js');
                     $this->template->add_js('form_approval.js');
