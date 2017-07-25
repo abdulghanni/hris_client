@@ -621,7 +621,7 @@
             
             <div class="col-md-3">
               <div class="input-append bootstrap-timepicker">
-                <input name="jam_mulai" id="timepicker2" type="text" class="timepicker-24" value="<?php echo $user->jam_mulai?>" required>
+                <input name="jam_mulai" id="timepicker2" type="text" class="timepicker-241" value="<?php echo $user->jam_mulai?>" required>
                 <span class="add-on">
                     <i class="icon-time"></i>
                 </span>
@@ -634,7 +634,7 @@
 
             <div class="col-md-3">
               <div class="input-append bootstrap-timepicker">
-                <input name="jam_akhir" id="timepicker2" type="text" class="timepicker-24" value="<?php echo $user->jam_akhir?>" required>
+                <input name="jam_akhir" id="timepicker2" type="text" class="timepicker-241" value="<?php echo $user->jam_akhir?>" required>
                 <span class="add-on">
                     <i class="icon-time"></i>
                 </span>
