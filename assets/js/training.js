@@ -8,7 +8,7 @@ $(document).ready(function(){
 
   $("#date_start").datepicker({format: "yyyy-mm-dd", todayHighlight: true});
   $('#date_end').datepicker({format: "yyyy-mm-dd", todayHighlight: true});
-  //$('.select2').select2();
+  $('.select2').select2();
 
 	table = $('#table').DataTable({ 
         
