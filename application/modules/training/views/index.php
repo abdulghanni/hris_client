@@ -194,7 +194,7 @@
               <div class="row form-row">
                 <label class="control-label col-md-3">Tempat pelaksanaan</label>
                 <div class="col-md-9">
-                  <input name="tempat" placeholder="" class="form-control" type="text">
+                  <input id="tempat" name="tempat" placeholder="" class="form-control" type="text">
                   <span class="help-block"></span>
                 </div>
               </div>
@@ -204,7 +204,7 @@
               <div class="row form-row">
                 <label class="control-label col-md-3">Narasumber</label>
                 <div class="col-md-9">
-                  <input name="narasumber" placeholder="" class="form-control" type="text">
+                  <input id="narasumber" name="narasumber" placeholder="" class="form-control" type="text">
                   <span class="help-block"></span>
                 </div>
               </div>
