@@ -17,6 +17,7 @@ class Form_training_group_model extends CI_Model {
     private function _get_datatables_query($f)
     {
         $is_admin = is_admin();
+        $is_admin_kompetensi = is_admin_kompetensi();
         if(!is_admin()){
             $sess_id = $this->session->userdata('user_id');
             $sess_nik = get_nik($sess_id);
@@ -58,22 +59,25 @@ class Form_training_group_model extends CI_Model {
                 
             }
             if($is_admin!=1 && $is_hrd_pusat != 1):
-            if($is_approver == $sess_nik || $is_admin_cabang == 1){
-                //$this->db->where_in("users_training_group.user_pengaju_id", $user);//print_mz($user);
-                if($sess_nik == 'P1493'){
-                        //$this->db->or_like('users'.'.nik','P', 'after');
-                        //$this->db->or_like('users'.'.nik','J', 'after');
-                        $where = "(users.nik like 'P%' OR users.nik like 'J%')";
-                        $this->db->where($where);
-                    }else{
-                        $this->db->where_in("users_training_group.user_pengaju_id", $user);//print_mz($user);    
+                if($is_approver == $sess_nik || $is_admin_cabang == 1){
+                    
+                    if($sess_nik == 'P1493'){
+                            $where = "(users.nik like 'P%' OR users.nik like 'J%')";
+                            $this->db->where($where);
+                        }else{
+                            $this->db->where_in("users_training_group.user_pengaju_id", $user);//print_mz($user);    
+                        }
+                }elseif($is_admin!=1 ){
+                    if($is_admin_kompetensi != 1)
+                    {  
+                        $this->db->where("(users_training_group.user_pengaju_id = '$sess_id' 
+                                       OR users_training_group.user_app_lv1 = '$sess_nik'  OR users_training_group.user_app_lv2 = '$sess_nik'  OR users_training_group.user_app_lv3 = '$sess_nik' 
+                        )",null, false);
                     }
-            }elseif($is_admin!=1 ){
-                 $this->db->where("(users_training_group.user_pengaju_id = '$sess_id' 
-                               OR users_training_group.user_app_lv1 = '$sess_nik'  OR users_training_group.user_app_lv2 = '$sess_nik'  OR users_training_group.user_app_lv3 = '$sess_nik' 
-                )",null, false);
-            }
+                }
             endif;
+
+
 
 
         $i = 0;
@@ -114,10 +118,13 @@ class Form_training_group_model extends CI_Model {
 
     function get_datatables($f)
     {
+        //$is_admin_kompetensi = is_admin_kompetensi();
         $this->_get_datatables_query($f);
         if($_POST['length'] != -1)
         $this->db->limit($_POST['length'], $_POST['start']);
         $query = $this->db->get();
+        //
+        //die('db : '.$is_admin_kompetensi.' - '.$this->db->last_query());
         return $query->result();
     }
 
