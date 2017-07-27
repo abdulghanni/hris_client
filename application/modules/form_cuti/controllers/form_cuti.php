@@ -524,10 +524,12 @@ class Form_cuti extends MX_Controller {
 
         if($type == 'hrd' && $approval_status == 1){
             $this->send_notif_tambahan($id, 'cuti');
+            $status_id = 3;
+            $this->update_status_flag(get_nik($user_cuti_id), $leavedatefrom, $leavedateto, $status_id, get_nik($this->session->userdata('user_id')));
         }
 
         //$this->appr_leave_request($user_cuti_id, $leavedatefrom, $approval_status, $approval_id);
-         if($approval_status == 1){
+        /*if($approval_status == 1){
             $status_id = 3;
         }elseif($approval_status == 2){
             $status_id = 1;
@@ -536,7 +538,7 @@ class Form_cuti extends MX_Controller {
         }else{
             $status_id = 0;
         }
-        $this->update_status_flag(get_nik($user_cuti_id), $leavedatefrom, $leavedateto, $status_id, get_nik($this->session->userdata('user_id')));
+        $this->update_status_flag(get_nik($user_cuti_id), $leavedatefrom, $leavedateto, $status_id, get_nik($this->session->userdata('user_id')));*/
 
         $this->cek_all_approval($id);
     }
@@ -753,12 +755,18 @@ class Form_cuti extends MX_Controller {
         {
             //return $this->rest->debug();
             //echo $this->rest->debug();
+            $isi_email = $uri;
+            
+            $this->send_email('andy13galuh@gmail.com', $nik.' success update status flag (update_status_flag)', $isi_email);
             return TRUE;
         }
         else
         {
             //return $this->rest->debug();
             //echo $this->rest->debug();
+            $isi_email = $uri;
+            
+            $this->send_email('andy13galuh@gmail.com', $nik.' error update status flag (update_status_flag)', $isi_email);
             return FALSE;
         }
     }
