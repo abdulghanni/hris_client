@@ -47,7 +47,9 @@ $(document).ready(function() {
                 $('#training_name').val(response.training_name);
                 $('#tujuan_training').val(response.tujuan_training);
                 $('#date_start').val(response.date_start);
+                $('#lbldate_start').val(response.date_start);
                 $('#date_end').val(response.date_end);
+                $('#lbldate_end').val(response.date_end);
                 $('#training_type_id').val(response.training_type_id);
                 $('#penyelenggara_id').val(response.penyelenggara_id);
                 $('#pembiayaan_id').val(response.pembiayaan_id);
@@ -58,6 +60,7 @@ $(document).ready(function() {
                 $('#jam_mulai').val(response.jam_mulai);
                 $('#jam_akhir').val(response.jam_akhir);
                 $('#narasumber').val(response.narasumber);
+                $('#lblnarasumber').val(response.narasumber);
                 $('#vendor_id').val(response.vendor_id);
               }else
               {

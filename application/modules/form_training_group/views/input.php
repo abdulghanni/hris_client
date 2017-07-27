@@ -137,6 +137,8 @@
                           echo form_dropdown('training_id', $options_training,'',$js); 
                         ?>
                       </div>
+                    </div>
+                    <div class="row form-row">
                       <div class="col-md-3">
                         <label class="form-label text-left">Nama Pelatihan</label>
                       </div>
@@ -149,7 +151,29 @@
                         <label class="form-label text-left">Tujuan Pelatihan</label>
                       </div>
                       <div class="col-md-9">
-                        <input name="tujuan_training" id="tujuan_training" type="text"  class="form-control" required readonly="readonly">
+                        <textarea name="tujuan_training" id="tujuan_training" type="text"  class="form-control" required readonly="readonly"></textarea> 
+                      </div>
+                    </div>
+                    <div class="row form-row">
+                      <div class="col-md-3">
+                        <label class="form-label text-left">Tanggal pelatihan</label>
+                      </div>
+                      <div class="col-md-4">
+                        <input id="lbldate_start" name="lbldate_start" type="text"  class="form-control"  required readonly="readonly">
+                      </div>
+                      <div class="col-md-1">
+                        S/D
+                      </div>
+                      <div class="col-md-4">
+                        <input id="lbldate_end" name="lbldate_end" type="text"  class="form-control"  required readonly="readonly">
+                      </div>
+                    </div>
+                    <div class="row form-row">
+                      <div class="col-md-3">
+                        <label class="form-label text-left">Narasumber</label>
+                      </div>
+                      <div class="col-md-9">
+                        <input id="lblnarasumber" name="lblnarasumber" type="text"  class="form-control"  required readonly="readonly">
                       </div>
                     </div>
                   </div>
