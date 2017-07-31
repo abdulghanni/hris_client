@@ -64,7 +64,12 @@ class recruitment_model extends CI_Model {
             }else{
                 
             }
-            if($is_admin!=1 && $is_hrd_pusat != 1):
+            
+            if($sess_nik == 'RECRUIT')
+            {
+                $where = "(users.nik like 'P%' OR users.nik like 'J%')";
+                $this->db->where($where);
+            }elseif($is_admin!=1 && $is_hrd_pusat != 1){
                 if($is_approver == $sess_nik || $is_admin_cabang == 1){
                     //$this->db->where_in("users_recruitment.user_id", $user);//print_mz($user);
                     if($sess_nik == 'P1493'){
@@ -80,7 +85,9 @@ class recruitment_model extends CI_Model {
                                    OR users_recruitment.user_app_lv1 = '$sess_nik'  OR users_recruitment.user_app_lv2 = '$sess_nik'  OR users_recruitment.user_app_lv3 = '$sess_nik'
                     )",null, false);
                 }
-            endif;
+            }
+
+
 
         $i = 0;
     
@@ -126,6 +133,7 @@ class recruitment_model extends CI_Model {
         if($_POST['length'] != -1)
         $this->db->limit($_POST['length'], $_POST['start']);
         $query = $this->db->get();
+        //echo $this->db->last_query();
         return $query->result();
     }
 
