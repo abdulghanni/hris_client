@@ -104,6 +104,28 @@
                             <input name="form3LastName" id="form3LastName" type="text"  class="form-control" placeholder="Tujuan pelatihan" value="<?php echo $user->tujuan_training?>" disabled="disabled">
                           </div>
                         </div>
+                        <div class="row form-row">
+                          <div class="col-md-3">
+                            <label class="form-label text-right">Waktu</label>
+                          </div>
+                          <div class="col-md-4">
+                            <input name="" id="" type="text"  class="form-control" value="<?php echo dateIndo($user->tanggal_mulai)?>" disabled="disabled">
+                          </div>
+                          <div class="col-md-1">
+                            S/D
+                          </div>
+                          <div class="col-md-4">
+                            <input name="" id="" type="text"  class="form-control" value="<?php echo dateIndo($user->tanggal_akhir)?>" disabled="disabled">
+                          </div>
+                        </div>
+                        <div class="row form-row">
+                          <div class="col-md-3">
+                            <label class="form-label text-right">Narasumber</label>
+                          </div>
+                          <div class="col-md-9">
+                            <input name="" id="tempat" type="text"  class="form-control" placeholder="Nama Narasumber" value="<?php echo $user->narasumber?>" disabled="disabled">
+                          </div>
+                        </div>
                     <?php 
                         for($i=1;$i<4;$i++):
                       $note_lv = 'note_app_lv'.$i;
