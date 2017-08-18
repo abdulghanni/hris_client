@@ -474,7 +474,7 @@
                               <span class="semi-bold"></span><br/>
                               <span class="small"></span><br/>
                               <span class="semi-bold"></span><br/>
-                              <span class="semi-bold">(HRD - <?php echo $sess_nik.' - '.$td->is_app_hrd,' - '$this->approval->approver('dinas', $td->task_creator)?>)</span>
+                              <span class="semi-bold">(HRD - <?php echo $sess_nik.' - '.$td->is_app_hrd.' - '.$this->approval->approver('dinas', $td->task_creator)?>)</span>
                             <?php } ?>
                           </p>
                         </div>
