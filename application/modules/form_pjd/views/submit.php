@@ -368,7 +368,7 @@
                             $rejected = assets_url('img/rejected_stamp.png');
                              $pending = assets_url('img/pending_stamp.png');
                             if(!empty($td->user_app_lv1) && $td->is_app_lv1 == 0 && get_nik($sess_id) == $td->user_app_lv1){?>
-                              <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitModalLv1" ><i class="icon-ok"></i>Submit</div>
+                              <div class="btn btn-success btn-cons" id="" type="" data-toggle="modal" data-target="#submitModalLv1" <?= $hide ?>><i class="icon-ok"></i>Submit</div>
                               <span class="semi-bold"></span><br/>
                               <span class="small"></span><br/>
                               <span class="semi-bold"><?php echo get_name($td->user_app_lv1)?></span><br/>
@@ -460,21 +460,21 @@
                               <span class="semi-bold"></span><br/>
                               <span class="small"></span><br/>
                               <span class="semi-bold"></span><br/>
-                              <span class="semi-bold">(HRD - <?php echo $this->approval->approver('dinas', $td->task_creator)?>)</span>
+                              <span class="semi-bold">(HRD)?>)</span>
                             <?php }elseif($td->is_app_hrd == 1){
                              echo ($td->app_status_id_hrd == 1)?"<img class=approval-img src=$approved>": (($td->app_status_id_hrd == 2) ? "<img class=approval-img src=$rejected>"  : (($td->app_status_id_hrd == 3) ? "<img class=approval-img src=$pending>" : "<span class='small'></span><br/>"));?>
                                <span class="small"></span><br/>
                               <span class="small"></span><br/>
                               <span class="semi-bold"><?php echo get_name($td->user_app_hrd)?></span><br/>
                               <span class="small"><?php echo dateIndo($td->date_app_hrd)?></span><br/>
-                              <span class="semi-bold">(HRD - <?php echo $this->approval->approver('dinas', $td->task_creator)?>)</span>
+                              <span class="semi-bold">(HRD)?>)</span>
                             <?php }else{?>
                               <span class="small"></span><br/>
                               <span class="small"></span><br/>
                               <span class="semi-bold"></span><br/>
                               <span class="small"></span><br/>
                               <span class="semi-bold"></span><br/>
-                              <span class="semi-bold">(HRD - <?php echo $sess_nik.' - '.$td->is_app_hrd.' - '.$this->approval->approver('dinas', $td->task_creator)?>)</span>
+                              <span class="semi-bold">(HRD)</span>
                             <?php } ?>
                           </p>
                         </div>
