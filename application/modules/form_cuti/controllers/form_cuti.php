@@ -742,7 +742,7 @@ class Form_cuti extends MX_Controller {
             redirect('auth/login', 'refresh');
         }
 
-        $method = 'post';
+        $method = 'get';
         $params =  array();
         $uri = get_api_key().'users/update_flag_cuti/nik/'.$nik.'/date/'.$date.'/end_date/'.$end_date.'/status_id/'.$status_id.'/id_approval/'.$id_approval;
 
@@ -958,7 +958,7 @@ class Form_cuti extends MX_Controller {
                    '/LEAVEDATEFROM/'.$data['date_mulai_cuti'].
                    '/REQUESTDATE/'.date('Y-m-d', strtotime($data['created_on'])).
                    '/IDLEAVEREQUEST/'.$IDLEAVEREQUEST.
-                   '/STATUSFLAG/'.'0'.
+                   '/STATUSFLAG/'.'3'.
                    '/IDPERSONSUBSTITUTE/'.$data['user_pengganti'].
                    '/TRAVELLINGLOCATION/'.$alamat_cuti.
                    '/MODIFIEDDATETIME/'.date('Y-m-d', strtotime($data['created_on'])).
@@ -995,7 +995,7 @@ class Form_cuti extends MX_Controller {
 
                 $isi_email = "NEXTREC =>".$NEXTREC."<br/>".$uri;
             
-                $this->send_email('andy13galuh@gmail.com', $user_id.' success insert cuti (insert_debug_leave_request)', $isi_email);
+                //$this->send_email('andy13galuh@gmail.com', $user_id.' success insert cuti (insert_debug_leave_request)', $isi_email);
                 return true;
             }
             else
