@@ -105,7 +105,7 @@ class Form_phk extends MX_Controller {
         {
             //redirect them to the login page
             redirect('auth/login', 'refresh');
-        }elseif(!is_spv($nik)&&!is_admin()){
+        }elseif(!is_dire($nik)&&!is_spv($nik)&&!is_admin()){
             return show_error('Anda tidak dapat mengakses halaman ini.');
         }else{
             $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
