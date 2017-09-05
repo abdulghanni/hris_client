@@ -970,6 +970,19 @@
 		}
 	}
 
+	if(!function_exists('is_dire'))
+	{
+		function is_dire($nik)
+		{
+			//$grade = substr(get_grade($nik),-1);
+			if(get_grade($nik) == 'G11' || get_grade($nik) == 'G10'){
+				return true;
+			}else{
+				return false;
+			}
+		}
+	}
+
 	if (!function_exists('is_registered'))
 	{	
 		function is_registered($nik)
