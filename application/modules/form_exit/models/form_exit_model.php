@@ -68,7 +68,7 @@ class Form_exit_model extends CI_Model {
             if($is_admin!=1 && $is_hrd_pusat != 1):
                 if($is_approver == $sess_nik || $is_admin_cabang == 1){
                     //$this->db->where_in($this->table.'.user_id', $user);//print_mz($user);
-                    if($sess_nik == 'P1493'){
+                    if($sess_nik == 'P1493' || $sess_nik == 'P1048'){
                         //$this->db->or_like('users'.'.nik','P', 'after');
                         //$this->db->or_like('users'.'.nik','J', 'after');
                         $where = "(users.nik like 'P%' OR users.nik like 'J%')";
@@ -77,16 +77,9 @@ class Form_exit_model extends CI_Model {
                         $this->db->where_in($this->table.'.user_id', $user);//print_mz($user);    
                     }
                 }elseif($is_admin!=1 ){
-                     if($sess_nik == 'P1048'){
-                        //$this->db->or_like('users'.'.nik','P', 'after');
-                        //$this->db->or_like('users'.'.nik','J', 'after');
-                        $where = "(users.nik like 'P%' OR users.nik like 'J%')";
-                        $this->db->where($where);
-                    }else{
                      $this->db->where("(users_exit.user_id = '$sess_id'
-                                   OR users_exit.user_exit_rekomendasi_id = '$sess_id' OR users_exit.created_by = '$sess_id' OR users_exit.user_app_lv1 = '$sess_nik'  OR users_exit.user_app_lv2 = '$sess_nik'  OR users_exit.user_app_lv3 = '$sess_nik' OR users_exit.user_submit_keuangan = '$sess_nik' OR users_exit.user_submit_it = '$sess_nik' OR users_exit.user_submit_hrd = '$sess_nik' OR users_exit.user_submit_logistik = '$sess_nik' OR users_exit.user_submit_koperasi = '$sess_nik' OR users_exit.user_submit_perpus = '$sess_nik'
+                                   OR users_exit.user_exit_rekomendasi_id = '$sess_id' OR users_exit.created_by = '$sess_id' OR users_exit.user_app_lv1 = '$sess_nik'  OR users_exit.user_app_lv2 = '$sess_nik'  OR users_exit.user_app_lv3 = '$sess_nik'
                     )",null, false);
-                    }
                 }
             endif;
 
