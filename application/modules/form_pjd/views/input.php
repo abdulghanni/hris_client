@@ -409,6 +409,26 @@
 
 <?php $all_users = $all_users->result();?>
 <script type="text/javascript">
+function addRow(tableID)
+{
+  var table=document.getElementById(tableID);
+  var rowCount=table.rows.length;
+  var row=table.insertRow(rowCount);
+
+  var cell1=row.insertCell(0);
+  var element1=document.createElement("input");
+  element1.type="checkbox";
+  element1.name="chkbox[]";
+  element1.className="checkbox1";
+  cell1.appendChild(element1);
+
+  var cell2=row.insertCell(1);
+  cell2.innerHTML=rowCount+1-1;
+  var cell3=row.insertCell(2);
+  cell3.innerHTML = "<select name='biaya_tambahan_id[]' class='select2' style='width:100%'><?php foreach($biaya_tambahan->result() as $row):?><option value='<?php echo $row->id?>'><?php echo $row->title?></option><?php endforeach;?></select>";  
+  var cell4=row.insertCell(3);
+  cell4.innerHTML = "<input type='text' name='jumlah_biaya_tambahan[]' class='form-control rupiah text-right'>";
+}
     function tambahatasan(){
         var skrg=$(".atasanlain:visible").length;
         var idskrg=skrg+3;
@@ -460,25 +480,40 @@
   cell3.innerHTML = "<select name='peserta[]' class='select2' style='width:100%'><?php foreach ($penerima_tugas as $key => $up) :?><option value='<?php echo $up['ID'] ?>'><?php $reg = (is_registered($up['ID'])) ? '' : ' - Belum Terdaftar';echo $up['NAME'].' - '.$up['ID'].$reg ?></option><?php endforeach;?></select>";  
   <?php } ?>
 }
-  function deleteEmp(tableID){try{var table=document.getElementById(tableID);var rowCount=table.rows.length;for(var i=0;i<rowCount;i++){var row=table.rows[i];var chkbox=row.cells[0].childNodes[0];if(null!=chkbox&&true==chkbox.checked){table.deleteRow(i);rowCount--;i--;}}}catch(e){alert(e);}}
-function addRow(tableID){
-  var table=document.getElementById(tableID);
-  var rowCount=table.rows.length;
-  var row=table.insertRow(rowCount);
-
-  var cell1=row.insertCell(0);
-  var element1=document.createElement("input");
-  element1.type="checkbox";
-  element1.name="chkbox[]";
-  element1.className="checkbox1";
-  cell1.appendChild(element1);
-
-  var cell2=row.insertCell(1);
-  cell2.innerHTML=rowCount+1-1;
-  var cell3=row.insertCell(2);
-  cell3.innerHTML = "<select name='biaya_tambahan_id[]' class='select2' style='width:100%'><?php foreach($biaya_tambahan->result() as $row):?><option value='<?php echo $row->id?>'><?php echo $row->title?></option><?php endforeach;?></select>";  
-  var cell4=row.insertCell(3);
-  cell4.innerHTML = "<input type='text' name='jumlah_biaya_tambahan[]' class='form-control rupiah text-right'>";
+function deleteEmp(tableID){
+  try{
+    var table=document.getElementById(tableID);
+    var rowCount=table.rows.length;
+    for(var i=0;i<rowCount;i++){
+      var row=table.rows[i];
+      var chkbox=row.cells[0].childNodes[0];
+      if(null!=chkbox&&true==chkbox.checked){
+        table.deleteRow(i);
+        rowCount--;
+        i--;
+      }
+    }
+  }catch(e){
+    alert(e);
+  }
 }
-  function deleteRow(tableID){try{var table=document.getElementById(tableID);var rowCount=table.rows.length;for(var i=0;i<rowCount;i++){var row=table.rows[i];var chkbox=row.cells[0].childNodes[0];if(null!=chkbox&&true==chkbox.checked){table.deleteRow(i);rowCount--;i--;}}}catch(e){alert(e);}}
+
+
+  function deleteRow(tableID){
+    try{
+      var table=document.getElementById(tableID);
+      var rowCount=table.rows.length;
+      for(var i=0;i<rowCount;i++){
+        var row=table.rows[i];
+        var chkbox=row.cells[0].childNodes[0];
+        if(null!=chkbox&&true==chkbox.checked){
+          table.deleteRow(i);
+          rowCount--;
+          i--;
+        }
+      }
+    }catch(e){
+      alert(e);
+    }
+  }
 </script>
