@@ -408,9 +408,9 @@
   <!-- END PAGE --> 
 
 <?php $all_users = $all_users->result();?>
-<script type="text/javascript">
-function addRow(tableID)
-{
+
+  <script type="text/javascript">
+  function addRow(tableID){
   var table=document.getElementById(tableID);
   var rowCount=table.rows.length;
   var row=table.insertRow(rowCount);
@@ -429,6 +429,10 @@ function addRow(tableID)
   var cell4=row.insertCell(3);
   cell4.innerHTML = "<input type='text' name='jumlah_biaya_tambahan[]' class='form-control rupiah text-right'>";
 }
+  function deleteRow(tableID){try{var table=document.getElementById(tableID);var rowCount=table.rows.length;for(var i=0;i<rowCount;i++){var row=table.rows[i];var chkbox=row.cells[0].childNodes[0];if(null!=chkbox&&true==chkbox.checked){table.deleteRow(i);rowCount--;i--;}}}catch(e){alert(e);}}
+</script>
+
+<script type="text/javascript">
     function tambahatasan(){
         var skrg=$(".atasanlain:visible").length;
         var idskrg=skrg+3;
@@ -480,40 +484,6 @@ function addRow(tableID)
   cell3.innerHTML = "<select name='peserta[]' class='select2' style='width:100%'><?php foreach ($penerima_tugas as $key => $up) :?><option value='<?php echo $up['ID'] ?>'><?php $reg = (is_registered($up['ID'])) ? '' : ' - Belum Terdaftar';echo $up['NAME'].' - '.$up['ID'].$reg ?></option><?php endforeach;?></select>";  
   <?php } ?>
 }
-function deleteEmp(tableID){
-  try{
-    var table=document.getElementById(tableID);
-    var rowCount=table.rows.length;
-    for(var i=0;i<rowCount;i++){
-      var row=table.rows[i];
-      var chkbox=row.cells[0].childNodes[0];
-      if(null!=chkbox&&true==chkbox.checked){
-        table.deleteRow(i);
-        rowCount--;
-        i--;
-      }
-    }
-  }catch(e){
-    alert(e);
-  }
-}
-
-
-  function deleteRow(tableID){
-    try{
-      var table=document.getElementById(tableID);
-      var rowCount=table.rows.length;
-      for(var i=0;i<rowCount;i++){
-        var row=table.rows[i];
-        var chkbox=row.cells[0].childNodes[0];
-        if(null!=chkbox&&true==chkbox.checked){
-          table.deleteRow(i);
-          rowCount--;
-          i--;
-        }
-      }
-    }catch(e){
-      alert(e);
-    }
-  }
+  function deleteEmp(tableID){try{var table=document.getElementById(tableID);var rowCount=table.rows.length;for(var i=0;i<rowCount;i++){var row=table.rows[i];var chkbox=row.cells[0].childNodes[0];if(null!=chkbox&&true==chkbox.checked){table.deleteRow(i);rowCount--;i--;}}}catch(e){alert(e);}}
 </script>
+
