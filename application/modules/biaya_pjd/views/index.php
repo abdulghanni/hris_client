@@ -27,11 +27,11 @@
                 <table class="table table-bordered table-hover table-full-width " id="table" style="width: 100%;">
                     <thead>
                          <tr>
-                          <th colspan="9" scope="col" width="100%" class="text-center">Biaya PJD</th>
+                          <th colspan="12" scope="col" width="100%" class="text-center">Biaya PJD</th>
                         </tr>
                          <tr>
                           <th rowspan="2" scope="col" width="20%">Komponen Biaya</th>
-                          <th colspan="7" scope="col" width="70%" class="text-center">Biaya PJD/Golongan</th>
+                          <th colspan="11" scope="col" width="70%" class="text-center">Biaya PJD/Golongan</th>
                         </tr>
                         <tr>
                           <th scope="col" class="text-center" width="10%">1</th>
@@ -41,12 +41,16 @@
                           <th scope="col" class="text-center" width="10%">5</th>
                           <th scope="col" class="text-center" width="10%">6</th>
                           <th scope="col" class="text-center" width="10%">7</th>
+                          <th scope="col" class="text-center" width="10%">8</th>
+                          <th scope="col" class="text-center" width="10%">9</th>
+                          <th scope="col" class="text-center" width="10%">10</th>
+                          <th scope="col" class="text-center" width="10%">11</th>
                         </tr>
                     </thead>
                     <tbody>
                       <tr>
                         <td>Uang Makan</td>
-                        <?php for($i=1;$i<=19;$i+=3){
+                        <?php for($i=1;$i<=31;$i+=3){
                             $v = number_format(getValue('jumlah_biaya', 'pjd_biaya', array('id'=>'where/'.$i)), 0);
                           ?>
 
@@ -62,7 +66,7 @@
                       </tr>
                        <tr>
                         <td>Uang Saku</td>
-                        <?php for($i=2;$i<=20;$i+=3){
+                        <?php for($i=2;$i<=32;$i+=3){
                             $v = number_format(getValue('jumlah_biaya', 'pjd_biaya', array('id'=>'where/'.$i)), 0);
                           ?>
                         <td align="right">
@@ -77,7 +81,7 @@
                       </tr>
                       <tr>
                         <td>Hotel</td>
-                        <?php for($i=3;$i<=21;$i+=3){
+                        <?php for($i=3;$i<=33;$i+=3){
                           $v = number_format(getValue('jumlah_biaya', 'pjd_biaya', array('id'=>'where/'.$i)), 0);
                           ?>
                         <td align="right">
@@ -101,11 +105,11 @@
                 <table class="table table-bordered table-hover table-full-width " id="table" style="width: 100%;">
                     <thead>
                          <tr>
-                          <th colspan="9" scope="col" width="100%" class="text-center">Biaya PJD Intern</th>
+                          <th colspan="12" scope="col" width="100%" class="text-center">Biaya PJD Intern</th>
                         </tr>
                          <tr>
                           <th rowspan="2" scope="col" width="20%">Komponen Biaya</th>
-                          <th colspan="7" scope="col" width="70%" class="text-center">Biaya PJD/Golongan</th>
+                          <th colspan="11" scope="col" width="70%" class="text-center">Biaya PJD/Golongan</th>
                         </tr>
                         <tr>
                           <th scope="col" class="text-center" width="10%">1</th>
@@ -115,12 +119,16 @@
                           <th scope="col" class="text-center" width="10%">5</th>
                           <th scope="col" class="text-center" width="10%">6</th>
                           <th scope="col" class="text-center" width="10%">7</th>
+                          <th scope="col" class="text-center" width="10%">8</th>
+                          <th scope="col" class="text-center" width="10%">9</th>
+                          <th scope="col" class="text-center" width="10%">10</th>
+                          <th scope="col" class="text-center" width="10%">11</th>
                         </tr>
                     </thead>
                     <tbody>
                       <tr>
                         <td>Uang Makan</td>
-                        <?php for($i=101;$i<=119;$i+=3){
+                        <?php for($i=101;$i<=131;$i+=3){
                             $v = number_format(getValue('jumlah_biaya', 'pjd_biaya_intern', array('id'=>'where/'.($i-100))), 0);
                           ?>
 
@@ -136,7 +144,7 @@
                       </tr>
                        <tr>
                         <td>Uang Saku</td>
-                        <?php for($i=102;$i<=120;$i+=3){
+                        <?php for($i=102;$i<=132;$i+=3){
                             $v = number_format(getValue('jumlah_biaya', 'pjd_biaya_intern', array('id'=>'where/'.($i-100))), 0);
                           ?>
                         <td align="right">
@@ -151,7 +159,7 @@
                       </tr>
                       <tr>
                         <td>Hotel</td>
-                        <?php for($i=103;$i<=121;$i+=3){
+                        <?php for($i=103;$i<=133;$i+=3){
                           $v = number_format(getValue('jumlah_biaya', 'pjd_biaya_intern', array('id'=>'where/'.($i-100))), 0);
                           ?>
                         <td align="right">
