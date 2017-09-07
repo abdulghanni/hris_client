@@ -1057,7 +1057,41 @@ class Form_pjd extends MX_Controller {
         }
             $pos_group = get_pos_group($id);
 
-            if($grade == 'G08' && $pos_group == 'AMD')
+            if($grade == 'G11')
+            {
+                return $this->data['biaya_fix'] = getAll($tbl, array('type_grade'=>'where/11'));
+            }elseif($grade == 'G10')
+            {
+                return $this->data['biaya_fix'] = getAll($tbl, array('type_grade'=>'where/10'));
+            }elseif($grade == 'G09')
+            {
+                return $this->data['biaya_fix'] = getAll($tbl, array('type_grade'=>'where/9'));
+            }elseif($grade == 'G08')
+            {
+                return $this->data['biaya_fix'] = getAll($tbl, array('type_grade'=>'where/8'));
+            }elseif($grade == 'G07')
+            {
+                return $this->data['biaya_fix'] = getAll($tbl, array('type_grade'=>'where/7'));
+            }elseif($grade == 'G06')
+            {
+                return $this->data['biaya_fix'] = getAll($tbl, array('type_grade'=>'where/6'));
+            }elseif($grade == 'G05')
+            {
+                return $this->data['biaya_fix'] = getAll($tbl, array('type_grade'=>'where/5'));
+            }elseif($grade == 'G04')
+            {
+                return $this->data['biaya_fix'] = getAll($tbl, array('type_grade'=>'where/4'));
+            }elseif($grade == 'G03')
+            {
+                return $this->data['biaya_fix'] = getAll($tbl, array('type_grade'=>'where/3'));
+            }elseif($grade == 'G02')
+            {
+                return $this->data['biaya_fix'] = getAll($tbl, array('type_grade'=>'where/2'));
+            }elseif($grade == 'G01')
+            {
+                return $this->data['biaya_fix'] = getAll($tbl, array('type_grade'=>'where/1'));
+            }
+            /*if($grade == 'G08' && $pos_group == 'AMD')
             {
                 return $this->data['biaya_fix'] = getAll($tbl, array('type_grade'=>'where/7'));
             }elseif($grade == 'G08' && $pos_group == 'MGR')
@@ -1073,7 +1107,7 @@ class Form_pjd extends MX_Controller {
                 return $this->data['biaya_fix'] = getAll($tbl, array('type_grade'=>'where/2'));
             }elseif($grade == 'G02' || $grade == 'G01'){
                 return $this->data['biaya_fix'] = getAll($tbl, array('type_grade'=>'where/1'));
-            }
+            }*/
     } 
 
         function get_kota($bu)
