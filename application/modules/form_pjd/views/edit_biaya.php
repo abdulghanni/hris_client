@@ -24,6 +24,61 @@
                     <h5 class="text-center"><span class="semi-bold">Ketentuan Biaya Perjalan Dinas</span></h5>
                     <div class="row form-row">
                           <div class="col-md-2">
+                            <label class="form-label text-left">Tujuan PJD</label>
+                          </div>
+                          <div class="col-md-8">
+                              <input type="text" class="form-control " name="destination" value="<?php echo $destination?>" required>
+                               
+                          </div>
+                        </div>
+                    <div class="row form-row">
+                          <div class="col-md-2">
+                            <label class="form-label text-left">Deskripsi</label>
+                          </div>
+                          <div class="col-md-8">
+                             <textarea class="form-control" id="title" name="title" required><?php echo $title?></textarea>
+                               
+                          </div>
+                        </div>
+                    <div class="row form-row">
+                          <div class="col-md-2">
+                            <label class="form-label text-left">Dari cabang</label>
+                          </div>
+                          <div class="col-md-8">
+                              <select name="from_city_id" class="form-control select2" id="fromCabang" required>
+                                <?php foreach ($bu as $key => $value) { ?>
+                                  <option value="<?php echo trim($key)?>" <?php echo (trim($key) == $from_city_id) ? 'selected="selected"' : ''?>><?php echo $value?></option>
+                                <?php } ?>
+                              </select>
+                          </div>
+                        </div>
+                        <br/>
+                    <div class="row form-row">
+                          <div class="col-md-2">
+                            <label class="form-label text-left">Ke cabang</label>
+                          </div>
+                          <div class="col-md-8">
+                            <!-- <input type="text" class="form-control " name="to_city_id" value="<?php echo get_bu_name($to_city_id)?>" required> -->
+                            <select name="to_city_id" class="form-control select2" id="fromCabang" required>
+                                <?php foreach ($bu as $key => $value) { ?>
+                                  <option value="<?php echo trim($key)?>" <?php echo (trim($key) == $to_city_id) ? 'selected="selected"' : ''?>><?php echo $value?></option>
+                                <?php } ?>
+                              </select>
+                          </div>
+                        </div>
+                        <br/>
+                    <?php if(!empty($nama_kantor_cabang)):?>
+                    <div class="row form-row">
+                          <div class="col-md-2">
+                            <label class="form-label text-left">Nama kantor cabang</label>
+                          </div>
+                          <div class="col-md-8">
+                              <input type="text" class="form-control " name="nama_kantor_cabang" value="<?php echo $nama_kantor_cabang; ?>" required>
+                          </div>
+                        </div>
+                    <?php endif;?>
+                    <div class="row form-row">
+                          <div class="col-md-2">
                             <label class="form-label text-left">Tgl. Berangkat</label>
                           </div>
                           <div class="col-md-8">

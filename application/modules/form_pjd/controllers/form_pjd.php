@@ -485,10 +485,28 @@ class Form_pjd extends MX_Controller {
         $this->data['detail'] = $this->db->distinct()->select('user_id')->where('user_spd_luar_group_id', $id)->get('users_spd_luar_group_biaya');
         
         $this->data['ci'] = $this;
-        $this->data['created_by'] = getValue('created_by', 'users_spd_luar_group', array('id'=>'where/'.$id));
+        $qusers_spd_luar_group = getAll('users_spd_luar_group',array('id'=>'where/'.$id));
+        if($qusers_spd_luar_group->num_rows() > 0)
+        {
+            $this->get_bu();
+            $this->data['created_by'] = $qusers_spd_luar_group->row('created_by');
+            $this->data['task_creator'] = $qusers_spd_luar_group->row('task_creator');
+            $this->data['spd_start'] = $qusers_spd_luar_group->row('date_spd_start');
+            $this->data['spd_end'] = $qusers_spd_luar_group->row('date_spd_end');
+            $this->data['destination'] = $qusers_spd_luar_group->row('destination');
+            $this->data['title'] = $qusers_spd_luar_group->row('title');
+            $this->data['from_city_id'] = $qusers_spd_luar_group->row('from_city_id');
+            $this->data['to_city_id'] = $qusers_spd_luar_group->row('to_city_id');
+            $this->data['nama_kantor_cabang'] = $qusers_spd_luar_group->row('nama_kantor_cabang');
+            //$kota = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('location_id');
+            $this->data['kota'] = explode(",", $qusers_spd_luar_group->row('location_id'));
+            //$kendaraan = getValue('transportation_id', 'users_spd_luar_group', array('id'=>'where/'.$id));
+            $this->data['kendaraan'] = explode(",", $qusers_spd_luar_group->row('transportation_id'));
+        }
+        /*$this->data['created_by'] = getValue('created_by', 'users_spd_luar_group', array('id'=>'where/'.$id));
         $this->data['task_creator'] = getValue('task_creator', 'users_spd_luar_group', array('id'=>'where/'.$id));
         $this->data['spd_start'] = getValue('date_spd_start', 'users_spd_luar_group', array('id'=>'where/'.$id));
-        $this->data['spd_end'] = getValue('date_spd_end', 'users_spd_luar_group', array('id'=>'where/'.$id));
+        $this->data['spd_end'] = getValue('date_spd_end', 'users_spd_luar_group', array('id'=>'where/'.$id));*/
 
         $this->_render_page('form_pjd/edit_biaya', $this->data);
     }
@@ -498,10 +516,15 @@ class Form_pjd extends MX_Controller {
         $data1 = array(
                 'date_spd_start'             => date('Y-m-d', strtotime($this->input->post('date_spd_start'))),
                 'date_spd_end'              => date('Y-m-d', strtotime($this->input->post('date_spd_end'))),
+                'destination'              => $this->input->post('destination'),
+                'title'              => $this->input->post('title'),
+                'from_city_id'              => $this->input->post('from_city_id'),
+                'to_city_id'              => $this->input->post('to_city_id'),
+                'nama_kantor_cabang'              => $this->input->post('nama_kantor_cabang'),
             );
 
-        $this->db->where('id', $id);
-        $this->db->update('users_spd_luar_group', $data1);
+        /*$this->db->where('id', $id);
+        $this->db->update('users_spd_luar_group', $data1);*/
 
         $this->db->where('id', $id);
         $this->db->update('users_spd_luar_group', $data1);
