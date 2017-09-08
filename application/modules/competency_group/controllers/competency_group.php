@@ -36,7 +36,7 @@ class competency_group extends MX_Controller {
         {
             redirect('auth/login', 'refresh');
         }
-        elseif (!$this->ion_auth->is_admin())
+        elseif (!is_admin_kompetensi()&&!$this->ion_auth->is_admin())
         {
             return show_error('You must be an administrator to view this page.');
         }
