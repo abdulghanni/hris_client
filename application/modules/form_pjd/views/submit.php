@@ -187,7 +187,7 @@
                   </div>
 
                   &nbsp;<hr/>
-                  <?php if($td->is_deleted == 0 && ($sess_id == $created_by || $sess_nik == $task_creator)):?>
+                  <?php if($td->is_deleted == 0 && ($sess_id == $created_by || $sess_nik == $task_creator || $sess_nik == $td->user_app_lv1 || $sess_nik == $td->user_app_lv2 || $sess_nik == $td->user_app_lv3 || $sess_nik == $td->user_app_lv4 || $sess_nik == $td->user_app_lv5 || $sess_nik == $td->user_app_lv6 || $sess_nik == $td->user_app_lv7 || $sess_nik == $td->user_app_lv8 || $sess_nik == $td->user_app_lv9 || $sess_nik == $td->user_app_lv10)):?>
                   <a href="<?php echo site_url('form_pjd/edit_biaya/'.$id)?>"><div class='btn btn-primary text-center' title='Edit PJD'><i class='icon-edit'> Ubah PJD</i></div></a>
                   <?php endif; ?>
                   <h5 class="text-center"><span class="semi-bold">Ketentuan Biaya Perjalan Dinas </span></h5>
