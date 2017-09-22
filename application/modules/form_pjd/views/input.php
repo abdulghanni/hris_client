@@ -108,7 +108,7 @@
                         <label class="form-label text-right"><?php echo 'Atasan Lainnya' ?></label>
                       </div>
                       <div class="col-md-8">
-                        <select name="atasan4" id="atasan3" class="select2" style="width:100%">
+                        <select name="atasan4" id="atasan4" class="select2" style="width:100%">
                             <option value="0">- Pilih Atasan -</option>
                         </select>
                       </div>
@@ -119,7 +119,7 @@
                         <label class="form-label text-right"><?php echo 'Atasan Lainnya' ?></label>
                       </div>
                       <div class="col-md-8">
-                        <select name="atasan5" id="atasan3" class="select2" style="width:100%">
+                        <select name="atasan5" id="atasan5" class="select2" style="width:100%">
                             <option value="0">- Pilih Atasan -</option>
                         </select>
                       </div>
@@ -130,7 +130,7 @@
                         <label class="form-label text-right"><?php echo 'Atasan Lainnya' ?></label>
                       </div>
                       <div class="col-md-8">
-                        <select name="atasan6" id="atasan3" class="select2" style="width:100%">
+                        <select name="atasan6" id="atasan6" class="select2" style="width:100%">
                             <option value="0">- Pilih Atasan -</option>
                         </select>
                       </div>
@@ -141,7 +141,7 @@
                         <label class="form-label text-right"><?php echo 'Atasan Lainnya' ?></label>
                       </div>
                       <div class="col-md-8">
-                        <select name="atasan7" id="atasan3" class="select2" style="width:100%">
+                        <select name="atasan7" id="atasan7" class="select2" style="width:100%">
                             <option value="0">- Pilih Atasan -</option>
                         </select>
                       </div>
@@ -152,7 +152,7 @@
                         <label class="form-label text-right"><?php echo 'Atasan Lainnya' ?></label>
                       </div>
                       <div class="col-md-8">
-                        <select name="atasan8" id="atasan3" class="select2" style="width:100%">
+                        <select name="atasan8" id="atasan8" class="select2" style="width:100%">
                             <option value="0">- Pilih Atasan -</option>
                         </select>
                       </div>
@@ -163,7 +163,7 @@
                         <label class="form-label text-right"><?php echo 'Atasan Lainnya' ?></label>
                       </div>
                       <div class="col-md-8">
-                        <select name="atasan9" id="atasan3" class="select2" style="width:100%">
+                        <select name="atasan9" id="atasan9" class="select2" style="width:100%">
                             <option value="0">- Pilih Atasan -</option>
                         </select>
                       </div>
@@ -174,7 +174,7 @@
                         <label class="form-label text-right"><?php echo 'Atasan Lainnya' ?></label>
                       </div>
                       <div class="col-md-8">
-                        <select name="atasan10" id="atasan3" class="select2" style="width:100%">
+                        <select name="atasan10" id="atasan10" class="select2" style="width:100%">
                             <option value="0">- Pilih Atasan -</option>
                         </select>
                       </div>

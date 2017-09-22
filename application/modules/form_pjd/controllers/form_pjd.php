@@ -435,7 +435,7 @@ class Form_pjd extends MX_Controller {
                 'user_app_lv7'          => $this->input->post('atasan7'),
                 'user_app_lv8'          => $this->input->post('atasan8'),
                 'user_app_lv9'          => $this->input->post('atasan9'),
-                'user_app_lv10'          => $this->input->post('atasan10'),
+                'user_app_lv10'         => $this->input->post('atasan10'),
                 'created_on'            => date('Y-m-d',strtotime('now')),
                 'created_by'            => $sess_id,
                 'is_show'               => 0
