@@ -404,6 +404,202 @@ class Dropdown extends MX_Controller {
         $this->load->view('dropdown_atasan',$data);
     }
 
+    public function get_atasan4($id)
+    {
+        $nik = get_nik($id);
+        $url_atasan_satu_bu = get_api_key().'users/atasan_satu_bu/EMPLID/'.$nik.'/format/json';
+        $headers = get_headers($url_atasan_satu_bu);
+        $response = substr($headers[0], 9, 3);
+        if($response != "404") {
+           $get_atasan = file_get_contents($url_atasan_satu_bu);
+           $at_khusus = getJoin('users','users_approval_khusus','users.nik = users_approval_khusus.nik','left', 'users_approval_khusus.nik as ID, users.username as NAME', array())->result_array();
+
+            $atasan = json_decode($get_atasan, true);
+            $uri = $this->uri->segment(3,9);
+            //if(get_user_buid($nik) != '50' ):
+                $atasan = (array_merge_recursive($atasan, $at_khusus));
+            //endif; 
+             foreach ($atasan as $row)
+                {
+                    $result['0']= '-- Pilih Atasan --';
+                    $result[$row['ID']]= $row['ID'].' - '.$row['NAME'];
+                }
+        }else{
+            $result['0']= '- Karyawan Tidak Memiliki Atasan -';
+        }
+
+        $data['result']=$result;
+        $this->load->view('dropdown_atasan',$data);
+    }
+
+    public function get_atasan5($id)
+    {
+        $nik = get_nik($id);
+        $url_atasan_satu_bu = get_api_key().'users/atasan_satu_bu/EMPLID/'.$nik.'/format/json';
+        $headers = get_headers($url_atasan_satu_bu);
+        $response = substr($headers[0], 9, 3);
+        if($response != "404") {
+           $get_atasan = file_get_contents($url_atasan_satu_bu);
+           $at_khusus = getJoin('users','users_approval_khusus','users.nik = users_approval_khusus.nik','left', 'users_approval_khusus.nik as ID, users.username as NAME', array())->result_array();
+
+            $atasan = json_decode($get_atasan, true);
+            $uri = $this->uri->segment(3,9);
+            //if(get_user_buid($nik) != '50' ):
+                $atasan = (array_merge_recursive($atasan, $at_khusus));
+            //endif; 
+             foreach ($atasan as $row)
+                {
+                    $result['0']= '-- Pilih Atasan --';
+                    $result[$row['ID']]= $row['ID'].' - '.$row['NAME'];
+                }
+        }else{
+            $result['0']= '- Karyawan Tidak Memiliki Atasan -';
+        }
+
+        $data['result']=$result;
+        $this->load->view('dropdown_atasan',$data);
+    }
+
+    public function get_atasan6($id)
+    {
+        $nik = get_nik($id);
+        $url_atasan_satu_bu = get_api_key().'users/atasan_satu_bu/EMPLID/'.$nik.'/format/json';
+        $headers = get_headers($url_atasan_satu_bu);
+        $response = substr($headers[0], 9, 3);
+        if($response != "404") {
+           $get_atasan = file_get_contents($url_atasan_satu_bu);
+           $at_khusus = getJoin('users','users_approval_khusus','users.nik = users_approval_khusus.nik','left', 'users_approval_khusus.nik as ID, users.username as NAME', array())->result_array();
+
+            $atasan = json_decode($get_atasan, true);
+            $uri = $this->uri->segment(3,9);
+            //if(get_user_buid($nik) != '50' ):
+                $atasan = (array_merge_recursive($atasan, $at_khusus));
+            //endif; 
+             foreach ($atasan as $row)
+                {
+                    $result['0']= '-- Pilih Atasan --';
+                    $result[$row['ID']]= $row['ID'].' - '.$row['NAME'];
+                }
+        }else{
+            $result['0']= '- Karyawan Tidak Memiliki Atasan -';
+        }
+
+        $data['result']=$result;
+        $this->load->view('dropdown_atasan',$data);
+    }
+
+    public function get_atasan7($id)
+    {
+        $nik = get_nik($id);
+        $url_atasan_satu_bu = get_api_key().'users/atasan_satu_bu/EMPLID/'.$nik.'/format/json';
+        $headers = get_headers($url_atasan_satu_bu);
+        $response = substr($headers[0], 9, 3);
+        if($response != "404") {
+           $get_atasan = file_get_contents($url_atasan_satu_bu);
+           $at_khusus = getJoin('users','users_approval_khusus','users.nik = users_approval_khusus.nik','left', 'users_approval_khusus.nik as ID, users.username as NAME', array())->result_array();
+
+            $atasan = json_decode($get_atasan, true);
+            $uri = $this->uri->segment(3,9);
+            //if(get_user_buid($nik) != '50' ):
+                $atasan = (array_merge_recursive($atasan, $at_khusus));
+            //endif; 
+             foreach ($atasan as $row)
+                {
+                    $result['0']= '-- Pilih Atasan --';
+                    $result[$row['ID']]= $row['ID'].' - '.$row['NAME'];
+                }
+        }else{
+            $result['0']= '- Karyawan Tidak Memiliki Atasan -';
+        }
+
+        $data['result']=$result;
+        $this->load->view('dropdown_atasan',$data);
+    }
+
+    public function get_atasan8($id)
+    {
+        $nik = get_nik($id);
+        $url_atasan_satu_bu = get_api_key().'users/atasan_satu_bu/EMPLID/'.$nik.'/format/json';
+        $headers = get_headers($url_atasan_satu_bu);
+        $response = substr($headers[0], 9, 3);
+        if($response != "404") {
+           $get_atasan = file_get_contents($url_atasan_satu_bu);
+           $at_khusus = getJoin('users','users_approval_khusus','users.nik = users_approval_khusus.nik','left', 'users_approval_khusus.nik as ID, users.username as NAME', array())->result_array();
+
+            $atasan = json_decode($get_atasan, true);
+            $uri = $this->uri->segment(3,9);
+            //if(get_user_buid($nik) != '50' ):
+                $atasan = (array_merge_recursive($atasan, $at_khusus));
+            //endif; 
+             foreach ($atasan as $row)
+                {
+                    $result['0']= '-- Pilih Atasan --';
+                    $result[$row['ID']]= $row['ID'].' - '.$row['NAME'];
+                }
+        }else{
+            $result['0']= '- Karyawan Tidak Memiliki Atasan -';
+        }
+
+        $data['result']=$result;
+        $this->load->view('dropdown_atasan',$data);
+    }
+
+    public function get_atasan9($id)
+    {
+        $nik = get_nik($id);
+        $url_atasan_satu_bu = get_api_key().'users/atasan_satu_bu/EMPLID/'.$nik.'/format/json';
+        $headers = get_headers($url_atasan_satu_bu);
+        $response = substr($headers[0], 9, 3);
+        if($response != "404") {
+           $get_atasan = file_get_contents($url_atasan_satu_bu);
+           $at_khusus = getJoin('users','users_approval_khusus','users.nik = users_approval_khusus.nik','left', 'users_approval_khusus.nik as ID, users.username as NAME', array())->result_array();
+
+            $atasan = json_decode($get_atasan, true);
+            $uri = $this->uri->segment(3,9);
+            //if(get_user_buid($nik) != '50' ):
+                $atasan = (array_merge_recursive($atasan, $at_khusus));
+            //endif; 
+             foreach ($atasan as $row)
+                {
+                    $result['0']= '-- Pilih Atasan --';
+                    $result[$row['ID']]= $row['ID'].' - '.$row['NAME'];
+                }
+        }else{
+            $result['0']= '- Karyawan Tidak Memiliki Atasan -';
+        }
+
+        $data['result']=$result;
+        $this->load->view('dropdown_atasan',$data);
+    }
+
+    public function get_atasan10($id)
+    {
+        $nik = get_nik($id);
+        $url_atasan_satu_bu = get_api_key().'users/atasan_satu_bu/EMPLID/'.$nik.'/format/json';
+        $headers = get_headers($url_atasan_satu_bu);
+        $response = substr($headers[0], 9, 3);
+        if($response != "404") {
+           $get_atasan = file_get_contents($url_atasan_satu_bu);
+           $at_khusus = getJoin('users','users_approval_khusus','users.nik = users_approval_khusus.nik','left', 'users_approval_khusus.nik as ID, users.username as NAME', array())->result_array();
+
+            $atasan = json_decode($get_atasan, true);
+            $uri = $this->uri->segment(3,9);
+            //if(get_user_buid($nik) != '50' ):
+                $atasan = (array_merge_recursive($atasan, $at_khusus));
+            //endif; 
+             foreach ($atasan as $row)
+                {
+                    $result['0']= '-- Pilih Atasan --';
+                    $result[$row['ID']]= $row['ID'].' - '.$row['NAME'];
+                }
+        }else{
+            $result['0']= '- Karyawan Tidak Memiliki Atasan -';
+        }
+
+        $data['result']=$result;
+        $this->load->view('dropdown_atasan',$data);
+    }
+
     public function get_pengganti_cuti($id)
     {
         $url = get_api_key().'users/org/EMPLID/'.get_nik($id).'/format/json';
