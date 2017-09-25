@@ -104,6 +104,13 @@ $(document).ready(function() {
             case 'form_pjd':
                 getAtasan1(empId);
                 getAtasan3(empId);
+                getAtasan4(empId);
+                getAtasan5(empId);
+                getAtasan6(empId);
+                getAtasan7(empId);
+                getAtasan8(empId);
+                getAtasan9(empId);
+                getAtasan10(empId);
                 getEmpOrg(empId);
                 getEmpPos(empId);
                 break;
@@ -611,6 +618,90 @@ $(document).ready(function() {
             data: {id : empId},
             success: function(data) {
                 $('#atasan3').html(data);
+            }
+        });
+    }
+
+    function getAtasan4(empId)
+    {
+        $.ajax({
+            type: 'POST',
+            url: baseurl+'dropdown/get_atasan4/'+empId,
+            data: {id : empId},
+            success: function(data) {
+                $('#atasan4').html(data);
+            }
+        });
+    }
+
+    function getAtasan5(empId)
+    {
+        $.ajax({
+            type: 'POST',
+            url: baseurl+'dropdown/get_atasan5/'+empId,
+            data: {id : empId},
+            success: function(data) {
+                $('#atasan5').html(data);
+            }
+        });
+    }
+
+    function getAtasan6(empId)
+    {
+        $.ajax({
+            type: 'POST',
+            url: baseurl+'dropdown/get_atasan6/'+empId,
+            data: {id : empId},
+            success: function(data) {
+                $('#atasan6').html(data);
+            }
+        });
+    }
+
+    function getAtasan7(empId)
+    {
+        $.ajax({
+            type: 'POST',
+            url: baseurl+'dropdown/get_atasan7/'+empId,
+            data: {id : empId},
+            success: function(data) {
+                $('#atasan7').html(data);
+            }
+        });
+    }
+
+    function getAtasan8(empId)
+    {
+        $.ajax({
+            type: 'POST',
+            url: baseurl+'dropdown/get_atasan8/'+empId,
+            data: {id : empId},
+            success: function(data) {
+                $('#atasan8').html(data);
+            }
+        });
+    }
+
+    function getAtasan9(empId)
+    {
+        $.ajax({
+            type: 'POST',
+            url: baseurl+'dropdown/get_atasan9/'+empId,
+            data: {id : empId},
+            success: function(data) {
+                $('#atasan9').html(data);
+            }
+        });
+    }
+
+    function getAtasan10(empId)
+    {
+        $.ajax({
+            type: 'POST',
+            url: baseurl+'dropdown/get_atasan10/'+empId,
+            data: {id : empId},
+            success: function(data) {
+                $('#atasan10').html(data);
             }
         });
     }
