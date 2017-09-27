@@ -13,13 +13,14 @@
 						<tr>
 							<!-- <td><?php //echo $user['EMPLID'].' - '.$user['NAME'].' ['.get_pos_id($user['EMPLID'])['POSITION'].']'?></td> -->
 							<td>
-								<?php echo '<h4>'.$user['EMPLID'].' - '.$user['NAME'].' ['.get_pos_id($user['EMPLID'])['POSITION'].'] '.'</h4>'?>
+								<?php //echo '<h4>'.$user['EMPLID'].' - '.$user['NAME'].' ['.get_pos_id($user['EMPLID'])['POSITION'].'] '.'</h4>'?>
 								<?php $qkpi_detail = $this->main->get_kpi_detail_by_userid(get_id($user['EMPLID'])); ?>
 								
 								<?php if($qkpi_detail->num_rows() > 0) { ?>
 								<table class="table table-bordered">
 									<thead>
 										<tr>
+											<th>Nama Karyawan</th>
 											<th>KPI</th>
 											<th>target</th>
 											<th>Jan</th>
@@ -42,6 +43,7 @@
 										<?php $kpi_detail = $qkpi_detail->result_array();?>
 										<?php foreach ($kpi_detail as $key => $value) { ?>	
 											<tr>
+												<td><?php echo $user['EMPLID'].' - '.$user['NAME']?></td>
 												<td><?php echo $value['kpi']?></td>
 												<td><?php echo $value['target_kpi']?></td>
 												<td><?php echo $value['jan']?></td>

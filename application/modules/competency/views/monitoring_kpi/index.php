@@ -10,7 +10,7 @@
   <div class="content">
     <div class="page-title">
         <i class="icon-custom-left"></i>
-        <h3>Kompetensi - Form Penilaian KPI</h3> 
+        <h3>Kompetensi - Form Laporan KPI Bulanan</h3> 
     </div>
     <div class="row">
       <div class="col-md-12">
