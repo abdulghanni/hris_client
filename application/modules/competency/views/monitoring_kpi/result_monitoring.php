@@ -43,7 +43,7 @@
 										<?php $kpi_detail = $qkpi_detail->result_array();?>
 										<?php foreach ($kpi_detail as $key => $value) { ?>	
 											<tr>
-												<td><?php echo $user['EMPLID'].' - '.$user['NAME']?></td>
+												<td rowspan="<?php echo $qkpi_detail->num_rows()?>"><?php echo $user['EMPLID'].' - '.$user['NAME']?></td>
 												<td><?php echo $value['kpi']?></td>
 												<td><?php echo $value['target_kpi']?></td>
 												<td><?php echo $value['jan']?></td>
