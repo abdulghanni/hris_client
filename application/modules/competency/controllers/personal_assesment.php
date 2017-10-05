@@ -162,7 +162,7 @@ class personal_assesment extends MX_Controller {
             'nik' => $this->input->post('nik'),
             'comp_session_id' => $this->input->post('comp_session_id'),
             'organization_id' => $this->input->post('organization_id'),
-            'position_group_id' => $this->input->post('position_group_id'),
+            'position_group_id' => $this->input->post('position'),
             'created_by'=>sessId(),
             'created_on'=>dateNow(),
             );
