@@ -76,7 +76,7 @@
       <li class=""> <a href="javascript:;"> <i class="icon-cog"></i> <span class="title">Laporan</span> <span class="arrow "></span> </a>
         <ul class="sub-menu">
           <li > <a href="<?php echo site_url('competency/monitoring_kpi')?>">Monitoring KPI Bulanan</a></li>
-          <li > <a href="<?php echo site_url('competency/monitoring_kpi')?>">Rekapitulasi gap Kompetensi</a></li>
+          <li > <a href="<?php echo site_url('competency/rekap_personal_assessment')?>">Rekapitulasi gap Kompetensi</a></li>
         </ul>
       </li>
       <?php endif;?>
