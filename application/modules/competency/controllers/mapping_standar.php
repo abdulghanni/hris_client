@@ -256,7 +256,8 @@ class mapping_standar extends MX_Controller {
             $pos_group[] = $value['DESCRIPTION'];
         }
 
-        $data['pos_group'] = $pos_group = array_unique($pos_group);
+        //$data['pos_group'] = $pos_group = array_unique($pos_group);
+        $data['pos_group'] = $pos_group;
         $data['pg_size'] = sizeof($pos_group);
         $data['col'] = 70/sizeof($pos_group);
         $comp_def = array();

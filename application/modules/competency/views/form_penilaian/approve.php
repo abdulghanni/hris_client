@@ -176,7 +176,13 @@
                   		<p class="wf-approve-sp">
                   		<?php 
                   			if($a->user_id == sessId() && $a->is_app == 0){ ?>
-                  				<div class="btn btn-success btn-cons" id="" type="button" data-toggle="modal" data-target="#submitModal<?=sessId()?>" style="margin-top: -15px;"><i class="icon-ok"></i>Submit</div><br/>
+                  				<div class="btn btn-success btn-cons" id="" type="button" data-toggle="modal" data-target="#submitModal<?=sessId()?>" style="margin-top: -15px;"><i class="icon-ok"></i>Submit</div>
+								<?php if($a->user_id == 118) { ?> 
+									<a href="<?php echo site_url('competency/form_penilaian/edit/'.$this->uri->segment(4))?>">
+										<button type="button" class="btn btn-success btn-cons" style="margin-top: -15px;" >Edit</button>
+									</a>
+								<?php } ?>
+                  				<br/>
                   				<span class="semi-bold"><?php echo get_name($a->user_id)?></span><br/>
                           		<span class="small"><?php echo dateIndo($a->date_app)?></span><br/>
                           		<span class="semi-bold"><?=get_user_position(get_nik($a->user_id))?></span>

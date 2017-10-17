@@ -219,7 +219,12 @@ class kinerja_supporting extends MX_Controller {
             $user_jumlah_telat = 1;
         }
 
-        $nilai_keterlambatan = $jumlah_menit_telat/$user_jumlah_telat[0]['JUMLAH_HARI_TELAT'];
+        if($user_jumlah_telat[0]['JUMLAH_HARI_TELAT'] != 0)
+        {
+            $nilai_keterlambatan = $jumlah_menit_telat/$user_jumlah_telat[0]['JUMLAH_HARI_TELAT'];
+        }else{
+            $nilai_keterlambatan = 1;
+        }
 
         $point_keterlambatan = $this->point_keterlambatan($nilai_keterlambatan);
 

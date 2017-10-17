@@ -143,8 +143,9 @@
 									</table>
 								</div>
 								<div class="col-md-12">
-									<h3>Kolom dibawah ini untuk HR</h3>
-									<?php $myk = ($sess_id != 118) ? 'disabled="disabled"' : '';?>
+									<!-- <h3>Kolom dibawah ini untuk HR</h3> -->
+									<?php //$myk = ($sess_id != 118) ? 'disabled="disabled"' : '';?>
+									<?php $myk = ($sess_id != 118) ? '' : '';?>
 								</div>
 								<div class="col-md-12">
 									<h4>Kuadran :</h4>
@@ -174,6 +175,7 @@
 					                     </div>
 									<?php } ?>
 								</div>
+								<div class="col-md-12">
 				            	<div id="approver">
 				            		<fieldset>
 				            			<legend>Atasan</legend>
@@ -208,6 +210,7 @@
 						            		</table>
 						            	</div>
 						            </fieldset>					            
+								</div>
 								</div>
 				            </div>
 			            	<div id="submit" class="form-actions">
