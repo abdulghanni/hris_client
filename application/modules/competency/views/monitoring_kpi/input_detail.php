@@ -191,7 +191,7 @@
 									</tbody>
 				              	</table>
 				            </div>
-
+							<div class="row form-row">
 			            	<div id="approver">
 			            		<fieldset>
 			            			<legend>Approver</legend>
@@ -228,6 +228,7 @@
 					            		</table>
 					            	</div>
 					            </fieldset>					            
+							</div>
 							</div>
 				            
 			            	<div id="submit" class="form-actions">

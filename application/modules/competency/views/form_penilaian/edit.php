@@ -143,6 +143,7 @@
 					                     </div>
 									<?php } ?>
 								</div>
+								<div class="col-md-12">
 				            	<div id="approver">
 				            		<fieldset>
 				            			<legend>Approver</legend>
@@ -179,6 +180,7 @@
 						            		</table>
 						            	</div>
 						            </fieldset>					            
+								</div>
 								</div>
 				            </div>
 			            	<div id="submit" class="form-actions">

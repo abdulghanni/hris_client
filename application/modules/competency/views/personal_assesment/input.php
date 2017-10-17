@@ -111,6 +111,7 @@
 
 									</div>
 								</div>
+								<div class="col-md-12">
 				            	<div id="approver">
 				            		<fieldset>
 				            			<legend>Atasan</legend>
@@ -139,6 +140,7 @@
 						            		</table>
 						            	</div>
 						            </fieldset>					            
+								</div>
 								</div>
 				            </div>
 			            	<div id="submit" class="form-actions">

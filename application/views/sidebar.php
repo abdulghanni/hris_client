@@ -60,18 +60,26 @@
           <li > <a href="<?php echo site_url('form_template')?>">Form Template</a> </li>        
            </ul>
       </li>
-      <?php if (is_spv($nik)||is_admin()):?>
+      <?php //if (is_spv($nik)||is_admin()):?>
       <?php //if (is_admin()):?>
       <li class=""> <a href="javascript:;"> <i class="icon-check"></i> <span class="title">Form Penilaian</span> <span class="arrow "></span> </a>
         <ul class="sub-menu">
-          <li > <a href="<?php echo site_url('competency/personal_assesment')?>">Personal Assesment</a></li>
-          <li > <a href="<?php echo site_url('competency/form_penilaian')?>">Human Value Matrix</a></li>
-          <li > <a href="<?php echo site_url('competency/form_kpi')?>">Monitoring KPI</a></li>
-          <li > <a href="<?php echo site_url('competency/form_evaluasi_training')?>">Evaluasi Keefektifan Training</a></li>
-          <li > <a href="<?php echo site_url('competency/kinerja_supporting')?>">Penilaian Kinerja Supporting</a></li>
+          <?php if (is_spv($nik)||is_admin()):?>
+            <li > <a href="<?php echo site_url('competency/personal_assesment')?>">Personal Assesment</a></li>
+          <?php endif;?>
+           <?php if (is_spv($nik)||is_admin()):?>  
+            <li > <a href="<?php echo site_url('competency/form_penilaian')?>">Human Value Matrix</a></li>
+          <?php endif;?>
+            <li > <a href="<?php echo site_url('competency/form_kpi')?>">Monitoring KPI</a></li>
+           <?php if (is_spv($nik)||is_admin()):?>
+              <li > <a href="<?php echo site_url('competency/form_evaluasi_training')?>">Evaluasi Keefektifan Training</a></li>
+            <?php endif;?>
+           <?php if (is_spv($nik)||is_admin()):?>    
+              <li > <a href="<?php echo site_url('competency/kinerja_supporting')?>">Penilaian Kinerja Supporting</a></li>
+          <?php endif;?>
         </ul>
       </li>   
-    <?php endif;?>
+    
     <?php if (is_admin() || is_admin_kompetensi()):?>
       <li class=""> <a href="javascript:;"> <i class="icon-cog"></i> <span class="title">Laporan</span> <span class="arrow "></span> </a>
         <ul class="sub-menu">

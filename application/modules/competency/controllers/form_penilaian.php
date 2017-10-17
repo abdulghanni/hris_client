@@ -254,6 +254,7 @@ class form_penilaian extends MX_Controller {
             $this->db->insert($this->table.'_detail', $data);
         }
 
+
         $url = base_url().$this->controller.'/approve/'.$com_id;
         $subject_email = "Kompetensi - $this->title";
         $isi_email = get_name(sessId())." Membuat ".$this->title.
@@ -265,7 +266,8 @@ class form_penilaian extends MX_Controller {
         $subject_email = "Kompetensi - $this->title";
         $isi_email = get_name(sessId())." Membuat ".$this->title.
                      "<br/>Untuk melihat detail silakan <a href=$url>Klik disini</a>";
-        $this->db->where($this->table.'_id', $id)->delete($this->table.'_approver');             
+        $this->db->where($this->table.'_id', $id)->delete($this->table.'_approver');
+
         for ($i=0;$i<sizeof($approver_id);$i++) {
             $data = array(
                 $this->table.'_id' => $com_id,
@@ -282,6 +284,16 @@ class form_penilaian extends MX_Controller {
                   'is_read' => 0,
             );
             $this->db->insert('email', $data4);
+
+            /*if(get_nik($approver_id[$i]) == 'P1575' || get_nik($approver_id[$i]) == 'P0227')
+            {
+                $url_hr = base_url().$this->controller.'/edit/'.$com_id;
+                $subject_email_hr = "Kompetensi - $this->title";
+                $isi_email_hr = get_name(sessId())." Membuat ".$this->title.
+                             "<br/>Untuk membuat penilaian berdasarkan HR silakan <a href=$url_hr>Klik disini</a>";
+                if(!empty(getEmail($approver_id[$i])))$this->send_email(getEmail($approver_id[$i]), $subject_email_hr, $isi_email_hr);
+            }*/
+
             if(!empty(getEmail($approver_id[$i])))$this->send_email(getEmail($approver_id[$i]), $subject_email, $isi_email);
         }
         redirect(base_url($this->controller), 'refresh');
