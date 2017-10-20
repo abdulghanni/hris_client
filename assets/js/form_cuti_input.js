@@ -65,8 +65,9 @@ ToEndDate.setDate(ToEndDate.getDate()+365);
     function days() 
     {   
       var date1 = $('[name="start_cuti"]').val(),date2 = $('[name="end_cuti"]').val();
+      var alasan_cuti = $('[name="alasan_cuti"]').val();
       $.ajax({
-            url : "get_libur/"+date1+'/'+date2+'/-',
+            url : "get_libur/"+date1+'/'+date2+'/-'+'/'+alasan_cuti,
             type: "GET",
             dataType: "JSON",
             success: function(json)
