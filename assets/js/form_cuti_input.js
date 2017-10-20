@@ -74,6 +74,7 @@ ToEndDate.setDate(ToEndDate.getDate()+365);
             {
               var dDate1 = new Date($("#datepicker_start").datepicker('getFormattedDate')); 
               var dDate2 = new Date($("#datepicker_end").datepicker('getFormattedDate'));
+              var dalasan_cuti = $('[name="alasan_cuti"]').val();
 
               var iWeeks, iDateDiff, iAdjust= 0;
              
@@ -85,7 +86,7 @@ ToEndDate.setDate(ToEndDate.getDate()+365);
               iWeekday1 = (iWeekday1 == 0) ? 7 : iWeekday1;   // change Sunday from 0 to 7
               iWeekday2 = (iWeekday2 == 0) ? 7 : iWeekday2;
              
-              if(alasan_cuti == 'CTB')
+              if(dalasan_cuti == 'CTB')
               {
                 if ((iWeekday1 > 7) && (iWeekday2 > 7)) iAdjust = 1;  // adjustment if both days on weekend
                 
@@ -122,7 +123,7 @@ ToEndDate.setDate(ToEndDate.getDate()+365);
                 } else {
                   iDateDiff = ((iWeeks + 1) * 6) - (iWeekday1 - iWeekday2)
                 }
-                
+
               }
                 
               
