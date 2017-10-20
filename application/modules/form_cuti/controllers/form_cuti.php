@@ -1454,7 +1454,7 @@ class Form_cuti extends MX_Controller {
         }
     }
 
-    function get_libur($tglawal,$tglakhir,$delimiter) {
+    function get_libur($tglawal,$tglakhir,$delimiter,$alasan_cuti) {
 
         $tgl_awal = $tgl_akhir = $minggu = $sabtu = $koreksi = $libur = 0;
         $liburnasional = $this->get_holiday();
@@ -1483,6 +1483,13 @@ class Form_cuti extends MX_Controller {
                     }
                 }
             }
+        }
+
+        if($alasan_cuti != 'CTB')
+        {
+            $libur = $libur;
+        }else{
+            $libur = 0;
         }
 
         echo json_encode($libur);
