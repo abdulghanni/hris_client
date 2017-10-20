@@ -85,23 +85,46 @@ ToEndDate.setDate(ToEndDate.getDate()+365);
               iWeekday1 = (iWeekday1 == 0) ? 7 : iWeekday1;   // change Sunday from 0 to 7
               iWeekday2 = (iWeekday2 == 0) ? 7 : iWeekday2;
              
+              if(alasan_cuti == 'CTB')
+              {
+                if ((iWeekday1 > 7) && (iWeekday2 > 7)) iAdjust = 1;  // adjustment if both days on weekend
+                
               
+                iWeekday1 = (iWeekday1 > 7) ? 7 : iWeekday1;    // only count weekdays
+                iWeekday2 = (iWeekday2 > 7) ? 7 : iWeekday2;
+              
+                  
+               
+                // calculate differnece in weeks (1000mS * 60sec * 60min * 24hrs * 7 days = 604800000)
+                iWeeks = Math.floor((dDate2.getTime() - dDate1.getTime()) / 604800000)
+               
+                if (iWeekday1 <= iWeekday2) {
+                  iDateDiff = (iWeeks * 7) + (iWeekday2 - iWeekday1)
+                } else {
+                  iDateDiff = ((iWeeks + 1) * 7) - (iWeekday1 - iWeekday2)
+                }
+
+              }else
+              {
                 if ((iWeekday1 > 6) && (iWeekday2 > 6)) iAdjust = 1;  // adjustment if both days on weekend
-              
+                
               
                 iWeekday1 = (iWeekday1 > 6) ? 6 : iWeekday1;    // only count weekdays
                 iWeekday2 = (iWeekday2 > 6) ? 6 : iWeekday2;
               
+                  
+               
+                // calculate differnece in weeks (1000mS * 60sec * 60min * 24hrs * 7 days = 604800000)
+                iWeeks = Math.floor((dDate2.getTime() - dDate1.getTime()) / 604800000)
+               
+                if (iWeekday1 <= iWeekday2) {
+                  iDateDiff = (iWeeks * 6) + (iWeekday2 - iWeekday1)
+                } else {
+                  iDateDiff = ((iWeeks + 1) * 6) - (iWeekday1 - iWeekday2)
+                }
                 
-             
-              // calculate differnece in weeks (1000mS * 60sec * 60min * 24hrs * 7 days = 604800000)
-              iWeeks = Math.floor((dDate2.getTime() - dDate1.getTime()) / 604800000)
-             
-              if (iWeekday1 <= iWeekday2) {
-                iDateDiff = (iWeeks * 6) + (iWeekday2 - iWeekday1)
-              } else {
-                iDateDiff = ((iWeeks + 1) * 6) - (iWeekday1 - iWeekday2)
               }
+                
               
               iAdjust += json;
               iDateDiff -= iAdjust// take into account both days on weekend
