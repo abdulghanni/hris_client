@@ -86,7 +86,7 @@ ToEndDate.setDate(ToEndDate.getDate()+365);
               iWeekday2 = (iWeekday2 == 0) ? 7 : iWeekday2;
              
               
-              if ((iWeekday1 > 6) && (iWeekday2 > 6)) iAdjust = 1;  // adjustment if both days on weekend
+                if ((iWeekday1 > 6) && (iWeekday2 > 6)) iAdjust = 1;  // adjustment if both days on weekend
               
               
                 iWeekday1 = (iWeekday1 > 6) ? 6 : iWeekday1;    // only count weekdays
@@ -104,14 +104,7 @@ ToEndDate.setDate(ToEndDate.getDate()+365);
               }
               
               iAdjust += json;
-
-              if(alasan_cuti == 'CTB')
-              {
-                iDateDiff = iDateDiff;
-              }else{
-                iDateDiff -= iAdjust;// take into account both days on weekend  
-              }
-              
+              iDateDiff -= iAdjust// take into account both days on weekend
               
 			
               //$("#jml_hari").val(iDateDiff + 1);// add 1 because dates are inclusive
