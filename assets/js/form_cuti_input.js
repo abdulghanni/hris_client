@@ -86,9 +86,16 @@ ToEndDate.setDate(ToEndDate.getDate()+365);
               iWeekday2 = (iWeekday2 == 0) ? 7 : iWeekday2;
              
               if ((iWeekday1 > 6) && (iWeekday2 > 6)) iAdjust = 1;  // adjustment if both days on weekend
-             
-              iWeekday1 = (iWeekday1 > 6) ? 6 : iWeekday1;    // only count weekdays
-              iWeekday2 = (iWeekday2 > 6) ? 6 : iWeekday2;
+              
+              if(alasan_cuti == 'CTB')
+              {
+                iWeekday1 = (iWeekday1 > 7) ? 7 : iWeekday1;    // count all day
+                iWeekday2 = (iWeekday2 > 7) ? 7 : iWeekday2;
+              }else{
+                iWeekday1 = (iWeekday1 > 6) ? 6 : iWeekday1;    // only count weekdays
+                iWeekday2 = (iWeekday2 > 6) ? 6 : iWeekday2;
+              }
+                
              
               // calculate differnece in weeks (1000mS * 60sec * 60min * 24hrs * 7 days = 604800000)
               iWeeks = Math.floor((dDate2.getTime() - dDate1.getTime()) / 604800000)
