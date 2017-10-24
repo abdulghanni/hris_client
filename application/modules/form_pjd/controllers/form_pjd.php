@@ -38,7 +38,7 @@ class Form_pjd extends MX_Controller {
 
     public function ajax_list($f)
     {
-        $list = $this->main->get_datatables($f);lastq();//print_mz($list);
+        $list = $this->main->get_datatables($f);//lastq();//print_mz($list);
         $data = array();
         $no = $_POST['start'];
         foreach ($list as $r) {
