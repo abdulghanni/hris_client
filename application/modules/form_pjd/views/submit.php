@@ -459,8 +459,8 @@
                               <span class="small"></span>
                               <span class="semi-bold"></span><br/>
                               <span class="small"></span><br/>
-                              <span class="semi-bold"></span><br/>
-                              <span class="semi-bold">(HRD)</span>
+                              <span class="semi-bold"><?php echo $this->approval->approver('dinas', $td->task_creator)?></span><br/>
+                              <span class="semi-bold"><?php echo $sess_nik?> (HRD)</span>
                             <?php }elseif($td->is_app_hrd == 1){
                              echo ($td->app_status_id_hrd == 1)?"<img class=approval-img src=$approved>": (($td->app_status_id_hrd == 2) ? "<img class=approval-img src=$rejected>"  : (($td->app_status_id_hrd == 3) ? "<img class=approval-img src=$pending>" : "<span class='small'></span><br/>"));?>
                                <span class="small"></span><br/>
