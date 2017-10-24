@@ -472,8 +472,8 @@
                               <span class="small"></span><br/>
                               <span class="small"></span><br/>
                               <span class="semi-bold"></span><br/>
-                              <span class="small"><?php echo $this->approval->approver('dinas', $td->task_creator)?></span><br/>
-                              <span class="semi-bold"><?php echo $sess_nik?> </span><br/>
+                              <span class="small"></span><br/>
+                              <span class="semi-bold"></span><br/>
                               <span class="semi-bold">(HRD)</span>
                             <?php } ?>
                           </p>
