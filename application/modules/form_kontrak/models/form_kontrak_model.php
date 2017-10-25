@@ -64,7 +64,7 @@ class Form_kontrak_model extends CI_Model {
             if($is_admin!=1 && $is_hrd_pusat != 1):
                 if($is_approver == $sess_nik || $is_admin_cabang == 1){
                     //$this->db->where_in($this->table.'.user_id', $user);//print_mz($user);
-                    if($sess_nik == 'P1493'){
+                    if($sess_nik == 'P1493' || $sess_nik == 'P0093'){
                         //$this->db->or_like('users'.'.nik','P', 'after');
                         //$this->db->or_like('users'.'.nik','J', 'after');
                         $where = "(users.nik like 'P%' OR users.nik like 'J%')";
