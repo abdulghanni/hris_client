@@ -106,6 +106,24 @@ $rejected = assets_url('img/rejected_stamp.png');?>
         <td><span class="style3">Tanggal Wawancara </span></td>
         <td><div align="center"><?php echo dateIndo($row->date_invitation)?></div></td>
       </tr>
+      <?php if(strlen($row->note_lv1) > 0) { ?>
+      <tr>
+        <td><span class="style3">Note (<?php echo get_name($row->user_app_lv1)?>)</span></td>
+        <td><div align="center"><?php echo $row->note_lv1?></div></td>
+      </tr>
+      <?php } ?>
+      <?php if(strlen($row->note_lv2) > 0) { ?>
+      <tr>
+        <td><span class="style3">Note (<?php echo get_name($row->user_app_lv2)?>)</span></td>
+        <td><div align="center"><?php echo $row->note_lv2?></div></td>
+      </tr>
+      <?php } ?>
+      <?php if(strlen($row->note_lv3) > 0) { ?>
+      <tr>
+        <td><span class="style3">Note (<?php echo get_name($row->user_app_lv3)?>)</span></td>
+        <td><div align="center"><?php echo $row->note_lv3?></div></td>
+      </tr>
+      <?php } ?>
 </table>
 <div class="style4">
 <p>Terhitung tanggal <?= dateIndo($row->date_resign) ?> mengajukan pengunduran diri dengan alasan <?= $row->alasan ?>, 
