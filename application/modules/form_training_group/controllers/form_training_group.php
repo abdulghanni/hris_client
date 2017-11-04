@@ -650,6 +650,47 @@ function get_penerima_tugas()
         }
     }
 
+    function pdf_blank($id)
+    {
+        $this->data['title'] = 'Detail Training';
+        if (!$this->ion_auth->logged_in())
+        {
+            $this->session->set_userdata('last_link', $this->uri->uri_string());
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+        else
+        {
+            $this->data['id'] = $id;
+            $user_id= getValue('user_pengaju_id', 'users_training_group', array('id'=>'where/'.$id));
+            $this->data['user_nik'] = $sess_nik = get_nik($user_id);
+            $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
+            $this->data['sess_nik'] = get_nik($sess_id);
+
+            $form_training_group = $this->data['form_training_group'] = $this->main->detail($id)->result();
+            $this->data['_num_rows'] = $this->main->detail($id)->num_rows();
+
+            $this->data['training_type'] = GetAll('training_type', array('is_deleted' => 'where/0'));
+            $this->data['penyelenggara'] = GetAll('penyelenggara', array('is_deleted' => 'where/0'));
+            $this->data['pembiayaan'] = GetAll('pembiayaan', array('is_deleted' => 'where/0'));
+            //$this->data['ikatan'] = GetAll('training_ikatan_dinas', array('is_deleted' => 'where/0'));
+            $this->data['waktu'] = GetAll('training_waktu', array('is_deleted' => 'where/0'));
+            $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
+
+            $this->data['ikatan'] = $this->get_tipe_ikatan_dinas();
+            $this->data['vendor'] = $this->get_vendor();
+
+        $this->data['id'] = $id;
+        $title = $this->data['title'] = 'Form Training-'.get_name($user_id);
+        $this->load->library('mpdf60/mpdf');
+        $html = $this->load->view('pdf', $this->data, true); 
+        $mpdf = new mPDF();
+        $mpdf = new mPDF('A4');
+        $mpdf->WriteHTML($html);
+        $mpdf->Output('form_template-training.pdf', 'I');
+        }
+    }
+
     function get_training()
     {
         $id = $this->input->post('id');

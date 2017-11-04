@@ -495,6 +495,34 @@ class form_tidak_masuk extends MX_Controller {
         $mpdf->Output($id.'-'.$title.'.pdf', 'I');
     }
 
+    function pdf_blank($id=1)
+    {
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+
+        $user_id= getValue('user_id', 'users_tidak_masuk', array('id'=>'where/'.$id));
+        $this->data['user_nik'] = $sess_nik = get_nik($user_id);
+        $this->data['sess_id'] = $this->session->userdata('user_id');
+
+        $form_tidak_masuk = $this->data['form_tidak_masuk'] = $this->main->detail($id)->result();
+        $this->data['_num_rows'] = $this->main->detail($id)->num_rows();
+
+        $alasan = getValue('alasan_tidak_masuk_id', 'users_tidak_masuk', array('id'=>'where/'.$id));
+        $this->data['alasan'] = getValue('title', 'alasan_tidak_masuk', array('id'=>'where/'.$alasan));
+
+        $this->data['id'] = $id;
+        $title = $this->data['title'] = 'Form Keterangan Tidak Masuk-'.get_name($user_id);
+        $this->load->library('mpdf60/mpdf');
+        $html = $this->load->view('pdf', $this->data, true);
+        $mpdf = new mPDF();
+        $mpdf = new mPDF('A4');
+        $mpdf->WriteHTML($html);
+        $mpdf->Output('form_template-keterangan_tidak_masuk.pdf', 'I');
+    }
+
     function get_sisa_cuti($user_nik)
     {
         if (!$this->ion_auth->logged_in())
@@ -821,6 +849,38 @@ class form_tidak_masuk extends MX_Controller {
         $remarks = str_replace($char, '-', $data['remarks']);
 		$remarks = word_limiter($remarks, 75);
         $phone = (!empty(getValue('phone', 'users', array('nik'=>'where/'.$user_id))))?str_replace($char, '-', getValue('phone', 'users', array('nik'=>'where/'.$user_id))):'-';
+
+        /*
+        $method = 'post';
+        $params =  array();
+        $uri = get_api_key().'users/leave_request/'.
+               'EMPLID/'.$user_id.
+               '/HRSLEAVETYPEID/'.$data['alasan_cuti_id'].
+               '/REMARKS/'.$remarks.
+               '/CONTACTPHONE/'.$phone.
+               '/TOTALLEAVEDAYS/'.$data['jumlah_hari'].
+               '/LEAVEDATETO/'.$data['date_selesai_cuti'].
+               '/LEAVEDATEFROM/'.$data['date_mulai_cuti'].
+               '/REQUESTDATE/'.$data['created_on'].
+               '/IDLEAVEREQUEST/'.$IDLEAVEREQUEST.
+               //'/STATUSFLAG/'.'0'.
+               '/STATUSFLAG/'.'0'.
+               '/IDPERSONSUBSTITUTE/'.$data['user_pengganti'].
+               '/TRAVELLINGLOCATION/'.$alamat_cuti.
+               '/MODIFIEDDATETIME/'.date('Y-m-d', strtotime($data['created_on'])).
+               '/MODIFIEDBY/'.$data['created_by'].
+               '/CREATEDDATETIME/'.date('Y-m-d', strtotime($data['created_on'])).
+               '/CREATEDBY/'.$data['created_by'].
+               '/DATAAREAID/'.get_user_dataareaid($user_id).
+               '/RECVERSION/'.$RECVERSION.
+               '/RECID/'.$RECID.
+               '/BRANCHID/'.get_user_branchid($user_id).
+               '/DIMENSION/'.get_user_buid($user_id).
+               '/DIMENSION2_/'.get_user_dimension2_($user_id).
+               '/HRSLOCATIONID/'.get_user_locationid($user_id).
+               '/HRSEMPLGROUPID/'.get_user_emplgroupid($user_id)
+               ;
+               */
         $method = 'post';
         $params =  array();
         $uri = get_api_key().'users/leave_request/'.
@@ -870,12 +930,12 @@ class form_tidak_masuk extends MX_Controller {
             $isi_email .= 'users/leave_request/'.
                'EMPLID/'.$user_id.
                //'EMPLID/'.$sess_nik.
-               '/HRSLEAVETYPEID/'.$data['type_cuti_id'].
+               '/HRSLEAVETYPEID/'.$data['alasan_cuti_id'].
                '/REMARKS/'.$remarks.
                '/CONTACTPHONE/'.$phone.
-               '/TOTALLEAVEDAYS/'.$data['jml_hari'].
-               '/LEAVEDATETO/'.$data['sampai_tanggal'].
-               '/LEAVEDATEFROM/'.$data['dari_tanggal'].
+               '/TOTALLEAVEDAYS/'.$data['jumlah_hari'].
+               '/LEAVEDATETO/'.$data['date_selesai_cuti'].
+               '/LEAVEDATEFROM/'.$data['date_mulai_cuti'].
                '/REQUESTDATE/'.date('Y-m-d').
                '/IDLEAVEREQUEST/'.$IDLEAVEREQUEST.
                '/STATUSFLAG/'.'3'.
@@ -1046,7 +1106,7 @@ class form_tidak_masuk extends MX_Controller {
         $date = $data['dari_tanggal'];
         // End date
         $end_date = $data['sampai_tanggal'];
-        $method = 'post';
+        $method = 'get';
         $params =  array();
         while (strtotime($date) <= strtotime($end_date)) {
             $uri = get_api_key().'attendance/attendance_data/'.
@@ -1094,6 +1154,7 @@ class form_tidak_masuk extends MX_Controller {
 
     function insert_attendancedata_cuti($id)
     {
+
         if (!$this->ion_auth->logged_in())
         {
             //redirect them to the login page
@@ -1108,7 +1169,7 @@ class form_tidak_masuk extends MX_Controller {
         $date = $data['dari_tanggal'];
         // End date
         $end_date = $data['sampai_tanggal'];
-        $method = 'post';
+        $method = 'get';
         $params =  array();
         while (strtotime($date) <= strtotime($end_date)) {
             $uri = get_api_key().'attendance/attendance_data_cuti/'.

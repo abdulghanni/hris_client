@@ -1026,6 +1026,38 @@ class Form_exit extends MX_Controller {
         }
     }
 
+    function pdf_blank($id)
+    {
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+        else
+        {
+
+        $user_id = getValue('user_id','users_exit', array('id'=>'where/'.$id));
+        $form_exit = $this->data['form_exit'] = $this->main->detail($id, $user_id);
+        $user_id = getValue('user_id', 'users_exit', array('id'=>'where/'.$id));
+        $this->data['user_nik'] = get_nik($user_id);
+        $this->data['sess_id'] = $sess_id = $this->session->userdata('user_id');
+        $i =$this->db->select('*')->from('users_inventory')->join('inventory', 'users_inventory.inventory_id = inventory.id', 'left')->where('users_inventory.user_id', $user_id)->get();
+       
+        $this->data['users_inventory'] = $i;
+        $this->data['rekomendasi'] = getAll('users_exit_rekomendasi', array('user_exit_id'=>'where/'.$id, ))->row();
+        $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
+
+        $this->data['id'] = $id;
+        $title = $this->data['title'] = 'Form Karyawan Keluar-'.get_name($user_id);
+        $this->load->library('mpdf60/mpdf');
+        $html = $this->load->view('pdf', $this->data, true); 
+        $mpdf = new mPDF();
+        $mpdf = new mPDF('A4');
+        $mpdf->WriteHTML($html);
+        $mpdf->Output('form_template-rekomendasi_karyawan_keluar.pdf', 'I');
+        }
+    }
+
     function _valid_csrf_nonce()
     {
         if ($this->input->post($this->session->flashdata('csrfkey')) !== FALSE &&

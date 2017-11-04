@@ -438,6 +438,7 @@ class form_kpi extends MX_Controller {
         $data['periode'] = getAll('comp_session',array('id'=>'where/'.$comp_session_id));
         $mapping_kpi_detail = getAll('competency_mapping_kpi_detail',array('id'=>'where/'.$id,'is_deleted'=>'where/0'));
         $data['approver'] = getAll($this->table.'_approver', array('organization_id'=>'where/'.$org_id,'comp_session_id'=>'where/'.$comp_session_id,'competency_mapping_kpi_detail_id'=>'where/'.$id));
+        $data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
         if($mapping_kpi_detail->num_rows() > 0)
         {
             $data['mapping_kpi'] = $mapping_kpi = $mapping_kpi_detail->row_array();
@@ -919,7 +920,7 @@ class form_kpi extends MX_Controller {
             );
 
             $this->db->where('organization_id', $org_id)
-                     ->where('user_id', $sessId)
+                     ->where('kpi_user_id', $sessId)
                      ->update($this->table.'_approver', $data);
             return true;
         }
@@ -1014,7 +1015,7 @@ class form_kpi extends MX_Controller {
 
                 $this->template->add_js('competency/form_kpi_input.js');
                     
-            }elseif(in_array($view, array($this->controller.'/approve')))
+            }elseif(in_array($view, array('form_kpi/approve_ats','form_kpi/approve')))
             {
                 $this->template->set_layout('default');
                 $this->template->add_js('jquery-ui-1.10.1.custom.min.js');

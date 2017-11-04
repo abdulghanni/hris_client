@@ -579,6 +579,36 @@ class Form_medical extends MX_Controller {
         $mpdf->Output($id.'-'.$title.'.pdf', 'I');
     }
 
+    function pdf_blank($id)
+    {
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+
+        
+        $form_medical = $this->data['form_medical'] = $this->main->detail($id)->result();
+
+        $user_id = getValue('user_id', 'users_medical', array('id'=>'where/'.$id));
+        $this->data['bagian'] = get_user_organization(get_nik($user_id));
+        $this->data['detail'] = $this->main->form_medical_detail($id)->result_array();
+        $this->data['detail_hrd'] = $this->main->form_medical_hrd($id)->result_array();
+        $this->data['total_medical_hrd'] = $this->main->get_total_medical_hrd($id);
+        $form_medical = $this->data['form_medical'] = $this->main->detail($id)->result();
+        $this->data['_num_rows'] = $this->main->detail($id)->num_rows();
+            
+
+        $this->data['id'] = $id;
+        $title = $this->data['title'] = 'REKAPITULASI RAWAT JALAN & INAP - '.$id;
+        $this->load->library('mpdf60/mpdf');
+        $html = $this->load->view('pdf', $this->data, true); 
+        $mpdf = new mPDF();
+        $mpdf = new mPDF('A4');
+        $mpdf->WriteHTML($html);
+        $mpdf->Output('form_template-medical.pdf', 'I');
+    }
+
     function get_user_same_org($user_id = null)
     {
 

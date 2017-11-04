@@ -689,6 +689,45 @@ class Form_rolling extends MX_Controller {
         }
     }
 
+    function pdf_blank($id=1)
+    {
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }else{
+           
+        $this->data['sess_id'] = $this->session->userdata('user_id');
+        $user_id = getValue('user_id', 'users_rolling', array('id'=>'where/'.$id));
+        $this->data['user_nik'] = get_nik($user_id);
+        $form_rolling = $this->data['form_rolling'] = $this->main->detail($id)->result();
+        $this->data['_num_rows'] = $this->main->detail($id)->num_rows();
+        $title = $this->data['title'] = 'Form Pengajuan Mutasi-'.get_name($user_id);
+        $creator = getValue('created_by', 'users_rolling', array('id'=>'where/'.$id));
+        $creator = get_nik($creator);
+        $this->data['form_id'] = 'MUT';
+        $this->data['bu'] = get_user_buid($creator);
+        $loc_id = get_user_locationid($creator);
+        $this->data['location'] = get_user_location($loc_id);
+        $date = getValue('created_on','users_rolling', array('id'=>'where/'.$id));
+        $this->data['m'] = date('m', strtotime($date));
+        $this->data['y'] = date('Y', strtotime($date));
+        $this->load->library('mpdf60/mpdf');
+        $html = $this->load->view('pdf_blank', $this->data, true); 
+        $this->mpdf = new mPDF();
+        $this->mpdf->AddPage('P', // L - landscape, P - portrait
+            '', '', '', '',
+            30, // margin_left
+            30, // margin right
+            0, // margin top
+            10, // margin bottom
+            10, // margin header
+            10); // margin footer
+        $this->mpdf->WriteHTML($html);
+        $this->mpdf->Output('form_template-mutasi.pdf', 'I');
+        }
+    }
+
     function _render_page($view, $data=null, $render=false)
     {
         $data = (empty($data)) ? $this->data : $data;
