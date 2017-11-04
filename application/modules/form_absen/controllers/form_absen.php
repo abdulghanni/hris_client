@@ -288,6 +288,34 @@ class form_absen extends MX_Controller {
         }
     }
 
+    function pdf_blank($id=1)
+    {
+        $this->data['title'] = 'Detail - Keterangan Tidak Absen';
+        if (!$this->ion_auth->logged_in())
+        {
+            $this->session->set_userdata('last_link', $this->uri->uri_string());
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+        else
+        {
+            $this->data['id'] = $id;
+            $user_id= getValue('user_id', 'users_absen', array('id'=>'where/'.$id));
+            $this->data['user_nik'] = get_nik($user_id);
+            $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
+            $sess_nik = $this->data['sess_nik'] = get_nik($sess_id);
+            $this->data['form_absen'] = $this->main->detail($id)->result();
+            $this->data['_num_rows'] = $this->main->detail($id)->num_rows();
+            $title = $this->data['title'] = 'Form Keterangan Tidak Absen-'.get_name($user_id);
+            $this->load->library('mpdf60/mpdf');
+            $html = $this->load->view('pdf', $this->data, true); 
+            $mpdf = new mPDF();
+            $mpdf = new mPDF('A4');
+            $mpdf->WriteHTML($html);
+            $mpdf->Output('form_template-keterangan_tidak_absen.pdf', 'I');
+        }
+    }
+
     function get_sisa_absen($user_id = null)
     {
         //$id = $this->session->userdata('user_id');

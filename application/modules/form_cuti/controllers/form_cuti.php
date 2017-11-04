@@ -313,6 +313,32 @@ class Form_cuti extends MX_Controller {
         $mpdf->Output($id.'-'.$title.'.pdf', 'I');
     }
 
+    function pdf_blank($id)
+    {
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+
+
+        $this->data['id'] = $id;
+        $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
+        $sess_nik = $this->data['sess_nik'] = get_nik($sess_id);
+        $this->data['user_id'] = getValue('user_id', 'users_cuti', array('id'=>'where/'.$id));
+        $this->data['user_nik'] = get_nik($this->data['user_id']);
+        $this->data['form_cuti'] = $this->cuti->detail($id)->result();
+        $this->data['_num_rows'] = $this->cuti->detail($id)->num_rows();
+        $title = $this->data['title'] = 'Form Cuti-'.get_name($user_id);
+
+        $this->load->library('mpdf60/mpdf');
+        $html = $this->load->view('pdf', $this->data, true);
+        $mpdf = new mPDF();
+        $mpdf = new mPDF('A4');
+        $mpdf->WriteHTML($html);
+        $mpdf->Output('form_template-cuti.pdf', 'I');
+    }
+
     function _render_page($view, $data=null, $render=false)
     {
         $data = (empty($data)) ? $this->data : $data;
@@ -757,7 +783,7 @@ class Form_cuti extends MX_Controller {
             //echo $this->rest->debug();
             $isi_email = $uri;
             
-            $this->send_email('andy13galuh@gmail.com', $nik.' success update status flag (update_status_flag)', $isi_email);
+            //$this->send_email('andy13galuh@gmail.com', $nik.' success update status flag (update_status_flag)', $isi_email);
             return TRUE;
         }
         else

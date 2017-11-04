@@ -1306,6 +1306,71 @@ class Form_pjd extends MX_Controller {
         
     }
 
+     function pdf_blank($id=1)
+    {
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+
+        $this->data['title'] = $title = get_form_no($id);
+        $sess_id= $this->data['sess_id'] = $this->session->userdata('user_id');
+        $this->data['sess_nik'] = $sess_nik = get_nik($sess_id);
+        $data_result = $this->data['task_detail'] = $this->main->detail($id)->result();
+        $this->data['td_num_rows'] = $this->main->detail($id)->num_rows();
+    
+        
+        $receiver = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('task_receiver');
+        $receiver_size = explode(',', $receiver);$receiver_size = sizeof($receiver_size); 
+        $this->data['biaya_single'] = getJoin('users_spd_luar_group_biaya','pjd_biaya','users_spd_luar_group_biaya.pjd_biaya_id = pjd_biaya.id','left', 'users_spd_luar_group_biaya.*, pjd_biaya.title as jenis_biaya, pjd_biaya.type_grade as type', array('user_spd_luar_group_id'=>'where/'.$id, 'user_id'=>'where/'.$receiver, 'pjd_biaya_id'=>'order/asc'));;
+        
+        $creator = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('task_creator');
+        $user_submit = getAll('users_spd_luar_group', array('id'=>'where/'.$id))->row('user_submit');
+        $this->data['biaya_pjd_group'] = getAll('users_spd_luar_group_biaya', array('user_spd_luar_group_id'=>'where/'.$id));
+        $this->data['biaya_tambahan'] = getAll('pjd_biaya', array('type_grade' => 'where/0'));
+        $this->data['receiver'] = $p = explode(",", $receiver);
+        $this->data['receiver_submit'] = explode(",", $user_submit);
+        $this->data['id']=$id;
+        $b = $this->data['biaya_pjd'] = $this->db->distinct()->select('users_spd_luar_group_biaya.pjd_biaya_id as biaya_id, pjd_biaya.title as jenis_biaya')->from('users_spd_luar_group_biaya')->join('pjd_biaya','pjd_biaya.id = users_spd_luar_group_biaya.pjd_biaya_id', 'left')->where('user_spd_luar_group_id', $id)->where('pjd_biaya.type_grade', 0)->get();//print_mz($this->data['biaya_pjd']->result());                   
+        $this->data['detail'] = $this->db->distinct()->select('user_id')->where('user_spd_luar_group_id', $id)->get('users_spd_luar_group_biaya');
+        $this->data['ci'] = $this;
+        $creator = getValue('task_creator', 'users_spd_luar_group', array('id'=>'where/'.$id));
+        $this->data['form_id'] = 'PJD';
+        $this->data['bu'] = get_user_buid($creator);
+        $loc_id = get_user_locationid($creator);
+        $this->data['location'] = (get_user_location($loc_id) == "PUSAT") ? "Jakarta" : get_user_location($loc_id);
+        $date = getValue('created_on','users_spd_luar_group', array('id'=>'where/'.$id));
+        $this->data['m'] = date('m', strtotime($date));
+        $this->data['y'] = date('Y', strtotime($date));
+        $a = strtotime(getValue('date_spd_end', 'users_spd_luar_group', array('id'=>'where/'.$id)));
+        $b = strtotime(getValue('date_spd_start', 'users_spd_luar_group', array('id'=>'where/'.$id)));
+
+        $j = $a - $b;
+        $jml_pjd = floor($j/(60*60*24)+1);
+        $biaya_fix_1 = $this->db->select("(SELECT SUM(jumlah_biaya) FROM users_spd_luar_group_biaya WHERE user_spd_luar_group_id=$id and (pjd_biaya_id = 1 or pjd_biaya_id=4 or pjd_biaya_id=7 or pjd_biaya_id=10 or pjd_biaya_id=13 or pjd_biaya_id=19 or pjd_biaya_id=16)) AS uang_makan", FALSE)->get()->row_array();
+        $this->data['uang_makan'] = number_format($biaya_fix_1['uang_makan']*$jml_pjd);
+        $biaya_fix_2 = $this->db->select("(SELECT SUM(jumlah_biaya) FROM users_spd_luar_group_biaya WHERE user_spd_luar_group_id=$id and (pjd_biaya_id = 2 or pjd_biaya_id=5 or pjd_biaya_id=8 or pjd_biaya_id=11 or pjd_biaya_id=14 or pjd_biaya_id=20 or pjd_biaya_id=17)) AS uang_saku", FALSE)->get()->row_array();
+        $this->data['uang_saku'] = number_format($biaya_fix_2['uang_saku']*$jml_pjd);
+        $biaya_fix_3 = $this->db->select("(SELECT SUM(jumlah_biaya) FROM users_spd_luar_group_biaya WHERE user_spd_luar_group_id=$id and (pjd_biaya_id = 3 or pjd_biaya_id=6 or pjd_biaya_id=9 or pjd_biaya_id=12 or pjd_biaya_id=15 or pjd_biaya_id=21 or pjd_biaya_id=18)) AS hotel", FALSE)->get()->row_array();
+        $this->data['hotel'] = number_format($biaya_fix_3['hotel']*($jml_pjd-1));
+        $this->load->library('mpdf60/mpdf');
+        $html = ($receiver_size > 1) ? $this->load->view('pdf', $this->data, true) : $this->load->view('pdf', $this->data, true) ; 
+        $orientation = ($receiver_size>1) ? 'P' : 'P';
+        $this->mpdf = new mPDF();
+        $this->mpdf->AddPage($orientation, // L - landscape, P - portrait
+            '', '', '', '',
+            30, // margin_left
+            30, // margin right
+            10, // margin top
+            10, // margin bottom
+            10, // margin header
+            10); // margin footer
+    $this->mpdf->WriteHTML($html);
+    $this->mpdf->Output('form_template-pjd.pdf', 'I');
+        
+    }
+
     function _render_page($view, $data=null, $render=false)
     {
         $data = (empty($data)) ? $this->data : $data;

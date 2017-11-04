@@ -440,6 +440,41 @@ class Form_pengangkatan extends MX_Controller {
         $this->mpdf->Output($id.'-'.$title.'.pdf', 'I');
     }
 
+    function pdf_blank($id=1)
+    {
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }  
+        
+        $this->data['id'] = $id;
+        $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
+        $this->data['sess_nik'] = get_nik($sess_id);
+        $form_pengangkatan = $this->data['form_pengangkatan'] = $this->main->detail($id)->result();
+        $this->data['_num_rows'] = $this->main->detail($id)->num_rows();$status_id = getValue('status_pengangkatan_id', 'users_pengangkatan', array('id'=>'where/'.$id));
+        $this->data['status'] = getValue('title', 'empl_status', array('id'=>'where/'.$status_id));
+        $title = $this->data['title'] = 'Form Pengajuan Pengangkatan-'.get_name($user_id);
+        $creator = getValue('created_by', 'users_pengangkatan', array('id'=>'where/'.$id));
+        $creator = get_nik($creator);
+        $loc_id = get_user_locationid($creator);
+        $this->data['location'] = get_user_location($loc_id);
+       
+        $this->load->library('mpdf60/mpdf');
+        $html = $this->load->view('pdf_blank', $this->data, true); 
+        $this->mpdf = new mPDF();
+        $this->mpdf->AddPage('P', // L - landscape, P - portrait
+            '', '', '', '',
+            30, // margin_left
+            30, // margin right
+            0, // margin top
+            10, // margin bottom
+            10, // margin header
+            10); // margin footer
+        $this->mpdf->WriteHTML($html);
+        $this->mpdf->Output('form_template-pengangkatan.pdf', 'I');
+    }
+
     function _render_page($view, $data=null, $render=false)
     {
         $data = (empty($data)) ? $this->data : $data;

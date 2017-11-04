@@ -57,7 +57,8 @@ $rejected = assets_url('img/rejected_stamp.png');?>
 
 
   <div style="float: right; width: 28%;">
-  <?= $location.', '.dateIndo($row->created_on)?>
+    FRM.HRD.07.01/rev-0<br/>
+    <?= $location.', '.dateIndo($row->created_on)?>
   </div>
 
   <div style="clear: both; margin: 0pt; padding: 0pt; "></div>

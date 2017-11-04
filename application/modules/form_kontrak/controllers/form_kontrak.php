@@ -463,6 +463,44 @@ class Form_kontrak extends MX_Controller {
         $this->mpdf->Output($id.'-'.$title.'.pdf', 'I');
     }
 
+    function pdf_blank($id=1)
+    {
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+
+         $this->data['id'] = $id;
+        $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
+        $this->data['sess_nik'] = get_nik($sess_id);
+        $form_kontrak = $this->data['form_kontrak'] = $this->main->detail($id)->result();
+        $this->data['_num_rows'] = $this->main->detail($id)->num_rows();
+         $title = $this->data['title'] = 'Form Pengajuan Mutasi-'.get_name($sess_id);
+        $lama_id = getValue('lama_kontrak', 'users_kontrak', array('id'=>'where/'.$id));
+        $this->data['lama'] = getValue('title', 'lama_kontrak', array('id'=>'where/'.$lama_id));
+        $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
+        $this->data['user_id'] =$user_id = getValue('created_by', 'users_kontrak', array('id'=>'where/'.$id));
+        $first_name = getValue('first_name', 'users', array('id'=>'where/'.$user_id));
+        $this->data['user_folder'] = $user_id.$first_name.'/sdm/';
+        $attachment = getValue('attachment', 'users_kontrak', array('id' => 'where/'.$id));
+        $this->data['attachment'] = explode(",",$attachment);
+        $this->_render_page('form_kontrak/detail', $this->data);
+        $this->load->library('mpdf60/mpdf');
+        $html = $this->load->view('pdf', $this->data, true);
+        $this->mpdf = new mPDF();
+        $this->mpdf->AddPage('P', // L - landscape, P - portrait
+            '', '', '', '',
+            30, // margin_left
+            30, // margin right
+            0, // margin top
+            10, // margin bottom
+            10, // margin header
+            10); // margin footer
+        $this->mpdf->WriteHTML($html);
+        $this->mpdf->Output('form_template-perpanjang_kontrak.pdf', 'I');
+    }
+
     function get_lama_kontrak($user_id = null){
         if($user_id==null):$user_id = $this->input->post('id');$echo = 1;else:$echo = 0;endif;
 

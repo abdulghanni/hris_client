@@ -465,6 +465,41 @@ class Form_Pemutusan extends MX_Controller {
         $this->mpdf->Output($id.'-'.$title.'.pdf', 'I');
     }
 
+    function pdf_blank($id=1)
+    {
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+
+         $this->data['id'] = $id;
+        $sess_id = $this->data['sess_id'] = $this->session->userdata('user_id');
+        $this->data['sess_nik'] = get_nik($sess_id);
+        $form_pemutusan = $this->data['form_pemutusan'] = $this->main->detail($id)->result();
+        $this->data['_num_rows'] = $this->main->detail($id)->num_rows();
+        $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
+        $this->data['user_id'] =$user_id = getValue('created_by', 'users_pemutusan', array('id'=>'where/'.$id));
+        $first_name = getValue('first_name', 'users', array('id'=>'where/'.$user_id));
+        $this->data['user_folder'] = $user_id.$first_name.'/sdm/';
+        $attachment = getValue('attachment', 'users_pemutusan', array('id' => 'where/'.$id));
+        $this->data['attachment'] = explode(",",$attachment);
+        $this->_render_page('form_pemutusan/detail', $this->data);
+        $this->load->library('mpdf60/mpdf');
+        $html = $this->load->view('pdf_blank', $this->data, true);
+        $this->mpdf = new mPDF();
+        $this->mpdf->AddPage('P', // L - landscape, P - portrait
+            '', '', '', '',
+            30, // margin_left
+            30, // margin right
+            0, // margin top
+            10, // margin bottom
+            10, // margin header
+            10); // margin footer
+        $this->mpdf->WriteHTML($html);
+        $this->mpdf->Output('form_template-pemutusan.pdf', 'I');
+    }
+
     function get_lama_kontrak($user_id = null){
         if($user_id==null):$user_id = $this->input->post('id');$echo = 1;else:$echo = 0;endif;
 
