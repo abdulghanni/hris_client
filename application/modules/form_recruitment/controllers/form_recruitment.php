@@ -653,6 +653,48 @@ class Form_recruitment extends MX_Controller {
         $mpdf->Output($id.'-'.$title.'.pdf', 'I');
     }
 
+    function blank_pdf($id=1)
+    {
+        $this->data['title'] = 'Detail Permintaan SDM Baru';
+        if (!$this->ion_auth->logged_in())
+        {
+            $this->session->set_userdata('last_link', $this->uri->uri_string());
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+        $this->data['id'] = $id;
+        $sess_id= $this->data['sess_id'] = $this->session->userdata('user_id');
+        $this->data['sess_nik'] = $sess_nik = get_nik($sess_id);
+        $this->data['recruitment'] = $this->main->detail($id)->result();
+        $this->data['_num_rows'] = $this->main->detail($id)->num_rows();
+        $this->data['status'] = getAll('recruitment_status', array('is_deleted' => 'where/0'));
+        $this->data['urgensi'] = getAll('recruitment_urgensi', array('is_deleted' => 'where/0'));
+        $jk = explode(',', getAll('users_recruitment_kualifikasi', array('id' => 'where/'.$id))->row('jenis_kelamin_id'));
+        $pendidikan = explode(',', getAll('users_recruitment_kualifikasi', array('id' => 'where/'.$id))->row('pendidikan_id'));
+        $komputer = explode(',', getAll('users_recruitment_kemampuan', array('id' => 'where/'.$id))->row('komputer'));
+        $this->data['jenis_kelamin'] = getAll('jenis_kelamin');
+        $this->data['pendidikan'] = getAll('recruitment_pendidikan');
+        $this->data['komputer'] = getAll('recruitment_pendidikan');
+        $this->data['position_pengaju'] = $this->get_user_position(getValue('user_id', 'users_recruitment', array('id'=>'where/'.$id)));
+        $user_id =getValue('user_id', 'users_recruitment', array('id'=>'where/'.$id));
+        $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
+        $title = $this->data['title'] = 'Form Permintaan SDM Baru-'.get_name($user_id);
+        $this->load->library('mpdf60/mpdf');
+        $html = $this->load->view('pdf', $this->data, true); 
+        $mpdf = new mPDF();
+        $mpdf = new mPDF('A4');
+        $mpdf->AddPage('p', // L - landscape, P - portrait
+            '', '', '', '',
+            30, // margin_left
+            30, // margin right
+            0, // margin top
+            10, // margin bottom
+            10, // margin header
+            10); // margin footer
+        $mpdf->WriteHTML($html);
+        $mpdf->Output('form-template_recruitment.pdf', 'I');
+    }
+
     function _render_page($view, $data=null, $render=false)
     {
         $data = (empty($data)) ? $this->data : $data;
