@@ -105,12 +105,12 @@ $pending = assets_url('img/pending_stamp.png');
         <td><div align="center"><?php echo get_position_name($row->old_pos)?></div></td>
       </tr>
       <tr>
-        <td><span class="style3">Tanggal Pengangkatan </span></td>
+        <td><span class="style3">Tanggal Mutasi </span></td>
         <td><div align="center"><?php echo dateIndo($row->date_rolling)?></div></td>
         <td><span class="style3"></span></td>
       </tr>
       <tr>
-        <td height="100"><span class="style3">Alasan Pengangkatan</span></td>
+        <td height="100"><span class="style3">Alasan Mutasi</span></td>
         <td colspan="2"><span class="style3"><?php echo $row->alasan?></span></td>
       </tr>
       <?php if(!empty($row->note_lv1)):?>
