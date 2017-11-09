@@ -222,7 +222,6 @@ class Form_pengangkatan extends MX_Controller {
         mkdir("./uploads/$user_folder/sdm/", 0777);
         }
 
-
         $path = "./uploads/$user_folder/sdm/";
         $this->load->library('upload');
         $this->upload->initialize(array(
@@ -230,7 +229,7 @@ class Form_pengangkatan extends MX_Controller {
             "overwrite" => TRUE,
             "allowed_types"=>"*"
         ));
-
+        die('stop disini');
         if($this->upload->do_multi_upload("userfile")){
             $up = $this->upload->get_multi_upload_data();
             $attachment = '';
