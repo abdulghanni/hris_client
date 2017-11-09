@@ -229,8 +229,9 @@ class Form_pengangkatan extends MX_Controller {
             "overwrite" => TRUE,
             "allowed_types"=>"*"
         ));
-        die('stop disini');
+
         if($this->upload->do_multi_upload("userfile")){
+            die('stop disini');
             $up = $this->upload->get_multi_upload_data();
             $attachment = '';
             for($i=0;$i<sizeof($up);$i++):
