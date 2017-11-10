@@ -141,7 +141,7 @@ class Form_phk extends MX_Controller {
             $this->data['_num_rows'] = $this->main->detail($id)->num_rows();
             $this->data['user_id'] =$user_id = getValue('created_by', 'users_phk', array('id'=>'where/'.$id));
             $first_name = getValue('first_name', 'users', array('id'=>'where/'.$user_id));
-            $this->data['user_folder'] = $user_id.$first_name.'/sdm/';
+            $this->data['user_folder'] = $user_id.trim($first_name).'/phk/';
             $attachment = getValue('attachment', 'users_phk', array('id' => 'where/'.$id));
             $this->data['attachment'] = explode(",",$attachment);
             $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
@@ -215,19 +215,19 @@ class Form_phk extends MX_Controller {
         $form = 'users_phk';
         $user_id = getValue('created_by', $form, array('id' => 'where/'.$id));
         $user = getAll('users', array('id'=>'where/'.$user_id))->row();
-        $user_folder = $user->id.$user->first_name;
+        $user_folder = $user->id.trim($user->first_name);
         if(!is_dir('./'.'uploads')){
         mkdir('./'.'uploads', 0777);
         }
         if(!is_dir('./uploads/'.$user_folder)){
         mkdir('./uploads/'.$user_folder, 0777);
         }
-        if(!is_dir("./uploads/$user_folder/sdm/")){
-        mkdir("./uploads/$user_folder/sdm/", 0777);
+        if(!is_dir("./uploads/$user_folder/phk/")){
+        mkdir("./uploads/$user_folder/phk/", 0777);
         }
 
 
-        $path = "./uploads/$user_folder/sdm/";
+        $path = "./uploads/$user_folder/phk/";
         $this->load->library('upload');
         $this->upload->initialize(array(
             "upload_path"=>$path,

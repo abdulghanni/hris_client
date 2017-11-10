@@ -136,7 +136,7 @@ class Form_pengangkatan extends MX_Controller {
             $this->data['_num_rows'] = $this->main->detail($id)->num_rows();
             $this->data['user_id'] =$user_id = getValue('created_by', 'users_pengangkatan', array('id'=>'where/'.$id));
             $first_name = getValue('first_name', 'users', array('id'=>'where/'.$user_id));
-            $this->data['user_folder'] = trim($user_id.trim($first_name).'/sdm/');
+            $this->data['user_folder'] = trim($user_id.trim($first_name).'/pengangkatan/');
             $attachment = getValue('attachment', 'users_pengangkatan', array('id' => 'where/'.$id));
             $this->data['attachment'] = explode(",",$attachment);
             $status_id = getValue('status_pengangkatan_id', 'users_pengangkatan', array('id'=>'where/'.$id));
@@ -218,11 +218,11 @@ class Form_pengangkatan extends MX_Controller {
         if(!is_dir('./uploads/'.$user_folder)){
         mkdir('./uploads/'.$user_folder, 0777);
         }
-        if(!is_dir("./uploads/$user_folder/sdm/")){
-        mkdir("./uploads/$user_folder/sdm/", 0777);
+        if(!is_dir("./uploads/$user_folder/pengangkatan/")){
+        mkdir("./uploads/$user_folder/pengangkatan/", 0777);
         }
 
-        $path = "./uploads/$user_folder/sdm/";
+        $path = "./uploads/$user_folder/pengangkatan/";
         $this->load->library('upload');
         $this->upload->initialize(array(
             "upload_path"=>$path,

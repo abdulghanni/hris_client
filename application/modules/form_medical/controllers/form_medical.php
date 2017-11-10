@@ -210,7 +210,7 @@ class Form_medical extends MX_Controller {
                 
                 $user_id = getValue('user_id', 'users_medical', array('id' => 'where/'.$last_medical_id));
                 $user = getAll('users', array('id'=>'where/'.$user_id))->row();
-                $user_folder = $user->id.$user->first_name;
+                $user_folder = $user->id.trim($user->first_name);
                 if(!is_dir('./'.'uploads')){
                 mkdir('./'.'uploads', 0777);
                 }
@@ -271,7 +271,7 @@ class Form_medical extends MX_Controller {
         $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
         $this->data['_num_rows'] = $this->main->detail($id)->num_rows();
         $first_name = getValue('first_name', 'users', array('id'=>'where/'.$user_id));
-        $this->data['user_folder'] = $user_id.$first_name.'/medical/';
+        $this->data['user_folder'] = $user_id.trim($first_name).'/medical/';
         $attachment = getValue('attachment', 'users_medical', array('id' => 'where/'.$id));
         $this->data['attachment'] = explode(",",$attachment);
         $this->get_user_same_org($user_id);
@@ -322,7 +322,7 @@ class Form_medical extends MX_Controller {
 
          $user_id = getValue('user_id', 'users_medical', array('id' => 'where/'.$id));
                 $user = getAll('users', array('id'=>'where/'.$user_id))->row();
-                $user_folder = $user->id.$user->first_name;
+                $user_folder = $user->id.trim($user->first_name);
                 if(!is_dir('./'.'uploads')){
                 mkdir('./'.'uploads', 0777);
                 }
