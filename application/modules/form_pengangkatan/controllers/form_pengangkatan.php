@@ -2,7 +2,7 @@
 
 class Form_pengangkatan extends MX_Controller {
 
-	public $data;
+    public $data;
     var $form_name = 'pengangkatan';
     function __construct()
     {
@@ -136,7 +136,7 @@ class Form_pengangkatan extends MX_Controller {
             $this->data['_num_rows'] = $this->main->detail($id)->num_rows();
             $this->data['user_id'] =$user_id = getValue('created_by', 'users_pengangkatan', array('id'=>'where/'.$id));
             $first_name = getValue('first_name', 'users', array('id'=>'where/'.$user_id));
-            $this->data['user_folder'] = $user_id.$first_name.'/sdm/';
+            $this->data['user_folder'] = trim($user_id.trim($first_name).'/sdm/');
             $attachment = getValue('attachment', 'users_pengangkatan', array('id' => 'where/'.$id));
             $this->data['attachment'] = explode(",",$attachment);
             $status_id = getValue('status_pengangkatan_id', 'users_pengangkatan', array('id'=>'where/'.$id));
@@ -211,7 +211,7 @@ class Form_pengangkatan extends MX_Controller {
     {
         $user_id = getValue('created_by', 'users_pengangkatan', array('id' => 'where/'.$id));
         $user = getAll('users', array('id'=>'where/'.$user_id))->row();
-        $user_folder = $user->id.$user->first_name;
+        $user_folder = trim($user->id.trim($user->first_name));
         if(!is_dir('./'.'uploads')){
         mkdir('./'.'uploads', 0777);
         }
@@ -231,17 +231,24 @@ class Form_pengangkatan extends MX_Controller {
         ));
 
         if($this->upload->do_multi_upload("userfile")){
-            die('stop disini');
+            //die('stop disini');
             $up = $this->upload->get_multi_upload_data();
             $attachment = '';
             for($i=0;$i<sizeof($up);$i++):
                 $koma = ($i<sizeof($up)-1)?',':'';
                 $attachment .= $up[$i]['file_name'].$koma;
             endfor;
+
             $data = array(
                     'attachment' => $attachment,
                 );
             $this->db->where('id', $id)->update('users_pengangkatan', $data);
+            /*if($this->db->where('id', $id)->update('users_pengangkatan', $data))
+            {
+                die('sukses'.$attachment);
+            }else{
+                die('failed'.$attachment);
+            }*/
             return true;
         }
     }
