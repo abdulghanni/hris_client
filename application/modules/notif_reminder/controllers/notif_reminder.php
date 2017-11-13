@@ -75,6 +75,7 @@ class notif_reminder extends MX_Controller {
                 $u = "user_app_lv".$i;
                 $f_app = array($is_app=>'where/0','is_deleted'=>'where/0');
                 $app = GetAll('users_'.$form_name, $f_app)->result();
+                $base_url_ = 'http://10.1.1.13/hris_client/';
 
                 foreach ($app as $a) {
                     $created_on = new DateTime($a->created_on);
@@ -83,9 +84,9 @@ class notif_reminder extends MX_Controller {
                     $user_app = $a->$u;
                        if($diff > $notif_reminder_var && $diff < 30 && !empty($user_app)){
                             if($form_name == "spd_luar_group"){
-                                $url = base_url().'form_pjd/submit/'.$a->id;
+                                $url = $base_url_.'form_pjd/submit/'.$a->id;
                             }else{
-                                $url = base_url().'form_'.$form_name.'/detail/'.$a->id;
+                                $url = $base_url_.'form_'.$form_name.'/detail/'.$a->id;
                             }
                             $subject_emailx = "Reminder Approval Pengajuan ".ucfirst($subject_email);
                             $isi_email = 'pengajuan '.$subject_email.' No : '.$a->id.' menunggu Approval dari anda, silakan <a class="klikmail" href='.$url.'>Klik Disini untuk melihat pengajuan melalui WEB HRIS PT. Erlangga</a><br />';
