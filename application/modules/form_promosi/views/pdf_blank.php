@@ -98,12 +98,12 @@
         <td><div align="center">&nbsp;</div></td>
       </tr>
       <tr>
-        <td><span class="style3">Tanggal Pengangkatan </span></td>
+        <td><span class="style3">Tanggal Promosi </span></td>
         <td><div align="center">&nbsp;</div></td>
         <td><span class="style3"></span></td>
       </tr>
       <tr>
-        <td height="100"><span class="style3">Alasan Pengangkatan</span></td>
+        <td height="100"><span class="style3">Alasan Promosi</span></td>
         <td colspan="2"><span class="style3">&nbsp;</span></td>
       </tr>
 </table>
