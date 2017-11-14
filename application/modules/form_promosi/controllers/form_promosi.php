@@ -551,7 +551,7 @@ class Form_promosi extends MX_Controller {
         $this->data['m'] = date('m', strtotime($date));
         $this->data['y'] = date('Y', strtotime($date));
         $this->load->library('mpdf60/mpdf');
-        $html = $this->load->view('pdf_blank', $this->data, true); 
+        $html = $this->load->view('promosi_pdf', $this->data, true); 
         $this->mpdf = new mPDF();
         $this->mpdf->AddPage('P', // L - landscape, P - portrait
             '', '', '', '',
