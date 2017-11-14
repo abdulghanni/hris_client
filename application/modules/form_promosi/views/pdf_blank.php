@@ -55,9 +55,8 @@ $signed = assets_url('img/signed.png');?>
   Nomor : 
   </div>
 
-
   <div style="float: right; width: 28%;">
-  <?= $location.', '?>
+  PUSAT, 
   <br/>
   FRM.HRD.09.03/rev-0
   </div>
