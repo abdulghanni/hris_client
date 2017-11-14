@@ -52,24 +52,22 @@ $rejected = assets_url('img/rejected_stamp.png');
 $signed = assets_url('img/signed.png');?>
 <div class="style4">
   <div style="float: left; width: 54%;">
-  Nomor : 
+  Nomor : <?php $x1="$form_id/$bu/$m/$y/$row->id" ?>
   </div>
 
 
   <div style="float: right; width: 28%;">
-  <?= $location.', '?>
-  <br/>
-  FRM.HRD.09.03/rev-0
+  <?php $x1 = $location.', '.dateIndo($row->created_on)?>
   </div>
 
   <div style="clear: both; margin: 0pt; padding: 0pt; "></div>
-  Perihal : Pengajuan Promosi Karyawan <br/><br/>
+  Perihal : Pengajuan Promosi Karyawan <?php $x1=get_nik($row->user_id).' '.get_name($row->user_id)?><br/><br/>
   Kepada Yth.,<br/>
   Departemen HRD<br/>
   Di Tempat<br/>
 
   <p>Dengan hormat,</p>
-  <p>Sesuai evaluasi kinerja karyawan terlampir, bersama ini kami sampaikan permohonan proses Promosi karyawan atas nama dengan data sebagai berikut:</p>
+  <p>Sesuai evaluasi kinerja karyawan terlampir, bersama ini kami sampaikan permohonan proses Promosi karyawan atas nama <?php $x1=get_name($row->user_id).' ('.get_nik($row->user_id).')' ?> dengan data sebagai berikut:</p>
 </div>
 
   <table width="800" height="128" border-style:solid border="1" class="tg">
@@ -81,37 +79,37 @@ $signed = assets_url('img/signed.png');?>
       </tr>
       <tr>
         <td><span class="style3">NIK</span></td>
-        <td><div align="center"></div></td>
+        <td><div align="center"><?php $x1=get_nik($row->user_id) ?></div></td>
         <td><span class="style3"></span></td>
       </tr>
       <tr>
         <td><span class="style3">Nama</span></td>
-        <td><div align="center"></div></td>
+        <td><div align="center"><?php $x1=get_name($row->user_id) ?></div></td>
         <td><span class="style3"></span></td>
       </tr>
       <tr>
         <td><span class="style3">Unit Bisnis</span></td>
-        <td><span class="style3"></span></td>
-        <td><div align="center"></div></td>
+        <td><span class="style3"><?php $x1=get_bu_name(substr($row->new_bu,0,2))?></span></td>
+        <td><div align="center"><?php $x1=get_bu_name(substr($row->old_bu,0,2))?></div></td>
       </tr>
       <tr>
         <td><span class="style3">Dept/Bagian</span></td>
-        <td><span class="style3"></span></td>
-        <td><div align="center"></div></td>
+        <td><span class="style3"><?php $x1=get_organization_name($row->new_org)?> </span></td>
+        <td><div align="center"><?php $x1=get_organization_name($row->old_org)?></div></td>
       </tr>
       <tr>
         <td><span class="style3">Jabatan </span></td>
-        <td><span class="style3"></span></td>
-        <td><div align="center"></div></td>
+        <td><span class="style3"><?php $x1=get_position_name($row->new_pos)?></span></td>
+        <td><div align="center"><?php $x1=get_position_name($row->old_pos)?></div></td>
       </tr>
       <tr>
         <td><span class="style3">Tanggal Promosi </span></td>
-        <td><div align="center"></div></td>
+        <td><div align="center"><?php $x1=dateIndo($row->date_promosi)?></div></td>
         <td><span class="style3"></span></td>
       </tr>
       <tr>
         <td height="100"><span class="style3">Alasan Promosi</span></td>
-        <td colspan="2"><span class="style3"></span></td>
+        <td colspan="2"><span class="style3"><?php echo $row->alasan?></span></td>
       </tr>
 </table>
 <div class="style4">
