@@ -525,7 +525,7 @@ class Form_promosi extends MX_Controller {
         $this->mpdf->Output($id.'-'.$title.'.pdf', 'I');
     }
 
-    function pdf_blank($id=28)
+    function pdf_blank($id=42)
     {
         if (!$this->ion_auth->logged_in())
         {
@@ -551,7 +551,7 @@ class Form_promosi extends MX_Controller {
         $this->data['m'] = date('m', strtotime($date));
         $this->data['y'] = date('Y', strtotime($date));
         $this->load->library('mpdf60/mpdf');
-        $html = $this->load->view('pdf_blank', $this->data, true); 
+        $html = $this->load->view('pdf_', $this->data, true); 
         $this->mpdf = new mPDF();
         $this->mpdf->AddPage('P', // L - landscape, P - portrait
             '', '', '', '',
@@ -562,7 +562,7 @@ class Form_promosi extends MX_Controller {
             10, // margin header
             10); // margin footer
         $this->mpdf->WriteHTML($html);
-        $this->mpdf->Output($id.'-'.$title.'.pdf', 'I');
+        $this->mpdf->Output('form_promosi_blank.pdf', 'I');
     }
 
     function _render_page($view, $data=null, $render=false)
