@@ -44,7 +44,12 @@
 <div align="center">
   <p align="left"><img src="<?php echo assets_url('img/erlangga.jpg')?>"/></p>
 </div>
- 
+<?php foreach($form_promosi as $row):
+$user_nik = get_nik($row->user_id);
+$pengaju_nik = get_nik($row->created_by);
+$approved = assets_url('img/approved_stamp.png');
+$rejected = assets_url('img/rejected_stamp.png');
+$signed = assets_url('img/signed.png');?>
 <div class="style4">
   <div style="float: left; width: 54%;">
   Nomor : 
@@ -53,6 +58,8 @@
 
   <div style="float: right; width: 28%;">
   <?= $location.', '?>
+  <br/>
+  FRM.HRD.09.03/rev-0
   </div>
 
   <div style="clear: both; margin: 0pt; padding: 0pt; "></div>
@@ -74,37 +81,37 @@
       </tr>
       <tr>
         <td><span class="style3">NIK</span></td>
-        <td><div align="center">&nbsp;</div></td>
+        <td><div align="center"></div></td>
         <td><span class="style3"></span></td>
       </tr>
       <tr>
         <td><span class="style3">Nama</span></td>
-        <td><div align="center">&nbsp;</div></td>
+        <td><div align="center"></div></td>
         <td><span class="style3"></span></td>
       </tr>
       <tr>
         <td><span class="style3">Unit Bisnis</span></td>
-        <td><span class="style3">&nbsp;</span></td>
-        <td><div align="center">&nbsp;</div></td>
+        <td><span class="style3"></span></td>
+        <td><div align="center"></div></td>
       </tr>
       <tr>
         <td><span class="style3">Dept/Bagian</span></td>
-        <td><span class="style3">&nbsp;</span></td>
-        <td><div align="center">&nbsp;</div></td>
+        <td><span class="style3"></span></td>
+        <td><div align="center"></div></td>
       </tr>
       <tr>
         <td><span class="style3">Jabatan </span></td>
-        <td><span class="style3">&nbsp;</span></td>
-        <td><div align="center">&nbsp;</div></td>
+        <td><span class="style3"></span></td>
+        <td><div align="center"></div></td>
       </tr>
       <tr>
         <td><span class="style3">Tanggal Promosi </span></td>
-        <td><div align="center">&nbsp;</div></td>
+        <td><div align="center"></div></td>
         <td><span class="style3"></span></td>
       </tr>
       <tr>
         <td height="100"><span class="style3">Alasan Promosi</span></td>
-        <td colspan="2"><span class="style3">&nbsp;</span></td>
+        <td colspan="2"><span class="style3"></span></td>
       </tr>
 </table>
 <div class="style4">
@@ -130,49 +137,26 @@
     </tr>
     <tr>
       <td height="20" align="center" class="style3">&nbsp;</td>
-   
+    
       <td height="20" align="center" class="style3">&nbsp;</td>
     
-   
+    
       <td align="center" class="style3">&nbsp;</td>
     
       <td align="center" class="style3">&nbsp;</td>
     </tr>
     <tr>
-      <td align="center">&nbsp;<br/>(Jabatan)</td>
+      <td align="center"><br/>(Jabatan)</td>
     
-      <td align="center">&nbsp;<br/>(Jabatan)</td>
+      <td align="center"><br/>(Jabatan)</td>
     
-      <td align="center">&nbsp;<br/>(Jabatan)</td>
+      <td align="center"><br/>(Jabatan)</td>
       
-      <td align="center">&nbsp;<br/>(HRD)</td>
-    </tr>
-  </tbody>
-</table>
-<br />
-
-<table width="800" align="center">
-  <tbody>
-    <tr>
-      <td width="275" align="center"></td>
-      <td width="275" align="center"><span class="small"></span><br/></td>
-      <td width="275" align="center"></td>
-    </tr>
-    <tr>
-      <td height="20" align="center" class="style3"></td>
-      <td align="center" class="style3">&nbsp;</td>
-      <td align="center" class="style3"></td>
-    </tr>
-    <tr>
-    
-      <td></td>
-      <td align="center">&nbsp;<br/>&nbsp;</td>
-      
-      <td align="center"></td>
+      <td align="center"><br/>(HRD)</td>
     </tr>
   </tbody>
 </table>
 
- 
+<?php endforeach;?>
 </body>
 </html>
