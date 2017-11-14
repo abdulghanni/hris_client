@@ -52,22 +52,24 @@ $rejected = assets_url('img/rejected_stamp.png');
 $signed = assets_url('img/signed.png');?>
 <div class="style4">
   <div style="float: left; width: 54%;">
-  Nomor : <?php echo "$form_id/$bu/$m/$y/$row->id" ?>
+  Nomor : 
   </div>
 
 
   <div style="float: right; width: 28%;">
-  <?= $location.', '.dateIndo($row->created_on)?>
+  <?= $location.', '?>
+  <br/>
+  FRM.HRD.09.03/rev-0
   </div>
 
   <div style="clear: both; margin: 0pt; padding: 0pt; "></div>
-  Perihal : Pengajuan Promosi Karyawan <?= get_nik($row->user_id).' '.get_name($row->user_id)?><br/><br/>
+  Perihal : Pengajuan Promosi Karyawan <br/><br/>
   Kepada Yth.,<br/>
   Departemen HRD<br/>
   Di Tempat<br/>
 
   <p>Dengan hormat,</p>
-  <p>Sesuai evaluasi kinerja karyawan terlampir, bersama ini kami sampaikan permohonan proses Promosi karyawan atas nama <?= get_name($row->user_id).' ('.get_nik($row->user_id).')' ?> dengan data sebagai berikut:</p>
+  <p>Sesuai evaluasi kinerja karyawan terlampir, bersama ini kami sampaikan permohonan proses Promosi karyawan atas nama ... dengan data sebagai berikut:</p>
 </div>
 
   <table width="800" height="128" border-style:solid border="1" class="tg">
@@ -79,37 +81,37 @@ $signed = assets_url('img/signed.png');?>
       </tr>
       <tr>
         <td><span class="style3">NIK</span></td>
-        <td><div align="center"><?= get_nik($row->user_id) ?></div></td>
+        <td><div align="center"></div></td>
         <td><span class="style3"></span></td>
       </tr>
       <tr>
         <td><span class="style3">Nama</span></td>
-        <td><div align="center"><?= get_name($row->user_id) ?></div></td>
+        <td><div align="center"></div></td>
         <td><span class="style3"></span></td>
       </tr>
       <tr>
         <td><span class="style3">Unit Bisnis</span></td>
-        <td><span class="style3"><?php echo get_bu_name(substr($row->new_bu,0,2))?></span></td>
-        <td><div align="center"><?php echo get_bu_name(substr($row->old_bu,0,2))?></div></td>
+        <td><span class="style3"></span></td>
+        <td><div align="center"></div></td>
       </tr>
       <tr>
         <td><span class="style3">Dept/Bagian</span></td>
-        <td><span class="style3"><?php echo get_organization_name($row->new_org)?> </span></td>
-        <td><div align="center"><?php echo get_organization_name($row->old_org)?></div></td>
+        <td><span class="style3"></span></td>
+        <td><div align="center"></div></td>
       </tr>
       <tr>
         <td><span class="style3">Jabatan </span></td>
-        <td><span class="style3"><?php echo get_position_name($row->new_pos)?></span></td>
-        <td><div align="center"><?php echo get_position_name($row->old_pos)?></div></td>
+        <td><span class="style3"></span></td>
+        <td><div align="center"></div></td>
       </tr>
       <tr>
         <td><span class="style3">Tanggal Promosi </span></td>
-        <td><div align="center"><?php echo dateIndo($row->date_promosi)?></div></td>
+        <td><div align="center"></div></td>
         <td><span class="style3"></span></td>
       </tr>
       <tr>
         <td height="100"><span class="style3">Alasan Promosi</span></td>
-        <td colspan="2"><span class="style3"><?php echo $row->alasan?></span></td>
+        <td colspan="2"><span class="style3"></span></td>
       </tr>
 </table>
 <div class="style4">
@@ -124,36 +126,61 @@ $signed = assets_url('img/signed.png');?>
       <th width="200"></th>
     </tr>
     <tr>
-      <td width="200" align="center">&nbsp;</td>
-      
+      <td width="200" align="center"><img class="approval-img-md" src="<?=$signed?>"></td>
+      <?php if(!empty($row->user_app_lv1)){?>
       <td width="200" align="center"><span class="small"></span><br/></td>
-      
-      
+      <?php }?>
+      <?php if(!empty($row->user_app_lv2)){?>
       <td width="200" align="center"><span class="small"></span><br/></td>
-      
+      <?php }?>
       <td width="200" align="center"><span class="small"></span><br/></td>
     </tr>
     <tr>
-      <td height="20" align="center" class="style3">&nbsp;</td>
-    
-      <td height="20" align="center" class="style3">&nbsp;</td>
-    
-    
-      <td align="center" class="style3">&nbsp;</td>
-    
-      <td align="center" class="style3">&nbsp;</td>
+      <td height="20" align="center" class="style3"></td>
+    <?php if(!empty($row->user_app_lv1)){?>
+      <td height="20" align="center" class="style3"></td>
+    <?php }?>
+    <?php if(!empty($row->user_app_lv2)){?>
+      <td align="center" class="style3"></td>
+    <?php }?>
+      <td align="center" class="style3"></td>
     </tr>
     <tr>
-      <td align="center"><br/>(Jabatan)</td>
-    
-      <td align="center"><br/>(Jabatan)</td>
-    
-      <td align="center"><br/>(Jabatan)</td>
-      
+      <td align="center"><br/></td>
+    <?php if(!empty($row->user_app_lv1)){?>
+      <td align="center"><br/></td>
+    <?php }?>
+    <?php if(!empty($row->user_app_lv2)){?>
+      <td align="center"><br/></td>
+      <?php }?>
       <td align="center"><br/>(HRD)</td>
     </tr>
   </tbody>
 </table>
+<br />
+<?php if(!empty($row->user_app_lv3)){?>
+<table width="800" align="center">
+  <tbody>
+    <tr>
+      <td width="275" align="center"></td>
+      <td width="275" align="center"><span class="small"></span><br/></td>
+      <td width="275" align="center"></td>
+    </tr>
+    <tr>
+      <td height="20" align="center" class="style3"></td>
+      <td align="center" class="style3"></td>
+      <td align="center" class="style3"></td>
+    </tr>
+    <tr>
+    <?php if(!empty($row->user_app_lv3)){?>
+      <td></td>
+      <td align="center"><br/></td>
+      <?php }?>
+      <td align="center"></td>
+    </tr>
+  </tbody>
+</table>
+<?php }?>
 
 <?php endforeach;?>
 </body>
