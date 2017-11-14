@@ -58,6 +58,8 @@ $signed = assets_url('img/signed.png');?>
 
   <div style="float: right; width: 28%;">
   <?= $location.', '.dateIndo($row->created_on)?>
+  <br/>
+  FRM.HRD.09.03/rev-0
   </div>
 
   <div style="clear: both; margin: 0pt; padding: 0pt; "></div>
