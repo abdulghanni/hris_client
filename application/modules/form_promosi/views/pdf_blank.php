@@ -57,9 +57,8 @@ $signed = assets_url('img/signed.png');?>
 
 
   <div style="float: right; width: 28%;">
+  FRM.HRD.09.03/rev-0<br/>
   PUSAT,
-  <br/>
-  FRM.HRD.09.03/rev-0
   </div>
 
   <div style="clear: both; margin: 0pt; padding: 0pt; "></div>
@@ -69,7 +68,7 @@ $signed = assets_url('img/signed.png');?>
   Di Tempat<br/>
 
   <p>Dengan hormat,</p>
-  <p>Sesuai evaluasi kinerja karyawan terlampir, bersama ini kami sampaikan permohonan proses Promosi karyawan atas nama ... dengan data sebagai berikut:</p>
+  <p>Sesuai evaluasi kinerja karyawan terlampir, bersama ini kami sampaikan permohonan proses promosi karyawan dengan data sebagai berikut:</p>
 </div>
 
   <table width="800" height="128" border-style:solid border="1" class="tg">
