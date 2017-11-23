@@ -114,7 +114,7 @@ BEGIN PAGE CONTAINER-->
                         <label class="form-label text-left">Deskripsi</label>
                       </div>
                       <div class="col-md-5">
-                        <textarea class="form-control" disabled="disabled"><?php echo $td->title; ?></textarea>
+                        <textarea class="form-control" readonly="readonly"><?php echo $td->title; ?></textarea>
                       </div>
                     </div>
 
@@ -281,7 +281,7 @@ BEGIN PAGE CONTAINER-->
                             <label class="form-label text-left">Note (<?php echo strtok(get_name($td->$user_lv), " ")?>):</label>
                           </div>
                           <div class="col-md-5">
-                            <textarea name="notes_spv" class="form-control" disabled="disabled"><?php echo $td->$note_lv ?></textarea>
+                            <textarea name="notes_spv" class="form-control" readonly="readonly"><?php echo $td->$note_lv ?></textarea>
                           </div>
                         </div>
                         <?php } ?>
@@ -292,7 +292,7 @@ BEGIN PAGE CONTAINER-->
                           <label class="form-label text-left">Note (hrd): </label>
                         </div>
                         <div class="col-md-5">
-                          <textarea name="notes_spv" class="form-control" disabled="disabled"><?php echo $td->note_hrd ?></textarea>
+                          <textarea name="notes_spv" class="form-control" readonly="readonly"><?php echo $td->note_hrd ?></textarea>
                         </div>
                       </div>
                       <?php } ?>
@@ -303,7 +303,7 @@ BEGIN PAGE CONTAINER-->
                           <label class="form-label text-left">Alasan Cancel: </label>
                         </div>
                         <div class="col-md-5">
-                          <textarea name="notes_spv" class="form-control" disabled="disabled"><?php echo $td->cancel_note ?></textarea>
+                          <textarea name="notes_spv" class="form-control" readonly="readonly"><?php echo $td->cancel_note ?></textarea>
                         </div>
                       </div>
                       <?php } ?>

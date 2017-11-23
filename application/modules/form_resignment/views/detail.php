@@ -108,7 +108,7 @@
                         <label class="form-label text-left">Alasan Pengunduran Diri</label>
                       </div>
                       <div class="col-md-8">
-                         <textarea name="alasan" class="form-control" disabled><?php echo $row->alasan?></textarea>
+                         <textarea name="alasan" class="form-control" readonly="readonly"><?php echo $row->alasan?></textarea>
                       </div>
                     </div>
 
@@ -163,7 +163,7 @@
                           <label class="form-label text-left">Catatan undangan wawancara: </label>
                         </div>
                         <div class="col-md-8">
-                          <textarea name="notes_spv" class="form-control" disabled="disabled"><?php echo $row->note_invitation ?></textarea>
+                          <textarea name="notes_spv" class="form-control" readonly="readonly"><?php echo $row->note_invitation ?></textarea>
                         </div>
                       </div>
 
@@ -179,7 +179,7 @@
                           <label class="form-label text-left">Note (<?php echo strtok(get_name($row->$user_lv), " ")?>):</label>
                         </div>
                         <div class="col-md-8">
-                          <textarea name="notes_spv" class="form-control" disabled="disabled"><?php echo $row->$note_lv ?></textarea>
+                          <textarea name="notes_spv" class="form-control" readonly="readonly"><?php echo $row->$note_lv ?></textarea>
                         </div>
                       </div>
                       <?php } ?>
@@ -190,7 +190,7 @@
                           <label class="form-label text-left">Note (hrd): </label>
                         </div>
                         <div class="col-md-8">
-                          <textarea name="notes_spv" class="form-control" disabled="disabled"><?php echo $row->note_hrd ?></textarea>
+                          <textarea name="notes_spv" class="form-control" readonly="readonly"><?php echo $row->note_hrd ?></textarea>
                         </div>
                       </div>
                       <?php } ?>
@@ -224,7 +224,7 @@
                         </div>
                       
                         <div class="col-md-12">
-                          <textarea id="text-editor" placeholder="Enter text ..." class="form-control" rows="3" name="desc_resign" disabled="disabled"><?php echo $row->desc_resign?></textarea>
+                          <textarea id="text-editor" placeholder="Enter text ..." class="form-control" rows="3" name="desc_resign" readonly="readonly"><?php echo $row->desc_resign?></textarea>
                         </div>
 
                       
@@ -233,7 +233,7 @@
                         </div>
                       
                         <div class="col-md-12">
-                          <textarea id="text-editor" placeholder="Enter text ..." class="form-control" rows="3" name="procedure_resign" disabled="disabled"><?php echo $row->procedure_resign?></textarea>
+                          <textarea id="text-editor" placeholder="Enter text ..." class="form-control" rows="3" name="procedure_resign" readonly="readonly"><?php echo $row->procedure_resign?></textarea>
                         </div>
 
                       
@@ -242,7 +242,7 @@
                         </div>
                       
                         <div class="col-md-12">
-                          <textarea id="text-editor" placeholder="Enter text ..." class="form-control" rows="3" name="kepuasan_resign" disabled="disabled"><?php echo $row->kepuasan_resign?></textarea>
+                          <textarea id="text-editor" placeholder="Enter text ..." class="form-control" rows="3" name="kepuasan_resign" readonly="readonly"><?php echo $row->kepuasan_resign?></textarea>
                         </div>
 
                       
@@ -251,7 +251,7 @@
                         </div>
                       
                         <div class="col-md-12">
-                          <textarea id="text-editor" placeholder="Enter text ..." class="form-control" rows="3" name="saran_resign" disabled="disabled"><?php echo $row->saran_resign?></textarea>
+                          <textarea id="text-editor" placeholder="Enter text ..." class="form-control" rows="3" name="saran_resign" readonly="readonly"><?php echo $row->saran_resign?></textarea>
                         </div>
 
                       
@@ -260,7 +260,7 @@
                         </div>
                       
                         <div class="col-md-12">
-                          <textarea id="text-editor" placeholder="Enter text ..." class="form-control" rows="3" name="rework_resign" disabled="disabled"><?php echo $row->rework_resign?></textarea>
+                          <textarea id="text-editor" placeholder="Enter text ..." class="form-control" rows="3" name="rework_resign" readonly="readonly"><?php echo $row->rework_resign?></textarea>
                         </div>
                       </div>
                     </div>

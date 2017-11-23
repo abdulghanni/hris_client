@@ -117,7 +117,7 @@
                           <label class="form-label text-left">Alasan Kenaikan Gaji</label>
                         </div>
                         <div class="col-md-8">
-                          <textarea name="alasan" id="alasan" type="text"  class="form-control" placeholder="Alasan rolling" disabled="disabled"><?php echo $row->alasan?></textarea>
+                          <textarea name="alasan" id="alasan" type="text"  class="form-control" placeholder="Alasan rolling" readonly="readonly"><?php echo $row->alasan?></textarea>
                         </div>
                       </div>
                       <div class="row form-row">
@@ -149,7 +149,7 @@
                             <label class="form-label text-left">Note (<?php echo strtok(get_name($row->$user_lv), " ")?>):</label>
                           </div>
                           <div class="col-md-8">
-                            <textarea name="notes_spv" class="form-control" disabled="disabled"><?php echo $row->$note_lv ?></textarea>
+                            <textarea name="notes_spv" class="form-control" readonly="readonly"><?php echo $row->$note_lv ?></textarea>
                           </div>
                         </div>
                         <?php } ?>
@@ -161,7 +161,7 @@
                             <label class="form-label text-left">Note (HRD): </label>
                           </div>
                           <div class="col-md-8">
-                            <textarea name="notes_spv" class="form-control" disabled="disabled"><?php echo $row->note_hrd ?></textarea>
+                            <textarea name="notes_spv" class="form-control" readonly="readonly"><?php echo $row->note_hrd ?></textarea>
                           </div>
                         </div>
                       <?php } ?>

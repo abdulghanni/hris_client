@@ -113,7 +113,7 @@
                           <label class="form-label text-left">Alasan Pengangkatan</label>
                         </div>
                         <div class="col-md-8">
-                          <textarea name="alasan" id="alasan" class="form-control" placeholder="" disabled><?php echo $row->alasan ?></textarea>
+                          <textarea name="alasan" id="alasan" class="form-control" placeholder="" readonly="readonly"><?php echo $row->alasan ?></textarea>
                         </div>
                       </div>
                       <?php if (!empty($attachment)):?>
@@ -143,7 +143,7 @@
                             <label class="form-label text-left">Note (<?php echo strtok(get_name($row->$user_lv), " ")?>):</label>
                           </div>
                           <div class="col-md-8">
-                            <textarea name="notes_spv" class="form-control" disabled="disabled"><?php echo $row->$note_lv ?></textarea>
+                            <textarea name="notes_spv" class="form-control" readonly="readonly"><?php echo $row->$note_lv ?></textarea>
                           </div>
                         </div>
                         <?php } ?>
@@ -155,7 +155,7 @@
                             <label class="form-label text-left">Note (HRD): </label>
                           </div>
                           <div class="col-md-8">
-                            <textarea name="notes_spv" class="form-control" disabled="disabled"><?php echo $row->note_hrd ?></textarea>
+                            <textarea name="notes_spv" class="form-control" readonly="readonly"><?php echo $row->note_hrd ?></textarea>
                           </div>
                         </div>
                       <?php } ?>
