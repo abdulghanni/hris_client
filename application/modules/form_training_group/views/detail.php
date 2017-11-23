@@ -136,7 +136,7 @@
                           <label class="form-label text-right">Note (<?php echo strtok(get_name($user->$user_lv), " ")?>):</label>
                         </div>
                         <div class="col-md-9">
-                          <textarea name="notes_spv" class="form-control" disabled="disabled"><?php echo $user->$note_lv ?></textarea>
+                          <textarea name="notes_spv" class="form-control" readonly="readonly"><?php echo $user->$note_lv ?></textarea>
                         </div>
                       </div>
                       <?php } ?>
@@ -294,7 +294,7 @@
                           <label class="form-label text-right">Note (HRD) : </label>
                         </div>
                         <div class="col-md-7">
-                          <textarea name="" class="form-control" class="custom-txtarea-form" placeholder="Note HRD isi disini" disabled="disabled"><?php echo $user->note_app_hrd?></textarea>
+                          <textarea name="" class="form-control" class="custom-txtarea-form" placeholder="Note HRD isi disini" readonly="readonly"><?php echo $user->note_app_hrd?></textarea>
                         </div>
                       </div>
                       <?php } ?>

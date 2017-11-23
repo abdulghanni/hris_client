@@ -230,7 +230,7 @@
                         <label class="form-label text-right">Job Desc</label>
                       </div>
                       <div class="col-md-10">
-                        <textarea name="job_desc" id="text-editor" placeholder="" class="form-control" rows="10" disabled="disabled"><?php echo $row->job_desc?></textarea>
+                        <textarea name="job_desc" id="text-editor" placeholder="" class="form-control" rows="10" readonly="readonly"><?php echo $row->job_desc?></textarea>
                       </div>
                     </div>
                     <div class="row form-row">
@@ -238,7 +238,7 @@
                         <label class="form-label text-right">Catatan Pengaju</label>
                       </div>
                       <div class="col-md-10">
-                        <textarea name="note_pengaju" id="text-editor" placeholder="" class="form-control" rows="10" disabled="disabled"><?php echo $row->note_pengaju?></textarea>
+                        <textarea name="note_pengaju" id="text-editor" placeholder="" class="form-control" rows="10" readonly="readonly"><?php echo $row->note_pengaju?></textarea>
                       </div>
                     </div>
                     <div id="note">
@@ -252,7 +252,7 @@
                           <label class="form-label text-right">Note (<?php echo strtok(get_name($row->$user_lv), " ")?>):</label>
                         </div>
                         <div class="col-md-10">
-                          <textarea name="notes_spv" class="form-control" disabled="disabled"><?php echo $row->$note_lv ?></textarea>
+                          <textarea name="notes_spv" class="form-control" readonly="readonly"><?php echo $row->$note_lv ?></textarea>
                         </div>
                       </div>
                       <?php } ?>
@@ -263,7 +263,7 @@
                           <label class="form-label text-right">Note (hrd): </label>
                         </div>
                         <div class="col-md-10">
-                          <textarea name="notes_spv" class="form-control" disabled="disabled"><?php echo $row->note_hrd ?></textarea>
+                          <textarea name="notes_spv" class="form-control" readonly="readonly"><?php echo $row->note_hrd ?></textarea>
                         </div>
                       </div>
                       <?php } ?>

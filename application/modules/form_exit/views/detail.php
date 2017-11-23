@@ -459,7 +459,7 @@
                       <label class="form-label text-left">Catatan Manager Ga Nasional</label>
                     </div>
                     <div class="col-md-12">
-                      <textarea  id="text-editor" placeholder="" class="form-control" rows="2" disabled><?php echo $row->note_mgr?></textarea>
+                      <textarea  id="text-editor" placeholder="" class="form-control" rows="2" readonly="readonly"><?php echo $row->note_mgr?></textarea>
                     </div>
                   </div>
                   <?php }?>
@@ -471,7 +471,7 @@
                       <label class="form-label text-left">Catatan Sie Koperasi</label>
                     </div>
                     <div class="col-md-12">
-                      <textarea  id="text-editor" placeholder="" class="form-control" rows="2" disabled><?php echo $row->note_koperasi?></textarea>
+                      <textarea  id="text-editor" placeholder="" class="form-control" rows="2" readonly="readonly"><?php echo $row->note_koperasi?></textarea>
                     </div>
                   </div>
                   <?php }?>
@@ -482,7 +482,7 @@
                       <label class="form-label text-left">Catatan Perpustakaan</label>
                     </div>
                     <div class="col-md-12">
-                      <textarea  id="text-editor" placeholder="" class="form-control" rows="2" disabled><?php echo $row->note_perpus?></textarea>
+                      <textarea  id="text-editor" placeholder="" class="form-control" rows="2" readonly="readonly"><?php echo $row->note_perpus?></textarea>
                     </div>
                   </div>
                   <?php }?>
@@ -493,7 +493,7 @@
                       <label class="form-label text-left">Catatan HRD</label>
                     </div>
                     <div class="col-md-12">
-                      <textarea  id="text-editor" placeholder="" class="form-control" rows="2" disabled><?php echo $row->note_hrd?></textarea>
+                      <textarea  id="text-editor" placeholder="" class="form-control" rows="2" readonly="readonly"><?php echo $row->note_hrd?></textarea>
                     </div>
                   </div>
                   <?php }?>
@@ -504,7 +504,7 @@
                       <label class="form-label text-left">Catatan IT</label>
                     </div>
                     <div class="col-md-12">
-                      <textarea  id="text-editor" placeholder="" class="form-control" rows="2" disabled><?php echo $row->note_it?></textarea>
+                      <textarea  id="text-editor" placeholder="" class="form-control" rows="2" readonly="readonly"><?php echo $row->note_it?></textarea>
                     </div>
                   </div>
                   <?php }?>
@@ -519,7 +519,7 @@
                           <label class="form-label text-left">Note (<?php echo strtok(get_name($row->$user_lv), " ")?>):</label>
                         </div>
                         <div class="col-md-12">
-                          <textarea name="notes_spv" class="form-control" disabled="disabled"><?php echo $row->$note_lv ?></textarea>
+                          <textarea name="notes_spv" class="form-control" readonly="readonly"><?php echo $row->$note_lv ?></textarea>
                         </div>
                       </div>
                       <?php } ?>

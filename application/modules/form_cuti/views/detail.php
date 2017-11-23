@@ -203,7 +203,7 @@
                           <label class="form-label text-right">Note (<?php echo strtok(get_name($user->$user_lv), " ")?>):</label>
                         </div>
                         <div class="col-md-8">
-                          <textarea name="notes_spv" class="form-control" disabled="disabled"><?php echo $user->$note_lv ?></textarea>
+                          <textarea name="notes_spv" class="form-control" readonly="readonly"><?php echo $user->$note_lv ?></textarea>
                         </div>
                       </div>
                       <?php }elseif($user->$is_app == 1){?>
@@ -212,7 +212,7 @@
                           <label class="form-label text-right">Note (<?php echo strtok(get_name($user->$user_lv), " ")?>):</label>
                         </div>
                         <div class="col-md-8">
-                          <textarea name="notes_spv" class="form-control" disabled="disabled"><?php echo '-' ?></textarea>
+                          <textarea name="notes_spv" class="form-control" readonly="readonly"><?php echo '-' ?></textarea>
                         </div>
                       </div>
                       <?php } ?>
@@ -224,7 +224,7 @@
                           <label class="form-label text-right">Note (HRD): </label>
                         </div>
                         <div class="col-md-8">
-                          <textarea name="notes_hrd" placeholder="Note hrd isi disini" class="form-control" disabled="disabled"><?php echo $user->note_app_hrd ?></textarea>
+                          <textarea name="notes_hrd" placeholder="Note hrd isi disini" class="form-control" readonly="readonly"><?php echo $user->note_app_hrd ?></textarea>
                         </div>
                       </div>
                       <?php }elseif($user->is_app_hrd == 1){?>
@@ -233,7 +233,7 @@
                           <label class="form-label text-right">Note (HRD): </label>
                         </div>
                         <div class="col-md-8">
-                          <textarea name="notes_hrd" class="form-control" disabled="disabled"><?php echo '-' ?></textarea>
+                          <textarea name="notes_hrd" class="form-control" readonly="readonly"><?php echo '-' ?></textarea>
                         </div>
                       </div>
                       <?php } ?>
