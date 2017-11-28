@@ -15,13 +15,13 @@
 			<td width="5%" rowspan="2" class="text-center">Score GAP (AK-SK) thn <?php echo $comp_session_year - 1 ?></td>
 			<td width="5%" rowspan="2" class="text-center">Aktual Komp. (AK)</td>
 			<td width="5%" rowspan="2" class="text-center">Score GAP (AK-SK)</td>
-			<td width="60%" colspan="4" class="text-center">Program Improvement</td>
+			<td width="60%" colspan="2" class="text-center">Program Improvement</td>
 		</tr>
 		<tr>
-			<td width="15%" class="text-center">Tindakan</td>
-			<td width="15%" class="text-center">Tanggal Pelaksanaan</td>
-			<td width="15%" class="text-center">PIC</td>
-			<td width="15%" class="text-center">Hasil</td>
+			<td width="30%" class="text-center">Tindakan</td>
+			<!-- <td width="15%" class="text-center">Tanggal Pelaksanaan</td> -->
+			<td width="30%" class="text-center">PIC</td>
+			<!-- <td width="15%" class="text-center">Hasil</td> -->
 		</tr>
 	</thead>
 	<tbody>
@@ -93,17 +93,17 @@
 						</select>
 					</td>
 					<!-- <td><input name="tgl[]" class="tanggal form-control" required></td> -->
-					<td><input name="tgl[]" class="tanggal form-control"></td>
+					<!-- <td><input name="tgl[]" class="tanggal form-control"></td> -->
 					<td><input type="text" name="pic[]" class="form-control"></td>
 					<!-- <td><input type="text" name="hasil[]" class="form-control"></td> -->
-					<td><select id="" class="select2" name="hasil[]">
+					<!-- <td><select id="" class="select2" name="hasil[]">
 						<option value="0">-- Pilih --</option>
 						<option value="A">A</option>
 						<option value="B">B</option>
 						<option value="C">C</option>
 						<option value="D">D</option>
 					</select>
-					</td>
+					</td> -->
 				</tr>
 				<?php } ?>
 			<?php } ?>

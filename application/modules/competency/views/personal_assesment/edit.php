@@ -88,13 +88,13 @@
 													<td width="5%" rowspan="2" class="text-center">Standar Komp. (SK)</td>
 													<td width="5%" rowspan="2" class="text-center">Aktual Komp. (AK)</td>
 													<td width="5%" rowspan="2" class="text-center">Score GAP (AK-SK)</td>
-													<td width="60%" colspan="4" class="text-center">Program Improvement</td>
+													<td width="60%" colspan="2" class="text-center">Program Improvement</td>
 												</tr>
 												<tr>
-													<td width="15%" class="text-center">Tindakan</td>
-													<td width="15%" class="text-center">Tanggal Pelaksanaan</td>
-													<td width="15%" class="text-center">PIC</td>
-													<td width="15%" class="text-center">Hasil</td>
+													<td width="30%" class="text-center">Tindakan</td>
+													<!-- <td width="15%" class="text-center">Tanggal Pelaksanaan</td> -->
+													<td width="30%" class="text-center">PIC</td>
+													<!-- <td width="15%" class="text-center">Hasil</td> -->
 												</tr>
 											</thead>
 											<tbody>
@@ -142,20 +142,20 @@
 																	}?>
 																</select>
 															</td>
-															<td><input name="tgl[]" class="tanggal form-control" value="<?=(($pa->tgl != '1970-01-01')) ? $pa->tgl : ''?>" ></td>
+															<!-- <td><input name="tgl[]" class="tanggal form-control" value="<?=(($pa->tgl != '1970-01-01')) ? $pa->tgl : ''?>" ></td> -->
 															<!-- <td><input name="tgl[]" class="tanggal form-control" value="<?=$pa->tgl?>" ></td> -->
 															<td><input type="text" name="pic[]" class="form-control" value="<?=$pa->pic?>"></td>
 															<!-- <td><input type="text" name="hasil[]" class="form-control" value="<?=$pa->hasil?>"></td> -->
-															<td>
+															<!-- <td>
 																<select id="" class="select2" name="hasil[]">
-																	<option value="0" <?php echo (($pa->hasil == '0') || (strlen($pa->hasil) == 0)) ? 'selected="selected"' : ''; ?> >-- Pilih --</option>
-																	<option value="A" <?php echo ($pa->hasil == 'A') ? 'selected="selected"' : ''; ?> >A</option>
-																	<option value="B" <?php echo ($pa->hasil == 'B') ? 'selected="selected"' : ''; ?> >B</option>
-																	<option value="C" <?php echo ($pa->hasil == 'C') ? 'selected="selected"' : ''; ?> >C</option>
-																	<option value="D" <?php echo ($pa->hasil == 'D') ? 'selected="selected"' : ''; ?> >D</option>
+																	<option value="0" <?php //echo (($pa->hasil == '0') || (strlen($pa->hasil) == 0)) ? 'selected="selected"' : ''; ?> >-- Pilih --</option>
+																	<option value="A" <?php //echo ($pa->hasil == 'A') ? 'selected="selected"' : ''; ?> >A</option>
+																	<option value="B" <?php //echo ($pa->hasil == 'B') ? 'selected="selected"' : ''; ?> >B</option>
+																	<option value="C" <?php //echo ($pa->hasil == 'C') ? 'selected="selected"' : ''; ?> >C</option>
+																	<option value="D" <?php //echo ($pa->hasil == 'D') ? 'selected="selected"' : ''; ?> >D</option>
 																	
 																</select>
-															</td>
+															</td> -->
 														</tr>
 														<?php } } ?>
 													<?php } ?>

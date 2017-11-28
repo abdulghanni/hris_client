@@ -94,13 +94,13 @@
 													<td width="5%" rowspan="2" class="text-center">Standar Komp. (SK)</td>
 													<td width="5%" rowspan="2" class="text-center">Aktual Komp. (AK)</td>
 													<td width="5%" rowspan="2" class="text-center">Score GAP (AK-SK)</td>
-													<td width="60%" colspan="4" class="text-center">Program Improvement</td>
+													<td width="60%" colspan="2" class="text-center">Program Improvement</td>
 												</tr>
 												<tr>
-													<td width="15%" class="text-center">Tindakan</td>
-													<td width="15%" class="text-center">Tanggal Pelaksanaan</td>
-													<td width="15%" class="text-center">PIC</td>
-													<td width="15%" class="text-center">Hasil</td>
+													<td width="30%" class="text-center">Tindakan</td>
+													<!-- <td width="15%" class="text-center">Tanggal Pelaksanaan</td> -->
+													<td width="30%" class="text-center">PIC</td>
+													<!-- <td width="15%" class="text-center">Hasil</td> -->
 												</tr>
 											</thead>
 											<tbody>
@@ -124,9 +124,9 @@
 														<td>
 															<?=($d->competency_tindakan_id == 0) ? '-' : getValue('title', 'competency_tindakan', array('id'=>'where/'.$d->competency_tindakan_id,'is_deleted'=>'where/0'))?>	
 														</td>
-														<td><?=($d->tgl == '1970-01-01') ? '-' : dateIndo($d->tgl)?></td>
+														<!-- <td><?=($d->tgl == '1970-01-01') ? '-' : dateIndo($d->tgl)?></td> -->
 														<td><?=(strlen($d->pic) > 0) ? $d->pic : '-' ?>	</td>
-														<td><?=($d->hasil != '0') ? $d->hasil : '-'?>	</td>
+														<!-- <td><?=($d->hasil != '0') ? $d->hasil : '-'?>	</td> -->
 													</tr>
 													<?php } ?>
 													<tr>
