@@ -154,8 +154,8 @@ class personal_assesment extends MX_Controller {
         $gap = $this->input->post('gap');
         $competency_tindakan_id = $this->input->post('competency_tindakan_id');
         $pic = $this->input->post('pic');
-        $hasil = $this->input->post('hasil');
-        $tgl = $this->input->post('tgl');
+        /*$hasil = $this->input->post('hasil');
+        $tgl = $this->input->post('tgl');*/
 
         // INSERT TO competency_personal_assesment
         $data = array(
@@ -178,9 +178,9 @@ class personal_assesment extends MX_Controller {
                 'ak' => $ak[$i],
                 'gap' => $gap[$i],
                 'competency_tindakan_id' => $competency_tindakan_id[$i],
-                'tgl' => date('Y-m-d', strtotime($tgl[$i])),
+                /*'tgl' => date('Y-m-d', strtotime($tgl[$i])),*/
                 'pic' => $pic[$i],
-                'hasil' => $hasil[$i],
+                /*'hasil' => $hasil[$i],*/
                 );
             $this->db->insert($this->table.'_detail', $data);
         }
@@ -267,8 +267,8 @@ class personal_assesment extends MX_Controller {
         $gap = $this->input->post('gap');
         $competency_tindakan_id = $this->input->post('competency_tindakan_id');
         $pic = $this->input->post('pic');
-        $hasil = $this->input->post('hasil');
-        $tgl = $this->input->post('tgl');
+        /*$hasil = $this->input->post('hasil');
+        $tgl = $this->input->post('tgl');*/
 
         // INSERT TO competency_personal_assesment
         $data = array(
@@ -291,9 +291,9 @@ class personal_assesment extends MX_Controller {
                 'ak' => $ak[$i],
                 'gap' => $gap[$i],
                 'competency_tindakan_id' => $competency_tindakan_id[$i],
-                'tgl' => date('Y-m-d', strtotime($tgl[$i])),
+                /*'tgl' => date('Y-m-d', strtotime($tgl[$i])),*/
                 'pic' => $pic[$i],
-                'hasil' => $hasil[$i],
+                /*'hasil' => $hasil[$i],*/
                 );
             $this->db->insert($this->table.'_detail', $data);
         }
