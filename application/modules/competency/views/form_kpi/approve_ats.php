@@ -246,7 +246,7 @@
 				              	</table>
 				            </div>
 
-				            <!-- <div class="form-actions">
+				            <div class="form-actions">
 				            					        	<div class="col-md-12 text-center">
 				            					        		<div class="row">
 				            					        			<div class="col-md-3 text-center"><span class="semi-bold">Dibuat Oleh,</span><br/><br/><br/></div>
@@ -271,7 +271,7 @@
 				            					                  			if($a->user_id == sessId() && $a->is_app == 0){ ?>
 				            					                  				<div class="btn btn-success btn-cons" id="" type="button" data-toggle="modal" data-target="#submitModal<?=sessId()?>" style="margin-top: -15px;"><i class="icon-ok"></i>Submit</div>
 				            													<?php if($a->user_id == 118) { ?> 
-				            														<a href="<?php echo site_url('competency/form_penilaian/edit/'.$this->uri->segment(4))?>">
+				            														<a href="<?php echo site_url('competency/form_kpi/edit/'.$this->uri->segment(4))?>">
 				            															<button type="button" class="btn btn-success btn-cons" style="margin-top: -15px;" >Edit</button>
 				            														</a>
 				            													<?php } ?>
@@ -292,11 +292,11 @@
 				            					                	<?php endforeach;}?>
 				            					              	</div>
 				            					            </div> 
-				            					        </div> -->
+				            					        </div> 
 
 
 
-			            	<div id="approver">
+			            	<!-- <div id="approver">
 			            		<fieldset>
 			            			<legend>Approver</legend>
 			            						            	<div class="col-md-12">
@@ -330,7 +330,7 @@
 			            						            		</table>
 			            						            	</div>
 			            						            </fieldset>					            
-			            								</div>
+			            								</div> -->
 			            					            
 			            	<div id="submit" class="form-actions">
 			            				                 	<div class="pull-right">
