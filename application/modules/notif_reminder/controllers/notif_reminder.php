@@ -7,7 +7,7 @@ class notif_reminder extends MX_Controller {
     function __construct()
     {
         parent::__construct();
-        
+
         $this->load->database();
         //$this->load->model('notif_tambahan_model');
 
@@ -64,7 +64,7 @@ class notif_reminder extends MX_Controller {
                         $form_name = "exit";
                         $subject_email = "Rekomendasi Karyawan Keluar";
                     break;
-                    
+
                     default:
                         $form_name = $form_name;
                         $subject_email = $form_name;
@@ -100,5 +100,59 @@ class notif_reminder extends MX_Controller {
                 }
             }
         }
+    }
+    function cc_atasan(){
+      error_reporting(E_ALL);
+      /*
+
+      is_app_lv1_akunting=1 AND
+      is_app_lv1_audit=1 AND
+      is_app_lv1_hrd=1 AND
+      is_app_lv1_it=1 AND
+      is_app_lv1_keuangan=1 AND
+      is_app_lv1_koperasi=1 AND
+      is_app_lv1_logistik=1 AND
+      is_app_lv1_perpus=1 AND
+      is_app_lv1=1 AND
+      is_app_lv2=1 AND
+      is_app_lv3=1 AND
+      is_app_mgr=1 AND
+
+      */
+
+          $form_name = "exit";
+          $subject_email = "Rekomendasi Karyawan Keluar";
+          $base_url_ = 'http://10.1.1.13/hris_client/';
+
+      $exit=$this->db->query(
+        "SELECT * FROM users_exit WHERE
+        is_app_akunting=1 AND
+        is_app_asset=1 AND
+        is_app_audit=1 AND
+        is_app_hrd=1 AND
+        is_app_it=1 AND
+        is_app_keuangan=1 AND
+        is_app_koperasi=1 AND
+        is_app_perpus=1 AND
+        sent_notification=0
+        "
+      )->result();
+
+      //echo $this->db->last_query();
+      foreach($exit as $ex){
+        $bu=get_user_buid(GetValue('nik','users',array('id'=>'where/'.$ex->user_id)));
+        if($bu=='50' || $bu=='51'){
+          $url = $base_url_.'form_'.$form_name.'/detail/'.$ex->id;
+          $subject_emailx = "Reminder Approval Pengajuan ".ucfirst($subject_email);
+          $isi_email = 'pengajuan '.$subject_email.' No : '.$ex->id.' menunggu Approval dari anda, silakan <a class="klikmail" href='.$url.'>Klik Disini untuk melihat pengajuan melalui WEB HRIS PT. Erlangga</a><br />';
+
+          $send=$this->send_email(getEmail('P0227'), $subject_emailx, $isi_email);
+          if($send){
+            $this->db->query("UPDATE users_exit SET sent_notification=1,sent_notification_date='".DATE('Y-m-d H:i:s')."' WHERE id='".$ex->id."'");
+          }
+          //echo "kirim";
+        }
+      }
+
     }
 }

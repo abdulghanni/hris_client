@@ -506,7 +506,8 @@ class Approval {
     public function request_exit($id)
     {
         $CI =& get_instance();
-        $url = base_url().'form_exit/input/'.$id;
+        //$url = base_url().'form_exit/input/'.$id;
+        $url = base_url().'form_exit/detail/'.$id;
         $atasan = get_superior($id);
         $data = array(
                 'sender_id' => get_nik($id),

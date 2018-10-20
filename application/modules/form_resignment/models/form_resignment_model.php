@@ -41,6 +41,7 @@ class Form_resignment_model extends CI_Model {
                 'users_resignment'.'.user_app_lv1',
                 'users_resignment'.'.user_app_lv2',
                 'users_resignment'.'.user_app_lv3',
+                'users_resignment'.'.user_id',
                'users'.'.username',
                'users'.'.nik',
             ));
@@ -64,6 +65,9 @@ class Form_resignment_model extends CI_Model {
                         //$this->db->or_like('users'.'.nik','P', 'after');
                         //$this->db->or_like('users'.'.nik','J', 'after');
                         $where = "(users.nik like 'P%' OR users.nik like 'J%')";
+                        $this->db->where($where);
+                    }elseif($sess_nik == 'G0055'){
+                        $where = "(users.nik like 'G%')";
                         $this->db->where($where);
                     }else{
                         $this->db->where_in($this->table.'.user_id', $user);//print_mz($user);    
@@ -117,6 +121,15 @@ class Form_resignment_model extends CI_Model {
         $this->db->limit($_POST['length'], $_POST['start']);
         $query = $this->db->get();
         return $query->result();
+    }
+
+    function get_datatables_printquery($f)
+    {
+        $this->_get_datatables_query($f);
+        if($_POST['length'] != -1)
+        $this->db->limit($_POST['length'], $_POST['start']);
+        $query = $this->db->get();
+        return $this->db->last_query();
     }
 
     function count_filtered($f)

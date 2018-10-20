@@ -7190,3 +7190,10 @@ ul.my-friends li .profile-pic{
 	background-color: #444444;
 	color: #ffffff;
 }
+.tab-header-blue{
+
+}
+.tab-header-blue thead td{
+	background-color: #ECF0F2;
+	font-weight: bold;
+}

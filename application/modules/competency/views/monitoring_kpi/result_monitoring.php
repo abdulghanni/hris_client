@@ -1,5 +1,5 @@
 <div class="row">
-	<div class="col-md-12">
+	<div class="col-md-12"  style="overflow-x: auto; overflow-y: hidden ">
 
 		<?php 
 			if($data->num_rows>0){?>

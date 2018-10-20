@@ -47,6 +47,14 @@ class Form_resignment extends MX_Controller {
         $no = $_POST['start'];
         foreach ($list as $r) {
             //AKSI
+           $stat_id_emp=get_user_emplstatus($r->nik);
+           $status_emp=select_where('employee_status','id',$stat_id_emp);
+           if($status_emp->num_rows()>0){
+            $status_employee=$status_emp->row();
+            $status_karyawannya=$status_employee->title;
+           }else{
+            $status_karyawannya='';
+           }
            $detail = base_url()."form_$this->form_name/detail/".$r->id; 
            $print = base_url()."form_$this->form_name/form_$this->form_name"."_pdf/".$r->id; 
            $delete = (($r->app_status_id_lv1 == 0 && $r->created_by == sessId()) || is_admin()) ? '<button onclick="showModal('.$r->id.')" class="btn btn-sm btn-danger" type="button" title="Batalkan Pengajuan"><i class="icon-remove"></i></button>' : '';
@@ -75,6 +83,7 @@ class Form_resignment extends MX_Controller {
             $row[] = "<a href=$detail>".$r->id.'</a>';
             $row[] = "<a href=$detail>".$r->nik.'</a>';
             $row[] = "<a href=$detail>".$r->username.'</a>';
+            $row[] = $status_karyawannya;
             $row[] = dateIndo($r->date_resign);
             $row[] = dateIndo($r->created_on);
             $row[] = $status1;
@@ -93,6 +102,17 @@ class Form_resignment extends MX_Controller {
                         "recordsFiltered" => $this->main->count_filtered($f),
                         "data" => $data,
                 );
+        //output to json format
+        echo json_encode($output);
+    }
+
+    function ajax_list_query($f){
+        $list = $this->main->get_datatables_printquery($f);
+        $data = array();
+        
+        $output = array(
+            "query" => $list
+        );
         //output to json format
         echo json_encode($output);
     }
@@ -219,7 +239,7 @@ class Form_resignment extends MX_Controller {
         $sess_nik = $this->data['sess_nik'] = get_nik($sess_id);
         $bu = get_user_buid($sess_nik);
         if(!is_admin()&&!is_user_logged($sess_nik,$id,'users_resignment')&&!is_user_app_lv1($sess_nik,$id,'users_resignment')&&!is_user_app_lv2($sess_nik,$id,'users_resignment')&&!is_user_app_lv3($sess_nik,$id,'users_resignment')&&!is_hrd_cabang($bu)&&!is_hrd_pusat($sess_nik,10)&&!is_cc_notif($sess_nik,$bu,10)&&!is_cc_tambahan($sess_nik,'P0081')){
-            return show_error('Anda tidak dapat mengakses halaman ini.');
+            return show_error('Anda tidak dapat mengakses halaman ini..');
         }else{
             $user_id = getValue('user_id', 'users_resignment', array('id'=>'where/'.$id));
             $user_nik = $this->data['user_nik'] = get_nik($user_id);
@@ -234,6 +254,15 @@ class Form_resignment extends MX_Controller {
             $this->data['approved'] = assets_url('img/approved_stamp.png');
             $this->data['rejected'] = assets_url('img/rejected_stamp.png');
             $this->data['pending'] = assets_url('img/pending_stamp.png');
+            $stat_id_emp=get_user_emplstatus($this->data['user_nik']);
+           $status_emp=select_where('employee_status','id',$stat_id_emp);
+           if($status_emp->num_rows()>0){
+            $status_employee=$status_emp->row();
+            $status_karyawannya=$status_employee->title;
+           }else{
+            $status_karyawannya='';
+           }
+            $this->data['status_karyawan']=$status_karyawannya;
             if($lv != null){
                 $app = $this->load->view('form_'.$this->form_name.'/'.$lv, $this->data, true);
                 $note = $this->load->view('form_'.$this->form_name.'/note', $this->data, true);

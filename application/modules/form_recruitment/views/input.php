@@ -53,7 +53,7 @@
 
                   <div class="row form-row" id="pos-dropdown" style="display:none">
                       <div class="col-md-2">
-                        <label class="form-label text-right">Jabatan</label>
+                        <label class="form-label text-right">Jabatan SDM Baru</label>
                       </div>
                       <div class="col-md-6">
                         <?php
@@ -338,11 +338,14 @@
                           </select>
                             <?php }?>
                       </div>
+                        <div class="col-md-5">
+                        	<label class="form-label text-left small-text">* Karyawan cabang wajib menambahkan Direktur Regional</label>
+                    	</div>
                     </div>
 
                     <div class="row form-row">
                       <div class="col-md-2">
-                        <label class="form-label text-left"><?php echo 'Akunting (Optional)' ?></label>
+                        <label class="form-label text-left"><?php echo 'Akunting' ?></label>
                       </div>
                       <div class="col-md-5">
                         <?php if(!is_admin()){?>

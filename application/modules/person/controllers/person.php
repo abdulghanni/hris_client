@@ -1,5 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 ini_set('memory_limit', '1024M');
+ini_set('MAX_EXECUTION_TIME', 0);
 class Person extends MX_Controller {
 
     public $data;
@@ -97,11 +98,153 @@ class Person extends MX_Controller {
             $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
             
             $this->data['bod'] = (!empty($user->bod)) ? $user->bod : '-';
-            $this->data['datafiles'] = get_filenames('d://xampp5519/htdocs/hris_client/hrd/');
+            $this->data['datafiles'] = get_filenames('d://xampp/htdocs/hris_client/hrd/');
             $this->_render_page('person/tab/payroll', $this->data);
         }
     }
 
+    function payroll_new()
+    {
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+        //elseif ($id != $this->session->userdata('user_id') && !$this->ion_auth->is_admin()) //remove this elseif if you want to enable this for non-admins
+        //{
+            //redirect them to the home page because they must be an administrator to view this
+            //return show_error('You must be an administrator to view this page.');
+            //return show_error('You can not view this page.');
+        //}
+        else
+        {
+            $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
+            
+            $this->data['bod'] = (!empty($user->bod)) ? $user->bod : '-';
+            $this->data['datafiles'] = $this->person_model->getPayrollbyNik(get_nik($this->session->userdata('user_id')));
+            $this->_render_page('person/tab/payroll_new', $this->data);
+        }
+    }
+
+    function payroll_injection($id)
+    {
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+        elseif ($id != $this->session->userdata('user_id') && !$this->ion_auth->is_admin()) //remove this elseif if you want to enable this for non-admins
+        {
+            //redirect them to the home page because they must be an administrator to view this
+            //return show_error('You must be an administrator to view this page.');
+            return show_error('You can not view this page.');
+        }
+        else
+        {
+            $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
+            $this->benchmark->mark('start');
+            //$this->data['bod'] = (!empty($user->bod)) ? $user->bod : '-';
+            $datafiles = get_filenames('d://xampp/htdocs/hris_client/hrd/');
+            echo 'jumlah data slip : '.count($datafiles).'<br/>';
+            $this->db->truncate('users_payroll'); 
+            /*
+            $data_interest=null;
+            $n=0;
+
+                    foreach($interests as $i)
+                    {
+                        $data_interest[$n]['interest_id'] = $i;
+                        $data_interest[$n]['user_id'] = $this->user->last_insert_id;
+                        $n++;
+                    }
+
+                    $this->db->insert_batch('user_interests', $data_interest);*/
+        $data_payroll = null;
+        $n = 0;
+            foreach($datafiles as $key => $value)
+            {
+                $nik = substr($value,0,5);
+                $filename = $value;
+                $created_date = date('Y-m-d');
+                $data_payroll[$n]['nik'] = $nik;
+                $data_payroll[$n]['filename'] = $filename;
+                $data_payroll[$n]['created_date'] = $created_date;
+                $n++;
+            }
+            $this->db->insert_batch('users_payroll', $data_payroll);
+            
+            $query_payroll = $this->person_model->getAllPayroll();
+            $jumlah_payroll = $query_payroll->num_rows();
+            echo 'Payroll yang sudah diinject sebanyak '.$jumlah_payroll.' data <br/>';
+            $this->benchmark->mark('end');
+            echo $this->benchmark->elapsed_time('start', 'end');
+            //$this->_render_page('person/tab/payroll', $this->data);
+        }
+    }
+
+    function get_uploads_dir()
+    {
+        $dir_name = get_dir_file_info('d://xampp/htdocs/hris_client/uploads/');
+        foreach ($dir_name as $key => $value) {
+            //echo $value['name'].'<br/>';
+            $data = 'You are not authorized to this directory';
+            if ( ! write_file('d://xampp/htdocs/hris_client/uploads/'.$value['name'].'/index.html', $data))
+            {
+                    echo 'Unable to write the file';
+            }
+            else
+            {
+                    echo 'File written!';
+            }
+        }
+    }
+
+   function get_uploads_dir_sdm()
+    {
+        $dir_name = get_dir_file_info('d://xampp/htdocs/hris_client/uploads/');
+        foreach ($dir_name as $key => $value) {
+            $sdm_dir_name = get_dir_file_info('d://xampp/htdocs/hris_client/uploads/'.$value['name']);
+            $dir    = 'd://xampp/htdocs/hris_client/uploads/'.$value['name'].'/sdm';
+           
+            if(file_exists($dir))
+            {
+                $data = 'You are not authorized to this directory';
+                if ( ! write_file('d://xampp/htdocs/hris_client/uploads/'.$value['name'].'/sdm/index.html', $data))
+                {
+                        echo 'Unable to write the file';
+                }
+                else
+                {
+                        echo $value['name'].' File written!<br/>';
+                }
+            }
+        }
+    }
+
+    function get_uploads_dir_kk()
+    {
+        $dir_name = get_dir_file_info('d://xampp/htdocs/hris_client/uploads/');
+        foreach ($dir_name as $key => $value) {
+            $sdm_dir_name = get_dir_file_info('d://xampp/htdocs/hris_client/uploads/'.$value['name']);
+            $dir    = 'd://xampp/htdocs/hris_client/uploads/'.$value['name'].'/kk';
+           
+            if(file_exists($dir))
+            {
+                $data = 'You are not authorized to this directory';
+                if ( ! write_file('d://xampp/htdocs/hris_client/uploads/'.$value['name'].'/kk/index.html', $data))
+                {
+                        echo 'Unable to write the file';
+                }
+                else
+                {
+                        echo $value['name'].'/kk/index.html File written!<br/>';
+                }
+            }
+        }
+    }
+
+
+ 
     function slip($id,$filename)
     {
         if (!$this->ion_auth->logged_in())
@@ -117,15 +260,11 @@ class Person extends MX_Controller {
         }
         else
         {
-            //$file = base_url().'hrd/'.$filename;
-            //if (file_exists(base_url().'hrd/'.$filename)) {
-                $data = file_get_contents(base_url().'hrd/'.$filename); // Read the file's contents
+               //$fp = fopen('hrd/'.$filename, 'r'); 
+               //$data = stream_get_contents($fp); 
+                $data = file_get_contents('d://xampp/htdocs/hris_client/hrd/'.$filename); // Read the file's contents
                 $name = $filename;
-                force_download($name, $data);
-            /*}else{
-                return show_error('File tidak tersedia.');
-            }*/
-            
+                force_download($name, $data);   
         }
     }
 

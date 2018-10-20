@@ -81,6 +81,15 @@
                           <input name="form3LastName" id="seniority_date" type="text"  class="form-control " placeholder="-" value=""  disabled="disabled" >
                         </div>
                       </div>
+
+                      <div class="row form-row">
+                        <div class="col-md-3">
+                          <label class="form-label text-right">Status Kepegawaian</label>
+                        </div>
+                        <div class="col-md-9">
+                          <input name="form3LastName" id="statuss" type="text"  class="form-control " placeholder="-" value=""  disabled="disabled" >
+                        </div>
+                      </div>
                       
                       
                     </div>

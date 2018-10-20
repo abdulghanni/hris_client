@@ -1,3 +1,4 @@
+
 <div class="page-content">
   	<div id="portlet-config" class="modal hide">
       <div class="modal-header">

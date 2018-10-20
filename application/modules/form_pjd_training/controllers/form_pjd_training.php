@@ -1233,10 +1233,10 @@ class form_pjd_training extends MX_Controller {
         $biaya_fix_1 = $this->db->select("(SELECT SUM(jumlah_biaya) FROM users_spd_training_biaya WHERE user_spd_luar_group_id=$id and (pjd_biaya_id = 1 or pjd_biaya_id=4 or pjd_biaya_id=7 or pjd_biaya_id=10 or pjd_biaya_id=13 or pjd_biaya_id=19 or pjd_biaya_id=16)) AS uang_makan", FALSE)->get()->row_array();
         //$this->data['uang_makan'] = number_format($biaya_fix_1['uang_makan']*$jml_pjd);
         $this->data['uang_makan'] = number_format($biaya_fix_1['uang_makan']);
-        $biaya_fix_2 = $this->db->select("(SELECT SUM(jumlah_biaya) FROM users_spd_training_biaya WHERE user_spd_luar_group_id=$id and (pjd_biaya_id = 2 or pjd_biaya_id=5 or pjd_biaya_id=8 or pjd_biaya_id=11 or pjd_biaya_id=14 or pjd_biaya_id=20 or pjd_biaya_id=17)) AS uang_saku", FALSE)->get()->row_array();
-        $this->data['uang_saku'] = number_format($biaya_fix_2['uang_saku']*$jml_pjd);
-        $biaya_fix_3 = $this->db->select("(SELECT SUM(jumlah_biaya) FROM users_spd_training_biaya WHERE user_spd_luar_group_id=$id and (pjd_biaya_id = 3 or pjd_biaya_id=6 or pjd_biaya_id=9 or pjd_biaya_id=12 or pjd_biaya_id=15 or pjd_biaya_id=21 or pjd_biaya_id=18)) AS hotel", FALSE)->get()->row_array();
-        $this->data['hotel'] = number_format($biaya_fix_3['hotel']*($jml_pjd-1));
+        /*$biaya_fix_2 = $this->db->select("(SELECT SUM(jumlah_biaya) FROM users_spd_training_biaya WHERE user_spd_luar_group_id=$id and (pjd_biaya_id = 2 or pjd_biaya_id=5 or pjd_biaya_id=8 or pjd_biaya_id=11 or pjd_biaya_id=14 or pjd_biaya_id=20 or pjd_biaya_id=17)) AS uang_saku", FALSE)->get()->row_array();
+        $this->data['uang_saku'] = number_format($biaya_fix_2['uang_saku']*$jml_pjd);*/
+        /*$biaya_fix_3 = $this->db->select("(SELECT SUM(jumlah_biaya) FROM users_spd_training_biaya WHERE user_spd_luar_group_id=$id and (pjd_biaya_id = 3 or pjd_biaya_id=6 or pjd_biaya_id=9 or pjd_biaya_id=12 or pjd_biaya_id=15 or pjd_biaya_id=21 or pjd_biaya_id=18)) AS hotel", FALSE)->get()->row_array();
+        $this->data['hotel'] = number_format($biaya_fix_3['hotel']*($jml_pjd-1));*/
         $this->load->library('mpdf60/mpdf');
         $html = ($receiver_size > 1) ? $this->load->view('spd_luar_group_pdf', $this->data, true) : $this->load->view('pjd_pdf', $this->data, true) ; 
         $orientation = ($receiver_size>1) ? 'P' : 'P';

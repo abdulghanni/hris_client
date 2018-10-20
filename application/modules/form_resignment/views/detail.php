@@ -47,7 +47,15 @@
                         <div class="col-md-9">
                           <input name="name" id="form3LastName" type="text"  class="form-control " placeholder="Nama" value="<?php echo get_name($row->user_id)?>"  disabled="disabled">
                         </div>
-                      </div>          
+                      </div>    
+                      <div class="row form-row">
+                        <div class="col-md-3">
+                          <label class="form-label text-right">Status Employee</label>
+                        </div>
+                        <div class="col-md-9">
+                          <input name="stat-emp" type="text"  class="form-control" placeholder="-" value="<?php echo $status_karyawan?>" disabled="disabled">
+                        </div>
+                      </div>      
                       <div class="row form-row">
                         <div class="col-md-3">
                           <label class="form-label text-right">Unit Bisnis</label>

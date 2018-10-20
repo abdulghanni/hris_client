@@ -121,6 +121,8 @@ $(document).ready(function() {
                 getEmpPos(empId);
                 break;
             case 'form_promosi':
+                getEmpStat(empId);
+                getEmpStatId(empId);
             case 'form_demotion':
             case 'form_rolling':
             case 'form_kenaikan_gaji':
@@ -139,6 +141,8 @@ $(document).ready(function() {
                 }
                 break;
             case 'form_kontrak':
+                getEmpStat(empId);
+                getEmpStatId(empId);
             case 'form_pengangkatan':
             case 'form_pemutusan':
                 getEmpBu(empId);

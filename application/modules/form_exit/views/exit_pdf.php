@@ -228,7 +228,7 @@ $rejected = assets_url('img/rejected_stamp.png');?>
     <tr>
       <td height="35" align="center">1</td>
       <td>&nbsp;Diberikan Uang Pesangon</td>
-      <td align="center">&nbsp;<?php echo ($rekomendasi->is_uang_pesangon == 1) ? 'Ya' : 'Tidak';?></td>
+      <td align="center">&nbsp;<?php echo ($rekomendasi->is_pesangon == 1) ? 'Ya' : 'Tidak';?></td>
     	<td></td>
     	<td></td>
     	<td></td>

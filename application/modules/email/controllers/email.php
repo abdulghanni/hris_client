@@ -283,6 +283,39 @@ class Email extends MX_Controller {
         }
     }
 
+    function approve($id=1){
+        set_time_limit(0);
+        $this->data['title'] = "List Approval";
+        if (!$this->ion_auth->logged_in())
+        {
+             $this->session->set_userdata('last_link', $this->uri->uri_string());
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+        $id = $this->session->userdata('user_id');
+        $nik=get_nik($id);
+        $this->data['competency_form_kpi']=select_where_array('competency_form_kpi_approver',array('app_status_id' => 0,'user_id'=>$id))->result();
+        $this->data['form_penilaian']=select_where_array('competency_form_penilaian_approver',array('app_status_id' => 0,'user_id'=>$id))->result();
+        $this->data['kinerja_supporting']=select_where_array('competency_kinerja_supporting_approver',array('app_status_id' => 0,'user_id'=>$id))->result();
+        $this->data['mapping_indikator']=select_where_array('competency_mapping_indikator_approver',array('app_status_id' => 0,'user_id'=>$id))->result();
+        $this->data['mapping_standar']=select_where_array('competency_mapping_standar_approver',array('app_status_id' => 0,'user_id'=>$id))->result();
+        $this->data['monitoring_kpi']=select_where_array('competency_monitoring_kpi_approver',array('app_status_id' => 0,'user_id'=>$id))->result();
+        $this->data['mapping_kpi']=select_where_array('competency_mapping_kpi_approver',array('app_status_id' => 0,'user_id'=>$id))->result();
+        $this->data['personal_assesment']=select_where_array('competency_personal_assesment_approver',array('app_status_id' => 0,'user_id'=>$id))->result();
+        $this->data['cuti1']=select_where_array('users_cuti',array('is_app_lv1' => 0,'user_app_lv1'=>$nik,'is_deleted'=>0))->result();
+        $this->data['cuti2']=select_where_array('users_cuti',array('is_app_lv2' => 0,'user_app_lv2'=>$nik,'is_deleted'=>0))->result();
+        $this->data['cuti3']=select_where_array('users_cuti',array('is_app_hrd' => 0,'user_app_hrd'=>$nik,'is_deleted'=>0))->result();
+        $this->data['izin1']=select_where_array('users_tidak_masuk',array('is_app_lv1' => 0,'user_app_lv1'=>$nik,'is_deleted'=>0))->result();
+        $this->data['izin2']=select_where_array('users_tidak_masuk',array('is_app_lv2' => 0,'user_app_lv2'=>$nik,'is_deleted'=>0))->result();
+        $this->data['izin3']=select_where_array('users_tidak_masuk',array('is_app_lv3' => 0,'user_app_lv3'=>$nik,'is_deleted'=>0))->result();
+        $this->data['izin_hrd']=select_where_array('users_tidak_masuk',array('is_app_hrd' => 0,'user_app_hrd'=>$nik,'is_deleted'=>0))->result();
+        $this->data['perjalanan_dinas1']=select_where_array('users_spd_luar_group',array('is_app_lv1' => 0,'user_app_lv1'=>$nik,'is_deleted'=>0))->result();
+        $this->data['perjalanan_dinas2']=select_where_array('users_spd_luar_group',array('is_app_lv2' => 0,'user_app_lv2'=>$nik,'is_deleted'=>0))->result();
+        $this->data['perjalanan_dinas3']=select_where_array('users_spd_luar_group',array('is_app_lv3' => 0,'user_app_lv3'=>$nik,'is_deleted'=>0))->result();
+        $this->_render_page('email/approve', $this->data);
+        
+    }
+
     function _render_page($view, $data=null, $render=false)
     {
         // $this->viewdata = (empty($data)) ? $this->data: $data;
@@ -319,6 +352,35 @@ class Email extends MX_Controller {
                     $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
                     $this->template->add_css('plugins/select2/select2.css');
                     $this->template->add_css('approval_img.css');
+
+                    //$this->template->add_css('pace-theme-flash.css');
+                    //$this->template->add_css('datepicker.css');
+                }
+
+                if(in_array($view, array('email/approve')))
+                {
+                    $this->template->set_layout('default');
+                    
+                    $this->template->add_js('jquery.sidr.min.js');
+                    $this->template->add_js('breakpoints.js');
+                    $this->template->add_js('select2.min.js');
+                    
+                    $this->template->add_js('core.js');
+                    $this->template->add_js('purl.js');
+                    $this->template->add_js('email_comman.js');
+                    
+                    $this->template->add_js('jqueryblockui.js');
+
+                    //$this->template->add_js('modules/skeleton.js');
+                    //$this->template->add_css('modules/skeleton.css');
+                    $this->template->add_js('main.js');
+                    $this->template->add_js('respond.min.js');
+                    $this->template->add_js('datatables.min.js');
+                    $this->template->add_js('mail_approve.js');                    
+                    $this->template->add_css('jquery-ui-1.10.1.custom.min.css');
+                    $this->template->add_css('plugins/select2/select2.css');
+                    $this->template->add_css('approval_img.css');
+                    $this->template->add_css('datatables.min.css');
 
                     //$this->template->add_css('pace-theme-flash.css');
                     //$this->template->add_css('datepicker.css');

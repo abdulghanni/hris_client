@@ -376,6 +376,7 @@ class form_tidak_masuk extends MX_Controller {
             $user_nik = get_nik($user_tidak_masuk_id);
             $potong_cuti = getValue('potong_cuti', 'users_tidak_masuk', array('id'=>'where/'.$id));
             $tipe_cuti = getValue('type_cuti_id', 'users_tidak_masuk', array('id'=>'where/'.$id));
+            $alasan_tidak_masuk = getValue('alasan_tidak_masuk_id', 'users_tidak_masuk', array('id'=>'where/'.$id));
             if($potong_cuti == 1){
                 if($this->input->post('insert') == 1)$this->insert_sisa_cuti($user_nik, $tipe_cuti);
                 $leave_request_id = $this->get_last_leave_request_id();
@@ -398,7 +399,10 @@ class form_tidak_masuk extends MX_Controller {
                 //$this->update_attendance_data($user_nik, $date_mulai_cuti, 5);
                 
             }else{
-                $this->insert_attendancedata($id);
+                if($alasan_tidak_masuk != 4)
+                    $this->insert_attendancedata($id);
+                else
+                    $this->insert_attendancedata_pjd($id);
             }
 
             if($is_app==0){
@@ -457,7 +461,7 @@ class form_tidak_masuk extends MX_Controller {
         else
         {
             $isi_email .= '<pre>  '.$this->rest->debug().'</pre>';
-            $this->send_email('andy13galuh@gmail.com', $nik.' error form izin tidak masuk (update_attendance_data_cuti '.$nik.'-'.$date.'-'.$absencestatus.')', $isi_email);
+            //$this->send_email('andy13galuh@gmail.com', $nik.' error form izin tidak masuk (update_attendance_data_cuti '.$nik.'-'.$date.'-'.$absencestatus.')', $isi_email);
             return FALSE;
         }
     }
@@ -741,7 +745,7 @@ class form_tidak_masuk extends MX_Controller {
         {
             //$isi_email .= '<pre>  '.$this->rest->debug().'</pre>';
             $isi_email = $uri;
-            $this->send_email('andy13galuh@gmail.com', get_nik($this->session->userdata('user_id')).' error insert cuti diizin tidak masuk (update_sisa_cuti)', $isi_email);
+            //$this->send_email('andy13galuh@gmail.com', get_nik($this->session->userdata('user_id')).' error insert cuti diizin tidak masuk (update_sisa_cuti)', $isi_email);
             return FALSE;
         }
     }
@@ -953,7 +957,7 @@ class form_tidak_masuk extends MX_Controller {
                '/DIMENSION2_/'.get_user_dimension2_($user_id).
                '/HRSLOCATIONID/'.get_user_locationid($user_id).
                '/HRSEMPLGROUPID/'.get_user_emplgroupid($user_id);
-            $this->send_email('andy13galuh@gmail.com', $user_id.' error insert cuti diizin tidak masuk (insert_leave_request)', $isi_email);
+            //$this->send_email('andy13galuh@gmail.com', $user_id.' error insert cuti diizin tidak masuk (insert_leave_request)', $isi_email);
             return false;
             //return $this->rest->debug();
         }
@@ -978,7 +982,7 @@ class form_tidak_masuk extends MX_Controller {
         else
         {
             $isi_email .= '<pre>  '.$this->rest->debug().'</pre>';
-            $this->send_email('andy13galuh@gmail.com', 'error insert izin tidak masuk (update_leave_number_sequence)', $isi_email);
+            //$this->send_email('andy13galuh@gmail.com', 'error insert izin tidak masuk (update_leave_number_sequence)', $isi_email);
             return false;
         }
     }
@@ -1060,7 +1064,7 @@ class form_tidak_masuk extends MX_Controller {
         {
             //print_mz($this->rest->debug());
             $isi_email .= '<pre>  '.$this->rest->debug().'</pre>';
-            $this->send_email('andy13galuh@gmail.com', 'error insert izin tidak masuk (insert_sisa_cuti)', $isi_email);
+            //$this->send_email('andy13galuh@gmail.com', 'error insert izin tidak masuk (insert_sisa_cuti)', $isi_email);
             return false;
         }
 
@@ -1085,7 +1089,7 @@ class form_tidak_masuk extends MX_Controller {
         {
             //print_mz($this->rest->debug());
             $isi_email .= '<pre>  '.$this->rest->debug().'</pre>';
-            $this->send_email('andy13galuh@gmail.com', 'error insert izin tidak masuk (update_entitlement_number_sequence)', $isi_email);
+            //$this->send_email('andy13galuh@gmail.com', 'error insert izin tidak masuk (update_entitlement_number_sequence)', $isi_email);
             return false;
         }
     }
@@ -1145,7 +1149,69 @@ class form_tidak_masuk extends MX_Controller {
                 echo "</pre>";
                 $isi_email = "";
                 $isi_email .= '<pre>'.print_r($this->rest->debug()).'</pre>';
-                $this->send_email('andy13galuh@gmail.com', $user_id.' error insert cuti diizin tidak masuk (insert_attendancedata)', $isi_email);
+                //$this->send_email('andy13galuh@gmail.com', $user_id.' error insert cuti diizin tidak masuk (insert_attendancedata)', $isi_email);
+                return false;
+            }
+            $date = date ("Y-m-d", strtotime("+1 day", strtotime($date)));
+        }
+    }
+
+    function insert_attendancedata_pjd($id)
+    {
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+        $data = GetAll('users_tidak_masuk', array('id'=>'where/'.$id))->row_array();
+        $user_id = get_nik($data['user_id']);
+        $attendance_id = $this->get_last_attendacedata_id();
+        $RECVERSION = $attendance_id[0]['RECVERSION']+1;
+        $RECID = $attendance_id[0]['RECID']+1;
+        // Start date
+        $date = $data['dari_tanggal'];
+        // End date
+        $end_date = $data['sampai_tanggal'];
+        $method = 'get';
+        $params =  array();
+        while (strtotime($date) <= strtotime($end_date)) {
+            $uri = get_api_key().'attendance/attendance_data_pjd/'.
+                   'EMPLID/'.$user_id.
+                   '/ATTENDANCEDATE/'.$date.
+                   '/EMPLSTATUS/'.get_user_emplstatus($user_id).
+                   '/HRSLOCATIONID/'.get_user_locationid($user_id).
+                   '/DIMENSION/'.get_user_buid($user_id).
+                   '/DIMENSION2_/'.get_user_dimension2_($user_id).
+                   '/HRSSCHEDULEID/'.get_user_dimension2_($user_id).
+                   '/MODIFIEDDATETIME/'.$data['created_on'].
+                   '/MODIFIEDBY/'.get_nik(sessId()).
+                   '/CREATEDDATETIME/'.$data['created_on'].
+                   '/CREATEDBY/'.get_nik(sessId()).
+                   '/DATAAREAID/'.get_user_dataareaid($user_id).
+                   '/RECVERSION/'.$RECVERSION.
+                   '/RECID/'.$RECID.
+                   '/BRANCHID/'.get_user_branchid($user_id)
+                   ;
+
+            $this->rest->format('application/json');
+
+            $result = $this->rest->{$method}($uri, $params);
+
+            if(isset($result->status) && $result->status == 'success')
+            {
+                echo "<pre>";
+                print_r($this->rest->debug());
+                echo "</pre>";
+                return true;
+           }
+            else
+           {
+                echo "<pre>err";
+                print_r($this->rest->debug());
+                echo "</pre>";
+                $isi_email = "";
+                $isi_email .= '<pre>'.print_r($this->rest->debug()).'</pre>';
+                //$this->send_email('andy13galuh@gmail.com', $user_id.' error insert cuti diizin tidak masuk (insert_attendancedata)', $isi_email);
                 return false;
             }
             $date = date ("Y-m-d", strtotime("+1 day", strtotime($date)));
@@ -1208,7 +1274,7 @@ class form_tidak_masuk extends MX_Controller {
                 echo "</pre>";
                 $isi_email = $uri;
                 //$isi_email .= '<pre>'.print_r($this->rest->debug()).'</pre>';
-                $this->send_email('andy13galuh@gmail.com', $user_id.' error insert cuti diizin tidak masuk (insert_attendancedata_cuti)', $isi_email);
+                //$this->send_email('andy13galuh@gmail.com', $user_id.' error insert cuti diizin tidak masuk (insert_attendancedata_cuti)', $isi_email);
                 return false;
             }
             $date = date ("Y-m-d", strtotime("+1 day", strtotime($date)));

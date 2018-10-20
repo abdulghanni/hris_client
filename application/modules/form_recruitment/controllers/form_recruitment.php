@@ -101,6 +101,8 @@ class Form_recruitment extends MX_Controller {
         echo json_encode($output);
     }
 
+    
+
     function input()
     {
         $this->data['title'] = 'Input Permintaan SDM Baru';
@@ -494,7 +496,8 @@ class Form_recruitment extends MX_Controller {
     {
         $url = base_url().'form_recruitment/detail/'.$id;
         $user_id = getValue('user_id', 'users_recruitment', array('id'=>'where/'.$id));
-        $receiver = getValue('user_nik', 'users_notif_tambahan', array('form_type_id'=>'where/9'));
+        $bu_user_id = get_user_buid(get_nik($user_id));
+        $receiver = getValue('user_nik', 'users_notif_tambahan', array('form_type_id'=>'where/9','bu'=>'where/'.$bu_user_id));
         $subject_email = 'Permintaan SDM Baru';
         $isi_email = 'HRD telah menyetujui pengajuan Permintaan SDM Baru oleh '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_recruitment/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
         //Notif to karyawan

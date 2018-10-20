@@ -5,7 +5,7 @@ class Pjd_model extends CI_Model {
 
     var $table = 'users_spd_luar_group';
     var $join1  = 'users';
-    var $column = array('id', 'title', 'created_on'); //set column field database for order and search
+    var $column = array('id', 'id', 'created_on'); //set column field database for order and search
     var $order = array('id' => 'desc'); // default order 
 
     public function __construct()

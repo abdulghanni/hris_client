@@ -10,7 +10,7 @@ class training_model extends CI_Model {
 	var $table_join4 = 'training_waktu';
 	var $table_join5 = 'pembiayaan';
 	var $column = array('title','date_start','date_end','vendor','description');
-	var $order = array('id' => 'desc');
+	var $order = array('date_start' => 'desc');
 
 	public function __construct()
 	{
@@ -30,6 +30,7 @@ class training_model extends CI_Model {
 			');
 		$this->db->from($this->table);
 		$this->db->join($this->table_join1, $this->table_join1.'.id = '.$this->table.'.vendor_id');
+		$this->db->order_by($this->table.'.date_start','desc');
 		$i = 0;
 	
 		foreach ($this->column as $item) 

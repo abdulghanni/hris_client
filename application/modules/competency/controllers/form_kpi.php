@@ -117,16 +117,19 @@ class form_kpi extends MX_Controller {
             $data['url_ajax_update'] = site_url('competency/form_kpi/ajax_update');
             $data['url_ajax_edit'] = site_url('competency/form_kpi/ajax_edit');
             $data['url_ajax_delete'] = site_url('competency/form_kpi/ajax_delete');
+            if($this->ion_auth->is_admin()){
             $this->_render_page('form_kpi/employee', $data);
-       /* }else{
-            $data['message'] = '
-                Maaf anda tidak dapat melakukan penilaian, dikarenakan anda tidak mempunyai bawahan.
-                <br/>Silakan hubungin HR Pusat / administrator.
-                <br/><br/>Terima kasih
-            ';
-            $this->_render_page('form_kpi/no_subordinate', $data);
-        }*/
+            }else{
+                $data['kpi_detail'] = $data['kpi_detail'] = getAll('competency_form_kpi_detail',array('competency_mapping_kpi_detail_id'=>'where/'.$data['competency_mapping_kpi_detail_id'],'is_deleted'=>'where/0','comp_session_id'=>'where/'.$comp_session_id,'organization_id'=>'where/'.$org_id,'user_id'=>'where/'.$this->session->userdata('user_id')));
+                if($kpi_detail->num_rows() > 0){
+                    $val_kpi_detail = $data['kpi_detail']->row_array();
+                    $url_red = 'competency/form_kpi/edit_detail/'.$org_id.'/'.$comp_session_id.'/'.$id.'/'.$val_kpi_detail['id'].'/'.$this->session->userdata('user_id');
+                }else{
+                    $url_red = 'competency/form_kpi/input_detail/'.$org_id.'/'.$comp_session_id.'/'.$id.'/'.$this->session->userdata('user_id');
+                }
+                redirect($url_red);
        
+    }
     }
 
     function input_detail($org_id, $comp_session_id, $id, $user_id)
@@ -944,6 +947,7 @@ class form_kpi extends MX_Controller {
 
     function get_mapping_from_org($org_id,$comp_session_id){
         $data['org_id'] = $org_id;
+        $data['position']=get_user_position(get_nik($this->session->userdata('user_id')));
         $f = array('is_deleted'=>'where/0');
 
         $data['approver'] = GetAll($this->table.'_approver', array('organization_id'=>'where/'.$org_id, 'comp_session_id'=>'where/'.$comp_session_id));

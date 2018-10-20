@@ -16,6 +16,7 @@
         <ul class="nav nav-tabs" id="tab-1">
           <li><a href="<?php echo site_url('email')?>">Inbox</a></li>
           <li class="active"><a href="#">Sent</a></li>
+          <li><a href="<?php echo site_url('email/approve')?>">List Approve</a></li>
         </ul>
       <div class="tab-content">
 

@@ -1,10 +1,13 @@
 <div class="row">
-	<div class="col-md-12">
+	<div class="col-md-12" style="overflow-x: auto; overflow-y: hidden ">
 		<?php 
-			if($data->num_rows>0){?>
+			if($data->num_rows>0){
+			if (is_admin_kompetensi()&&$this->ion_auth->is_admin()){
+		?>
 			<div class="row col-md-12">
 				<a href="<?=base_url($ci->controller.'/input/'.$org_id)?>"><button class="btn btn-primary"><i class="icon-pencil"></i> Ubah Mapping</button></a>
 			</div>
+			<?php } ?>
 			<table class="table table-bordered">
 				<thead>
 					<tr>

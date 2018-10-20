@@ -238,7 +238,7 @@ class Form_exit extends MX_Controller {
                 $isi_email = get_name($user_id).' mengajukan rekomendasi karyawan keluar, untuk melihat detail silakan <a href='.base_url().'form_exit/detail/'.$exit_id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_exit/detail/'.$exit_id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
 
                 //$this->send_approval_request($exit_id, $user_id, $creator_id); pengiriman notif berdasarkan BU pengaju
-                $this->send_approval_request($exit_id, $user_id, $user_id); //pengiriman notif berdasarkan BU user yang diajukan
+                $this->send_approval_request($exit_id, $user_id, $creator_id); //pengiriman notif berdasarkan BU user yang diajukan
                 redirect('form_exit', 'refresh');
                 //echo json_encode(array('st' =>1));
             }
@@ -1009,7 +1009,10 @@ class Form_exit extends MX_Controller {
         $user_id = getValue('user_id', 'users_exit', array('id'=>'where/'.$id));
         $this->data['user_nik'] = get_nik($user_id);
         $this->data['sess_id'] = $sess_id = $this->session->userdata('user_id');
-        $i =$this->db->select('*')->from('users_inventory')->join('inventory', 'users_inventory.inventory_id = inventory.id', 'left')->where('users_inventory.user_id', $user_id)->get();
+        
+        $i =$this->db->select('*')->from('users_inventory')->join('inventory', 'users_inventory.inventory_id = inventory.id', 'left')->where('users_inventory.user_id', $user_id)->where('users_inventory.is_deleted', 0)->get();
+
+        //$i =$this->db->select('*')->from('users_inventory')->join('inventory', 'users_inventory.inventory_id = inventory.id', 'left')->where('users_inventory.user_id', $user_id)->get();
        
         $this->data['users_inventory'] = $i;
         $this->data['rekomendasi'] = getAll('users_exit_rekomendasi', array('user_exit_id'=>'where/'.$id, ))->row();

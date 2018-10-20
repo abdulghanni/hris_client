@@ -215,6 +215,29 @@ class Person_model extends CI_Model
         return $query;
     }
 
+    function payroll_injection($data=array())
+    {
+        $this->db->insert_batch('users_payroll', $data); 
+    }
+
+    function getAllPayroll()
+    {
+        $this->db->select('*');
+        $this->db->from('users_payroll');
+        $query = $this->db->get();
+        return $query; 
+    }
+
+    function getPayrollbyNik($nik=0)
+    {
+        $this->db->select('*');
+        $this->db->from('users_payroll');
+        $this->db->where('nik',$nik);
+        $this->db->order_by('filename','desc');
+        $query = $this->db->get();
+        return $query; 
+    }
+
 
 
 

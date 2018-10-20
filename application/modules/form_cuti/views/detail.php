@@ -73,6 +73,14 @@
                     </div>
                     <div class="row form-row">
                       <div class="col-md-4">
+                        <label class="form-label text-right">Status Employee</label>
+                      </div>
+                      <div class="col-md-8">
+                        <input name="name" id="name" type="text"  class="form-control" placeholder="Nama" value="<?php echo $status_karyawan ?>" disabled="disabled">
+                      </div>
+                    </div>
+                    <div class="row form-row">
+                      <div class="col-md-4">
                         <label class="form-label text-right"><?php echo lang('dept_div') ?></label>
                       </div>
                       <div class="col-md-8">
@@ -253,7 +261,7 @@
                             <div class='btn btn-warning btn-small text-center' title='Kirim Notifikasi' onClick="send_notif_('lv<?php echo $i?>')"><i class='icon-mail-forward'> Kirim Notifikasi</i></div>
                           <?php }elseif($user->is_app_lv3 == 1 && get_nik($sess_id) == $user->user_app_lv3){?>
                             <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitcutiModalLv3"><i class='icon-edit'> Edit Approval</i></div>
-                            <div class='btn btn-warning btn-small text-center' title='Kirim Notifikasi' onClick="send_notif_hrd"><i class='icon-mail-forward'> Kirim Notifikasi</i></div>
+                            <div class='btn btn-warning btn-small text-center' title='Kirim Notifikasi' onClick="send_notif_('hrd')"><i class='icon-mail-forward'> Kirim Notifikasi</i></div>
                           <?php }elseif($user->is_app_hrd == 1 && get_nik($sess_id) == $user->user_app_hrd){?>
                             <div class='btn btn-info btn-small text-center' title='Edit Approval' data-toggle="modal" data-target="#submitcutiModalHrd"><i class='icon-edit'> Edit Approval</i></div>
                             <div class='btn btn-warning btn-small text-center' title='Kirim Notifikasi' onClick="send_notif_('lv<?php echo $i?>')"><i class='icon-mail-forward'> Kirim Notifikasi</i></div>

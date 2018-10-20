@@ -21,7 +21,7 @@
 		          <div class="tabbable tabs-left">
 		            <ul class="nav nav-tabs" id="tab-1">
 		              <li class="active" id="tabpersonnel" onclick="load('personnel')"><a href="#">Employee Identity</a></li>
-		              <li id="tabslip" onclick="load('payroll')"><a href="#">Slip Gaji Bulanan</a></li>
+		              <li id="tabslip" onclick="load('payroll_new')"><a href="#">Slip Gaji Bulanan</a></li>
 		              <li id="tabcourse" onclick="load('course')"><a href="#">Company Sponsor Course</a></li>
 		              <li id="tabcertificate" onclick="load('certificate')"><a href="#">Certificate</a></li>
 		              <li id="tabeducation" onclick="load('education')"><a href="#">Education</a></li>

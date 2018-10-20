@@ -92,6 +92,16 @@
                         </div>
                       </div>
 
+                      <div class="row form-row">
+                        <div class="col-md-3">
+                          <label class="form-label text-right">Status kepegawaian</label>
+                        </div>
+                        <div class="col-md-9">
+                          <input id="statuss" class="form-control "  value=""  disabled="disabled">
+                          <input name="old_status" id="status_id" type="hidden"  class="form-control " value="">
+                        </div>
+                      </div>
+
                     <div class="row form-row">
                       <div class="col-md-12">
                         <label class="bold form-label text-left"><?php echo 'Approval' ?></label>

@@ -8,7 +8,7 @@ class Form_pengangkatan_model extends CI_Model {
     var $join2  = 'empl_status';
     var $column = array('users.nik'); //set column field database for order and search
     var $order = array('id' => 'desc'); // default order 
-
+    //var $order = array();
     public function __construct()
     {
         parent::__construct();
@@ -105,15 +105,15 @@ class Form_pengangkatan_model extends CI_Model {
             $i++;
         }
         
-        if(isset($_POST['order'])) // here order processing
-        {
-            $this->db->order_by($column[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
-        } 
-        else if(isset($this->order))
-        {
+        //if(isset($_POST['order'])) // here order processing
+       // {
+        //    $this->db->order_by($column[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+        //} 
+        //else if(isset($this->order))
+        //{
             $order = $this->order;
             $this->db->order_by(key($order), $order[key($order)]);
-        }
+        //}
     }
 
     function get_datatables($f)

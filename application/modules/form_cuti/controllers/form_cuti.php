@@ -44,6 +44,38 @@ class Form_cuti extends MX_Controller {
         $no = $_POST['start'];
         foreach ($list as $r) {
             //AKSI
+            /*$stat_id_emp=get_user_emplstatus($r->nik);
+           $status_emp=select_where('employee_status','id',$stat_id_emp);
+           if($status_emp->num_rows()>0){
+            $status_employee=$status_emp->row();
+            $status_karyawannya=$status_employee->title;
+           }else{
+            $status_karyawannya='';
+           }*/
+           
+             $url = get_api_key().'users/employement/EMPLID/'.$r->nik.'/format/json';
+            $headers = get_headers($url);
+            $response = substr($headers[0], 9, 3);
+            if ($response != "404") {
+                $getuser_info = file_get_contents($url);
+                $user_info = json_decode($getuser_info, true);
+                //$this->data['user_info'] = $user_info;
+            }
+
+            $employee_status = (!empty($user_info['STATUS'])) ? $user_info['STATUS'] : '-';
+
+
+            if($employee_status == 0){
+                                $status_karyawannya = 'Work Center';
+                            }elseif($employee_status == 1){
+                                $status_karyawannya = 'Employed';
+                            }elseif($employee_status == 2){
+                                $status_karyawannya = 'Terminated';
+                            }elseif($employee_status == 3){
+                                $status_karyawannya = 'Honorarium';
+                            }else{
+                                $status_karyawannya = '-';
+                            }
            $detail = base_url()."form_".$this->form_name."/detail/".$r->id;
            $print = base_url()."form_".$this->form_name."/form_".$this->form_name."_pdf/".$r->id;
            $delete = (($r->approval_status_id_lv1 == 0 && $r->created_by == sessId()) || is_admin()) ? '<button onclick="showModal('.$r->id.')" class="btn btn-sm btn-danger" type="button" title="Batalkan Pengajuan"><i class="icon-remove"></i></button>' : '';
@@ -74,6 +106,7 @@ class Form_cuti extends MX_Controller {
             $row[] = "<a href=$detail>".$r->id.'</a>';
             $row[] = "<a href=$detail>".$r->nik.'</a>';
             $row[] = "<a href=$detail>".$r->username.'</a>';
+            $row[] = $status_karyawannya;
             $row[] = dateIndo($r->date_mulai_cuti);
             $row[] = $r->alasan_cuti;
             $row[] = $r->jumlah_hari;
@@ -219,6 +252,42 @@ class Form_cuti extends MX_Controller {
         }
     }
 
+    function renotif_to_lv1()
+    {
+        $sess_id = $this->session->userdata('user_id');
+        $query_lv1 = GetAll('users_cuti',array('created_on > '=>'where/2017-12-04','is_app_lv1'=>'where/0','is_deleted'=>'where/0'));
+        //die('--'.$this->db->last_query());
+        if($query_lv1->num_rows() > 0 )
+        {
+            foreach ($query_lv1->result_array() as $key => $value) {
+                $cuti_id = $value['id'];
+                $user_id = $value['user_id'];
+                $user_app_lv1 = $value['user_app_lv1'];
+                $created_on = $value['created_on'];
+
+                $subject_email = get_form_no($cuti_id).'-Pengajuan Permohonan Cuti';
+                $isi_email = get_name($user_id).' mengajukan Permohonan Cuti, untuk melihat detail silakan <a href='.base_url().'form_cuti/detail/'.$cuti_id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_cuti/detail/'.$cuti_id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
+                //if($user_id!==$sess_id):
+                //    $this->approval->by_admin('cuti', $cuti_id, $sess_id, $user_id, $this->detail_email($cuti_id));
+                //endif;
+                if(!empty($user_app_lv1)){
+                    $this->approval->request_renotif_lv1('lv1', 'cuti', $cuti_id, $user_id, $created_on, $this->detail_email($cuti_id));
+                    if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), $subject_email, $isi_email);
+
+                    echo 'ID:'.$cuti_id.' berhasil terkirim';
+                }else{
+                    $this->approval->request_renotif_lv1('hrd', 'cuti', $cuti_id, $user_id, $created_on, $this->detail_email($cuti_id));
+                    if(!empty(getEmail($this->approval->approver('cuti', $user_nik))))$this->send_email(getEmail($this->approval->approver('cuti', $user_nik)), $subject_email, $isi_email);
+
+                    echo 'ID:'.$cuti_id.' gagal terkirim';
+                }
+            }
+        }else{
+            echo 'Ga ada yg diproses';
+        }
+
+    }
+
     function upload_attachment($id){
         $sess_id = $this->session->userdata('user_id');
             $user_folder = get_nik($sess_id);
@@ -277,6 +346,39 @@ class Form_cuti extends MX_Controller {
             $this->data['approved'] = assets_url('img/approved_stamp.png');
             $this->data['rejected'] = assets_url('img/rejected_stamp.png');
             $this->data['pending'] = assets_url('img/pending_stamp.png');
+            /*$stat_id_emp=get_user_emplstatus($this->data['user_nik']);
+           $status_emp=select_where('employee_status','id',$stat_id_emp);
+           if($status_emp->num_rows()>0){
+            $status_employee=$status_emp->row();
+            $status_karyawannya=$status_employee->title;
+           }else{
+            $status_karyawannya='';
+           }
+            $this->data['status_karyawan']=$status_karyawannya;*/
+
+             $url = get_api_key().'users/employement/EMPLID/'.$this->data['user_nik'].'/format/json';
+            $headers = get_headers($url);
+            $response = substr($headers[0], 9, 3);
+            if ($response != "404") {
+                $getuser_info = file_get_contents($url);
+                $user_info = json_decode($getuser_info, true);
+                //$this->data['user_info'] = $user_info;
+            }
+
+            $employee_status = (!empty($user_info['STATUS'])) ? $user_info['STATUS'] : '-';
+
+
+            if($employee_status == 0){
+                                $this->data['status_karyawan'] = 'Work Center';
+                            }elseif($employee_status == 1){
+                                $this->data['status_karyawan'] = 'Employed';
+                            }elseif($employee_status == 2){
+                                $this->data['status_karyawan'] = 'Terminated';
+                            }elseif($employee_status == 3){
+                                $this->data['status_karyawan'] = 'Honorarium';
+                            }else{
+                                $this->data['status_karyawan'] = '-';
+                            }
             if($lv != null){
                 $app = $this->load->view('form_cuti/'.$lv, $this->data, true);
                 $note = $this->load->view('form_cuti/note', $this->data, true);
@@ -491,13 +593,16 @@ class Form_cuti extends MX_Controller {
                 $this->approval->request('lv3', 'cuti', $id, $user_cuti_id, $this->detail_email($id));
             }elseif(empty($user_app) && empty($user_app_lv3) && $type == 'lv1'){
                 $this->approval->request('hrd', 'cuti', $id, $user_cuti_id, $this->detail_email($id));
-                if(!empty(getEmail($this->approval->approver('cuti', $user_id))))$this->send_email(getEmail($this->approval->approver('cuti', $user_id)), $subject_email_request, $isi_email_request);
+                //if(!empty(getEmail($this->approval->approver('cuti', $user_id))))$this->send_email(getEmail($this->approval->approver('cuti', $user_id)), $subject_email_request, $isi_email_request); terkirim ke user berdasarkan BU approver lv3
+                if(!empty(getEmail($this->approval->approver('cuti', get_nik($user_cuti_id)))))$this->send_email(getEmail($this->approval->approver('cuti', get_nik($user_cuti_id))), $subject_email_request, $isi_email_request);
             }elseif($type == 'lv3'){
                 $this->approval->request('hrd', 'cuti', $id, $user_cuti_id, $this->detail_email($id));
-                if(!empty(getEmail($this->approval->approver('cuti', $user_id))))$this->send_email(getEmail($this->approval->approver('cuti', $user_id)), $subject_email_request, $isi_email_request);
-            }elseif(empty($user_app_lv3) && $type == 'lv2'){
+                //if(!empty(getEmail($this->approval->approver('cuti', $user_id))))$this->send_email(getEmail($this->approval->approver('cuti', $user_id)), $subject_email_request, $isi_email_request);
+                if(!empty(getEmail($this->approval->approver('cuti', get_nik($user_cuti_id)))))$this->send_email(getEmail($this->approval->approver('cuti', get_nik($user_cuti_id))), $subject_email_request, $isi_email_request);
+            }elseif($user_app_lv3 == 0 && $type == 'lv2'){
                 $this->approval->request('hrd', 'cuti', $id, $user_cuti_id, $this->detail_email($id));
-                if(!empty(getEmail($this->approval->approver('cuti', $user_id))))$this->send_email(getEmail($this->approval->approver('cuti', $user_id)), $subject_email_request, $isi_email_request);
+                //if(!empty(getEmail($this->approval->approver('cuti', $user_id))))$this->send_email(getEmail($this->approval->approver('cuti', $user_id)), $subject_email_request, $isi_email_request);
+                if(!empty(getEmail($this->approval->approver('cuti', get_nik($user_cuti_id)))))$this->send_email(getEmail($this->approval->approver('cuti', get_nik($user_cuti_id))), $subject_email_request, $isi_email_request);
             }
         }else{
             $email_body = "Status pengajuan permohonan cuti yang diajukan oleh ".get_name($user_cuti_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_cuti/detail/'.$id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_cuti/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
@@ -551,6 +656,7 @@ class Form_cuti extends MX_Controller {
         if($type == 'hrd' && $approval_status == 1){
             $this->send_notif_tambahan($id, 'cuti');
             $status_id = 3;
+            //$this->appr_leave_request(get_nik($user_cuti_id), $leavedatefrom, $status_id, get_nik($this->session->userdata('user_id')));
             $this->update_status_flag(get_nik($user_cuti_id), $leavedatefrom, $leavedateto, $status_id, get_nik($this->session->userdata('user_id')));
         }
 
@@ -579,7 +685,7 @@ class Form_cuti extends MX_Controller {
 
         $method = 'post';
         $params =  array();
-        $uri = get_api_key().'users/appr_leave_request/EMPLID/'.$user_id.'/LEAVEDATEFROM/'.$leavedatefrom.'/STATUSFLAG/'.$approval_status.'/IDAPPROVAL'.$approval_id;
+        $uri = get_api_key().'users/appr_leave_request/EMPLID/'.$user_id.'/LEAVEDATEFROM/'.$leavedatefrom.'/STATUSFLAG/'.$approval_status.'/IDAPPROVAL/'.$approval_id;
 
         $this->rest->format('application/json');
 
@@ -707,10 +813,12 @@ class Form_cuti extends MX_Controller {
         if(isset($result->status) && $result->status == 'success')
         {
             //return $this->rest->debug();
+            //$this->send_email('andy13galuh@gmail.com', $nik.' success update attendance data (update_attendance_data)', $uri);
             return TRUE;
         }
         else
         {
+            $this->send_email('andy13galuh@gmail.com', $nik.' failed update attendance data (update_attendance_data)', $uri);
             //return $this->rest->debug();
             return FALSE;
         }
@@ -936,7 +1044,7 @@ class Form_cuti extends MX_Controller {
             $this->update_leave_number_sequence($NEXTREC);
             $isi_email = "NEXTREC =>".$NEXTREC."<br/>".$uri;
             
-            $this->send_email('andy13galuh@gmail.com', $user_id.' success insert cuti (insert_leave_request)', $isi_email);
+            //$this->send_email('andy13galuh@gmail.com', $user_id.' success insert cuti (insert_leave_request)', $isi_email);
             return true;
         }
         else

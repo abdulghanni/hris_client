@@ -27,8 +27,8 @@
         <a href="<?php echo base_url()?>"> <i class="icon-custom-home"></i> <span class="title">Halaman Depan</span> <span class="selected"></span> </a> 
       </li>      
       <!-- <li class=""> <a href="<?php echo site_url('attendance')?>"> <i class="icon-signin"></i> <span class="title">Kehadiran</span></a> -->
-      <?php if(get_nik($this->session->userdata('user_id')) != 1){?><li class=""> <a href="<?php echo site_url('attendance_axapta')?>"> <i class="icon-signin"></i> <span class="title">Kehadiran (Axapta)</span></a><?php } ?>
-      </li>
+     
+      
       <li class=""> <a href="javascript:;"> <i class="icon-plus-sign"></i> <span class="title">Form pengajuan</span> <span class="arrow "></span> </a>
         <ul class="sub-menu">
           <?php if(is_spv($nik)||is_admin()||is_admin_bagian()):?><li > <a href="<?php echo site_url('form_recruitment')?>">Permintaan SDM</a></li><?php endif; ?>
@@ -60,7 +60,7 @@
           <li > <a href="<?php echo site_url('form_template')?>">Form Template</a> </li>        
            </ul>
       </li>
-      <?php //if (is_spv($nik)||is_admin()):?>
+      <?php //echo $nik; //if (is_spv($nik)||is_admin()):?>
       <?php //if (is_admin()):?>
       <li class=""> <a href="javascript:;"> <i class="icon-check"></i> <span class="title">Form Penilaian</span> <span class="arrow "></span> </a>
         <ul class="sub-menu">
@@ -74,15 +74,37 @@
            <?php if (is_spv($nik)||is_admin()):?>
               <li > <a href="<?php echo site_url('competency/form_evaluasi_training')?>">Evaluasi Keefektifan Training</a></li>
             <?php endif;?>
-           <?php if (is_spv($nik)||is_admin()):?>    
+           <?php 
+            if($nik!='P0421'):
+           if(is_spv($nik)||is_admin()):?>    
               <li > <a href="<?php echo site_url('competency/kinerja_supporting')?>">Penilaian Kinerja Supporting</a></li>
-          <?php endif;?>
+          <?php endif;
+            endif;
+          ?>
         </ul>
       </li>   
+
+       <?php if(get_nik($this->session->userdata('user_id')) != 1){?>
+
+      <li class=""> <a href="<?php echo site_url('attendance_axapta')?>"> <i class="icon-signin"></i> <span class="title">Kehadiran (Axapta)</span></a></li>
+
+      <li class=""> 
+      <a href="javascript:;"> <i class="icon-info-sign"></i> <span class="title">Mapping Kompetensi</span> <span class="arrow "></span> </a>
+        <ul class="sub-menu">
+          <li > <a href="<?php echo site_url('competency/mapping_standar')?>">Kompetensi Standar</a> </li>
+          <li > <a href="<?php echo site_url('competency/mapping_indikator')?>">Kompetensi Indikator</a> </li>
+          </ul>
+        </li>
+
+      <?php } ?>
     
     <?php if (is_admin() || is_admin_kompetensi()):?>
       <li class=""> <a href="javascript:;"> <i class="icon-cog"></i> <span class="title">Laporan</span> <span class="arrow "></span> </a>
         <ul class="sub-menu">
+        <li > <a href="<?php echo site_url('competency/monitoring_personal_assessment')?>">Personal Assessment</a></li>
+        <li > <a href="<?php echo site_url('competency/monitoring_hvm')?>">Human Value Matrix</a></li>
+        <li > <a href="<?php echo site_url('competency/monitoring_evaluasi_training')?>">Evaluasi Keaktifan Training</a></li>
+        <li > <a href="<?php echo site_url('competency/monitoring_kinerja_supporting')?>">Penilaian Kinerja Supporting</a></li>
           <li > <a href="<?php echo site_url('competency/monitoring_kpi')?>">Monitoring KPI Bulanan</a></li>
           <li > <a href="<?php echo site_url('competency/rekap_personal_assessment')?>">Rekapitulasi gap Kompetensi</a></li>
         </ul>
@@ -108,7 +130,8 @@
           <li > <a href="<?php echo site_url('organization')?>">Organization</a> </li>
           <li > <a href="<?php echo site_url('position')?>">Position</a> </li>
           <li > <a href="<?php echo site_url('library_table')?>">Library Reference Table</a> </li>-->
-          <?php if(is_admin_inventaris()):?><li ><a href="<?php echo site_url('inventory')?>"><i class="icon-briefcase"></i> Inventaris</a> </li><?php endif?>
+          <?php if(is_admin_inventaris()):?><li ><a href="<?php echo site_url('inventory')?>"><i class="icon-briefcase"></i> Inventaris</a> </li>
+          <li ><a href="<?php echo site_url('inactive_user/axa')?>"><i class="icon-briefcase"></i> Active/Inactive User</a> </li><?php endif?>
           <?php if(is_admin()):?><li ><a href="<?php echo site_url('admin_khusus')?>"> Admin Khusus</a> </li><?php endif?>
           <?php if(is_admin()):?><li ><a href="<?php echo site_url('approval')?>"> Approval HRD</a> </li><?php endif?>
           <?php if(is_admin()):?><li ><a href="<?php echo site_url('approval_khusus')?>"> Approval Atasan Khusus</a> </li><?php endif?>
@@ -142,13 +165,13 @@
       </li>
       <?php endif;?>
 
-      <?php if (is_admin() || is_admin_kompetensi()):?>
+      <?php if (is_admin() || is_admin_kompetensi() || is_admin_cabang()):?>
       <li class=""> <a href="javascript:;"> <i class="icon-cogs"></i> <span class="title">Setup Training</span> <span class="arrow "></span> </a>
         <ul class="sub-menu">
           
-           <?php if(is_admin()||is_admin_kompetensi()):?><li > <a href="<?php echo site_url('vendor')?>">Vendor</a> </li><?php endif?>
-          <?php if(is_admin()||is_admin_kompetensi()):?><li > <a href="<?php echo site_url('form_training_notif')?>">Notifikasi training</a> </li><?php endif?>
-          <?php if(is_admin()||is_admin_kompetensi()):?><li > <a href="<?php echo site_url('training')?>">Training</a> </li><?php endif?>
+           <?php if(is_admin()||is_admin_kompetensi() || is_admin_cabang()):?><li > <a href="<?php echo site_url('vendor')?>">Vendor</a> </li><?php endif?>
+          <?php if(is_admin()||is_admin_kompetensi() || is_admin_cabang()):?><li > <a href="<?php echo site_url('form_training_notif')?>">Notifikasi training</a> </li><?php endif?>
+          <?php if(is_admin()||is_admin_kompetensi() || is_admin_cabang()):?><li > <a href="<?php echo site_url('training')?>">Training</a> </li><?php endif?>
         </ul>
       </li>
       <?php endif;?>

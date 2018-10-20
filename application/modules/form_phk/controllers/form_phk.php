@@ -44,6 +44,14 @@ class Form_phk extends MX_Controller {
         $no = $_POST['start'];
         foreach ($list as $r) {
             //AKSI
+            $stat_id_emp=get_user_emplstatus($r->nik_karyawan);
+           $status_emp=select_where('employee_status','id',$stat_id_emp);
+           if($status_emp->num_rows()>0){
+            $status_employee=$status_emp->row();
+            $status_karyawannya=$status_employee->title;
+           }else{
+            $status_karyawannya='';
+           }
            $detail = base_url()."form_".$this->form_name."/detail/".$r->id; 
            $print = base_url()."form_".$this->form_name."/form_".$this->form_name."_pdf/".$r->id; 
            $delete = (($r->app_status_id_lv1 == 0 && $r->created_by == sessId()) || is_admin()) ? '<button onclick="showModal('.$r->id.')" class="btn btn-sm btn-danger" type="button" title="Batalkan Pengajuan"><i class="icon-remove"></i></button>' : '';
@@ -73,6 +81,7 @@ class Form_phk extends MX_Controller {
             $row = array();
             $row[] = "<a href=$detail>".$r->id.'</a>';
             $row[] = "<a href=$detail>".$r->karyawan.' - '.$r->nik_karyawan.'</a>';
+            $row[] = $status_karyawannya;
             $row[] = "<a href=$detail>".$r->pengaju.' - '.$r->nik_pengaju.'</a>';
             $row[] = dateIndo($r->date_phk);
             $row[] = dateIndo($r->created_on);
@@ -145,7 +154,16 @@ class Form_phk extends MX_Controller {
             $attachment = getValue('attachment', 'users_phk', array('id' => 'where/'.$id));
             $this->data['attachment'] = explode(",",$attachment);
             $this->data['approval_status'] = GetAll('approval_status', array('is_deleted'=>'where/0'));
-            
+            $nik_karyawan=get_nik($this->data['row']->user_id);
+            $stat_id_emp=get_user_emplstatus($nik_karyawan);
+           $status_emp=select_where('employee_status','id',$stat_id_emp);
+           if($status_emp->num_rows()>0){
+            $status_employee=$status_emp->row();
+            $status_karyawannya=$status_employee->title;
+           }else{
+            $status_karyawannya='';
+           }
+            $this->data['status_karyawan']=$status_karyawannya;
             $this->data['approved'] = assets_url('img/approved_stamp.png');
             $this->data['rejected'] = assets_url('img/rejected_stamp.png');
             $this->data['pending'] = assets_url('img/pending_stamp.png');

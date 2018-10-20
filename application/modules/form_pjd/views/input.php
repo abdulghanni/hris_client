@@ -92,14 +92,15 @@
                       </div>
                     </div>
 
-                    <div class="row form-row atasanlain" style="display:none" id="atasan-3">
+                    <div class="row form-row atasanlain" id="atasan-3">
                       <div class="col-md-4">
-                        <label class="form-label text-right"><?php echo 'Atasan Lainnya' ?></label>
+                        <label class="form-label text-right"><?php echo 'Atasan lain (Ka. Akunting)' ?></label>
                       </div>
                       <div class="col-md-8">
-                        <select name="atasan3" id="atasan3" class="select2" style="width:100%">
-                            <option value="0">- Pilih Atasan -</option>
-                        </select>
+                      <?php
+                                $style_bu='class="form-control input-sm select2" style="width:100%" id="ka_akunting"  ';
+                                echo form_dropdown('atasan3',$ka_akt,'',$style_bu);
+                              ?>
                       </div>
                     </div>
 
@@ -179,9 +180,10 @@
                         </select>
                       </div>
                     </div>  
-
+                    <br/>
                    <div class="row form-row">
                       <div class="col-md-4">
+                      &nbsp;
                       </div>
                       <div class="col-md-8">
                           <button type="button" class="btn btn-primary btn-xs" onclick="tambahatasan()" id="addatasan" title="Tambah Atasan"><i class="icon-plus"></i>&nbsp;<?php echo 'Tambah atasan';?></button>&nbsp;<button type="button" class="btn btn-danger btn-xs" onclick="hapusatasanz()" id="hapusatasan"  title="Hapus Atasan" style="display: none;"><i class="icon-minus"></i>&nbsp;<?php echo '';?></button>
@@ -481,7 +483,7 @@
   cell3.innerHTML = "<select name='peserta[]' class='select2' style='width:100%'><option value='0'> -- Pilih Karyawan -- </option><?php foreach ($users as $key => $up) :?><option value='<?php echo $up['nik'] ?>'><?php echo $up['username'].' - '.$up['nik'] ?></option><?php endforeach;?></select>"; 
   <?php } else { ?>
   var cell3=row.insertCell(2);
-  cell3.innerHTML = "<select name='peserta[]' class='select2' style='width:100%'><?php foreach ($penerima_tugas as $key => $up) :?><option value='<?php echo $up['ID'] ?>'><?php $reg = (is_registered($up['ID'])) ? '' : ' - Belum Terdaftar';echo $up['NAME'].' - '.$up['ID'].$reg ?></option><?php endforeach;?></select>";  
+  cell3.innerHTML = "<select name='peserta[]' class='select2' style='width:100%'><?php foreach ($penerima_tugas_satu_bu as $key => $up) :?><option value='<?php echo $up['ID'] ?>'><?php $reg = (is_registered($up['ID'])) ? '' : ' - Belum Terdaftar';echo $up['NAME'].' - '.$up['ID'].$reg ?></option><?php endforeach;?></select>";  
   <?php } ?>
 }
   function deleteEmp(tableID){try{var table=document.getElementById(tableID);var rowCount=table.rows.length;for(var i=0;i<rowCount;i++){var row=table.rows[i];var chkbox=row.cells[0].childNodes[0];if(null!=chkbox&&true==chkbox.checked){table.deleteRow(i);rowCount--;i--;}}}catch(e){alert(e);}}

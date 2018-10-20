@@ -28,7 +28,7 @@
               </div>
               <?php echo bs_form_submit('submit', lang('login_submit_btn'));?>
               </fieldset><br/>
-              <u><a href="<?php echo site_url('auth/forgot_password')?>">Lupa Password?, Klik Disini</a></u>
+               <u><a href="<?php echo site_url('auth/forgot_password')?>">Lupa Password?, Klik Disini</a></u>
               <br/>
               <br/>
               <u><a href="<?php echo site_url('user_guide')?>" target="_blank">Panduan?, Klik Disini</a></u>

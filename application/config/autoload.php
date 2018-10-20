@@ -64,7 +64,7 @@ $autoload['libraries'] = array('pagination');
 |	$autoload['helper'] = array('url', 'file');
 */
 
-$autoload['helper'] = array('form' ,'url','mz', 'ag', 'text');
+$autoload['helper'] = array('form' ,'url','mz', 'ag', 'text', 'dc');
 
 
 /*

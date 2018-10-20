@@ -270,8 +270,14 @@ class Form_pjd extends MX_Controller {
         'app_status_id_'.$type => $approval_status,
         'note_'.$type => $this->input->post('note_'.$type)
         );
-
         $this->main->update($id,$data);
+        if($type=='lv1' and $approval_status==1){
+            $task_creator = getValue('task_creator','users_spd_luar_group', array('id'=>'where/'.$id));
+            $creator_nik = get_nik($task_creator);
+            $spd_id=$id;
+            if(!empty(getEmail($this->approval->approver('dinas', $creator_nik))))$this->send_email(getEmail($this->approval->approver('dinas', $creator_nik)), $subject_email, $isi_email);
+             $this->approval->request('hrd', 'spd_luar_group', $spd_id, $task_creator, $this->detail_email($spd_id));
+        }
     }
 
     function send_notif($id, $type){
@@ -382,6 +388,7 @@ class Form_pjd extends MX_Controller {
             $this->get_penerima_tugas_satu_bu();
             // $this->get_user_atasan();
             $this->get_bu();
+            $this->get_ka_akt();
             $this->data['transportation_list'] = getAll('transportation', array('is_deleted'=>'where/0'))->result();
             $this->data['tl_num_rows'] = getAll('transportation', array('is_deleted'=>'where/0'))->num_rows();
             $this->data['city_list'] = getAll('city', array('is_deleted'=>'where/0'))->result();
@@ -1051,14 +1058,12 @@ class Form_pjd extends MX_Controller {
         if($task_creator!==$created_by):
             $this->approval->by_admin('spd_luar_group', $spd_id, $created_by, $task_creator, $this->detail_email($spd_id));
         endif;
-         if(!empty($user_app_lv1)):
-            //if(!empty(getEmail($user_app_lv1)))$this->send_email(getEmail($user_app_lv1), $subject_email, $isi_email);
+         if(!empty($user_app_lv1)){
+            if(!empty(getEmail($user_app_lv1))){
+                $this->send_email(getEmail($user_app_lv1), $subject_email, $isi_email);
             $this->approval->request('lv1', 'spd_luar_group', $spd_id, $task_creator, $this->detail_email($spd_id));
-         else:
-            if(!empty(getEmail($this->approval->approver('dinas', $creator_nik))))$this->send_email(getEmail($this->approval->approver('dinas', $creator_nik)), $subject_email, $isi_email);
-            $this->approval->request('hrd', 'spd_luar_group', $spd_id, $task_creator, $this->detail_email($spd_id));
-         endif;
-
+            }
+        }
          $this->db->where('id', $spd_id)->update('users_spd_luar_group', array('is_show'=>1));
         redirect('form_pjd', 'refresh');
     }
@@ -1208,6 +1213,32 @@ class Form_pjd extends MX_Controller {
                 return $this->data['bu'] = $result;
             } else {
                 return $this->data['bu'] = '';
+            }
+    }
+
+    function get_ka_akt()
+    {
+            //return $this->data['ka_akt'] = 'test';
+            $user_id = $this->session->userdata('user_id');
+            //die($user_id);
+            $url_org = get_api_key().'users/ka_akt_list/EMPLID/'.get_nik($user_id).'/format/json';
+            $headers = get_headers($url_org);
+            $response = substr($headers[0], 9, 3);
+
+            if ($response != "404") {
+                $get_ka_akt = file_get_contents($url_org);
+                $ka_akt = json_decode($get_ka_akt, true);
+
+                foreach ($ka_akt as $row)
+                {
+                    //$result['']= '- Pilih Ka. Akunting -';
+                    if($row['EMPLID'] != null){
+                        $result[$row['EMPLID']]= ucwords(strtolower($row['NAME']));
+                    }
+                }
+                return $this->data['ka_akt'] = $result;
+            } else {
+                return $this->data['ka_akt'] = '';
             }
     }
 

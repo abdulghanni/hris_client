@@ -11,6 +11,7 @@
 										</thead>
 										<tbody id="compentency-kpi">
 											<?php foreach ($pos as $pos) { ?>
+											<?php  if($this->ion_auth->is_admin()){ ?>
 													<tr>
 														<td colspan="6">
 															<h4><?php echo $pos['DESCRIPTION']?></h4>
@@ -66,7 +67,65 @@
 															</table>
 														</td>
 													</tr>
-											<?php }	?>
+											<?php }elseif($position==$pos['DESCRIPTION']){ ?>
+											<tr>
+														<td colspan="6">
+															<h4><?php echo $pos['DESCRIPTION']?></h4>
+															<table>
+																<?php 
+																$kpi = GetJoin('competency_mapping_kpi_detail as a','competency_monitoring as b','a.competency_monitoring_id = b.id','LEFT','
+														            a.id as id, 
+														            a.organization_id as organization_id, 
+														            a.position_group_id as position_group_id, 
+														            a.area_kinerja_utama as area_kinerja_utama, 
+														            a.kpi as kpi, a.bobot_kpi as bobot_kpi, 
+														            a.target_kpi as target_kpi, 
+														            a.sumber_info as sumber_info, 
+														            a.competency_monitoring_id as competency_monitoring_id,
+														            a.is_deleted as is_deleted, 
+														            b.title as competency_monitoring
+														            ',array('a.organization_id'=>'where/'.$org_id,'a.is_deleted'=>'where/0','a.position_group_id'=>'where/'.$pos['ID']));
+														            ?>
+															        <tr>
+																		<th >Area Kinerja Utama</th>
+																		<th >KPI</th>
+																		<th >Bobot KPI</th>
+																		<th >Target KPI</th>
+																		<th >Sumber Info</th>
+																		<th >Monitoring</th>
+																	</tr>    
+																<?php foreach ($kpi->result_array() as $kpi) { ?>
+																	<tr>
+																		<td >
+																			<?php 
+																			$kpi_detail = $kpi_detail = getAll('competency_form_kpi_detail',array('competency_mapping_kpi_detail_id'=>'where/'.$kpi["id"],'is_deleted'=>'where/0','comp_session_id'=>'where/'.$comp_session_id,'organization_id'=>'where/'.$org_id));
+																			/*if($kpi_detail->num_rows() > 0)
+																			{
+																				$val_kpi_detail = $kpi_detail->row_array();
+																				$url_red = 'edit_detail/'.$org_id.'/'.$comp_session_id.'/'.$kpi["id"].'/'.$val_kpi_detail['id'].'/';
+																			}else
+																			{
+																				$url_red = 'input_detail/'.$org_id.'/'.$comp_session_id.'/'.$kpi["id"].'/';
+																			}*/
+																			$url_red = 'employee/'.$org_id.'/'.$comp_session_id.'/'.$kpi["id"].'/';
+																			?>
+																			<a href="<?php echo site_url('competency/form_kpi/'.$url_red)?>">
+																				<?php echo $kpi['area_kinerja_utama']?>
+																			</a>
+																		</td>
+																		<td ><?php echo $kpi['kpi']?></td>
+																		<td ><?php echo $kpi['bobot_kpi']?></td>
+																		<td ><?php echo $kpi['target_kpi']?></td>
+																		<td ><?php echo $kpi['sumber_info']?></td>
+																		<td ><?php echo $kpi['competency_monitoring']?></td>
+																	</tr>
+																<?php } ?>
+															</table>
+														</td>
+													</tr>
+
+
+											<?php } }	?>
 													
 										</tbody>
 									</table>

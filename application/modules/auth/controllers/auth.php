@@ -41,6 +41,7 @@ class Auth extends MX_Controller {
         }
         else
         {
+            //redirect('auth/maintenance', 'refresh');
             //set the flash data error message if there is one
             $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
 
@@ -120,6 +121,12 @@ class Auth extends MX_Controller {
         }
     }
 
+    function maintenance()
+    {
+        $this->data['home']='';
+        $this->_render_page('auth/maintenance', $this->data);
+    }
+
 
 
     function keywords(){
@@ -172,22 +179,30 @@ class Auth extends MX_Controller {
             $first_login = (!empty($last_login)) ? '' : '1';
             if ($this->ion_auth->login($nik, $this->input->post('password')))
             {
-                if(!empty($last_link)):
-                    redirect($last_link);
-                else:
-                    if(!is_admin()&&$first_login == 1)redirect('auth/edit_user/'.$user_id.'/'.$first_login,'refresh');
-                    $this->session->set_flashdata('message', $this->ion_auth->messages());
-                    redirect('/');
-                endif;
+            	$jsondata = file_get_contents(get_api_key().'users/lists2/EMPLID/'.$nik.'/format/json');
+                $data = json_decode($jsondata, true);
+                if(count($data) == 0)
+                {
+	                if(!empty($last_link)):
+	                    redirect($last_link);
+	                else:
+	                    if(!is_admin()&&$first_login == 1)redirect('auth/edit_user/'.$user_id.'/'.$first_login,'refresh');
+	                    $this->session->set_flashdata('message', $this->ion_auth->messages());
+	                    redirect('/');
+	                endif;
+	            }else{
+	            	$this->session->set_flashdata('message', 'Your Account is still inactive, Please Contact The Administrator');
+                        redirect("auth/login", 'refresh');
+	            }
             }
 
-            //$jsondata = file_get_contents(get_api_key().'users/lists/format/json');
-            $jsondata = file_get_contents(get_api_key().'users/lists2/EMPLID/'.$nik.'/format/json');
+            $jsondata = file_get_contents(get_api_key().'users/lists/format/json');
+            //$jsondata = file_get_contents(get_api_key().'users/lists2/EMPLID/'.$nik.'/format/json');
              //convert json object to php associative array
              $data = json_decode($jsondata, true);
-             // print_mz($data);
-            // if ($this->cekNik($data, 'EMPLID', $nik) == TRUE && $this->input->post('password') == 'password' && is_registered($nik) == false)
-            if ($data == 1 && $this->input->post('password') == 'password' && is_registered($nik) == false)
+            // print_mz($data);
+             if ($this->cekNik($data, 'EMPLID', $nik) == TRUE && $this->input->post('password') == 'password' && is_registered($nik) == false)
+            //if ($data == 1 && $this->input->post('password') == 'password' && is_registered($nik) == false)
             {
               $getdata = file_get_contents(get_api_key().'users/list/EMPLID/'.$nik.'/format/json');
               $data = json_decode($getdata, true);
@@ -526,7 +541,54 @@ class Auth extends MX_Controller {
                 $this->session->set_flashdata('message', 'Nik anda tidak terdaftar');
                 redirect("auth/forgot_password", 'refresh');
             }
+            $identity=$identity->nik;
+            //$this->load->model('ion_auth_model');
+            if ( $this->ion_auth_model->forgotten_password($identity) )   //changed
+        {
+            //$user = $this->where($this->config->item('identity', 'ion_auth'), $identity)->where('active', 1)->users()->row();  //changed to get_user_by_identity from email
+            $user=$this->db->query("SELECT * FROM users WHERE active='1' AND nik='$identity'")->row();
+            $email_coorporate = getEmail($identity);
+            $email_previous = getPreviousEmail($identity);
+            $email = (!empty($email_coorporate)) ? $email_coorporate : ((!empty($email_previous)) ? $email_previous : '');
+            if ($user)
+            {
+                $data = array(
+                    'identity'      => $user->{$this->config->item('identity', 'ion_auth')},
+                    'forgotten_password_code' => $user->forgotten_password_code
+                );
 
+
+                if(!$this->config->item('use_ci_email', 'ion_auth'))
+                {
+                    $this->set_message('forgot_password_successful');
+                    return $data;
+                }
+                else
+                {
+
+                    $message = $this->load->view($this->config->item('email_templates', 'ion_auth').$this->config->item('email_forgot_password', 'ion_auth'), $data, true);
+                    $a=$this->send_email($email, 'Verifikasi Reset Password Akun Web-HRIS Erlangga', $message);
+                    if ($a)
+                        {
+                            //$this->set_message('Verifikasi Reset Password Terkirim Ke '.$email);
+                            $this->session->set_flashdata('message','Verifikasi Reset Password Terkirim Ke '.$email) ;
+                            redirect("auth/login", 'refresh');
+                        }
+                        else
+                        {
+                            //$this->set_message('Terjadi kesalahan !!, silakan hubungi administrator');
+                            //return 'Anda tidak memiliki email aktif, silakan hubungi administrator!';
+                            
+                            $this->session->set_flashdata('message','Email gagal terkirim, inbox email anda penuh atau silakan hubungi administrator') ;
+
+                            redirect("auth/forgot_password", 'refresh');
+                            //return $this->email->print_debugger();
+                        }
+
+                }
+            }
+        }
+            /*
             //run the forgotten password method to email an activation code to the user
             $forgotten = $this->ion_auth->forgotten_password($identity->{$this->config->item('identity', 'ion_auth')});
             
@@ -541,7 +603,7 @@ class Auth extends MX_Controller {
             {
                 $this->session->set_flashdata('message', $this->ion_auth->message());
                 redirect("auth/forgot_password", 'refresh');
-            }
+            }*/
         }
     }
 

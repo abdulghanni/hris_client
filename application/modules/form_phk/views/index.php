@@ -41,6 +41,7 @@
                          <tr>
                           <th rowspan="2" scope="col" width="5%" class="text-center">No</th>
                           <th rowspan="2" scope="col" width="15%">Nama Karyawan</th>
+                          <th rowspan="2" scope="col" width="5%">Status Employee</th>
                           <th rowspan="2" scope="col" width="15%">Nama Pemohon</th>
                           <th rowspan="2" scope="col" width="15%">Tanggal PHK</th>
                           <th rowspan="2" scope="col" width="15%">Tanggal Pengajuan</th>
