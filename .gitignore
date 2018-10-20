@@ -12,3 +12,6 @@ uploads/template/ArboWebForestUserManual.pdf
 users_approval.csv
 users_approval.xlsx
 .htaccess
+uploads/*
+hrd/*
+application/config/config.php
