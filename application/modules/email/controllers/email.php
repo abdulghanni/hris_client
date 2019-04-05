@@ -82,6 +82,130 @@ class Email extends MX_Controller {
         }
     }
 
+    function show_read($name = "fn:",$subject = "em:", $sort_by = "id", $sort_order = "asc", $offset = 0)
+    {
+        $this->data['title'] = "Email Masuk";
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+        else
+        {
+        //set the flash data error message if there is one
+        $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
+
+        //set sort order
+        $this->data['sort_order'] = $sort_order;
+        
+        //set sort by
+        $this->data['sort_by'] = $sort_by;
+       
+        //set filter by title
+        $this->data['name_param'] = $name; 
+        $exp_name = explode(":",$name);
+        $name_re = str_replace("_", " ", $exp_name[1]);
+        $name_post = (strlen($name_re) > 0) ? array('users.username'=>$name_re) : array() ;
+
+        //set filter by title
+        $this->data['subject_param'] = $subject; 
+        $exp_subject = explode(":",$subject);
+        $subject_re = str_replace("_", " ", $exp_subject[1]);
+        $subject_post = (strlen($subject_re) > 0) ? array('email.subject'=>$subject_re) : array() ;
+        
+        //set default limit in var $config['list_limit'] at application/config/ion_auth.php 
+        $this->data['limit'] = $limit = (strlen($this->input->post('limit')) > 0) ? $this->input->post('limit') : 25 ;
+
+        $this->data['offset'] = 6;
+
+        //list of filterize all email  
+        $this->data['email_all'] = $this->email_model->like($name_post)->like($subject_post)->where('is_deleted',0)->email_read()->result();
+        
+        $this->data['num_rows_all'] = $this->email_model->like($name_post)->like($subject_post)->where('is_deleted',0)->email_read()->num_rows();
+        
+        $this->data['email'] = $this->email_model->like($name_post)->like($subject_post)->where('receiver_id', (!empty($nik)) ? $nik : $this->session->userdata('user_id'))->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->email_read()->result();
+        //print_mz($this->data['email']);
+        //list of filterize limit email for pagination  d();
+        $this->data['_num_rows'] = $this->email_model->like($name_post)->like($subject_post)->where('is_deleted',0)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->email_read()->num_rows();
+
+         //config pagination
+         $config['base_url'] = base_url().'email/read/fn:'.$exp_name[1].'/em:'.$exp_subject[1].'/'.$sort_by.'/'.$sort_order.'/';
+         $config['total_rows'] = $this->data['num_rows_all'];
+         $config['per_page'] = 25;
+         $config['uri_segment'] = $this->config->item('uri_segment_pager', 'ion_auth');
+
+        //inisialisasi config
+         $this->pagination->initialize($config);
+
+        //create pagination
+        $this->data['halaman'] = $this->pagination->create_links();
+
+        $this->_render_page('email/read', $this->data);
+        }
+    }
+
+    function show_unread($name = "fn:",$subject = "em:", $sort_by = "id", $sort_order = "asc", $offset = 0)
+    {
+        $this->data['title'] = "Email Masuk";
+        if (!$this->ion_auth->logged_in())
+        {
+            //redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }
+        else
+        {
+        //set the flash data error message if there is one
+        $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
+
+        //set sort order
+        $this->data['sort_order'] = $sort_order;
+        
+        //set sort by
+        $this->data['sort_by'] = $sort_by;
+       
+        //set filter by title
+        $this->data['name_param'] = $name; 
+        $exp_name = explode(":",$name);
+        $name_re = str_replace("_", " ", $exp_name[1]);
+        $name_post = (strlen($name_re) > 0) ? array('users.username'=>$name_re) : array() ;
+
+        //set filter by title
+        $this->data['subject_param'] = $subject; 
+        $exp_subject = explode(":",$subject);
+        $subject_re = str_replace("_", " ", $exp_subject[1]);
+        $subject_post = (strlen($subject_re) > 0) ? array('email.subject'=>$subject_re) : array() ;
+        
+        //set default limit in var $config['list_limit'] at application/config/ion_auth.php 
+        $this->data['limit'] = $limit = (strlen($this->input->post('limit')) > 0) ? $this->input->post('limit') : 25 ;
+
+        $this->data['offset'] = 6;
+
+        //list of filterize all email  
+        $this->data['email_all'] = $this->email_model->like($name_post)->like($subject_post)->where('is_deleted',0)->email_unread()->result();
+        
+        $this->data['num_rows_all'] = $this->email_model->like($name_post)->like($subject_post)->where('is_deleted',0)->email_unread()->num_rows();
+        
+        $this->data['email'] = $this->email_model->like($name_post)->like($subject_post)->where('receiver_id', (!empty($nik)) ? $nik : $this->session->userdata('user_id'))->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->email_unread()->result();
+        //print_mz($this->data['email']);
+        //list of filterize limit email for pagination  d();
+        $this->data['_num_rows'] = $this->email_model->like($name_post)->like($subject_post)->where('is_deleted',0)->limit($limit)->offset($offset)->order_by($sort_by, $sort_order)->email_unread()->num_rows();
+
+         //config pagination
+         $config['base_url'] = base_url().'email/unread/fn:'.$exp_name[1].'/em:'.$exp_subject[1].'/'.$sort_by.'/'.$sort_order.'/';
+         $config['total_rows'] = $this->data['num_rows_all'];
+         $config['per_page'] = 25;
+         $config['uri_segment'] = $this->config->item('uri_segment_pager', 'ion_auth');
+
+        //inisialisasi config
+         $this->pagination->initialize($config);
+
+        //create pagination
+        $this->data['halaman'] = $this->pagination->create_links();
+
+        $this->_render_page('email/unread', $this->data);
+        }
+    }
+
     function sent($ftitle = "fn:",$sort_by = "id", $sort_order = "asc", $offset = 0)
     {
         $this->data['title'] = "Email Terkirim";

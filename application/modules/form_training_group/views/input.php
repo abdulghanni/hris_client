@@ -31,8 +31,11 @@
                         <label class="form-label text-right">Nama</label>
                       </div>
                       <div class="col-md-9">
-                      <?php if(is_admin()||is_admin_bagian()||is_admin_khusus()){?>
+                      <?php if(is_admin()||is_admin_bagian()||is_admin_khusus()||is_admin_kompetensi()){?>
                       <select id="emp" class="select2" style="width:100%" name="emp">
+                        <?php if($sess_id == 2596) { ?>
+                          <option value="2596"><?php echo "Anita Kimasari" ?></option>  
+                        <?php } ?>
                         <?php
                         foreach ($all_users->result() as $up) { ?>
                           <option value="<?php echo $up->id ?>"><?php echo $up->username; ?></option>
@@ -72,9 +75,19 @@
                         <label class="form-label text-right"><?php echo 'Atasan Langsung' ?></label>
                       </div>
                       <div class="col-md-9">
+
                         <?php
+                        if($sess_id = 2596)
+                        {
+
+                          echo form_dropdown('atasan1',array('P0227'=>'Wisnu Chandra Kristiaji'),'P0227','class="select2" style="width:100%" id="atasan1_"');
+
+                        }else{
+
                           $style_up='class="select2" style="width:100%" id="atasan1"';
-                          echo form_dropdown('atasan1',array('0'=>'- Pilih Atasan Langsung -'),'',$style_up);
+                            echo form_dropdown('atasan1',array('0'=>'- Pilih Atasan Langsung -'),'',$style_up);
+
+                        }
                         ?>
                       </div>
                     </div>

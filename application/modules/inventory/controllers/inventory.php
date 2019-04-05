@@ -56,9 +56,9 @@ class Inventory extends MX_Controller {
                 $this->data['type'] = $type = 'koperasi';
             }elseif(is_admin_keuangan_()){
                 $this->data['type'] = $type = 'keuangan';
-            /*}elseif(is_admin_audit()){
+            }elseif(is_admin_audit()){
                 $this->data['type'] = $type = 'audit';
-            }elseif(is_admin_legal()){
+            /*}elseif(is_admin_legal()){
                 $this->data['type'] = $type = 'legal';
             }elseif(is_admin_payroll()){
                 $this->data['type'] = $type = 'payroll';*/

@@ -263,6 +263,7 @@
 			$sess_id = $CI->session->userdata('user_id');
 			$nik = get_nik($sess_id);
 			$bu = get_user_buid($nik);
+
 			$r = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 3)->where('groups.type_inventory_id', 2)->where('groups.bu',$buid)->get()->result_array('user_id');
 			for ($i = 0;$i<sizeof($r);$i++) {
 			if($sess_id == $r[$i]['user_id']):
@@ -299,7 +300,14 @@
 			$sess_id = $CI->session->userdata('user_id');
 			$nik = get_nik($sess_id);
 			$bu = get_user_buid($nik);
-			$r = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 3)->where('groups.type_inventory_id', 2)->where('groups.bu',$buid)->get()->result_array('user_id');
+			if($buid == 51)
+			{
+				$r = $CI->db->select('users_groups.user_id as user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->join('users', 'users_groups.user_id = users.id')->where('groups.admin_type_id', 3)->where('groups.type_inventory_id', 2)->where('groups.bu',$buid)->order_by('users.username','desc')->get()->result_array('user_id');
+			}else{
+				$r = $CI->db->select('user_id')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->where('groups.admin_type_id', 3)->where('groups.type_inventory_id', 2)->where('groups.bu',$buid)->get()->result_array('user_id');
+			}
+				
+				
 			for ($i = 0;$i<sizeof($r);$i++) {
 			//if($sess_id == $r[$i]['user_id']):
 				return $r[$i]['user_id'];
@@ -317,11 +325,16 @@
 			$sess_id = $CI->session->userdata('user_id');
 			$nik = get_nik($sess_id);
 			$bu = get_user_buid($nik);
-			$r = $CI->db->select('users.username as username')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->join('users','users_groups.user_id = users.id')->where('groups.admin_type_id', 3)->where('groups.type_inventory_id', 2)->where('groups.bu',$buid)->get()->result_array('users.username');
+
+			if($buid == 51)
+			{
+				$r = $CI->db->select('users.username as username')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->join('users','users_groups.user_id = users.id')->where('groups.admin_type_id', 3)->where('groups.type_inventory_id', 2)->where('groups.bu',$buid)->order_by('users.username as username','desc')->get()->result_array('users.username');
+			}else{
+				$r = $CI->db->select('users.username as username')->from('users_groups')->join('groups', 'users_groups.group_id = groups.id')->join('users','users_groups.user_id = users.id')->where('groups.admin_type_id', 3)->where('groups.type_inventory_id', 2)->where('groups.bu',$buid)->get()->result_array('users.username');
+			}
+				
 			for ($i = 0;$i<sizeof($r);$i++) {
-			//if($sess_id == $r[$i]['user_id']):
-				return $r[$i]['username'];
-			//endif;
+				return $r[$i]['username'];			
 			}
 		}
 	}

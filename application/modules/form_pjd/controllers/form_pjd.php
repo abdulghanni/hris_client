@@ -470,6 +470,19 @@ class Form_pjd extends MX_Controller {
                             $this->db->insert('users_spd_luar_group_biaya', $data);
                         endfor;
                     }
+                 }else{
+                    for($i=0;$i<sizeof($tr);$i++)
+                    {
+                        $data = array(
+                            'user_spd_luar_group_id' => $spd_id,
+                            'user_id' => $tr[$i],
+                            'pjd_biaya_id'=>40,
+                            'jumlah_biaya'=>0,
+                            'created_on'=> date('Y-m-d',strtotime('now')),
+                            'created_by'=> $sess_id
+                        );
+                        $this->db->insert('users_spd_luar_group_biaya', $data);
+                    }
                  }
                 redirect('form_pjd/input_biaya/'.$spd_id,'refresh');
             }

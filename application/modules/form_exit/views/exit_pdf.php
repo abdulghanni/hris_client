@@ -146,68 +146,68 @@ $rejected = assets_url('img/rejected_stamp.png');?>
   <tbody>
     <tr>
       <td align="center">
-        <?php if(!empty($row->user_app_akunting) && (get_user_bu($user_nik) != 'BU Jakarta')):?>
+        <?php //if(!empty($row->user_app_akunting) && (get_user_bu($user_nik) != 'BU Jakarta')):?>
           <?php echo ($row->app_status_id_akunting == 1)?"<img class=approval-img-md src=$approved>":(($row->app_status_id_akunting == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?>
-        <?php endif ?>
+        <?php //endif ?>
       </td>
       <td align="center">
-        <?php if(!empty($row->user_app_audit) && (get_user_bu($user_nik) != 'BU Jakarta')):?>
+        <?php //if(!empty($row->user_app_audit) && (get_user_bu($user_nik) != 'BU Jakarta')):?>
           <?php echo ($row->app_status_id_audit == 1)?"<img class=approval-img-md src=$approved>":(($row->app_status_id_audit == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?>
-        <?php endif ?>
+        <?php //endif ?>
       </td>
       <td align="center">
-        <?php if(!empty($row->user_app_keuangan)):?>
+        <?php //if(!empty($row->user_app_keuangan)):?>
           <?php echo ($row->app_status_id_keuangan == 1)?"<img class=approval-img-md src=$approved>":(($row->app_status_id_keuangan == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?>
-        <?php endif ?>
+        <?php //endif ?>
       </td>
       <td align="center">
-        <?php if(!empty($row->user_app_asset)):?>
+        <?php //if(!empty($row->user_app_asset)):?>
           <?php echo ($row->app_status_id_asset == 1)?"<img class=approval-img-md src=$approved>":(($row->app_status_id_asset == 2) ? "<img class=approval-img-md src=$rejected>":'<span class="small"></span><br/>');?>
-        <?php endif ?>
+        <?php //endif ?>
       </td>
     </tr>
     <tr>
       <td height="80" align="center">
-        <?php if(!empty($row->user_app_akunting) && (get_user_bu($user_nik) != 'BU Jakarta')):?>
+        <?php //if(!empty($row->user_app_akunting) && (get_user_bu($user_nik) != 'BU Jakarta')):?>
           <?php echo get_name($row->user_app_akunting)?><br/><?php echo dateIndo($row->date_app_akunting)?>
-        <?php endif ?>
+        <?php //endif ?>
       </td>
       <td align="center">
-        <?php if(!empty($row->user_app_audit) && (get_user_bu($user_nik) != 'BU Jakarta')):?>
+        <?php //if(!empty($row->user_app_audit) && (get_user_bu($user_nik) != 'BU Jakarta')):?>
           <?php echo get_name($row->user_app_audit)?><br/><?php echo dateIndo($row->date_app_audit)?>
-        <?php endif ?>
+        <?php //endif ?>
       </td>
       <td align="center">
-        <?php if(!empty($row->user_app_keuangan)):?>
+        <?php //if(!empty($row->user_app_keuangan)):?>
           <?php echo get_name($row->user_app_keuangan)?><br/><?php echo dateIndo($row->date_app_keuangan)?>
-        <?php endif ?>
+        <?php //endif ?>
       </td>
       <td align="center">
-        <?php if(!empty($row->user_app_asset)):?>
+        <?php //if(!empty($row->user_app_asset)):?>
           <?php echo get_name($row->user_app_asset)?><br/><?php echo dateIndo($row->date_app_asset)?>
-        <?php endif ?>
+        <?php //endif ?>
       </td>
     </tr>
     <tr >
       <td align="center">
-        <?php if(!empty($row->user_app_akunting) && (get_user_bu($user_nik) != 'BU Jakarta')):?>
+        <?php //if(!empty($row->user_app_akunting) && (get_user_bu($user_nik) != 'BU Jakarta')):?>
           Akunting
-        <?php endif ?>  
+        <?php //endif ?>  
       </td>
       <td align="center">
-        <?php if(!empty($row->user_app_audit) && (get_user_bu($user_nik) != 'BU Jakarta')):?>
+        <?php //if(!empty($row->user_app_audit) && (get_user_bu($user_nik) != 'BU Jakarta')):?>
           Audit
-        <?php endif ?>  
+        <?php //endif ?>  
       </td>
       <td align="center">
-        <?php if(!empty($row->user_app_keuangan)):?>
+        <?php //if(!empty($row->user_app_keuangan)):?>
           Keuangan
-        <?php endif ?>  
+        <?php //endif ?>  
       </td>
       <td align="center">
-        <?php if(!empty($row->user_app_asset)):?>
+        <?php //if(!empty($row->user_app_asset)):?>
           Asset Management
-        <?php endif ?>  
+        <?php //endif ?>  
       </td>
     </tr>
   </tbody>
@@ -277,35 +277,35 @@ $rejected = assets_url('img/rejected_stamp.png');?>
 </table>
 <?php if(!empty($row->note_mgr)){?>
 <p class="style4">Catatan Manager GA Nasional</p>
-<textarea class="style4" rows="2" width="100%"><?php echo $row->note_mgr?></textarea>
+<textarea class="style4" rows="4" width="100%"><?php echo $row->note_mgr?></textarea>
 <?php } ?>
 <?php if(!empty($row->note_koperasi)){?>
 <p class="style4">Catatan Sie Koperasi</p>
-<textarea class="style4" rows="2" width="100%"><?php echo $row->note_koperasi?></textarea>
+<textarea class="style4" rows="4" width="100%"><?php echo $row->note_koperasi?></textarea>
 <?php } ?>
 <?php if(!empty($row->note_perpus)){?>
 <p class="style4">Catatan Perpustakaan</p>
-<textarea class="style4" rows="2" width="100%"><?php echo $row->note_perpus?></textarea>
+<textarea class="style4" rows="4" width="100%"><?php echo $row->note_perpus?></textarea>
 <?php } ?>
 <?php if(!empty($row->note_hrd)){?>
 <p class="style4">Catatan HRD</p>
-<textarea class="style4" rows="2" width="100%"><?php echo $row->note_hrd?></textarea>
+<textarea class="style4" rows="4" width="100%"><?php echo $row->note_hrd?></textarea>
 <?php } ?>
 <?php if(!empty($row->note_it)){?>
 <p class="style4">Catatan IT</p>
-<textarea class="style4" rows="2" width="100%"><?php echo $row->note_it?></textarea>
+<textarea class="style4" rows="4" width="100%"><?php echo $row->note_it?></textarea>
 <?php } ?>
 <?php if(!empty($row->note_lv1)){?>
 <p class="style4">Catatan Atasan Langsung</p>
-<textarea class="style4" rows="2" width="100%"><?php echo $row->note_lv1?></textarea>
+<textarea class="style4" rows="4" width="100%"><?php echo $row->note_lv1?></textarea>
 <?php } ?>
 <?php if(!empty($row->note_lv2)){?>
 <p class="style4">Catatan Atasan TIdak Langsung</p>
-<textarea class="style4" rows="2" width="100%"><?php echo $row->note_lv2?></textarea>
+<textarea class="style4" rows="4" width="100%"><?php echo $row->note_lv2?></textarea>
 <?php } ?>
 <?php if(!empty($row->note_lv3)){?>
 <p class="style4">Catatan Atasan Lainnya</p>
-<textarea class="style4" rows="2" width="100%"><?php echo $row->note_lv3?></textarea>
+<textarea class="style4" rows="4" width="100%"><?php echo $row->note_lv3?></textarea>
 <?php } ?>
 <br />
  <p class="style4">Hubungi sekretariat HRD (021-xxxxxx)</p>

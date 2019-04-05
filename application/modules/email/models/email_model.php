@@ -356,6 +356,160 @@ class Email_model extends CI_Model
         return $this;
     }
 
+    public function email_read($id = null)
+    {
+        $this->trigger_events('email');
+
+        if (isset($this->_ion_select) && !empty($this->_ion_select))
+        {
+            foreach ($this->_ion_select as $select)
+            {
+                $this->db->select($select);
+            }
+
+            $this->_ion_select = array();
+        }
+        else
+        {
+            $nik = get_nik($this->session->userdata('user_id'));
+            //default selects
+            $this->db->select(array(
+            $this->tables['email'].'.*',
+            $this->tables['email'].'.id as id',
+            $this->tables['email'].'.id as email_id',
+            
+            $this->tables['users'].'.username as name',
+            $this->tables['users'].'.id as userid',
+            $this->tables['users'].'.active as active',
+
+            ));
+            
+            
+            $this->db->join('users', 'email.sender_id = users.nik', 'left');
+            $this->db->where('email.is_read', 1);
+            
+            $this->db->where('email.is_deleted', 0);
+            //$this->db->where('users.active', 0);
+            $this->db->where('receiver_id', (!empty($nik)) ? $nik : $this->session->userdata('user_id'));
+            $this->db->order_by('sent_on', 'desc');
+            
+        }
+        
+        if (isset($this->_ion_like) && !empty($this->_ion_like))
+        {
+            foreach ($this->_ion_like as $like)
+            {
+                $this->db->or_like($like);
+            }
+
+            $this->_ion_like = array();
+        }
+
+        if (isset($this->_ion_limit) && isset($this->_ion_offset))
+        {
+            $this->db->limit($this->_ion_limit, $this->_ion_offset);
+
+            $this->_ion_limit  = NULL;
+            $this->_ion_offset = NULL;
+        }
+        else if (isset($this->_ion_limit))
+        {
+            $this->db->limit($this->_ion_limit);
+
+            $this->_ion_limit  = NULL;
+        }
+
+        //set the order
+        if (isset($this->_ion_order_by) && isset($this->_ion_order))
+        {
+            $this->db->order_by($this->_ion_order_by, $this->_ion_order);
+
+            $this->_ion_order    = NULL;
+            $this->_ion_order_by = NULL;
+        }
+
+        $this->response = $this->db->get($this->tables['email']);
+
+        return $this;
+    }
+
+    public function email_unread($id = null)
+    {
+        $this->trigger_events('email');
+
+        if (isset($this->_ion_select) && !empty($this->_ion_select))
+        {
+            foreach ($this->_ion_select as $select)
+            {
+                $this->db->select($select);
+            }
+
+            $this->_ion_select = array();
+        }
+        else
+        {
+            $nik = get_nik($this->session->userdata('user_id'));
+            //default selects
+            $this->db->select(array(
+            $this->tables['email'].'.*',
+            $this->tables['email'].'.id as id',
+            $this->tables['email'].'.id as email_id',
+            
+            $this->tables['users'].'.username as name',
+            $this->tables['users'].'.id as userid',
+            $this->tables['users'].'.active as active',
+
+            ));
+            
+            
+            $this->db->join('users', 'email.sender_id = users.nik', 'left');
+            $this->db->where('email.is_read', 0);
+            
+            $this->db->where('email.is_deleted', 0);
+            //$this->db->where('users.active', 0);
+            $this->db->where('receiver_id', (!empty($nik)) ? $nik : $this->session->userdata('user_id'));
+            $this->db->order_by('sent_on', 'desc');
+            
+        }
+        
+        if (isset($this->_ion_like) && !empty($this->_ion_like))
+        {
+            foreach ($this->_ion_like as $like)
+            {
+                $this->db->or_like($like);
+            }
+
+            $this->_ion_like = array();
+        }
+
+        if (isset($this->_ion_limit) && isset($this->_ion_offset))
+        {
+            $this->db->limit($this->_ion_limit, $this->_ion_offset);
+
+            $this->_ion_limit  = NULL;
+            $this->_ion_offset = NULL;
+        }
+        else if (isset($this->_ion_limit))
+        {
+            $this->db->limit($this->_ion_limit);
+
+            $this->_ion_limit  = NULL;
+        }
+
+        //set the order
+        if (isset($this->_ion_order_by) && isset($this->_ion_order))
+        {
+            $this->db->order_by($this->_ion_order_by, $this->_ion_order);
+
+            $this->_ion_order    = NULL;
+            $this->_ion_order_by = NULL;
+        }
+
+        $this->response = $this->db->get($this->tables['email']);
+
+        return $this;
+    }
+
     public function email_sent($id = null)
     {
         $this->trigger_events('email');

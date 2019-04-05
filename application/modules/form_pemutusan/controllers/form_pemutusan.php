@@ -328,6 +328,23 @@ class Form_Pemutusan extends MX_Controller {
         }elseif($type == 'hrd' && $approval_status == 1){
             $this->send_user_notification($id, $user_pemutusan_id);
             //$this->send_notif_tambahan($id, $user_pemutusan_id);
+            /*notif tambahan admin payroll*/
+                $url = base_url().'form_pemutusan/detail/'.$id;
+                $subject_email = 'Pengajuan form pemutusan kontrak';
+                $isi_email = 'HRD telah menyetujui pengajuan form pemutusan kontrak oleh '.get_name($user_pemutusan_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />';
+                $receiver_admin_payroll = 'P0081';
+                $data4 = array(
+                      'sender_id' => get_nik(sessId()),
+                      'receiver_id' => $receiver_admin_payroll,
+                      'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                      'subject' => $subject_email,
+                      'email_body' => $isi_email,
+                      'is_read' => 0,
+                  );
+                
+                $this->db->insert('email', $data4);
+                if(!empty(getEmail($receiver_admin_payroll)))$this->send_email(getEmail($receiver_admin_payroll), $subject_email, $isi_email);
+                /*notif tambahan admin payroll*/
         }else{
             $email_body = "Status pengajuan pemutusan yang diajukan oleh ".get_name($user_pemutusan_id).' '.$approval_status_mail. ' oleh '.get_name($user_id).' untuk detail silakan <a href='.base_url().'form_pemutusan/detail/'.$id.'>Klik Disini</a> atau <a href="http://123.231.241.12/hris_client/form_pemutusan/detail/'.$id.'">Klik Disini</a> jika anda akan mengakses diluar jaringan perusahaan. <br />';
             $form = 'pemutusan';

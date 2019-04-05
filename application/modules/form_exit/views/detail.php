@@ -723,7 +723,7 @@
 <?php endfor;?>
 
 <?php 
-$admin_inv = array('mgr', 'koperasi', 'keuangan', 'perpus', 'hrd', 'it');
+$admin_inv = array('mgr', 'koperasi', 'keuangan', 'perpus', 'hrd', 'it','akunting','audit','legal');
 foreach($admin_inv as $k=>$v):?>
   <!--approval  Modal atasan -->
 <div class="modal fade" data-backdrop="static" data-keyboard="false" id="<?php echo 'submitModal'.$v?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

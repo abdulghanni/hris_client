@@ -391,6 +391,24 @@ class Form_phk extends MX_Controller {
 
         if($type == 'hrd' && $approval_status == 1){
             $this->send_notif_tambahan($id, 'phk');
+
+                /*notif tambahan admin payroll*/
+                $url = base_url().'form_phk/detail/'.$id;
+                $subject_email = 'Pengajuan form PHK';
+                $isi_email = 'HRD telah menyetujui pengajuan form PHK oleh '.get_name($user_id).', untuk melihat detail silakan <a class="klikmail" href='.$url.'>Klik Disini</a><br />';
+                $receiver_admin_payroll = 'P0081';
+                $data4 = array(
+                      'sender_id' => get_nik(sessId()),
+                      'receiver_id' => $receiver_admin_payroll,
+                      'sent_on' => date('Y-m-d-H-i-s',strtotime('now')),
+                      'subject' => $subject_email,
+                      'email_body' => $isi_email,
+                      'is_read' => 0,
+                  );
+                
+                $this->db->insert('email', $data4);
+                if(!empty(getEmail($receiver_admin_payroll)))$this->send_email(getEmail($receiver_admin_payroll), $subject_email, $isi_email);
+                /*notif tambahan admin payroll*/
         }
     }
 

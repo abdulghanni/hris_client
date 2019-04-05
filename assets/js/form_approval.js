@@ -6,8 +6,8 @@ $(document).ready(function() {
     var businessunit = $('#bu').val();
 
     if(businessunit = 'BU Jakarta'){
-        $('#akunting').hide();
-        $('#audit').hide();
+        //$('#akunting').hide();
+        //$('#audit').hide();
     }
 
 

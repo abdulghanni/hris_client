@@ -15,8 +15,6 @@ class Form_exit extends MX_Controller {
         $this->load->model('form_exit/form_exit_model', 'main');
         $this->lang->load('auth');
         $this->load->helper('language');
-
-        
     }
 
     function index($ftitle = "fn:",$sort_by = "id", $sort_order = "asc", $offset = 0)
@@ -628,6 +626,7 @@ class Form_exit extends MX_Controller {
 					else
 					{	
 						$statusauditdone=0;
+                        $statusauditneed=0;
 					}
 				}
 				else
@@ -647,6 +646,7 @@ class Form_exit extends MX_Controller {
 					else
 					{	
 						$statusakuntingdone=0;
+                        $statusakuntingneed=0;
 					}
 				}
 				else
